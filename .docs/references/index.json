@@ -5,7 +5,13 @@
         "path": "Box",
         "source": {
             "header": "Includes/Chicane/Box.hpp",
-            "namespace": "Chicane::Box"
+            "namespace": "Chicane::Box",
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -14,7 +20,13 @@
                 "path": "Box/Asset",
                 "source": {
                     "header": "Includes/Chicane/Box/Asset.hpp",
-                    "namespace": "Chicane::Box::Asset"
+                    "namespace": "Chicane::Box::Asset",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -23,7 +35,13 @@
                         "path": "Box/Asset/Header",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Header.hpp",
-                            "namespace": "Chicane::Box::AssetHeader"
+                            "namespace": "Chicane::Box::AssetHeader",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -33,7 +51,13 @@
                         "path": "Box/Asset/Type",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Type.hpp",
-                            "namespace": "Chicane::Box::AssetType"
+                            "namespace": "Chicane::Box::AssetType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -45,7 +69,13 @@
                 "path": "Box/Font",
                 "source": {
                     "header": "Includes/Chicane/Box/Font.hpp",
-                    "namespace": "Chicane::Box::Font"
+                    "namespace": "Chicane::Box::Font",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -54,7 +84,13 @@
                         "path": "Box/Font/Glyph",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Glyph.hpp",
-                            "namespace": "Chicane::Box::FontGlyph"
+                            "namespace": "Chicane::Box::FontGlyph",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -64,7 +100,13 @@
                         "path": "Box/Font/Manager",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Manager.hpp",
-                            "namespace": "Chicane::Box::FontManager"
+                            "namespace": "Chicane::Box::FontManager",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -74,7 +116,13 @@
                         "path": "Box/Font/Parsed",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Parsed.hpp",
-                            "namespace": "Chicane::Box::FontParsed"
+                            "namespace": "Chicane::Box::FontParsed",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -84,7 +132,13 @@
                         "path": "Box/Font/TrueType",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/TrueType.hpp",
-                            "namespace": "Chicane::Box::FontTrueType"
+                            "namespace": "Chicane::Box::FontTrueType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -94,7 +148,13 @@
                         "path": "Box/Font/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Vendor.hpp",
-                            "namespace": "Chicane::Box::FontVendor"
+                            "namespace": "Chicane::Box::FontVendor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -106,7 +166,13 @@
                 "path": "Box/Manager",
                 "source": {
                     "header": "Includes/Chicane/Box/Manager.hpp",
-                    "namespace": "Chicane::Box::Manager"
+                    "namespace": "Chicane::Box::Manager",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -115,7 +181,13 @@
                         "path": "Box/Manager/Event",
                         "source": {
                             "header": "Includes/Chicane/Box/Manager/Event.hpp",
-                            "namespace": "Chicane::Box::ManagerEvent"
+                            "namespace": "Chicane::Box::ManagerEvent",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -127,7 +199,13 @@
                 "path": "Box/Mesh",
                 "source": {
                     "header": "Includes/Chicane/Box/Mesh.hpp",
-                    "namespace": "Chicane::Box::Mesh"
+                    "namespace": "Chicane::Box::Mesh",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -136,7 +214,13 @@
                         "path": "Box/Mesh/Group",
                         "source": {
                             "header": "Includes/Chicane/Box/Mesh/Group.hpp",
-                            "namespace": "Chicane::Box::MeshGroup"
+                            "namespace": "Chicane::Box::MeshGroup",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -146,7 +230,13 @@
                         "path": "Box/Mesh/Parsed",
                         "source": {
                             "header": "Includes/Chicane/Box/Mesh/Parsed.hpp",
-                            "namespace": "Chicane::Box::MeshParsed"
+                            "namespace": "Chicane::Box::MeshParsed",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -158,7 +248,13 @@
                 "path": "Box/Model",
                 "source": {
                     "header": "Includes/Chicane/Box/Model.hpp",
-                    "namespace": "Chicane::Box::Model"
+                    "namespace": "Chicane::Box::Model",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -167,7 +263,13 @@
                         "path": "Box/Model/Manager",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Manager.hpp",
-                            "namespace": "Chicane::Box::ModelManager"
+                            "namespace": "Chicane::Box::ModelManager",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -177,7 +279,13 @@
                         "path": "Box/Model/Parsed",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Parsed.hpp",
-                            "namespace": "Chicane::Box::ModelParsed"
+                            "namespace": "Chicane::Box::ModelParsed",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -187,7 +295,13 @@
                         "path": "Box/Model/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Vendor.hpp",
-                            "namespace": "Chicane::Box::ModelVendor"
+                            "namespace": "Chicane::Box::ModelVendor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -197,7 +311,13 @@
                         "path": "Box/Model/Wavefront",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
-                            "namespace": "Chicane::Box::ModelWavefront"
+                            "namespace": "Chicane::Box::ModelWavefront",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -209,7 +329,13 @@
                 "path": "Box/Sky",
                 "source": {
                     "header": "Includes/Chicane/Box/Sky.hpp",
-                    "namespace": "Chicane::Box::Sky"
+                    "namespace": "Chicane::Box::Sky",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -218,7 +344,13 @@
                         "path": "Box/Sky/Side",
                         "source": {
                             "header": "Includes/Chicane/Box/Sky/Side.hpp",
-                            "namespace": "Chicane::Box::SkySide"
+                            "namespace": "Chicane::Box::SkySide",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -230,7 +362,13 @@
                 "path": "Box/Sound",
                 "source": {
                     "header": "Includes/Chicane/Box/Sound.hpp",
-                    "namespace": "Chicane::Box::Sound"
+                    "namespace": "Chicane::Box::Sound",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -239,7 +377,13 @@
                         "path": "Box/Sound/Manager",
                         "source": {
                             "header": "Includes/Chicane/Box/Sound/Manager.hpp",
-                            "namespace": "Chicane::Box::SoundManager"
+                            "namespace": "Chicane::Box::SoundManager",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -251,7 +395,13 @@
                 "path": "Box/Texture",
                 "source": {
                     "header": "Includes/Chicane/Box/Texture.hpp",
-                    "namespace": "Chicane::Box::Texture"
+                    "namespace": "Chicane::Box::Texture",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -260,7 +410,13 @@
                         "path": "Box/Texture/Manager",
                         "source": {
                             "header": "Includes/Chicane/Box/Texture/Manager.hpp",
-                            "namespace": "Chicane::Box::TextureManager"
+                            "namespace": "Chicane::Box::TextureManager",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -274,7 +430,13 @@
         "path": "Core",
         "source": {
             "header": null,
-            "namespace": null
+            "namespace": null,
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -283,7 +445,13 @@
                 "path": "Core/Base64",
                 "source": {
                     "header": "Includes/Chicane/Core/Base64.hpp",
-                    "namespace": "Chicane::Base64"
+                    "namespace": "Chicane::Base64",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -293,7 +461,13 @@
                 "path": "Core/Changeable",
                 "source": {
                     "header": "Includes/Chicane/Core/Changeable.hpp",
-                    "namespace": "Chicane::Changeable"
+                    "namespace": "Chicane::Changeable",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -303,7 +477,13 @@
                 "path": "Core/Color",
                 "source": {
                     "header": "Includes/Chicane/Core/Color.hpp",
-                    "namespace": "Chicane::Color"
+                    "namespace": "Chicane::Color",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -313,7 +493,13 @@
                 "path": "Core/Event",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -322,7 +508,13 @@
                         "path": "Core/Event/Observable",
                         "source": {
                             "header": "Includes/Chicane/Core/Event/Observable.hpp",
-                            "namespace": "Chicane::EventObservable"
+                            "namespace": "Chicane::EventObservable",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -332,7 +524,13 @@
                         "path": "Core/Event/Subscription",
                         "source": {
                             "header": "Includes/Chicane/Core/Event/Subscription.hpp",
-                            "namespace": "Chicane::EventSubscription"
+                            "namespace": "Chicane::EventSubscription",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -344,7 +542,13 @@
                 "path": "Core/FileSystem",
                 "source": {
                     "header": "Includes/Chicane/Core/FileSystem.hpp",
-                    "namespace": "Chicane::FileSystem"
+                    "namespace": "Chicane::FileSystem",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -353,7 +557,13 @@
                         "path": "Core/FileSystem/FileDialog",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/FileDialog.hpp",
-                            "namespace": "Chicane::FileSystem::FileDialog"
+                            "namespace": "Chicane::FileSystem::FileDialog",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -363,7 +573,13 @@
                         "path": "Core/FileSystem/FolderDialog",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/FolderDialog.hpp",
-                            "namespace": "Chicane::FileSystem::FolderDialog"
+                            "namespace": "Chicane::FileSystem::FolderDialog",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -373,7 +589,13 @@
                         "path": "Core/FileSystem/Item",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/Item.hpp",
-                            "namespace": "Chicane::FileSystem::Item"
+                            "namespace": "Chicane::FileSystem::Item",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -382,7 +604,13 @@
                                 "path": "Core/FileSystem/Item/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Core/FileSystem/Item/Type.hpp",
-                                    "namespace": "Chicane::FileSystem::ItemType"
+                                    "namespace": "Chicane::FileSystem::ItemType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -396,7 +624,13 @@
                 "path": "Core/Image",
                 "source": {
                     "header": "Includes/Chicane/Core/Image.hpp",
-                    "namespace": "Chicane::Image"
+                    "namespace": "Chicane::Image",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -405,7 +639,13 @@
                         "path": "Core/Image/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Core/Image/Vendor.hpp",
-                            "namespace": "Chicane::ImageVendor"
+                            "namespace": "Chicane::ImageVendor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -417,7 +657,13 @@
                 "path": "Core/Input",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -426,7 +672,13 @@
                         "path": "Core/Input/Event",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -435,7 +687,13 @@
                                 "path": "Core/Input/Event/Events",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Events.hpp",
-                                    "namespace": "Chicane::Input::Events"
+                                    "namespace": "Chicane::Input::Events",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -445,7 +703,13 @@
                                 "path": "Core/Input/Event/Pressable",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
-                                    "namespace": "Chicane::Input::PressableEvents"
+                                    "namespace": "Chicane::Input::PressableEvents",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -457,7 +721,13 @@
                         "path": "Core/Input/Gamepad",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -466,7 +736,13 @@
                                 "path": "Core/Input/Gamepad/Axis",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/Axis.hpp",
-                                    "namespace": "Chicane::Input::GamepadAxis"
+                                    "namespace": "Chicane::Input::GamepadAxis",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -476,7 +752,13 @@
                                 "path": "Core/Input/Gamepad/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",
-                                    "namespace": "Chicane::Input::GamepadButton"
+                                    "namespace": "Chicane::Input::GamepadButton",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -485,7 +767,13 @@
                                         "path": "Core/Input/Gamepad/Button/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Gamepad/Button/Event.hpp",
-                                            "namespace": "Chicane::Input::GamepadButtonEvent"
+                                            "namespace": "Chicane::Input::GamepadButtonEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -497,7 +785,13 @@
                                 "path": "Core/Input/Gamepad/Motion",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -506,7 +800,13 @@
                                         "path": "Core/Input/Gamepad/Motion/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
-                                            "namespace": "Chicane::Input::GamepadMotionEvent"
+                                            "namespace": "Chicane::Input::GamepadMotionEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -520,7 +820,13 @@
                         "path": "Core/Input/Device",
                         "source": {
                             "header": "Includes/Chicane/Core/Input/Device.hpp",
-                            "namespace": "Chicane::Input"
+                            "namespace": "Chicane::Input",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -529,7 +835,13 @@
                                 "path": "Core/Input/Device/Event",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
-                                    "namespace": "Chicane::Input::DeviceEvent"
+                                    "namespace": "Chicane::Input::DeviceEvent",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -539,7 +851,13 @@
                                 "path": "Core/Input/Device/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
-                                    "namespace": "Chicane::Input::DeviceType"
+                                    "namespace": "Chicane::Input::DeviceType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -551,7 +869,13 @@
                         "path": "Core/Input/Keyboard",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -560,7 +884,13 @@
                                 "path": "Core/Input/Keyboard/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",
-                                    "namespace": "Chicane::Input::KeyboardButton"
+                                    "namespace": "Chicane::Input::KeyboardButton",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -569,7 +899,13 @@
                                         "path": "Core/Input/Keyboard/Button/Modifier",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Keyboard/Button/Modifier.hpp",
-                                            "namespace": "Chicane::Input::KeyboardButtonModifier"
+                                            "namespace": "Chicane::Input::KeyboardButtonModifier",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -581,7 +917,13 @@
                                 "path": "Core/Input/Keyboard/Event",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-                                    "namespace": "Chicane::Input::KeyboardEvent"
+                                    "namespace": "Chicane::Input::KeyboardEvent",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -593,7 +935,13 @@
                         "path": "Core/Input/Mouse",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -602,7 +950,13 @@
                                 "path": "Core/Input/Mouse/Motion",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -611,7 +965,13 @@
                                         "path": "Core/Input/Mouse/Motion/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseMotionEvent"
+                                            "namespace": "Chicane::Input::MouseMotionEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -623,7 +983,13 @@
                                 "path": "Core/Input/Mouse/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
-                                    "namespace": "Chicane::Input::MouseButton"
+                                    "namespace": "Chicane::Input::MouseButton",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -632,7 +998,13 @@
                                         "path": "Core/Input/Mouse/Button/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseButtonEvent"
+                                            "namespace": "Chicane::Input::MouseButtonEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -646,7 +1018,13 @@
                         "path": "Core/Input/Status",
                         "source": {
                             "header": "Includes/Chicane/Core/Input/Status.hpp",
-                            "namespace": "Chicane::Input::Status"
+                            "namespace": "Chicane::Input::Status",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -658,7 +1036,13 @@
                 "path": "Core/List",
                 "source": {
                     "header": "Includes/Chicane/Core/List.hpp",
-                    "namespace": "Chicane::List"
+                    "namespace": "Chicane::List",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -667,7 +1051,13 @@
                         "path": "Core/List/Push",
                         "source": {
                             "header": "Includes/Chicane/Core/List/Push.hpp",
-                            "namespace": "Chicane::ListPush"
+                            "namespace": "Chicane::ListPush",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -676,7 +1066,13 @@
                                 "path": "Core/List/Push/Strategy",
                                 "source": {
                                     "header": "Includes/Chicane/Core/List/Push/Strategy.hpp",
-                                    "namespace": "Chicane::ListPushStrategy"
+                                    "namespace": "Chicane::ListPushStrategy",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -690,7 +1086,13 @@
                 "path": "Core/Log",
                 "source": {
                     "header": "Includes/Chicane/Core/Log.hpp",
-                    "namespace": "Chicane::Log"
+                    "namespace": "Chicane::Log",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -699,7 +1101,13 @@
                         "path": "Core/Log/Entry",
                         "source": {
                             "header": "Includes/Chicane/Core/Log/Entry.hpp",
-                            "namespace": "Chicane::Log::Entry"
+                            "namespace": "Chicane::Log::Entry",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -711,7 +1119,13 @@
                 "path": "Core/Math",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -720,7 +1134,13 @@
                         "path": "Core/Math/Bounds",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -729,7 +1149,13 @@
                                 "path": "Core/Math/Bounds/2D",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Bounds/2D.hpp",
-                                    "namespace": "Chicane::Bounds2D"
+                                    "namespace": "Chicane::Bounds2D",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -739,7 +1165,13 @@
                                 "path": "Core/Math/Bounds/3D",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Bounds/3D.hpp",
-                                    "namespace": "Chicane::Bounds3D"
+                                    "namespace": "Chicane::Bounds3D",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -751,7 +1183,13 @@
                         "path": "Core/Math/Curve",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Curve.hpp",
-                            "namespace": "Chicane::Curve"
+                            "namespace": "Chicane::Curve",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -761,7 +1199,13 @@
                         "path": "Core/Math/Line",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Line.hpp",
-                            "namespace": "Chicane::Line"
+                            "namespace": "Chicane::Line",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -771,7 +1215,13 @@
                         "path": "Core/Math/Mat",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Mat.hpp",
-                            "namespace": "Chicane::Mat"
+                            "namespace": "Chicane::Mat",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -780,7 +1230,13 @@
                                 "path": "Core/Math/Mat/Mat4",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Mat/Mat4.hpp",
-                                    "namespace": "Chicane::Mat4"
+                                    "namespace": "Chicane::Mat4",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -792,7 +1248,13 @@
                         "path": "Core/Math/Quat",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Quat.hpp",
-                            "namespace": "Chicane::Quat"
+                            "namespace": "Chicane::Quat",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -801,7 +1263,13 @@
                                 "path": "Core/Math/Quat/QuatFloat",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Quat/QuatFloat.hpp",
-                                    "namespace": "Chicane::QuatFloat"
+                                    "namespace": "Chicane::QuatFloat",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -813,7 +1281,13 @@
                         "path": "Core/Math/Rotator",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Rotator.hpp",
-                            "namespace": "Chicane::Rotator"
+                            "namespace": "Chicane::Rotator",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -823,7 +1297,13 @@
                         "path": "Core/Math/Transform",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Transform.hpp",
-                            "namespace": "Chicane::Transform"
+                            "namespace": "Chicane::Transform",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -832,7 +1312,13 @@
                                 "path": "Core/Math/Transform/Spatial",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Transform/Spatial.hpp",
-                                    "namespace": "Chicane::SpatialTransform"
+                                    "namespace": "Chicane::SpatialTransform",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -844,7 +1330,13 @@
                         "path": "Core/Math/Vec",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Vec.hpp",
-                            "namespace": "Chicane::Vec"
+                            "namespace": "Chicane::Vec",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -853,7 +1345,13 @@
                                 "path": "Core/Math/Vec/Vec2",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec2.hpp",
-                                    "namespace": "Chicane::Vec2"
+                                    "namespace": "Chicane::Vec2",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -863,7 +1361,13 @@
                                 "path": "Core/Math/Vec/Vec3",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec3.hpp",
-                                    "namespace": "Chicane::Vec3"
+                                    "namespace": "Chicane::Vec3",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -873,7 +1377,13 @@
                                 "path": "Core/Math/Vec/Vec4",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec4.hpp",
-                                    "namespace": "Chicane::Vec4"
+                                    "namespace": "Chicane::Vec4",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -885,7 +1395,13 @@
                         "path": "Core/Math/Vertex",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Vertex.hpp",
-                            "namespace": "Chicane::Vertex"
+                            "namespace": "Chicane::Vertex",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -897,7 +1413,13 @@
                 "path": "Core/Recorder",
                 "source": {
                     "header": "Includes/Chicane/Core/Recorder.hpp",
-                    "namespace": "Chicane::Recorder"
+                    "namespace": "Chicane::Recorder",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -907,7 +1429,13 @@
                 "path": "Core/Reference",
                 "source": {
                     "header": "Includes/Chicane/Core/Reference.hpp",
-                    "namespace": "Chicane::Reference"
+                    "namespace": "Chicane::Reference",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -917,7 +1445,13 @@
                 "path": "Core/String",
                 "source": {
                     "header": "Includes/Chicane/Core/String.hpp",
-                    "namespace": "Chicane::String"
+                    "namespace": "Chicane::String",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -927,7 +1461,13 @@
                 "path": "Core/Telemetry",
                 "source": {
                     "header": "Includes/Chicane/Core/Telemetry.hpp",
-                    "namespace": "Chicane::Telemetry"
+                    "namespace": "Chicane::Telemetry",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -937,7 +1477,13 @@
                 "path": "Core/Thread",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -946,7 +1492,13 @@
                         "path": "Core/Thread/Pool",
                         "source": {
                             "header": "Includes/Chicane/Core/Thread/Pool.hpp",
-                            "namespace": "Chicane::ThreadPool"
+                            "namespace": "Chicane::ThreadPool",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -958,7 +1510,13 @@
                 "path": "Core/Time",
                 "source": {
                     "header": "Includes/Chicane/Core/Time.hpp",
-                    "namespace": "Chicane::Time"
+                    "namespace": "Chicane::Time",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -968,7 +1526,13 @@
                 "path": "Core/Transformable",
                 "source": {
                     "header": "Includes/Chicane/Core/Transformable.hpp",
-                    "namespace": "Chicane::Transformable"
+                    "namespace": "Chicane::Transformable",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -978,7 +1542,13 @@
                 "path": "Core/View",
                 "source": {
                     "header": "Includes/Chicane/Core/View.hpp",
-                    "namespace": "Chicane::View"
+                    "namespace": "Chicane::View",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -987,7 +1557,13 @@
                         "path": "Core/View/Projection",
                         "source": {
                             "header": null,
-                            "namespace": null
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -996,7 +1572,13 @@
                                 "path": "Core/View/Projection/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Core/View/Projection/Type.hpp",
-                                    "namespace": "Chicane::ViewProjectionType"
+                                    "namespace": "Chicane::ViewProjectionType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1008,7 +1590,13 @@
                         "path": "Core/View/Frustum",
                         "source": {
                             "header": "Includes/Chicane/Core/View/Frustum.hpp",
-                            "namespace": "Chicane::ViewFrustum"
+                            "namespace": "Chicane::ViewFrustum",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1018,7 +1606,13 @@
                         "path": "Core/View/Plane",
                         "source": {
                             "header": "Includes/Chicane/Core/View/Plane.hpp",
-                            "namespace": "Chicane::ViewPlane"
+                            "namespace": "Chicane::ViewPlane",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1028,7 +1622,13 @@
                         "path": "Core/View/Settings",
                         "source": {
                             "header": "Includes/Chicane/Core/View/Settings.hpp",
-                            "namespace": "Chicane::ViewSettings"
+                            "namespace": "Chicane::ViewSettings",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1040,7 +1640,13 @@
                 "path": "Core/Window",
                 "source": {
                     "header": "Includes/Chicane/Core/Window.hpp",
-                    "namespace": "Chicane::Window"
+                    "namespace": "Chicane::Window",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1049,7 +1655,13 @@
                         "path": "Core/Window/Backend",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Backend.hpp",
-                            "namespace": "Chicane::WindowBackend"
+                            "namespace": "Chicane::WindowBackend",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1059,7 +1671,13 @@
                         "path": "Core/Window/Event",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Event.hpp",
-                            "namespace": "Chicane::WindowEvent"
+                            "namespace": "Chicane::WindowEvent",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1068,7 +1686,13 @@
                                 "path": "Core/Window/Event/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Window/Event/Type.hpp",
-                                    "namespace": "Chicane::WindowEventType"
+                                    "namespace": "Chicane::WindowEventType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1080,7 +1704,13 @@
                         "path": "Core/Window/Settings",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Settings.hpp",
-                            "namespace": "Chicane::WindowSettings"
+                            "namespace": "Chicane::WindowSettings",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1090,7 +1720,13 @@
                         "path": "Core/Window/Type",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Type.hpp",
-                            "namespace": "Chicane::WindowType"
+                            "namespace": "Chicane::WindowType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1102,7 +1738,13 @@
                 "path": "Core/Xml",
                 "source": {
                     "header": "Includes/Chicane/Core/Xml.hpp",
-                    "namespace": "Chicane::Xml"
+                    "namespace": "Chicane::Xml",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             }
@@ -1114,7 +1756,13 @@
         "path": "Grid",
         "source": {
             "header": "Includes/Chicane/Grid.hpp",
-            "namespace": "Chicane::Grid"
+            "namespace": "Chicane::Grid",
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -1123,7 +1771,13 @@
                 "path": "Grid/Component",
                 "source": {
                     "header": "Includes/Chicane/Grid/Component.hpp",
-                    "namespace": "Chicane::Grid::Component"
+                    "namespace": "Chicane::Grid::Component",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1132,7 +1786,13 @@
                         "path": "Grid/Component/Button",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Button.hpp",
-                            "namespace": "Chicane::Grid::Button"
+                            "namespace": "Chicane::Grid::Button",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1142,7 +1802,13 @@
                         "path": "Grid/Component/Container",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Container.hpp",
-                            "namespace": "Chicane::Grid::Container"
+                            "namespace": "Chicane::Grid::Container",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1152,7 +1818,13 @@
                         "path": "Grid/Component/List",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/List.hpp",
-                            "namespace": "Chicane::Grid::List"
+                            "namespace": "Chicane::Grid::List",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1162,7 +1834,13 @@
                         "path": "Grid/Component/Popup",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Popup.hpp",
-                            "namespace": "Chicane::Grid::Popup"
+                            "namespace": "Chicane::Grid::Popup",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1172,7 +1850,13 @@
                         "path": "Grid/Component/ProgressBar",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/ProgressBar.hpp",
-                            "namespace": "Chicane::Grid::ProgressBar"
+                            "namespace": "Chicane::Grid::ProgressBar",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1182,7 +1866,13 @@
                         "path": "Grid/Component/Text",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Text.hpp",
-                            "namespace": "Chicane::Grid::Text"
+                            "namespace": "Chicane::Grid::Text",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1191,7 +1881,13 @@
                                 "path": "Grid/Component/Text/Character",
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Component/Text/Character.hpp",
-                                    "namespace": "Chicane::Grid::TextCharacter"
+                                    "namespace": "Chicane::Grid::TextCharacter",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1201,7 +1897,13 @@
                                 "path": "Grid/Component/Text/Input",
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Component/Text/Input.hpp",
-                                    "namespace": "Chicane::Grid::TextInput"
+                                    "namespace": "Chicane::Grid::TextInput",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1213,7 +1915,13 @@
                         "path": "Grid/Component/View",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/View.hpp",
-                            "namespace": "Chicane::Grid::View"
+                            "namespace": "Chicane::Grid::View",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1225,7 +1933,13 @@
                 "path": "Grid/Event",
                 "source": {
                     "header": "Includes/Chicane/Grid/Event.hpp",
-                    "namespace": "Chicane::Grid::Event"
+                    "namespace": "Chicane::Grid::Event",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -1235,7 +1949,13 @@
                 "path": "Grid/Function",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1244,7 +1964,13 @@
                         "path": "Grid/Function/Data",
                         "source": {
                             "header": "Includes/Chicane/Grid/Function/Data.hpp",
-                            "namespace": "Chicane::Grid::FunctionData"
+                            "namespace": "Chicane::Grid::FunctionData",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1256,7 +1982,13 @@
                 "path": "Grid/Primitive",
                 "source": {
                     "header": "Includes/Chicane/Grid/Primitive.hpp",
-                    "namespace": "Chicane::Grid::Primitive"
+                    "namespace": "Chicane::Grid::Primitive",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -1266,7 +1998,13 @@
                 "path": "Grid/Style",
                 "source": {
                     "header": "Includes/Chicane/Grid/Style.hpp",
-                    "namespace": "Chicane::Grid::Style"
+                    "namespace": "Chicane::Grid::Style",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1275,7 +2013,13 @@
                         "path": "Grid/Style/Alignment",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-                            "namespace": "Chicane::Grid::StyleAlignment"
+                            "namespace": "Chicane::Grid::StyleAlignment",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1285,7 +2029,13 @@
                         "path": "Grid/Style/Background",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Background.hpp",
-                            "namespace": "Chicane::Grid::StyleBackground"
+                            "namespace": "Chicane::Grid::StyleBackground",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1295,7 +2045,13 @@
                         "path": "Grid/Style/Corners",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Corners.hpp",
-                            "namespace": "Chicane::Grid::StyleCorners"
+                            "namespace": "Chicane::Grid::StyleCorners",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1305,7 +2061,13 @@
                         "path": "Grid/Style/Direction",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Direction.hpp",
-                            "namespace": "Chicane::Grid::StyleDirection"
+                            "namespace": "Chicane::Grid::StyleDirection",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1315,7 +2077,13 @@
                         "path": "Grid/Style/Display",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Display.hpp",
-                            "namespace": "Chicane::Grid::StyleDisplay"
+                            "namespace": "Chicane::Grid::StyleDisplay",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1325,7 +2093,13 @@
                         "path": "Grid/Style/Flex",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Flex.hpp",
-                            "namespace": "Chicane::Grid::StyleFlex"
+                            "namespace": "Chicane::Grid::StyleFlex",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1334,7 +2108,13 @@
                                 "path": "Grid/Style/Flex/Direction",
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Style/Flex/Direction.hpp",
-                                    "namespace": "Chicane::Grid::StyleFlexDirection"
+                                    "namespace": "Chicane::Grid::StyleFlexDirection",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1346,7 +2126,13 @@
                         "path": "Grid/Style/Font",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Font.hpp",
-                            "namespace": "Chicane::Grid::StyleFont"
+                            "namespace": "Chicane::Grid::StyleFont",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1356,7 +2142,13 @@
                         "path": "Grid/Style/Position",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Position.hpp",
-                            "namespace": "Chicane::Grid::StylePosition"
+                            "namespace": "Chicane::Grid::StylePosition",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1366,7 +2158,13 @@
                         "path": "Grid/Style/Property",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Property.hpp",
-                            "namespace": "Chicane::Grid::StyleProperty"
+                            "namespace": "Chicane::Grid::StyleProperty",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1376,7 +2174,13 @@
                         "path": "Grid/Style/Source",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Source.hpp",
-                            "namespace": "Chicane::Grid::StyleSource"
+                            "namespace": "Chicane::Grid::StyleSource",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1390,7 +2194,13 @@
         "path": "Kerb",
         "source": {
             "header": "Includes/Chicane/Kerb.hpp",
-            "namespace": "Chicane::Kerb"
+            "namespace": "Chicane::Kerb",
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -1399,7 +2209,13 @@
                 "path": "Kerb/Engine",
                 "source": {
                     "header": "Includes/Chicane/Kerb/Engine.hpp",
-                    "namespace": "Chicane::Kerb::Engine"
+                    "namespace": "Chicane::Kerb::Engine",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -1409,7 +2225,13 @@
                 "path": "Kerb/Layer",
                 "source": {
                     "header": null,
-                    "namespace": null
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1418,7 +2240,13 @@
                         "path": "Kerb/Layer/BroadPhase",
                         "source": {
                             "header": "Includes/Chicane/Kerb/Layer/BroadPhase.hpp",
-                            "namespace": "Chicane::Kerb::BroadPhaseLayer"
+                            "namespace": "Chicane::Kerb::BroadPhaseLayer",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1428,7 +2256,13 @@
                         "path": "Kerb/Layer/Object",
                         "source": {
                             "header": "Includes/Chicane/Kerb/Layer/Object.hpp",
-                            "namespace": "Chicane::Kerb::ObjectLayer"
+                            "namespace": "Chicane::Kerb::ObjectLayer",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1442,7 +2276,13 @@
         "path": "Renderer",
         "source": {
             "header": null,
-            "namespace": null
+            "namespace": null,
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -1451,7 +2291,13 @@
                 "path": "Renderer/Draw",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Draw.hpp",
-                    "namespace": "Chicane::Renderer::Draw"
+                    "namespace": "Chicane::Renderer::Draw",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1460,7 +2306,13 @@
                         "path": "Renderer/Draw/Data",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Draw/Data.hpp",
-                            "namespace": "Chicane::Renderer::DrawData"
+                            "namespace": "Chicane::Renderer::DrawData",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -1470,7 +2322,13 @@
                         "path": "Renderer/Draw/Poly",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Draw/Poly.hpp",
-                            "namespace": "Chicane::Renderer::DrawPoly"
+                            "namespace": "Chicane::Renderer::DrawPoly",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1479,7 +2337,13 @@
                                 "path": "Renderer/Draw/Poly/2D",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1488,7 +2352,13 @@
                                         "path": "Renderer/Draw/Poly/2D/Instance",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Instance.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly2DInstance"
+                                            "namespace": "Chicane::Renderer::DrawPoly2DInstance",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -1500,7 +2370,13 @@
                                 "path": "Renderer/Draw/Poly/3D",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1509,7 +2385,13 @@
                                         "path": "Renderer/Draw/Poly/3D/Instance",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Instance.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly3DInstance"
+                                            "namespace": "Chicane::Renderer::DrawPoly3DInstance",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -1521,7 +2403,13 @@
                                 "path": "Renderer/Draw/Poly/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyData"
+                                    "namespace": "Chicane::Renderer::DrawPolyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1531,7 +2419,13 @@
                                 "path": "Renderer/Draw/Poly/Resource",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Resource.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyResource"
+                                    "namespace": "Chicane::Renderer::DrawPolyResource",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1541,7 +2435,13 @@
                                 "path": "Renderer/Draw/Poly/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyType"
+                                    "namespace": "Chicane::Renderer::DrawPolyType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1553,7 +2453,13 @@
                         "path": "Renderer/Draw/Sky",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Draw/Sky.hpp",
-                            "namespace": "Chicane::Renderer::DrawSky"
+                            "namespace": "Chicane::Renderer::DrawSky",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1562,7 +2468,13 @@
                                 "path": "Renderer/Draw/Sky/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Sky/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawSkyData"
+                                    "namespace": "Chicane::Renderer::DrawSkyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1572,7 +2484,13 @@
                                 "path": "Renderer/Draw/Sky/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Sky/Instance.hpp",
-                                    "namespace": "Chicane::Renderer::DrawSkyInstance"
+                                    "namespace": "Chicane::Renderer::DrawSkyInstance",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1584,7 +2502,13 @@
                         "path": "Renderer/Draw/Texture",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Draw/Texture.hpp",
-                            "namespace": "Chicane::Renderer::DrawTexture"
+                            "namespace": "Chicane::Renderer::DrawTexture",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1593,7 +2517,13 @@
                                 "path": "Renderer/Draw/Texture/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Texture/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawTextureData"
+                                    "namespace": "Chicane::Renderer::DrawTextureData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -1607,7 +2537,13 @@
                 "path": "Renderer/Frame",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Frame.hpp",
-                    "namespace": "Chicane::Renderer::Frame"
+                    "namespace": "Chicane::Renderer::Frame",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -1617,7 +2553,13 @@
                 "path": "Renderer/Instance",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Instance.hpp",
-                    "namespace": "Chicane::Renderer::Instance"
+                    "namespace": "Chicane::Renderer::Instance",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -1627,7 +2569,13 @@
                 "path": "Renderer/Layer",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Layer.hpp",
-                    "namespace": "Chicane::Renderer::Layer"
+                    "namespace": "Chicane::Renderer::Layer",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1636,7 +2584,13 @@
                         "path": "Renderer/Layer/Status",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Layer/Status.hpp",
-                            "namespace": "Chicane::Renderer::LayerStatus"
+                            "namespace": "Chicane::Renderer::LayerStatus",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -1648,7 +2602,13 @@
                 "path": "Renderer/Backend",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Backend.hpp",
-                    "namespace": "Chicane::Renderer"
+                    "namespace": "Chicane::Renderer",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -1657,7 +2617,13 @@
                         "path": "Renderer/Backend/OpenGL",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Backend/OpenGL.hpp",
-                            "namespace": "Chicane::Renderer::OpenGLBackend"
+                            "namespace": "Chicane::Renderer::OpenGLBackend",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1666,7 +2632,13 @@
                                 "path": "Renderer/Backend/OpenGL/Layer",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1675,7 +2647,13 @@
                                         "path": "Renderer/Backend/OpenGL/Layer/Grid",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp",
-                                            "namespace": "Chicane::Renderer::OpenGLLGrid"
+                                            "namespace": "Chicane::Renderer::OpenGLLGrid",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1685,7 +2663,13 @@
                                         "path": "Renderer/Backend/OpenGL/Layer/Scene",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp",
-                                            "namespace": "Chicane::Renderer::OpenGLLScene"
+                                            "namespace": "Chicane::Renderer::OpenGLLScene",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -1694,7 +2678,13 @@
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Mesh",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp",
-                                                    "namespace": "Chicane::Renderer::OpenGLLSceneMesh"
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneMesh",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             },
@@ -1704,7 +2694,13 @@
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Shadow",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp",
-                                                    "namespace": "Chicane::Renderer::OpenGLLSceneShadow"
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneShadow",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             },
@@ -1714,7 +2710,13 @@
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Sky",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp",
-                                                    "namespace": "Chicane::Renderer::OpenGLLSceneSky"
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneSky",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -1730,7 +2732,13 @@
                         "path": "Renderer/Backend/Vulkan",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Backend/Vulkan.hpp",
-                            "namespace": "Chicane::Renderer::VulkanBackend"
+                            "namespace": "Chicane::Renderer::VulkanBackend",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -1739,7 +2747,13 @@
                                 "path": "Renderer/Backend/Vulkan/Descriptor",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1748,7 +2762,13 @@
                                         "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanDescriptorBundle"
+                                            "namespace": "Chicane::Renderer::VulkanDescriptorBundle",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1758,7 +2778,13 @@
                                         "path": "Renderer/Backend/Vulkan/Descriptor/Pool",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanDescriptorPool"
+                                            "namespace": "Chicane::Renderer::VulkanDescriptorPool",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -1767,7 +2793,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanDescriptorPoolCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanDescriptorPoolCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             },
@@ -1777,7 +2809,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanDescriptorPoolSizeCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanDescriptorPoolSizeCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -1789,7 +2827,13 @@
                                         "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout"
+                                            "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -1798,7 +2842,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanDescriptorSetLayoutBidingsCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanDescriptorSetLayoutBidingsCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -1812,7 +2862,13 @@
                                 "path": "Renderer/Backend/Vulkan/Layer",
                                 "source": {
                                     "header": null,
-                                    "namespace": null
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1821,7 +2877,13 @@
                                         "path": "Renderer/Backend/Vulkan/Layer/Grid",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanLGrid"
+                                            "namespace": "Chicane::Renderer::VulkanLGrid",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1831,7 +2893,13 @@
                                         "path": "Renderer/Backend/Vulkan/Layer/Scene",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanLScene"
+                                            "namespace": "Chicane::Renderer::VulkanLScene",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -1840,7 +2908,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Layer/Scene/Mesh",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanLSceneMesh"
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneMesh",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             },
@@ -1850,7 +2924,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Layer/Scene/Shadow",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanLSceneShadow"
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneShadow",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             },
@@ -1860,7 +2940,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Layer/Scene/Sky",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanLSceneSky"
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneSky",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -1874,7 +2960,13 @@
                                 "path": "Renderer/Backend/Vulkan/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Data.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanBackendData"
+                                    "namespace": "Chicane::Renderer::VulkanBackendData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1884,7 +2976,13 @@
                                 "path": "Renderer/Backend/Vulkan/Buffer",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Buffer.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanBuffer"
+                                    "namespace": "Chicane::Renderer::VulkanBuffer",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1893,7 +2991,13 @@
                                         "path": "Renderer/Backend/Vulkan/Buffer/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Buffer/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanBufferCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanBufferCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -1905,7 +3009,13 @@
                                 "path": "Renderer/Backend/Vulkan/CommandBuffer",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanCommandBuffer"
+                                    "namespace": "Chicane::Renderer::VulkanCommandBuffer",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1914,7 +3024,13 @@
                                         "path": "Renderer/Backend/Vulkan/CommandBuffer/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanCommandBufferCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanCommandBufferCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1924,7 +3040,13 @@
                                         "path": "Renderer/Backend/Vulkan/CommandBuffer/Pool",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanCommandBufferPool"
+                                            "namespace": "Chicane::Renderer::VulkanCommandBufferPool",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1934,7 +3056,13 @@
                                         "path": "Renderer/Backend/Vulkan/CommandBuffer/Worker",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanCommandBufferWorker"
+                                            "namespace": "Chicane::Renderer::VulkanCommandBufferWorker",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -1946,7 +3074,13 @@
                                 "path": "Renderer/Backend/Vulkan/Debug",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Debug.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanDebug"
+                                    "namespace": "Chicane::Renderer::VulkanDebug",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1956,7 +3090,13 @@
                                 "path": "Renderer/Backend/Vulkan/Device",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Device.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanDevice"
+                                    "namespace": "Chicane::Renderer::VulkanDevice",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -1966,7 +3106,13 @@
                                 "path": "Renderer/Backend/Vulkan/Frame",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanFrame"
+                                    "namespace": "Chicane::Renderer::VulkanFrame",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -1975,7 +3121,13 @@
                                         "path": "Renderer/Backend/Vulkan/Frame/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanFrameCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -1985,7 +3137,13 @@
                                         "path": "Renderer/Backend/Vulkan/Frame/Resource",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameResource"
+                                            "namespace": "Chicane::Renderer::VulkanFrameResource",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -1997,7 +3155,13 @@
                                 "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanGraphicsPipeline"
+                                    "namespace": "Chicane::Renderer::VulkanGraphicsPipeline",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2006,7 +3170,13 @@
                                         "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Attachment.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachment"
+                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachment",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -2015,7 +3185,13 @@
                                                 "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachmentType"
+                                                    "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachmentType",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -2027,7 +3203,13 @@
                                         "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Builder",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineBuilder"
+                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineBuilder",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2039,7 +3221,13 @@
                                 "path": "Renderer/Backend/Vulkan/Image",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanImage"
+                                    "namespace": "Chicane::Renderer::VulkanImage",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2048,7 +3236,13 @@
                                         "path": "Renderer/Backend/Vulkan/Image/Memory",
                                         "source": {
                                             "header": null,
-                                            "namespace": null
+                                            "namespace": null,
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -2057,7 +3251,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Image/Memory/CreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanImageMemoryCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanImageMemoryCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -2069,7 +3269,13 @@
                                         "path": "Renderer/Backend/Vulkan/Image/Sampler",
                                         "source": {
                                             "header": null,
-                                            "namespace": null
+                                            "namespace": null,
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -2078,7 +3284,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Image/Sampler/CreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanImageSamplerCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanImageSamplerCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -2090,7 +3302,13 @@
                                         "path": "Renderer/Backend/Vulkan/Image/View",
                                         "source": {
                                             "header": null,
-                                            "namespace": null
+                                            "namespace": null,
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": [
                                             {
@@ -2099,7 +3317,13 @@
                                                 "path": "Renderer/Backend/Vulkan/Image/View/CreateInfo",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Renderer::VulkanImageViewCreateInfo"
+                                                    "namespace": "Chicane::Renderer::VulkanImageViewCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
                                                 },
                                                 "children": []
                                             }
@@ -2111,7 +3335,13 @@
                                         "path": "Renderer/Backend/Vulkan/Image/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanImageCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanImageCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -2121,7 +3351,13 @@
                                         "path": "Renderer/Backend/Vulkan/Image/Data",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Data.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanImageData"
+                                            "namespace": "Chicane::Renderer::VulkanImageData",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2133,7 +3369,13 @@
                                 "path": "Renderer/Backend/Vulkan/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Instance.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanInstance"
+                                    "namespace": "Chicane::Renderer::VulkanInstance",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2143,7 +3385,13 @@
                                 "path": "Renderer/Backend/Vulkan/Queue",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanQueue"
+                                    "namespace": "Chicane::Renderer::VulkanQueue",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2152,7 +3400,13 @@
                                         "path": "Renderer/Backend/Vulkan/Queue/FamilyIndices",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue/FamilyIndices.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanQueueFamilyIndices"
+                                            "namespace": "Chicane::Renderer::VulkanQueueFamilyIndices",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2164,7 +3418,13 @@
                                 "path": "Renderer/Backend/Vulkan/Shader",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Shader.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanShader"
+                                    "namespace": "Chicane::Renderer::VulkanShader",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2173,7 +3433,13 @@
                                         "path": "Renderer/Backend/Vulkan/Shader/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Shader/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanShaderStageCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanShaderStageCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2185,7 +3451,13 @@
                                 "path": "Renderer/Backend/Vulkan/Sky",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sky.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSky"
+                                    "namespace": "Chicane::Renderer::VulkanSky",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2194,7 +3466,13 @@
                                         "path": "Renderer/Backend/Vulkan/Sky/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sky/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanSkyCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanSkyCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2206,7 +3484,13 @@
                                 "path": "Renderer/Backend/Vulkan/Surface",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Surface.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSurface"
+                                    "namespace": "Chicane::Renderer::VulkanSurface",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2216,7 +3500,13 @@
                                 "path": "Renderer/Backend/Vulkan/Swapchain",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSwapchain"
+                                    "namespace": "Chicane::Renderer::VulkanSwapchain",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2225,7 +3515,13 @@
                                         "path": "Renderer/Backend/Vulkan/Swapchain/Bundle",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanSwapchainBundle"
+                                            "namespace": "Chicane::Renderer::VulkanSwapchainBundle",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     },
@@ -2235,7 +3531,13 @@
                                         "path": "Renderer/Backend/Vulkan/Swapchain/SupportDetails",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain/SupportDetails.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanSwapchainSupportDetails"
+                                            "namespace": "Chicane::Renderer::VulkanSwapchainSupportDetails",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2247,7 +3549,13 @@
                                 "path": "Renderer/Backend/Vulkan/Sync",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sync.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSync"
+                                    "namespace": "Chicane::Renderer::VulkanSync",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2257,7 +3565,13 @@
                                 "path": "Renderer/Backend/Vulkan/Texture",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Texture.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanTexture"
+                                    "namespace": "Chicane::Renderer::VulkanTexture",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2266,7 +3580,13 @@
                                         "path": "Renderer/Backend/Vulkan/Texture/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Texture/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanTextureCreateInfo"
+                                            "namespace": "Chicane::Renderer::VulkanTextureCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2278,7 +3598,13 @@
                                 "path": "Renderer/Backend/Vulkan/Vertex",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Vertex.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanVertex"
+                                    "namespace": "Chicane::Renderer::VulkanVertex",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -2292,7 +3618,13 @@
                 "path": "Renderer/Settings",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Settings.hpp",
-                    "namespace": "Chicane::Renderer::Settings"
+                    "namespace": "Chicane::Renderer::Settings",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -2302,7 +3634,13 @@
                 "path": "Renderer/Viewport",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Viewport.hpp",
-                    "namespace": "Chicane::Renderer::Viewport"
+                    "namespace": "Chicane::Renderer::Viewport",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             }
@@ -2314,7 +3652,13 @@
         "path": "Runtime",
         "source": {
             "header": null,
-            "namespace": null
+            "namespace": null,
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -2323,7 +3667,13 @@
                 "path": "Runtime/Application",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Application.hpp",
-                    "namespace": "Chicane::Application"
+                    "namespace": "Chicane::Application",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -2332,7 +3682,13 @@
                         "path": "Runtime/Application/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
-                            "namespace": "Chicane::ApplicationCreateInfo"
+                            "namespace": "Chicane::ApplicationCreateInfo",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -2344,7 +3700,13 @@
                 "path": "Runtime/Controller",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Controller.hpp",
-                    "namespace": "Chicane::Controller"
+                    "namespace": "Chicane::Controller",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -2354,7 +3716,13 @@
                 "path": "Runtime/Scene",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Scene.hpp",
-                    "namespace": "Chicane::Scene"
+                    "namespace": "Chicane::Scene",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -2363,7 +3731,13 @@
                         "path": "Runtime/Scene/Actor",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Scene/Actor.hpp",
-                            "namespace": "Chicane::Actor"
+                            "namespace": "Chicane::Actor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -2372,7 +3746,13 @@
                                 "path": "Runtime/Scene/Actor/Camera",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Actor/Camera.hpp",
-                                    "namespace": "Chicane::ACamera"
+                                    "namespace": "Chicane::ACamera",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2382,7 +3762,13 @@
                                 "path": "Runtime/Scene/Actor/Light",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Actor/Light.hpp",
-                                    "namespace": "Chicane::ALight"
+                                    "namespace": "Chicane::ALight",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2392,7 +3778,13 @@
                                 "path": "Runtime/Scene/Actor/Pawn",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn.hpp",
-                                    "namespace": "Chicane::APawn"
+                                    "namespace": "Chicane::APawn",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": [
                                     {
@@ -2401,7 +3793,13 @@
                                         "path": "Runtime/Scene/Actor/Pawn/Character",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn/Character.hpp",
-                                            "namespace": "Chicane::ACharacter"
+                                            "namespace": "Chicane::ACharacter",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
                                         },
                                         "children": []
                                     }
@@ -2413,7 +3811,13 @@
                                 "path": "Runtime/Scene/Actor/Sky",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Actor/Sky.hpp",
-                                    "namespace": "Chicane::ASky"
+                                    "namespace": "Chicane::ASky",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2423,7 +3827,13 @@
                                 "path": "Runtime/Scene/Actor/Sound",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Actor/Sound.hpp",
-                                    "namespace": "Chicane::ASound"
+                                    "namespace": "Chicane::ASound",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -2435,7 +3845,13 @@
                         "path": "Runtime/Scene/Component",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Scene/Component.hpp",
-                            "namespace": "Chicane::Component"
+                            "namespace": "Chicane::Component",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": [
                             {
@@ -2444,7 +3860,13 @@
                                 "path": "Runtime/Scene/Component/Camera",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Camera.hpp",
-                                    "namespace": "Chicane::CCamera"
+                                    "namespace": "Chicane::CCamera",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2454,7 +3876,13 @@
                                 "path": "Runtime/Scene/Component/Light",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Light.hpp",
-                                    "namespace": "Chicane::CLight"
+                                    "namespace": "Chicane::CLight",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2464,7 +3892,13 @@
                                 "path": "Runtime/Scene/Component/Mesh",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Mesh.hpp",
-                                    "namespace": "Chicane::CMesh"
+                                    "namespace": "Chicane::CMesh",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2474,7 +3908,13 @@
                                 "path": "Runtime/Scene/Component/Physics",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Physics.hpp",
-                                    "namespace": "Chicane::CPhysics"
+                                    "namespace": "Chicane::CPhysics",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2484,7 +3924,13 @@
                                 "path": "Runtime/Scene/Component/Sound",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Sound.hpp",
-                                    "namespace": "Chicane::CSound"
+                                    "namespace": "Chicane::CSound",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             },
@@ -2494,7 +3940,13 @@
                                 "path": "Runtime/Scene/Component/View",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/View.hpp",
-                                    "namespace": "Chicane::CView"
+                                    "namespace": "Chicane::CView",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
                                 },
                                 "children": []
                             }
@@ -2510,7 +3962,13 @@
         "path": "Screech",
         "source": {
             "header": "Includes/Chicane/Screech.hpp",
-            "namespace": "Chicane::Screech"
+            "namespace": "Chicane::Screech",
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
         },
         "children": [
             {
@@ -2519,7 +3977,13 @@
                 "path": "Screech/Device",
                 "source": {
                     "header": "Includes/Chicane/Screech/Device.hpp",
-                    "namespace": "Chicane::Screech::Device"
+                    "namespace": "Chicane::Screech::Device",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -2528,7 +3992,13 @@
                         "path": "Screech/Device/Format",
                         "source": {
                             "header": "Includes/Chicane/Screech/Device/Format.hpp",
-                            "namespace": "Chicane::Screech::DeviceFormat"
+                            "namespace": "Chicane::Screech::DeviceFormat",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2538,7 +4008,13 @@
                         "path": "Screech/Device/Id",
                         "source": {
                             "header": "Includes/Chicane/Screech/Device/Id.hpp",
-                            "namespace": "Chicane::Screech::DeviceId"
+                            "namespace": "Chicane::Screech::DeviceId",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2548,7 +4024,13 @@
                         "path": "Screech/Device/Type",
                         "source": {
                             "header": "Includes/Chicane/Screech/Device/Type.hpp",
-                            "namespace": "Chicane::Screech::DeviceType"
+                            "namespace": "Chicane::Screech::DeviceType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }
@@ -2560,7 +4042,13 @@
                 "path": "Screech/Manager",
                 "source": {
                     "header": "Includes/Chicane/Screech/Manager.hpp",
-                    "namespace": "Chicane::Screech::Manager"
+                    "namespace": "Chicane::Screech::Manager",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": []
             },
@@ -2570,7 +4058,13 @@
                 "path": "Screech/Sound",
                 "source": {
                     "header": "Includes/Chicane/Screech/Sound.hpp",
-                    "namespace": "Chicane::Screech::Sound"
+                    "namespace": "Chicane::Screech::Sound",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
                 },
                 "children": [
                     {
@@ -2579,7 +4073,13 @@
                         "path": "Screech/Sound/Channel",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Channel.hpp",
-                            "namespace": "Chicane::Screech::SoundChannel"
+                            "namespace": "Chicane::Screech::SoundChannel",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2589,7 +4089,13 @@
                         "path": "Screech/Sound/Flags",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Flags.hpp",
-                            "namespace": "Chicane::Screech::SoundFlag"
+                            "namespace": "Chicane::Screech::SoundFlag",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2599,7 +4105,13 @@
                         "path": "Screech/Sound/Format",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Format.hpp",
-                            "namespace": "Chicane::Screech::SoundFormat"
+                            "namespace": "Chicane::Screech::SoundFormat",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2609,7 +4121,13 @@
                         "path": "Screech/Sound/Settings",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Settings.hpp",
-                            "namespace": "Chicane::Screech::SoundSettings"
+                            "namespace": "Chicane::Screech::SoundSettings",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2619,7 +4137,13 @@
                         "path": "Screech/Sound/Status",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Status.hpp",
-                            "namespace": "Chicane::Screech::SoundStatus"
+                            "namespace": "Chicane::Screech::SoundStatus",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     },
@@ -2629,7 +4153,13 @@
                         "path": "Screech/Sound/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Vendor.hpp",
-                            "namespace": "Chicane::Screech::SoundVendor"
+                            "namespace": "Chicane::Screech::SoundVendor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
                         },
                         "children": []
                     }

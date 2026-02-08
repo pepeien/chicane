@@ -688,6 +688,32 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Renderer::Settings",
+                            "suffix": "&",
+                            "path": "Renderer/Settings",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initWindow",
                 "parameters": [
                     {
@@ -703,42 +729,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_INITWINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "initRenderer",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "WindowBackend",
-                            "suffix": "",
-                            "path": "Core/Window/Backend",
-                            "templates": []
-                        },
-                        "name": "inBackend"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Renderer::Settings",
-                            "suffix": "&",
-                            "path": "Renderer/Settings",
-                            "templates": []
-                        },
-                        "name": "inSettings"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_INITRENDERER_DESCRIPTION"
             },
             {
                 "accessor": "private",

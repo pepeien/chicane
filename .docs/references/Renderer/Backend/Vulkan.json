@@ -19,18 +19,7 @@
                     "templates": []
                 },
                 "name": "VulkanBackend",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
-                        },
-                        "name": "inWindow"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_VULKANBACKEND_DESCRIPTION"
             }
@@ -83,12 +72,27 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Viewport",
+                            "name": "Vec",
                             "suffix": "&",
-                            "path": "Renderer/Viewport",
-                            "templates": []
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         },
-                        "name": "inViewport"
+                        "name": "inResolution"
                     }
                 ],
                 "modifiers": [],
@@ -131,7 +135,18 @@
                     "templates": []
                 },
                 "name": "onRender",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_ONRENDER_DESCRIPTION"
             },
@@ -441,32 +456,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDLAYERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "renderLayers",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_RENDERLAYERS_DESCRIPTION"
             },
             {
                 "accessor": "private",

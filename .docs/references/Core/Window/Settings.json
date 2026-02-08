@@ -55,7 +55,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -83,7 +83,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []

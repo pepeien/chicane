@@ -152,12 +152,27 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Viewport",
+                            "name": "Vec",
                             "suffix": "&",
-                            "path": "Renderer/Viewport",
-                            "templates": []
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         },
-                        "name": "inViewport"
+                        "name": "inResolution"
                     }
                 ],
                 "modifiers": [
@@ -264,7 +279,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -374,6 +389,24 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getId",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_LAYER_GETID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "bool",
                     "suffix": "",
@@ -432,18 +465,46 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "String",
+                    "name": "Viewport",
                     "suffix": "&",
-                    "path": "Core/String",
+                    "path": "Renderer/Viewport",
                     "templates": []
                 },
-                "name": "getId",
+                "name": "getViewport",
                 "parameters": [],
                 "modifiers": [
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_LAYER_GETID_DESCRIPTION"
+                "description": "CHICANE_RENDERER_LAYER_GETVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Viewport",
+                            "suffix": "&",
+                            "path": "Renderer/Viewport",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_LAYER_SETVIEWPORT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -556,12 +617,27 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Viewport",
+                            "name": "Vec",
                             "suffix": "&",
-                            "path": "Renderer/Viewport",
-                            "templates": []
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         },
-                        "name": "inViewport"
+                        "name": "inResolution"
                     }
                 ],
                 "modifiers": [
@@ -801,6 +877,19 @@
                 },
                 "name": "m_status",
                 "description": "CHICANE_RENDERER_LAYER_M_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Viewport",
+                    "suffix": "",
+                    "path": "Renderer/Viewport",
+                    "templates": []
+                },
+                "name": "m_viewport",
+                "description": "CHICANE_RENDERER_LAYER_M_VIEWPORT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

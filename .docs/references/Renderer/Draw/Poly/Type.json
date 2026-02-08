@@ -28,6 +28,17 @@
                 },
                 "name": "e3D",
                 "description": "CHICANE_RENDERER_DRAWPOLYTYPE_E3D_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "eParticle",
+                "description": "CHICANE_RENDERER_DRAWPOLYTYPE_EPARTICLE_DESCRIPTION"
             }
         ],
         "constructors": [],

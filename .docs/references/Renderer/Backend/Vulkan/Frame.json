@@ -21,18 +21,7 @@
                     "templates": []
                 },
                 "name": "wait",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "vk::Device",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inLogicalDevice"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANFRAME_WAIT_DESCRIPTION"
             },
@@ -47,18 +36,7 @@
                     "templates": []
                 },
                 "name": "reset",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "vk::Device",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inLogicalDevice"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANFRAME_RESET_DESCRIPTION"
             },

@@ -28,6 +28,49 @@
         "functions": [
             {
                 "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_CVIEW_ONRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",

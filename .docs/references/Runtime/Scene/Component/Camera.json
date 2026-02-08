@@ -25,7 +25,49 @@
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CCAMERA_ONRESIZE_DESCRIPTION"
+            }
+        ],
         "members": [],
         "description": "CHICANE_CCAMERA_DESCRIPTION"
     },

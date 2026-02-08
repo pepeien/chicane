@@ -147,7 +147,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "addLights",
+                "name": "addLight",
                 "parameters": [
                     {
                         "type": {
@@ -161,7 +161,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_ADDLIGHTS_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_ADDLIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",

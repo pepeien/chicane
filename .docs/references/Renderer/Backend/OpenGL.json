@@ -19,18 +19,7 @@
                     "templates": []
                 },
                 "name": "OpenGLBackend",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
-                        },
-                        "name": "inWindow"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_OPENGLBACKEND_DESCRIPTION"
             }
@@ -108,6 +97,32 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_ONSETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONRENDER_DESCRIPTION"
             },
             {
                 "accessor": "protected",

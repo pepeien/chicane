@@ -168,7 +168,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -210,7 +210,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "int",
+                                    "name": "std::uint32_t",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -277,7 +277,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -319,7 +319,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "int",
+                                    "name": "std::uint32_t",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -754,6 +754,52 @@
                 "description": "CHICANE_WINDOW_WATCHSIZE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "WindowBackendSubscription",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "watchBackend",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackendSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackendSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackendSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_WATCHBACKEND_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -966,6 +1012,19 @@
                 },
                 "name": "m_sizeObservable",
                 "description": "CHICANE_WINDOW_M_SIZEOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "WindowBackendObservable",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "m_backendObservable",
+                "description": "CHICANE_WINDOW_M_BACKENDOBSERVABLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_WINDOW_DESCRIPTION"

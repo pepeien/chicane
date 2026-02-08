@@ -29,7 +29,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "int",
+                                    "name": "std::uint32_t",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -63,7 +63,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "int",
+                                    "name": "std::uint32_t",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -73,88 +73,480 @@
                     ]
                 },
                 "description": "CHICANE_RENDERER_RESOLUTIONSUBSCRIPTION_DESCRIPTION"
-            },
-            {
-                "name": "ViewportObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Viewport",
-                            "suffix": "",
-                            "path": "Renderer/Viewport",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_VIEWPORTOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "ViewportSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Viewport",
-                            "suffix": "",
-                            "path": "Renderer/Viewport",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_VIEWPORTSUBSCRIPTION_DESCRIPTION"
-            },
-            {
-                "name": "BackendObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "WindowBackend",
-                            "suffix": "",
-                            "path": "Core/Window/Backend",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_BACKENDOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "BackendSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "WindowBackend",
-                            "suffix": "",
-                            "path": "Core/Window/Backend",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_BACKENDSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
-        "constructors": [],
-        "destructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Backend",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_BACKEND_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Backend",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_~BACKEND_DESCRIPTION"
+            }
+        ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResolution"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyResource",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Resource",
+                            "templates": []
+                        },
+                        "name": "inResource"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawTexture::List",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Texture",
+                            "templates": []
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawSky",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Sky",
+                            "templates": []
+                        },
+                        "name": "inResource"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onSetup",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONSETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onCleanup",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONCLEANUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onHandle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ONHANDLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setWindow",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Window",
+                            "suffix": "*",
+                            "path": "Core/Window",
+                            "templates": []
+                        },
+                        "name": "inWindow"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_SETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Target",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getLayer",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ListPush",
+                            "suffix": "&",
+                            "path": "Core/List/Push",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Layer",
+                                    "suffix": "*",
+                                    "path": "Renderer/Layer",
+                                    "templates": [
+                                        {
+                                            "prefix": "",
+                                            "name": "F",
+                                            "suffix": "",
+                                            "path": "",
+                                            "templates": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "name": "inSettings"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ADDLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderLayers",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "F",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_RENDERLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyLayers",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_DESTROYLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildLayers",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_REBUILDLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "deleteLayers",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_DELETELAYERS_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -242,7 +634,50 @@
                 "description": "CHICANE_RENDERER_OPENGLDEBUGCALLBACK_DESCRIPTION"
             }
         ],
-        "members": [],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "m_window",
+                "description": "CHICANE_RENDERER_BACKEND_M_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "List",
+                    "suffix": "",
+                    "path": "Core/List",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "F",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_layers",
+                "description": "CHICANE_RENDERER_BACKEND_M_LAYERS_DESCRIPTION"
+            }
+        ],
         "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []

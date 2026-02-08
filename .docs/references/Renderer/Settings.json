@@ -29,7 +29,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -38,6 +38,19 @@
                 },
                 "name": "resolution",
                 "description": "CHICANE_RENDERER_SETTINGS_RESOLUTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bufferCount",
+                "description": "CHICANE_RENDERER_SETTINGS_BUFFERCOUNT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_SETTINGS_DESCRIPTION"

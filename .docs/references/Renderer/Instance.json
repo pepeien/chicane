@@ -24,23 +24,7 @@
                 "description": "CHICANE_RENDERER_INSTANCE_INSTANCE_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Instance",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_~INSTANCE_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -54,26 +38,6 @@
                 },
                 "name": "init",
                 "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
-                        },
-                        "name": "inWindow"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "WindowBackend",
-                            "suffix": "",
-                            "path": "Core/Window/Backend",
-                            "templates": []
-                        },
-                        "name": "inBackend"
-                    },
                     {
                         "type": {
                             "prefix": "const ",
@@ -102,21 +66,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_RENDER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroy",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DESTROY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -195,6 +144,47 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_ADDLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFrameCount",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SETFRAMECOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Frame",
+                    "suffix": "&",
+                    "path": "Renderer/Frame",
+                    "templates": []
+                },
+                "name": "getCurrentFrame",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_GETCURRENTFRAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -440,7 +430,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "int",
+                            "name": "std::uint32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -482,7 +472,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "int",
+                                    "name": "std::uint32_t",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -540,324 +530,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_WATCHRESOLUTION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Viewport",
-                    "suffix": "&",
-                    "path": "Renderer/Viewport",
-                    "templates": []
-                },
-                "name": "getViewport",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_GETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Viewport",
-                            "suffix": "&",
-                            "path": "Renderer/Viewport",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inPosition"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inSize"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewportPosition",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inPosition"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORTPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewportPosition",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inY"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORTPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewportSize",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inSize"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORTSIZE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewportSize",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inWidth"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inHeight"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWPORTSIZE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "ViewportSubscription",
-                    "suffix": "",
-                    "path": "Renderer/Backend",
-                    "templates": []
-                },
-                "name": "watchViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ViewportSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ViewportSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ViewportSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_WATCHVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Window",
-                    "suffix": "*",
-                    "path": "Core/Window",
-                    "templates": []
-                },
-                "name": "getWindow",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_GETWINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setWindow",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
-                        },
-                        "name": "inWindow"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETWINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "handle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_HANDLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -923,50 +595,30 @@
                 "description": "CHICANE_RENDERER_INSTANCE_ADDBACKENDLAYER_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "BackendSubscription",
+                    "name": "void",
                     "suffix": "",
-                    "path": "Renderer/Backend",
+                    "path": "",
                     "templates": []
                 },
-                "name": "watchBackend",
+                "name": "handle",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "BackendSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
                             "templates": []
                         },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "BackendSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "BackendSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
+                        "name": "inEvent"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_WATCHBACKEND_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_HANDLE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -978,24 +630,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setBackend",
+                "name": "reloadBackend",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "WindowBackend",
-                            "suffix": "",
-                            "path": "Core/Window/Backend",
+                            "prefix": "const ",
+                            "name": "Window",
+                            "suffix": "*",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inType"
+                        "name": "inWindow"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETBACKEND_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_RELOADBACKEND_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -1019,51 +671,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_GETPOLYRESOURCE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "reloadResources",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_RELOADRESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshViewport",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_REFRESHVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "propagateResize",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_PROPAGATERESIZE_DESCRIPTION"
             }
         ],
         "members": [
@@ -1085,13 +692,75 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Window",
-                    "suffix": "*",
-                    "path": "Core/Window",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_resolution",
+                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ResolutionObservable",
+                    "suffix": "",
+                    "path": "Renderer/Backend",
                     "templates": []
                 },
-                "name": "m_window",
-                "description": "CHICANE_RENDERER_INSTANCE_M_WINDOW_DESCRIPTION"
+                "name": "m_resolutionObservable",
+                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTIONOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Frame",
+                            "suffix": "",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_frames",
+                "description": "CHICANE_RENDERER_INSTANCE_M_FRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_currentFrame",
+                "description": "CHICANE_RENDERER_INSTANCE_M_CURRENTFRAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1137,73 +806,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_resolution",
-                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTION_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ResolutionObservable",
-                    "suffix": "",
-                    "path": "Renderer/Backend",
-                    "templates": []
-                },
-                "name": "m_resolutionObservable",
-                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTIONOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Viewport",
-                    "suffix": "",
-                    "path": "Renderer/Viewport",
-                    "templates": []
-                },
-                "name": "m_viewport",
-                "description": "CHICANE_RENDERER_INSTANCE_M_VIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ViewportObservable",
-                    "suffix": "",
-                    "path": "Renderer/Backend",
-                    "templates": []
-                },
-                "name": "m_viewportObservable",
-                "description": "CHICANE_RENDERER_INSTANCE_M_VIEWPORTOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "std::unique_ptr",
                     "suffix": "",
                     "path": "",
@@ -1219,32 +821,6 @@
                 },
                 "name": "m_backend",
                 "description": "CHICANE_RENDERER_INSTANCE_M_BACKEND_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "WindowBackend",
-                    "suffix": "",
-                    "path": "Core/Window/Backend",
-                    "templates": []
-                },
-                "name": "m_backendType",
-                "description": "CHICANE_RENDERER_INSTANCE_M_BACKENDTYPE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "BackendObservable",
-                    "suffix": "",
-                    "path": "Renderer/Backend",
-                    "templates": []
-                },
-                "name": "m_backendObservable",
-                "description": "CHICANE_RENDERER_INSTANCE_M_BACKENDOBSERVABLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_INSTANCE_DESCRIPTION"

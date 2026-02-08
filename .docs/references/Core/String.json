@@ -172,6 +172,35 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator()",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Chicane::String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "s"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "STD_HASH< CHICANE_STRING >_OPERATOR()_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "String",
                     "suffix": "&",

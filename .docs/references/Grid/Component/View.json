@@ -77,21 +77,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "handle",
+                "name": "setWindow",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "WindowEvent",
-                            "suffix": "",
-                            "path": "Core/Window/Event",
+                            "name": "Window",
+                            "suffix": "*",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inEvent"
+                        "name": "inWindow"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_SETWINDOW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -224,6 +224,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_ONADOPTED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
             }
         ],
         "members": [
@@ -258,6 +284,32 @@
                 },
                 "name": "PATH_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_VIEW_PATH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "m_window",
+                "description": "CHICANE_GRID_VIEW_M_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "WindowEventSubscription",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "m_windowEventSubscription",
+                "description": "CHICANE_GRID_VIEW_M_WINDOWEVENTSUBSCRIPTION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
