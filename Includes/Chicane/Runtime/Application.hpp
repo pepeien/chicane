@@ -105,7 +105,7 @@ namespace Chicane
 
             return static_cast<T*>(m_scene.get());
         }
-        template <class T = Grid::View, typename... Params>
+        template <class T, typename... Params>
         void setView(Params... inParams)
         {
             if (hasView())
@@ -115,8 +115,12 @@ namespace Chicane
             }
 
             m_view = std::make_unique<T>(inParams...);
-            m_view->setSize(m_window->getSize());
             m_view->activate();
+
+            if (hasRenderer())
+            {
+                m_view->setSize(m_renderer->getResolution());
+            }
 
             m_viewObservable.next(m_view.get());
         }
@@ -137,8 +141,8 @@ namespace Chicane
 
     private:
         // Initialization
+        void initRenderer(const Renderer::Settings& inSettings);
         void initWindow(const WindowSettings& inSettings);
-        void initRenderer(WindowBackend inBackend, const Renderer::Settings& inSettings);
         void initBox();
         void initKerb();
 

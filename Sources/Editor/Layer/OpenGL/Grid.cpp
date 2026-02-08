@@ -12,12 +12,14 @@ namespace Editor
 
     OpenGLLGrid::~OpenGLLGrid()
     {
+        destroyVertexArray();
         destroyShader();
     }
 
     bool OpenGLLGrid::onInit()
     {
         buildShader();
+        buildVertexArray();
 
         return true;
     }
@@ -36,6 +38,8 @@ namespace Editor
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glBindVertexArray(m_vertexArray);
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
@@ -112,5 +116,15 @@ namespace Editor
     void OpenGLLGrid::destroyShader()
     {
         glDeleteProgram(m_shaderProgram);
+    }
+
+    void OpenGLLGrid::buildVertexArray()
+    {
+        glCreateVertexArrays(1, &m_vertexArray);
+    }
+
+    void OpenGLLGrid::destroyVertexArray()
+    {
+        glDeleteVertexArrays(1, &m_vertexArray);
     }
 }

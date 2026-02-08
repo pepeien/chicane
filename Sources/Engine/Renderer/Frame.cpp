@@ -55,7 +55,7 @@ namespace Chicane
             return m_lights;
         }
 
-        void Frame::addLights(const View::List& inData)
+        void Frame::addLight(const View::List& inData)
         {
             m_lights.insert(m_lights.begin(), inData.begin(), inData.end());
         }

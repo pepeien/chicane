@@ -26,7 +26,7 @@ namespace Chicane
         inline ~EventObservable() { m_subscriptions.clear(); }
 
     public:
-        inline EventSubscription<T> subscribe(
+        [[nodiscard]] inline EventSubscription<T> subscribe(
             EmptyCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
@@ -35,7 +35,7 @@ namespace Chicane
             return m_subscriptions.back();
         }
 
-        inline EventSubscription<T> subscribe(
+        [[nodiscard]] inline EventSubscription<T> subscribe(
             NextCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {

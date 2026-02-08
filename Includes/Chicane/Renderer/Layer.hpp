@@ -41,7 +41,7 @@ namespace Chicane
             inline virtual bool onInit() { return true; }
             inline virtual bool onDestroy() { return true; }
             inline virtual bool onRebuild() { return true; }
-            inline virtual void onResize(const Viewport& inViewport) { return; }
+            inline virtual void onResize(const Vec<2, std::uint32_t>& inResolution) { return; }
             inline virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             inline virtual void onLoad(const DrawTexture::List& inResources) { return; }
             inline virtual void onLoad(const DrawSky& inResource) { return; }
@@ -97,14 +97,14 @@ namespace Chicane
                 setStatus(LayerStatus::Running);
             }
 
-            inline void resize(const Viewport& inViewport)
+            inline void resize(const Vec<2, std::uint32_t>& inResolution)
             {
                 if (is(LayerStatus::Offline))
                 {
                     return;
                 }
 
-                onResize(inViewport);
+                onResize(inResolution);
             }
 
             inline void load(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -137,19 +137,21 @@ namespace Chicane
                 onLoad(inResource);
             }
 
-            inline void setup(const F& inFrame)
+            inline bool setup(const F& inFrame)
             {
                 if (!is(LayerStatus::Running))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!onSetup(inFrame))
                 {
-                    return;
+                    return false;
                 }
 
                 setStatus(LayerStatus::Running);
+
+                return true;
             }
 
             inline void render(const F& inFrame, void* inData = nullptr)
@@ -175,11 +177,15 @@ namespace Chicane
             inline void handle(const WindowEvent& inEvent) { onEvent(inEvent); }
 
         public:
+            inline const String& getId() const { return m_id; }
+
             inline bool is(LayerStatus inStatus) const { return m_status == inStatus; }
 
             inline void setStatus(LayerStatus inStatus) { m_status = inStatus; }
 
-            inline const String& getId() const { return m_id; }
+            inline const Viewport& getViewport() const { return m_viewport; }
+
+            inline void setViewport(const Viewport& inValue) { m_viewport = inValue; }
 
             template <typename T>
             inline T* getBackend()
@@ -192,7 +198,7 @@ namespace Chicane
         protected:
             Id          m_id;
             LayerStatus m_status;
-
+            Viewport    m_viewport;
             void*       m_backend;
         };
     }

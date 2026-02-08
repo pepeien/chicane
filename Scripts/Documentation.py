@@ -155,6 +155,18 @@ def namespace_to_snake(text, character = "_"):
 
     return text.replace("::", character).upper()
 
+def merge_node(existing, value):
+    for key, val in value.items():
+        if key != "source":
+            existing[key] = val
+            continue
+
+        for src_key, src_val in val.items():
+            if isinstance(src_val, list):
+                existing["source"][src_key].extend(src_val)
+            elif src_val is not None:
+                existing["source"][src_key] = src_val
+
 def add_node(tree, parts, value, accumulated_path = ""):
     part = parts[0]
     path = accumulated_path + part
@@ -181,7 +193,7 @@ def add_node(tree, parts, value, accumulated_path = ""):
         tree.append(existing)
 
     if len(parts) == 1:
-        existing.update(value)
+        merge_node(existing, value)
     else:
         add_node(existing["children"], parts[1:], value, path + "/")
 
@@ -279,7 +291,7 @@ def add_definition(result, compounddef, base_key = ""):
 
     key = header.split(include_dir)[-1].split(".")[0]
 
-    print(get_definition(result, namespace), namespace, header)
+    print(namespace, header)
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):

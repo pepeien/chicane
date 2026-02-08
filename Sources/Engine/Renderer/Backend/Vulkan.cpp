@@ -19,8 +19,8 @@ namespace Chicane
 {
     namespace Renderer
     {
-        VulkanBackend::VulkanBackend(const Window* inWindow)
-            : Backend<Frame>(inWindow),
+        VulkanBackend::VulkanBackend()
+            : Backend<Frame>(),
               swapchain({}),
               imageCount(0),
               m_currentImageIndex(0),
@@ -66,26 +66,21 @@ namespace Chicane
             Backend::onInit();
         }
 
-        void VulkanBackend::onResize(const Viewport& inViewport)
+        void VulkanBackend::onResize(const Vec<2, std::uint32_t>& inResolution)
         {
-            float x = inViewport.position.x;
-            float y = inViewport.position.y;
-            float w = inViewport.size.x;
-            float h = inViewport.size.y;
-
-            viewport.x        = x;
-            viewport.y        = y;
-            viewport.width    = w;
-            viewport.height   = h;
+            viewport.x        = 0.0f;
+            viewport.y        = 0.0f;
+            viewport.width    = inResolution.x;
+            viewport.height   = inResolution.y;
             viewport.minDepth = 0.0f;
             viewport.maxDepth = 1.0f;
 
-            scissor.offset.x      = static_cast<int32_t>(x);
-            scissor.offset.y      = static_cast<int32_t>(y);
-            scissor.extent.width  = static_cast<uint32_t>(w);
-            scissor.extent.height = static_cast<uint32_t>(h);
+            scissor.offset.x      = 0U;
+            scissor.offset.y      = 0U;
+            scissor.extent.width  = static_cast<uint32_t>(viewport.width);
+            scissor.extent.height = static_cast<uint32_t>(viewport.height);
 
-            Backend::onResize(inViewport);
+            Backend::onResize(inResolution);
         }
 
         void VulkanBackend::onLoad(const DrawTexture::List& inResources)
@@ -93,10 +88,10 @@ namespace Chicane
             buildTextureData(inResources);
         }
 
-        void VulkanBackend::onRender()
+        void VulkanBackend::onRender(const Frame& inFrame)
         {
             VulkanFrame& lastFrame = swapchain.frames.at(m_currentImageIndex);
-            lastFrame.wait(logicalDevice);
+            lastFrame.wait();
 
             vk::ResultValue<std::uint32_t> acquireResult =
                 logicalDevice.acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
@@ -112,15 +107,15 @@ namespace Chicane
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            lastFrame.reset(logicalDevice);
+            lastFrame.reset();
 
             std::uint32_t frameIndex = acquireResult.value;
             VulkanFrame&  frame      = swapchain.frames.at(frameIndex);
 
-            frame.updateCameraData(getCurrentFrame().getCamera());
-            frame.updateLightData(getCurrentFrame().getLights());
-            frame.update2DData(getCurrentFrame().getInstances2D());
-            frame.update3DData(getCurrentFrame().getInstances3D());
+            frame.updateCameraData(inFrame.getCamera());
+            frame.updateLightData(inFrame.getLights());
+            frame.update2DData(inFrame.getInstances2D());
+            frame.update3DData(inFrame.getInstances3D());
             frame.updateDescriptorSets();
 
             vk::CommandBufferBeginInfo commandBufferBegin;
@@ -133,7 +128,7 @@ namespace Chicane
             lastFrame.commandBuffer.reset();
             lastFrame.commandBuffer.begin(commandBufferBegin);
             renderViewport(data.commandBuffer);
-            renderLayers(&data);
+            renderLayers(inFrame, &data);
             lastFrame.commandBuffer.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -322,14 +317,6 @@ namespace Chicane
 
             settings.strategy = ListPushStrategy::Back;
             addLayer<VulkanLGrid>(settings);
-        }
-
-        void VulkanBackend::renderLayers(void* inData)
-        {
-            for (Layer<Frame>* layer : m_layers)
-            {
-                layer->render(getCurrentFrame(), inData);
-            }
         }
 
         void VulkanBackend::buildTextureDescriptor()

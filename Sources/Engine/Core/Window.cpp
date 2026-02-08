@@ -14,7 +14,7 @@
 
 namespace Chicane
 {
-    const Chicane::Vec<2, int> VEC2_ZERO(0);
+    static inline const Vec<2, std::uint32_t> VEC2_ZERO(0);
 
     Window::Window()
         : m_instance(nullptr),
@@ -22,7 +22,9 @@ namespace Chicane
           m_bIsFocused(false),
           m_bIsResizable(true),
           m_bIsMinimized(false),
-          m_sizeObservable({})
+          m_eventObservable({}),
+          m_sizeObservable({}),
+          m_backendObservable({})
     {
         SDL_InitFlags initFlags = 0;
         initFlags |= SDL_INIT_GAMEPAD;
@@ -190,7 +192,7 @@ namespace Chicane
         setType(m_settings.type);
     }
 
-    const Vec<2, int>& Window::getSize() const
+    const Vec<2, std::uint32_t>& Window::getSize() const
     {
         if (m_bIsMinimized)
         {
@@ -200,7 +202,7 @@ namespace Chicane
         return m_settings.size;
     }
 
-    void Window::setSize(const Vec<2, int>& inValue)
+    void Window::setSize(const Vec<2, std::uint32_t>& inValue)
     {
         setSize(inValue.x, inValue.y);
     }
@@ -225,12 +227,12 @@ namespace Chicane
         m_sizeObservable.next(m_settings.size);
     }
 
-    const Vec<2, int>& Window::getPosition() const
+    const Vec<2, std::uint32_t>& Window::getPosition() const
     {
         return m_settings.position;
     }
 
-    void Window::setPosition(const Vec<2, int>& inValue)
+    void Window::setPosition(const Vec<2, std::uint32_t>& inValue)
     {
         setPosition(inValue.x, inValue.y);
     }
@@ -327,7 +329,10 @@ namespace Chicane
             emmitError("Error while setting the window display");
         }
 
-        setSize(std::min(m_settings.size.x, displaySettings->w), std::min(m_settings.size.y, displaySettings->h));
+        setSize(
+            std::min(m_settings.size.x, static_cast<std::uint32_t>(displaySettings->w)),
+            std::min(m_settings.size.y, static_cast<std::uint32_t>(displaySettings->h))
+        );
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }
@@ -395,11 +400,13 @@ namespace Chicane
         if (!hasInstance())
         {
             initInstance();
-
-            return;
+        }
+        else
+        {
+            restart();
         }
 
-        restart();
+        m_backendObservable.next(inBackend);
     }
 
     bool Window::hasInstance() const
@@ -579,7 +586,7 @@ namespace Chicane
             return m_bIsMinimized;
         }
 
-        Vec<2, int> currentSize = getSize();
+        Vec<2, std::uint32_t> currentSize = getSize();
 
         return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }
@@ -600,6 +607,15 @@ namespace Chicane
     )
     {
         return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_settings.size);
+    }
+
+    WindowBackendSubscription Window::watchBackend(
+        WindowBackendSubscription::NextCallback     inNext,
+        WindowBackendSubscription::ErrorCallback    inError,
+        WindowBackendSubscription::CompleteCallback inComplete
+    )
+    {
+        return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_settings.backend);
     }
 
     void Window::refreshSize()

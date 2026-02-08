@@ -57,12 +57,7 @@ namespace Chicane
 
         bool OpenGLLScene::onSetup(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().empty())
-            {
-                return false;
-            }
-
-            if (inFrame.get3DDraws().empty())
+            if (inFrame.get3DDraws().empty() && inFrame.getSkyInstance().model.id == Draw::UnknownId)
             {
                 return false;
             }
@@ -72,7 +67,7 @@ namespace Chicane
 
         void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
-            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
 
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);

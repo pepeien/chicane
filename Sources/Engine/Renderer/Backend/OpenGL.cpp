@@ -16,11 +16,9 @@ namespace Chicane
     {
         static SDL_GLContext g_context;
 
-        OpenGLBackend::OpenGLBackend(const Window* inWindow)
-            : Backend<Frame>(inWindow)
-        {
-            setFrameCount(2);
-        }
+        OpenGLBackend::OpenGLBackend()
+            : Backend<Frame>()
+        {}
 
         OpenGLBackend::~OpenGLBackend()
         {
@@ -72,17 +70,19 @@ namespace Chicane
 
         void OpenGLBackend::onSetup()
         {
-            //const Viewport& viewport = m_renderer->getViewport();
-            //glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
-
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            glBindTextureUnit(0, m_texturesBuffer);
+            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 
-            Backend::onSetup();
+            glBindTextureUnit(0, m_texturesBuffer);
+        }
+
+        void OpenGLBackend::onRender(const Frame& inFrame)
+        {
+            renderLayers(inFrame);
         }
 
         void OpenGLBackend::onCleanup()
@@ -93,8 +93,6 @@ namespace Chicane
             {
                 throw std::runtime_error(std::string("Failed to swawp window frame buffer [") + SDL_GetError() + "]");
             }
-
-            Backend::onCleanup();
         }
 
         void OpenGLBackend::buildContext()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
@@ -31,17 +32,27 @@ namespace Chicane
             void activate();
             void deactivate();
 
-            // Event
-            void handle(WindowEvent inEvent);
+            // Window
+            void setWindow(Window* inWindow);
 
             // Children
             std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
             std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
 
         protected:
-            String            m_path;
+            // Window
+            void handle(const WindowEvent& inEvent);
 
-            StyleSource::List m_styles;
+        protected:
+            // Window
+            const Window*           m_window;
+            WindowEventSubscription m_windowEventSubscription;
+
+            // Routing
+            String                  m_path;
+
+            // Styling
+            StyleSource::List       m_styles;
         };
     }
 }

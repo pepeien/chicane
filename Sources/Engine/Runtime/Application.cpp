@@ -33,8 +33,8 @@ namespace Chicane
 
     void Application::run(const ApplicationCreateInfo& inCreateInfo)
     {
+        initRenderer(inCreateInfo.renderer);
         initWindow(inCreateInfo.window);
-        initRenderer(inCreateInfo.window.backend, inCreateInfo.renderer);
         initBox();
         initKerb();
 
@@ -157,15 +157,12 @@ namespace Chicane
 
     void Application::setRenderer(WindowBackend inBackend)
     {
-        if (!hasWindow() || !hasRenderer())
+        if (!hasWindow())
         {
             return;
         }
 
-        m_renderer->destroy();
-
         m_window->setBackend(inBackend);
-        m_renderer->setBackend(inBackend);
     }
 
     void Application::initWindow(const WindowSettings& inSettings)
@@ -177,18 +174,27 @@ namespace Chicane
 
         m_window = std::make_unique<Window>();
         m_window->init(inSettings);
-        m_window->watchEvent(
-            [&](WindowEvent inEvent)
+        m_window->watchSize(
+            [this](Vec<2, std::uint32_t> inSize)
             {
-                if (hasView())
+                if (hasRenderer())
                 {
-                    m_view->handle(inEvent);
+                    m_renderer->setResolution(inSize);
+                }
+            }
+        );
+        m_window->watchBackend(
+            [this](WindowBackend inValue)
+            {
+                if (hasRenderer())
+                {
+                    m_renderer->reloadBackend(m_window.get());
                 }
             }
         );
     }
 
-    void Application::initRenderer(WindowBackend inBackend, const Renderer::Settings& inSettings)
+    void Application::initRenderer(const Renderer::Settings& inSettings)
     {
         if (hasRenderer())
         {
@@ -196,13 +202,13 @@ namespace Chicane
         }
 
         m_renderer = std::make_unique<Renderer::Instance>();
-        m_renderer->init(getWindow(), inBackend, inSettings);
-        m_renderer->watchViewport(
-            [&](const Renderer::Viewport& inViewport)
+        m_renderer->init(inSettings);
+        m_renderer->watchResolution(
+            [&](const Vec<2, std::uint32_t>& inResolution)
             {
                 if (hasView())
                 {
-                    m_view->setSize(inViewport.size.x, inViewport.size.y);
+                    m_view->setSize(inResolution);
                 }
             }
         );
@@ -257,13 +263,15 @@ namespace Chicane
 
         for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
         {
-            camera->setViewport(m_renderer->getViewport().size);
+            camera->onResize(m_renderer->getResolution());
 
             m_renderer->useCamera(camera->getData());
         }
 
         for (CLight* light : m_scene->getActiveComponents<CLight>())
         {
+            light->onResize(m_renderer->getResolution());
+
             m_renderer->addLight(light->getData());
         }
 

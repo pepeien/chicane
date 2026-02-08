@@ -28,14 +28,8 @@ namespace Chicane
 
     namespace Renderer
     {
-        using ResolutionObservable   = EventObservable<Vec<2, int>>;
-        using ResolutionSubscription = EventSubscription<Vec<2, int>>;
-
-        using ViewportObservable   = EventObservable<Viewport>;
-        using ViewportSubscription = EventSubscription<Viewport>;
-
-        using BackendObservable   = EventObservable<WindowBackend>;
-        using BackendSubscription = EventSubscription<WindowBackend>;
+        using ResolutionObservable   = EventObservable<Vec<2, std::uint32_t>>;
+        using ResolutionSubscription = EventSubscription<Vec<2, std::uint32_t>>;
 
         class CHICANE_RENDERER Instance
         {
@@ -43,18 +37,20 @@ namespace Chicane
 
         public:
             Instance();
-            ~Instance();
 
         public:
             // Lifecycle
-            void init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings);
+            void init(const Settings& inSettings);
             void render();
-            void destroy();
 
             // View
             void useCamera(const View& inData);
             void addLight(const View& inData);
             void addLight(const View::List& inData);
+
+            // Frame
+            void setFrameCount(std::uint32_t inValue);
+            Frame& getCurrentFrame();
 
             // Render
             Draw::Id loadPoly(DrawPolyType inType, const DrawPolyData& inData);
@@ -75,7 +71,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
-                m_backend->drawPoly(inId, inInstance);
+                getCurrentFrame().use(inId, inInstance);
             }
 
             Draw::Id findTexture(const Draw::Reference& inReference);
@@ -85,31 +81,13 @@ namespace Chicane
             Draw::Id loadSky(const DrawSkyData& inData);
 
             // Settings
-            const Vec<2, int>& getResolution() const;
-            void setResolution(const Vec<2, int>& inValue);
+            const Vec<2, std::uint32_t>& getResolution() const;
+            void setResolution(const Vec<2, std::uint32_t>& inValue);
             ResolutionSubscription watchResolution(
                 ResolutionSubscription::NextCallback     inNext,
                 ResolutionSubscription::ErrorCallback    inError    = nullptr,
                 ResolutionSubscription::CompleteCallback inComplete = nullptr
             );
-
-            const Viewport& getViewport() const;
-            void setViewport(const Viewport& inValue);
-            void setViewport(const Vec2& inPosition, const Vec2& inSize);
-            void setViewportPosition(const Vec2& inPosition);
-            void setViewportPosition(float inX, float inY);
-            void setViewportSize(const Vec2& inSize);
-            void setViewportSize(float inWidth, float inHeight);
-            ViewportSubscription watchViewport(
-                ViewportSubscription::NextCallback     inNext,
-                ViewportSubscription::ErrorCallback    inError    = nullptr,
-                ViewportSubscription::CompleteCallback inComplete = nullptr
-            );
-
-            // Window
-            Window* getWindow() const;
-            void setWindow(Window* inWindow);
-            void handle(const WindowEvent& inEvent);
 
             // Backend
             bool hasBackend() const;
@@ -120,44 +98,32 @@ namespace Chicane
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }
 
-            BackendSubscription watchBackend(
-                BackendSubscription::NextCallback     inNext,
-                BackendSubscription::ErrorCallback    inError    = nullptr,
-                BackendSubscription::CompleteCallback inComplete = nullptr
-            );
-
         protected:
-            void setBackend(WindowBackend inType);
+            // Window
+            void handle(const WindowEvent& inEvent);
 
-        private:
+            // Backend
+            void reloadBackend(const Window* inWindow);
+
             // Draw
             DrawPolyResource& getPolyResource(DrawPolyType inType);
-            void reloadResources();
-
-            // Settings
-            void refreshViewport();
-            void propagateResize();
 
         private:
-            // Window
-            Window*                    m_window;
+            // Settings
+            Vec<2, std::uint32_t>      m_resolution;
+            ResolutionObservable       m_resolutionObservable;
+
+            // Frame
+            std::vector<Frame>         m_frames;
+            std::uint32_t              m_currentFrame;
 
             // Draw
             DrawPolyResource::Map      m_polyResources;
             DrawTexture::List          m_textureResources;
             DrawSky                    m_skyResource;
 
-            // Settings
-            Vec<2, int>                m_resolution;
-            ResolutionObservable       m_resolutionObservable;
-
-            Viewport                   m_viewport;
-            ViewportObservable         m_viewportObservable;
-
             // Backend
             std::unique_ptr<Backend<>> m_backend;
-            WindowBackend              m_backendType;
-            BackendObservable          m_backendObservable;
         };
     }
 }

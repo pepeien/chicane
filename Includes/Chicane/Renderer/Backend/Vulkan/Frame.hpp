@@ -20,8 +20,8 @@ namespace Chicane
         {
         public:
             // Lifecycle
-            void wait(const vk::Device& inLogicalDevice);
-            void reset(const vk::Device& inLogicalDevice);
+            void wait();
+            void reset();
             void destroy();
 
             // Buffer
