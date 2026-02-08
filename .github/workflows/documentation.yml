@@ -12,6 +12,9 @@ jobs:
         runs-on: ubuntu-22.04
         permissions:
             contents: write
+        defaults:
+            run:
+                working-directory: ./Scripts
         steps:
             - name: Setup Checkout
               uses: actions/checkout@v6
@@ -33,7 +36,7 @@ jobs:
               run: rm -rf .docs/references
 
             - name: Build References
-              run: python Scripts/Documentation.py -i .docs/xml -o .docs/references -d Includes/Chicane/ -n Chicane -s CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_KERB,CHICANE_RUNTIME,CHICANE_SCREECH
+              run: bash Documentation
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
