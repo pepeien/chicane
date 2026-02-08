@@ -230,13 +230,18 @@ namespace Chicane
             }
         }
 
-        void Instance::reloadBackend(const Window* inWindow)
+        void Instance::shutdownBackend()
         {
-            if (hasBackend())
+            if (!hasBackend())
             {
-                m_backend.reset();
+                return;
             }
 
+            m_backend.reset();
+        }
+
+        void Instance::reloadBackend(const Window* inWindow)
+        {
             switch (inWindow->getBackend())
             {
 #if CHICANE_OPENGL

@@ -162,6 +162,11 @@ namespace Chicane
             return;
         }
 
+        if (hasRenderer())
+        {
+            m_renderer->shutdownBackend();
+        }
+
         m_window->setBackend(inBackend);
     }
 

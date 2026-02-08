@@ -33,19 +33,19 @@ float ComputeGridLinearDepth(vec4 inClipSpacePosition, float inNear, float inFar
 }
 
 float ComputeGridFade(vec3 inPosition, vec3 inViewLocation, float inLinearDepth) {
-    vec3 viewDir = normalize(inPosition - inViewLocation.xyz);
-    vec3 gridNormal = vec3(0, 0, 1);
+    vec3 viewDir = normalize(inPosition - inViewLocation);
+    vec3 gridNormal = vec3(0.0, 0.0, 1.0);
 
-    float distFade = smoothstep(0.15, 0.85, inLinearDepth);
-    distFade = pow(distFade, 1.5);
-
-    float angle = abs(dot(viewDir, gridNormal));
+    float angle     = abs(dot(viewDir, gridNormal));
     float angleFade = smoothstep(0.05, 0.25, angle);
 
-    float height = abs(inViewLocation.z);
+    float height     = abs(inViewLocation.z);
     float heightFade = smoothstep(0.0, 10.0, height);
 
-    return (1.0 - distFade) * angleFade * (1.0 - heightFade * 0.5);
+    float distance     = inLinearDepth;
+    float distanceFade = pow(smoothstep(0.15, 0.85, distance), 1.5);
+
+    return (1.0 - distanceFade) * angleFade * (1.0 - heightFade * 0.5);
 }
 
 float ComputeGridDepth(vec4 inWorldPosition) {
