@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER vk::PipelineShaderStageCreateInfo",
+                    "name": "vk::PipelineShaderStageCreateInfo",
                     "suffix": "",
                     "path": "",
                     "templates": []

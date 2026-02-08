@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER bool",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -41,7 +41,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -77,7 +77,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -123,7 +123,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER std::uint32_t",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

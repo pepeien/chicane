@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -61,7 +61,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -105,7 +105,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -149,7 +149,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_RENDERER void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
