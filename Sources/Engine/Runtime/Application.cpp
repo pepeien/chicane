@@ -24,7 +24,6 @@ namespace Chicane
           m_bIsSceneRunning(false),
           m_sceneMutex({}),
           m_sceneThread({}),
-          m_sceneTimer({}),
           m_sceneObservable({}),
           m_view(nullptr),
           m_viewObservable({}),
@@ -294,15 +293,11 @@ namespace Chicane
                 continue;
             }
 
-            m_sceneTimer.end();
-
             {
                 std::lock_guard<std::mutex> lock(m_sceneMutex);
 
-                m_scene->tick(m_sceneTimer.getDelta().miliseconds());
+                m_scene->tick(m_telemetry.delta);
             }
-
-            m_sceneTimer.start();
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
@@ -393,15 +388,11 @@ namespace Chicane
                 continue;
             }
 
-            m_viewTimer.end();
-
             {
                 std::lock_guard<std::mutex> lock(m_viewMutex);
 
-                m_view->tick(m_viewTimer.getDelta().miliseconds());
+                m_view->tick(m_telemetry.delta);
             }
-
-            m_viewTimer.start();
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
@@ -413,6 +404,8 @@ namespace Chicane
         {
             return;
         }
+
+        std::lock_guard<std::mutex> lock(m_viewMutex);
 
         const Vec2& viewSize = m_view->getSize();
 

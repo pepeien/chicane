@@ -175,7 +175,6 @@ namespace Chicane
         std::atomic<bool>                   m_bIsSceneRunning;
         std::mutex                          m_sceneMutex;
         std::thread                         m_sceneThread;
-        Timer                               m_sceneTimer;
         SceneObservable                     m_sceneObservable;
 
         // Grid
@@ -183,7 +182,6 @@ namespace Chicane
         std::atomic<bool>                   m_bIsViewRunning;
         std::mutex                          m_viewMutex;
         std::thread                         m_viewThread;
-        Timer                               m_viewTimer;
         ViewObservable                      m_viewObservable;
 
         // Window

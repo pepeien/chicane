@@ -28,6 +28,11 @@ namespace Chicane
         {
             for (const DrawPoly& draw : m_draws)
             {
+                if (!draw.reference.empty() && draw.reference.equals(inData.reference))
+                {
+                    return draw.id;
+                }
+
                 if (draw.vertexCount != inData.vertices.size() || draw.indexCount != inData.indices.size())
                 {
                     continue;
