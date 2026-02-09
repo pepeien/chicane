@@ -1,5 +1,9 @@
 #pragma once
 
+#include <atomic>
+#include <mutex>
+#include <thread>
+
 #include "Chicane/Core/Telemetry.hpp"
 #include "Chicane/Core/Window.hpp"
 
@@ -148,7 +152,15 @@ namespace Chicane
 
         // Lifecycle
         void render();
+
+        void initSceneThread();
+        void shutdownSceneThread();
+        void tickScene();
         void renderScene();
+
+        void initViewThread();
+        void shutdownViewThread();
+        void tickView();
         void renderView();
 
     private:
@@ -160,10 +172,18 @@ namespace Chicane
         ControllerObservable                m_controllerObservable;
 
         std::unique_ptr<Scene>              m_scene;
+        std::atomic<bool>                   m_bIsSceneRunning;
+        std::mutex                          m_sceneMutex;
+        std::thread                         m_sceneThread;
+        Timer                               m_sceneTimer;
         SceneObservable                     m_sceneObservable;
 
         // Grid
         std::unique_ptr<Grid::View>         m_view;
+        std::atomic<bool>                   m_bIsViewRunning;
+        std::mutex                          m_viewMutex;
+        std::thread                         m_viewThread;
+        Timer                               m_viewTimer;
         ViewObservable                      m_viewObservable;
 
         // Window

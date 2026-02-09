@@ -3,14 +3,14 @@
 namespace Chicane
 {
     Telemetry::Telemetry()
-        : Recorder(10.0f),
+        : Timer(),
           delta(0.0f),
           rate(0U)
     {}
 
     void Telemetry::onTime()
     {
-        delta = Time::miliseconds(m_end.point - m_begin.point);
+        delta = getDelta().miliseconds();
         rate  = delta > 0.0f ? static_cast<std::uint32_t>(1000.0f / delta) : 0;
     }
 }

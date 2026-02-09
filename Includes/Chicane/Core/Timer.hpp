@@ -5,11 +5,10 @@
 
 namespace Chicane
 {
-    struct CHICANE_CORE Recorder
+    struct CHICANE_CORE Timer
     {
     public:
-        Recorder(float inUpdateRateInMs);
-        Recorder();
+        Timer();
 
     protected:
         inline virtual void onTime() { return; }
@@ -18,12 +17,10 @@ namespace Chicane
         void start();
         void end();
 
-        void setUpdateRate(float inValue);
+        Time getDelta() const;
 
     protected:
-        Time  m_begin;
-        Time  m_end;
-
-        float m_cooldownInMs;
+        Time m_start;
+        Time m_end;
     };
 }

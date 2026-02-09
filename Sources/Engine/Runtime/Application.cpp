@@ -21,6 +21,10 @@ namespace Chicane
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
+          m_bIsSceneRunning(false),
+          m_sceneMutex({}),
+          m_sceneThread({}),
+          m_sceneTimer({}),
           m_sceneObservable({}),
           m_view(nullptr),
           m_viewObservable({}),
@@ -43,6 +47,9 @@ namespace Chicane
             inCreateInfo.onSetup();
         }
 
+        initSceneThread();
+        initViewThread();
+
         while (m_window->run())
         {
             m_telemetry.start();
@@ -51,6 +58,9 @@ namespace Chicane
 
             m_telemetry.end();
         }
+
+        shutdownSceneThread();
+        shutdownViewThread();
     }
 
     void Application::render()
@@ -257,6 +267,47 @@ namespace Chicane
         Kerb::init();
     }
 
+    void Application::initSceneThread()
+    {
+        m_bIsSceneRunning = true;
+        m_sceneThread     = std::thread(&Application::tickScene, this);
+    }
+
+    void Application::shutdownSceneThread()
+    {
+        m_bIsSceneRunning = false;
+
+        if (m_sceneThread.joinable())
+        {
+            m_sceneThread.join();
+        }
+    }
+
+    void Application::tickScene()
+    {
+        while (m_bIsSceneRunning)
+        {
+            if (!hasScene())
+            {
+                std::this_thread::yield();
+
+                continue;
+            }
+
+            m_sceneTimer.end();
+
+            {
+                std::lock_guard<std::mutex> lock(m_sceneMutex);
+
+                m_scene->tick(m_sceneTimer.getDelta().miliseconds());
+            }
+
+            m_sceneTimer.start();
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     void Application::renderScene()
     {
         if (!hasScene())
@@ -264,7 +315,7 @@ namespace Chicane
             return;
         }
 
-        m_scene->tick(m_telemetry.delta);
+        std::lock_guard<std::mutex> lock(m_sceneMutex);
 
         for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
         {
@@ -315,14 +366,53 @@ namespace Chicane
         }
     }
 
+    void Application::initViewThread()
+    {
+        m_bIsViewRunning = true;
+        m_viewThread     = std::thread(&Application::tickView, this);
+    }
+
+    void Application::shutdownViewThread()
+    {
+        m_bIsViewRunning = false;
+
+        if (m_viewThread.joinable())
+        {
+            m_viewThread.join();
+        }
+    }
+
+    void Application::tickView()
+    {
+        while (m_bIsViewRunning)
+        {
+            if (!hasView())
+            {
+                std::this_thread::yield();
+
+                continue;
+            }
+
+            m_viewTimer.end();
+
+            {
+                std::lock_guard<std::mutex> lock(m_viewMutex);
+
+                m_view->tick(m_viewTimer.getDelta().miliseconds());
+            }
+
+            m_viewTimer.start();
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     void Application::renderView()
     {
         if (!hasView())
         {
             return;
         }
-
-        m_view->tick(m_telemetry.delta);
 
         const Vec2& viewSize = m_view->getSize();
 
