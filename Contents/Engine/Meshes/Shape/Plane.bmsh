@@ -1,0 +1,6 @@
+<Asset version="1" id="Plane">
+    <Group id="Body">
+        <Model>Plane_Body</Model>
+        <Texture>Color_Gray</Texture>
+    </Group>
+</Asset>

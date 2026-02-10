@@ -1,0 +1,6 @@
+<Asset version="1" id="Torus">
+    <Group id="Body">
+        <Model>Torus_Body</Model>
+        <Texture>Color_Gray</Texture>
+    </Group>
+</Asset>

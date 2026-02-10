@@ -1,0 +1,6 @@
+<Asset version="1" id="Cone">
+    <Group id="Body">
+        <Model>Cone_Body</Model>
+        <Texture>Color_Gray</Texture>
+    </Group>
+</Asset>

@@ -2,8 +2,6 @@
 
 #include "Chicane/Box/Model/Wavefront.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Box
@@ -31,8 +29,6 @@ namespace Chicane
                 String id = inId;
                 id.append("_");
                 id.append(name);
-
-                Log::info(id);
 
                 add(id, model);
             }

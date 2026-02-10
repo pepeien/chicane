@@ -1,0 +1,6 @@
+<Asset version="1" id="Pyramid">
+    <Group id="Body">
+        <Model>Pyramid_Body</Model>
+        <Texture>Color_Gray</Texture>
+    </Group>
+</Asset>
