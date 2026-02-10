@@ -5,6 +5,7 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
@@ -30,9 +31,8 @@ namespace Chicane
             Renderer::DrawSkyData        sky = {};
 
             // Mesh
-            Renderer::DrawPoly3DInstance instance         = {};
-            String                       modelReference   = "";
-            String                       textureReference = "";
+            Renderer::DrawPoly3DInstance instance = {};
+            DrawPoly3DCommandMesh::List  meshes   = {};
         };
     }
 }

@@ -1,6 +1,6 @@
 <Asset version="1" id="Structure">
     <Group id="Body">
-        <Model>Contents/Engine/Models/Shape/Cube.bmdl</Model>
-        <Texture>Contents/Engine/Textures/Checkered.btex</Texture>
+        <Model>Cube_Body</Model>
+        <Texture>Checkered</Texture>
     </Group>
 </Asset>

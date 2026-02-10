@@ -114,14 +114,14 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Model)
             {
-                throw std::runtime_error(inFilePath.string() + "is not a model");
+                throw std::runtime_error(inFilePath.string() + " is not a model");
             }
 
             if (!hasAsset(inFilePath))
             {
                 const Model* asset = addAsset<Model>(inFilePath);
 
-                g_modelManager->load(inFilePath.string(), *asset);
+                g_modelManager->load(asset->getId(), *asset);
 
                 return asset;
             }
@@ -140,7 +140,7 @@ namespace Chicane
             {
                 const Texture* asset = addAsset<Texture>(inFilePath);
 
-                g_textureManager->load(inFilePath.string(), *asset);
+                g_textureManager->load(asset->getId(), *asset);
 
                 return asset;
             }
@@ -157,24 +157,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Mesh* asset = addAsset<Mesh>(inFilePath);
-
-                for (const MeshGroup& group : asset->getGroups())
-                {
-                    const String& model = group.getModel();
-                    if (!model.isEmpty() && !hasAsset(model.toStandard()))
-                    {
-                        loadModel(model.toStandard());
-                    }
-
-                    const String& texture = group.getTexture();
-                    if (!texture.isEmpty() && !hasAsset(texture.toStandard()))
-                    {
-                        loadTexture(texture.toStandard());
-                    }
-                }
-
-                return asset;
+                return addAsset<Mesh>(inFilePath);
             }
 
             return getAsset<Mesh>(inFilePath);
@@ -189,16 +172,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Sky* asset = addAsset<Sky>(inFilePath);
-
-                loadModel(asset->getModel().toStandard());
-
-                for (const auto& [side, texture] : asset->getSides())
-                {
-                    loadTexture(texture.toStandard());
-                }
-
-                return asset;
+                return addAsset<Sky>(inFilePath);
             }
 
             return getAsset<Sky>(inFilePath);

@@ -32,7 +32,6 @@ Character::Character()
     m_body = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
     m_body->setMesh("Contents/Sample/Shooter/Meshes/Character/Body.bmsh");
-    m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
     m_victorySound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();

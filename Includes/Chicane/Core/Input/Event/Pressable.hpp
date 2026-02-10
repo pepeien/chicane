@@ -30,7 +30,16 @@ namespace Chicane
         protected:
             inline void onTime() override
             {
+                m_cooldown.end();
+
+                if (m_cooldown.getDelta().miliseconds() <= 20.0f)
+                {
+                    return;
+                }
+
                 start();
+
+                m_cooldown.start();
 
                 for (B button : m_pressed)
                 {
@@ -112,6 +121,7 @@ namespace Chicane
         private:
             std::vector<B> m_pressed;
             Events         m_events;
+            Timer          m_cooldown;
         };
     }
 }

@@ -1,11 +1,11 @@
 <Asset version="1" id="Blue">
     <Sides>
-        <Texture side="Left">Contents/Engine/Textures/Color/Blue.btex</Texture>
-        <Texture side="Right">Contents/Engine/Textures/Color/Blue.btex</Texture>
-        <Texture side="Front">Contents/Engine/Textures/Color/Blue.btex</Texture>
-        <Texture side="Back">Contents/Engine/Textures/Color/Blue.btex</Texture>
-        <Texture side="Up">Contents/Engine/Textures/Color/Blue.btex</Texture>
-        <Texture side="Down">Contents/Engine/Textures/Color/Blue.btex</Texture>
+        <Texture side="Left">Color_Blue</Texture>
+        <Texture side="Right">Color_Blue</Texture>
+        <Texture side="Front">Color_Blue</Texture>
+        <Texture side="Back">Color_Blue</Texture>
+        <Texture side="Up">Color_Blue</Texture>
+        <Texture side="Down">Color_Blue</Texture>
     </Sides>
-    <Model>Contents/Engine/Models/Skybox.bmdl</Model>
+    <Model>Skybox_Body</Model>
 </Asset>

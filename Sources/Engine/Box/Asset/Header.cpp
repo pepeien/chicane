@@ -94,13 +94,6 @@ namespace Chicane
             }
 
             id = Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
-
-            if (!id.isEmpty())
-            {
-                return;
-            }
-
-            id = "";
         }
 
         void AssetHeader::fetchType()

@@ -7,6 +7,8 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -248,12 +250,12 @@ namespace Chicane
         Box::getModelManager()->watch(
             [&](const Box::ModelManager::Instances& inInstances)
             {
-                for (const auto& [id, poly] : inInstances)
+                for (const auto& [id, model] : inInstances)
                 {
                     Renderer::DrawPolyData data;
                     data.reference = id;
-                    data.vertices  = poly.vertices;
-                    data.indices   = poly.indices;
+                    data.vertices  = model.vertices;
+                    data.indices   = model.indices;
 
                     m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
                 }
@@ -365,19 +367,16 @@ namespace Chicane
                         continue;
                     }
 
-                    Renderer::DrawPoly3DInstance draw;
-                    draw.model = mesh->getTransform().getMatrix();
+                    Renderer::DrawPoly3DCommand command;
+                    command.type           = Renderer::DrawPoly3DCommandType::Mesh;
+                    command.instance.model = mesh->getTransform().getMatrix();
 
                     for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
                     {
-                        Renderer::DrawPoly3DCommand command;
-                        command.type             = Renderer::DrawPoly3DCommandType::Mesh;
-                        command.instance         = draw;
-                        command.modelReference   = group.getModel();
-                        command.textureReference = group.getTexture();
-
-                        commands.emplace_back(std::move(command));
+                        command.meshes.push_back({.model = group.getModel(), .texture = group.getTexture()});
                     }
+
+                    commands.emplace_back(std::move(command));
                 }
 
                 m_sceneReadIndex.store(index, std::memory_order_release);
@@ -419,9 +418,12 @@ namespace Chicane
                 break;
 
             case Renderer::DrawPoly3DCommandType::Mesh:
-                command.instance.texture = m_renderer->findTexture(command.textureReference);
+                for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
+                {
+                    command.instance.texture = m_renderer->findTexture(mesh.texture);
 
-                m_renderer->drawPoly(Renderer::DrawPolyType::e3D, command.modelReference, command.instance);
+                    m_renderer->drawPoly(Renderer::DrawPolyType::e3D, mesh.model, command.instance);
+                }
 
                 break;
 

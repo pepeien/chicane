@@ -48,26 +48,6 @@ namespace Chicane
         return m_mesh;
     }
 
-    const String& CMesh::getModel() const
-    {
-        if (!hasMesh())
-        {
-            return String::empty();
-        }
-
-        return m_mesh->getGroups().at(0).getModel();
-    }
-
-    const String& CMesh::getTexture() const
-    {
-        if (!hasMesh())
-        {
-            return String::empty();
-        }
-
-        return m_mesh->getGroups().at(0).getTexture();
-    }
-
     void CMesh::generateBounds()
     {
         if (!hasMesh())
@@ -79,7 +59,7 @@ namespace Chicane
 
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::ModelParsed model = manager->get(group.getModel());
+            const Box::ModelParsed& model = manager->get(group.getModel());
 
             const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
 

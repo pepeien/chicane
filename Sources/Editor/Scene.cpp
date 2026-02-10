@@ -6,6 +6,7 @@
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 
 #include "Actor/Character.hpp"
+#include "Actor/Item.hpp"
 #include "Actor/Sun.hpp"
 
 namespace Editor
