@@ -62,6 +62,7 @@ target_include_directories(
     PRIVATE
         # Vendors
         ${VENDORS_DIR}/stb
+        ${VENDORS_DIR}/xxHash
 )
 
 target_link_libraries(

@@ -46,8 +46,6 @@ namespace Chicane
 
             currentFrame.reset();
 
-            getPolyResource(DrawPolyType::e2D).reset();
-
             m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
 

@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     CCamera::CCamera()

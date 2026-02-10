@@ -18,10 +18,10 @@ namespace Chicane
 {
     Application::Application()
         : m_telemetry({}),
+          m_bIsRunning(false),
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
-          m_bIsSceneRunning(false),
           m_sceneMutex({}),
           m_sceneThread({}),
           m_sceneObservable({}),
@@ -46,6 +46,8 @@ namespace Chicane
             inCreateInfo.onSetup();
         }
 
+        m_bIsRunning = true;
+
         initSceneThread();
         initViewThread();
 
@@ -57,6 +59,8 @@ namespace Chicane
 
             m_telemetry.end();
         }
+
+        m_bIsRunning = false;
 
         shutdownSceneThread();
         shutdownViewThread();
@@ -268,14 +272,11 @@ namespace Chicane
 
     void Application::initSceneThread()
     {
-        m_bIsSceneRunning = true;
-        m_sceneThread     = std::thread(&Application::tickScene, this);
+        m_sceneThread = std::thread(&Application::tickScene, this);
     }
 
     void Application::shutdownSceneThread()
     {
-        m_bIsSceneRunning = false;
-
         if (m_sceneThread.joinable())
         {
             m_sceneThread.join();
@@ -284,7 +285,7 @@ namespace Chicane
 
     void Application::tickScene()
     {
-        while (m_bIsSceneRunning)
+        while (m_bIsRunning)
         {
             if (!hasScene())
             {
@@ -363,14 +364,11 @@ namespace Chicane
 
     void Application::initViewThread()
     {
-        m_bIsViewRunning = true;
-        m_viewThread     = std::thread(&Application::tickView, this);
+        m_viewThread = std::thread(&Application::tickView, this);
     }
 
     void Application::shutdownViewThread()
     {
-        m_bIsViewRunning = false;
-
         if (m_viewThread.joinable())
         {
             m_viewThread.join();
@@ -379,7 +377,7 @@ namespace Chicane
 
     void Application::tickView()
     {
-        while (m_bIsViewRunning)
+        while (m_bIsRunning)
         {
             if (!hasView())
             {
@@ -389,9 +387,41 @@ namespace Chicane
             }
 
             {
-                std::lock_guard<std::mutex> lock(m_viewMutex);
+                uint32_t writeIdx  = m_viewWriteIndex.load(std::memory_order_relaxed);
+                auto&    cmdBuffer = m_viewCmdBuffers[writeIdx];
+                cmdBuffer.clear();
 
                 m_view->tick(m_telemetry.delta);
+
+                const Vec2& viewSize = m_view->getSize();
+
+                for (Grid::Component* component : m_view->getChildrenFlat())
+                {
+                    if (!component->isDrawable())
+                    {
+                        continue;
+                    }
+
+                    DrawCommand2D cmd;
+
+                    const Grid::Primitive& primitive = component->getPrimitive();
+                    cmd.polygon.vertices             = primitive.vertices;
+                    cmd.polygon.indices              = primitive.indices;
+
+                    const Grid::Style& style = component->getStyle();
+                    cmd.instance.screen      = viewSize;
+                    cmd.instance.size        = component->getSize();
+                    cmd.instance
+                        .position      = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
+                    cmd.textureRef     = style.background.image.get();
+                    cmd.opacity        = style.opacity.get();
+                    cmd.instance.color = style.background.color.get();
+
+                    cmdBuffer.emplace_back(std::move(cmd));
+                }
+
+                m_viewReadIndex.store(writeIdx, std::memory_order_release);
+                m_viewWriteIndex.store(1 - writeIdx, std::memory_order_relaxed);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -400,46 +430,21 @@ namespace Chicane
 
     void Application::renderView()
     {
-        if (!hasView())
+        if (!hasRenderer())
         {
             return;
         }
 
-        std::lock_guard<std::mutex> lock(m_viewMutex);
+        uint32_t    readIdx   = m_viewReadIndex.load(std::memory_order_acquire);
+        const auto& cmdBuffer = m_viewCmdBuffers[readIdx];
 
-        const Vec2& viewSize = m_view->getSize();
-
-        for (Grid::Component* component : m_view->getChildrenFlat())
+        for (const DrawCommand2D& cmd : cmdBuffer)
         {
-            if (!component->isDrawable())
-            {
-                continue;
-            }
+            Renderer::DrawPoly2DInstance draw = cmd.instance;
+            draw.texture                      = m_renderer->findTexture(cmd.textureRef);
+            draw.color.a = (draw.texture > Renderer::Draw::UnknownId ? 255.0f : draw.color.a) * cmd.opacity;
 
-            const Grid::Primitive& primitive = component->getPrimitive();
-
-            Renderer::DrawPolyData data;
-            data.vertices         = primitive.vertices;
-            data.indices          = primitive.indices;
-            Renderer::Draw::Id id = m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
-
-            const Vec2&        position = component->getPosition();
-            const Grid::Style& style    = component->getStyle();
-
-            const Color::Rgba backgroundColor = style.background.color.get();
-
-            Renderer::DrawPoly2DInstance draw;
-            draw.screen   = viewSize;
-            draw.size     = component->getSize();
-            draw.position = {position.x, position.y, style.zIndex.get()};
-            draw.texture  = m_renderer->findTexture(style.background.image.get());
-            draw.color    = {
-                backgroundColor.r,
-                backgroundColor.g,
-                backgroundColor.b,
-                (draw.texture >= 0 ? 255.0f : backgroundColor.a) * style.opacity.get()
-            };
-            m_renderer->drawPoly(id, draw);
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, cmd.polygon), draw);
         }
     }
 }

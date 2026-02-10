@@ -31,6 +31,29 @@ namespace Chicane
         using ViewSubscription = EventSubscription<Grid::View*>;
 
     public:
+        struct DrawCommand2D
+        {
+        public:
+            Renderer::DrawPolyData       polygon = {};
+
+            Renderer::DrawPoly2DInstance instance   = {};
+            String                       textureRef = "";
+            float                        opacity    = 1.0f;
+        };
+
+        struct DrawCommand3D : Renderer::DrawPoly3DInstance
+        {
+        public:
+            String textureRef = "";
+        };
+
+        struct DrawCommandBuffer
+        {
+        public:
+            std::vector<DrawCommand2D> draws2D = {};
+        };
+
+    public:
         static inline Application& getInstance()
         {
             static Application instance;
@@ -166,20 +189,19 @@ namespace Chicane
     private:
         // Status
         Telemetry                           m_telemetry;
+        std::atomic<bool>                   m_bIsRunning;
 
         // Scene
         Controller*                         m_controller;
         ControllerObservable                m_controllerObservable;
 
         std::unique_ptr<Scene>              m_scene;
-        std::atomic<bool>                   m_bIsSceneRunning;
         std::mutex                          m_sceneMutex;
         std::thread                         m_sceneThread;
         SceneObservable                     m_sceneObservable;
 
         // Grid
         std::unique_ptr<Grid::View>         m_view;
-        std::atomic<bool>                   m_bIsViewRunning;
         std::mutex                          m_viewMutex;
         std::thread                         m_viewThread;
         ViewObservable                      m_viewObservable;
@@ -189,5 +211,9 @@ namespace Chicane
 
         // Renderer
         std::unique_ptr<Renderer::Instance> m_renderer;
+
+        std::vector<DrawCommand2D>          m_viewCmdBuffers[2];
+        std::atomic<uint32_t>               m_viewWriteIndex{0};
+        std::atomic<uint32_t>               m_viewReadIndex{1};
     };
 }
