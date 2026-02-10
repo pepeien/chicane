@@ -308,83 +308,91 @@ namespace Chicane
             }
 
             {
-                // Tick
                 m_scene->tick(m_telemetry.delta);
 
-                // Render
-                std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
-                Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
-                commands.clear();
-
-                commands.reserve(m_scene->getComponents().size());
-
-                for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
-                {
-                    camera->onResize(m_renderer->getResolution());
-
-                    Renderer::DrawPoly3DCommand command;
-                    command.type   = Renderer::DrawPoly3DCommandType::Camera;
-                    command.camera = camera->getData();
-
-                    commands.emplace_back(std::move(command));
-                }
-
-                for (CLight* light : m_scene->getActiveComponents<CLight>())
-                {
-                    light->onResize(m_renderer->getResolution());
-
-                    Renderer::DrawPoly3DCommand command;
-                    command.type  = Renderer::DrawPoly3DCommandType::Light;
-                    command.light = light->getData();
-
-                    commands.emplace_back(std::move(command));
-                }
-
-                for (ASky* sky : m_scene->getActors<ASky>())
-                {
-                    const Box::Sky* asset = sky->getSky();
-
-                    Renderer::DrawSkyData data;
-                    data.reference = asset->getFilepath().string();
-                    data.model     = asset->getModel();
-
-                    for (Box::SkySide side : Box::Sky::ORDER)
-                    {
-                        data.textures.push_back(asset->getSide(side));
-                    }
-
-                    Renderer::DrawPoly3DCommand command;
-                    command.type = Renderer::DrawPoly3DCommandType::Sky;
-                    command.sky  = data;
-
-                    commands.emplace_back(std::move(command));
-                }
-
-                for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
-                {
-                    if (!mesh->hasMesh())
-                    {
-                        continue;
-                    }
-
-                    Renderer::DrawPoly3DCommand command;
-                    command.type           = Renderer::DrawPoly3DCommandType::Mesh;
-                    command.instance.model = mesh->getTransform().getMatrix();
-
-                    for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-                    {
-                        command.meshes.push_back({.model = group.getModel(), .texture = group.getTexture()});
-                    }
-
-                    commands.emplace_back(std::move(command));
-                }
-
-                m_sceneReadIndex.store(index, std::memory_order_release);
-                m_sceneWriteIndex.store(1 - index, std::memory_order_relaxed);
+                buildSceneCommands();
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+    }
+
+    void Application::buildSceneCommands()
+    {
+        if (!hasScene())
+        {
+            return;
+        }
+
+        std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
+        Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
+        commands.clear();
+
+        commands.reserve(m_scene->getComponents().size());
+
+        for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
+        {
+            camera->onResize(m_renderer->getResolution());
+
+            Renderer::DrawPoly3DCommand command;
+            command.type   = Renderer::DrawPoly3DCommandType::Camera;
+            command.camera = camera->getData();
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (CLight* light : m_scene->getActiveComponents<CLight>())
+        {
+            light->onResize(m_renderer->getResolution());
+
+            Renderer::DrawPoly3DCommand command;
+            command.type  = Renderer::DrawPoly3DCommandType::Light;
+            command.light = light->getData();
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (ASky* sky : m_scene->getActors<ASky>())
+        {
+            const Box::Sky* asset = sky->getSky();
+
+            Renderer::DrawSkyData data;
+            data.reference = asset->getFilepath().string();
+            data.model     = asset->getModel();
+
+            for (Box::SkySide side : Box::Sky::ORDER)
+            {
+                data.textures.push_back(asset->getSide(side));
+            }
+
+            Renderer::DrawPoly3DCommand command;
+            command.type = Renderer::DrawPoly3DCommandType::Sky;
+            command.sky  = data;
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
+        {
+            if (!mesh->hasMesh())
+            {
+                continue;
+            }
+
+            Renderer::DrawPoly3DCommand command;
+            command.type           = Renderer::DrawPoly3DCommandType::Mesh;
+            command.instance.model = mesh->getTransform().getMatrix();
+
+            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+            {
+                command.meshes.push_back({.model = group.getModel(), .texture = group.getTexture()});
+            }
+
+            commands.emplace_back(std::move(command));
+        }
+
+        m_sceneReadIndex.store(index, std::memory_order_release);
+        m_sceneWriteIndex.store(1 - index, std::memory_order_relaxed);
     }
 
     void Application::renderScene()
@@ -458,46 +466,53 @@ namespace Chicane
             }
 
             {
-                // Tick
                 m_view->tick(m_telemetry.delta);
 
-                // Render
-                std::uint32_t                      index    = m_viewWriteIndex.load(std::memory_order_relaxed);
-                Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
-                commands.clear();
-
-                const Vec2& viewSize = m_view->getSize();
-
-                for (Grid::Component* component : m_view->getChildrenFlat())
-                {
-                    if (!component->isDrawable())
-                    {
-                        continue;
-                    }
-
-                    const Grid::Primitive& primitive = component->getPrimitive();
-                    const Grid::Style&     style     = component->getStyle();
-
-                    Renderer::DrawPoly2DCommand command;
-                    command.polygon.vertices = primitive.vertices;
-                    command.polygon.indices  = primitive.indices;
-                    command.instance.screen  = viewSize;
-                    command.instance.size    = component->getSize();
-                    command.instance
-                        .position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
-                    command.textureReference = style.background.image.get();
-                    command.opacity          = style.opacity.get();
-                    command.instance.color   = style.background.color.get();
-
-                    commands.emplace_back(std::move(command));
-                }
-
-                m_viewReadIndex.store(index, std::memory_order_release);
-                m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);
+                buildViewCommands();
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+    }
+
+    void Application::buildViewCommands()
+    {
+        if (!hasView())
+        {
+            return;
+        }
+
+        std::uint32_t                      index    = m_viewWriteIndex.load(std::memory_order_relaxed);
+        Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
+        commands.clear();
+
+        const Vec2& viewSize = m_view->getSize();
+
+        for (Grid::Component* component : m_view->getChildrenFlat())
+        {
+            if (!component->isDrawable())
+            {
+                continue;
+            }
+
+            const Grid::Primitive& primitive = component->getPrimitive();
+            const Grid::Style&     style     = component->getStyle();
+
+            Renderer::DrawPoly2DCommand command;
+            command.polygon.vertices  = primitive.vertices;
+            command.polygon.indices   = primitive.indices;
+            command.instance.screen   = viewSize;
+            command.instance.size     = component->getSize();
+            command.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
+            command.textureReference  = style.background.image.get();
+            command.opacity           = style.opacity.get();
+            command.instance.color    = style.background.color.get();
+
+            commands.emplace_back(std::move(command));
+        }
+
+        m_viewReadIndex.store(index, std::memory_order_release);
+        m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);
     }
 
     void Application::renderView()

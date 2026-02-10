@@ -158,11 +158,13 @@ namespace Chicane
         void initSceneThread();
         void shutdownSceneThread();
         void tickScene();
+        void buildSceneCommands();
         void renderScene();
 
         void initViewThread();
         void shutdownViewThread();
         void tickView();
+        void buildViewCommands();
         void renderView();
 
     private:
