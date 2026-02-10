@@ -13,7 +13,8 @@ namespace Chicane
         using Point = std::chrono::time_point<Clock>;
 
     public:
-        Time(const std::chrono::time_point<Clock>& inDuration);
+        Time(const Clock::duration& inDuration);
+        Time(const Point& inDuration);
         Time();
 
     public:

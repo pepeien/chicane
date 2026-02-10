@@ -73,10 +73,10 @@ namespace Chicane
             return result;
         }
 
-        template <class T = Actor>
-        inline T* createActor()
+        template <class T = Actor, typename... Params>
+        inline T* createActor(Params... inParams)
         {
-            m_actors.push_back(new T());
+            m_actors.push_back(new T(inParams...));
 
             m_actorsObservable.next(m_actors);
 
@@ -148,10 +148,10 @@ namespace Chicane
             return result;
         }
 
-        template <class T = Component>
-        inline T* createComponent()
+        template <class T = Component, typename... Params>
+        inline T* createComponent(Params... inParams)
         {
-            m_components.push_back(new T());
+            m_components.push_back(new T(inParams...));
 
             m_componentsObservable.next(m_components);
 

@@ -3,11 +3,11 @@
 #include <cstdio>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Recorder.hpp"
+#include "Chicane/Core/Timer.hpp"
 
 namespace Chicane
 {
-    struct CHICANE_CORE Telemetry : public Recorder
+    struct CHICANE_CORE Telemetry : public Timer
     {
     public:
         Telemetry();

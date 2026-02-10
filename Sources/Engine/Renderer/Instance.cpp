@@ -46,8 +46,6 @@ namespace Chicane
 
             currentFrame.reset();
 
-            getPolyResource(DrawPolyType::e2D).reset();
-
             m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
 
@@ -230,13 +228,18 @@ namespace Chicane
             }
         }
 
-        void Instance::reloadBackend(const Window* inWindow)
+        void Instance::shutdownBackend()
         {
-            if (hasBackend())
+            if (!hasBackend())
             {
-                m_backend.reset();
+                return;
             }
 
+            m_backend.reset();
+        }
+
+        void Instance::reloadBackend(const Window* inWindow)
+        {
             switch (inWindow->getBackend())
             {
 #if CHICANE_OPENGL

@@ -9,7 +9,6 @@ namespace Chicane
           m_camera(nullptr)
     {
         m_camera = Application::getInstance().getScene()->createComponent<CCamera>();
-        m_camera->setFarClip(2500.0f);
         m_camera->attachTo(this);
     }
 

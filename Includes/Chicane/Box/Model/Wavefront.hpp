@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace ModelWavefront
         {
-            CHICANE_BOX ModelParsed parse(const ModelRaw& inData);
+            CHICANE_BOX ModelParsed::Map parse(const ModelRaw& inData);
         }
     }
 }

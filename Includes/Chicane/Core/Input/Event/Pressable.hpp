@@ -8,23 +8,21 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Status.hpp"
-#include "Chicane/Core/Recorder.hpp"
-
-static constexpr inline const float COOLDOWN_IN_MS = 30.0f;
+#include "Chicane/Core/Timer.hpp"
 
 namespace Chicane
 {
     namespace Input
     {
         template <typename B>
-        struct CHICANE_CORE PressableEvents : private Recorder
+        struct CHICANE_CORE PressableEvents : private Timer
         {
         public:
             using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
             inline PressableEvents()
-                : Recorder(COOLDOWN_IN_MS),
+                : Timer(),
                   m_pressed({}),
                   m_events({})
             {}
@@ -32,6 +30,17 @@ namespace Chicane
         protected:
             inline void onTime() override
             {
+                m_cooldown.end();
+
+                if (m_cooldown.getDelta().miliseconds() <= 20.0f)
+                {
+                    return;
+                }
+
+                start();
+
+                m_cooldown.start();
+
                 for (B button : m_pressed)
                 {
                     exec(button, Status::Pressed);
@@ -112,6 +121,7 @@ namespace Chicane
         private:
             std::vector<B> m_pressed;
             Events         m_events;
+            Timer          m_cooldown;
         };
     }
 }

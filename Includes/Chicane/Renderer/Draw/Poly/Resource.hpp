@@ -1,8 +1,10 @@
 #pragma once
 
-#include <vector>
 #include <map>
+#include <unordered_map>
+#include <vector>
 
+#include "Chicane/Core/Hash.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
 #include "Chicane/Renderer.hpp"
@@ -16,7 +18,8 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPolyResource
         {
         public:
-            using Map = std::map<DrawPolyType, DrawPolyResource>;
+            using Map       = std::map<DrawPolyType, DrawPolyResource>;
+            using HashTable = std::unordered_map<Hash::Value, Draw::Id>;
 
         public:
             bool isEmpty() const;
@@ -36,9 +39,13 @@ namespace Chicane
             void reset();
 
         private:
+            Hash::Value hash(const DrawPolyData& inData);
+
+        private:
             DrawPoly::List  m_draws    = {};
             Vertex::List    m_vertices = {};
             Vertex::Indices m_indices  = {};
+            HashTable       m_hashes   = {};
         };
     }
 }

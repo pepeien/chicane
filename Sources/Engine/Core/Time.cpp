@@ -2,7 +2,11 @@
 
 namespace Chicane
 {
-    Time::Time(const std::chrono::time_point<Clock>& inDuration)
+    Time::Time(const Clock::duration& inDuration)
+        : point(inDuration)
+    {}
+
+    Time::Time(const Point& inDuration)
         : point(inDuration)
     {}
 

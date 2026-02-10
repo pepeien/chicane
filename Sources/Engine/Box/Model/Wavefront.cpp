@@ -55,32 +55,52 @@ namespace Chicane
                 outMap.insert(std::make_pair(dataSet, currentIndex));
             }
 
-            ModelParsed parse(const ModelRaw& inData)
+            ModelParsed::Map parse(const ModelRaw& inData)
             {
-                ModelParsed result = {};
-
                 String data = String(inData.begin(), inData.end());
                 data.append('\n');
 
                 fastObjMesh* mesh = fast_obj_read_memory(&data.front(), &data.back());
 
-                std::uint32_t indexPerFace = *mesh->face_vertices;
-
-                Vertex::Indices vertexLayout = {0, 1, 2};
-
-                if (indexPerFace > 3) // is quad
+                if (!mesh)
                 {
-                    vertexLayout = {0, 1, 2, 2, 3, 0};
+                    return {};
                 }
 
-                std::unordered_map<String, std::uint32_t> map = {};
+                ModelParsed::Map result = {};
 
-                for (std::uint32_t i = 0; i < mesh->index_count; i += indexPerFace)
+                std::vector<std::uint32_t> faceIndexOffsets(mesh->face_count);
                 {
-                    for (std::uint32_t index : vertexLayout)
+                    std::uint32_t offset = 0;
+                    for (std::uint32_t f = 0; f < mesh->face_count; ++f)
                     {
-                        parseDataset(result, map, mesh, i + index);
+                        faceIndexOffsets[f] = offset;
+                        offset += mesh->face_vertices[f];
                     }
+                }
+
+                for (std::uint32_t o = 0; o < mesh->object_count; ++o)
+                {
+                    const fastObjGroup& obj = mesh->objects[o];
+
+                    ModelParsed                               model = {};
+                    std::unordered_map<String, std::uint32_t> map   = {};
+
+                    for (std::uint32_t f = 0; f < obj.face_count; ++f)
+                    {
+                        std::uint32_t faceIndex  = obj.face_offset + f;
+                        std::uint32_t faceVertex = mesh->face_vertices[faceIndex];
+                        std::uint32_t indexStart = faceIndexOffsets[faceIndex];
+
+                        for (std::uint32_t i = 1; i + 1 < faceVertex; ++i)
+                        {
+                            parseDataset(model, map, mesh, indexStart + 0);
+                            parseDataset(model, map, mesh, indexStart + i);
+                            parseDataset(model, map, mesh, indexStart + i + 1);
+                        }
+                    }
+
+                    result.emplace(obj.name ? obj.name : "unnamed", std::move(model));
                 }
 
                 fast_obj_destroy(mesh);

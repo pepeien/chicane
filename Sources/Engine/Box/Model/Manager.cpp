@@ -12,15 +12,25 @@ namespace Chicane
 
         void ModelManager::onLoad(const String& inId, const Model& inData)
         {
+            ModelParsed::Map data = {};
             switch (inData.getVendor())
             {
             case ModelVendor::Wavefront:
-                add(inId, ModelWavefront::parse(inData.getData()));
+                data = ModelWavefront::parse(inData.getData());
 
                 break;
 
             default:
                 throw std::runtime_error("Failed to import Model due to invalid type");
+            }
+
+            for (const auto& [name, model] : data)
+            {
+                String id = inId;
+                id.append("_");
+                id.append(name);
+
+                add(id, model);
             }
         }
     }

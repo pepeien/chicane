@@ -33,8 +33,8 @@ Apple::Apple()
 
 void Apple::onTick(float inDeltaTime)
 {
-    addAbsoluteRotation(0.0f, 0.0f, m_rotateRate * inDeltaTime);
-    addAbsoluteTranslation(0.0f, 0.0f, -(m_fallRate * inDeltaTime));
+    addAbsoluteRotation(0.0f, 0.0f, m_rotateRate);
+    addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)

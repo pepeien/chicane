@@ -103,6 +103,7 @@ namespace Chicane
             void handle(const WindowEvent& inEvent);
 
             // Backend
+            void shutdownBackend();
             void reloadBackend(const Window* inWindow);
 
             // Draw

@@ -26,36 +26,11 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::findId(const DrawPolyData& inData)
         {
-            for (const DrawPoly& draw : m_draws)
+            auto it = m_hashes.find(hash(inData));
+
+            if (it != m_hashes.end())
             {
-                if (draw.vertexCount != inData.vertices.size() || draw.indexCount != inData.indices.size())
-                {
-                    continue;
-                }
-
-                bool bIsEquals = true;
-
-                for (std::uint32_t index = 0; index < draw.indexCount; index++)
-                {
-                    const Vertex& incoming = inData.vertices.at(inData.indices.at(index));
-                    const Vertex& stored   = m_vertices.at(draw.vertexStart + m_indices.at(draw.indexStart + index));
-
-                    if (incoming == stored)
-                    {
-                        continue;
-                    }
-
-                    bIsEquals = false;
-
-                    break;
-                }
-
-                if (!bIsEquals)
-                {
-                    continue;
-                }
-
-                return draw.id;
+                return it->second;
             }
 
             return Draw::UnknownId;
@@ -105,11 +80,11 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::add(const DrawPolyData& inData)
         {
-            Draw::Id drawId = findId(inData);
+            Draw::Id id = findId(inData);
 
-            if (drawId > Draw::UnknownId)
+            if (id > Draw::UnknownId)
             {
-                return drawId;
+                return id;
             }
 
             DrawPoly draw    = {};
@@ -127,14 +102,27 @@ namespace Chicane
             m_indices.reserve(m_indices.size() + inData.indices.size());
             m_indices.insert(m_indices.end(), inData.indices.begin(), inData.indices.end());
 
+            m_hashes.emplace(hash(inData), draw.id);
+
             return draw.id;
         }
 
         void DrawPolyResource::reset()
         {
             m_draws.clear();
+            m_hashes.clear();
             m_vertices.clear();
             m_indices.clear();
+        }
+
+        Hash::Value DrawPolyResource::hash(const DrawPolyData& inData)
+        {
+            return Hash::generate(
+                (void*)inData.indices.data(),
+                inData.indices.size() * sizeof(Vertex::Index),
+                (void*)inData.vertices.data(),
+                inData.vertices.size() * sizeof(Vertex)
+            );
         }
     }
 }

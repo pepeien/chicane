@@ -7,6 +7,8 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -18,15 +20,29 @@ namespace Chicane
 {
     Application::Application()
         : m_telemetry({}),
+          m_bIsRunning(false),
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
+          m_sceneMutex({}),
+          m_sceneThread({}),
+          m_sceneCommandBuffers({}),
+          m_sceneWriteIndex(0),
+          m_sceneReadIndex(1),
           m_sceneObservable({}),
           m_view(nullptr),
+          m_viewMutex({}),
+          m_viewThread({}),
+          m_viewCommandBuffers({}),
+          m_viewWriteIndex(0),
+          m_viewReadIndex(1),
           m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
-    {}
+    {
+        m_sceneCommandBuffers.resize(2);
+        m_viewCommandBuffers.resize(2);
+    }
 
     Application::~Application()
     {}
@@ -43,6 +59,11 @@ namespace Chicane
             inCreateInfo.onSetup();
         }
 
+        m_bIsRunning = true;
+
+        initSceneThread();
+        initViewThread();
+
         while (m_window->run())
         {
             m_telemetry.start();
@@ -51,6 +72,11 @@ namespace Chicane
 
             m_telemetry.end();
         }
+
+        m_bIsRunning = false;
+
+        shutdownSceneThread();
+        shutdownViewThread();
     }
 
     void Application::render()
@@ -162,6 +188,11 @@ namespace Chicane
             return;
         }
 
+        if (hasRenderer())
+        {
+            m_renderer->shutdownBackend();
+        }
+
         m_window->setBackend(inBackend);
     }
 
@@ -219,12 +250,12 @@ namespace Chicane
         Box::getModelManager()->watch(
             [&](const Box::ModelManager::Instances& inInstances)
             {
-                for (const auto& [id, poly] : inInstances)
+                for (const auto& [id, model] : inInstances)
                 {
                     Renderer::DrawPolyData data;
                     data.reference = id;
-                    data.vertices  = poly.vertices;
-                    data.indices   = poly.indices;
+                    data.vertices  = model.vertices;
+                    data.indices   = model.indices;
 
                     m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
                 }
@@ -252,45 +283,73 @@ namespace Chicane
         Kerb::init();
     }
 
-    void Application::renderScene()
+    void Application::initSceneThread()
+    {
+        m_sceneThread = std::thread(&Application::tickScene, this);
+    }
+
+    void Application::shutdownSceneThread()
+    {
+        if (m_sceneThread.joinable())
+        {
+            m_sceneThread.join();
+        }
+    }
+
+    void Application::tickScene()
+    {
+        while (m_bIsRunning)
+        {
+            if (!hasScene())
+            {
+                std::this_thread::yield();
+
+                continue;
+            }
+
+            {
+                m_scene->tick(m_telemetry.delta);
+
+                buildSceneCommands();
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
+    void Application::buildSceneCommands()
     {
         if (!hasScene())
         {
             return;
         }
 
-        m_scene->tick(m_telemetry.delta);
+        std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
+        Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
+        commands.clear();
+
+        commands.reserve(m_scene->getComponents().size());
 
         for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
         {
             camera->onResize(m_renderer->getResolution());
 
-            m_renderer->useCamera(camera->getData());
+            Renderer::DrawPoly3DCommand command;
+            command.type   = Renderer::DrawPoly3DCommandType::Camera;
+            command.camera = camera->getData();
+
+            commands.emplace_back(std::move(command));
         }
 
         for (CLight* light : m_scene->getActiveComponents<CLight>())
         {
             light->onResize(m_renderer->getResolution());
 
-            m_renderer->addLight(light->getData());
-        }
+            Renderer::DrawPoly3DCommand command;
+            command.type  = Renderer::DrawPoly3DCommandType::Light;
+            command.light = light->getData();
 
-        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
-        {
-            if (!mesh->hasMesh())
-            {
-                continue;
-            }
-
-            Renderer::DrawPoly3DInstance draw;
-            draw.model = mesh->getTransform().getMatrix();
-
-            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-            {
-                draw.texture = m_renderer->findTexture(group.getTexture());
-
-                m_renderer->drawPoly(Renderer::DrawPolyType::e3D, group.getModel(), draw);
-            }
+            commands.emplace_back(std::move(command));
         }
 
         for (ASky* sky : m_scene->getActors<ASky>())
@@ -306,18 +365,126 @@ namespace Chicane
                 data.textures.push_back(asset->getSide(side));
             }
 
-            m_renderer->loadSky(data);
+            Renderer::DrawPoly3DCommand command;
+            command.type = Renderer::DrawPoly3DCommandType::Sky;
+            command.sky  = data;
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
+        {
+            if (!mesh->hasMesh())
+            {
+                continue;
+            }
+
+            Renderer::DrawPoly3DCommand command;
+            command.type           = Renderer::DrawPoly3DCommandType::Mesh;
+            command.instance.model = mesh->getTransform().getMatrix();
+
+            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+            {
+                command.meshes.push_back({.model = group.getModel(), .texture = group.getTexture()});
+            }
+
+            commands.emplace_back(std::move(command));
+        }
+
+        m_sceneReadIndex.store(index, std::memory_order_release);
+        m_sceneWriteIndex.store(1 - index, std::memory_order_relaxed);
+    }
+
+    void Application::renderScene()
+    {
+        if (!hasScene())
+        {
+            return;
+        }
+
+        std::uint32_t index = m_sceneReadIndex.load(std::memory_order_acquire);
+
+        for (const Renderer::DrawPoly3DCommand& commandBuffer : m_sceneCommandBuffers[index])
+        {
+            Renderer::DrawPoly3DCommand command = commandBuffer;
+
+            switch (command.type)
+            {
+            case Renderer::DrawPoly3DCommandType::Camera:
+                m_renderer->useCamera(command.camera);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Light:
+                m_renderer->addLight(command.light);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Sky:
+                m_renderer->loadSky(command.sky);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Mesh:
+                for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
+                {
+                    command.instance.texture = m_renderer->findTexture(mesh.texture);
+
+                    m_renderer->drawPoly(Renderer::DrawPolyType::e3D, mesh.model, command.instance);
+                }
+
+                break;
+
+            default:
+                break;
+            }
         }
     }
 
-    void Application::renderView()
+    void Application::initViewThread()
+    {
+        m_viewThread = std::thread(&Application::tickView, this);
+    }
+
+    void Application::shutdownViewThread()
+    {
+        if (m_viewThread.joinable())
+        {
+            m_viewThread.join();
+        }
+    }
+
+    void Application::tickView()
+    {
+        while (m_bIsRunning)
+        {
+            if (!hasView())
+            {
+                std::this_thread::yield();
+
+                continue;
+            }
+
+            {
+                m_view->tick(m_telemetry.delta);
+
+                buildViewCommands();
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
+    void Application::buildViewCommands()
     {
         if (!hasView())
         {
             return;
         }
 
-        m_view->tick(m_telemetry.delta);
+        std::uint32_t                      index    = m_viewWriteIndex.load(std::memory_order_relaxed);
+        Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
+        commands.clear();
 
         const Vec2& viewSize = m_view->getSize();
 
@@ -329,29 +496,41 @@ namespace Chicane
             }
 
             const Grid::Primitive& primitive = component->getPrimitive();
+            const Grid::Style&     style     = component->getStyle();
 
-            Renderer::DrawPolyData data;
-            data.vertices         = primitive.vertices;
-            data.indices          = primitive.indices;
-            Renderer::Draw::Id id = m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+            Renderer::DrawPoly2DCommand command;
+            command.polygon.vertices  = primitive.vertices;
+            command.polygon.indices   = primitive.indices;
+            command.instance.screen   = viewSize;
+            command.instance.size     = component->getSize();
+            command.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
+            command.textureReference  = style.background.image.get();
+            command.opacity           = style.opacity.get();
+            command.instance.color    = style.background.color.get();
 
-            const Vec2&        position = component->getPosition();
-            const Grid::Style& style    = component->getStyle();
+            commands.emplace_back(std::move(command));
+        }
 
-            const Color::Rgba backgroundColor = style.background.color.get();
+        m_viewReadIndex.store(index, std::memory_order_release);
+        m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);
+    }
 
-            Renderer::DrawPoly2DInstance draw;
-            draw.screen   = viewSize;
-            draw.size     = component->getSize();
-            draw.position = {position.x, position.y, style.zIndex.get()};
-            draw.texture  = m_renderer->findTexture(style.background.image.get());
-            draw.color    = {
-                backgroundColor.r,
-                backgroundColor.g,
-                backgroundColor.b,
-                (draw.texture >= 0 ? 255.0f : backgroundColor.a) * style.opacity.get()
-            };
-            m_renderer->drawPoly(id, draw);
+    void Application::renderView()
+    {
+        if (!hasRenderer())
+        {
+            return;
+        }
+
+        std::uint32_t index = m_viewReadIndex.load(std::memory_order_acquire);
+
+        for (const Renderer::DrawPoly2DCommand& command : m_viewCommandBuffers[index])
+        {
+            Renderer::DrawPoly2DInstance draw = command.instance;
+            draw.texture                      = m_renderer->findTexture(command.textureReference);
+            draw.color.a = (draw.texture > Renderer::Draw::UnknownId ? 255.0f : draw.color.a) * command.opacity;
+
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, command.polygon), draw);
         }
     }
 }

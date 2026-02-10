@@ -1,6 +1,6 @@
-<Asset version="1" id="Wand">
-    <Group>
-        <Model>Contents/Engine/Models/Shape/Cube.bmdl</Model>
-        <Texture>Contents/Engine/Textures/Color/Gray.btex</Texture>
+<Asset version="1" id="Character_Wand">
+    <Group id="Body">
+        <Model>Cube_Body</Model>
+        <Texture>Color_Gray</Texture>
     </Group>
 </Asset>

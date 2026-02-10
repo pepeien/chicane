@@ -17,7 +17,7 @@ namespace Chicane
 
     public:
         // Settings
-        Vec4 clip = Vec4(0.1f, 1000.0f, 0.0f, 0.0f);
+        Vec4 clip = Vec4(0.1f, 100.0f, 0.0f, 0.0f);
 
         // Matrices
         Mat4 view       = Mat4::One;
