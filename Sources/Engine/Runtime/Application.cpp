@@ -24,12 +24,23 @@ namespace Chicane
           m_scene(nullptr),
           m_sceneMutex({}),
           m_sceneThread({}),
+          m_sceneCommandBuffers({}),
+          m_sceneWriteIndex(0),
+          m_sceneReadIndex(1),
           m_sceneObservable({}),
           m_view(nullptr),
+          m_viewMutex({}),
+          m_viewThread({}),
+          m_viewCommandBuffers({}),
+          m_viewWriteIndex(0),
+          m_viewReadIndex(1),
           m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
-    {}
+    {
+        m_sceneCommandBuffers.resize(2);
+        m_viewCommandBuffers.resize(2);
+    }
 
     Application::~Application()
     {}
@@ -295,9 +306,82 @@ namespace Chicane
             }
 
             {
-                std::lock_guard<std::mutex> lock(m_sceneMutex);
-
+                // Tick
                 m_scene->tick(m_telemetry.delta);
+
+                // Render
+                std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
+                Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
+                commands.clear();
+
+                commands.reserve(m_scene->getComponents().size());
+
+                for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
+                {
+                    camera->onResize(m_renderer->getResolution());
+
+                    Renderer::DrawPoly3DCommand command;
+                    command.type   = Renderer::DrawPoly3DCommandType::Camera;
+                    command.camera = camera->getData();
+
+                    commands.emplace_back(std::move(command));
+                }
+
+                for (CLight* light : m_scene->getActiveComponents<CLight>())
+                {
+                    light->onResize(m_renderer->getResolution());
+
+                    Renderer::DrawPoly3DCommand command;
+                    command.type  = Renderer::DrawPoly3DCommandType::Light;
+                    command.light = light->getData();
+
+                    commands.emplace_back(std::move(command));
+                }
+
+                for (ASky* sky : m_scene->getActors<ASky>())
+                {
+                    const Box::Sky* asset = sky->getSky();
+
+                    Renderer::DrawSkyData data;
+                    data.reference = asset->getFilepath().string();
+                    data.model     = asset->getModel();
+
+                    for (Box::SkySide side : Box::Sky::ORDER)
+                    {
+                        data.textures.push_back(asset->getSide(side));
+                    }
+
+                    Renderer::DrawPoly3DCommand command;
+                    command.type = Renderer::DrawPoly3DCommandType::Sky;
+                    command.sky  = data;
+
+                    commands.emplace_back(std::move(command));
+                }
+
+                for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
+                {
+                    if (!mesh->hasMesh())
+                    {
+                        continue;
+                    }
+
+                    Renderer::DrawPoly3DInstance draw;
+                    draw.model = mesh->getTransform().getMatrix();
+
+                    for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+                    {
+                        Renderer::DrawPoly3DCommand command;
+                        command.type             = Renderer::DrawPoly3DCommandType::Mesh;
+                        command.instance         = draw;
+                        command.modelReference   = group.getModel();
+                        command.textureReference = group.getTexture();
+
+                        commands.emplace_back(std::move(command));
+                    }
+                }
+
+                m_sceneReadIndex.store(index, std::memory_order_release);
+                m_sceneWriteIndex.store(1 - index, std::memory_order_relaxed);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -311,54 +395,39 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::mutex> lock(m_sceneMutex);
+        std::uint32_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
-        for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
+        for (const Renderer::DrawPoly3DCommand& commandBuffer : m_sceneCommandBuffers[index])
         {
-            camera->onResize(m_renderer->getResolution());
+            Renderer::DrawPoly3DCommand command = commandBuffer;
 
-            m_renderer->useCamera(camera->getData());
-        }
-
-        for (CLight* light : m_scene->getActiveComponents<CLight>())
-        {
-            light->onResize(m_renderer->getResolution());
-
-            m_renderer->addLight(light->getData());
-        }
-
-        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
-        {
-            if (!mesh->hasMesh())
+            switch (command.type)
             {
-                continue;
+            case Renderer::DrawPoly3DCommandType::Camera:
+                m_renderer->useCamera(command.camera);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Light:
+                m_renderer->addLight(command.light);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Sky:
+                m_renderer->loadSky(command.sky);
+
+                break;
+
+            case Renderer::DrawPoly3DCommandType::Mesh:
+                command.instance.texture = m_renderer->findTexture(command.textureReference);
+
+                m_renderer->drawPoly(Renderer::DrawPolyType::e3D, command.modelReference, command.instance);
+
+                break;
+
+            default:
+                break;
             }
-
-            Renderer::DrawPoly3DInstance draw;
-            draw.model = mesh->getTransform().getMatrix();
-
-            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-            {
-                draw.texture = m_renderer->findTexture(group.getTexture());
-
-                m_renderer->drawPoly(Renderer::DrawPolyType::e3D, group.getModel(), draw);
-            }
-        }
-
-        for (ASky* sky : m_scene->getActors<ASky>())
-        {
-            const Box::Sky* asset = sky->getSky();
-
-            Renderer::DrawSkyData data;
-            data.reference = asset->getFilepath().string();
-            data.model     = asset->getModel();
-
-            for (Box::SkySide side : Box::Sky::ORDER)
-            {
-                data.textures.push_back(asset->getSide(side));
-            }
-
-            m_renderer->loadSky(data);
         }
     }
 
@@ -387,11 +456,13 @@ namespace Chicane
             }
 
             {
-                uint32_t writeIdx  = m_viewWriteIndex.load(std::memory_order_relaxed);
-                auto&    cmdBuffer = m_viewCmdBuffers[writeIdx];
-                cmdBuffer.clear();
-
+                // Tick
                 m_view->tick(m_telemetry.delta);
+
+                // Render
+                std::uint32_t                      index    = m_viewWriteIndex.load(std::memory_order_relaxed);
+                Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
+                commands.clear();
 
                 const Vec2& viewSize = m_view->getSize();
 
@@ -402,26 +473,25 @@ namespace Chicane
                         continue;
                     }
 
-                    DrawCommand2D cmd;
-
                     const Grid::Primitive& primitive = component->getPrimitive();
-                    cmd.polygon.vertices             = primitive.vertices;
-                    cmd.polygon.indices              = primitive.indices;
+                    const Grid::Style&     style     = component->getStyle();
 
-                    const Grid::Style& style = component->getStyle();
-                    cmd.instance.screen      = viewSize;
-                    cmd.instance.size        = component->getSize();
-                    cmd.instance
-                        .position      = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
-                    cmd.textureRef     = style.background.image.get();
-                    cmd.opacity        = style.opacity.get();
-                    cmd.instance.color = style.background.color.get();
+                    Renderer::DrawPoly2DCommand command;
+                    command.polygon.vertices = primitive.vertices;
+                    command.polygon.indices  = primitive.indices;
+                    command.instance.screen  = viewSize;
+                    command.instance.size    = component->getSize();
+                    command.instance
+                        .position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
+                    command.textureReference = style.background.image.get();
+                    command.opacity          = style.opacity.get();
+                    command.instance.color   = style.background.color.get();
 
-                    cmdBuffer.emplace_back(std::move(cmd));
+                    commands.emplace_back(std::move(command));
                 }
 
-                m_viewReadIndex.store(writeIdx, std::memory_order_release);
-                m_viewWriteIndex.store(1 - writeIdx, std::memory_order_relaxed);
+                m_viewReadIndex.store(index, std::memory_order_release);
+                m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -435,16 +505,15 @@ namespace Chicane
             return;
         }
 
-        uint32_t    readIdx   = m_viewReadIndex.load(std::memory_order_acquire);
-        const auto& cmdBuffer = m_viewCmdBuffers[readIdx];
+        std::uint32_t index = m_viewReadIndex.load(std::memory_order_acquire);
 
-        for (const DrawCommand2D& cmd : cmdBuffer)
+        for (const Renderer::DrawPoly2DCommand& command : m_viewCommandBuffers[index])
         {
-            Renderer::DrawPoly2DInstance draw = cmd.instance;
-            draw.texture                      = m_renderer->findTexture(cmd.textureRef);
-            draw.color.a = (draw.texture > Renderer::Draw::UnknownId ? 255.0f : draw.color.a) * cmd.opacity;
+            Renderer::DrawPoly2DInstance draw = command.instance;
+            draw.texture                      = m_renderer->findTexture(command.textureReference);
+            draw.color.a = (draw.texture > Renderer::Draw::UnknownId ? 255.0f : draw.color.a) * command.opacity;
 
-            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, cmd.polygon), draw);
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, command.polygon), draw);
         }
     }
 }
