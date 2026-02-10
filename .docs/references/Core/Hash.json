@@ -1,0 +1,86 @@
+{
+    "title": "Hash",
+    "filename": "Hash",
+    "path": "Core/Hash",
+    "source": {
+        "header": "Includes/Chicane/Core/Hash.hpp",
+        "namespace": "Chicane::Hash",
+        "types": [
+            {
+                "name": "Value",
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_HASH_VALUE_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Value",
+                    "suffix": "",
+                    "path": "Core/Hash",
+                    "templates": []
+                },
+                "name": "generate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDataSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSeed"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSeedSize"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_HASH_GENERATE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_HASH_DESCRIPTION"
+    },
+    "children": []
+}

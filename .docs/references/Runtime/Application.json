@@ -785,10 +785,130 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initSceneThread",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITSCENETHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownSceneThread",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SHUTDOWNSCENETHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tickScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_TICKSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildSceneCommands",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_BUILDSCENECOMMANDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "renderScene",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_RENDERSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initViewThread",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITVIEWTHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownViewThread",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SHUTDOWNVIEWTHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tickView",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_TICKVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildViewCommands",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_BUILDVIEWCOMMANDS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -819,6 +939,27 @@
                 },
                 "name": "m_telemetry",
                 "description": "CHICANE_APPLICATION_M_TELEMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bIsRunning",
+                "description": "CHICANE_APPLICATION_M_BISRUNNING_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -872,6 +1013,95 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_sceneMutex",
+                "description": "CHICANE_APPLICATION_M_SCENEMUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_sceneThread",
+                "description": "CHICANE_APPLICATION_M_SCENETHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly3DCommand::List",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Command",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneCommandBuffers",
+                "description": "CHICANE_APPLICATION_M_SCENECOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneWriteIndex",
+                "description": "CHICANE_APPLICATION_M_SCENEWRITEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneReadIndex",
+                "description": "CHICANE_APPLICATION_M_SCENEREADINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "SceneObservable",
                     "suffix": "",
                     "path": "Runtime/Application",
@@ -900,6 +1130,95 @@
                 },
                 "name": "m_view",
                 "description": "CHICANE_APPLICATION_M_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_viewMutex",
+                "description": "CHICANE_APPLICATION_M_VIEWMUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_viewThread",
+                "description": "CHICANE_APPLICATION_M_VIEWTHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly2DCommand::List",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/2D/Command",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewCommandBuffers",
+                "description": "CHICANE_APPLICATION_M_VIEWCOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewWriteIndex",
+                "description": "CHICANE_APPLICATION_M_VIEWWRITEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewReadIndex",
+                "description": "CHICANE_APPLICATION_M_VIEWREADINDEX_DESCRIPTION"
             },
             {
                 "accessor": "private",

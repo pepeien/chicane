@@ -1,0 +1,125 @@
+{
+    "title": "Timer",
+    "filename": "Timer",
+    "path": "Core/Timer",
+    "source": {
+        "header": "Includes/Chicane/Core/Timer.hpp",
+        "namespace": "Chicane::Timer",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Timer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TIMER_TIMER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "start",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TIMER_START_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "end",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TIMER_END_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Time",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "getDelta",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TIMER_GETDELTA_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTime",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TIMER_ONTIME_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "m_start",
+                "description": "CHICANE_TIMER_M_START_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "m_end",
+                "description": "CHICANE_TIMER_M_END_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TIMER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -619,6 +619,22 @@
                 ]
             },
             {
+                "title": "Hash",
+                "filename": "Hash",
+                "path": "Core/Hash",
+                "source": {
+                    "header": "Includes/Chicane/Core/Hash.hpp",
+                    "namespace": "Chicane::Hash",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
                 "title": "Image",
                 "filename": "Image",
                 "path": "Core/Image",
@@ -1408,22 +1424,6 @@
                 ]
             },
             {
-                "title": "Recorder",
-                "filename": "Recorder",
-                "path": "Core/Recorder",
-                "source": {
-                    "header": "Includes/Chicane/Core/Recorder.hpp",
-                    "namespace": "Chicane::Recorder",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": []
-            },
-            {
                 "title": "Reference",
                 "filename": "Reference",
                 "path": "Core/Reference",
@@ -1472,12 +1472,12 @@
                 "children": []
             },
             {
-                "title": "Thread",
-                "filename": "Thread",
-                "path": "Core/Thread",
+                "title": "Time",
+                "filename": "Time",
+                "path": "Core/Time",
                 "source": {
-                    "header": null,
-                    "namespace": null,
+                    "header": "Includes/Chicane/Core/Time.hpp",
+                    "namespace": "Chicane::Time",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -1485,32 +1485,15 @@
                     "functions": [],
                     "members": []
                 },
-                "children": [
-                    {
-                        "title": "ThreadPool",
-                        "filename": "Pool",
-                        "path": "Core/Thread/Pool",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Thread/Pool.hpp",
-                            "namespace": "Chicane::ThreadPool",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
+                "children": []
             },
             {
-                "title": "Time",
-                "filename": "Time",
-                "path": "Core/Time",
+                "title": "Timer",
+                "filename": "Timer",
+                "path": "Core/Timer",
                 "source": {
-                    "header": "Includes/Chicane/Core/Time.hpp",
-                    "namespace": "Chicane::Time",
+                    "header": "Includes/Chicane/Core/Timer.hpp",
+                    "namespace": "Chicane::Timer",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2347,6 +2330,22 @@
                                 },
                                 "children": [
                                     {
+                                        "title": "DrawPoly2DCommand",
+                                        "filename": "Command",
+                                        "path": "Renderer/Draw/Poly/2D/Command",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Command.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly2DCommand",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    },
+                                    {
                                         "title": "DrawPoly2DInstance",
                                         "filename": "Instance",
                                         "path": "Renderer/Draw/Poly/2D/Instance",
@@ -2379,6 +2378,55 @@
                                     "members": []
                                 },
                                 "children": [
+                                    {
+                                        "title": "DrawPoly3DCommand",
+                                        "filename": "Command",
+                                        "path": "Renderer/Draw/Poly/3D/Command",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly3DCommand",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "DrawPoly3DCommandMesh",
+                                                "filename": "Mesh",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "title": "DrawPoly3DCommandType",
+                                                "filename": "Type",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Type",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandType",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
                                     {
                                         "title": "DrawPoly3DInstance",
                                         "filename": "Instance",

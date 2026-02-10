@@ -1,0 +1,116 @@
+{
+    "title": "DrawPoly3DCommand",
+    "filename": "Command",
+    "path": "Renderer/Draw/Poly/3D/Command",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DCommand",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly3DCommand",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Command",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DCommandType",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Command/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "View",
+                    "suffix": "",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "camera",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_CAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "View",
+                    "suffix": "",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "light",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer::DrawSkyData",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Sky/Data",
+                    "templates": []
+                },
+                "name": "sky",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_SKY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer::DrawPoly3DInstance",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DCommandMesh::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                    "templates": []
+                },
+                "name": "meshes",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_MESHES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_DESCRIPTION"
+    },
+    "children": []
+}

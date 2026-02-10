@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ModelParsed",
+                    "name": "ModelParsed::Map",
                     "suffix": "",
                     "path": "Box/Model/Parsed",
                     "templates": []

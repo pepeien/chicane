@@ -366,7 +366,18 @@
                     "templates": []
                 },
                 "name": "createActor",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
                 "modifiers": [
                     "inline"
                 ],
@@ -567,7 +578,18 @@
                     "templates": []
                 },
                 "name": "createComponent",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
                 "modifiers": [
                     "inline"
                 ],

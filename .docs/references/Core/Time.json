@@ -54,18 +54,36 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::chrono::time_point",
+                            "name": "Clock::duration",
                             "suffix": "&",
                             "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Clock",
-                                    "suffix": "",
-                                    "path": "Core/Time",
-                                    "templates": []
-                                }
-                            ]
+                            "templates": []
+                        },
+                        "name": "inDuration"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TIME_TIME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Time",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Point",
+                            "suffix": "&",
+                            "path": "Core/Time",
+                            "templates": []
                         },
                         "name": "inDuration"
                     }

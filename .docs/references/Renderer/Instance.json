@@ -630,6 +630,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "shutdownBackend",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SHUTDOWNBACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "reloadBackend",
                 "parameters": [
                     {

@@ -1,0 +1,64 @@
+{
+    "title": "DrawPoly3DCommandMesh",
+    "filename": "Mesh",
+    "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly3DCommandMesh",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "model",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_TEXTURE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_DESCRIPTION"
+    },
+    "children": []
+}

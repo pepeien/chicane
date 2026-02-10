@@ -31,6 +31,32 @@
                     ]
                 },
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_MAP_DESCRIPTION"
+            },
+            {
+                "name": "HashTable",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Hash::Value",
+                            "suffix": "",
+                            "path": "Core/Hash",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_HASHTABLE_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -249,6 +275,32 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Hash::Value",
+                    "suffix": "",
+                    "path": "Core/Hash",
+                    "templates": []
+                },
+                "name": "hash",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyData",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Data",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_HASH_DESCRIPTION"
             }
         ],
         "members": [
@@ -290,6 +342,19 @@
                 },
                 "name": "m_indices",
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "HashTable",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Resource",
+                    "templates": []
+                },
+                "name": "m_hashes",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_HASHES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_DESCRIPTION"

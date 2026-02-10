@@ -1,0 +1,73 @@
+{
+    "title": "DrawPoly3DCommandType",
+    "filename": "Type",
+    "path": "Renderer/Draw/Poly/3D/Command/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DCommandType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Camera",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_CAMERA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Light",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_LIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sky",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_SKY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mesh",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_MESH_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTYPE_DESCRIPTION"
+    },
+    "children": []
+}

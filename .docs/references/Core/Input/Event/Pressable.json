@@ -304,6 +304,19 @@
                 },
                 "name": "m_events",
                 "description": "CHICANE_INPUT_PRESSABLEEVENTS_M_EVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Timer",
+                    "suffix": "",
+                    "path": "Core/Timer",
+                    "templates": []
+                },
+                "name": "m_cooldown",
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_M_COOLDOWN_DESCRIPTION"
             }
         ],
         "description": "CHICANE_INPUT_PRESSABLEEVENTS_DESCRIPTION"
