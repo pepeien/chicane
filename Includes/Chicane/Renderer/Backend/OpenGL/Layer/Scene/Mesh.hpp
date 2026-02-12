@@ -15,6 +15,7 @@ namespace Chicane
 
         public:
             bool onInit() override;
+            bool onSetup(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
             void onCleanup() override;
 

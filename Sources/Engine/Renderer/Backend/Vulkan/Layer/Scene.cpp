@@ -40,21 +40,6 @@ namespace Chicane
             }
         }
 
-        bool VulkanLScene::onSetup(const Frame& inFrame)
-        {
-            if (inFrame.getInstances3D().empty())
-            {
-                return false;
-            }
-
-            if (inFrame.get3DDraws().empty())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         void VulkanLScene::buildModelVertexBuffer()
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();

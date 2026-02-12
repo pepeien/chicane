@@ -65,13 +65,13 @@ namespace Chicane
         void Texture::fetchVendor()
         {
             const String value = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-            setVendor(Image::extractVendor(value));
+            m_vendor           = Image::extractVendor(value);
         }
 
         void Texture::fetchData()
         {
             const String& value = getXML().text().as_string();
-            setData(Base64::decodeToUnsigned(value));
+            m_data              = Base64::decodeToUnsigned(value);
         }
     }
 }

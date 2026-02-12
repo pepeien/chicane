@@ -45,12 +45,7 @@ namespace Chicane
 
         bool VulkanLSceneShadow::onSetup(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().empty())
-            {
-                return false;
-            }
-
-            if (inFrame.get3DDraws().empty())
+            if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
                 return false;
             }

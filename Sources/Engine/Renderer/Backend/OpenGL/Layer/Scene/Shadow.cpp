@@ -29,18 +29,18 @@ namespace Chicane
             return true;
         }
 
+        bool OpenGLLSceneShadow::onSetup(const Frame& inFrame)
+        {
+            if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
-            if (inFrame.getInstances3D().empty())
-            {
-                return;
-            }
-
-            if (inFrame.get3DDraws().empty())
-            {
-                return;
-            }
-
             glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
 
             glUseProgram(m_shaderProgram);
