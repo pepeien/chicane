@@ -109,6 +109,34 @@
                 "description": "CHICANE_BOX_ASSETHEADER_GETTYPE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTypeExtension",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetType",
+                            "suffix": "",
+                            "path": "Box/Asset/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPEEXTENSION_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {

@@ -94,32 +94,6 @@
                 "description": "CHICANE_RENDERER_VULKANLSCENE_ONLOAD_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onSetup",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Frame",
-                            "suffix": "&",
-                            "path": "Renderer/Frame",
-                            "templates": []
-                        },
-                        "name": "inFrame"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_ONSETUP_DESCRIPTION"
-            },
-            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {

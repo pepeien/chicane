@@ -113,9 +113,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawTexture::List",
+                            "name": "DrawTextureResource",
                             "suffix": "&",
-                            "path": "Renderer/Draw/Texture",
+                            "path": "Renderer/Draw/Texture/Resource",
                             "templates": []
                         },
                         "name": "inResources"
@@ -411,21 +411,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildFramesCommandBuffers",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDFRAMESCOMMANDBUFFERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "renderViewport",
                 "parameters": [
                     {
@@ -611,19 +596,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "imageCount",
-                "description": "CHICANE_RENDERER_VULKANBACKEND_IMAGECOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "vk::Viewport",
                     "suffix": "",
                     "path": "",
@@ -738,19 +710,6 @@
                 },
                 "name": "m_mainCommandPool",
                 "description": "CHICANE_RENDERER_VULKANBACKEND_M_MAINCOMMANDPOOL_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_currentImageIndex",
-                "description": "CHICANE_RENDERER_VULKANBACKEND_M_CURRENTIMAGEINDEX_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANBACKEND_DESCRIPTION"

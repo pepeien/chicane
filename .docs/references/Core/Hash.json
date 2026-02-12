@@ -37,42 +37,22 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
+                            "name": "Subject",
+                            "suffix": "&",
+                            "path": "Core/Hash/Subject",
                             "templates": []
                         },
                         "name": "inData"
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "std::size_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDataSize"
-                    },
-                    {
-                        "type": {
                             "prefix": "const ",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
+                            "name": "Subject",
+                            "suffix": "&",
+                            "path": "Core/Hash/Subject",
                             "templates": []
                         },
                         "name": "inSeed"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::size_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inSeedSize"
                     }
                 ],
                 "modifiers": [],

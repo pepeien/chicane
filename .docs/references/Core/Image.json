@@ -26,6 +26,17 @@
                 "description": "CHICANE_IMAGE_RAW_DESCRIPTION"
             },
             {
+                "name": "Pixel",
+                "type": {
+                    "prefix": "",
+                    "name": "unsigned char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_IMAGE_PIXEL_DESCRIPTION"
+            },
+            {
                 "name": "Pixels",
                 "type": {
                     "prefix": "",
@@ -105,6 +116,16 @@
                             "templates": []
                         },
                         "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ImageVendor",
+                            "suffix": "",
+                            "path": "Core/Image/Vendor",
+                            "templates": []
+                        },
+                        "name": "inVendor"
                     }
                 ],
                 "modifiers": [],
@@ -170,6 +191,79 @@
             }
         ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ImageVendor",
+                    "suffix": "",
+                    "path": "Core/Image/Vendor",
+                    "templates": []
+                },
+                "name": "extractVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_IMAGE_EXTRACTVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "extractVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ImageVendor",
+                            "suffix": "",
+                            "path": "Core/Image/Vendor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_IMAGE_EXTRACTVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ImageVendor",
+                    "suffix": "",
+                    "path": "Core/Image/Vendor",
+                    "templates": []
+                },
+                "name": "getVendor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_IMAGE_GETVENDOR_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -327,8 +421,8 @@
                     "path": "Core/Image/Vendor",
                     "templates": []
                 },
-                "name": "m_type",
-                "description": "CHICANE_IMAGE_M_TYPE_DESCRIPTION"
+                "name": "m_vendor",
+                "description": "CHICANE_IMAGE_M_VENDOR_DESCRIPTION"
             },
             {
                 "accessor": "protected",

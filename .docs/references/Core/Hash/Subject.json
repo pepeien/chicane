@@ -1,0 +1,44 @@
+{
+    "title": "Subject",
+    "filename": "Subject",
+    "path": "Core/Hash/Subject",
+    "source": {
+        "header": "Includes/Chicane/Core/Hash/Subject.hpp",
+        "namespace": "Chicane::Hash::Subject",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_HASH_SUBJECT_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_HASH_SUBJECT_SIZE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_HASH_SUBJECT_DESCRIPTION"
+    },
+    "children": []
+}

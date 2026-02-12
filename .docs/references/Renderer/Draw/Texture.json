@@ -29,7 +29,26 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawTexture",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Texture",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_DRAWTEXTURE_EMPTY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

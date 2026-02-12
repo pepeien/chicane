@@ -41,12 +41,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
+                            "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/String",
+                            "path": "Core/FileSystem",
                             "templates": []
                         },
-                        "name": "inSound"
+                        "name": "inFilePath"
                     }
                 ],
                 "modifiers": [],

@@ -75,9 +75,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "String",
+                    "name": "AssetReference",
                     "suffix": "&",
-                    "path": "Core/String",
+                    "path": "Box/Asset/Reference",
                     "templates": []
                 },
                 "name": "getModel",
@@ -102,12 +102,48 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESHGROUP_SETMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setModel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "String",
                             "suffix": "&",
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inReference"
                     }
                 ],
                 "modifiers": [],
@@ -118,9 +154,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "String",
+                    "name": "AssetReference",
                     "suffix": "&",
-                    "path": "Core/String",
+                    "path": "Box/Asset/Reference",
                     "templates": []
                 },
                 "name": "getTexture",
@@ -145,12 +181,48 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "String",
                             "suffix": "&",
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inReference"
                     }
                 ],
                 "modifiers": [],
@@ -176,9 +248,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "AssetReference",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Box/Asset/Reference",
                     "templates": []
                 },
                 "name": "m_model",
@@ -189,9 +261,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "AssetReference",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Box/Asset/Reference",
                     "templates": []
                 },
                 "name": "m_texture",

@@ -795,9 +795,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawTexture::List",
+                    "name": "DrawTextureResource",
                     "suffix": "",
-                    "path": "Renderer/Draw/Texture",
+                    "path": "Renderer/Draw/Texture/Resource",
                     "templates": []
                 },
                 "name": "m_textureResources",

@@ -233,9 +233,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawTexture::List",
+                            "name": "DrawTextureResource",
                             "suffix": "&",
-                            "path": "Renderer/Draw/Texture",
+                            "path": "Renderer/Draw/Texture/Resource",
                             "templates": []
                         },
                         "name": "inResources"
@@ -698,9 +698,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawTexture::List",
+                            "name": "DrawTextureResource",
                             "suffix": "&",
-                            "path": "Renderer/Draw/Texture",
+                            "path": "Renderer/Draw/Texture/Resource",
                             "templates": []
                         },
                         "name": "inResources"

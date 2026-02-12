@@ -35,15 +35,28 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "VulkanFrame",
+                            "name": "VulkanSwapchainImage",
                             "suffix": "",
-                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "path": "Renderer/Backend/Vulkan/Swapchain/Image",
                             "templates": []
                         }
                     ]
                 },
-                "name": "frames",
-                "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_FRAMES_DESCRIPTION"
+                "name": "images",
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_IMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "currentImageIndex",
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_CURRENTIMAGEINDEX_DESCRIPTION"
             },
             {
                 "accessor": "public",

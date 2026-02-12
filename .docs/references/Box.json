@@ -226,17 +226,6 @@
                 "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
             },
             {
-                "name": "SkyRawSide",
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "description": "CHICANE_BOX_SKYRAWSIDE_DESCRIPTION"
-            },
-            {
                 "name": "SkyRawSides",
                 "type": {
                     "prefix": "",
@@ -253,9 +242,9 @@
                         },
                         {
                             "prefix": "",
-                            "name": "SkyRawSide",
+                            "name": "AssetReference",
                             "suffix": "",
-                            "path": "Box",
+                            "path": "Box/Asset/Reference",
                             "templates": []
                         }
                     ]
@@ -331,6 +320,68 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadAll",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_LOADALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadAllByExtension",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inExtension"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_LOADALLBYEXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "class Asset",
                     "suffix": "*",
@@ -380,32 +431,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_BOX_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "init",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inPath"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_INIT_DESCRIPTION"
             }
         ],
         "members": [

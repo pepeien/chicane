@@ -46,6 +46,22 @@
                         "children": []
                     },
                     {
+                        "title": "AssetReference",
+                        "filename": "Reference",
+                        "path": "Box/Asset/Reference",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Reference.hpp",
+                            "namespace": "Chicane::Box::AssetReference",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "AssetType",
                         "filename": "Type",
                         "path": "Box/Asset/Type",
@@ -632,7 +648,24 @@
                     "functions": [],
                     "members": []
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Subject",
+                        "filename": "Subject",
+                        "path": "Core/Hash/Subject",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Hash/Subject.hpp",
+                            "namespace": "Chicane::Hash::Subject",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "Image",
@@ -2496,6 +2529,22 @@
                         ]
                     },
                     {
+                        "title": "DrawResource",
+                        "filename": "Resource",
+                        "path": "Renderer/Draw/Resource",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Resource.hpp",
+                            "namespace": "Chicane::Renderer::DrawResource",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "DrawSky",
                         "filename": "Sky",
                         "path": "Renderer/Draw/Sky",
@@ -2566,6 +2615,22 @@
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Texture/Data.hpp",
                                     "namespace": "Chicane::Renderer::DrawTextureData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawTextureResource",
+                                "filename": "Resource",
+                                "path": "Renderer/Draw/Texture/Resource",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Texture/Resource.hpp",
+                                    "namespace": "Chicane::Renderer::DrawTextureResource",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -2905,6 +2970,55 @@
                                 ]
                             },
                             {
+                                "title": "Frame",
+                                "filename": "Frame",
+                                "path": "Renderer/Backend/Vulkan/Frame",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "VulkanFrameCreateInfo",
+                                        "filename": "CreateInfo",
+                                        "path": "Renderer/Backend/Vulkan/Frame/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanFrameCreateInfo",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "VulkanFrameResource",
+                                        "filename": "Resource",
+                                        "path": "Renderer/Backend/Vulkan/Frame/Resource",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanFrameResource",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
                                 "title": "Layer",
                                 "filename": "Layer",
                                 "path": "Renderer/Backend/Vulkan/Layer",
@@ -3001,22 +3115,6 @@
                                         ]
                                     }
                                 ]
-                            },
-                            {
-                                "title": "VulkanBackendData",
-                                "filename": "Data",
-                                "path": "Renderer/Backend/Vulkan/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Data.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanBackendData",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
                             },
                             {
                                 "title": "VulkanBuffer",
@@ -3147,55 +3245,6 @@
                                     "members": []
                                 },
                                 "children": []
-                            },
-                            {
-                                "title": "VulkanFrame",
-                                "filename": "Frame",
-                                "path": "Renderer/Backend/Vulkan/Frame",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanFrame",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": [
-                                    {
-                                        "title": "VulkanFrameCreateInfo",
-                                        "filename": "CreateInfo",
-                                        "path": "Renderer/Backend/Vulkan/Frame/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameCreateInfo",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "VulkanFrameResource",
-                                        "filename": "Resource",
-                                        "path": "Renderer/Backend/Vulkan/Frame/Resource",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameResource",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    }
-                                ]
                             },
                             {
                                 "title": "VulkanGraphicsPipeline",
@@ -3564,6 +3613,22 @@
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp",
                                             "namespace": "Chicane::Renderer::VulkanSwapchainBundle",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "VulkanSwapchainImage",
+                                        "filename": "Image",
+                                        "path": "Renderer/Backend/Vulkan/Swapchain/Image",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanSwapchainImage",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
