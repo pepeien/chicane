@@ -16,6 +16,7 @@ namespace Chicane
         public:
             bool onInit() override;
             void onLoad(const DrawSky& inResource) override;
+            bool onSetup(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
             void onCleanup() override;
 

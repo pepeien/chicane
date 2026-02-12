@@ -7,5 +7,5 @@
         <Texture source="Contents/Engine/Textures/Color/Green.btex">Color_Green</Texture>
         <Texture source="Contents/Engine/Textures/Color/Green.btex">Color_Green</Texture>
     </Textures>
-    <Model source="Contents/Engine/Models/Skybox.bmdl">Skybox_Body</Model>
+    <Model source="Contents/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
 </Asset>

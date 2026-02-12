@@ -56,13 +56,18 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
+        bool OpenGLLSceneSky::onSetup(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
             {
-                return;
+                return false;
             }
 
+            return true;
+        }
+
+        void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
+        {
             glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
 
             glUseProgram(m_shaderProgram);
