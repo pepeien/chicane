@@ -61,6 +61,16 @@ namespace Chicane
             return inNode.attribute(inName.toChar());
         }
 
+        void addAttribute(pugi::xml_node& outNode, const String& inName, const String& inValue)
+        {
+            if (inName.isEmpty())
+            {
+                return;
+            }
+
+            outNode.append_attribute(inName.toChar()).set_value(inValue);
+        }
+
         void addText(pugi::xml_node& outNode, const String& inText)
         {
             if (inText.isEmpty())

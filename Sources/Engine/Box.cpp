@@ -157,7 +157,15 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                return addAsset<Mesh>(inFilePath);
+                const Mesh* asset = addAsset<Mesh>(inFilePath);
+
+                for (const MeshGroup& group : asset->getGroups())
+                {
+                    loadTexture(group.getTexture().getSource());
+                    loadModel(group.getModel().getSource());
+                }
+
+                return asset;
             }
 
             return getAsset<Mesh>(inFilePath);
@@ -172,10 +180,64 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                return addAsset<Sky>(inFilePath);
+                const Sky* asset = addAsset<Sky>(inFilePath);
+
+                for (const AssetReference& texture : asset->getTextures())
+                {
+                    loadTexture(texture.getSource());
+                }
+
+                loadModel(asset->getModel().getSource());
+
+                return asset;
             }
 
             return getAsset<Sky>(inFilePath);
+        }
+
+        void loadAll(const String& inPath)
+        {
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            {
+                if (item.type != FileSystem::ItemType::File)
+                {
+                    loadAll(item.path);
+
+                    continue;
+                }
+
+                if (!AssetHeader::isFileAsset(item.path.toStandard()))
+                {
+                    continue;
+                }
+
+                load(item.path.toStandard());
+            }
+        }
+
+        void loadAllByExtension(const String& inExtension, const String& inPath)
+        {
+            if (inExtension.isEmpty())
+            {
+                return;
+            }
+
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            {
+                if (item.type != FileSystem::ItemType::File)
+                {
+                    loadAllByExtension(inExtension, item.path);
+
+                    continue;
+                }
+
+                if (!item.extension.contains(inExtension))
+                {
+                    continue;
+                }
+
+                load(item.path.toStandard());
+            }
         }
 
         const Asset* load(const FileSystem::Path& inFilePath)
@@ -211,26 +273,6 @@ namespace Chicane
 
             default:
                 return nullptr;
-            }
-        }
-
-        void init(const String& inPath)
-        {
-            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
-            {
-                if (item.type != FileSystem::ItemType::File)
-                {
-                    init(item.path);
-
-                    continue;
-                }
-
-                if (!AssetHeader::isFileAsset(item.path.toStandard()))
-                {
-                    continue;
-                }
-
-                load(item.path.toStandard());
             }
         }
     }

@@ -1,7 +1,6 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp"
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -66,25 +65,29 @@ namespace Chicane
             buildTextureData(inResource);
         }
 
-        void VulkanLSceneSky::onRender(const Frame& inFrame, void* outData)
+        bool VulkanLSceneSky::onSetup(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId || !m_sky)
             {
-                return;
+                return false;
             }
 
+            return true;
+        }
+
+        void VulkanLSceneSky::onRender(const Frame& inFrame, void* inData)
+        {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
             VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
 
-            VulkanBackendData* data          = (VulkanBackendData*)outData;
-            vk::CommandBuffer& commandBuffer = data->commandBuffer;
-            VulkanFrame&       frame         = data->frame;
+            VulkanSwapchainImage image         = *((VulkanSwapchainImage*)inData);
+            vk::CommandBuffer    commandBuffer = image.commandBuffer;
 
             vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass        = m_graphicsPipeline.renderPass;
-            beginInfo.framebuffer       = frame.getFramebuffer(m_id);
-            beginInfo.renderArea.extent = getBackend<VulkanBackend>()->swapchain.extent;
+            beginInfo.framebuffer       = image.getFramebuffer(m_id);
+            beginInfo.renderArea.extent = backend->swapchain.extent;
             beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
             beginInfo.pClearValues      = m_clear.data();
 
@@ -93,7 +96,7 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
 
             // Texture
             m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
@@ -115,6 +118,8 @@ namespace Chicane
 
         void VulkanLSceneSky::initFrameResources()
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
             bidings.count = 1;
 
@@ -124,36 +129,27 @@ namespace Chicane
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            VulkanDescriptorSetLayout::init(
-                m_frameDescriptor.setLayout,
-                getBackend<VulkanBackend>()->logicalDevice,
-                bidings
-            );
+            VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, backend->logicalDevice, bidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets =
-                static_cast<std::uint32_t>(getBackend<VulkanBackend>()->swapchain.frames.size());
+            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->swapchain.images.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
             );
 
-            VulkanDescriptorPool::init(
-                m_frameDescriptor.pool,
-                getBackend<VulkanBackend>()->logicalDevice,
-                descriptorPoolCreateInfo
-            );
+            VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
 
-            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
+            for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
                 vk::DescriptorSet descriptorSet;
 
                 VulkanDescriptorSetLayout::allocate(
                     descriptorSet,
-                    getBackend<VulkanBackend>()->logicalDevice,
+                    backend->logicalDevice,
                     m_frameDescriptor.setLayout,
                     m_frameDescriptor.pool
                 );
-                frame.addDescriptorSet(m_id, descriptorSet);
+                image.addDescriptorSet(m_id, descriptorSet);
 
                 vk::WriteDescriptorSet cameraWriteInfo;
                 cameraWriteInfo.dstSet          = descriptorSet;
@@ -161,15 +157,17 @@ namespace Chicane
                 cameraWriteInfo.dstArrayElement = 0;
                 cameraWriteInfo.descriptorCount = 1;
                 cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
-                frame.addWriteDescriptorSet(cameraWriteInfo);
+                cameraWriteInfo.pBufferInfo     = &image.cameraResource.bufferInfo;
+                image.addWriteDescriptorSet(cameraWriteInfo);
             }
         }
 
         void VulkanLSceneSky::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            backend->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
+            backend->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
         void VulkanLSceneSky::initGraphicsPipeline()
@@ -195,7 +193,7 @@ namespace Chicane
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;
@@ -251,21 +249,25 @@ namespace Chicane
 
         void VulkanLSceneSky::initFramebuffers()
         {
-            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
                 VulkanFrameCreateInfo createInfo;
                 createInfo.id            = m_id;
-                createInfo.logicalDevice = getBackend<VulkanBackend>()->logicalDevice;
+                createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent        = getBackend<VulkanBackend>()->swapchain.extent;
-                createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.extent        = backend->swapchain.extent;
+                createInfo.attachments.push_back(image.colorImage.view);
 
-                frame.addBuffer(createInfo);
+                image.addBuffer(createInfo);
             }
         }
 
         void VulkanLSceneSky::buildTextureDescriptor()
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanDescriptorSetLayoutBidingsCreateInfo layoutBidings;
             layoutBidings.count = 1;
 
@@ -274,31 +276,25 @@ namespace Chicane
             layoutBidings.counts.push_back(1);
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
-            VulkanDescriptorSetLayout::init(
-                m_textureDescriptor.setLayout,
-                getBackend<VulkanBackend>()->logicalDevice,
-                layoutBidings
-            );
+            VulkanDescriptorSetLayout::init(m_textureDescriptor.setLayout, backend->logicalDevice, layoutBidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
             descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 1});
 
-            VulkanDescriptorPool::init(
-                m_textureDescriptor.pool,
-                getBackend<VulkanBackend>()->logicalDevice,
-                descriptorPoolCreateInfo
-            );
+            VulkanDescriptorPool::init(m_textureDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
         }
 
         void VulkanLSceneSky::buildTextureData(const DrawSky& inData)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanSkyCreateInfo createInfo;
             createInfo.images              = {};
-            createInfo.logicalDevice       = getBackend<VulkanBackend>()->logicalDevice;
-            createInfo.physicalDevice      = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.commandBuffer       = getBackend<VulkanBackend>()->mainCommandBuffer;
-            createInfo.queue               = getBackend<VulkanBackend>()->graphicsQueue;
+            createInfo.logicalDevice       = backend->logicalDevice;
+            createInfo.physicalDevice      = backend->physicalDevice;
+            createInfo.commandBuffer       = backend->mainCommandBuffer;
+            createInfo.queue               = backend->graphicsQueue;
             createInfo.descriptorPool      = m_textureDescriptor.pool;
             createInfo.descriptorSetLayout = m_textureDescriptor.setLayout;
 
@@ -313,8 +309,10 @@ namespace Chicane
 
         void VulkanLSceneSky::destroyTextureData()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            backend->logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
+            backend->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
         }
     }
 }

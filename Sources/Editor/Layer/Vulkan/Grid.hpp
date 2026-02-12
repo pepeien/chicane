@@ -2,7 +2,6 @@
 
 #include <vulkan/vulkan.hpp>
 
-#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include <Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp>
 #include <Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp>
 #include <Chicane/Renderer/Layer.hpp>

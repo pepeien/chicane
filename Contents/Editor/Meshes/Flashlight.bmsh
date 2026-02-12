@@ -1,6 +1,6 @@
 <Asset version="1" id="Flashlight">
     <Group id="Body">
-        <Model>Flashlight_Body</Model>
-        <Texture>Color_Gray</Texture>
+        <Model source="Contents/Editor/Models/Flashlight.bmdl">Flashlight_Body</Model>
+        <Texture source="Contents/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
     </Group>
 </Asset>

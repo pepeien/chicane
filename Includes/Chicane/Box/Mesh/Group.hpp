@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Chicane/Box.hpp"
+#include "Chicane/Box/Asset/Reference.hpp"
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
@@ -16,16 +18,18 @@ namespace Chicane
             const String& getId() const;
             void setId(const String& inId);
 
-            const String& getModel() const;
-            void setModel(const String& inFilepath);
+            const AssetReference& getModel() const;
+            void setModel(const pugi::xml_node& inNode);
+            void setModel(const String& inSource, const String& inReference);
 
-            const String& getTexture() const;
-            void setTexture(const String& inFilepath);
+            const AssetReference& getTexture() const;
+            void setTexture(const pugi::xml_node& inNode);
+            void setTexture(const String& inSource, const String& inReference);
 
         private:
-            String m_id      = "";
-            String m_model   = "";
-            String m_texture = "";
+            String         m_id      = "";
+            AssetReference m_model   = {};
+            AssetReference m_texture = {};
         };
     }
 }

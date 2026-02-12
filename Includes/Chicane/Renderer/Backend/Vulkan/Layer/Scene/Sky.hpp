@@ -22,6 +22,7 @@ namespace Chicane
             bool onDestroy() override;
             bool onRebuild() override;
             void onLoad(const DrawSky& inResource) override;
+            bool onSetup(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
 
         private:

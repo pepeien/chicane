@@ -15,6 +15,7 @@ namespace Chicane
         public:
             static bool isFileAsset(const FileSystem::Path& inFilepath);
             static AssetType getType(const FileSystem::Path& inFilepath);
+            static String getTypeExtension(AssetType inType);
 
         public:
             AssetHeader(const FileSystem::Path& inFilepath);

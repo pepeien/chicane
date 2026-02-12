@@ -52,11 +52,13 @@ namespace Chicane
             pugi::xml_node groupNode = root.append_child(GROUP_TAG);
             groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id.toStandard());
 
+            // Model
             pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
-            Xml::addText(modelNode, inGroup.getModel());
+            inGroup.getModel().saveTo(modelNode);
 
+            // Texture
             pugi::xml_node textureNode = groupNode.append_child(Texture::TAG);
-            Xml::addText(textureNode, inGroup.getTexture());
+            inGroup.getTexture().saveTo(textureNode);
         }
 
         void Mesh::updateGroup(const MeshGroup& inGroup)
@@ -91,11 +93,13 @@ namespace Chicane
                 return;
             }
 
+            // Model
             pugi::xml_node modelNode = foundGroupNode.child(Model::TAG);
-            Xml::addText(modelNode, inGroup.getModel());
+            inGroup.getModel().saveTo(modelNode);
 
+            // Texture
             pugi::xml_node textureNode = foundGroupNode.child(Texture::TAG);
-            Xml::addText(textureNode, inGroup.getTexture());
+            inGroup.getTexture().saveTo(textureNode);
         }
 
         void Mesh::fetchGroups()
@@ -122,14 +126,14 @@ namespace Chicane
 
                     if (currentTag.equals(Model::TAG))
                     {
-                        group.setModel(assetNode.child_value());
+                        group.setModel(assetNode);
 
                         continue;
                     }
 
                     if (currentTag.equals(Texture::TAG))
                     {
-                        group.setTexture(assetNode.child_value());
+                        group.setTexture(assetNode);
 
                         continue;
                     }

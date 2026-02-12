@@ -12,7 +12,7 @@ namespace Chicane
         ASound();
 
     public:
-        void load(const String& inSound);
+        void load(const FileSystem::Path& inFilePath);
         void play() const;
 
     protected:

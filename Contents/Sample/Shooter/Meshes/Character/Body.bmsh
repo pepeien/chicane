@@ -1,10 +1,10 @@
 <Asset version="1" id="Character_Body">
     <Group id="Head">
-        <Model>Character_Head</Model>
-        <Texture>Color_Gray</Texture>
+        <Model source="Contents/Sample/Shooter/Models/Character.bmdl">Character_Head</Model>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
     </Group>
     <Group id="Body">
-        <Model>Character_Body</Model>
-        <Texture>Color_Gray</Texture>
+        <Model source="Contents/Sample/Shooter/Models/Character.bmdl">Character_Body</Model>
+        <Texture source="Contents/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
     </Group>
 </Asset>

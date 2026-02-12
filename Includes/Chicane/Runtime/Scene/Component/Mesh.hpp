@@ -19,7 +19,7 @@ namespace Chicane
         bool isDrawable() const;
 
         bool hasMesh() const;
-        void setMesh(const String& inMesh);
+        void setMesh(const FileSystem::Path& inFilePath);
         const Box::Mesh* getMesh() const;
         const String& getModel() const;
         const String& getTexture() const;

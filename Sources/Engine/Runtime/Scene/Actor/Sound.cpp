@@ -12,14 +12,14 @@ namespace Chicane
         m_sound->attachTo(this);
     }
 
-    void ASound::load(const String& inSound)
+    void ASound::load(const FileSystem::Path& inFilePath)
     {
-        if (inSound.isEmpty())
+        if (!m_sound)
         {
             return;
         }
 
-        m_sound->load(inSound);
+        m_sound->load(inFilePath);
     }
 
     void ASound::play() const

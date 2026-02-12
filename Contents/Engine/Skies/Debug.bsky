@@ -1,11 +1,11 @@
 <Asset version="1" id="Debug">
-    <Sides>
-        <Texture side="Left">Debug_Left</Texture>
-        <Texture side="Right">Debug_Right</Texture>
-        <Texture side="Front">Debug_Front</Texture>
-        <Texture side="Back">Debug_Back</Texture>
-        <Texture side="Up">Debug_Up</Texture>
-        <Texture side="Down">Debug_Down</Texture>
-    </Sides>
-    <Model>Skybox_Body</Model>
+    <Textures>
+        <Texture source="Contents/Engine/Textures/Debug/Left.btex">Debug_Left</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Right.btex">Debug_Right</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Front.btex">Debug_Front</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Back.btex">Debug_Back</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Up.btex">Debug_Up</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Down.btex">Debug_Down</Texture>
+    </Textures>
+    <Model source="Contents/Engine/Models/Skybox.bmdl">Skybox_Body</Model>
 </Asset>

@@ -31,14 +31,14 @@ namespace Chicane
         return m_mesh != nullptr;
     }
 
-    void CMesh::setMesh(const String& inMesh)
+    void CMesh::setMesh(const FileSystem::Path& inFilePath)
     {
-        if (inMesh.isEmpty() || hasMesh())
+        if (inFilePath.empty())
         {
             return;
         }
 
-        m_mesh = Box::load<Box::Mesh>(inMesh.toStandard());
+        m_mesh = Box::load<Box::Mesh>(inFilePath);
 
         generateBounds();
     }
@@ -59,7 +59,7 @@ namespace Chicane
 
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::ModelParsed& model = manager->get(group.getModel());
+            const Box::ModelParsed& model = manager->get(group.getModel().getReference());
 
             const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
 
