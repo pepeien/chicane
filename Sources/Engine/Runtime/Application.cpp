@@ -7,9 +7,6 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
-#include "Chicane/Core/Log.hpp"
-#include "Chicane/Core/Timer.hpp"
-
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -19,8 +16,6 @@
 
 namespace Chicane
 {
-    static Timer timer;
-
     Application::Application()
         : m_telemetry({}),
           m_bIsRunning(false),

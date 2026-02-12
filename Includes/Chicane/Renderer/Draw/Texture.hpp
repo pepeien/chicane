@@ -17,6 +17,14 @@ namespace Chicane
             using List = std::vector<DrawTexture>;
 
         public:
+            static const DrawTexture& empty()
+            {
+                static const DrawTexture result;
+
+                return result;
+            }
+
+        public:
             Image image = {};
         };
     }

@@ -9,6 +9,7 @@
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
+#include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Layer/Status.hpp"
 
@@ -43,7 +44,7 @@ namespace Chicane
             inline virtual bool onRebuild() { return true; }
             inline virtual void onResize(const Vec<2, std::uint32_t>& inResolution) { return; }
             inline virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
-            inline virtual void onLoad(const DrawTexture::List& inResources) { return; }
+            inline virtual void onLoad(const DrawTextureResource& inResources) { return; }
             inline virtual void onLoad(const DrawSky& inResource) { return; }
             inline virtual bool onSetup(const F& inFrame) { return true; }
             inline virtual void onRender(const F& inFrame, void* inData = nullptr) { return; }
@@ -117,7 +118,7 @@ namespace Chicane
                 onLoad(inType, inResource);
             }
 
-            inline void load(const DrawTexture::List& inResources)
+            inline void load(const DrawTextureResource& inResources)
             {
                 if (is(LayerStatus::Offline))
                 {

@@ -8,9 +8,9 @@ namespace Chicane
 {
     namespace Hash
     {
-        Value generate(const void* inData, std::size_t inDataSize, const void* inSeed, std::size_t inSeedSize)
+        Value generate(const Subject& inData, const Subject& inSeed)
         {
-            return XXH3_64bits_withSeed(inData, inDataSize, XXH3_64bits(inSeed, inSeedSize));
+            return XXH3_64bits_withSeed(inData.data, inData.size, XXH3_64bits(inSeed.data, inSeed.size));
         }
     }
 }

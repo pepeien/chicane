@@ -8,6 +8,7 @@
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
+#include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
@@ -63,7 +64,7 @@ namespace Chicane
                 }
             }
 
-            inline virtual void onLoad(const DrawTexture::List& inResources)
+            inline virtual void onLoad(const DrawTextureResource& inResources)
             {
                 for (Layer<F>* layer : m_layers)
                 {

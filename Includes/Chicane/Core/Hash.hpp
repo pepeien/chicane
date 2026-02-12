@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Hash/Subject.hpp"
 
 namespace Chicane
 {
@@ -10,6 +11,6 @@ namespace Chicane
     {
         typedef typename std::uint64_t Value;
 
-        Value generate(const void* inData, std::size_t inDataSize, const void* inSeed, std::size_t inSeedSize);
+        Value generate(const Subject& inData, const Subject& inSeed);
     }
 }

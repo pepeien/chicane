@@ -14,10 +14,11 @@
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
-#include "Chicane/Renderer/Draw/Texture/Data.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
-#include "Chicane/Renderer/Draw/Sky/Data.hpp"
+#include "Chicane/Renderer/Draw/Texture/Data.hpp"
+#include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
+#include "Chicane/Renderer/Draw/Sky/Data.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
@@ -120,7 +121,7 @@ namespace Chicane
 
             // Draw
             DrawPolyResource::Map      m_polyResources;
-            DrawTexture::List          m_textureResources;
+            DrawTextureResource        m_textureResources;
             DrawSky                    m_skyResource;
 
             // Backend

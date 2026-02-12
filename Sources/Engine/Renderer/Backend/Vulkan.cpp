@@ -80,9 +80,11 @@ namespace Chicane
             Backend::onResize(inResolution);
         }
 
-        void VulkanBackend::onLoad(const DrawTexture::List& inResources)
+        void VulkanBackend::onLoad(const DrawTextureResource& inResources)
         {
-            buildTextureData(inResources);
+            buildTextureData(inResources.getDraws());
+
+            Backend::onLoad(inResources);
         }
 
         void VulkanBackend::onRender(const Frame& inFrame)
