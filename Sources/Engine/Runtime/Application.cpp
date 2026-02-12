@@ -7,8 +7,6 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -275,7 +273,7 @@ namespace Chicane
             }
         );
 
-        Box::init();
+        Box::loadAllByExtension(Box::AssetHeader::getTypeExtension(Box::AssetType::Font));
     }
 
     void Application::initKerb()
@@ -358,11 +356,11 @@ namespace Chicane
 
             Renderer::DrawSkyData data;
             data.reference = asset->getFilepath().string();
-            data.model     = asset->getModel();
+            data.model     = asset->getModel().getReference();
 
-            for (Box::SkySide side : Box::Sky::ORDER)
+            for (const Box::AssetReference& texture : asset->getTextures())
             {
-                data.textures.push_back(asset->getSide(side));
+                data.textures.push_back(texture.getReference());
             }
 
             Renderer::DrawPoly3DCommand command;
@@ -385,7 +383,9 @@ namespace Chicane
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                command.meshes.push_back({.model = group.getModel(), .texture = group.getTexture()});
+                command.meshes.push_back(
+                    {.model = group.getModel().getReference(), .texture = group.getTexture().getReference()}
+                );
             }
 
             commands.emplace_back(std::move(command));

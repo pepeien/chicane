@@ -12,12 +12,17 @@ namespace Chicane
     {
     public:
         using Raw    = std::vector<unsigned char>;
+        using Pixel  = unsigned char;
         using Pixels = unsigned char*;
         using List   = std::vector<Image>;
 
     public:
+        static ImageVendor extractVendor(const String& inValue);
+        static String extractVendor(ImageVendor inValue);
+
+    public:
         Image(const FileSystem::Path& inFilepath);
-        Image(const Raw& inData);
+        Image(const Raw& inData, ImageVendor inVendor);
         Image();
 
         Image(const Image& inInstance);
@@ -25,6 +30,8 @@ namespace Chicane
         virtual ~Image();
 
     public:
+        ImageVendor getVendor() const;
+
         int getWidth() const;
         int getHeight() const;
         int getChannel() const;
@@ -37,7 +44,7 @@ namespace Chicane
         void rotate(float inAngle);
 
     protected:
-        ImageVendor m_type;
+        ImageVendor m_vendor;
 
         int         m_width;
         int         m_height;

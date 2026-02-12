@@ -7,10 +7,9 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
 
 namespace Chicane
@@ -26,7 +25,7 @@ namespace Chicane
         protected:
             void onInit() override;
             void onResize(const Vec<2, std::uint32_t>& inResolution) override;
-            void onLoad(const DrawTexture::List& inResources) override;
+            void onLoad(const DrawTextureResource& inResources) override;
             void onRender(const Frame& inFrame) override;
 
             void onHandle(const WindowEvent& inEvent) override;
@@ -54,7 +53,6 @@ namespace Chicane
             void destroyCommandPool();
 
             void buildMainCommandBuffer();
-            void buildFramesCommandBuffers();
 
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
@@ -84,9 +82,6 @@ namespace Chicane
             // Swap Chain
             VulkanSwapchainBundle                       swapchain;
 
-            // Frame
-            int                                         imageCount;
-
             // Viewport
             vk::Viewport                                viewport;
             vk::Rect2D                                  scissor;
@@ -107,9 +102,6 @@ namespace Chicane
 
             // Command
             vk::CommandPool                   m_mainCommandPool;
-
-            // Frame
-            int                               m_currentImageIndex;
         };
     }
 }

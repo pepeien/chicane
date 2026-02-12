@@ -52,12 +52,7 @@ namespace Chicane
 
         bool OpenGLLGrid::onSetup(const Frame& inFrame)
         {
-            if (inFrame.getInstances2D().empty())
-            {
-                return false;
-            }
-
-            if (inFrame.get2DDraws().empty())
+            if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
             {
                 return false;
             }

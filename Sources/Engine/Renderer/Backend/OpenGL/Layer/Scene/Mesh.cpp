@@ -24,18 +24,18 @@ namespace Chicane
             return true;
         }
 
+        bool OpenGLLSceneMesh::onSetup(const Frame& inFrame)
+        {
+            if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
-            if (inFrame.getInstances3D().empty())
-            {
-                return;
-            }
-
-            if (inFrame.get3DDraws().empty())
-            {
-                return;
-            }
-
             glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
 
             glUseProgram(m_shaderProgram);

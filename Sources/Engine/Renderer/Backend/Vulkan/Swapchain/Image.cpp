@@ -1,38 +1,65 @@
-#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 
+#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
-#include "Chicane/Runtime/Scene/Component/Light.hpp"
-#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
-        void VulkanFrame::wait()
+        void VulkanSwapchainImage::init()
         {
-            vk::Result result = logicalDevice.waitForFences(1, &renderFence, VK_TRUE, UINT64_MAX);
+            setupSync();
 
+            setupCameraData();
+            setupLightData();
+            setup2DData();
+            setup3DData();
+        }
+
+        void VulkanSwapchainImage::wait()
+        {
+            vk::Result result = logicalDevice.waitForFences(1, &fence, VK_TRUE, UINT64_MAX);
             if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
             {
                 throw std::runtime_error("Error while waiting the fences");
             }
-        }
 
-        void VulkanFrame::reset()
-        {
-            vk::Result result = logicalDevice.resetFences(1, &renderFence);
-
+            result = logicalDevice.resetFences(1, &fence);
             if (result != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Error while resetting the fences");
             }
+
+            commandBuffer.reset();
         }
 
-        void VulkanFrame::destroy()
+        vk::ResultValue<std::uint32_t> VulkanSwapchainImage::acquire(const vk::SwapchainKHR& inSwapchain)
+        {
+            return logicalDevice.acquireNextImageKHR(inSwapchain, UINT64_MAX, imageAvailableSemaphore, nullptr);
+        }
+
+        void VulkanSwapchainImage::begin(const Frame& inFrame)
+        {
+            updateCameraData(inFrame.getCamera());
+            updateLightData(inFrame.getLights());
+            update2DData(inFrame.getInstances2D());
+            update3DData(inFrame.getInstances3D());
+
+            vk::CommandBufferBeginInfo commandBufferBegin;
+            commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+            commandBuffer.begin(commandBufferBegin);
+        }
+
+        void VulkanSwapchainImage::end()
+        {
+            commandBuffer.end();
+        }
+
+        void VulkanSwapchainImage::destroy()
         {
             for (auto& [id, frambuffer] : framebuffers)
             {
@@ -49,7 +76,12 @@ namespace Chicane
             destroySync();
         }
 
-        void VulkanFrame::addBuffer(const VulkanFrameCreateInfo& inCreateInfo)
+        void VulkanSwapchainImage::setupCommandBuffer(const vk::CommandPool& inPool)
+        {
+            VulkanCommandBuffer::init(commandBuffer, {logicalDevice, inPool});
+        }
+
+        void VulkanSwapchainImage::addBuffer(const VulkanFrameCreateInfo& inCreateInfo)
         {
             vk::FramebufferCreateInfo framebufferInfo;
             framebufferInfo.renderPass      = inCreateInfo.renderPass;
@@ -60,24 +92,24 @@ namespace Chicane
             framebufferInfo.layers          = 1;
 
             vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
-            addFrameBuffer(inCreateInfo.id, frameBuffer);
+            addFramebuffer(inCreateInfo.id, frameBuffer);
         }
 
-        void VulkanFrame::setupSync()
+        void VulkanSwapchainImage::setupSync()
         {
-            VulkanSync::initSempahore(presentSemaphore, logicalDevice);
-            VulkanSync::initSempahore(renderSemaphore, logicalDevice);
-            VulkanSync::initFence(renderFence, logicalDevice);
+            VulkanSync::initSempahore(imageAvailableSemaphore, logicalDevice);
+            VulkanSync::initSempahore(renderFinishedSemaphore, logicalDevice);
+            VulkanSync::initFence(fence, logicalDevice);
         }
 
-        void VulkanFrame::destroySync()
+        void VulkanSwapchainImage::destroySync()
         {
-            logicalDevice.destroyFence(renderFence);
-            logicalDevice.destroySemaphore(presentSemaphore);
-            logicalDevice.destroySemaphore(renderSemaphore);
+            logicalDevice.destroyFence(fence);
+            logicalDevice.destroySemaphore(imageAvailableSemaphore);
+            logicalDevice.destroySemaphore(renderFinishedSemaphore);
         }
 
-        void VulkanFrame::setupCameraData()
+        void VulkanSwapchainImage::setupCameraData()
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
@@ -90,25 +122,20 @@ namespace Chicane
             cameraResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::updateCameraData(const View& inData)
+        void VulkanSwapchainImage::updateCameraData(const View& inData)
         {
-            if (cameraResource.isEmpty())
-            {
-                setupCameraData();
-            }
-
             View data = inData;
             data.flipY();
 
             cameraResource.copyToBuffer(&data, sizeof(View));
         }
 
-        void VulkanFrame::destroyCameraData()
+        void VulkanSwapchainImage::destroyCameraData()
         {
             cameraResource.destroy(logicalDevice);
         }
 
-        void VulkanFrame::setupLightData()
+        void VulkanSwapchainImage::setupLightData()
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
@@ -121,18 +148,11 @@ namespace Chicane
             lightResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::updateLightData(const View::List& inData)
+        void VulkanSwapchainImage::updateLightData(const View::List& inData)
         {
             if (inData.empty())
             {
-                destroyLightData();
-
                 return;
-            }
-
-            if (lightResource.isEmpty())
-            {
-                setupLightData();
             }
 
             View data = inData.at(0);
@@ -141,12 +161,12 @@ namespace Chicane
             lightResource.copyToBuffer(&data, sizeof(View));
         }
 
-        void VulkanFrame::destroyLightData()
+        void VulkanSwapchainImage::destroyLightData()
         {
             lightResource.destroy(logicalDevice);
         }
 
-        void VulkanFrame::setup2DData()
+        void VulkanSwapchainImage::setup2DData()
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
@@ -159,29 +179,22 @@ namespace Chicane
             poly2DResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::update2DData(const DrawPoly2DInstance::List& inData)
+        void VulkanSwapchainImage::update2DData(const DrawPoly2DInstance::List& inData)
         {
             if (inData.empty())
             {
-                destroy2DData();
-
                 return;
-            }
-
-            if (poly2DResource.isEmpty())
-            {
-                setup2DData();
             }
 
             poly2DResource.copyToBuffer(inData.data(), sizeof(DrawPoly2DInstance) * inData.size());
         }
 
-        void VulkanFrame::destroy2DData()
+        void VulkanSwapchainImage::destroy2DData()
         {
             poly2DResource.destroy(logicalDevice);
         }
 
-        void VulkanFrame::setup3DData()
+        void VulkanSwapchainImage::setup3DData()
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
@@ -194,29 +207,22 @@ namespace Chicane
             poly3DResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::update3DData(const DrawPoly3DInstance::List& inData)
+        void VulkanSwapchainImage::update3DData(const DrawPoly3DInstance::List& inData)
         {
             if (inData.empty())
             {
-                destroy3DData();
-
                 return;
-            }
-
-            if (poly3DResource.isEmpty())
-            {
-                setup3DData();
             }
 
             poly3DResource.copyToBuffer(inData.data(), sizeof(DrawPoly3DInstance) * inData.size());
         }
 
-        void VulkanFrame::destroy3DData()
+        void VulkanSwapchainImage::destroy3DData()
         {
             poly3DResource.destroy(logicalDevice);
         }
 
-        void VulkanFrame::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+        void VulkanSwapchainImage::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)
         {
             colorImage.format = inFormat;
             colorImage.extent = inExtent;
@@ -230,12 +236,12 @@ namespace Chicane
             VulkanImage::initView(colorImage.view, colorImage.instance, viewCreateInfo);
         }
 
-        void VulkanFrame::destroyColorImage()
+        void VulkanSwapchainImage::destroyColorImage()
         {
             logicalDevice.destroyImageView(colorImage.view);
         }
 
-        void VulkanFrame::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+        void VulkanSwapchainImage::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)
         {
             depthImage.format = inFormat;
             depthImage.extent = inExtent;
@@ -286,7 +292,7 @@ namespace Chicane
             VulkanImage::initView(depthImage.view, depthImage.instance, viewCreateInfo);
         }
 
-        void VulkanFrame::destroyDepthImage()
+        void VulkanSwapchainImage::destroyDepthImage()
         {
             logicalDevice.freeMemory(depthImage.memory);
             logicalDevice.destroyImage(depthImage.instance);
@@ -294,7 +300,7 @@ namespace Chicane
             logicalDevice.destroySampler(depthImage.sampler);
         }
 
-        void VulkanFrame::setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+        void VulkanSwapchainImage::setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent)
         {
             shadowImage.format = inFormat;
             shadowImage.extent = inExtent;
@@ -350,7 +356,7 @@ namespace Chicane
             shadowImageInfo.sampler     = shadowImage.sampler;
         }
 
-        void VulkanFrame::destroyShadowImage()
+        void VulkanSwapchainImage::destroyShadowImage()
         {
             logicalDevice.freeMemory(shadowImage.memory);
             logicalDevice.destroyImage(shadowImage.instance);
@@ -358,7 +364,7 @@ namespace Chicane
             logicalDevice.destroySampler(shadowImage.sampler);
         }
 
-        void VulkanFrame::addFrameBuffer(const String& inId, const vk::Framebuffer& inFramebuffer)
+        void VulkanSwapchainImage::addFramebuffer(const String& inId, const vk::Framebuffer& inFramebuffer)
         {
             if (framebuffers.find(inId) != framebuffers.end())
             {
@@ -368,12 +374,12 @@ namespace Chicane
             framebuffers.insert(std::make_pair(inId, inFramebuffer));
         }
 
-        vk::Framebuffer VulkanFrame::getFramebuffer(const String& inId) const
+        vk::Framebuffer VulkanSwapchainImage::getFramebuffer(const String& inId) const
         {
             return framebuffers.at(inId);
         }
 
-        void VulkanFrame::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)
+        void VulkanSwapchainImage::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)
         {
             if (descriptorSets.find(inId) != descriptorSets.end())
             {
@@ -383,17 +389,19 @@ namespace Chicane
             descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
         }
 
-        vk::DescriptorSet VulkanFrame::getDescriptorSet(const String& inId) const
+        vk::DescriptorSet VulkanSwapchainImage::getDescriptorSet(const String& inId) const
         {
             return descriptorSets.at(inId);
         }
 
-        void VulkanFrame::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
+        void VulkanSwapchainImage::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
         {
             descriptorSetWrites.push_back(inWriteDescriptorSet);
+
+            updateDescriptorSets();
         }
 
-        void VulkanFrame::updateDescriptorSets()
+        void VulkanSwapchainImage::updateDescriptorSets()
         {
             if (descriptorSetWrites.empty())
             {

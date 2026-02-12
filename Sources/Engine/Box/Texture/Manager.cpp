@@ -10,7 +10,7 @@ namespace Chicane
 
         void TextureManager::onLoad(const String& inId, const Texture& inData)
         {
-            add(inId, Image(inData.getData()));
+            add(inId, Image(inData.getData(), inData.getVendor()));
         }
     }
 }

@@ -1,6 +1,6 @@
 <Asset version="1" id="Suzanne">
     <Group id="Body">
-        <Model>Suzanne_Body</Model>
-        <Texture>Color_Gray</Texture>
+        <Model source="Contents/Engine/Models/Suzanne.bmdl">Suzanne_Body</Model>
+        <Texture source="Contents/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
     </Group>
 </Asset>

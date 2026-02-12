@@ -40,26 +40,13 @@ namespace Chicane
             }
         }
 
-        bool VulkanLScene::onSetup(const Frame& inFrame)
-        {
-            if (inFrame.getInstances3D().empty())
-            {
-                return false;
-            }
-
-            if (inFrame.get3DDraws().empty())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         void VulkanLScene::buildModelVertexBuffer()
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
             createInfo.size           = sizeof(Vertex) * 2000000;
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -69,9 +56,11 @@ namespace Chicane
 
         void VulkanLScene::buildModelVertexData(const Vertex::List& inVertices)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
             createInfo.size           = sizeof(Vertex) * inVertices.size();
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties =
@@ -80,25 +69,21 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation =
-                getBackend<VulkanBackend>()->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation = backend->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inVertices.data(), createInfo.size);
-            getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
+            backend->logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            stagingBuffer.copy(
-                modelVertexBuffer,
-                createInfo.size,
-                getBackend<VulkanBackend>()->graphicsQueue,
-                getBackend<VulkanBackend>()->mainCommandBuffer
-            );
-            stagingBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+            stagingBuffer.copy(modelVertexBuffer, createInfo.size, backend->graphicsQueue, backend->mainCommandBuffer);
+            stagingBuffer.destroy(backend->logicalDevice);
         }
 
         void VulkanLScene::buildModelIndexBuffer()
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice   = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.logicalDevice    = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.physicalDevice   = backend->physicalDevice;
+            createInfo.logicalDevice    = backend->logicalDevice;
             createInfo.size             = sizeof(Vertex::Index) * 2000000;
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -108,9 +93,11 @@ namespace Chicane
 
         void VulkanLScene::buildModelIndexData(const Vertex::Indices& inIndices)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
             createInfo.size           = sizeof(Vertex::Index) * inIndices.size();
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties =
@@ -119,36 +106,32 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation =
-                getBackend<VulkanBackend>()->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation = backend->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inIndices.data(), createInfo.size);
-            getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
+            backend->logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            stagingBuffer.copy(
-                modelIndexBuffer,
-                createInfo.size,
-                getBackend<VulkanBackend>()->graphicsQueue,
-                getBackend<VulkanBackend>()->mainCommandBuffer
-            );
-            stagingBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+            stagingBuffer.copy(modelIndexBuffer, createInfo.size, backend->graphicsQueue, backend->mainCommandBuffer);
+            stagingBuffer.destroy(backend->logicalDevice);
         }
 
         void VulkanLScene::destroyModelData()
         {
-            getBackend<VulkanBackend>()->logicalDevice.waitIdle();
+            VulkanBackend* backend = getBackend<VulkanBackend>();
 
-            modelVertexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
-            modelIndexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+            modelVertexBuffer.destroy(backend->logicalDevice);
+            modelIndexBuffer.destroy(backend->logicalDevice);
         }
 
         void VulkanLScene::buildLayers()
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            getBackend<VulkanBackend>()->addLayer<VulkanLSceneSky>(settings);
-            getBackend<VulkanBackend>()->addLayer<VulkanLSceneShadow>(settings);
-            getBackend<VulkanBackend>()->addLayer<VulkanLSceneMesh>(settings);
+            backend->addLayer<VulkanLSceneSky>(settings);
+            backend->addLayer<VulkanLSceneShadow>(settings);
+            backend->addLayer<VulkanLSceneMesh>(settings);
         }
     }
 }

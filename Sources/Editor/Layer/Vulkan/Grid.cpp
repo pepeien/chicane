@@ -1,7 +1,6 @@
 #include "Layer/Vulkan/Grid.hpp"
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -46,13 +45,12 @@ namespace Editor
     {
         Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
 
-        Chicane::Renderer::VulkanBackendData* data          = (Chicane::Renderer::VulkanBackendData*)inData;
-        vk::CommandBuffer&                    commandBuffer = data->commandBuffer;
-        Chicane::Renderer::VulkanFrame&       frame         = data->frame;
+        Chicane::Renderer::VulkanSwapchainImage image         = *((Chicane::Renderer::VulkanSwapchainImage*)inData);
+        vk::CommandBuffer                       commandBuffer = image.commandBuffer;
 
         vk::RenderPassBeginInfo beginInfo = {};
         beginInfo.renderPass              = m_graphicsPipeline.renderPass;
-        beginInfo.framebuffer             = frame.getFramebuffer(m_id);
+        beginInfo.framebuffer             = image.getFramebuffer(m_id);
         beginInfo.renderArea.extent       = backend->swapchain.extent;
         beginInfo.clearValueCount         = static_cast<std::uint32_t>(m_clear.size());
         beginInfo.pClearValues            = m_clear.data();
@@ -63,7 +61,7 @@ namespace Editor
         m_graphicsPipeline.bind(commandBuffer);
 
         // Frame
-        m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+        m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
 
         // Draw
         commandBuffer.draw(6, 1, 0, 0);
@@ -73,6 +71,8 @@ namespace Editor
 
     void VulkanLGrid::initFrameResources()
     {
+        Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
+
         Chicane::Renderer::VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
         bidings.count = 1;
 
@@ -84,34 +84,33 @@ namespace Editor
 
         Chicane::Renderer::VulkanDescriptorSetLayout::init(
             m_frameDescriptor.setLayout,
-            getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice,
+            backend->logicalDevice,
             bidings
         );
 
         Chicane::Renderer::VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.maxSets =
-            static_cast<std::uint32_t>(getBackend<Chicane::Renderer::VulkanBackend>()->swapchain.frames.size());
+        descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->swapchain.images.size());
         descriptorPoolCreateInfo.sizes.push_back(
             {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
         );
 
         Chicane::Renderer::VulkanDescriptorPool::init(
             m_frameDescriptor.pool,
-            getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice,
+            backend->logicalDevice,
             descriptorPoolCreateInfo
         );
 
-        for (Chicane::Renderer::VulkanFrame& frame : getBackend<Chicane::Renderer::VulkanBackend>()->swapchain.frames)
+        for (Chicane::Renderer::VulkanSwapchainImage& image : backend->swapchain.images)
         {
             vk::DescriptorSet descriptorSet;
 
             Chicane::Renderer::VulkanDescriptorSetLayout::allocate(
                 descriptorSet,
-                getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice,
+                backend->logicalDevice,
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
-            frame.addDescriptorSet(m_id, descriptorSet);
+            image.addDescriptorSet(m_id, descriptorSet);
 
             vk::WriteDescriptorSet cameraWriteInfo;
             cameraWriteInfo.dstSet          = descriptorSet;
@@ -119,17 +118,17 @@ namespace Editor
             cameraWriteInfo.dstArrayElement = 0;
             cameraWriteInfo.descriptorCount = 1;
             cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
-            frame.addWriteDescriptorSet(cameraWriteInfo);
+            cameraWriteInfo.pBufferInfo     = &image.cameraResource.bufferInfo;
+            image.addWriteDescriptorSet(cameraWriteInfo);
         }
     }
 
     void VulkanLGrid::destroyFrameResources()
     {
-        getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-            m_frameDescriptor.setLayout
-        );
-        getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
+        Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
+
+        backend->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
+        backend->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
     }
 
     void VulkanLGrid::initGraphicsPipeline()
@@ -164,8 +163,8 @@ namespace Editor
         colorAttachment.samples       = vk::SampleCountFlagBits::e1;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-        colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
-        colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
+        colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+        colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
         vk::AttachmentReference colorReference;
         colorReference.attachment = 0;
@@ -243,17 +242,19 @@ namespace Editor
 
     void VulkanLGrid::initFramebuffers()
     {
-        for (Chicane::Renderer::VulkanFrame& frame : getBackend<Chicane::Renderer::VulkanBackend>()->swapchain.frames)
+        Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
+
+        for (Chicane::Renderer::VulkanSwapchainImage& image : backend->swapchain.images)
         {
             Chicane::Renderer::VulkanFrameCreateInfo createInfo;
             createInfo.id            = m_id;
-            createInfo.logicalDevice = getBackend<Chicane::Renderer::VulkanBackend>()->logicalDevice;
+            createInfo.logicalDevice = backend->logicalDevice;
             createInfo.renderPass    = m_graphicsPipeline.renderPass;
-            createInfo.extent        = getBackend<Chicane::Renderer::VulkanBackend>()->swapchain.extent;
-            createInfo.attachments.push_back(frame.colorImage.view);
-            createInfo.attachments.push_back(frame.depthImage.view);
+            createInfo.extent        = backend->swapchain.extent;
+            createInfo.attachments.push_back(image.colorImage.view);
+            createInfo.attachments.push_back(image.depthImage.view);
 
-            frame.addBuffer(createInfo);
+            image.addBuffer(createInfo);
         }
     }
 }

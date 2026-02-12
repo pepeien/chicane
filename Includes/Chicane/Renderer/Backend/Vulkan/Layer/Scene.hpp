@@ -19,7 +19,6 @@ namespace Chicane
         protected:
             bool onInit() override;
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
-            bool onSetup(const Frame& inFrame) override;
 
         private:
             // Model

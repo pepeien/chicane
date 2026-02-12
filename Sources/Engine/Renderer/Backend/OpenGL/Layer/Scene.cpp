@@ -57,7 +57,7 @@ namespace Chicane
 
         bool OpenGLLScene::onSetup(const Frame& inFrame)
         {
-            if (inFrame.get3DDraws().empty() && inFrame.getSkyInstance().model.id == Draw::UnknownId)
+            if (inFrame.get3DDraws().empty() && inFrame.getInstances3D().empty() && inFrame.getLights().empty())
             {
                 return false;
             }

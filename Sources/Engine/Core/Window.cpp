@@ -390,11 +390,6 @@ namespace Chicane
 
     void Window::setBackend(WindowBackend inBackend)
     {
-        if (m_settings.backend == inBackend)
-        {
-            return;
-        }
-
         m_settings.backend = inBackend;
 
         if (!hasInstance())

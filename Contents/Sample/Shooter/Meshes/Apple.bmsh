@@ -1,6 +1,6 @@
 <Asset version="1" id="Apple">
     <Group id="Body">
-        <Model>Apple_Body</Model>
-        <Texture>Apple</Texture>
+        <Model source="Contents/Sample/Shooter/Models/Apple.bmdl">Apple_Body</Model>
+        <Texture source="Contents/Sample/Shooter/Textures/Apple.btex">Apple</Texture>
     </Group>
 </Asset>

@@ -22,8 +22,6 @@ namespace Chicane
         VulkanBackend::VulkanBackend()
             : Backend<Frame>(),
               swapchain({}),
-              imageCount(0),
-              m_currentImageIndex(0),
               viewport({}),
               scissor(vk::Rect2D())
         {}
@@ -56,10 +54,9 @@ namespace Chicane
             buildSurface();
             buildDevices();
             buildQueues();
-            buildSwapchain();
             buildCommandPool();
+            buildSwapchain();
             buildMainCommandBuffer();
-            buildFramesCommandBuffers();
             buildTextureDescriptor();
             buildLayers();
 
@@ -83,91 +80,73 @@ namespace Chicane
             Backend::onResize(inResolution);
         }
 
-        void VulkanBackend::onLoad(const DrawTexture::List& inResources)
+        void VulkanBackend::onLoad(const DrawTextureResource& inResources)
         {
-            buildTextureData(inResources);
+            buildTextureData(inResources.getDraws());
+
+            Backend::onLoad(inResources);
         }
 
         void VulkanBackend::onRender(const Frame& inFrame)
         {
-            VulkanFrame& lastFrame = swapchain.frames.at(m_currentImageIndex);
-            lastFrame.wait();
+            VulkanSwapchainImage& liveImage = swapchain.images.at(swapchain.currentImageIndex);
+            liveImage.wait();
 
-            vk::ResultValue<std::uint32_t> acquireResult =
-                logicalDevice.acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
-
-            if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
+            vk::ResultValue<std::uint32_t> acquire = liveImage.acquire(swapchain.instance);
+            if (acquire.result == vk::Result::eErrorOutOfDateKHR)
             {
                 rebuildSwapchain();
 
                 return;
             }
-            else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
+            else if (acquire.result != vk::Result::eSuccess && acquire.result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            lastFrame.reset();
-
-            std::uint32_t frameIndex = acquireResult.value;
-            VulkanFrame&  frame      = swapchain.frames.at(frameIndex);
-
-            frame.updateCameraData(inFrame.getCamera());
-            frame.updateLightData(inFrame.getLights());
-            frame.update2DData(inFrame.getInstances2D());
-            frame.update3DData(inFrame.getInstances3D());
-            frame.updateDescriptorSets();
-
-            vk::CommandBufferBeginInfo commandBufferBegin;
-            commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
-
-            VulkanBackendData data;
-            data.frame         = frame;
-            data.commandBuffer = lastFrame.commandBuffer;
-
-            lastFrame.commandBuffer.reset();
-            lastFrame.commandBuffer.begin(commandBufferBegin);
-            renderViewport(data.commandBuffer);
-            renderLayers(inFrame, &data);
-            lastFrame.commandBuffer.end();
+            VulkanSwapchainImage& nextImage = swapchain.images.at(acquire.value);
+            nextImage.begin(inFrame);
+            renderViewport(nextImage.commandBuffer);
+            renderLayers(inFrame, &nextImage);
+            nextImage.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
-            vk::SubmitInfo submitInfo       = {};
+            vk::SubmitInfo submitInfo;
             submitInfo.waitSemaphoreCount   = 1;
-            submitInfo.pWaitSemaphores      = &lastFrame.presentSemaphore;
-            submitInfo.commandBufferCount   = 1;
-            submitInfo.pCommandBuffers      = &lastFrame.commandBuffer;
-            submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores    = &lastFrame.renderSemaphore;
+            submitInfo.pWaitSemaphores      = &liveImage.imageAvailableSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
+            submitInfo.commandBufferCount   = 1;
+            submitInfo.pCommandBuffers      = &nextImage.commandBuffer;
+            submitInfo.signalSemaphoreCount = 1;
+            submitInfo.pSignalSemaphores    = &nextImage.renderFinishedSemaphore;
 
-            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, lastFrame.renderFence);
-
-            if (submitResult != vk::Result::eSuccess)
+            vk::Result submit = graphicsQueue.submit(1, &submitInfo, liveImage.fence);
+            if (submit != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Error while submiting the next image");
             }
 
             vk::PresentInfoKHR presentInfo = {};
             presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores    = &lastFrame.renderSemaphore;
+            presentInfo.pWaitSemaphores    = &nextImage.renderFinishedSemaphore;
             presentInfo.swapchainCount     = 1;
             presentInfo.pSwapchains        = &swapchain.instance;
-            presentInfo.pImageIndices      = &frameIndex;
+            presentInfo.pImageIndices      = &acquire.value;
 
-            vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
-
-            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
+            vk::Result present = m_presentQueue.presentKHR(presentInfo);
+            if (present == vk::Result::eErrorOutOfDateKHR || present == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
+
+                return;
             }
-            else if (presentResult != vk::Result::eSuccess)
+            else if (present != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Error while presenting the image");
             }
 
-            m_currentImageIndex = (m_currentImageIndex + 1) % imageCount;
+            swapchain.currentImageIndex = (swapchain.currentImageIndex + 1) % swapchain.images.size();
         }
 
         void VulkanBackend::onHandle(const WindowEvent& inEvent)
@@ -231,28 +210,28 @@ namespace Chicane
         {
             VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
 
-            imageCount = static_cast<int>(swapchain.frames.size());
-
-            for (VulkanFrame& frame : swapchain.frames)
+            for (VulkanSwapchainImage& image : swapchain.images)
             {
-                // Images
-                frame.setupColorImage(swapchain.colorFormat, swapchain.extent);
-                frame.setupDepthImage(swapchain.depthFormat, swapchain.extent);
-                frame.setupShadowImage(swapchain.depthFormat, swapchain.extent);
+                image.init();
 
-                // Sync
-                frame.setupSync();
+                // Commandbuffer
+                image.setupCommandBuffer(m_mainCommandPool);
+
+                // Images
+                image.setupColorImage(swapchain.colorFormat, swapchain.extent);
+                image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
+                image.setupShadowImage(swapchain.depthFormat, swapchain.extent);
             }
         }
 
         void VulkanBackend::destroySwapchain()
         {
-            for (VulkanFrame& frame : swapchain.frames)
+            for (VulkanSwapchainImage& image : swapchain.images)
             {
-                frame.destroy();
+                image.destroy();
             }
 
-            swapchain.frames.clear();
+            swapchain.images.clear();
 
             logicalDevice.destroySwapchainKHR(swapchain.instance);
 
@@ -271,8 +250,6 @@ namespace Chicane
             destroySwapchain();
             buildSwapchain();
 
-            buildFramesCommandBuffers();
-
             rebuildLayers();
         }
 
@@ -290,16 +267,6 @@ namespace Chicane
         {
             VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
             VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
-        }
-
-        void VulkanBackend::buildFramesCommandBuffers()
-        {
-            VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
-
-            for (VulkanFrame& frame : swapchain.frames)
-            {
-                VulkanCommandBuffer::init(frame.commandBuffer, createInfo);
-            }
         }
 
         void VulkanBackend::renderViewport(const vk::CommandBuffer& inCommandBuffer)

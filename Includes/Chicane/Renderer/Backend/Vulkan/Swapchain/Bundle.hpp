@@ -3,7 +3,7 @@
 #include <vulkan/vulkan.hpp>
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 
 namespace Chicane
 {
@@ -12,11 +12,12 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanSwapchainBundle
         {
         public:
-            vk::SwapchainKHR         instance;
-            std::vector<VulkanFrame> frames;
-            vk::Format               colorFormat;
-            vk::Format               depthFormat;
-            vk::Extent2D             extent;
+            vk::SwapchainKHR                  instance;
+            std::vector<VulkanSwapchainImage> images;
+            std::uint32_t                     currentImageIndex;
+            vk::Format                        colorFormat;
+            vk::Format                        depthFormat;
+            vk::Extent2D                      extent;
         };
     }
 }

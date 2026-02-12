@@ -19,6 +19,7 @@ namespace Chicane
             bool onInit() override;
             bool onDestroy() override;
             bool onRebuild() override;
+            bool onSetup(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData = nullptr) override;
 
         private:

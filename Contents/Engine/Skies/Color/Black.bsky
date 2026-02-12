@@ -1,11 +1,11 @@
 <Asset version="1" id="Black">
-    <Sides>
-        <Texture side="Left">Color_Black</Texture>
-        <Texture side="Right">Color_Black</Texture>
-        <Texture side="Front">Color_Black</Texture>
-        <Texture side="Back">Color_Black</Texture>
-        <Texture side="Up">Color_Black</Texture>
-        <Texture side="Down">Color_Black</Texture>
-    </Sides>
-    <Model>Skybox_Body</Model>
+    <Textures>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+        <Texture source="Contents/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+    </Textures>
+    <Model source="Contents/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
 </Asset>

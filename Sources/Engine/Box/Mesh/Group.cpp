@@ -6,8 +6,7 @@ namespace Chicane
     {
         bool MeshGroup::isValid() const
         {
-            return !m_id.isEmpty() && FileSystem::exists(m_model.toStandard()) &&
-                   FileSystem::exists(m_texture.toStandard());
+            return !m_id.isEmpty() && m_model.isValid() && m_texture.isValid();
         }
 
         const String& MeshGroup::getId() const
@@ -20,34 +19,36 @@ namespace Chicane
             m_id = inId;
         }
 
-        const String& MeshGroup::getModel() const
+        const AssetReference& MeshGroup::getModel() const
         {
             return m_model;
         }
 
-        void MeshGroup::setModel(const String& inFilepath)
+        void MeshGroup::setModel(const pugi::xml_node& inNode)
         {
-            if (inFilepath.isEmpty())
-            {
-                return;
-            }
-
-            m_model = inFilepath.trim();
+            m_model.setFrom(inNode);
         }
 
-        const String& MeshGroup::getTexture() const
+        void MeshGroup::setModel(const String& inSource, const String& inReference)
+        {
+            m_model.setSource(inSource.toStandard());
+            m_model.setReference(inReference);
+        }
+
+        const AssetReference& MeshGroup::getTexture() const
         {
             return m_texture;
         }
 
-        void MeshGroup::setTexture(const String& inFilepath)
+        void MeshGroup::setTexture(const pugi::xml_node& inNode)
         {
-            if (inFilepath.isEmpty())
-            {
-                return;
-            }
+            m_texture.setFrom(inNode);
+        }
 
-            m_texture = inFilepath.trim();
+        void MeshGroup::setTexture(const String& inSource, const String& inReference)
+        {
+            m_texture.setSource(inSource.toStandard());
+            m_texture.setReference(inReference);
         }
     }
 }

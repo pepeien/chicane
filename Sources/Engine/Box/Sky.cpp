@@ -14,125 +14,81 @@ namespace Chicane
         Sky::Sky(const FileSystem::Path& inFilepath)
             : Asset(inFilepath)
         {
-            fetchSides();
+            fetchTextures();
             fetchModel();
         }
 
-        const SkyRawSides& Sky::getSides() const
+        const AssetReference::List& Sky::getTextures() const
         {
-            return m_sides;
+            return m_textures;
         }
 
-        const String& Sky::getSide(SkySide inSide) const
+        void Sky::addTexture(const String& inSource, const String& inReference)
         {
-            if (m_sides.find(inSide) == m_sides.end())
+            pugi::xml_node textures = getXML().child(TEXTURES_TAG);
+
+            if (textures.empty())
             {
-                throw std::runtime_error("Cubemap side not found");
+                textures = getXML().append_child(TEXTURES_TAG);
             }
 
-            return m_sides.at(inSide);
+            pugi::xml_node node = textures.append_child(Texture::TAG);
+
+            AssetReference texture;
+            texture.setSource(inSource.toStandard());
+            texture.setReference(inReference);
+            texture.saveTo(node);
+
+            m_textures.push_back(texture);
         }
 
-        void Sky::setSide(SkySide inSide, const SkyRawSide& inFilepath)
-        {
-            if (inFilepath.isEmpty())
-            {
-                return;
-            }
-
-            const String filepath = inFilepath.trim();
-
-            if (!FileSystem::exists(filepath.toStandard()))
-            {
-                throw std::runtime_error("The texture " + filepath + " doesn't exist");
-            }
-
-            m_sides[inSide] = filepath;
-
-            auto side = std::find_if(
-                SIDE_MAP.begin(),
-                SIDE_MAP.end(),
-                [inSide](const auto& inPair) { return inPair.second == inSide; }
-            );
-
-            if (side == SIDE_MAP.end())
-            {
-                return;
-            }
-
-            String sideID = side->first;
-
-            pugi::xml_node sideNode = getXML().find_child_by_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME, sideID.toChar());
-
-            if (Xml::isEmpty(sideNode))
-            {
-                sideNode = getXML().append_child(Texture::TAG);
-                sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.toChar());
-            }
-
-            sideNode.text().set(filepath);
-        }
-
-        const String& Sky::getModel() const
+        const AssetReference& Sky::getModel() const
         {
             return m_model;
         }
 
-        void Sky::setModel(const String& inModel)
+        void Sky::setModel(const String& inSource, const String& inReference)
         {
-            m_model = inModel;
-        }
+            pugi::xml_node model = getXML().child(Model::TAG);
 
-        SkySide Sky::getSideFromString(const String& inValue) const
-        {
-            String value = inValue;
-            std::transform(value.begin(), value.end(), value.begin(), ::toupper);
-
-            if (SIDE_MAP.find(value) == SIDE_MAP.end())
+            if (model.empty())
             {
-                return SkySide::Front;
+                model = getXML().append_child(Model::TAG);
             }
 
-            return SIDE_MAP.at(value);
+            m_model.setSource(inSource.toStandard());
+            m_model.setReference(inReference);
+            m_model.saveTo(model);
         }
 
-        void Sky::fetchSides()
+        void Sky::fetchTextures()
         {
-            if (getFilepath().empty() || isEmpty())
-            {
-                m_sides.clear();
+            const pugi::xml_node textures = getXML().child(TEXTURES_TAG);
 
+            if (textures.empty())
+            {
                 return;
             }
 
-            const auto& root = getXML();
-
-            for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
+            for (const pugi::xml_node& node : textures.children(Texture::TAG))
             {
-                SkySide side = getSideFromString(Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture).as_string());
+                AssetReference texture;
+                texture.setFrom(node);
 
-                if (m_sides.find(side) != m_sides.end())
-                {
-                    throw std::runtime_error("There are duplicated sides inside the " + m_header.id + " cube map");
-                }
-
-                const String textureName = texture.child_value();
-
-                m_sides.insert(std::make_pair(side, textureName.trim()));
-            }
-
-            if (m_sides.size() < SIDE_MAP.size())
-            {
-                throw std::runtime_error("The sky " + m_header.id + " have insuficient sides");
+                m_textures.push_back(texture);
             }
         }
 
         void Sky::fetchModel()
         {
-            const auto& model = getXML().child(Model::TAG);
+            const pugi::xml_node node = getXML().child(Model::TAG);
 
-            m_model = model.child_value();
-            m_model = m_model.trim();
+            if (node.empty())
+            {
+                return;
+            }
+
+            m_model.setFrom(node);
         }
     }
 }

@@ -41,6 +41,21 @@ namespace Chicane
             return TYPES.at(inFilepath.extension().string());
         }
 
+        String AssetHeader::getTypeExtension(AssetType inType)
+        {
+            for (const auto& [extension, type] : TYPES)
+            {
+                if (type != inType)
+                {
+                    continue;
+                }
+
+                return extension;
+            }
+
+            return "";
+        }
+
         AssetHeader::AssetHeader(const FileSystem::Path& inFilepath)
             : AssetHeader()
         {

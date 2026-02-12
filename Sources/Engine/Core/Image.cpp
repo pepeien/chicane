@@ -1,14 +1,66 @@
 #include "Chicane/Core/Image.hpp"
 
+#include <unordered_map>
+
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 namespace Chicane
 {
+    static std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
+        {".jpg",  ImageVendor::Jpg},
+        {".jpeg", ImageVendor::Jpg},
+        {".png",  ImageVendor::Png}
+    };
+
+    ImageVendor Image::extractVendor(const String& inValue)
+    {
+        if (inValue.isEmpty())
+        {
+            return ImageVendor::Undefined;
+        }
+
+        const String value = inValue.toLower();
+
+        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
+        {
+            if (!extension.contains(value))
+            {
+                continue;
+            }
+
+            return vendor;
+        }
+
+        return ImageVendor::Undefined;
+    }
+
+    String Image::extractVendor(ImageVendor inValue)
+    {
+        if (inValue == ImageVendor::Undefined)
+        {
+            return "";
+        }
+
+        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
+        {
+            if (vendor != inValue)
+            {
+                continue;
+            }
+
+            return extension.toUpper().filter(".");
+        }
+
+        return "";
+    }
+
     Image::Image(const FileSystem::Path& inFilepath)
         : Image()
     {
+        m_vendor = extractVendor(inFilepath.extension());
+
         m_format = STBI_rgb_alpha;
 
         m_pixels = stbi_load(inFilepath.string().c_str(), &m_width, &m_height, &m_channel, m_format);
@@ -19,9 +71,11 @@ namespace Chicane
         }
     }
 
-    Image::Image(const Raw& inData)
+    Image::Image(const Raw& inData, ImageVendor inVendor)
         : Image()
     {
+        m_vendor = inVendor;
+
         m_format = STBI_rgb_alpha;
 
         m_pixels = stbi_load_from_memory(
@@ -40,7 +94,8 @@ namespace Chicane
     }
 
     Image::Image()
-        : m_width(0),
+        : m_vendor(ImageVendor::Undefined),
+          m_width(0),
           m_height(0),
           m_channel(0),
           m_format(0),
@@ -67,6 +122,11 @@ namespace Chicane
         stbi_image_free(m_pixels);
 
         m_pixels = nullptr;
+    }
+
+    ImageVendor Image::getVendor() const
+    {
+        return m_vendor;
     }
 
     int Image::getWidth() const

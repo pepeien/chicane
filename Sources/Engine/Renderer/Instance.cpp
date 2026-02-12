@@ -36,6 +36,23 @@ namespace Chicane
                 return;
             }
 
+            for (auto& [type, resource] : m_polyResources)
+            {
+                if (resource.isDirty())
+                {
+                    m_backend->onLoad(type, resource);
+
+                    resource.markAsClean();
+                }
+            }
+
+            if (m_textureResources.isDirty())
+            {
+                m_backend->onLoad(m_textureResources);
+
+                m_textureResources.markAsClean();
+            }
+
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
@@ -76,58 +93,17 @@ namespace Chicane
 
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
         {
-            const Draw::Id id = getPolyResource(inType).add(inData);
-
-            if (hasBackend())
-            {
-                m_backend->onLoad(inType, getPolyResource(inType));
-            }
-
-            return id;
+            return getPolyResource(inType).add(inData);
         }
 
         Draw::Id Instance::findTexture(const Draw::Reference& inReference)
         {
-            const auto& found = std::find_if(
-                m_textureResources.begin(),
-                m_textureResources.end(),
-                [inReference](const DrawTexture& inTexture) { return inTexture.reference.equals(inReference); }
-            );
-
-            if (found == m_textureResources.end())
-            {
-                return Draw::UnknownId;
-            }
-
-            return found->id;
+            return m_textureResources.findId(inReference);
         }
 
         Draw::Id Instance::loadTexture(const DrawTextureData& inData)
         {
-            const auto& found = std::find_if(
-                m_textureResources.begin(),
-                m_textureResources.end(),
-                [inData](const DrawTexture& inTexture) { return inTexture.reference.equals(inData.reference); }
-            );
-
-            if (found != m_textureResources.end())
-            {
-                return found->id;
-            }
-
-            DrawTexture texture;
-            texture.id        = m_textureResources.size();
-            texture.reference = inData.reference;
-            texture.image     = inData.image;
-
-            m_textureResources.push_back(texture);
-
-            if (hasBackend())
-            {
-                m_backend->onLoad(m_textureResources);
-            }
-
-            return texture.id;
+            return m_textureResources.add(inData);
         }
 
         Draw::Id Instance::findSky(const Draw::Reference& inReference)
@@ -148,18 +124,7 @@ namespace Chicane
 
             for (const Draw::Reference& texture : inData.textures)
             {
-                const auto& found = std::find_if(
-                    m_textureResources.begin(),
-                    m_textureResources.end(),
-                    [texture](const DrawTexture& resource) { return resource.reference.equals(texture); }
-                );
-
-                if (found == m_textureResources.end())
-                {
-                    return Draw::UnknownId;
-                }
-
-                sky.textures.push_back(*found);
+                sky.textures.push_back(m_textureResources.getDraw(texture));
             }
 
             sky.textures.at(0).image.rotate(-90.0f);  // Right

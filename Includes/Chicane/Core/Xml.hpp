@@ -21,6 +21,7 @@ namespace Chicane
 
         CHICANE_CORE Attribute getAttributes(const pugi::xml_node& inNode);
         CHICANE_CORE pugi::xml_attribute getAttribute(const String& inName, const pugi::xml_node& inNode);
+        CHICANE_CORE void addAttribute(pugi::xml_node& outNode, const String& inName, const String& inValue);
 
         CHICANE_CORE void addText(pugi::xml_node& outNode, const String& inText);
     }

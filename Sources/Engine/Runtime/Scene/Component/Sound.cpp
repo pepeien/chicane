@@ -9,14 +9,14 @@ namespace Chicane
           m_sound({})
     {}
 
-    void CSound::load(const String& inSound)
+    void CSound::load(const FileSystem::Path& inFilePath)
     {
-        if (inSound.isEmpty())
+        if (inFilePath.empty())
         {
             return;
         }
 
-        m_sound.setData(Box::getSoundManager()->get(inSound));
+        m_sound.setData(Box::load<Box::Sound>(inFilePath)->getData());
     }
 
     void CSound::play()

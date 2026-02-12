@@ -26,14 +26,12 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::findId(const DrawPolyData& inData)
         {
-            auto it = m_hashes.find(hash(inData));
-
-            if (it != m_hashes.end())
-            {
-                return it->second;
-            }
-
-            return Draw::UnknownId;
+            return findHash(
+                inData.indices.data(),
+                inData.indices.size() * sizeof(Vertex::Index),
+                inData.vertices.data(),
+                inData.vertices.size() * sizeof(Vertex)
+            );
         }
 
         Draw::Id DrawPolyResource::findId(const Draw::Reference& inReference)
@@ -102,7 +100,13 @@ namespace Chicane
             m_indices.reserve(m_indices.size() + inData.indices.size());
             m_indices.insert(m_indices.end(), inData.indices.begin(), inData.indices.end());
 
-            m_hashes.emplace(hash(inData), draw.id);
+            addHash(
+                inData.indices.data(),
+                inData.indices.size() * sizeof(Vertex::Index),
+                inData.vertices.data(),
+                inData.vertices.size() * sizeof(Vertex),
+                draw.id
+            );
 
             return draw.id;
         }
@@ -110,19 +114,9 @@ namespace Chicane
         void DrawPolyResource::reset()
         {
             m_draws.clear();
-            m_hashes.clear();
             m_vertices.clear();
             m_indices.clear();
-        }
-
-        Hash::Value DrawPolyResource::hash(const DrawPolyData& inData)
-        {
-            return Hash::generate(
-                (void*)inData.indices.data(),
-                inData.indices.size() * sizeof(Vertex::Index),
-                (void*)inData.vertices.data(),
-                inData.vertices.size() * sizeof(Vertex)
-            );
+            clearHashes();
         }
     }
 }

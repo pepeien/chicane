@@ -137,15 +137,17 @@ namespace Chicane
                 outSwapChain.extent      = extent;
 
                 std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(outSwapChain.instance);
-                outSwapChain.frames.resize(images.size());
+                outSwapChain.images.resize(images.size());
 
                 for (int i = 0; i < images.size(); i++)
                 {
-                    VulkanFrame& frame        = outSwapChain.frames[i];
-                    frame.physicalDevice      = inPhysicalDevice;
-                    frame.logicalDevice       = inLogicalDevice;
-                    frame.colorImage.instance = images[i];
+                    VulkanSwapchainImage& image = outSwapChain.images[i];
+                    image.physicalDevice        = inPhysicalDevice;
+                    image.logicalDevice         = inLogicalDevice;
+                    image.colorImage.instance   = images[i];
                 }
+
+                outSwapChain.currentImageIndex = 0U;
             }
         }
     }

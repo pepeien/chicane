@@ -41,14 +41,14 @@ namespace Chicane
             Backend::onInit();
         }
 
-        void OpenGLBackend::onLoad(const DrawTexture::List& inResources)
+        void OpenGLBackend::onLoad(const DrawTextureResource& inResources)
         {
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
             GLubyte zero[4] = {0, 0, 0, 0};
             glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, zero);
 
-            for (const DrawTexture& texture : inResources)
+            for (const DrawTexture& texture : inResources.getDraws())
             {
                 glTextureSubImage3D(
                     m_texturesBuffer,

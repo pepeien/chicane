@@ -1,8 +1,5 @@
 #include "Chicane/Box/Texture.hpp"
 
-#include <algorithm>
-#include <unordered_map>
-
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -10,11 +7,6 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, ImageVendor> VENDOR_MAP{
-            {"JPG", ImageVendor::Jpg},
-            {"PNG", ImageVendor::Png},
-        };
-
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
               m_vendor(ImageVendor::Undefined)
@@ -32,29 +24,18 @@ namespace Chicane
         {
             m_vendor = inVendor;
 
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
-            );
-
-            if (vendor == VENDOR_MAP.end())
-            {
-                return;
-            }
-
-            String vendorID = vendor->first;
+            String vendorValue = Image::extractVendor(m_vendor);
 
             pugi::xml_node root = getXML();
 
             if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
             {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorValue.toChar());
 
                 return;
             }
 
-            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorValue.toChar());
         }
 
         const Image::Raw& Texture::getData() const
@@ -66,6 +47,8 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath.toStandard()))
             {
+                m_data.clear();
+
                 return;
             }
 
@@ -74,11 +57,6 @@ namespace Chicane
 
         void Texture::setData(const Image::Raw& inData)
         {
-            if (inData.empty())
-            {
-                return;
-            }
-
             m_data = inData;
 
             getXML().text().set(Base64::encode(inData));
@@ -86,31 +64,14 @@ namespace Chicane
 
         void Texture::fetchVendor()
         {
-            if (getFilepath().empty() || isEmpty())
-            {
-                return;
-            }
-
-            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-
-            if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
-            {
-                m_vendor = ImageVendor::Undefined;
-
-                return;
-            }
-
-            m_vendor = VENDOR_MAP.at(vendor);
+            const String value = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
+            m_vendor           = Image::extractVendor(value);
         }
 
         void Texture::fetchData()
         {
-            if (getFilepath().empty() || isEmpty())
-            {
-                return;
-            }
-
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            const String& value = getXML().text().as_string();
+            m_data              = Base64::decodeToUnsigned(value);
         }
     }
 }
