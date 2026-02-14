@@ -5,7 +5,6 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Style/File.hpp"
 
 namespace Chicane
 {
@@ -21,23 +20,11 @@ namespace Chicane
         public:
             View(const String& inSource);
 
-        protected:
-            virtual void onActivation() { return; }
-            virtual void onDeactivation() { return; }
-
-        protected:
-            void onAdopted(Component* inChild) override;
-
         public:
-            // Lifecycle
-            void activate();
-            void deactivate();
-
             // Window
             void setWindow(Window* inWindow);
 
             // Children
-            std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
             std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
 
             // Styling

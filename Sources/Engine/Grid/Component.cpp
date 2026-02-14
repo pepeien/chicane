@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include "Chicane/Grid.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -17,9 +15,9 @@ namespace Chicane
         }
 
         Component::Component(const String& inTag)
-            : Changeable(),
-              m_tag(inTag),
+            : m_tag(inTag),
               m_style({}),
+              m_styleFile(nullptr),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
@@ -170,6 +168,18 @@ namespace Chicane
             return m_style;
         }
 
+        void Component::setStyle(const StyleFile* inSource)
+        {
+            m_styleFile = inSource;
+
+            if (!m_styleFile)
+            {
+                return;
+            }
+
+            setStyle(m_styleFile->getRulesets());
+        }
+
         void Component::setStyle(const StyleRuleset::List& inSources)
         {
             if (inSources.empty())
@@ -286,8 +296,6 @@ namespace Chicane
             }
 
             m_references.insert(std::make_pair(inId, inReference));
-
-            emmitChanges();
         }
 
         void Component::removeReference(const String& inId)
@@ -298,8 +306,6 @@ namespace Chicane
             }
 
             m_references.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
@@ -345,8 +351,6 @@ namespace Chicane
             }
 
             m_functions.insert(std::make_pair(inId, inFunction));
-
-            emmitChanges();
         }
 
         void Component::removeFunction(const String& inId)
@@ -357,8 +361,6 @@ namespace Chicane
             }
 
             m_functions.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasRoot() const
@@ -378,7 +380,7 @@ namespace Chicane
                 return;
             }
 
-            setValue(m_root, inComponent);
+            m_root = inComponent;
 
             for (Component* child : m_children)
             {
@@ -501,6 +503,7 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
+            inComponent->setStyle(m_styleFile);
 
             m_children.push_back(inComponent);
 
@@ -524,7 +527,8 @@ namespace Chicane
 
         void Component::setSize(float inWidth, float inHeight)
         {
-            setValue(m_size, {inWidth, inHeight});
+            m_size.x = inWidth;
+            m_size.y = inHeight;
         }
 
         const Vec2& Component::getPosition() const
@@ -549,7 +553,8 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            setValue(m_position, {inX, inY});
+            m_position.x = inX;
+            m_position.y = inY;
 
             setCursor(m_position);
         }
@@ -576,7 +581,8 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            setValue(m_cursor, {inX, inY});
+            m_cursor.x = inX;
+            m_cursor.y = inY;
         }
 
         const Bounds2D& Component::getBounds() const
@@ -596,12 +602,12 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            setValue(m_primitive, {});
+            m_primitive = {};
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
         {
-            setValue(m_primitive, inPrimitive);
+            m_primitive = inPrimitive;
         }
 
         void Component::refreshStyle()

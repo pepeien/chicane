@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
@@ -13,12 +12,13 @@
 #include "Chicane/Grid/Function/Data.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/Style/File.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE_GRID Component : public Changeable
+        class CHICANE_GRID Component
         {
         public:
             using Compiler = std::function<Component*(const pugi::xml_node& inNode)>;
@@ -39,7 +39,6 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
 
-        public:
         protected:
             // Lifescycle Events
             virtual void onEvent(const WindowEvent& inEvent) { return; }
@@ -80,7 +79,7 @@ namespace Chicane
 
             // Style
             const Style& getStyle() const;
-            void setStyle(const StyleFlex& inSource);
+            void setStyle(const StyleFile* inSource);
             void setStyle(const StyleRuleset::List& inSources);
             void setStyle(const StyleRuleset::Properties& inSource);
 
@@ -133,6 +132,7 @@ namespace Chicane
             void setCursor(const Vec2& inCursor);
             void setCursor(float inX, float inY);
 
+            // Collision
             const Bounds2D& getBounds() const;
 
             // Draw
@@ -157,24 +157,35 @@ namespace Chicane
             FunctionData parseFunction(const String& inRefValue) const;
 
         protected:
+            // Identification
             String                  m_tag;
-            Style                   m_style;
 
+            // Style
+            Style                   m_style;
+            const StyleFile*        m_styleFile;
+
+            // References
             Reference::Map          m_references;
             Functions               m_functions;
 
+            // Hierarchy
             Component*              m_root;
             Component*              m_parent;
             std::vector<Component*> m_children;
 
+            // Position
             Vec2                    m_size;
             Vec2                    m_position;
             Vec2                    m_cursor;
+
+            // Collision
             Bounds2D                m_bounds;
 
-            Xml::Attributes         m_attributes;
-
+            // Draw
             Primitive               m_primitive;
+
+            // XML
+            Xml::Attributes         m_attributes;
         };
     }
 }

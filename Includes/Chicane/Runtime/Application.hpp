@@ -116,12 +116,10 @@ namespace Chicane
         {
             if (hasView())
             {
-                m_view->deactivate();
                 m_view.reset();
             }
 
             m_view = std::make_unique<T>(inParams...);
-            m_view->activate();
 
             if (hasRenderer())
             {
