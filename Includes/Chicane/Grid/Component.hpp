@@ -80,8 +80,9 @@ namespace Chicane
 
             // Style
             const Style& getStyle() const;
-            void setStyle(const StyleSource::List& inSources);
-            void setStyle(const StyleSource::Map& inSource);
+            void setStyle(const StyleFlex& inSource);
+            void setStyle(const StyleRuleset::List& inSources);
+            void setStyle(const StyleRuleset::Properties& inSource);
 
             // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
@@ -171,7 +172,7 @@ namespace Chicane
             Vec2                    m_cursor;
             Bounds2D                m_bounds;
 
-            Xml::Attribute          m_attributes;
+            Xml::Attributes         m_attributes;
 
             Primitive               m_primitive;
         };

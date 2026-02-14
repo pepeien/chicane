@@ -1,10 +1,12 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
 #include <cstdio>
-#include <vector>
+#include <regex>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "Chicane/Core.hpp"
 
@@ -188,8 +190,52 @@ namespace Chicane
         std::size_t find(char inValue) const;
         std::size_t find(const String& inValue) const;
 
-        std::vector<String> split(char inDelimeter) const;
-        std::vector<String> split(const String& inDelimeter) const;
+        template <typename... Args>
+        std::vector<String> split(Args... inDelimeters) const
+        {
+            std::vector<String> delimeters = {inDelimeters...};
+
+            if (size() == 0 || delimeters.size() == 0)
+            {
+                return {};
+            }
+
+            std::vector<String> result = {};
+
+            String              value = *this;
+
+            size_t              position = 0;
+
+            String              block = "";
+
+            for (const String& delimeter : delimeters)
+            {
+                if (delimeter.size() == 0)
+                {
+                    continue;
+                }
+
+                position = 0;
+
+                block = "";
+
+                while ((position = value.find(delimeter)) != std::string::npos)
+                {
+                    block = value.substr(0, position);
+
+                    result.push_back(block);
+
+                    value.erase(0, position + delimeter.size());
+                }
+            }
+
+            if (value.size() > 0)
+            {
+                result.push_back(value);
+            }
+
+            return result;
+        }
 
         String getBetween(char inOpening, char inClosing) const;
         String getBetween(const String& inOpening, const String& inClosing) const;
@@ -219,9 +265,17 @@ namespace Chicane
         void append(const String& inValue);
         void append(char inValue);
 
+        void erase(char inValue);
         void erase(std::string::const_iterator inStart, std::string::const_iterator inEnd);
         void erase(std::uint32_t inStart, std::uint32_t inEnd);
 
+        template <typename... Args>
+        String regexReplace(Args... args)
+        {
+            return std::regex_replace(m_value, args...);
+        }
+
+        void popFront();
         void popBack();
 
     protected:

@@ -17,7 +17,7 @@ namespace Chicane
             size.refresh();
         }
 
-        void StyleFont::setProperties(const StyleSource::Map& inProperties)
+        void StyleFont::setProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(Style::FONT_FAMILY_ATTRIBUTE_NAME) != inProperties.end())
             {

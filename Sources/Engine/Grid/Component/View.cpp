@@ -51,17 +51,17 @@ namespace Chicane
 
             m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
 
-            m_styles = Style::parseSources(node);
-
             m_root   = this;
             m_parent = this;
+
+            importStyleFile(Xml::getAttribute(Style::ATTRIBUTE_NAME, node).as_string());
 
             addChildren(node);
         }
 
         void View::onAdopted(Component* inComponent)
         {
-            inComponent->setStyle(m_styles);
+            inComponent->setStyle(m_styles.getRulesets());
         }
 
         void View::activate()
@@ -137,6 +137,16 @@ namespace Chicane
             );
 
             return contenders;
+        }
+
+        const StyleFile& View::getStyleFile() const
+        {
+            return m_styles;
+        }
+
+        void View::importStyleFile(const FileSystem::Path& inValue)
+        {
+            m_styles.parse(inValue);
         }
 
         void View::handle(const WindowEvent& inEvent)

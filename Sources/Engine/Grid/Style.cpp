@@ -10,92 +10,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
-        {
-            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
-        }
-
-        StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
-        {
-            if (inFilePath.empty())
-            {
-                return {};
-            }
-
-            const String fileExtension = inFilePath.filename().extension().string();
-
-            if (!fileExtension.endsWith(Style::FILE_EXTENSION_NAME))
-            {
-                return {};
-            }
-
-            return parseSources(FileSystem::readString(inFilePath));
-        }
-
-        StyleSource::List Style::parseSources(const String& inData)
-        {
-            String data = inData;
-            data.erase(std::remove(data.begin(), data.end(), '\n'), data.cend());
-            data.erase(std::remove(data.begin(), data.end(), '\r'), data.cend());
-
-            const std::vector<String> styles = data.split('}');
-
-            StyleSource::List result = {};
-
-            for (const String& style : styles)
-            {
-                const std::vector<String> splittedStyle = style.trim().split('{');
-
-                if (splittedStyle.size() < 2)
-                {
-                    continue;
-                }
-
-                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
-
-                for (String& selector : selectors)
-                {
-                    selector = selector.trim();
-                }
-
-                result.emplace_back(selectors, parseSource(splittedStyle.at(1).trim()));
-            }
-
-            return result;
-        }
-
-        StyleSource::Map Style::parseSource(const String& inData)
-        {
-            std::vector<String> blocks = inData.split(';');
-
-            StyleSource::Map result = {};
-
-            for (const String& block : blocks)
-            {
-                const std::vector<String> splittedBlock = block.trim().split(':');
-
-                if (splittedBlock.size() < 2)
-                {
-                    continue;
-                }
-
-                const String key   = splittedBlock.at(0).trim();
-                const String value = splittedBlock.at(1).trim();
-
-                if (result.find(key) != result.end())
-                {
-                    result[key] = value;
-
-                    continue;
-                }
-
-                result.insert(std::make_pair(key, value));
-            }
-
-            return result;
-        }
-
-        Style::Style(const StyleSource::Map& inProperties, Component* inParent)
+        Style::Style(const StyleRuleset::Properties& inProperties, Component* inParent)
             : Style()
         {
             setParent(inParent);
@@ -234,7 +149,7 @@ namespace Chicane
             return position.get() == inValue;
         }
 
-        void Style::setProperties(const StyleSource::Map& inProperties)
+        void Style::setProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(DISPLAY_ATTRIBUTE_NAME) != inProperties.end())
             {
@@ -317,7 +232,7 @@ namespace Chicane
             return m_parent != nullptr;
         }
 
-        void Style::setParent(Component* inComponent)
+        void Style::setParent(const Component* inComponent)
         {
             if (m_parent == inComponent)
             {

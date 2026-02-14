@@ -28,8 +28,6 @@ namespace Chicane
         CHICANE_BOX class ModelManager* getModelManager();
         CHICANE_BOX class TextureManager* getTextureManager();
 
-        CHICANE_BOX void loadAll(const String& inPath = ".");
-        CHICANE_BOX void loadAllByExtension(const String& inExtension, const String& inPath = ".");
         CHICANE_BOX const class Asset* load(const FileSystem::Path& inFilePath);
         template <typename T>
         inline const T* load(const FileSystem::Path& inFilePath)

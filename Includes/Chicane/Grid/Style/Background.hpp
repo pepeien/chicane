@@ -5,7 +5,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
-#include "Chicane/Grid/Style/Source.hpp"
+#include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
 {
@@ -23,7 +23,7 @@ namespace Chicane
         public:
             void refresh();
 
-            void setProperties(const StyleSource::Map& inProperties);
+            void setProperties(const StyleRuleset::Properties& inProperties);
 
             void parseWith(ColorParser inColorParser, ImageParser inImageParser);
 

@@ -44,9 +44,9 @@ namespace Chicane
             return result;
         }
 
-        Attribute getAttributes(const pugi::xml_node& inNode)
+        Attributes getAttributes(const pugi::xml_node& inNode)
         {
-            Attribute result;
+            Attributes result;
 
             for (pugi::xml_attribute attribute : inNode.attributes())
             {

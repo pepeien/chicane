@@ -155,13 +155,15 @@ namespace Chicane
         // Lifecycle
         void render();
 
+        // Scene
         void initSceneThread();
         void shutdownSceneThread();
         void tickScene();
         void buildSceneCommands();
         void renderScene();
 
-        void initViewThread();
+        // Grid
+        void initView();
         void shutdownViewThread();
         void tickView();
         void buildViewCommands();

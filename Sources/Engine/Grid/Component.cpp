@@ -170,14 +170,14 @@ namespace Chicane
             return m_style;
         }
 
-        void Component::setStyle(const StyleSource::List& inSources)
+        void Component::setStyle(const StyleRuleset::List& inSources)
         {
             if (inSources.empty())
             {
                 return;
             }
 
-            for (const StyleSource& source : inSources)
+            for (const StyleRuleset& source : inSources)
             {
                 if (source.isEmpty())
                 {
@@ -242,7 +242,7 @@ namespace Chicane
             }
         }
 
-        void Component::setStyle(const StyleSource::Map& inSource)
+        void Component::setStyle(const StyleRuleset::Properties& inSource)
         {
             m_style.setProperties(inSource);
         }

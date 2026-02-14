@@ -12,9 +12,10 @@
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
+#include "Chicane/Grid/Style/Import.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
-#include "Chicane/Grid/Style/Source.hpp"
+#include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
 {
@@ -161,24 +162,17 @@ namespace Chicane
             static constexpr inline const char* ALIGNMENT_TYPE_END       = "end";
 
         public:
-            static StyleSource::List parseSources(const pugi::xml_node& inNode);
-            static StyleSource::List parseSources(const FileSystem::Path& inPath);
-            static StyleSource::List parseSources(const String& inData);
-
-            static StyleSource::Map parseSource(const String& inData);
-
-        public:
-            Style(const StyleSource::Map& inProperties, Component* inParent);
+            Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
 
         public:
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
 
-            void setProperties(const StyleSource::Map& inProperties);
+            void setProperties(const StyleRuleset::Properties& inProperties);
 
             bool hasParent() const;
-            void setParent(Component* inComponent);
+            void setParent(const Component* inComponent);
 
             void refresh();
 
@@ -222,6 +216,9 @@ namespace Chicane
             float parseNumber(const String& inValue) const;
 
         public:
+            // Keywords
+            StyleImport::List             imports;
+
             // Visiblity
             StyleProperty<StyleDisplay>   display;
             StyleProperty<float>          zIndex; // [0.0f, 999.9f]
@@ -252,7 +249,7 @@ namespace Chicane
             StyleProperty<float>          letterSpacing;
 
         private:
-            Component* m_parent;
+            const Component* m_parent;
         };
 
         CHICANE_GRID String variableToReference(const String& inValue);

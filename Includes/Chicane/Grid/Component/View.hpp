@@ -5,6 +5,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Style/File.hpp"
 
 namespace Chicane
 {
@@ -39,6 +40,10 @@ namespace Chicane
             std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
             std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
 
+            // Styling
+            const StyleFile& getStyleFile() const;
+            void importStyleFile(const FileSystem::Path& inValue);
+
         protected:
             // Window
             void handle(const WindowEvent& inEvent);
@@ -52,7 +57,7 @@ namespace Chicane
             String                  m_path;
 
             // Styling
-            StyleSource::List       m_styles;
+            StyleFile               m_styles;
         };
     }
 }

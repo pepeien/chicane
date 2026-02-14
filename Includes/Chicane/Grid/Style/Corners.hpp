@@ -9,7 +9,7 @@
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
-#include "Chicane/Grid/Style/Source.hpp"
+#include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
 {
@@ -35,12 +35,12 @@ namespace Chicane
             void refresh();
 
             void setProperties(
-                const StyleSource::Map& inProperties,
-                const String&           inOnelineAttributeName,
-                const String&           inTopAttributeName,
-                const String&           inBottomAttributeName,
-                const String&           inLeftAttributeName,
-                const String&           inRightAttributeName
+                const StyleRuleset::Properties& inProperties,
+                const String&                   inOnelineAttributeName,
+                const String&                   inTopAttributeName,
+                const String&                   inBottomAttributeName,
+                const String&                   inLeftAttributeName,
+                const String&                   inRightAttributeName
             );
 
             void parseWith(std::function<float(const String&, StyleDirection)> inParser);
