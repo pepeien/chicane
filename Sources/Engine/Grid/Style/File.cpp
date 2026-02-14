@@ -2,6 +2,8 @@
 
 #include <regex>
 
+#include "Chicane/Grid/Style.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -50,6 +52,16 @@ namespace Chicane
         const StyleFile::Variables& StyleFile::getVariables() const
         {
             return m_variables;
+        }
+
+        const String& StyleFile::getVariable(const String& inName) const
+        {
+            if (m_variables.find(inName) == m_variables.end())
+            {
+                return String::empty();
+            }
+
+            return m_variables.at(inName);
         }
 
         void StyleFile::addVariable(const String& inValue)
@@ -121,7 +133,7 @@ namespace Chicane
             {
                 const String trimmedStatement = statement.trim();
 
-                if (!trimmedStatement.startsWith(StyleImport::KEYWORD))
+                if (!trimmedStatement.startsWith(Style::IMPORT_KEYWORD))
                 {
                     continue;
                 }
@@ -140,7 +152,7 @@ namespace Chicane
             {
                 const String trimmedStatement = statement.trim();
 
-                if (!trimmedStatement.startsWith(VARIABLE_KEYWORD))
+                if (!trimmedStatement.startsWith(Style::VARIABLE_KEYWORD))
                 {
                     continue;
                 }
@@ -176,18 +188,18 @@ namespace Chicane
             std::size_t cursor = 0;
             while (cursor < inValue.size())
             {
-                while ((cursor < inValue.size()) && (inValue.at(cursor) != StyleRuleset::INCLUSIVE_SELECTOR &&
-                                                     inValue.at(cursor) != StyleRuleset::ID_SELECTOR &&
-                                                     inValue.at(cursor) != StyleRuleset::CLASS_SELECTOR &&
-                                                     inValue.at(cursor) != StyleRuleset::SELECTOR_INHERITANCE_KEYWORD))
+                while ((cursor < inValue.size()) &&
+                       (inValue.at(cursor) != Style::INCLUSIVE_SELECTOR && inValue.at(cursor) != Style::ID_SELECTOR &&
+                        inValue.at(cursor) != Style::CLASS_SELECTOR &&
+                        inValue.at(cursor) != Style::SELECTOR_INHERITANCE))
                 {
                     cursor++;
                 }
 
                 size_t start = cursor;
-                while ((cursor < inValue.size()) && (inValue.at(cursor) != StyleRuleset::OPENING_KEYWORD))
+                while ((cursor < inValue.size()) && (inValue.at(cursor) != Style::RULESET_OPENING))
                 {
-                    if (inValue.at(cursor) == COMMAND_ENDING)
+                    if (inValue.at(cursor) == Style::COMMAND_ENDING)
                     {
                         start = cursor + 1;
                     }
@@ -208,11 +220,11 @@ namespace Chicane
                 cursor++;
                 while (cursor < inValue.size() && depth > 0)
                 {
-                    if (inValue.at(cursor) == StyleRuleset::OPENING_KEYWORD)
+                    if (inValue.at(cursor) == Style::RULESET_OPENING)
                     {
                         depth++;
                     }
-                    else if (inValue.at(cursor) == StyleRuleset::CLOSING_KEYWORD)
+                    else if (inValue.at(cursor) == Style::RULESET_CLOSING)
                     {
                         depth--;
                     }
@@ -224,12 +236,12 @@ namespace Chicane
 
                 const String blockContent = inValue.substr(blockStart, blockEnd - blockStart);
 
-                for (const String& currentSelector : selector.split(StyleRuleset::SELECTOR_SEPARATOR_COMMA_KEYWORD))
+                for (const String& currentSelector : selector.split(Style::SELECTOR_SEPARATOR_COMMA))
                 {
                     String trimmedSelector = currentSelector.trim();
 
                     String resolvedSelector;
-                    if (trimmedSelector.startsWith(StyleRuleset::SELECTOR_INHERITANCE_KEYWORD))
+                    if (trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE))
                     {
                         resolvedSelector = inSelector;
                         resolvedSelector.append(trimmedSelector.substr(1));
@@ -266,14 +278,14 @@ namespace Chicane
             std::uint32_t depth = 0;
             for (char character : inValue)
             {
-                if (character == StyleRuleset::OPENING_KEYWORD)
+                if (character == Style::RULESET_OPENING)
                 {
                     depth++;
 
                     continue;
                 }
 
-                if (character == StyleRuleset::CLOSING_KEYWORD)
+                if (character == Style::RULESET_CLOSING)
                 {
                     depth--;
 

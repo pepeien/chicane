@@ -20,11 +20,6 @@ namespace Chicane
             using Variables = std::unordered_map<String, String>;
 
         public:
-            static constexpr inline const char COMMAND_ENDING = ';';
-
-            static constexpr inline const char VARIABLE_KEYWORD = '$';
-
-        public:
             StyleFile();
 
         public:
@@ -37,6 +32,7 @@ namespace Chicane
             void addImport(const StyleImport& inValue);
 
             const Variables& getVariables() const;
+            const String& getVariable(const String& inName) const;
             void addVariable(const String& inValue);
             void addVariable(const Variables& inValue);
             void addVariable(const String& inName, const String& inValue);

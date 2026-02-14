@@ -191,7 +191,7 @@ namespace Chicane
         std::size_t find(const String& inValue) const;
 
         template <typename... Args>
-        std::vector<String> split(Args... inDelimeters) const
+        inline std::vector<String> split(Args... inDelimeters) const
         {
             std::vector<String> delimeters = {inDelimeters...};
 

@@ -19,18 +19,6 @@ namespace Chicane
             using List       = std::vector<StyleRuleset>;
 
         public:
-            static constexpr inline const char OPENING_KEYWORD = '{';
-            static constexpr inline const char CLOSING_KEYWORD = '}';
-
-            static constexpr inline const char INCLUSIVE_SELECTOR = '*';
-            static constexpr inline const char ID_SELECTOR        = '#';
-            static constexpr inline const char CLASS_SELECTOR     = '.';
-
-            static constexpr inline const char SELECTOR_INHERITANCE_KEYWORD     = '&';
-            static constexpr inline const char SELECTOR_SEPARATOR_COMMA_KEYWORD = ',';
-            static constexpr inline const char SELECTOR_SEPARATOR_SPACE_KEYWORD = ' ';
-
-        public:
             static String normalizeData(const String& inValue);
 
         public:

@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 
+#include "Chicane/Grid/Style.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -25,7 +27,7 @@ namespace Chicane
 
         void StyleImport::parse(const String& inValue)
         {
-            if (!inValue.startsWith(KEYWORD))
+            if (!inValue.startsWith(Style::IMPORT_KEYWORD))
             {
                 return;
             }

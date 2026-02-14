@@ -22,9 +22,6 @@ namespace Chicane
             using List = std::vector<StyleImport>;
 
         public:
-            static constexpr inline const char* KEYWORD = "@import";
-
-        public:
             StyleImport(const String& inValue);
             StyleImport();
 

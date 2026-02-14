@@ -30,8 +30,8 @@ View::View()
       m_uiCrosshairColorG(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorG)),
       m_crosshairColorB(255),
       m_uiCrosshairColorB(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorB)),
-      m_crosshairColorA(255),
-      m_uiCrosshairColorA(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorA)),
+      m_crosshairColorA(1.0f),
+      m_uiCrosshairColorA(Chicane::Reference::fromValue<float>(&m_crosshairColorA)),
       m_playerScore(0U),
       m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore))
 {

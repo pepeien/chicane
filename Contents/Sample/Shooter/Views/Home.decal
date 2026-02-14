@@ -1,12 +1,24 @@
 @import(Font, Contents/Engine/Fonts/Poppins.bfon);
 
+// Color
+$grayColor: rgb(51, 51, 51);
+
+// Crosshair
+$xhairSize:      ref(crosshairSize)vh;
+$xhairThickness: ref(crosshairThickness)vh;
+$xhairGap:       ref(crosshairGap)vh;
+
+$xhairThicknessOffset: calc($xhairThickness * 0.5);
+$xhairPositiveOffset:  calc(50% + calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 0.5)));
+$xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 1.5));
+
 .victory {
     position: absolute;
-    display: var(victoryDisplay);
+    display: ref(victoryDisplay);
     height: 6vw;
     width: 32vw;
     margin: 50% 16vw 3vw 50%;
-    background-color: #333333;
+    background-color: $grayColor;
     font-size: 5vw;
     padding-left: 0.5em;
     z-index: 2;
@@ -22,7 +34,7 @@
     width: 12em;
     height: 3em;
     margin: 0 12em 0 100%;
-    background-color: #3333335f;
+    background-color: rgba($grayColor, 0.3);
     font-size: 2em;
     padding-left: 0.5em;
 }
@@ -30,51 +42,39 @@
 .crosshair {
     &__dot, &__top, &__bottom, &__left, &__right {
         position: absolute;
-        background-color: rgba(var(crosshairColorR), var(crosshairColorG), var(crosshairColorB), var(crosshairColorA));
+        background-color: rgba(ref(crosshairColorR), ref(crosshairColorG), ref(crosshairColorB), ref(crosshairColorA));
     }
 
     &__top, &__bottom {
-        height: var(crosshairSize)vh;
-        width: var(crosshairThickness)vh;
+        height: $xhairSize;
+        width: $xhairThickness;
     }
 
     &__left, &__right {
-        height: var(crosshairThickness)vh;
-        width: var(crosshairSize)vh;
+        height: $xhairThickness;
+        width: $xhairSize;
     }
 
     &__dot {
-        display: var(crosshairDotDisplay);
-        margin: 50% calc(var(crosshairThickness)vh * 0.5) calc(var(crosshairThickness)vh * 0.5) 50%;
-        height: var(crosshairThickness)vh;
-        width: var(crosshairThickness)vh;
+        display: ref(crosshairDotDisplay);
+        margin: 50% $xhairThicknessOffset $xhairThicknessOffset 50%;
+        height: $xhairThickness;
+        width: $xhairThickness;
     }
 
     &__top {
-        margin-top:    50%;
-        margin-right:  calc(var(crosshairThickness)vh * 0.5);
-        margin-bottom: calc(calc(var(crosshairGap)vh + var(crosshairThickness)vh) + calc(var(crosshairSize)vh * 1.5));
-        margin-left:   50%;
+        margin: 50% $xhairThicknessOffset $xhairNegativeOffset 50%;
     }
 
     &__bottom {
-        margin-top:    calc(50% + calc(calc(var(crosshairGap)vh + var(crosshairThickness)vh) + calc(var(crosshairSize)vh * 0.5)));
-        margin-right:  calc(var(crosshairThickness)vh * 0.5);
-        margin-bottom: 0;
-        margin-left:   50%;
+        margin: $xhairPositiveOffset $xhairThicknessOffset 0 50%;
     }
 
     &__left {
-        margin-top:    50%;
-        margin-right:  calc(calc(var(crosshairGap)vh + var(crosshairThickness)vh) + calc(var(crosshairSize)vh * 1.5));
-        margin-bottom: calc(var(crosshairThickness)vh * 0.5);
-        margin-left:   50%;
+        margin: 50% $xhairNegativeOffset $xhairThicknessOffset 50%;
     }
 
     &__right {
-        margin-top:    50%;
-        margin-right:  0;
-        margin-bottom: calc(var(crosshairThickness)vh * 0.5);
-        margin-left:   calc(50% + calc(calc(var(crosshairGap)vh + var(crosshairThickness)vh) + calc(var(crosshairSize)vh * 0.5)));
+        margin: 50% 0 $xhairThicknessOffset $xhairPositiveOffset;
     }
 }

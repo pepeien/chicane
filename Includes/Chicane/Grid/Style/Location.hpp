@@ -14,9 +14,6 @@ namespace Chicane
         struct CHICANE_GRID StyleLocation
         {
         public:
-            static constexpr inline const char* URL_KEYWORD = "url";
-
-        public:
             StyleLocation();
 
         public:

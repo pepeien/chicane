@@ -71,17 +71,38 @@ namespace Chicane
             const String& getTag() const;
 
             String getId() const;
+            void setId(const String& inValue);
 
-            std::vector<String> getClasses() const;
-            String getClass() const;
+            std::vector<String> getClassList() const;
+            const String& getClassName() const;
+            void setClassName(const String& inValue);
+            template <typename... Args>
+            inline void addClassName(Args... inClasses)
+            {
+                String className = m_className;
+
+                (
+                    [&]()
+                    {
+                        className.append(inClasses);
+                        className.append(' ');
+                    }(),
+                    ...
+                );
+
+                setClassName(className.trim());
+            }
 
             String getAttribute(const String& inName) const;
 
             // Style
+            bool hasStyleFile() const;
+            const StyleFile* getStyleFile() const;
+            void setStyleFile(StyleFile* inSource);
+            void addStyleRuleset(const StyleRuleset::List& inSources);
+            void addStyleProperties(const StyleRuleset::Properties& inSource);
+
             const Style& getStyle() const;
-            void setStyle(const StyleFile* inSource);
-            void setStyle(const StyleRuleset::List& inSources);
-            void setStyle(const StyleRuleset::Properties& inSource);
 
             // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
@@ -146,6 +167,7 @@ namespace Chicane
 
         protected:
             void refreshStyle();
+            void refreshStyleRuleset();
             void refreshSize();
             void refreshPosition();
             void refreshBounds();
@@ -159,10 +181,12 @@ namespace Chicane
         protected:
             // Identification
             String                  m_tag;
+            String                  m_id;
+            String                  m_className;
 
             // Style
             Style                   m_style;
-            const StyleFile*        m_styleFile;
+            StyleFile*              m_styleFile;
 
             // References
             Reference::Map          m_references;

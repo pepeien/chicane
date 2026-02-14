@@ -110,7 +110,7 @@ namespace Chicane
         {
             m_styles.parse(inValue);
 
-            setStyle(&m_styles);
+            setStyleFile(&m_styles);
         }
 
         void View::handle(const WindowEvent& inEvent)

@@ -351,18 +351,12 @@ namespace Chicane
 
                 result.append(keyword);
                 result.append(FUNCTION_PARAMS_OPENING);
-
                 for (const String& param : params)
                 {
                     result.append(parseText(param.trim()));
                     result.append(",");
                 }
-
-                if (result.endsWith(","))
-                {
-                    result.popBack();
-                }
-
+                result.popBack();
                 result.append(FUNCTION_PARAMS_CLOSING);
             }
             else
@@ -415,6 +409,20 @@ namespace Chicane
             return parseNumber(value);
         }
 
+        String Style::parseReference(const String& inValue) const
+        {
+            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
+            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
+
+            String result = "";
+            result.append(REFERENCE_VALUE_OPENING);
+            result.append(inValue.substr(start, end - start));
+            result.append(REFERENCE_VALUE_CLOSING);
+            result.append(inValue.substr(end + 1));
+
+            return result;
+        }
+
         String Style::parseText(const String& inValue) const
         {
             if (!hasParent())
@@ -424,9 +432,14 @@ namespace Chicane
 
             String value = inValue.trim();
 
-            if (value.startsWith(VARIABLE_KEYWORD))
+            if (value.startsWith(VARIABLE_KEYWORD) && m_parent->hasStyleFile())
             {
-                value = variableToReference(value);
+                value = parseText(m_parent->getStyleFile()->getVariable(value.substr(1)));
+            }
+
+            if (value.startsWith(REFERENCE_KEYWORD))
+            {
+                value = parseReference(value);
             }
 
             return m_parent->parseText(value);
@@ -620,30 +633,6 @@ namespace Chicane
             {
                 return 0.0f;
             }
-        }
-
-        String variableToReference(const String& inValue)
-        {
-            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
-
-            String reference = "";
-            reference.append(REFERENCE_VALUE_OPENING);
-            reference.append(inValue.substr(start, end - start));
-            reference.append(REFERENCE_VALUE_CLOSING);
-            reference.append(inValue.substr(end + 1));
-
-            return reference;
-        }
-
-        String colorToReference(const String& inValue)
-        {
-            if (inValue.startsWith(Style::VARIABLE_KEYWORD))
-            {
-                return variableToReference(inValue);
-            }
-
-            return inValue;
         }
 
         std::vector<String> splitOneliner(const String& inValue)

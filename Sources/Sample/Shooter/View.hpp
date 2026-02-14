@@ -41,7 +41,7 @@ private:
     Chicane::Reference m_uiCrosshairColorG;
     std::uint8_t       m_crosshairColorB;
     Chicane::Reference m_uiCrosshairColorB;
-    std::uint8_t       m_crosshairColorA;
+    float              m_crosshairColorA;
     Chicane::Reference m_uiCrosshairColorA;
 
     // Score
