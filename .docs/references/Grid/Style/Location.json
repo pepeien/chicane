@@ -1,0 +1,87 @@
+{
+    "title": "StyleLocation",
+    "filename": "Location",
+    "path": "Grid/Style/Location",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Location.hpp",
+        "namespace": "Chicane::Grid::StyleLocation",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleLocation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLELOCATION_STYLELOCATION_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLELOCATION_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleLocationType",
+                    "suffix": "",
+                    "path": "Grid/Style/Location/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_GRID_STYLELOCATION_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "value",
+                "description": "CHICANE_GRID_STYLELOCATION_VALUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLELOCATION_DESCRIPTION"
+    },
+    "children": []
+}

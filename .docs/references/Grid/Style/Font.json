@@ -95,9 +95,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleSource::Map",
+                            "name": "StyleRuleset::Properties",
                             "suffix": "&",
-                            "path": "Grid/Style/Source",
+                            "path": "Grid/Style/Ruleset",
                             "templates": []
                         },
                         "name": "inProperties"

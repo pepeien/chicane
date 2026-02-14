@@ -1,0 +1,40 @@
+{
+    "title": "StyleLocationType",
+    "filename": "Type",
+    "path": "Grid/Style/Location/Type",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Location/Type.hpp",
+        "namespace": "Chicane::Grid::StyleLocationType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Local",
+                "description": "CHICANE_GRID_STYLELOCATIONTYPE_LOCAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "URL",
+                "description": "CHICANE_GRID_STYLELOCATIONTYPE_URL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLELOCATIONTYPE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -47,36 +47,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "activate",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_ACTIVATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "deactivate",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_DEACTIVATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "setWindow",
                 "parameters": [
                     {
@@ -92,42 +62,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_SETWINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getFlatChildren",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        },
-                        "name": "inParent"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_VIEW_GETFLATCHILDREN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -166,25 +100,25 @@
                 "description": "CHICANE_GRID_VIEW_GETCHILDRENON_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "virtual",
+                "accessor": "public",
+                "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "prefix": "const ",
+                    "name": "StyleFile",
+                    "suffix": "&",
+                    "path": "Grid/Style/File",
                     "templates": []
                 },
-                "name": "onActivation",
+                "name": "getStyleFile",
                 "parameters": [],
                 "modifiers": [
-                    "inline"
+                    "const"
                 ],
-                "description": "CHICANE_GRID_VIEW_ONACTIVATION_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_GETSTYLEFILE_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "virtual",
+                "accessor": "public",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -192,38 +126,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onDeactivation",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_GRID_VIEW_ONDEACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onAdopted",
+                "name": "importStyleFile",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
                             "templates": []
                         },
-                        "name": "inChild"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_ONADOPTED_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_IMPORTSTYLEFILE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -329,9 +246,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleSource::List",
+                    "name": "StyleFile",
                     "suffix": "",
-                    "path": "Grid/Style/Source",
+                    "path": "Grid/Style/File",
                     "templates": []
                 },
                 "name": "m_styles",

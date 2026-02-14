@@ -7,7 +7,7 @@
         "namespace": "Chicane::Xml",
         "types": [
             {
-                "name": "Attribute",
+                "name": "Attributes",
                 "type": {
                     "prefix": "",
                     "name": "std::unordered_map",
@@ -30,7 +30,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_XML_ATTRIBUTE_DESCRIPTION"
+                "description": "CHICANE_XML_ATTRIBUTES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -156,7 +156,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Attribute",
+                    "name": "Attributes",
                     "suffix": "",
                     "path": "Core/Xml",
                     "templates": []

@@ -1,0 +1,62 @@
+{
+    "title": "StyleImportType",
+    "filename": "Type",
+    "path": "Grid/Style/Import/Type",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Import/Type.hpp",
+        "namespace": "Chicane::Grid::StyleImportType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_GRID_STYLEIMPORTTYPE_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Style",
+                "description": "CHICANE_GRID_STYLEIMPORTTYPE_STYLE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Font",
+                "description": "CHICANE_GRID_STYLEIMPORTTYPE_FONT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Texture",
+                "description": "CHICANE_GRID_STYLEIMPORTTYPE_TEXTURE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEIMPORTTYPE_DESCRIPTION"
+    },
+    "children": []
+}

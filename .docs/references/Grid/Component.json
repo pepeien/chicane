@@ -288,6 +288,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -301,29 +327,83 @@
                         }
                     ]
                 },
-                "name": "getClasses",
+                "name": "getClassList",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_GETCLASSES_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_GETCLASSLIST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getClassName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCLASSNAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "void",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "",
                     "templates": []
                 },
-                "name": "getClass",
-                "parameters": [],
-                "modifiers": [
-                    "const"
+                "name": "setClassName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
                 ],
-                "description": "CHICANE_GRID_COMPONENT_GETCLASS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETCLASSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addClassName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inClasses"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ADDCLASSNAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -357,6 +437,118 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasStyleFile",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASSTYLEFILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StyleFile",
+                    "suffix": "*",
+                    "path": "Grid/Style/File",
+                    "templates": []
+                },
+                "name": "getStyleFile",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETSTYLEFILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setStyleFile",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleFile",
+                            "suffix": "*",
+                            "path": "Grid/Style/File",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETSTYLEFILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addStyleRuleset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::List",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inSources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDSTYLERULESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addStyleProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDSTYLEPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Style",
                     "suffix": "&",
@@ -369,58 +561,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETSTYLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setStyle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "StyleSource::List",
-                            "suffix": "&",
-                            "path": "Grid/Style/Source",
-                            "templates": []
-                        },
-                        "name": "inSources"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETSTYLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setStyle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "StyleSource::Map",
-                            "suffix": "&",
-                            "path": "Grid/Style/Source",
-                            "templates": []
-                        },
-                        "name": "inSource"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETSTYLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1727,6 +1867,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshStyleRuleset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHSTYLERULESET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshSize",
                 "parameters": [],
                 "modifiers": [],
@@ -1942,6 +2097,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_id",
+                "description": "CHICANE_GRID_COMPONENT_M_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_className",
+                "description": "CHICANE_GRID_COMPONENT_M_CLASSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Style",
                     "suffix": "",
                     "path": "Grid/Style",
@@ -1949,6 +2130,19 @@
                 },
                 "name": "m_style",
                 "description": "CHICANE_GRID_COMPONENT_M_STYLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleFile",
+                    "suffix": "*",
+                    "path": "Grid/Style/File",
+                    "templates": []
+                },
+                "name": "m_styleFile",
+                "description": "CHICANE_GRID_COMPONENT_M_STYLEFILE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2080,19 +2274,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Xml::Attribute",
-                    "suffix": "",
-                    "path": "Core/Xml",
-                    "templates": []
-                },
-                "name": "m_attributes",
-                "description": "CHICANE_GRID_COMPONENT_M_ATTRIBUTES_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "Primitive",
                     "suffix": "",
                     "path": "Grid/Primitive",
@@ -2100,6 +2281,19 @@
                 },
                 "name": "m_primitive",
                 "description": "CHICANE_GRID_COMPONENT_M_PRIMITIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Xml::Attributes",
+                    "suffix": "",
+                    "path": "Core/Xml",
+                    "templates": []
+                },
+                "name": "m_attributes",
+                "description": "CHICANE_GRID_COMPONENT_M_ATTRIBUTES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"

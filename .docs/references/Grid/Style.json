@@ -23,9 +23,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleSource::Map",
+                            "name": "StyleRuleset::Properties",
                             "suffix": "&",
-                            "path": "Grid/Style/Source",
+                            "path": "Grid/Style/Ruleset",
                             "templates": []
                         },
                         "name": "inProperties"
@@ -62,118 +62,6 @@
         ],
         "destructors": [],
         "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "StyleSource::List",
-                    "suffix": "",
-                    "path": "Grid/Style/Source",
-                    "templates": []
-                },
-                "name": "parseSources",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_GRID_STYLE_PARSESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "StyleSource::List",
-                    "suffix": "",
-                    "path": "Grid/Style/Source",
-                    "templates": []
-                },
-                "name": "parseSources",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem",
-                            "templates": []
-                        },
-                        "name": "inPath"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_GRID_STYLE_PARSESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "StyleSource::List",
-                    "suffix": "",
-                    "path": "Grid/Style/Source",
-                    "templates": []
-                },
-                "name": "parseSources",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_GRID_STYLE_PARSESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "StyleSource::Map",
-                    "suffix": "",
-                    "path": "Grid/Style/Source",
-                    "templates": []
-                },
-                "name": "parseSource",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_GRID_STYLE_PARSESOURCE_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -245,9 +133,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleSource::Map",
+                            "name": "StyleRuleset::Properties",
                             "suffix": "&",
-                            "path": "Grid/Style/Source",
+                            "path": "Grid/Style/Ruleset",
                             "templates": []
                         },
                         "name": "inProperties"
@@ -287,7 +175,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "Component",
                             "suffix": "*",
                             "path": "Grid/Component",
@@ -589,6 +477,34 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLE_PARSESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "parseReference",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEREFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1137,8 +1053,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "CALCULATION_KEYWORD",
-                "description": "CHICANE_GRID_STYLE_CALCULATION_KEYWORD_DESCRIPTION"
+                "name": "REFERENCE_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_REFERENCE_KEYWORD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1150,6 +1066,54 @@
                     "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "IMPORT_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_IMPORT_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "URL_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_URL_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "COMMAND_ENDING",
+                "description": "CHICANE_GRID_STYLE_COMMAND_ENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
                     "path": "",
                     "templates": []
                 },
@@ -1169,8 +1133,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "HEX_KEYWORD",
-                "description": "CHICANE_GRID_STYLE_HEX_KEYWORD_DESCRIPTION"
+                "name": "RULESET_OPENING",
+                "description": "CHICANE_GRID_STYLE_RULESET_OPENING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RULESET_CLOSING",
+                "description": "CHICANE_GRID_STYLE_RULESET_CLOSING_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1185,24 +1165,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "RGB_KEYWORD",
-                "description": "CHICANE_GRID_STYLE_RGB_KEYWORD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "RGBA_KEYWORD",
-                "description": "CHICANE_GRID_STYLE_RGBA_KEYWORD_DESCRIPTION"
+                "name": "CALCULATION_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_CALCULATION_KEYWORD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1386,6 +1350,54 @@
                 },
                 "name": "INCLUSIVE_SELECTOR",
                 "description": "CHICANE_GRID_STYLE_INCLUSIVE_SELECTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SELECTOR_INHERITANCE",
+                "description": "CHICANE_GRID_STYLE_SELECTOR_INHERITANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SELECTOR_SEPARATOR_COMMA",
+                "description": "CHICANE_GRID_STYLE_SELECTOR_SEPARATOR_COMMA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SELECTOR_SEPARATOR_SPACE",
+                "description": "CHICANE_GRID_STYLE_SELECTOR_SEPARATOR_SPACE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1674,6 +1686,54 @@
                 },
                 "name": "BACKGROUND_IMAGE_DEFAULT_COLOR",
                 "description": "CHICANE_GRID_STYLE_BACKGROUND_IMAGE_DEFAULT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HEX_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_HEX_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RGB_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_RGB_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RGBA_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_RGBA_KEYWORD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2144,6 +2204,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "StyleImport::List",
+                    "suffix": "",
+                    "path": "Grid/Style/Import",
+                    "templates": []
+                },
+                "name": "imports",
+                "description": "CHICANE_GRID_STYLE_IMPORTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "StyleProperty",
                     "suffix": "",
                     "path": "Grid/Style/Property",
@@ -2410,7 +2483,7 @@
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Component",
                     "suffix": "*",
                     "path": "Grid/Component",

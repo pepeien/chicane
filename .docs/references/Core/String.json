@@ -1181,51 +1181,16 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "char",
+                            "name": "Args...",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inDelimeter"
+                        "name": "inDelimeters"
                     }
                 ],
                 "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_STRING_SPLIT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "split",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inDelimeter"
-                    }
-                ],
-                "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_STRING_SPLIT_DESCRIPTION"
@@ -1599,6 +1564,32 @@
                     {
                         "type": {
                             "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_ERASE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "erase",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
                             "name": "std::string::const_iterator",
                             "suffix": "",
                             "path": "",
@@ -1655,6 +1646,49 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_STRING_ERASE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "regexReplace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "args"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_REGEXREPLACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "popFront",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_STRING_POPFRONT_DESCRIPTION"
             },
             {
                 "accessor": "public",

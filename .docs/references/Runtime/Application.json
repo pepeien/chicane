@@ -860,10 +860,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "initViewThread",
+                "name": "initView",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_INITVIEWTHREAD_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_INITVIEW_DESCRIPTION"
             },
             {
                 "accessor": "private",
