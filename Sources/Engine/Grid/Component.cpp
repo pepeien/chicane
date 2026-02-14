@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include "Chicane/Grid.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -12,14 +10,16 @@ namespace Chicane
             : Component(inNode.name())
         {
             m_attributes = Xml::getAttributes(inNode);
+            setId(getAttribute(ID_ATTRIBUTE_NAME));
+            setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
             addChildren(inNode);
         }
 
         Component::Component(const String& inTag)
-            : Changeable(),
-              m_tag(inTag),
+            : m_tag(inTag),
               m_style({}),
+              m_styleFile(nullptr),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
@@ -142,17 +142,31 @@ namespace Chicane
 
         String Component::getId() const
         {
-            return getAttribute(ID_ATTRIBUTE_NAME);
+            return m_id;
         }
 
-        std::vector<String> Component::getClasses() const
+        void Component::setId(const String& inValue)
         {
-            return getClass().split(Style::CLASS_SEPARATOR);
+            m_id = inValue;
+
+            refreshStyleRuleset();
         }
 
-        String Component::getClass() const
+        std::vector<String> Component::getClassList() const
         {
-            return getAttribute(CLASS_ATTRIBUTE_NAME);
+            return m_className.split(Style::SELECTOR_SEPARATOR_SPACE);
+        }
+
+        const String& Component::getClassName() const
+        {
+            return m_className;
+        }
+
+        void Component::setClassName(const String& inValue)
+        {
+            m_className = inValue;
+
+            refreshStyleRuleset();
         }
 
         String Component::getAttribute(const String& inName) const
@@ -170,79 +184,41 @@ namespace Chicane
             return m_style;
         }
 
-        void Component::setStyle(const StyleSource::List& inSources)
+        bool Component::hasStyleFile() const
         {
-            if (inSources.empty())
+            return m_styleFile != nullptr;
+        }
+
+        const StyleFile* Component::getStyleFile() const
+        {
+            return m_styleFile;
+        }
+
+        void Component::setStyleFile(StyleFile* inSource)
+        {
+            m_styleFile = inSource;
+
+            refreshStyleRuleset();
+
+            for (Component* child : m_children)
+            {
+                child->setStyleFile(inSource);
+            }
+        }
+
+        void Component::addStyleRuleset(const StyleRuleset::List& inSources)
+        {
+            if (!hasStyleFile())
             {
                 return;
             }
 
-            for (const StyleSource& source : inSources)
-            {
-                if (source.isEmpty())
-                {
-                    continue;
-                }
+            m_styleFile->addRuleset(inSources);
 
-                for (const String& selector : source.selectors)
-                {
-                    if (selector.equals(Style::INCLUSIVE_SELECTOR))
-                    {
-                        setStyle(source.properties);
-
-                        continue;
-                    }
-
-                    if (!getTag().isEmpty())
-                    {
-                        if (selector.equals(getTag()))
-                        {
-                            setStyle(source.properties);
-
-                            continue;
-                        }
-                    }
-
-                    if (!getClass().isEmpty())
-                    {
-                        for (const String& className : getClasses())
-                        {
-                            String formattedClass = "";
-                            formattedClass.append(Style::CLASS_SELECTOR);
-                            formattedClass.append(className);
-
-                            if (formattedClass.equals(selector))
-                            {
-                                setStyle(source.properties);
-
-                                continue;
-                            }
-                        }
-                    }
-
-                    if (!getId().isEmpty())
-                    {
-                        String formattedId = "";
-                        formattedId.append(Style::ID_SELECTOR);
-                        formattedId.append(getId());
-
-                        if (formattedId.equals(selector))
-                        {
-                            setStyle(source.properties);
-
-                            continue;
-                        }
-                    }
-                }
-            }
-
-            for (Component* child : getChildren())
-            {
-                child->setStyle(inSources);
-            }
+            refreshStyleRuleset();
         }
 
-        void Component::setStyle(const StyleSource::Map& inSource)
+        void Component::addStyleProperties(const StyleRuleset::Properties& inSource)
         {
             m_style.setProperties(inSource);
         }
@@ -286,8 +262,6 @@ namespace Chicane
             }
 
             m_references.insert(std::make_pair(inId, inReference));
-
-            emmitChanges();
         }
 
         void Component::removeReference(const String& inId)
@@ -298,8 +272,6 @@ namespace Chicane
             }
 
             m_references.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
@@ -345,8 +317,6 @@ namespace Chicane
             }
 
             m_functions.insert(std::make_pair(inId, inFunction));
-
-            emmitChanges();
         }
 
         void Component::removeFunction(const String& inId)
@@ -357,8 +327,6 @@ namespace Chicane
             }
 
             m_functions.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasRoot() const
@@ -378,7 +346,7 @@ namespace Chicane
                 return;
             }
 
-            setValue(m_root, inComponent);
+            m_root = inComponent;
 
             for (Component* child : m_children)
             {
@@ -501,6 +469,7 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
+            inComponent->setStyleFile(m_styleFile);
 
             m_children.push_back(inComponent);
 
@@ -524,7 +493,8 @@ namespace Chicane
 
         void Component::setSize(float inWidth, float inHeight)
         {
-            setValue(m_size, {inWidth, inHeight});
+            m_size.x = inWidth;
+            m_size.y = inHeight;
         }
 
         const Vec2& Component::getPosition() const
@@ -549,7 +519,8 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            setValue(m_position, {inX, inY});
+            m_position.x = inX;
+            m_position.y = inY;
 
             setCursor(m_position);
         }
@@ -576,7 +547,8 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            setValue(m_cursor, {inX, inY});
+            m_cursor.x = inX;
+            m_cursor.y = inY;
         }
 
         const Bounds2D& Component::getBounds() const
@@ -596,17 +568,90 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            setValue(m_primitive, {});
+            m_primitive = {};
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
         {
-            setValue(m_primitive, inPrimitive);
+            m_primitive = inPrimitive;
         }
 
         void Component::refreshStyle()
         {
             m_style.refresh();
+        }
+
+        void Component::refreshStyleRuleset()
+        {
+            if (!m_styleFile)
+            {
+                return;
+            }
+
+            const String& tag = getTag();
+
+            String id = Style::ID_SELECTOR;
+            id.append(getId());
+
+            std::vector<String> classList;
+            for (const String& className : getClassList())
+            {
+                String formatted = Style::CLASS_SELECTOR;
+                formatted.append(className);
+
+                classList.push_back(formatted);
+            }
+
+            for (const StyleRuleset& source : m_styleFile->getRulesets())
+            {
+                if (source.isEmpty())
+                {
+                    continue;
+                }
+
+                for (const String& selector : source.selectors)
+                {
+                    if (selector.equals(Style::INCLUSIVE_SELECTOR))
+                    {
+                        addStyleProperties(source.properties);
+
+                        continue;
+                    }
+
+                    if (!tag.isEmpty())
+                    {
+                        if (selector.equals(tag))
+                        {
+                            addStyleProperties(source.properties);
+
+                            continue;
+                        }
+                    }
+
+                    if (!id.isEmpty())
+                    {
+                        if (id.equals(selector))
+                        {
+                            addStyleProperties(source.properties);
+
+                            continue;
+                        }
+                    }
+
+                    if (!classList.empty())
+                    {
+                        for (const String& className : classList)
+                        {
+                            if (className.equals(selector))
+                            {
+                                addStyleProperties(source.properties);
+
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         void Component::refreshSize()

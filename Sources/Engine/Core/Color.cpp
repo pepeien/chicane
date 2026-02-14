@@ -38,6 +38,66 @@ namespace Chicane
             return inValue.a > 0.0f;
         }
 
+        String normalizeColor(const String& inValue)
+        {
+            String result;
+            String current;
+            int    depth = 0;
+
+            auto flush = [&](String token)
+            {
+                token = token.trim();
+
+                if (token.isEmpty())
+                {
+                    return;
+                }
+
+                if (token.startsWith(RGB_KEYWORD))
+                {
+                    std::uint32_t start = token.firstOf('(') + 1;
+                    std::uint32_t end   = token.lastOf(')');
+
+                    result.append(normalizeColor(token.substr(start, end - start)));
+                }
+                else
+                {
+                    result.append(token);
+                }
+
+                result.append(',');
+            };
+
+            for (char character : inValue)
+            {
+                if (character == '(')
+                {
+                    depth++;
+                }
+                else if (character == ')')
+                {
+                    depth--;
+                }
+
+                if (character == ',' && depth == 0)
+                {
+                    flush(current);
+
+                    current = "";
+                }
+                else
+                {
+                    current += character;
+                }
+            }
+
+            flush(current);
+
+            result.popBack();
+
+            return result;
+        }
+
         Rgba toRgba(const String& inValue)
         {
             if (inValue.startsWith(HEX_KEYWORD))
@@ -72,34 +132,40 @@ namespace Chicane
                 const std::uint32_t start = inValue.firstOf("(") + 1;
                 const std::uint32_t end   = inValue.lastOf(")");
 
-                const String color = inValue.substr(start, end - start);
+                const String color = normalizeColor(inValue.substr(start, end - start));
 
-                if (g_colors.find(color) == g_colors.end())
+                if (g_colors.find(color) != g_colors.end())
                 {
-                    const std::vector<String> values = color.split(",");
-
-                    for (const String& value : values)
-                    {
-                        if (!value.isNaN())
-                        {
-                            continue;
-                        }
-
-                        return g_colors.at(HEX_COLOR_TRANSPARENT);
-                    }
-
-                    Rgba result = Rgba(
-                        std::stoi(values.at(0).toStandard()),
-                        std::stoi(values.at(1).toStandard()),
-                        std::stoi(values.at(2).toStandard()),
-                        values.size() < 4 ? 255U : std::stoi(values.at(3).toStandard())
-                    );
-                    g_colors.insert(std::make_pair(color, result));
-
-                    return result;
+                    return g_colors.at(color);
                 }
 
-                return g_colors.at(color);
+                std::vector<String> values = color.split(',');
+
+                if (values.size() < 3)
+                {
+                    return g_colors.at(HEX_COLOR_TRANSPARENT);
+                }
+
+                for (const String& value : values)
+                {
+                    if (!value.isNaN())
+                    {
+                        continue;
+                    }
+
+                    return g_colors.at(HEX_COLOR_TRANSPARENT);
+                }
+
+                Rgba result = Rgba(
+                    std::stoi(values.at(0).toStandard()),
+                    std::stoi(values.at(1).toStandard()),
+                    std::stoi(values.at(2).toStandard()),
+                    255U * (values.size() < 4 ? 1.0f : std::stof(values.at(3).toStandard()))
+                );
+
+                g_colors.insert(std::make_pair(color, result));
+
+                return result;
             }
 
             if (g_colors.find(inValue) == g_colors.end())

@@ -10,92 +10,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
-        {
-            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
-        }
-
-        StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
-        {
-            if (inFilePath.empty())
-            {
-                return {};
-            }
-
-            const String fileExtension = inFilePath.filename().extension().string();
-
-            if (!fileExtension.endsWith(Style::FILE_EXTENSION_NAME))
-            {
-                return {};
-            }
-
-            return parseSources(FileSystem::readString(inFilePath));
-        }
-
-        StyleSource::List Style::parseSources(const String& inData)
-        {
-            String data = inData;
-            data.erase(std::remove(data.begin(), data.end(), '\n'), data.cend());
-            data.erase(std::remove(data.begin(), data.end(), '\r'), data.cend());
-
-            const std::vector<String> styles = data.split('}');
-
-            StyleSource::List result = {};
-
-            for (const String& style : styles)
-            {
-                const std::vector<String> splittedStyle = style.trim().split('{');
-
-                if (splittedStyle.size() < 2)
-                {
-                    continue;
-                }
-
-                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
-
-                for (String& selector : selectors)
-                {
-                    selector = selector.trim();
-                }
-
-                result.emplace_back(selectors, parseSource(splittedStyle.at(1).trim()));
-            }
-
-            return result;
-        }
-
-        StyleSource::Map Style::parseSource(const String& inData)
-        {
-            std::vector<String> blocks = inData.split(';');
-
-            StyleSource::Map result = {};
-
-            for (const String& block : blocks)
-            {
-                const std::vector<String> splittedBlock = block.trim().split(':');
-
-                if (splittedBlock.size() < 2)
-                {
-                    continue;
-                }
-
-                const String key   = splittedBlock.at(0).trim();
-                const String value = splittedBlock.at(1).trim();
-
-                if (result.find(key) != result.end())
-                {
-                    result[key] = value;
-
-                    continue;
-                }
-
-                result.insert(std::make_pair(key, value));
-            }
-
-            return result;
-        }
-
-        Style::Style(const StyleSource::Map& inProperties, Component* inParent)
+        Style::Style(const StyleRuleset::Properties& inProperties, Component* inParent)
             : Style()
         {
             setParent(inParent);
@@ -234,7 +149,7 @@ namespace Chicane
             return position.get() == inValue;
         }
 
-        void Style::setProperties(const StyleSource::Map& inProperties)
+        void Style::setProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(DISPLAY_ATTRIBUTE_NAME) != inProperties.end())
             {
@@ -317,7 +232,7 @@ namespace Chicane
             return m_parent != nullptr;
         }
 
-        void Style::setParent(Component* inComponent)
+        void Style::setParent(const Component* inComponent)
         {
             if (m_parent == inComponent)
             {
@@ -436,18 +351,12 @@ namespace Chicane
 
                 result.append(keyword);
                 result.append(FUNCTION_PARAMS_OPENING);
-
                 for (const String& param : params)
                 {
                     result.append(parseText(param.trim()));
                     result.append(",");
                 }
-
-                if (result.endsWith(","))
-                {
-                    result.popBack();
-                }
-
+                result.popBack();
                 result.append(FUNCTION_PARAMS_CLOSING);
             }
             else
@@ -500,6 +409,20 @@ namespace Chicane
             return parseNumber(value);
         }
 
+        String Style::parseReference(const String& inValue) const
+        {
+            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
+            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
+
+            String result = "";
+            result.append(REFERENCE_VALUE_OPENING);
+            result.append(inValue.substr(start, end - start));
+            result.append(REFERENCE_VALUE_CLOSING);
+            result.append(inValue.substr(end + 1));
+
+            return result;
+        }
+
         String Style::parseText(const String& inValue) const
         {
             if (!hasParent())
@@ -509,9 +432,14 @@ namespace Chicane
 
             String value = inValue.trim();
 
-            if (value.startsWith(VARIABLE_KEYWORD))
+            if (value.startsWith(VARIABLE_KEYWORD) && m_parent->hasStyleFile())
             {
-                value = variableToReference(value);
+                value = parseText(m_parent->getStyleFile()->getVariable(value.substr(1)));
+            }
+
+            if (value.startsWith(REFERENCE_KEYWORD))
+            {
+                value = parseReference(value);
             }
 
             return m_parent->parseText(value);
@@ -705,30 +633,6 @@ namespace Chicane
             {
                 return 0.0f;
             }
-        }
-
-        String variableToReference(const String& inValue)
-        {
-            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
-
-            String reference = "";
-            reference.append(REFERENCE_VALUE_OPENING);
-            reference.append(inValue.substr(start, end - start));
-            reference.append(REFERENCE_VALUE_CLOSING);
-            reference.append(inValue.substr(end + 1));
-
-            return reference;
-        }
-
-        String colorToReference(const String& inValue)
-        {
-            if (inValue.startsWith(Style::VARIABLE_KEYWORD))
-            {
-                return variableToReference(inValue);
-            }
-
-            return inValue;
         }
 
         std::vector<String> splitOneliner(const String& inValue)

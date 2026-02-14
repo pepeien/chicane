@@ -15,7 +15,7 @@ namespace Chicane
             direction.refresh();
         }
 
-        void StyleFlex::setProperties(const StyleSource::Map& inProperties)
+        void StyleFlex::setProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(Style::FLEX_DIRECTION_ATTRIBUTE_NAME) != inProperties.end())
             {

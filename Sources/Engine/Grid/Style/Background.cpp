@@ -17,7 +17,7 @@ namespace Chicane
             image.refresh();
         }
 
-        void StyleBackground::setProperties(const StyleSource::Map& inProperties)
+        void StyleBackground::setProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(Style::BACKGROUND_COLOR_ATTRIBUTE_NAME) != inProperties.end())
             {

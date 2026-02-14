@@ -23,12 +23,12 @@ namespace Editor
         m_controller->bindEvent(
             Chicane::Input::MouseButton::Left,
             Chicane::Input::Status::Released,
-            [&]() { Chicane::Application::getInstance().getWindow()->focus(); }
+            []() { Chicane::Application::getInstance().getWindow()->focus(); }
         );
         m_controller->bindEvent(
             Chicane::Input::MouseButton::Right,
             Chicane::Input::Status::Released,
-            [&]() { Chicane::Application::getInstance().getWindow()->blur(); }
+            []() { Chicane::Application::getInstance().getWindow()->blur(); }
         );
 
         // Keyboard

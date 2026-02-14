@@ -6,18 +6,18 @@ namespace Chicane
 {
     namespace Log
     {
-        static constexpr inline const char* LOG_COLOR_START = "\33[";
-        static constexpr inline const char* LOG_COLOR_END   = "\33[0m\n";
+        static constexpr inline const char* COLOR_START = "\33[";
+        static constexpr inline const char* COLOR_END   = "\33[0m\n";
 
-        static constexpr inline const std::uint32_t MAX_LOG_COUNT = 500;
+        static constexpr inline const std::uint32_t MAX_HISTORY_COUNT = 500;
 
         static inline std::unordered_map<String, String> g_colors = {};
 
-        static inline List g_logs = {};
+        static inline List g_history = {};
 
         const List& getLogs()
         {
-            return g_logs;
+            return g_history;
         }
 
         void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
@@ -42,16 +42,16 @@ namespace Chicane
 
             if (IS_DEBUGGING)
             {
-                std::cout << LOG_COLOR_START << terminalColor << message << LOG_COLOR_END;
+                std::cout << COLOR_START << terminalColor << message << COLOR_END;
             }
 
             // History
-            if (g_logs.size() > MAX_LOG_COUNT)
+            if (g_history.size() > MAX_HISTORY_COUNT)
             {
-                g_logs.pop_front();
+                g_history.pop_front();
             }
 
-            g_logs.emplace_back(message, color);
+            g_history.emplace_back(message, color);
         }
 
         void info(const String& inMessage)

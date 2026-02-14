@@ -20,24 +20,16 @@ namespace Chicane
         public:
             View(const String& inSource);
 
-        protected:
-            virtual void onActivation() { return; }
-            virtual void onDeactivation() { return; }
-
-        protected:
-            void onAdopted(Component* inChild) override;
-
         public:
-            // Lifecycle
-            void activate();
-            void deactivate();
-
             // Window
             void setWindow(Window* inWindow);
 
             // Children
-            std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
             std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
+
+            // Styling
+            const StyleFile& getStyleFile() const;
+            void importStyleFile(const FileSystem::Path& inValue);
 
         protected:
             // Window
@@ -52,7 +44,7 @@ namespace Chicane
             String                  m_path;
 
             // Styling
-            StyleSource::List       m_styles;
+            StyleFile               m_styles;
         };
     }
 }

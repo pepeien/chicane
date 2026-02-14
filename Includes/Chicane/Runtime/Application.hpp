@@ -116,12 +116,10 @@ namespace Chicane
         {
             if (hasView())
             {
-                m_view->deactivate();
                 m_view.reset();
             }
 
             m_view = std::make_unique<T>(inParams...);
-            m_view->activate();
 
             if (hasRenderer())
             {
@@ -155,13 +153,15 @@ namespace Chicane
         // Lifecycle
         void render();
 
+        // Scene
         void initSceneThread();
         void shutdownSceneThread();
         void tickScene();
         void buildSceneCommands();
         void renderScene();
 
-        void initViewThread();
+        // Grid
+        void initView();
         void shutdownViewThread();
         void tickView();
         void buildViewCommands();

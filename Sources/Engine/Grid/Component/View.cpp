@@ -51,27 +51,12 @@ namespace Chicane
 
             m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
 
-            m_styles = Style::parseSources(node);
-
             m_root   = this;
             m_parent = this;
 
+            importStyleFile(Xml::getAttribute(Style::ATTRIBUTE_NAME, node).as_string());
+
             addChildren(node);
-        }
-
-        void View::onAdopted(Component* inComponent)
-        {
-            inComponent->setStyle(m_styles);
-        }
-
-        void View::activate()
-        {
-            onActivation();
-        }
-
-        void View::deactivate()
-        {
-            onDeactivation();
         }
 
         void View::setWindow(Window* inWindow)
@@ -88,33 +73,10 @@ namespace Chicane
             m_windowEventSubscription = inWindow->watchEvent([this](WindowEvent inEvent) { handle(inEvent); });
         }
 
-        std::vector<Component*> View::getFlatChildren(const Component* inParent) const
-        {
-            const Component* parent = inParent;
-
-            if (!parent)
-            {
-                parent = this;
-            }
-
-            std::vector<Component*> result;
-
-            for (Component* child : parent->getChildren())
-            {
-                result.push_back(child);
-
-                std::vector<Component*> subChildren = getFlatChildren(child);
-
-                result.insert(result.end(), subChildren.begin(), subChildren.end());
-            }
-
-            return result;
-        }
-
         std::vector<Component*> View::getChildrenOn(const Vec2& inLocation) const
         {
             std::vector<Component*> contenders = {};
-            for (Component* child : getFlatChildren())
+            for (Component* child : getChildrenFlat())
             {
                 if (!child->isDrawable())
                 {
@@ -137,6 +99,18 @@ namespace Chicane
             );
 
             return contenders;
+        }
+
+        const StyleFile& View::getStyleFile() const
+        {
+            return m_styles;
+        }
+
+        void View::importStyleFile(const FileSystem::Path& inValue)
+        {
+            m_styles.parse(inValue);
+
+            setStyleFile(&m_styles);
         }
 
         void View::handle(const WindowEvent& inEvent)

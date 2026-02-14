@@ -13,8 +13,19 @@ namespace Chicane
         using Rgba = Vec<4, std::uint8_t>;
 
         // Keyword
-        static constexpr inline const char  HEX_KEYWORD  = '#';
-        static constexpr inline const char* RGB_KEYWORD  = "rgb";
+        /*
+         * Template 1: "#RRGGBB"
+         * Template 2: "#RRGGBBAA"
+         */
+        static constexpr inline const char  HEX_KEYWORD = '#';
+        /*
+         * Template 1: "rgb(r,g,b)"
+         */
+        static constexpr inline const char* RGB_KEYWORD = "rgb";
+        /*
+         * Template 1: "rgba(r,g,b,a)"
+         * Template 2: "rgba(rgb(r,g,b),a)"
+         */
         static constexpr inline const char* RGBA_KEYWORD = "rgba";
 
         // Hex
@@ -42,6 +53,7 @@ namespace Chicane
         CHICANE_CORE bool isVisible(const String& inValue);
         CHICANE_CORE bool isVisible(const Rgba& inValue);
 
+        CHICANE_CORE String normalizeColor(const String& inValue);
         CHICANE_CORE Rgba toRgba(const String& inValue);
     }
 }

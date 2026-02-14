@@ -60,7 +60,7 @@ namespace Chicane
         m_bIsRunning = true;
 
         initSceneThread();
-        initViewThread();
+        initView();
 
         while (m_window->run())
         {
@@ -272,8 +272,6 @@ namespace Chicane
                 }
             }
         );
-
-        Box::loadAllByExtension(Box::AssetHeader::getTypeExtension(Box::AssetType::Font));
     }
 
     void Application::initKerb()
@@ -441,8 +439,43 @@ namespace Chicane
         }
     }
 
-    void Application::initViewThread()
+    void Application::initView()
     {
+        watchView(
+            [&](Grid::View* inView)
+            {
+                if (!inView)
+                {
+                    return;
+                }
+
+                for (const Grid::StyleImport& import : inView->getStyleFile().getImports())
+                {
+                    if (import.location.type == Grid::StyleLocationType::URL)
+                    {
+                        continue;
+                    }
+
+                    switch (import.type)
+                    {
+                    case Grid::StyleImportType::Style:
+                        inView->importStyleFile(FileSystem::Path(import.location.value.toStandard()));
+
+                        break;
+
+                    case Grid::StyleImportType::Font:
+                    case Grid::StyleImportType::Texture:
+                        Box::load(FileSystem::Path(import.location.value.toStandard()));
+
+                        break;
+
+                    default:
+                        break;
+                    };
+                }
+            }
+        );
+
         m_viewThread = std::thread(&Application::tickView, this);
     }
 

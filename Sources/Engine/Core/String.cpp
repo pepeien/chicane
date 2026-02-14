@@ -214,43 +214,6 @@ namespace Chicane
         return m_value.find(inValue.toStandard());
     }
 
-    std::vector<String> String::split(char inDelimeter) const
-    {
-        return split(String(1, inDelimeter));
-    }
-
-    std::vector<String> String::split(const String& inDelimeter) const
-    {
-        if (size() == 0 || inDelimeter.size() == 0)
-        {
-            return {};
-        }
-
-        std::vector<String> result = {};
-
-        String value = *this;
-
-        size_t position = 0;
-
-        String block = "";
-
-        while ((position = value.find(inDelimeter)) != std::string::npos)
-        {
-            block = value.substr(0, position);
-
-            result.push_back(block);
-
-            value.erase(0, position + inDelimeter.size());
-        }
-
-        if (value.size() > 0)
-        {
-            result.push_back(value);
-        }
-
-        return result;
-    }
-
     String String::getBetween(char inOpening, char inClosing) const
     {
         const std::size_t start = firstOf(inOpening) + 1;
@@ -351,6 +314,11 @@ namespace Chicane
         m_value.push_back(inValue);
     }
 
+    void String::erase(char inValue)
+    {
+        m_value.erase(std::remove(m_value.begin(), m_value.end(), inValue), m_value.cend());
+    }
+
     void String::erase(std::string::const_iterator inStart, std::string::const_iterator inEnd)
     {
         m_value.erase(inStart, inEnd);
@@ -361,9 +329,19 @@ namespace Chicane
         m_value.erase(inStart, inEnd);
     }
 
+    void String::popFront()
+    {
+        if (size() == 0)
+        {
+            return;
+        }
+
+        erase(0, 1);
+    }
+
     void String::popBack()
     {
-        if (isEmpty())
+        if (size() == 0)
         {
             return;
         }

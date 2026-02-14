@@ -32,12 +32,12 @@ namespace Chicane
         }
 
         void StyleCorners::setProperties(
-            const StyleSource::Map& inProperties,
-            const String&           inOnelineAttributeName,
-            const String&           inTopAttributeName,
-            const String&           inBottomAttributeName,
-            const String&           inLeftAttributeName,
-            const String&           inRightAttributeName
+            const StyleRuleset::Properties& inProperties,
+            const String&                   inOnelineAttributeName,
+            const String&                   inTopAttributeName,
+            const String&                   inBottomAttributeName,
+            const String&                   inLeftAttributeName,
+            const String&                   inRightAttributeName
         )
         {
             if (inProperties.find(inOnelineAttributeName) != inProperties.end())

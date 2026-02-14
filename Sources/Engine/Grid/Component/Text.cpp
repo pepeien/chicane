@@ -12,7 +12,7 @@ namespace Chicane
         {
             setText(inNode.text().as_string());
 
-            setStyle({
+            addStyleProperties({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
                 {Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW},
                 {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         },

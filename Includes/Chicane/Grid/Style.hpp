@@ -12,9 +12,10 @@
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
+#include "Chicane/Grid/Style/Import.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
-#include "Chicane/Grid/Style/Source.hpp"
+#include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
 {
@@ -39,14 +40,21 @@ namespace Chicane
             static constexpr inline const char*   VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
             static constexpr inline const char*   VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
 
-            // Special keywords
-            static constexpr inline const char*   CALCULATION_KEYWORD = "calc";
-            static constexpr inline const char*   VARIABLE_KEYWORD    = "var";
-            static constexpr inline const char    HEX_KEYWORD         = '#';
-            static constexpr inline const char*   RGB_KEYWORD         = "rgb";
-            static constexpr inline const char*   RGBA_KEYWORD        = "rgba";
+            // Reference
+            static constexpr inline const char*   REFERENCE_KEYWORD = "ref";
+
+            // Import
+            static constexpr inline const char*   IMPORT_KEYWORD = "@import";
+            static constexpr inline const char*   URL_KEYWORD    = "url";
+
+            // Ruleset
+            static constexpr inline const char    COMMAND_ENDING   = ';';
+            static constexpr inline const char    VARIABLE_KEYWORD = '$';
+            static constexpr inline const char    RULESET_OPENING  = '{';
+            static constexpr inline const char    RULESET_CLOSING  = '}';
 
             // Calculation
+            static constexpr inline const char*   CALCULATION_KEYWORD      = "calc";
             static constexpr inline const char    CALCULATION_OPERATOR_SUM = '+';
             static constexpr inline const char    CALCULATION_OPERATOR_SUB = '-';
             static constexpr inline const char    CALCULATION_OPERATOR_MUL = '*';
@@ -61,9 +69,12 @@ namespace Chicane
             static constexpr inline const char  CLASS_SEPARATOR    = ' ';
 
             // Selectors
-            static constexpr inline const char  ID_SELECTOR        = '#';
-            static constexpr inline const char  CLASS_SELECTOR     = '.';
-            static constexpr inline const char  INCLUSIVE_SELECTOR = '*';
+            static constexpr inline const char  ID_SELECTOR              = '#';
+            static constexpr inline const char  CLASS_SELECTOR           = '.';
+            static constexpr inline const char  INCLUSIVE_SELECTOR       = '*';
+            static constexpr inline const char  SELECTOR_INHERITANCE     = '&';
+            static constexpr inline const char  SELECTOR_SEPARATOR_COMMA = ',';
+            static constexpr inline const char  SELECTOR_SEPARATOR_SPACE = ' ';
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
@@ -97,6 +108,10 @@ namespace Chicane
             static constexpr inline const char* BACKGROUND_IMAGE_DEFAULT_COLOR  = "";
 
             // Color
+            static constexpr inline const char  HEX_KEYWORD  = '#';
+            static constexpr inline const char* RGB_KEYWORD  = "rgb";
+            static constexpr inline const char* RGBA_KEYWORD = "rgba";
+
             static constexpr inline const char* FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
             static constexpr inline const char* FOREGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_WHITE;
 
@@ -161,24 +176,17 @@ namespace Chicane
             static constexpr inline const char* ALIGNMENT_TYPE_END       = "end";
 
         public:
-            static StyleSource::List parseSources(const pugi::xml_node& inNode);
-            static StyleSource::List parseSources(const FileSystem::Path& inPath);
-            static StyleSource::List parseSources(const String& inData);
-
-            static StyleSource::Map parseSource(const String& inData);
-
-        public:
-            Style(const StyleSource::Map& inProperties, Component* inParent);
+            Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
 
         public:
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
 
-            void setProperties(const StyleSource::Map& inProperties);
+            void setProperties(const StyleRuleset::Properties& inProperties);
 
             bool hasParent() const;
-            void setParent(Component* inComponent);
+            void setParent(const Component* inComponent);
 
             void refresh();
 
@@ -200,6 +208,7 @@ namespace Chicane
 
             Color::Rgba parseColor(const String& inValue) const;
             float parseSize(const String& inValue, StyleDirection inDirection) const;
+            String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
 
             float parseCalculation(const String& inValue, StyleDirection inDirection) const;
@@ -222,6 +231,9 @@ namespace Chicane
             float parseNumber(const String& inValue) const;
 
         public:
+            // Keywords
+            StyleImport::List             imports;
+
             // Visiblity
             StyleProperty<StyleDisplay>   display;
             StyleProperty<float>          zIndex; // [0.0f, 999.9f]
@@ -252,11 +264,8 @@ namespace Chicane
             StyleProperty<float>          letterSpacing;
 
         private:
-            Component* m_parent;
+            const Component* m_parent;
         };
-
-        CHICANE_GRID String variableToReference(const String& inValue);
-        CHICANE_GRID String colorToReference(const String& inValue);
 
         CHICANE_GRID std::vector<String> splitOneliner(const String& inValue);
     }
