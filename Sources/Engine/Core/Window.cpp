@@ -286,7 +286,7 @@ namespace Chicane
             emmitError("The window icon [ " + inPath.string() + " ] doesn't exists");
         }
 
-        const Image image = Image(inPath);
+        const Image image(inPath, false);
 
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
             image.getWidth(),

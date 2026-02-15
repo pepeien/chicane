@@ -72,6 +72,8 @@ namespace Chicane
         template <class T = Scene, typename... Params>
         void setScene(Params... inParams)
         {
+            std::lock_guard lock(m_sceneMutex);
+
             if (hasScene())
             {
                 m_scene->deactivate();
@@ -104,7 +106,7 @@ namespace Chicane
         template <class T = Scene>
         T* getView()
         {
-            if (!hasScene())
+            if (!hasView())
             {
                 return nullptr;
             }
@@ -114,17 +116,14 @@ namespace Chicane
         template <class T, typename... Params>
         void setView(Params... inParams)
         {
+            std::lock_guard lock(m_viewMutex);
+
             if (hasView())
             {
                 m_view.reset();
             }
 
             m_view = std::make_unique<T>(inParams...);
-
-            if (hasRenderer())
-            {
-                m_view->setSize(m_renderer->getResolution());
-            }
 
             m_viewObservable.next(m_view.get());
         }
@@ -154,15 +153,15 @@ namespace Chicane
         void render();
 
         // Scene
-        void initSceneThread();
-        void shutdownSceneThread();
+        void initScene();
+        void shutdownScene();
         void tickScene();
         void buildSceneCommands();
         void renderScene();
 
         // Grid
         void initView();
-        void shutdownViewThread();
+        void shutdownView();
         void tickView();
         void buildViewCommands();
         void renderView();

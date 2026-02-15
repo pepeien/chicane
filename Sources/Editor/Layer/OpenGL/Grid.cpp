@@ -9,12 +9,7 @@ namespace Editor
 {
     OpenGLLGrid::OpenGLLGrid()
         : Layer("Editor_Scene_Grid")
-    {
-        Chicane::Renderer::Viewport viewport;
-        viewport.size = {800, 600};
-
-        setViewport(viewport);
-    }
+    {}
 
     OpenGLLGrid::~OpenGLLGrid()
     {

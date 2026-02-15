@@ -58,8 +58,7 @@ namespace Chicane
         }
 
         m_bIsRunning = true;
-
-        initSceneThread();
+        initScene();
         initView();
 
         while (m_window->run())
@@ -72,9 +71,8 @@ namespace Chicane
         }
 
         m_bIsRunning = false;
-
-        shutdownSceneThread();
-        shutdownViewThread();
+        shutdownScene();
+        shutdownView();
     }
 
     void Application::render()
@@ -123,7 +121,7 @@ namespace Chicane
 
     bool Application::hasScene()
     {
-        return m_scene && m_scene.get() != nullptr;
+        return !!m_scene;
     }
 
     Application::SceneSubscription Application::watchScene(
@@ -137,7 +135,7 @@ namespace Chicane
 
     bool Application::hasView()
     {
-        return m_view != nullptr;
+        return !!m_view;
     }
 
     Application::ViewSubscription Application::watchView(
@@ -232,15 +230,6 @@ namespace Chicane
 
         m_renderer = std::make_unique<Renderer::Instance>();
         m_renderer->init(inSettings);
-        m_renderer->watchResolution(
-            [&](const Vec<2, std::uint32_t>& inResolution)
-            {
-                if (hasView())
-                {
-                    m_view->setSize(inResolution);
-                }
-            }
-        );
     }
 
     void Application::initBox()
@@ -279,12 +268,12 @@ namespace Chicane
         Kerb::init();
     }
 
-    void Application::initSceneThread()
+    void Application::initScene()
     {
         m_sceneThread = std::thread(&Application::tickScene, this);
     }
 
-    void Application::shutdownSceneThread()
+    void Application::shutdownScene()
     {
         if (m_sceneThread.joinable())
         {
@@ -323,8 +312,6 @@ namespace Chicane
         std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
         Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
         commands.clear();
-
-        commands.reserve(m_scene->getComponents().size());
 
         for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
         {
@@ -479,7 +466,7 @@ namespace Chicane
         m_viewThread = std::thread(&Application::tickView, this);
     }
 
-    void Application::shutdownViewThread()
+    void Application::shutdownView()
     {
         if (m_viewThread.joinable())
         {
@@ -499,6 +486,8 @@ namespace Chicane
             }
 
             {
+                m_view->setSize(m_renderer->getResolution());
+
                 m_view->tick(m_telemetry.delta);
 
                 buildViewCommands();

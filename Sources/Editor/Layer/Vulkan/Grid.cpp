@@ -14,12 +14,7 @@ namespace Editor
     VulkanLGrid::VulkanLGrid()
         : Layer("Editor_Scene_Grid"),
           m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f), vk::ClearDepthStencilValue(1.0f, 0)})
-    {
-        Chicane::Renderer::Viewport viewport;
-        viewport.size = {800, 600};
-
-        setViewport(viewport);
-    }
+    {}
 
     bool VulkanLGrid::onInit()
     {
