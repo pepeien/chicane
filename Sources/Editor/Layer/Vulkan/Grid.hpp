@@ -8,7 +8,7 @@
 
 namespace Editor
 {
-    class VulkanLGrid : public Chicane::Renderer::Layer<>
+    class VulkanLGrid : public Chicane::Renderer::Layer
     {
     public:
         VulkanLGrid();
@@ -17,6 +17,7 @@ namespace Editor
         bool onInit() override;
         bool onDestroy() override;
         bool onRebuild() override;
+        void onResize(const Chicane::Vec<2, std::uint32_t>& inResolution) override;
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData = nullptr) override;
 
     private:

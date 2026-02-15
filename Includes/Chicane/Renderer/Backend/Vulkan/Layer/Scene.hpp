@@ -10,8 +10,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLScene : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLScene : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Scene";
+
         public:
             VulkanLScene();
             ~VulkanLScene();

@@ -9,7 +9,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLSceneShadow::OpenGLLSceneShadow()
-            : Layer("Engine_Scene_Shadow"),
+            : Layer(ID),
               m_viewport({})
         {
             m_viewport.size = Vec2(1024, 1024);
@@ -41,7 +41,8 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
+            Viewport viewport = getViewport();
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             glUseProgram(m_shaderProgram);
 

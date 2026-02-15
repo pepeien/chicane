@@ -5,7 +5,7 @@
 
 namespace Editor
 {
-    class OpenGLLGrid : public Chicane::Renderer::Layer<>
+    class OpenGLLGrid : public Chicane::Renderer::Layer
     {
     public:
         OpenGLLGrid();
@@ -13,6 +13,7 @@ namespace Editor
 
     public:
         bool onInit() override;
+        void onResize(const Chicane::Vec<2, std::uint32_t>& inResolution) override;
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData) override;
         void onCleanup() override;
 

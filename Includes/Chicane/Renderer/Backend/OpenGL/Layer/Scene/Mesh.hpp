@@ -7,8 +7,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneMesh : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLSceneMesh : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Scene_Mesh";
+
         public:
             OpenGLLSceneMesh();
             ~OpenGLLSceneMesh();

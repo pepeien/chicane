@@ -12,7 +12,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLScene::OpenGLLScene()
-            : Layer("Engine_Scene")
+            : Layer(ID)
         {}
 
         OpenGLLScene::~OpenGLLScene()
@@ -67,8 +67,6 @@ namespace Chicane
 
         void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
             glVertexArrayVertexBuffer(m_modelVertexArray, 0, m_modelVertexBuffer, 0, sizeof(Vertex));
@@ -175,9 +173,9 @@ namespace Chicane
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneSky>(settings);
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneShadow>(settings);
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneMesh>(settings);
+            m_backend->addLayer<OpenGLLSceneSky>(settings);
+            m_backend->addLayer<OpenGLLSceneShadow>(settings);
+            m_backend->addLayer<OpenGLLSceneMesh>(settings);
         }
     }
 }

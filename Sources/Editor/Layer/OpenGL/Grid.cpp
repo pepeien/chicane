@@ -3,12 +3,18 @@
 #include <GL/glew.h>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Renderer/Backend.hpp"
 
 namespace Editor
 {
     OpenGLLGrid::OpenGLLGrid()
-        : Layer<>("Editor_Scene_Grid")
-    {}
+        : Layer("Editor_Scene_Grid")
+    {
+        Chicane::Renderer::Viewport viewport;
+        viewport.size = {800, 600};
+
+        setViewport(viewport);
+    }
 
     OpenGLLGrid::~OpenGLLGrid()
     {
@@ -24,8 +30,20 @@ namespace Editor
         return true;
     }
 
+    void OpenGLLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
+    {
+        for (Layer* sceneLayer : m_backend->findLayers([](Chicane::Renderer::Layer* inLayer)
+                                                       { return inLayer->getId().contains("Engine_Scene"); }))
+        {
+            sceneLayer->setViewport(getViewport());
+        }
+    }
+
     void OpenGLLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
+        Chicane::Renderer::Viewport viewport = getViewport();
+        glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
+
         glUseProgram(m_shaderProgram);
 
         glEnable(GL_DEPTH_TEST);

@@ -20,10 +20,8 @@ namespace Chicane
     namespace Renderer
     {
         VulkanBackend::VulkanBackend()
-            : Backend<Frame>(),
-              swapchain({}),
-              viewport({}),
-              scissor(vk::Rect2D())
+            : Backend(),
+              swapchain({})
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -63,23 +61,6 @@ namespace Chicane
             Backend::onInit();
         }
 
-        void VulkanBackend::onResize(const Vec<2, std::uint32_t>& inResolution)
-        {
-            viewport.x        = 0.0f;
-            viewport.y        = 0.0f;
-            viewport.width    = inResolution.x;
-            viewport.height   = inResolution.y;
-            viewport.minDepth = 0.0f;
-            viewport.maxDepth = 1.0f;
-
-            scissor.offset.x      = 0U;
-            scissor.offset.y      = 0U;
-            scissor.extent.width  = static_cast<uint32_t>(viewport.width);
-            scissor.extent.height = static_cast<uint32_t>(viewport.height);
-
-            Backend::onResize(inResolution);
-        }
-
         void VulkanBackend::onLoad(const DrawTextureResource& inResources)
         {
             buildTextureData(inResources.getDraws());
@@ -106,7 +87,6 @@ namespace Chicane
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(acquire.value);
             nextImage.begin(inFrame);
-            renderViewport(nextImage.commandBuffer);
             renderLayers(inFrame, &nextImage);
             nextImage.end();
 
@@ -157,6 +137,30 @@ namespace Chicane
             }
 
             Backend::onHandle(inEvent);
+        }
+
+        vk::Viewport VulkanBackend::getViewport(Viewport inViewport) const
+        {
+            vk::Viewport result;
+            result.x        = 0.0f;
+            result.y        = 0.0f;
+            result.width    = inViewport.size.x;
+            result.height   = inViewport.size.y;
+            result.minDepth = 0.0f;
+            result.maxDepth = 1.0f;
+
+            return result;
+        }
+
+        vk::Rect2D VulkanBackend::getScissor(Viewport inViewport) const
+        {
+            vk::Rect2D result;
+            result.offset.x      = inViewport.position.x;
+            result.offset.y      = inViewport.position.y;
+            result.extent.width  = inViewport.size.x;
+            result.extent.height = inViewport.size.y;
+
+            return result;
         }
 
         void VulkanBackend::buildInstance()
@@ -269,15 +273,9 @@ namespace Chicane
             VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
         }
 
-        void VulkanBackend::renderViewport(const vk::CommandBuffer& inCommandBuffer)
-        {
-            inCommandBuffer.setViewport(0, 1, &viewport);
-            inCommandBuffer.setScissor(0, 1, &scissor);
-        }
-
         void VulkanBackend::buildLayers()
         {
-            ListPush<Layer<Frame>*> settings;
+            ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<VulkanLScene>(settings);

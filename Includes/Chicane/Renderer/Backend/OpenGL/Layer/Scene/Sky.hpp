@@ -7,8 +7,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneSky : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLSceneSky : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Scene_Sky";
+
         public:
             OpenGLLSceneSky();
             ~OpenGLLSceneSky();

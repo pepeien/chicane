@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLBackend : public Backend<Frame>
+        class CHICANE_RENDERER OpenGLBackend : public Backend
         {
         public:
             OpenGLBackend();

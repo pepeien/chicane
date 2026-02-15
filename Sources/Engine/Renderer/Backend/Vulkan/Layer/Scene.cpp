@@ -14,7 +14,7 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLScene::VulkanLScene()
-            : Layer("Engine_Scene")
+            : Layer(ID)
         {}
 
         VulkanLScene::~VulkanLScene()
@@ -124,14 +124,12 @@ namespace Chicane
 
         void VulkanLScene::buildLayers()
         {
-            VulkanBackend* backend = getBackend<VulkanBackend>();
-
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            backend->addLayer<VulkanLSceneSky>(settings);
-            backend->addLayer<VulkanLSceneShadow>(settings);
-            backend->addLayer<VulkanLSceneMesh>(settings);
+            m_backend->addLayer<VulkanLSceneSky>(settings);
+            m_backend->addLayer<VulkanLSceneShadow>(settings);
+            m_backend->addLayer<VulkanLSceneMesh>(settings);
         }
     }
 }

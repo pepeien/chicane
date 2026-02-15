@@ -16,7 +16,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanBackend : public Backend<Frame>
+        class CHICANE_RENDERER VulkanBackend : public Backend
         {
         public:
             VulkanBackend();
@@ -24,11 +24,14 @@ namespace Chicane
 
         protected:
             void onInit() override;
-            void onResize(const Vec<2, std::uint32_t>& inResolution) override;
             void onLoad(const DrawTextureResource& inResources) override;
             void onRender(const Frame& inFrame) override;
 
             void onHandle(const WindowEvent& inEvent) override;
+
+        public:
+            vk::Viewport getViewport(Viewport inViewport) const;
+            vk::Rect2D getScissor(Viewport inViewport) const;
 
         private:
             void buildInstance();
@@ -53,8 +56,6 @@ namespace Chicane
             void destroyCommandPool();
 
             void buildMainCommandBuffer();
-
-            void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
             void buildLayers();
 
@@ -81,10 +82,6 @@ namespace Chicane
 
             // Swap Chain
             VulkanSwapchainBundle                       swapchain;
-
-            // Viewport
-            vk::Viewport                                viewport;
-            vk::Rect2D                                  scissor;
 
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;

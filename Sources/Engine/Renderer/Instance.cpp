@@ -222,7 +222,7 @@ namespace Chicane
 #endif
 
             default:
-                m_backend = std::make_unique<Backend<>>();
+                m_backend = std::make_unique<Backend>();
 
                 break;
             }

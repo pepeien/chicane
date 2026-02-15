@@ -14,7 +14,7 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLSceneShadow::VulkanLSceneShadow()
-            : Layer("Engine_Scene_Shadow"),
+            : Layer(ID),
               m_clear({vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
@@ -56,17 +56,24 @@ namespace Chicane
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(VulkanLScene::ID);
 
             VulkanSwapchainImage image         = *((VulkanSwapchainImage*)inData);
             vk::CommandBuffer    commandBuffer = image.commandBuffer;
 
-            vk::RenderPassBeginInfo beginInfo = {};
-            beginInfo.renderPass              = m_graphicsPipeline.renderPass;
-            beginInfo.framebuffer             = image.getFramebuffer(m_id);
-            beginInfo.renderArea.extent       = backend->swapchain.extent;
-            beginInfo.clearValueCount         = static_cast<std::uint32_t>(m_clear.size());
-            beginInfo.pClearValues            = m_clear.data();
+            vk::Viewport viewport = backend->getViewport(getViewport());
+            commandBuffer.setViewport(0, 1, &viewport);
+
+            vk::Rect2D scissor = backend->getScissor(getViewport());
+            commandBuffer.setScissor(0, 1, &scissor);
+
+            vk::RenderPassBeginInfo beginInfo  = {};
+            beginInfo.renderPass               = m_graphicsPipeline.renderPass;
+            beginInfo.framebuffer              = image.getFramebuffer(m_id);
+            beginInfo.renderArea.extent.width  = viewport.width;
+            beginInfo.renderArea.extent.height = viewport.height;
+            beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
+            beginInfo.pClearValues             = m_clear.data();
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
             // Pipeline
@@ -177,7 +184,7 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(VulkanLScene::ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
@@ -241,9 +248,9 @@ namespace Chicane
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
                 .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
-                .addViewport(backend->viewport)
+                .addViewport(backend->getViewport(getViewport()))
                 .addDynamicState(vk::DynamicState::eViewport)
-                .addScissor(backend->scissor)
+                .addScissor(backend->getScissor(getViewport()))
                 .addDynamicState(vk::DynamicState::eScissor)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .setDepthStencil(depth)
@@ -257,7 +264,8 @@ namespace Chicane
 
         void VulkanLSceneShadow::initFramebuffers()
         {
-            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanBackend* backend  = getBackend<VulkanBackend>();
+            vk::Viewport   viewport = backend->getViewport(getViewport());
 
             for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
@@ -265,7 +273,8 @@ namespace Chicane
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent        = backend->swapchain.extent;
+                createInfo.extent.width  = viewport.width;
+                createInfo.extent.height = viewport.height;
                 createInfo.attachments.push_back(image.shadowImage.view);
 
                 image.addBuffer(createInfo);

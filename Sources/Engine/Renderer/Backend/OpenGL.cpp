@@ -17,7 +17,7 @@ namespace Chicane
         static SDL_GLContext g_context;
 
         OpenGLBackend::OpenGLBackend()
-            : Backend<Frame>()
+            : Backend()
         {}
 
         OpenGLBackend::~OpenGLBackend()
@@ -176,7 +176,7 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            ListPush<Layer<Frame>*> settings;
+            ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<OpenGLLScene>(settings);

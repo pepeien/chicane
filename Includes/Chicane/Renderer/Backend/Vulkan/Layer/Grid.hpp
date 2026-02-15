@@ -12,8 +12,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLGrid : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLGrid : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Grid";
+
         public:
             VulkanLGrid();
             ~VulkanLGrid();

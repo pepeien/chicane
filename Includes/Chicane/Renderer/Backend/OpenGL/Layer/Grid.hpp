@@ -7,8 +7,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLGrid : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLGrid : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Grid";
+
         public:
             OpenGLLGrid();
             ~OpenGLLGrid();

@@ -9,7 +9,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLGrid::OpenGLLGrid()
-            : Layer("Engine_Grid")
+            : Layer(ID)
         {}
 
         OpenGLLGrid::~OpenGLLGrid()
@@ -62,7 +62,8 @@ namespace Chicane
 
         void OpenGLLGrid::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
+            Viewport viewport = getViewport();
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             glUseProgram(m_shaderProgram);
 

@@ -11,8 +11,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLSceneSky : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLSceneSky : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Scene_Sky";
+
         public:
             VulkanLSceneSky();
             ~VulkanLSceneSky();

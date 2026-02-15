@@ -93,8 +93,8 @@ namespace Chicane
             // Backend
             bool hasBackend() const;
 
-            template <typename Target = Layer<>, typename... Params>
-            inline void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
+            template <typename Target = Layer, typename... Params>
+            inline void addBackendLayer(const ListPush<Layer*>& inSettings, Params... inParams)
             {
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }
@@ -112,20 +112,20 @@ namespace Chicane
 
         private:
             // Settings
-            Vec<2, std::uint32_t>      m_resolution;
-            ResolutionObservable       m_resolutionObservable;
+            Vec<2, std::uint32_t>    m_resolution;
+            ResolutionObservable     m_resolutionObservable;
 
             // Frame
-            std::vector<Frame>         m_frames;
-            std::uint32_t              m_currentFrame;
+            std::vector<Frame>       m_frames;
+            std::uint32_t            m_currentFrame;
 
             // Draw
-            DrawPolyResource::Map      m_polyResources;
-            DrawTextureResource        m_textureResources;
-            DrawSky                    m_skyResource;
+            DrawPolyResource::Map    m_polyResources;
+            DrawTextureResource      m_textureResources;
+            DrawSky                  m_skyResource;
 
             // Backend
-            std::unique_ptr<Backend<>> m_backend;
+            std::unique_ptr<Backend> m_backend;
         };
     }
 }

@@ -8,8 +8,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer
         {
+        public:
+            static constexpr inline const char* ID = "Engine_Scene_Shadow";
+
         public:
             OpenGLLSceneShadow();
             ~OpenGLLSceneShadow();

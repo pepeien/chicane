@@ -12,9 +12,14 @@
 namespace Editor
 {
     VulkanLGrid::VulkanLGrid()
-        : Layer<>("Editor_Scene_Grid"),
+        : Layer("Editor_Scene_Grid"),
           m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f), vk::ClearDepthStencilValue(1.0f, 0)})
-    {}
+    {
+        Chicane::Renderer::Viewport viewport;
+        viewport.size = {800, 600};
+
+        setViewport(viewport);
+    }
 
     bool VulkanLGrid::onInit()
     {
@@ -41,6 +46,15 @@ namespace Editor
         return true;
     }
 
+    void VulkanLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
+    {
+        for (Layer* sceneLayer : m_backend->findLayers([](Chicane::Renderer::Layer* inLayer)
+                                                       { return inLayer->getId().contains("Engine_Scene"); }))
+        {
+            sceneLayer->setViewport(getViewport());
+        }
+    }
+
     void VulkanLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
         Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
@@ -48,12 +62,19 @@ namespace Editor
         Chicane::Renderer::VulkanSwapchainImage image         = *((Chicane::Renderer::VulkanSwapchainImage*)inData);
         vk::CommandBuffer                       commandBuffer = image.commandBuffer;
 
-        vk::RenderPassBeginInfo beginInfo = {};
-        beginInfo.renderPass              = m_graphicsPipeline.renderPass;
-        beginInfo.framebuffer             = image.getFramebuffer(m_id);
-        beginInfo.renderArea.extent       = backend->swapchain.extent;
-        beginInfo.clearValueCount         = static_cast<std::uint32_t>(m_clear.size());
-        beginInfo.pClearValues            = m_clear.data();
+        vk::Viewport viewport = backend->getViewport(getViewport());
+        commandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = backend->getScissor(getViewport());
+        commandBuffer.setScissor(0, 1, &scissor);
+
+        vk::RenderPassBeginInfo beginInfo  = {};
+        beginInfo.renderPass               = m_graphicsPipeline.renderPass;
+        beginInfo.framebuffer              = image.getFramebuffer(m_id);
+        beginInfo.renderArea.extent.width  = viewport.width;
+        beginInfo.renderArea.extent.height = viewport.height;
+        beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
+        beginInfo.pClearValues             = m_clear.data();
 
         commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
 
@@ -222,9 +243,9 @@ namespace Editor
         // Build
         Chicane::Renderer::VulkanGraphicsPipelineBuilder()
             .setInputAssembly(Chicane::Renderer::VulkanGraphicsPipeline::createInputAssemblyState())
-            .addViewport(backend->viewport)
+            .addViewport(backend->getViewport(getViewport()))
             .addDynamicState(vk::DynamicState::eViewport)
-            .addScissor(backend->scissor)
+            .addScissor(backend->getScissor(getViewport()))
             .addDynamicState(vk::DynamicState::eScissor)
             .addShaderStage(vertexShader, backend->logicalDevice)
             .addShaderStage(fragmentShader, backend->logicalDevice)
@@ -242,7 +263,8 @@ namespace Editor
 
     void VulkanLGrid::initFramebuffers()
     {
-        Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
+        Chicane::Renderer::VulkanBackend* backend  = getBackend<Chicane::Renderer::VulkanBackend>();
+        vk::Viewport                      viewport = backend->getViewport(getViewport());
 
         for (Chicane::Renderer::VulkanSwapchainImage& image : backend->swapchain.images)
         {
@@ -250,7 +272,8 @@ namespace Editor
             createInfo.id            = m_id;
             createInfo.logicalDevice = backend->logicalDevice;
             createInfo.renderPass    = m_graphicsPipeline.renderPass;
-            createInfo.extent        = backend->swapchain.extent;
+            createInfo.extent.width  = viewport.width;
+            createInfo.extent.height = viewport.height;
             createInfo.attachments.push_back(image.colorImage.view);
             createInfo.attachments.push_back(image.depthImage.view);
 
