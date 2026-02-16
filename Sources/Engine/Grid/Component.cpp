@@ -594,13 +594,18 @@ namespace Chicane
             id.append(getId());
 
             std::vector<String> classList;
+            String              formattedClassName = "";
             for (const String& className : getClassList())
             {
                 String formatted = Style::CLASS_SELECTOR;
                 formatted.append(className);
 
+                formattedClassName.append(formatted);
+                formattedClassName.append(" ");
+
                 classList.push_back(formatted);
             }
+            classList.push_back(formattedClassName.trim());
 
             for (const StyleRuleset& source : m_styleFile->getRulesets())
             {
