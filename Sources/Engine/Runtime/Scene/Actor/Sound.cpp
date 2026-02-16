@@ -1,14 +1,17 @@
 #include "Chicane/Runtime/Scene/Actor/Sound.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 
 namespace Chicane
 {
     ASound::ASound()
         : Actor(),
           m_sound(nullptr)
+    {}
+
+    void ASound::onLoad()
     {
-        m_sound = Application::getInstance().getScene()->createComponent<CSound>();
+        m_sound = getScene()->createComponent<CSound>();
         m_sound->attachTo(this);
     }
 

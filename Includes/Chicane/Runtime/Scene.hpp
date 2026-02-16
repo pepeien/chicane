@@ -77,6 +77,7 @@ namespace Chicane
         inline T* createActor(Params... inParams)
         {
             m_actors.push_back(new T(inParams...));
+            m_actors.back()->setScene(this);
 
             m_actorsObservable.next(m_actors);
 
@@ -152,6 +153,7 @@ namespace Chicane
         inline T* createComponent(Params... inParams)
         {
             m_components.push_back(new T(inParams...));
+            m_components.back()->setScene(this);
 
             m_componentsObservable.next(m_components);
 

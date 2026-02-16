@@ -12,18 +12,16 @@ namespace Chicane
             : Layer(ID)
         {}
 
-        OpenGLLSceneSky::~OpenGLLSceneSky()
-        {
-            destroyShader();
-            destroyTextureData();
-        }
-
-        bool OpenGLLSceneSky::onInit()
+        void OpenGLLSceneSky::onInit()
         {
             buildShader();
             buildTextureData();
+        }
 
-            return true;
+        void OpenGLLSceneSky::onDestruction()
+        {
+            destroyShader();
+            destroyTextureData();
         }
 
         void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
@@ -56,7 +54,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLSceneSky::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
             {
@@ -89,7 +87,7 @@ namespace Chicane
             );
         }
 
-        void OpenGLLSceneSky::onCleanup()
+        void OpenGLLSceneSky::onEndRender()
         {
             glDisable(GL_CULL_FACE);
         }

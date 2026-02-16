@@ -26,23 +26,7 @@ namespace Chicane
 
         VulkanBackend::~VulkanBackend()
         {
-            logicalDevice.waitIdle();
-
-            // Vulkan
-            destroyCommandPool();
-            destroySwapchain();
-            destroyTextureData();
-            deleteLayers();
-
-            destroyDevices();
-            destroySurface();
-
-            if (IS_DEBUGGING)
-            {
-                destroyDebugMessenger();
-            }
-
-            destroyInstance();
+            onShutdown();
         }
 
         void VulkanBackend::onInit()
@@ -57,8 +41,34 @@ namespace Chicane
             buildMainCommandBuffer();
             buildTextureDescriptor();
             buildLayers();
+        }
 
-            Backend::onInit();
+        void VulkanBackend::onShutdown()
+        {
+            logicalDevice.waitIdle();
+
+            // Vulkan
+            destroyCommandPool();
+            destroySwapchain();
+            destroyTextureData();
+            destroyLayers();
+
+            destroyDevices();
+            destroySurface();
+
+            if (IS_DEBUGGING)
+            {
+                destroyDebugMessenger();
+            }
+
+            destroyInstance();
+        }
+
+        void VulkanBackend::onResize()
+        {
+            rebuildSwapchain();
+
+            Backend::onResize();
         }
 
         void VulkanBackend::onLoad(const DrawTextureResource& inResources)
@@ -71,7 +81,7 @@ namespace Chicane
         void VulkanBackend::onRender(const Frame& inFrame)
         {
             VulkanSwapchainImage& liveImage = swapchain.images.at(swapchain.currentImageIndex);
-            liveImage.wait();
+            liveImage.sync();
 
             vk::ResultValue<std::uint32_t> acquire = liveImage.acquire(swapchain.instance);
             if (acquire.result == vk::Result::eErrorOutOfDateKHR)
@@ -86,6 +96,7 @@ namespace Chicane
             }
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(acquire.value);
+            nextImage.reset();
             nextImage.begin(inFrame);
             renderLayers(inFrame, &nextImage);
             nextImage.end();
@@ -127,16 +138,6 @@ namespace Chicane
             }
 
             swapchain.currentImageIndex = (swapchain.currentImageIndex + 1) % swapchain.images.size();
-        }
-
-        void VulkanBackend::onHandle(const WindowEvent& inEvent)
-        {
-            if (inEvent.type == WindowEventType::WindowResized)
-            {
-                rebuildSwapchain();
-            }
-
-            Backend::onHandle(inEvent);
         }
 
         vk::Viewport VulkanBackend::getViewport(Viewport inViewport) const
@@ -230,6 +231,8 @@ namespace Chicane
 
         void VulkanBackend::destroySwapchain()
         {
+            logicalDevice.waitIdle();
+
             for (VulkanSwapchainImage& image : swapchain.images)
             {
                 image.destroy();
@@ -239,7 +242,7 @@ namespace Chicane
 
             logicalDevice.destroySwapchainKHR(swapchain.instance);
 
-            destroyLayers();
+            shutdownLayers();
         }
 
         void VulkanBackend::rebuildSwapchain()
@@ -248,8 +251,6 @@ namespace Chicane
             {
                 return;
             }
-
-            logicalDevice.waitIdle();
 
             destroySwapchain();
             buildSwapchain();

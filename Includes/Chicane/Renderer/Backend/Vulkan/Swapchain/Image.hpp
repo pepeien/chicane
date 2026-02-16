@@ -22,7 +22,8 @@ namespace Chicane
         public:
             // Lifecycle
             void init();
-            void wait();
+            void sync();
+            void reset();
             vk::ResultValue<std::uint32_t> acquire(const vk::SwapchainKHR& inSwapchain);
             void begin(const Frame& inFrame);
             void end();

@@ -21,16 +21,15 @@ namespace Chicane
             View(const FileSystem::Path& inSource);
 
         public:
+            // Window
+            void handle(const WindowEvent& inEvent);
+
             // Children
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
 
             // Styling
             const StyleFile& getStyleFile() const;
             void importStyleFile(const FileSystem::Path& inValue);
-
-        protected:
-            // Window
-            void handle(const WindowEvent& inEvent);
 
         protected:
             // Routing

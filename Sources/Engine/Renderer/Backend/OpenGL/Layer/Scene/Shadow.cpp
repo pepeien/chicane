@@ -9,27 +9,24 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLSceneShadow::OpenGLLSceneShadow()
-            : Layer(ID),
-              m_viewport({})
+            : Layer(ID)
         {
             m_viewport.size = Vec2(1024, 1024);
         }
 
-        OpenGLLSceneShadow::~OpenGLLSceneShadow()
+        void OpenGLLSceneShadow::onInit()
+        {
+            buildShader();
+            buildShadowMap();
+        }
+
+        void OpenGLLSceneShadow::onDestruction()
         {
             destroyShader();
             destroyShadowMap();
         }
 
-        bool OpenGLLSceneShadow::onInit()
-        {
-            buildShader();
-            buildShadowMap();
-
-            return true;
-        }
-
-        bool OpenGLLSceneShadow::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -79,7 +76,7 @@ namespace Chicane
             glBindTextureUnit(2, m_depthMapBuffer);
         }
 
-        void OpenGLLSceneShadow::onCleanup()
+        void OpenGLLSceneShadow::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);

@@ -11,18 +11,16 @@ namespace Editor
         : Layer("Editor_Scene_Grid")
     {}
 
-    OpenGLLGrid::~OpenGLLGrid()
-    {
-        destroyVertexArray();
-        destroyShader();
-    }
-
-    bool OpenGLLGrid::onInit()
+    void OpenGLLGrid::onInit()
     {
         buildShader();
         buildVertexArray();
+    }
 
-        return true;
+    void OpenGLLGrid::onDestruction()
+    {
+        destroyVertexArray();
+        destroyShader();
     }
 
     void OpenGLLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
@@ -57,7 +55,7 @@ namespace Editor
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    void OpenGLLGrid::onCleanup()
+    void OpenGLLGrid::onEndRender()
     {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);

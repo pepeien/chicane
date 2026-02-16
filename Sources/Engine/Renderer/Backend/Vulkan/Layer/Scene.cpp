@@ -17,18 +17,16 @@ namespace Chicane
             : Layer(ID)
         {}
 
-        VulkanLScene::~VulkanLScene()
-        {
-            destroyModelData();
-        }
-
-        bool VulkanLScene::onInit()
+        void VulkanLScene::onInit()
         {
             buildModelVertexBuffer();
             buildModelIndexBuffer();
             buildLayers();
+        }
 
-            return true;
+        void VulkanLScene::onDestruction()
+        {
+            destroyModelData();
         }
 
         void VulkanLScene::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)

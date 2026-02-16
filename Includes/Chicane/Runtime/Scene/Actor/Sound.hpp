@@ -11,6 +11,9 @@ namespace Chicane
     public:
         ASound();
 
+    protected:
+        void onLoad() override;
+
     public:
         void load(const FileSystem::Path& inFilePath);
         void play() const;

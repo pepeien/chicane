@@ -9,13 +9,15 @@ namespace Editor
     {
     public:
         OpenGLLGrid();
-        ~OpenGLLGrid();
 
     public:
-        bool onInit() override;
+        void onInit() override;
+        void onDestruction() override;
+
         void onResize(const Chicane::Vec<2, std::uint32_t>& inResolution) override;
+
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData) override;
-        void onCleanup() override;
+        void onEndRender() override;
 
     private:
         void buildShader();

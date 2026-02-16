@@ -15,30 +15,6 @@ Character::Character()
       m_body(nullptr),
       m_victorySound(nullptr)
 {
-    m_camera = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CCamera>();
-    m_camera->setId("First Person");
-    m_camera->attachTo(this);
-    m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
-    m_camera->activate();
-
-    m_wand = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
-    m_wand->attachTo(m_camera);
-    m_wand->setMesh("Contents/Sample/Shooter/Meshes/Character/Wand.bmsh");
-    m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
-    m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
-    m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
-    m_wand->activate();
-
-    m_body = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
-    m_body->attachTo(this);
-    m_body->setMesh("Contents/Sample/Shooter/Meshes/Character/Body.bmsh");
-    m_body->activate();
-
-    m_victorySound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
-    m_victorySound->attachTo(this);
-    m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
-    m_victorySound->activate();
-
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
@@ -50,6 +26,35 @@ Character::Character()
             }
         }
     );
+}
+
+void Character::onLoad()
+{
+    Chicane::ACharacter::onLoad();
+
+    m_camera = getScene()->createComponent<Chicane::CCamera>();
+    m_camera->setId("First Person");
+    m_camera->attachTo(this);
+    m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
+    m_camera->activate();
+
+    m_wand = getScene()->createComponent<Chicane::CMesh>();
+    m_wand->attachTo(m_camera);
+    m_wand->setMesh("Contents/Sample/Shooter/Meshes/Character/Wand.bmsh");
+    m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
+    m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
+    m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
+    m_wand->activate();
+
+    m_body = getScene()->createComponent<Chicane::CMesh>();
+    m_body->attachTo(this);
+    m_body->setMesh("Contents/Sample/Shooter/Meshes/Character/Body.bmsh");
+    m_body->activate();
+
+    m_victorySound = getScene()->createComponent<Chicane::CSound>();
+    m_victorySound->attachTo(this);
+    m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
+    m_victorySound->activate();
 }
 
 void Character::onControlAttachment()
@@ -102,7 +107,7 @@ void Character::onControlAttachment()
         {
             m_camera->activate();
 
-            static_cast<Level*>(Chicane::Application::getInstance().getScene())->disableCameras();
+            getScene<Level>()->disableCameras();
         }
     );
     m_controller->bindEvent(
@@ -110,7 +115,7 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Pressed,
         [this]()
         {
-            static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateLeftCamera();
+            getScene<Level>()->activateLeftCamera();
 
             m_camera->deactivate();
         }
@@ -120,7 +125,7 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Pressed,
         [this]()
         {
-            static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateCenterCamera();
+            getScene<Level>()->activateCenterCamera();
 
             m_camera->deactivate();
         }
@@ -128,7 +133,7 @@ void Character::onControlAttachment()
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F4,
         Chicane::Input::Status::Pressed,
-        []() { static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateRightCamera(); }
+        [this]() { getScene<Level>()->activateRightCamera(); }
     );
 
     // Gamepad
@@ -265,8 +270,7 @@ void Character::onShoot()
     const Chicane::Vec3& origin      = m_camera->getTranslation();
     const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples =
-        Chicane::Application::getInstance().getScene()->traceLine<Apple>(origin, destination, {this});
+    std::vector<Apple*> hitApples = getScene()->traceLine<Apple>(origin, destination, {this});
 
     for (Apple* apple : hitApples)
     {

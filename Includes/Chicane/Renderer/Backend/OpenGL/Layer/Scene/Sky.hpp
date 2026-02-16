@@ -14,14 +14,16 @@ namespace Chicane
 
         public:
             OpenGLLSceneSky();
-            ~OpenGLLSceneSky();
 
         public:
-            bool onInit() override;
+            void onInit() override;
+            void onDestruction() override;
+
             void onLoad(const DrawSky& inResource) override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            void onCleanup() override;
+            void onEndRender() override;
 
         private:
             void buildShader();

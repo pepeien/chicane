@@ -19,10 +19,12 @@ namespace Chicane
             VulkanLSceneShadow();
 
         protected:
-            bool onInit() override;
-            bool onDestroy() override;
-            bool onRebuild() override;
-            bool onSetup(const Frame& inFrame) override;
+            void onInit() override;
+            void onShutdown() override;
+            void onRestart() override;
+            void onDestruction() override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData = nullptr) override;
 
         private:

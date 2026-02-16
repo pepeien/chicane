@@ -12,23 +12,20 @@ namespace Chicane
             : Layer(ID)
         {}
 
-        OpenGLLGrid::~OpenGLLGrid()
-        {
-            destroyShader();
-            destroyPrimitiveData();
-            destroyInstanceData();
-        }
-
-        bool OpenGLLGrid::onInit()
+        void OpenGLLGrid::onInit()
         {
             buildShader();
-
             buildPrimitiveVertexArray();
             buildPrimitiveVertexBuffer();
             buildPrimitiveIndexBuffer();
             buildInstanceData();
+        }
 
-            return true;
+        void OpenGLLGrid::onDestruction()
+        {
+            destroyShader();
+            destroyPrimitiveData();
+            destroyInstanceData();
         }
 
         void OpenGLLGrid::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -50,7 +47,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLGrid::onSetup(const Frame& inFrame)
+        bool OpenGLLGrid::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
             {
@@ -106,7 +103,7 @@ namespace Chicane
             }
         }
 
-        void OpenGLLGrid::onCleanup()
+        void OpenGLLGrid::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);

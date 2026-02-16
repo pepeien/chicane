@@ -11,6 +11,7 @@ public:
     Apple();
 
 protected:
+    void onLoad() override;
     void onTick(float inDeltaTime) override;
     void onCollision(const Chicane::Actor* inSubject) override;
 

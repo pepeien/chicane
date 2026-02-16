@@ -20,7 +20,7 @@ namespace Chicane
             setup3DData();
         }
 
-        void VulkanSwapchainImage::wait()
+        void VulkanSwapchainImage::sync()
         {
             vk::Result result = logicalDevice.waitForFences(1, &fence, VK_TRUE, UINT64_MAX);
             if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
@@ -33,7 +33,10 @@ namespace Chicane
             {
                 throw std::runtime_error("Error while resetting the fences");
             }
+        }
 
+        void VulkanSwapchainImage::reset()
+        {
             commandBuffer.reset();
         }
 
@@ -83,15 +86,15 @@ namespace Chicane
 
         void VulkanSwapchainImage::addBuffer(const VulkanFrameCreateInfo& inCreateInfo)
         {
-            vk::FramebufferCreateInfo framebufferInfo;
-            framebufferInfo.renderPass      = inCreateInfo.renderPass;
-            framebufferInfo.attachmentCount = static_cast<std::uint32_t>(inCreateInfo.attachments.size());
-            framebufferInfo.pAttachments    = inCreateInfo.attachments.data();
-            framebufferInfo.width           = inCreateInfo.extent.width;
-            framebufferInfo.height          = inCreateInfo.extent.height;
-            framebufferInfo.layers          = 1;
+            vk::FramebufferCreateInfo createInfo;
+            createInfo.renderPass      = inCreateInfo.renderPass;
+            createInfo.attachmentCount = static_cast<std::uint32_t>(inCreateInfo.attachments.size());
+            createInfo.pAttachments    = inCreateInfo.attachments.data();
+            createInfo.width           = inCreateInfo.extent.width;
+            createInfo.height          = inCreateInfo.extent.height;
+            createInfo.layers          = 1;
 
-            vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
+            vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(createInfo);
             addFramebuffer(inCreateInfo.id, frameBuffer);
         }
 

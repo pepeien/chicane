@@ -8,7 +8,6 @@
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Window/Backend.hpp"
-#include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
@@ -42,6 +41,9 @@ namespace Chicane
         public:
             // Lifecycle
             void init(const Settings& inSettings);
+            void shutdown();
+
+            // Render
             void render();
 
             // View
@@ -100,11 +102,7 @@ namespace Chicane
             }
 
         protected:
-            // Window
-            void handle(const WindowEvent& inEvent);
-
             // Backend
-            void shutdownBackend();
             void reloadBackend(const Window* inWindow);
 
             // Draw

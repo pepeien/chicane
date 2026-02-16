@@ -12,6 +12,7 @@ namespace Editor
         Character();
 
     protected:
+        void onLoad() override;
         void onControlAttachment() override;
 
     public:

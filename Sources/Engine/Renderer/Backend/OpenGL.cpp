@@ -20,16 +20,6 @@ namespace Chicane
             : Backend()
         {}
 
-        OpenGLBackend::~OpenGLBackend()
-        {
-            // Layers
-            deleteLayers();
-
-            // OpenGL
-            destroyTextureData();
-            destroyContext();
-        }
-
         void OpenGLBackend::onInit()
         {
             buildContext();
@@ -37,8 +27,16 @@ namespace Chicane
             enableFeatures();
             buildTextureData();
             buildLayers();
+        }
 
-            Backend::onInit();
+        void OpenGLBackend::onShutdown()
+        {
+            // Layers
+            destroyLayers();
+
+            // OpenGL
+            destroyTextureData();
+            destroyContext();
         }
 
         void OpenGLBackend::onLoad(const DrawTextureResource& inResources)
@@ -68,7 +66,7 @@ namespace Chicane
             Backend::onLoad(inResources);
         }
 
-        void OpenGLBackend::onSetup()
+        void OpenGLBackend::onBeginRender()
         {
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
@@ -85,7 +83,7 @@ namespace Chicane
             renderLayers(inFrame);
         }
 
-        void OpenGLBackend::onCleanup()
+        void OpenGLBackend::onEndRender()
         {
             SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
 

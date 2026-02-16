@@ -29,6 +29,14 @@ namespace Chicane
             setResolution(inSettings.resolution);
         }
 
+        void Instance::shutdown()
+        {
+            if (hasBackend())
+            {
+                m_backend->onShutdown();
+            }
+        }
+
         void Instance::render()
         {
             if (!hasBackend())
@@ -57,9 +65,9 @@ namespace Chicane
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_backend->onSetup();
+            m_backend->onBeginRender();
             m_backend->onRender(currentFrame);
-            m_backend->onCleanup();
+            m_backend->onEndRender();
 
             currentFrame.reset();
 
@@ -165,7 +173,8 @@ namespace Chicane
 
             if (hasBackend())
             {
-                m_backend->onResize(m_resolution);
+                m_backend->setResolution(m_resolution);
+                m_backend->onResize();
             }
 
             m_resolutionObservable.next(m_resolution);
@@ -183,24 +192,6 @@ namespace Chicane
         bool Instance::hasBackend() const
         {
             return m_backend && m_backend.get() != nullptr;
-        }
-
-        void Instance::handle(const WindowEvent& inEvent)
-        {
-            if (hasBackend())
-            {
-                m_backend->onHandle(inEvent);
-            }
-        }
-
-        void Instance::shutdownBackend()
-        {
-            if (!hasBackend())
-            {
-                return;
-            }
-
-            m_backend.reset();
         }
 
         void Instance::reloadBackend(const Window* inWindow)
@@ -228,9 +219,9 @@ namespace Chicane
             }
 
             m_backend->setWindow(inWindow);
+            m_backend->setResolution(m_resolution);
 
             m_backend->onInit();
-            m_backend->onResize(m_resolution);
 
             for (const auto& [type, resource] : m_polyResources)
             {

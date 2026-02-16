@@ -1,33 +1,13 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
 
+#include "Chicane/Runtime/Scene.hpp"
+
 namespace Chicane
 {
     Actor::Actor()
-        : Transformable(),
-          m_bCanCollide(false),
-          m_bCanTick(false),
-          m_id("")
+        : Object(),
+          m_bCanCollide(false)
     {}
-
-    bool Actor::canTick() const
-    {
-        return m_bCanTick;
-    }
-
-    void Actor::setCanTick(bool inCanTick)
-    {
-        m_bCanTick = inCanTick;
-    }
-
-    void Actor::tick(float inDeltaTime)
-    {
-        if (!canTick())
-        {
-            return;
-        }
-
-        onTick(inDeltaTime);
-    }
 
     bool Actor::canCollide() const
     {
@@ -67,15 +47,5 @@ namespace Chicane
         }
 
         onCollision(inSubject);
-    }
-
-    const String& Actor::getId() const
-    {
-        return m_id;
-    }
-
-    void Actor::setId(const String& inId)
-    {
-        m_id = inId;
     }
 }

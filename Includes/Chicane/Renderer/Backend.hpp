@@ -24,18 +24,21 @@ namespace Chicane
         public:
             Backend();
 
-            inline virtual ~Backend() = default;
-
         public:
+            // Lifecycle
             virtual void onInit();
-            virtual void onResize(const Vec<2, std::uint32_t>& inResolution);
+            virtual void onShutdown();
+
+            // Event
+            virtual void onResize();
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource);
             virtual void onLoad(const DrawTextureResource& inResources);
             virtual void onLoad(const DrawSky& inResource);
-            virtual void onSetup();
+
+            // Render
+            virtual void onBeginRender();
             virtual void onRender(const Frame& inFrame);
-            virtual void onCleanup();
-            virtual void onHandle(const WindowEvent& inEvent);
+            virtual void onEndRender();
 
         public:
             // Window
@@ -44,6 +47,7 @@ namespace Chicane
 
             // Resolution
             const Vec<2, std::uint32_t>& getResolution() const;
+            void setResolution(const Vec<2, std::uint32_t>& inValue);
 
             // Layer
             std::vector<Layer*> findLayers(std::function<bool(Layer* inLayer)> inPredicate) const;
@@ -110,15 +114,15 @@ namespace Chicane
                 }
 
                 location->get()->setBackend(this);
-                location->get()->init();
+                location->get()->onInit();
             }
 
         protected:
             // Layer
             void renderLayers(const Frame& inFrame, void* inData = nullptr);
-            void destroyLayers();
+            void shutdownLayers();
             void rebuildLayers();
-            void deleteLayers();
+            void destroyLayers();
 
         protected:
             const Window*         m_window;

@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Controller.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 
 namespace Chicane
 {
@@ -11,8 +11,11 @@ namespace Chicane
           m_physicsComponent(nullptr)
     {
         setCanCollide(true);
+    }
 
-        m_physicsComponent = Application::getInstance().getScene()->createComponent<CPhysics>();
+    void APawn::onLoad()
+    {
+        m_physicsComponent = getScene()->createComponent<CPhysics>();
         m_physicsComponent->attachTo(this);
         m_physicsComponent->activate();
     }

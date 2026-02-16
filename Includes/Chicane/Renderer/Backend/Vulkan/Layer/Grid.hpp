@@ -19,15 +19,17 @@ namespace Chicane
 
         public:
             VulkanLGrid();
-            ~VulkanLGrid();
 
         protected:
-            bool onInit() override;
+            void onInit() override;
+            void onRestart() override;
+            void onShutdown() override;
+            void onDestruction() override;
+
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
-            bool onRebuild() override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            bool onDestroy() override;
 
         private:
             // Resource

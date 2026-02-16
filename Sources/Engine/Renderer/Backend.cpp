@@ -13,10 +13,13 @@ namespace Chicane
             return;
         }
 
-        void Backend::onResize(const Vec<2, std::uint32_t>& inResolution)
+        void Backend::onShutdown()
         {
-            m_resolution = inResolution;
+            return;
+        }
 
+        void Backend::onResize()
+        {
             for (std::unique_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
@@ -24,7 +27,7 @@ namespace Chicane
                     continue;
                 }
 
-                layer->resize(inResolution);
+                layer->onResize(m_resolution);
             }
         }
 
@@ -37,7 +40,7 @@ namespace Chicane
                     continue;
                 }
 
-                layer->load(inType, inResource);
+                layer->onLoad(inType, inResource);
             }
         }
 
@@ -50,7 +53,7 @@ namespace Chicane
                     continue;
                 }
 
-                layer->load(inResources);
+                layer->onLoad(inResources);
             }
         }
 
@@ -63,11 +66,11 @@ namespace Chicane
                     continue;
                 }
 
-                layer->load(inResource);
+                layer->onLoad(inResource);
             }
         }
 
-        void Backend::onSetup()
+        void Backend::onBeginRender()
         {
             return;
         }
@@ -77,22 +80,9 @@ namespace Chicane
             return;
         }
 
-        void Backend::onCleanup()
+        void Backend::onEndRender()
         {
             return;
-        }
-
-        void Backend::onHandle(const WindowEvent& inEvent)
-        {
-            for (std::unique_ptr<Layer>& layer : m_layers)
-            {
-                if (!layer)
-                {
-                    continue;
-                }
-
-                layer->handle(inEvent);
-            }
         }
 
         const Window* Backend::getWindow() const
@@ -108,6 +98,11 @@ namespace Chicane
         const Vec<2, std::uint32_t>& Backend::getResolution() const
         {
             return m_resolution;
+        }
+
+        void Backend::setResolution(const Vec<2, std::uint32_t>& inValue)
+        {
+            m_resolution = inValue;
         }
 
         std::vector<Layer*> Backend::findLayers(std::function<bool(Layer* inLayer)> inPredicate) const
@@ -136,17 +131,17 @@ namespace Chicane
                     continue;
                 }
 
-                if (!layer->setup(inFrame))
+                if (!layer->onBeginRender(inFrame))
                 {
                     continue;
                 }
 
-                layer->render(inFrame, inData);
-                layer->cleanup();
+                layer->onRender(inFrame, inData);
+                layer->onEndRender();
             }
         }
 
-        void Backend::destroyLayers()
+        void Backend::shutdownLayers()
         {
             for (std::unique_ptr<Layer>& layer : m_layers)
             {
@@ -155,7 +150,7 @@ namespace Chicane
                     continue;
                 }
 
-                layer->destroy();
+                layer->onShutdown();
             }
         }
 
@@ -168,12 +163,22 @@ namespace Chicane
                     continue;
                 }
 
-                layer->rebuild();
+                layer->onRestart();
             }
         }
 
-        void Backend::deleteLayers()
+        void Backend::destroyLayers()
         {
+            for (std::unique_ptr<Layer>& layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->onDestruction();
+            }
+
             m_layers.clear();
         }
     }

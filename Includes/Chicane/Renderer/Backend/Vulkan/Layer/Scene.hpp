@@ -17,10 +17,11 @@ namespace Chicane
 
         public:
             VulkanLScene();
-            ~VulkanLScene();
 
         protected:
-            bool onInit() override;
+            void onInit() override;
+            void onDestruction() override;
+
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
 
         private:

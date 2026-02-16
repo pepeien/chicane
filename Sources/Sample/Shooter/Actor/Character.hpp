@@ -12,6 +12,7 @@ public:
     Character();
 
 protected:
+    void onLoad() override;
     void onControlAttachment() override;
 
 private:

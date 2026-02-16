@@ -1,6 +1,7 @@
 #include "Actor/Character.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Scene.hpp>
 
 static constexpr inline const float MOVE_COEFFICIENT = 1.0f;
 
@@ -9,8 +10,13 @@ namespace Editor
     Character::Character()
         : Chicane::ACharacter(),
           m_camera(nullptr)
+    {}
+
+    void Character::onLoad()
     {
-        m_camera = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CCamera>();
+        Chicane::ACharacter::onLoad();
+
+        m_camera = getScene()->createComponent<Chicane::CCamera>();
         m_camera->attachTo(this);
         m_camera->activate();
     }

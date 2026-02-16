@@ -12,19 +12,17 @@ namespace Chicane
             : Layer(ID)
         {}
 
-        OpenGLLSceneMesh::~OpenGLLSceneMesh()
+        void OpenGLLSceneMesh::onInit()
+        {
+            buildShader();
+        }
+
+        void OpenGLLSceneMesh::onDestruction()
         {
             destroyShader();
         }
 
-        bool OpenGLLSceneMesh::onInit()
-        {
-            buildShader();
-
-            return true;
-        }
-
-        bool OpenGLLSceneMesh::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -73,7 +71,7 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneMesh::onCleanup()
+        void OpenGLLSceneMesh::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);

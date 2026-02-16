@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Scene/Component/Physics.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 
 static constexpr inline const float FORCE_MAX_VELOCITY               = 0.3f;
@@ -30,7 +30,7 @@ namespace Chicane
 
     bool CPhysics::canCollide() const
     {
-        return isAttached() && Application::getInstance().hasScene();
+        return isAttached();
     }
 
     void CPhysics::addForce(const Vec3& inDirection, float inForce)
@@ -59,7 +59,7 @@ namespace Chicane
             return;
         }
 
-        for (Actor* actor : Application::getInstance().getScene()->getActors())
+        for (Actor* actor : getScene()->getActors())
         {
             if (actor == attachment || !actor->canCollide() || !actor->isCollidingWith(attachment))
             {

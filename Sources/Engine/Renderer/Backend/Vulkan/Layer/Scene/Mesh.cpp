@@ -18,32 +18,31 @@ namespace Chicane
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        bool VulkanLSceneMesh::onInit()
+        void VulkanLSceneMesh::onInit()
         {
             initFrameResources();
 
             initGraphicsPipeline();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneMesh::onDestroy()
+        void VulkanLSceneMesh::onShutdown()
         {
             destroyFrameResources();
-
-            return true;
         }
 
-        bool VulkanLSceneMesh::onRebuild()
+        void VulkanLSceneMesh::onRestart()
         {
             initFrameResources();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneMesh::onSetup(const Frame& inFrame)
+        void VulkanLSceneMesh::onDestruction()
+        {
+            m_graphicsPipeline.destroy();
+        }
+
+        bool VulkanLSceneMesh::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -81,10 +80,10 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
 
             // Texture
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 1, backend->textureDescriptor.set);
+            m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
 
             // Draw
             vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};

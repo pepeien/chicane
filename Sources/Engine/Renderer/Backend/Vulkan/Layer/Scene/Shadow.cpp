@@ -18,32 +18,31 @@ namespace Chicane
               m_clear({vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        bool VulkanLSceneShadow::onInit()
+        void VulkanLSceneShadow::onInit()
         {
             initFrameResources();
 
             initGraphicsPipeline();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneShadow::onDestroy()
+        void VulkanLSceneShadow::onShutdown()
         {
             destroyFrameResources();
-
-            return true;
         }
 
-        bool VulkanLSceneShadow::onRebuild()
+        void VulkanLSceneShadow::onRestart()
         {
             initFrameResources();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneShadow::onSetup(const Frame& inFrame)
+        void VulkanLSceneShadow::onDestruction()
+        {
+            m_graphicsPipeline.destroy();
+        }
+
+        bool VulkanLSceneShadow::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -80,7 +79,7 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
 
             // Draw
             vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};

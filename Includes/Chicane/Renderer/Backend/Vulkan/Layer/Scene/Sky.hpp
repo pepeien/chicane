@@ -18,14 +18,16 @@ namespace Chicane
 
         public:
             VulkanLSceneSky();
-            ~VulkanLSceneSky();
 
         public:
-            bool onInit() override;
-            bool onDestroy() override;
-            bool onRebuild() override;
+            void onInit() override;
+            void onShutdown() override;
+            void onRestart() override;
+            void onDestruction() override;
+
             void onLoad(const DrawSky& inResource) override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
 
         private:

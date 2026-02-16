@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Chicane/Core/Event/Subscription.hpp"
-#include "Chicane/Core/Transformable.hpp"
-#include "Chicane/Core/String.hpp"
 
 #include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Scene/Object.hpp"
 
 namespace Chicane
 {
-    class CHICANE_RUNTIME Component : public Transformable
+    class CHICANE_RUNTIME Component : public Object
     {
     public:
         Component();
@@ -16,8 +15,7 @@ namespace Chicane
     protected:
         inline virtual void onActivation() { return; }
         inline virtual void onDeactivation() { return; }
-        inline virtual void onAttachment(Transformable* inParent) { return; }
-        inline virtual void onTick(float inDeltaTime) { return; }
+        inline virtual void onAttachment(Object* inParent) { return; }
 
     public:
         template <class T>
@@ -30,29 +28,19 @@ namespace Chicane
         void activate();
         void deactivate();
 
-        bool canTick() const;
-        void setCanTick(bool inCanTick);
-        void tick(float inDeltaTime);
-
-        const String& getId() const;
-        void setId(const String& inId);
-
         bool isAttached() const;
-        template <class T = Transformable>
+        template <class T = Object>
         inline T* getParent() const
         {
             return static_cast<T*>(m_parent);
         }
-        void attachTo(Transformable* inParent);
+        void attachTo(Object* inParent);
         void detach();
 
     public:
-        bool                m_bCanTick;
         bool                m_bIsActive;
 
-        String              m_id;
-
-        Transformable*      m_parent;
+        Object*             m_parent;
         EventSubscription<> m_parentSubscription;
     };
 }

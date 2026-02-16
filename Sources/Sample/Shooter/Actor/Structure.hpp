@@ -8,6 +8,9 @@ class Strcuture : public Chicane::Actor
 public:
     Strcuture();
 
+protected:
+    void onLoad() override;
+
 private:
     Chicane::CMesh* m_mesh;
 };

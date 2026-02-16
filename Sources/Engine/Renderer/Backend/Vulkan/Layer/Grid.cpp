@@ -17,12 +17,7 @@ namespace Chicane
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        VulkanLGrid::~VulkanLGrid()
-        {
-            destroyPrimitiveData();
-        }
-
-        bool VulkanLGrid::onInit()
+        void VulkanLGrid::onInit()
         {
             initFrameResources();
 
@@ -31,8 +26,24 @@ namespace Chicane
 
             buildPrimitiveVertexBuffer();
             buildPrimitiveIndexBuffer();
+        }
 
-            return true;
+        void VulkanLGrid::onRestart()
+        {
+            initFrameResources();
+            initFramebuffers();
+        }
+
+        void VulkanLGrid::onShutdown()
+        {
+            destroyFrameResources();
+        }
+
+        void VulkanLGrid::onDestruction()
+        {
+            destroyPrimitiveData();
+
+            m_graphicsPipeline.destroy();
         }
 
         void VulkanLGrid::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -44,15 +55,7 @@ namespace Chicane
             }
         }
 
-        bool VulkanLGrid::onRebuild()
-        {
-            initFrameResources();
-            initFramebuffers();
-
-            return true;
-        }
-
-        bool VulkanLGrid::onSetup(const Frame& inFrame)
+        bool VulkanLGrid::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
             {
@@ -89,10 +92,10 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
 
             // Texture
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 1, backend->textureDescriptor.set);
+            m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
 
             // Draw
             vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
@@ -119,13 +122,6 @@ namespace Chicane
             }
 
             commandBuffer.endRenderPass();
-        }
-
-        bool VulkanLGrid::onDestroy()
-        {
-            destroyFrameResources();
-
-            return true;
         }
 
         void VulkanLGrid::initFrameResources()

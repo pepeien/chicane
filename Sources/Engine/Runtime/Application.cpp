@@ -22,19 +22,15 @@ namespace Chicane
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
-          m_sceneMutex({}),
           m_sceneThread({}),
           m_sceneCommandBuffers({}),
           m_sceneWriteIndex(0),
           m_sceneReadIndex(1),
-          m_sceneObservable({}),
           m_view(nullptr),
-          m_viewMutex({}),
           m_viewThread({}),
           m_viewCommandBuffers({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
-          m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
     {
@@ -73,6 +69,8 @@ namespace Chicane
         m_bIsRunning = false;
         shutdownScene();
         shutdownView();
+
+        shutdownRenderer();
     }
 
     void Application::render()
@@ -119,23 +117,13 @@ namespace Chicane
         return m_controllerObservable.subscribe(inNext, inError, inComplete).next(m_controller);
     }
 
-    bool Application::hasScene()
-    {
-        return !!m_scene;
-    }
-
     Application::SceneSubscription Application::watchScene(
         SceneSubscription::NextCallback     inNext,
         SceneSubscription::ErrorCallback    inError,
         SceneSubscription::CompleteCallback inComplete
     )
     {
-        return m_sceneObservable.subscribe(inNext, inError, inComplete).next(m_scene.get());
-    }
-
-    bool Application::hasView()
-    {
-        return !!m_view;
+        return m_sceneObservable.subscribe(inNext, inError, inComplete).next(getScene());
     }
 
     Application::ViewSubscription Application::watchView(
@@ -144,7 +132,7 @@ namespace Chicane
         ViewSubscription::CompleteCallback inComplete
     )
     {
-        return m_viewObservable.subscribe(inNext, inError, inComplete).next(m_view.get());
+        return m_viewObservable.subscribe(inNext, inError, inComplete).next(getView());
     }
 
     bool Application::hasWindow()
@@ -184,10 +172,7 @@ namespace Chicane
             return;
         }
 
-        if (hasRenderer())
-        {
-            m_renderer->shutdownBackend();
-        }
+        shutdownRenderer();
 
         m_window->setBackend(inBackend);
     }
@@ -202,7 +187,7 @@ namespace Chicane
         m_window = std::make_unique<Window>();
         m_window->init(inSettings);
         m_window->watchSize(
-            [this](Vec<2, std::uint32_t> inSize)
+            [this](const Vec<2, std::uint32_t>& inSize)
             {
                 if (hasRenderer())
                 {
@@ -230,6 +215,16 @@ namespace Chicane
 
         m_renderer = std::make_unique<Renderer::Instance>();
         m_renderer->init(inSettings);
+    }
+
+    void Application::shutdownRenderer()
+    {
+        if (!hasRenderer())
+        {
+            return;
+        }
+
+        m_renderer->shutdown();
     }
 
     void Application::initBox()
@@ -285,7 +280,9 @@ namespace Chicane
     {
         while (m_bIsRunning)
         {
-            if (!hasScene())
+            std::shared_ptr<Scene> scene = getScene();
+
+            if (!scene)
             {
                 std::this_thread::yield();
 
@@ -293,18 +290,18 @@ namespace Chicane
             }
 
             {
-                m_scene->tick(m_telemetry.delta);
+                scene->tick(m_telemetry.delta);
 
-                buildSceneCommands();
+                buildSceneCommands(scene);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
 
-    void Application::buildSceneCommands()
+    void Application::buildSceneCommands(std::shared_ptr<Scene> inScene)
     {
-        if (!hasScene())
+        if (!inScene)
         {
             return;
         }
@@ -313,7 +310,7 @@ namespace Chicane
         Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
         commands.clear();
 
-        for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
+        for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
             camera->onResize(m_renderer->getResolution());
 
@@ -324,7 +321,7 @@ namespace Chicane
             commands.emplace_back(std::move(command));
         }
 
-        for (CLight* light : m_scene->getActiveComponents<CLight>())
+        for (CLight* light : inScene->getActiveComponents<CLight>())
         {
             light->onResize(m_renderer->getResolution());
 
@@ -335,7 +332,7 @@ namespace Chicane
             commands.emplace_back(std::move(command));
         }
 
-        for (ASky* sky : m_scene->getActors<ASky>())
+        for (ASky* sky : inScene->getActors<ASky>())
         {
             const Box::Sky* asset = sky->getSky();
 
@@ -355,7 +352,7 @@ namespace Chicane
             commands.emplace_back(std::move(command));
         }
 
-        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
+        for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
         {
             if (!mesh->hasMesh())
             {
@@ -382,11 +379,6 @@ namespace Chicane
 
     void Application::renderScene()
     {
-        if (!hasScene())
-        {
-            return;
-        }
-
         std::uint32_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
         for (const Renderer::DrawPoly3DCommand& commandBuffer : m_sceneCommandBuffers[index])
@@ -429,7 +421,7 @@ namespace Chicane
     void Application::initView()
     {
         watchView(
-            [&](Grid::View* inView)
+            [&](std::shared_ptr<Grid::View> inView)
             {
                 if (!inView)
                 {
@@ -478,7 +470,9 @@ namespace Chicane
     {
         while (m_bIsRunning)
         {
-            if (!hasView())
+            std::shared_ptr<Grid::View> view = getView();
+
+            if (!view)
             {
                 std::this_thread::yield();
 
@@ -486,20 +480,20 @@ namespace Chicane
             }
 
             {
-                m_view->setSize(m_renderer->getResolution());
+                view->setSize(m_renderer->getResolution());
 
-                m_view->tick(m_telemetry.delta);
+                view->tick(m_telemetry.delta);
 
-                buildViewCommands();
+                buildViewCommands(view);
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
 
-    void Application::buildViewCommands()
+    void Application::buildViewCommands(std::shared_ptr<Grid::View> inView)
     {
-        if (!hasView())
+        if (!inView)
         {
             return;
         }
@@ -508,9 +502,9 @@ namespace Chicane
         Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
         commands.clear();
 
-        const Vec2& viewSize = m_view->getSize();
+        const Vec2& viewSize = inView->getSize();
 
-        for (Grid::Component* component : m_view->getChildrenFlat())
+        for (Grid::Component* component : inView->getChildrenFlat())
         {
             if (!component->isDrawable())
             {

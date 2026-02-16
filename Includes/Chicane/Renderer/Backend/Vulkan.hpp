@@ -20,14 +20,19 @@ namespace Chicane
         {
         public:
             VulkanBackend();
-            virtual ~VulkanBackend();
+            ~VulkanBackend();
 
         protected:
+            // Lifecycle
             void onInit() override;
-            void onLoad(const DrawTextureResource& inResources) override;
-            void onRender(const Frame& inFrame) override;
+            void onShutdown() override;
 
-            void onHandle(const WindowEvent& inEvent) override;
+            // Event
+            void onResize() override;
+            void onLoad(const DrawTextureResource& inResources) override;
+
+            // Render
+            void onRender(const Frame& inFrame) override;
 
         public:
             vk::Viewport getViewport(Viewport inViewport) const;

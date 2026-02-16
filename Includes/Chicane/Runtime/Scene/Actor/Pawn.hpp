@@ -17,6 +17,9 @@ namespace Chicane
         virtual void onControlAttachment() { return; }
         virtual void onControleDeattachment() { return; }
 
+    protected:
+        void onLoad() override;
+
     public:
         bool isControlled() const;
         template <class T = Controller>

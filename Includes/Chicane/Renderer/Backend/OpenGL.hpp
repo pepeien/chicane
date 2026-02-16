@@ -12,14 +12,19 @@ namespace Chicane
         {
         public:
             OpenGLBackend();
-            virtual ~OpenGLBackend();
 
         protected:
+            // Lifecycle
             void onInit() override;
+            void onShutdown() override;
+
+            // Event
             void onLoad(const DrawTextureResource& inResources) override;
-            void onSetup() override;
+
+            // Render
+            void onBeginRender() override;
             void onRender(const Frame& inFrame);
-            void onCleanup() override;
+            void onEndRender() override;
 
         private:
             // OpenGL

@@ -15,15 +15,7 @@ namespace Chicane
             : Layer(ID)
         {}
 
-        OpenGLLScene::~OpenGLLScene()
-        {
-            destroyCameraData();
-            destroyLightData();
-            destroyModelData();
-            destroyInstanceData();
-        }
-
-        bool OpenGLLScene::onInit()
+        void OpenGLLScene::onInit()
         {
             buildCameraData();
             buildLightData();
@@ -32,8 +24,14 @@ namespace Chicane
             buildModelIndexBuffer();
             buildInstanceData();
             buildLayers();
+        }
 
-            return true;
+        void OpenGLLScene::onDestruction()
+        {
+            destroyCameraData();
+            destroyLightData();
+            destroyModelData();
+            destroyInstanceData();
         }
 
         void OpenGLLScene::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -55,7 +53,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLScene::onSetup(const Frame& inFrame)
+        bool OpenGLLScene::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.get3DDraws().empty() && inFrame.getInstances3D().empty() && inFrame.getLights().empty())
             {

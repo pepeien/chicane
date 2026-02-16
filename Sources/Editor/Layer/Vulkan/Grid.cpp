@@ -16,29 +16,23 @@ namespace Editor
           m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f), vk::ClearDepthStencilValue(1.0f, 0)})
     {}
 
-    bool VulkanLGrid::onInit()
+    void VulkanLGrid::onInit()
     {
         initFrameResources();
 
         initGraphicsPipeline();
         initFramebuffers();
-
-        return true;
     }
 
-    bool VulkanLGrid::onDestroy()
+    void VulkanLGrid::onShutdown()
     {
         destroyFrameResources();
-
-        return true;
     }
 
-    bool VulkanLGrid::onRebuild()
+    void VulkanLGrid::onRestart()
     {
         initFrameResources();
         initFramebuffers();
-
-        return true;
     }
 
     void VulkanLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
@@ -77,7 +71,7 @@ namespace Editor
         m_graphicsPipeline.bind(commandBuffer);
 
         // Frame
-        m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+        m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
 
         // Draw
         commandBuffer.draw(6, 1, 0, 0);

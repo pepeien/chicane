@@ -21,14 +21,7 @@ namespace Chicane
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f)})
         {}
 
-        VulkanLSceneSky::~VulkanLSceneSky()
-        {
-            destroyTextureData();
-
-            m_sky.reset();
-        }
-
-        bool VulkanLSceneSky::onInit()
+        void VulkanLSceneSky::onInit()
         {
             initFrameResources();
 
@@ -36,23 +29,26 @@ namespace Chicane
 
             initGraphicsPipeline();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneSky::onDestroy()
+        void VulkanLSceneSky::onShutdown()
         {
             destroyFrameResources();
-
-            return true;
         }
 
-        bool VulkanLSceneSky::onRebuild()
+        void VulkanLSceneSky::onRestart()
         {
             initFrameResources();
             initFramebuffers();
+        }
 
-            return true;
+        void VulkanLSceneSky::onDestruction()
+        {
+            destroyTextureData();
+
+            m_sky.reset();
+
+            m_graphicsPipeline.destroy();
         }
 
         void VulkanLSceneSky::onLoad(const DrawSky& inResource)
@@ -65,7 +61,7 @@ namespace Chicane
             buildTextureData(inResource);
         }
 
-        bool VulkanLSceneSky::onSetup(const Frame& inFrame)
+        bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId || !m_sky)
             {
@@ -103,7 +99,7 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
 
             // Texture
             m_sky->bind(commandBuffer, m_graphicsPipeline.layout);

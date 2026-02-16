@@ -14,13 +14,14 @@ namespace Chicane
 
         public:
             OpenGLLSceneMesh();
-            ~OpenGLLSceneMesh();
 
         public:
-            bool onInit() override;
-            bool onSetup(const Frame& inFrame) override;
+            void onInit() override;
+            void onDestruction() override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            void onCleanup() override;
+            void onEndRender() override;
 
         private:
             void buildShader();

@@ -1,6 +1,6 @@
 #include "Actor/Apple.hpp"
 
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Scene.hpp>
 
 #include "Game.hpp"
 
@@ -15,17 +15,20 @@ Apple::Apple()
 {
     setCanTick(true);
     setCanCollide(true);
+}
 
-    m_meshComponent = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
+void Apple::onLoad()
+{
+    m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
-    m_physicsComponent = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CPhysics>();
+    m_physicsComponent = getScene()->createComponent<Chicane::CPhysics>();
     m_physicsComponent->attachTo(this);
     m_physicsComponent->activate();
 
-    m_hitSound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
+    m_hitSound = getScene()->createComponent<Chicane::CSound>();
     m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
     m_hitSound->attachTo(this);
     m_hitSound->activate();
@@ -53,7 +56,7 @@ void Apple::onHit(const Chicane::Actor* inSubject)
 
     m_meshComponent->deactivate();
 
-    Chicane::Application::getInstance().getScene()->removeComponent(m_meshComponent);
+    getScene()->removeComponent(m_meshComponent);
 
     Game::incrementScore(1);
 

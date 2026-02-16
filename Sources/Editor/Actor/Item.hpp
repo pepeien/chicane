@@ -12,7 +12,11 @@ namespace Editor
     public:
         Item(const Chicane::FileSystem::Path& inMesh);
 
+    protected:
+        void onLoad() override;
+
     private:
-        Chicane::CMesh* m_mesh;
+        Chicane::FileSystem::Path m_mesh;
+        Chicane::CMesh*           m_asset;
     };
 }

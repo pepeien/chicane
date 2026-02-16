@@ -255,15 +255,6 @@ namespace Chicane
             return inLogicalDevice.createRenderPass(createInfo);
         }
 
-        VulkanGraphicsPipeline::~VulkanGraphicsPipeline()
-        {
-            m_logicalDevice.waitIdle();
-
-            m_logicalDevice.destroyPipeline(instance);
-            m_logicalDevice.destroyPipelineLayout(layout);
-            m_logicalDevice.destroyRenderPass(renderPass);
-        }
-
         void VulkanGraphicsPipeline::init(
             const vk::Device& inLogicalDevice, const vk::GraphicsPipelineCreateInfo& inCreateInfo
         )
@@ -280,12 +271,21 @@ namespace Chicane
             inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, instance);
         }
 
-        void VulkanGraphicsPipeline::bindDescriptorSet(
+        void VulkanGraphicsPipeline::bind(
             vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
         )
         {
             inCommandBuffer
                 .bindDescriptorSets(vk::PipelineBindPoint::eGraphics, layout, inIndex, inDescriptorSet, nullptr);
+        }
+
+        void VulkanGraphicsPipeline::destroy()
+        {
+            m_logicalDevice.waitIdle();
+
+            m_logicalDevice.destroyPipeline(instance);
+            m_logicalDevice.destroyPipelineLayout(layout);
+            m_logicalDevice.destroyRenderPass(renderPass);
         }
     }
 }
