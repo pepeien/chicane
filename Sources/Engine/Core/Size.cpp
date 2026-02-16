@@ -39,11 +39,6 @@ namespace Chicane
             return parseCalculation(value, inDirection);
         }
 
-        if (value.equals(AUTO_UNIT))
-        {
-            return parsePercentage("100%", inDirection);
-        }
-
         if (value.endsWith(EM_UNIT))
         {
             return parseEM(value);

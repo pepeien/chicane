@@ -4,9 +4,9 @@
 $grayColor: rgb(51, 51, 51);
 
 // Crosshair
-$xhairSize:      ref(crosshairSize)vh;
-$xhairThickness: ref(crosshairThickness)vh;
-$xhairGap:       ref(crosshairGap)vh;
+$xhairSize:      ref(crosshairSize)px;
+$xhairThickness: ref(crosshairThickness)px;
+$xhairGap:       ref(crosshairGap)px;
 
 $xhairThicknessOffset: calc($xhairThickness * 0.5);
 $xhairPositiveOffset:  calc(50% + calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 0.5)));
@@ -15,8 +15,6 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 .victory {
     position: absolute;
     display: ref(victoryDisplay);
-    height: 6vw;
-    width: 32vw;
     margin: 50% 16vw 3vw 50%;
     background-color: $grayColor;
     font-size: 5vw;
@@ -24,8 +22,7 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
     z-index: 2;
 }
 
-.telemetry, .camera {
-    width: 12em;
+.telemetry {
     color: green;
 }
 
@@ -57,24 +54,24 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 
     &__dot {
         display: ref(crosshairDotDisplay);
-        margin: 50% $xhairThicknessOffset $xhairThicknessOffset 50%;
+        margin: auto $xhairThicknessOffset $xhairThicknessOffset auto;
         height: $xhairThickness;
         width: $xhairThickness;
     }
 
     &__top {
-        margin: 50% $xhairThicknessOffset $xhairNegativeOffset 50%;
+        margin: auto $xhairThicknessOffset $xhairNegativeOffset auto;
     }
 
     &__bottom {
-        margin: $xhairPositiveOffset $xhairThicknessOffset 0 50%;
+        margin: $xhairPositiveOffset $xhairThicknessOffset 0 auto;
     }
 
     &__left {
-        margin: 50% $xhairNegativeOffset $xhairThicknessOffset 50%;
+        margin: auto $xhairNegativeOffset $xhairThicknessOffset auto;
     }
 
     &__right {
-        margin: 50% 0 $xhairThicknessOffset $xhairPositiveOffset;
+        margin: auto 0 $xhairThicknessOffset $xhairPositiveOffset;
     }
 }

@@ -6,6 +6,8 @@
 #include "Game.hpp"
 #include "Level.hpp"
 
+static int switcher = 1;
+
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
       m_bDidPlayerWin(true),

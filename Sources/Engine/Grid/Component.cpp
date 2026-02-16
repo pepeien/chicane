@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -476,6 +478,68 @@ namespace Chicane
             onAdopted(inComponent);
         }
 
+        Vec2 Component::getChildrenContentSizeBlock() const
+        {
+            Vec2 result = Vec2::Zero;
+
+            for (const Component* child : m_children)
+            {
+                if (!child || !child->isVisible())
+                {
+                    continue;
+                }
+
+                const Style& style = child->getStyle();
+
+                const Vec2 margin = {
+                    style.margin.left.get() + style.margin.right.get(),
+                    style.margin.top.get() + style.margin.bottom.get()
+                };
+
+                const Vec2 occupied = {
+                    (child->getPosition().x - m_position.x) + child->getSize().x + margin.x,
+                    (child->getPosition().y - m_position.y) + child->getSize().y + margin.y
+                };
+
+                result.x = std::max(result.x, occupied.x);
+                result.y = std::max(result.y, occupied.y);
+            }
+
+            return result;
+        }
+
+        Vec2 Component::getChildrenContentSizeFlex() const
+        {
+            Vec2 result = Vec2::Zero;
+
+            for (const Component* child : m_children)
+            {
+                if (!child || !child->isVisible())
+                {
+                    continue;
+                }
+
+                const Style& style = child->getStyle();
+
+                const Vec2 margin = {style.margin.right.get(), style.margin.bottom.get()};
+
+                result.x = std::max(result.x, (child->getPosition().x - m_position.x) + child->getSize().x + margin.x);
+                result.y = std::max(result.y, (child->getPosition().y - m_position.y) + child->getSize().y + margin.y);
+            }
+
+            return result;
+        }
+
+        Vec2 Component::getChildrenContentSize() const
+        {
+            if (m_style.display.get() == StyleDisplay::Flex)
+            {
+                return getChildrenContentSizeFlex();
+            }
+
+            return getChildrenContentSizeBlock();
+        }
+
         Vec2 Component::getAvailableSize() const
         {
             return m_size - m_cursor;
@@ -666,7 +730,27 @@ namespace Chicane
                 return;
             }
 
-            setSize(m_style.width.get(), m_style.height.get());
+            const bool bIsWidthAuto  = m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsHeightAuto = m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            if (!bIsWidthAuto && !bIsHeightAuto)
+            {
+                setSize(m_style.width.get(), m_style.height.get());
+
+                return;
+            }
+
+            Vec2 content = getChildrenContentSize();
+
+            Vec2 padding = {
+                m_style.padding.left.get() + m_style.padding.right.get(),
+                m_style.padding.top.get() + m_style.padding.bottom.get()
+            };
+
+            setSize(
+                bIsWidthAuto ? content.x + padding.x : m_style.width.get(),
+                bIsHeightAuto ? content.y + padding.y : m_style.height.get()
+            );
         }
 
         void Component::refreshPosition()

@@ -20,12 +20,12 @@ namespace Chicane
             bottom.refresh();
             right.refresh();
 
-            if (left.getRaw().equals(Size::AUTO_UNIT) && right.getRaw().equals(Size::AUTO_UNIT))
+            if (left.getRaw().equals(Size::AUTO_KEYWORD) && right.getRaw().equals(Size::AUTO_KEYWORD))
             {
                 right.set(right.get() * 0.5f);
             }
 
-            if (top.getRaw().equals(Size::AUTO_UNIT) && bottom.getRaw().equals(Size::AUTO_UNIT))
+            if (top.getRaw().equals(Size::AUTO_KEYWORD) && bottom.getRaw().equals(Size::AUTO_KEYWORD))
             {
                 bottom.set(bottom.get() * 0.5f);
             }

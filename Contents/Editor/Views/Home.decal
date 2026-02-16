@@ -3,15 +3,6 @@
 $sideBarSize:   15vw;
 $bottomBarSize: 20vh;
 
-.telemetry {
-    width: 12em;
-    height: 3rem;
-
-    &__text {
-        color: green;
-    }
-}
-
 .menu {
     position: absolute;
     background-color: #242424;

@@ -135,6 +135,10 @@ namespace Chicane
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
 
+            Vec2 getChildrenContentSizeBlock() const;
+            Vec2 getChildrenContentSizeFlex() const;
+            Vec2 getChildrenContentSize() const;
+
             // Positioning
             Vec2 getAvailableSize() const;
             const Vec2& getSize() const;

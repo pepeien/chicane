@@ -13,8 +13,10 @@ namespace Chicane
         using TextParser = std::function<String(const String&)>;
 
     public:
-        // Units
-        static constexpr inline const char*   AUTO_UNIT            = "auto";
+        // Keywords
+        static constexpr inline const char*   AUTO_KEYWORD = "auto";
+
+        // Unit
         static constexpr inline const char*   PIXEL_UNIT           = "px";
         static constexpr inline const char*   EM_UNIT              = "em";
         static constexpr inline const char*   PERCENTAGE_UNIT      = "%";

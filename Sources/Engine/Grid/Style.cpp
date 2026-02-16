@@ -165,10 +165,18 @@ namespace Chicane
             {
                 width.setRaw(inProperties.at(WIDTH_ATTRIBUTE_NAME));
             }
+            else
+            {
+                width.setRaw(Size::AUTO_KEYWORD);
+            }
 
             if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) != inProperties.end())
             {
                 height.setRaw(inProperties.at(HEIGHT_ATTRIBUTE_NAME));
+            }
+            else
+            {
+                height.setRaw(Size::AUTO_KEYWORD);
             }
 
             if (inProperties.find(POSITION_ATTRIBUTE_NAME) != inProperties.end())
