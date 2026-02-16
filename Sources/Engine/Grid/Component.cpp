@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -119,7 +117,7 @@ namespace Chicane
         {
             onClick();
 
-            String onClickAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
+            String onClickAttribute = getAttribute(ON_CLICK_ATTRIBUTE_NAME);
 
             if (onClickAttribute.isEmpty())
             {
@@ -278,6 +276,11 @@ namespace Chicane
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
+            if (inId.isEmpty())
+            {
+                return false;
+            }
+
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
             const bool bHasLocally =
@@ -293,6 +296,11 @@ namespace Chicane
 
         const Function Component::getFunction(const String& inId, bool isLocalOnly) const
         {
+            if (inId.isEmpty())
+            {
+                return nullptr;
+            }
+
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
             if (!hasParent() || isRoot() || isLocalOnly)

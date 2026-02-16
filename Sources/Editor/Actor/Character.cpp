@@ -26,17 +26,6 @@ namespace Editor
         // Mouse
         m_controller->bindEvent(std::bind(&Character::onMouseMotion, this, std::placeholders::_1));
 
-        m_controller->bindEvent(
-            Chicane::Input::MouseButton::Left,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().getWindow()->focus(); }
-        );
-        m_controller->bindEvent(
-            Chicane::Input::MouseButton::Right,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().getWindow()->blur(); }
-        );
-
         // Keyboard
         m_controller->bindEvent(
             Chicane::Input::KeyboardButton::W,
@@ -71,12 +60,7 @@ namespace Editor
         m_controller->bindEvent(
             Chicane::Input::KeyboardButton::F1,
             Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::Vulkan); }
-        );
-        m_controller->bindEvent(
-            Chicane::Input::KeyboardButton::F2,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::OpenGL); }
+            []() { Chicane::Application::getInstance().getWindow()->switchFocus(); }
         );
 
         // Gamepad

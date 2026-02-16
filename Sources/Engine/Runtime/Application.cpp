@@ -183,6 +183,15 @@ namespace Chicane
 
         m_window = std::make_unique<Window>();
         m_window->init(inSettings);
+        m_window->watchEvent(
+            [this](const WindowEvent& inEvent)
+            {
+                if (std::shared_ptr<Grid::View> view = getView())
+                {
+                    view->handle(inEvent);
+                }
+            }
+        );
         m_window->watchBackend(
             [this](WindowBackend inValue)
             {

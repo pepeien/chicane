@@ -385,7 +385,7 @@ namespace Chicane
             if (hasParent() && m_parent->hasParent())
             {
                 result.setRoot(m_parent->getRoot()->getSize());
-                result.setParent(m_parent->getParent()->getAvailableSize());
+                result.setParent(m_parent->getParent()->getSize());
             }
 
             return result.parse(inValue, inDirection);

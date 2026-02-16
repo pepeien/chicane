@@ -14,8 +14,22 @@ $bottomBarSize: 20vh;
     }
 
     .--bottom {
-        width: 100%;
+        width: calc(100% - $sideBarSize);
         height: $bottomBarSize;
         margin-top: calc(100% - $bottomBarSize);
     }
+}
+
+.button {
+    width: calc(100% - 2em);
+    height: 2em;
+    background-color: gray;
+    margin: calc(100% - 3em) 0 0 1em;
+    alignment: center;
+}
+
+.block {
+    width: 1em;
+    height: 1em;
+    background-color: blue;
 }

@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component/Container.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -41,6 +43,41 @@ namespace Chicane
             primitive.vertices.push_back(vertex);
 
             setPrimitive(primitive);
+        }
+
+        void Container::onRefresh()
+        {
+            Component::onRefresh();
+
+            if (m_style.height.isRaw(Size::AUTO_KEYWORD) || m_style.width.isRaw(Size::AUTO_KEYWORD))
+            {
+                return;
+            }
+
+            if (!m_style.align.isRaw(Style::ALIGNMENT_TYPE_CENTER))
+            {
+                return;
+            }
+
+            Vec2 min(FLT_MAX);
+            Vec2 max(-FLT_MAX);
+
+            for (auto* child : m_children)
+            {
+                const Vec2& pos  = child->getPosition();
+                const Vec2& size = child->getSize();
+
+                min.x = std::min(min.x, pos.x);
+                min.y = std::min(min.y, pos.y);
+
+                max.x = std::max(max.x, pos.x + size.x);
+                max.y = std::max(max.y, pos.y + size.y);
+            }
+
+            const Vec2 contentSize = max - min;
+
+            m_style.padding.left = (m_size.x - contentSize.x) * 0.5f;
+            m_style.padding.top  = (m_size.y - contentSize.y) * 0.5f;
         }
     }
 }
