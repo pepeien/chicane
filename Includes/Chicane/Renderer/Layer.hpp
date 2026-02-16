@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/List.hpp"
+#include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Renderer.hpp"
@@ -10,6 +10,8 @@
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Viewport.hpp"
+#include "Chicane/Renderer/Viewport/Settings.hpp"
 
 namespace Chicane
 {
@@ -19,6 +21,8 @@ namespace Chicane
 
         class CHICANE_RENDERER Layer
         {
+            friend Backend;
+
         public:
             using Id = String;
 
@@ -34,7 +38,6 @@ namespace Chicane
             virtual void onDestruction() { return; }
 
             // Event
-            virtual void onResize(const Vec<2, std::uint32_t>& inResolution) { return; }
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             virtual void onLoad(const DrawTextureResource& inResources) { return; }
             virtual void onLoad(const DrawSky& inResource) { return; }
@@ -48,20 +51,19 @@ namespace Chicane
             // Settings
             const String& getId() const;
 
-            Viewport getViewport() const;
-            void setViewport(const Viewport& inValue);
+            void setViewport(const ViewportSettings& inValue);
 
             template <typename T = Backend>
-            inline T* getBackend()
+            inline T* getBackend() const
             {
                 return static_cast<T*>(m_backend);
             }
             void setBackend(Backend* inBackend);
 
         protected:
-            Id       m_id;
-            Backend* m_backend;
-            Viewport m_viewport;
+            Id               m_id;
+            Backend*         m_backend;
+            ViewportSettings m_viewport;
         };
     }
 }

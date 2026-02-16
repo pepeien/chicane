@@ -4,15 +4,15 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         OpenGLLSceneShadow::OpenGLLSceneShadow()
             : Layer(ID)
-        {
-            m_viewport.size = Vec2(1024, 1024);
-        }
+        {}
 
         void OpenGLLSceneShadow::onInit()
         {
@@ -38,7 +38,7 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
-            Viewport viewport = getViewport();
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             glUseProgram(m_shaderProgram);
@@ -133,7 +133,7 @@ namespace Chicane
 
             // Depth Map
             glCreateTextures(GL_TEXTURE_2D, 1, &m_depthMapBuffer);
-            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT32F, m_viewport.size.x, m_viewport.size.y);
+            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT32F, 512, 512);
 
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

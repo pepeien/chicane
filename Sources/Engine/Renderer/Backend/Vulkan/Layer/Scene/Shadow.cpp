@@ -60,10 +60,10 @@ namespace Chicane
             VulkanSwapchainImage image         = *((VulkanSwapchainImage*)inData);
             vk::CommandBuffer    commandBuffer = image.commandBuffer;
 
-            vk::Viewport viewport = backend->getViewport(getViewport());
+            vk::Viewport viewport = backend->getVkViewport(this);
             commandBuffer.setViewport(0, 1, &viewport);
 
-            vk::Rect2D scissor = backend->getScissor(getViewport());
+            vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
 
             vk::RenderPassBeginInfo beginInfo  = {};
@@ -247,9 +247,9 @@ namespace Chicane
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
                 .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
-                .addViewport(backend->getViewport(getViewport()))
+                .addViewport(backend->getVkViewport(this))
                 .addDynamicState(vk::DynamicState::eViewport)
-                .addScissor(backend->getScissor(getViewport()))
+                .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .setDepthStencil(depth)
@@ -264,7 +264,7 @@ namespace Chicane
         void VulkanLSceneShadow::initFramebuffers()
         {
             VulkanBackend* backend  = getBackend<VulkanBackend>();
-            vk::Viewport   viewport = backend->getViewport(getViewport());
+            vk::Viewport   viewport = backend->getVkViewport(this);
 
             for (VulkanSwapchainImage& image : backend->swapchain.images)
             {

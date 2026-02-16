@@ -1,4 +1,8 @@
 <View path="home" style="Contents/Editor/Views/Home.decal">
-    <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
-    <Text class="telemetry">{{ frameTime }} ms</Text>
+    <Container class="telemetry">
+        <Text class="telemetry__text">{{ framesPerSecond }} FPS</Text>
+        <Text class="telemetry__text">{{ frameTime }} ms</Text>
+    </Container>
+    <Container class="menu --side"></Container>
+    <Container class="menu --bottom"></Container>
 </View>

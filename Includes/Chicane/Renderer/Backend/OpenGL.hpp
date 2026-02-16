@@ -3,6 +3,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
+#include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
 {
@@ -25,6 +26,10 @@ namespace Chicane
             void onBeginRender() override;
             void onRender(const Frame& inFrame);
             void onEndRender() override;
+
+        public:
+            // Layer
+            Viewport getGLViewport(Layer* inLayer);
 
         private:
             // OpenGL

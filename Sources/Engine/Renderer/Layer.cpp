@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Layer.hpp"
 
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
 {
@@ -23,18 +24,7 @@ namespace Chicane
             return m_id;
         }
 
-        Viewport Layer::getViewport() const
-        {
-            const Vec<2, std::uint32_t>& resolution = m_backend->getResolution();
-
-            Viewport result = m_viewport;
-            result.size.x   = result.size.x <= 0.0f ? resolution.x : result.size.x;
-            result.size.y   = result.size.y <= 0.0f ? resolution.y : result.size.y;
-
-            return result;
-        }
-
-        void Layer::setViewport(const Viewport& inValue)
+        void Layer::setViewport(const ViewportSettings& inValue)
         {
             m_viewport = inValue;
         }

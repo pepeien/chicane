@@ -20,12 +20,12 @@ namespace Chicane
             bottom.refresh();
             right.refresh();
 
-            if (left.getRaw().equals(Style::AUTO_SIZE_UNIT) && right.getRaw().equals(Style::AUTO_SIZE_UNIT))
+            if (left.getRaw().equals(Size::AUTO_UNIT) && right.getRaw().equals(Size::AUTO_UNIT))
             {
                 right.set(right.get() * 0.5f);
             }
 
-            if (top.getRaw().equals(Style::AUTO_SIZE_UNIT) && bottom.getRaw().equals(Style::AUTO_SIZE_UNIT))
+            if (top.getRaw().equals(Size::AUTO_UNIT) && bottom.getRaw().equals(Size::AUTO_UNIT))
             {
                 bottom.set(bottom.get() * 0.5f);
             }
@@ -66,13 +66,12 @@ namespace Chicane
             }
         }
 
-        void StyleCorners::parseWith(std::function<float(const String&, StyleDirection)> inParser)
+        void StyleCorners::parseWith(std::function<float(const String&, SizeDirection)> inParser)
         {
-            top.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Vertical); });
-            left.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Horizontal); });
-            bottom.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Vertical); });
-            right.parseWith([inParser](const String& inValue)
-                            { return inParser(inValue, StyleDirection::Horizontal); });
+            top.parseWith([inParser](const String& inValue) { return inParser(inValue, SizeDirection::Vertical); });
+            left.parseWith([inParser](const String& inValue) { return inParser(inValue, SizeDirection::Horizontal); });
+            bottom.parseWith([inParser](const String& inValue) { return inParser(inValue, SizeDirection::Vertical); });
+            right.parseWith([inParser](const String& inValue) { return inParser(inValue, SizeDirection::Horizontal); });
         }
 
         void StyleCorners::setAll(float inValue)

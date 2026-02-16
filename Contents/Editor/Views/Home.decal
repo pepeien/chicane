@@ -1,6 +1,30 @@
 @import(Font, Contents/Engine/Fonts/Poppins.bfon);
 
+$sideBarSize:   15vw;
+$bottomBarSize: 20vh;
+
 .telemetry {
     width: 12em;
-    color: green;
+    height: 3rem;
+
+    &__text {
+        color: green;
+    }
+}
+
+.menu {
+    position: absolute;
+    background-color: #242424;
+
+    .--side {
+        width: $sideBarSize;
+        height: 100%;
+        margin-left: calc(100% - $sideBarSize);
+    }
+
+    .--bottom {
+        width: 100%;
+        height: $bottomBarSize;
+        margin-top: calc(100% - $bottomBarSize);
+    }
 }

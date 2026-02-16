@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -8,7 +9,6 @@
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Background.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
-#include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
@@ -27,41 +27,23 @@ namespace Chicane
         {
         public:
             // Extension
-            static constexpr inline const char*   FILE_EXTENSION_NAME = "decal";
+            static constexpr inline const char* FILE_EXTENSION_NAME = "decal";
 
             // Attribute
-            static constexpr inline const char*   ATTRIBUTE_NAME = "style";
-
-            // Size units
-            static constexpr inline const char*   AUTO_SIZE_UNIT            = "auto";
-            static constexpr inline const char*   PIXEL_SIZE_UNIT           = "px";
-            static constexpr inline const char*   EM_SIZE_UNIT              = "em";
-            static constexpr inline const char*   PERCENTAGE_SIZE_UNIT      = "%";
-            static constexpr inline const char*   VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
-            static constexpr inline const char*   VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
+            static constexpr inline const char* ATTRIBUTE_NAME = "style";
 
             // Reference
-            static constexpr inline const char*   REFERENCE_KEYWORD = "ref";
+            static constexpr inline const char* REFERENCE_KEYWORD = "ref";
 
             // Import
-            static constexpr inline const char*   IMPORT_KEYWORD = "@import";
-            static constexpr inline const char*   URL_KEYWORD    = "url";
+            static constexpr inline const char* IMPORT_KEYWORD = "@import";
+            static constexpr inline const char* URL_KEYWORD    = "url";
 
             // Ruleset
-            static constexpr inline const char    COMMAND_ENDING   = ';';
-            static constexpr inline const char    VARIABLE_KEYWORD = '$';
-            static constexpr inline const char    RULESET_OPENING  = '{';
-            static constexpr inline const char    RULESET_CLOSING  = '}';
-
-            // Calculation
-            static constexpr inline const char*   CALCULATION_KEYWORD      = "calc";
-            static constexpr inline const char    CALCULATION_OPERATOR_SUM = '+';
-            static constexpr inline const char    CALCULATION_OPERATOR_SUB = '-';
-            static constexpr inline const char    CALCULATION_OPERATOR_MUL = '*';
-            static constexpr inline const char    CALCULATION_OPERATOR_DIV = '/';
-            static inline const std::vector<char> CALCULATION_OPERATORS    = {
-                CALCULATION_OPERATOR_SUM, CALCULATION_OPERATOR_SUB, CALCULATION_OPERATOR_MUL, CALCULATION_OPERATOR_DIV
-            };
+            static constexpr inline const char  COMMAND_ENDING   = ';';
+            static constexpr inline const char  VARIABLE_KEYWORD = '$';
+            static constexpr inline const char  RULESET_OPENING  = '{';
+            static constexpr inline const char  RULESET_CLOSING  = '}';
 
             // Separator
             static constexpr inline const char  ONELINE_SEPARATOR  = ' ';
@@ -207,28 +189,9 @@ namespace Chicane
             void refreshLetterSpacing();
 
             Color::Rgba parseColor(const String& inValue) const;
-            float parseSize(const String& inValue, StyleDirection inDirection) const;
+            float parseSize(const String& inValue, SizeDirection inDirection) const;
             String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
-
-            float parseCalculation(const String& inValue, StyleDirection inDirection) const;
-
-            float parseEM(const String& inValue) const;
-            float parseEM(float inValue) const;
-
-            float parsePercentage(const String& inValue, StyleDirection inDirection) const;
-            float parsePercentage(float inValue, StyleDirection inDirection) const;
-
-            float parseViewportHeight(const String& inValue) const;
-            float parseViewportHeight(float inValue) const;
-
-            float parseViewportWidth(const String& inValue) const;
-            float parseViewportWidth(float inValue) const;
-
-            float parsePixel(const String& inValue) const;
-
-            float parseNumberUnit(const String& inValue, const String& inUnit) const;
-            float parseNumber(const String& inValue) const;
 
         public:
             // Keywords

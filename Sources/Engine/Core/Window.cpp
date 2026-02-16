@@ -335,6 +335,8 @@ namespace Chicane
         );
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
+
+        m_settings.display = display;
     }
 
     WindowType Window::getType() const

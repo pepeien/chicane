@@ -2,8 +2,9 @@
 
 #include <GL/glew.h>
 
-#include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Renderer/Backend.hpp"
+#include <Chicane/Core/FileSystem.hpp>
+
+#include <Chicane/Renderer/Backend/OpenGL.hpp>
 
 namespace Editor
 {
@@ -15,6 +16,7 @@ namespace Editor
     {
         buildShader();
         buildVertexArray();
+        buildViewport();
     }
 
     void OpenGLLGrid::onDestruction()
@@ -23,18 +25,9 @@ namespace Editor
         destroyShader();
     }
 
-    void OpenGLLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
-    {
-        for (Layer* sceneLayer : m_backend->findLayers([](Chicane::Renderer::Layer* inLayer)
-                                                       { return inLayer->getId().contains("Engine_Scene"); }))
-        {
-            sceneLayer->setViewport(getViewport());
-        }
-    }
-
     void OpenGLLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        Chicane::Renderer::Viewport viewport = getViewport();
+        Chicane::Renderer::Viewport viewport = getBackend<Chicane::Renderer::OpenGLBackend>()->getGLViewport(this);
         glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
         glUseProgram(m_shaderProgram);
@@ -137,5 +130,20 @@ namespace Editor
     void OpenGLLGrid::destroyVertexArray()
     {
         glDeleteVertexArrays(1, &m_vertexArray);
+    }
+
+    void OpenGLLGrid::buildViewport()
+    {
+        Chicane::Renderer::ViewportSettings viewport;
+        viewport.width  = "85vw";
+        viewport.height = "80vh";
+
+        setViewport(viewport);
+
+        for (Layer* layer :
+             m_backend->findLayers([](const Layer* inLayer) { return inLayer->getId().contains("Engine_Scene"); }))
+        {
+            layer->setViewport(viewport);
+        }
     }
 }

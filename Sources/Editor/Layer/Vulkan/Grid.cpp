@@ -1,13 +1,13 @@
 #include "Layer/Vulkan/Grid.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
+#include <Chicane/Renderer/Backend/Vulkan.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp>
+#include <Chicane/Renderer/Backend/Vulkan/Vertex.hpp>
 
 namespace Editor
 {
@@ -22,6 +22,8 @@ namespace Editor
 
         initGraphicsPipeline();
         initFramebuffers();
+
+        initViewport();
     }
 
     void VulkanLGrid::onShutdown()
@@ -35,13 +37,9 @@ namespace Editor
         initFramebuffers();
     }
 
-    void VulkanLGrid::onResize(const Chicane::Vec<2, std::uint32_t>& inResolution)
+    void VulkanLGrid::onDestruction()
     {
-        for (Layer* sceneLayer : m_backend->findLayers([](Chicane::Renderer::Layer* inLayer)
-                                                       { return inLayer->getId().contains("Engine_Scene"); }))
-        {
-            sceneLayer->setViewport(getViewport());
-        }
+        m_graphicsPipeline.destroy();
     }
 
     void VulkanLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
@@ -51,10 +49,10 @@ namespace Editor
         Chicane::Renderer::VulkanSwapchainImage image         = *((Chicane::Renderer::VulkanSwapchainImage*)inData);
         vk::CommandBuffer                       commandBuffer = image.commandBuffer;
 
-        vk::Viewport viewport = backend->getViewport(getViewport());
+        vk::Viewport viewport = backend->getVkViewport(this);
         commandBuffer.setViewport(0, 1, &viewport);
 
-        vk::Rect2D scissor = backend->getScissor(getViewport());
+        vk::Rect2D scissor = backend->getVkScissor(this);
         commandBuffer.setScissor(0, 1, &scissor);
 
         vk::RenderPassBeginInfo beginInfo  = {};
@@ -232,9 +230,9 @@ namespace Editor
         // Build
         Chicane::Renderer::VulkanGraphicsPipelineBuilder()
             .setInputAssembly(Chicane::Renderer::VulkanGraphicsPipeline::createInputAssemblyState())
-            .addViewport(backend->getViewport(getViewport()))
+            .addViewport(backend->getVkViewport(this))
             .addDynamicState(vk::DynamicState::eViewport)
-            .addScissor(backend->getScissor(getViewport()))
+            .addScissor(backend->getVkScissor(this))
             .addDynamicState(vk::DynamicState::eScissor)
             .addShaderStage(vertexShader, backend->logicalDevice)
             .addShaderStage(fragmentShader, backend->logicalDevice)
@@ -253,7 +251,7 @@ namespace Editor
     void VulkanLGrid::initFramebuffers()
     {
         Chicane::Renderer::VulkanBackend* backend  = getBackend<Chicane::Renderer::VulkanBackend>();
-        vk::Viewport                      viewport = backend->getViewport(getViewport());
+        vk::Viewport                      viewport = backend->getVkViewport(this);
 
         for (Chicane::Renderer::VulkanSwapchainImage& image : backend->swapchain.images)
         {
@@ -267,6 +265,21 @@ namespace Editor
             createInfo.attachments.push_back(image.depthImage.view);
 
             image.addBuffer(createInfo);
+        }
+    }
+
+    void VulkanLGrid::initViewport()
+    {
+        Chicane::Renderer::ViewportSettings viewport;
+        viewport.width  = "85vw";
+        viewport.height = "80vh";
+
+        setViewport(viewport);
+
+        for (Layer* layer :
+             m_backend->findLayers([](const Layer* inLayer) { return inLayer->getId().contains("Engine_Scene"); }))
+        {
+            layer->setViewport(viewport);
         }
     }
 }

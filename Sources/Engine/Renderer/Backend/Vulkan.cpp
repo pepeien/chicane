@@ -138,26 +138,30 @@ namespace Chicane
             }
         }
 
-        vk::Viewport VulkanBackend::getViewport(Viewport inViewport) const
+        vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
         {
+            const Viewport viewport = getLayerViewport(inLayer);
+
             vk::Viewport result;
-            result.x        = 0.0f;
-            result.y        = 0.0f;
-            result.width    = inViewport.size.x;
-            result.height   = inViewport.size.y;
+            result.x        = viewport.position.x;
+            result.y        = viewport.position.y;
+            result.width    = viewport.size.x;
+            result.height   = viewport.size.y;
             result.minDepth = 0.0f;
             result.maxDepth = 1.0f;
 
             return result;
         }
 
-        vk::Rect2D VulkanBackend::getScissor(Viewport inViewport) const
+        vk::Rect2D VulkanBackend::getVkScissor(Layer* inLayer) const
         {
+            const Viewport viewport = getLayerViewport(inLayer);
+
             vk::Rect2D result;
-            result.offset.x      = inViewport.position.x;
-            result.offset.y      = inViewport.position.y;
-            result.extent.width  = inViewport.size.x;
-            result.extent.height = inViewport.size.y;
+            result.offset.x      = 0.0f;
+            result.offset.y      = 0.0f;
+            result.extent.width  = viewport.size.x;
+            result.extent.height = viewport.size.y;
 
             return result;
         }
@@ -184,7 +188,7 @@ namespace Chicane
 
         void VulkanBackend::buildSurface()
         {
-            VulkanSurface::init(surface, instance, m_window->getInstance());
+            VulkanSurface::init(surface, instance, getRenderer()->getWindow()->getInstance());
         }
 
         void VulkanBackend::destroySurface()
@@ -245,7 +249,7 @@ namespace Chicane
 
         void VulkanBackend::rebuildSwapchain()
         {
-            if (m_window->isMinimized())
+            if (getRenderer()->getWindow()->isMinimized())
             {
                 return;
             }

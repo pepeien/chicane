@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Core/List.hpp"
-#include "Chicane/Core/Window.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -16,8 +15,12 @@ namespace Chicane
 {
     namespace Renderer
     {
+        class Instance;
+
         class CHICANE_RENDERER Backend
         {
+            friend Instance;
+
         public:
             using LayerList = std::vector<std::unique_ptr<Layer>>;
 
@@ -41,16 +44,11 @@ namespace Chicane
             virtual void onEndRender();
 
         public:
-            // Window
-            const Window* getWindow() const;
-            void setWindow(const Window* inWindow);
-
-            // Resolution
-            const Vec<2, std::uint32_t>& getResolution() const;
-            void setResolution(const Vec<2, std::uint32_t>& inValue);
+            // Renderer
+            const Instance* getRenderer() const;
 
             // Layer
-            std::vector<Layer*> findLayers(std::function<bool(Layer* inLayer)> inPredicate) const;
+            std::vector<Layer*> findLayers(std::function<bool(const Layer* inLayer)> inPredicate) const;
 
             template <typename Target = Layer>
             inline Target* getLayer(const String& inId) const
@@ -119,15 +117,18 @@ namespace Chicane
 
         protected:
             // Layer
+            Viewport getLayerViewport(Layer* inLayer) const;
             void renderLayers(const Frame& inFrame, void* inData = nullptr);
             void shutdownLayers();
             void rebuildLayers();
             void destroyLayers();
 
+        private:
+            void setRenderer(const Instance* inValue);
+
         protected:
-            const Window*         m_window;
-            Vec<2, std::uint32_t> m_resolution;
-            LayerList             m_layers;
+            const Instance* m_renderer;
+            LayerList       m_layers;
         };
     }
 }

@@ -14,7 +14,6 @@ namespace Chicane
     {
         Instance::Instance()
             : m_resolution(Vec<2, std::uint32_t>(0)),
-              m_resolutionObservable({}),
               m_frames({}),
               m_currentFrame(0U),
               m_polyResources({}),
@@ -157,9 +156,33 @@ namespace Chicane
             return m_skyResource.id;
         }
 
-        const Vec<2, std::uint32_t>& Instance::getResolution() const
+        bool Instance::hasWindow() const
         {
-            return m_resolution;
+            return m_window != nullptr;
+        }
+
+        const Window* Instance::getWindow() const
+        {
+            return m_window;
+        }
+
+        void Instance::setWindow(const Window* inWindow)
+        {
+            m_window = inWindow;
+
+            reloadBackend();
+        }
+
+        Vec<2, std::uint32_t> Instance::getResolution() const
+        {
+            if (!hasWindow())
+            {
+                return m_resolution;
+            }
+
+            const Vec<2, std::uint32_t>& windowSize = m_window->getSize();
+
+            return {std::max(m_resolution.x, windowSize.x), std::max(m_resolution.y, windowSize.y)};
         }
 
         void Instance::setResolution(const Vec<2, std::uint32_t>& inValue)
@@ -173,20 +196,8 @@ namespace Chicane
 
             if (hasBackend())
             {
-                m_backend->setResolution(m_resolution);
                 m_backend->onResize();
             }
-
-            m_resolutionObservable.next(m_resolution);
-        }
-
-        ResolutionSubscription Instance::watchResolution(
-            ResolutionSubscription::NextCallback     inNext,
-            ResolutionSubscription::ErrorCallback    inError,
-            ResolutionSubscription::CompleteCallback inComplete
-        )
-        {
-            return m_resolutionObservable.subscribe(inNext, inError, inComplete).next(m_resolution);
         }
 
         bool Instance::hasBackend() const
@@ -194,9 +205,14 @@ namespace Chicane
             return m_backend && m_backend.get() != nullptr;
         }
 
-        void Instance::reloadBackend(const Window* inWindow)
+        void Instance::reloadBackend()
         {
-            switch (inWindow->getBackend())
+            if (!hasWindow())
+            {
+                return;
+            }
+
+            switch (m_window->getBackend())
             {
 #if CHICANE_OPENGL
             case WindowBackend::OpenGL:
@@ -218,8 +234,7 @@ namespace Chicane
                 break;
             }
 
-            m_backend->setWindow(inWindow);
-            m_backend->setResolution(m_resolution);
+            m_backend->setRenderer(this);
 
             m_backend->onInit();
 

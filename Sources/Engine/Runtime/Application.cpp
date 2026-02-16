@@ -40,8 +40,8 @@ namespace Chicane
 
     void Application::run(const ApplicationCreateInfo& inCreateInfo)
     {
-        initRenderer(inCreateInfo.renderer);
         initWindow(inCreateInfo.window);
+        initRenderer(inCreateInfo.renderer);
         initBox();
         initKerb();
 
@@ -183,21 +183,12 @@ namespace Chicane
 
         m_window = std::make_unique<Window>();
         m_window->init(inSettings);
-        m_window->watchSize(
-            [this](const Vec<2, std::uint32_t>& inSize)
-            {
-                if (hasRenderer())
-                {
-                    m_renderer->setResolution(inSize);
-                }
-            }
-        );
         m_window->watchBackend(
             [this](WindowBackend inValue)
             {
                 if (hasRenderer())
                 {
-                    m_renderer->reloadBackend(m_window.get());
+                    m_renderer->reloadBackend();
                 }
             }
         );
@@ -205,13 +196,14 @@ namespace Chicane
 
     void Application::initRenderer(const Renderer::Settings& inSettings)
     {
-        if (hasRenderer())
+        if (hasRenderer() || !hasWindow())
         {
             return;
         }
 
         m_renderer = std::make_unique<Renderer::Instance>();
         m_renderer->init(inSettings);
+        m_renderer->setWindow(m_window.get());
     }
 
     void Application::shutdownRenderer()

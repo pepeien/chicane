@@ -4,6 +4,7 @@
 
 #include <Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp>
 #include <Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp>
+#include <Chicane/Renderer/Frame.hpp>
 #include <Chicane/Renderer/Layer.hpp>
 
 namespace Editor
@@ -17,8 +18,7 @@ namespace Editor
         void onInit() override;
         void onShutdown() override;
         void onRestart() override;
-
-        void onResize(const Chicane::Vec<2, std::uint32_t>& inResolution) override;
+        void onDestruction() override;
 
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData = nullptr) override;
 
@@ -30,6 +30,9 @@ namespace Editor
         // Pipeline
         void initGraphicsPipeline();
         void initFramebuffers();
+
+        // Viewport
+        void initViewport();
 
     private:
         Chicane::Renderer::VulkanGraphicsPipeline m_graphicsPipeline;

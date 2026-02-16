@@ -1,11 +1,13 @@
 #include "Chicane/Renderer/Backend.hpp"
 
+#include "Chicane/Renderer/Instance.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         Backend::Backend()
-            : m_window(nullptr)
+            : m_renderer(nullptr)
         {}
 
         void Backend::onInit()
@@ -20,15 +22,7 @@ namespace Chicane
 
         void Backend::onResize()
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
-            {
-                if (!layer)
-                {
-                    continue;
-                }
-
-                layer->onResize(m_resolution);
-            }
+            return;
         }
 
         void Backend::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -85,27 +79,31 @@ namespace Chicane
             return;
         }
 
-        const Window* Backend::getWindow() const
+        const Instance* Backend::getRenderer() const
         {
-            return m_window;
+            return m_renderer;
         }
 
-        void Backend::setWindow(const Window* inWindow)
+        Viewport Backend::getLayerViewport(Layer* inLayer) const
         {
-            m_window = inWindow;
+            const Vec<2, std::uint32_t>& resolution = m_renderer->getResolution();
+            const ViewportSettings       viewport   = inLayer->m_viewport;
+
+            Size size;
+            size.setIsAsobute(true);
+            size.setRoot(resolution);
+            size.setParent(resolution);
+
+            Viewport result;
+            result.size.x     = size.parse(viewport.width, SizeDirection::Horizontal);
+            result.size.y     = size.parse(viewport.height, SizeDirection::Vertical);
+            result.position.x = size.parse(viewport.offsetX, SizeDirection::Horizontal);
+            result.position.y = size.parse(viewport.offsetY, SizeDirection::Vertical);
+
+            return result;
         }
 
-        const Vec<2, std::uint32_t>& Backend::getResolution() const
-        {
-            return m_resolution;
-        }
-
-        void Backend::setResolution(const Vec<2, std::uint32_t>& inValue)
-        {
-            m_resolution = inValue;
-        }
-
-        std::vector<Layer*> Backend::findLayers(std::function<bool(Layer* inLayer)> inPredicate) const
+        std::vector<Layer*> Backend::findLayers(std::function<bool(const Layer* inLayer)> inPredicate) const
         {
             std::vector<Layer*> result;
 
@@ -180,6 +178,11 @@ namespace Chicane
             }
 
             m_layers.clear();
+        }
+
+        void Backend::setRenderer(const Instance* inValue)
+        {
+            m_renderer = inValue;
         }
     }
 }

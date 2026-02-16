@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Layer.hpp"
+#include <Chicane/Renderer/Frame.hpp>
+#include <Chicane/Renderer/Layer.hpp>
 
 namespace Editor
 {
@@ -14,8 +14,6 @@ namespace Editor
         void onInit() override;
         void onDestruction() override;
 
-        void onResize(const Chicane::Vec<2, std::uint32_t>& inResolution) override;
-
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData) override;
         void onEndRender() override;
 
@@ -25,6 +23,8 @@ namespace Editor
 
         void buildVertexArray();
         void destroyVertexArray();
+
+        void buildViewport();
 
     private:
         // Shader

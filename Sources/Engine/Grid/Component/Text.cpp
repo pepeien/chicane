@@ -15,7 +15,7 @@ namespace Chicane
             addStyleProperties({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
                 {Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW},
-                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         },
+                {Style::WIDTH_ATTRIBUTE_NAME,          Size::AUTO_UNIT               },
                 {Style::HEIGHT_ATTRIBUTE_NAME,         Style::FONT_SIZE_DEFAULT_VALUE}
             });
         }

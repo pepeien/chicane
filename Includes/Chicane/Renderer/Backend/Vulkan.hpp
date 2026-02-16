@@ -7,6 +7,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
@@ -35,8 +36,8 @@ namespace Chicane
             void onRender(const Frame& inFrame) override;
 
         public:
-            vk::Viewport getViewport(Viewport inViewport) const;
-            vk::Rect2D getScissor(Viewport inViewport) const;
+            vk::Viewport getVkViewport(Layer* inLayer) const;
+            vk::Rect2D getVkScissor(Layer* inLayer) const;
 
         private:
             void buildInstance();

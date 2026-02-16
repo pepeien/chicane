@@ -85,7 +85,7 @@ namespace Chicane
 
         void OpenGLBackend::onEndRender()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
             {
@@ -93,9 +93,19 @@ namespace Chicane
             }
         }
 
+        Viewport OpenGLBackend::getGLViewport(Layer* inLayer)
+        {
+            const Vec<2, std::uint32_t> resolution = getRenderer()->getResolution();
+
+            Viewport result   = getLayerViewport(inLayer);
+            result.position.y = resolution.y - (result.position.y + result.size.y);
+
+            return result;
+        }
+
         void OpenGLBackend::buildContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             g_context = SDL_GL_CreateContext(window);
 
@@ -117,7 +127,7 @@ namespace Chicane
 
         void OpenGLBackend::destroyContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_MakeCurrent(window, nullptr))
             {

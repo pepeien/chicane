@@ -4,6 +4,8 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -66,7 +68,7 @@ namespace Chicane
 
         void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
         {
-            Viewport viewport = getViewport();
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             glUseProgram(m_shaderProgram);
