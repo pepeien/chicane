@@ -38,9 +38,6 @@ namespace Chicane
         m_viewCommandBuffers.resize(2);
     }
 
-    Application::~Application()
-    {}
-
     void Application::run(const ApplicationCreateInfo& inCreateInfo)
     {
         initRenderer(inCreateInfo.renderer);

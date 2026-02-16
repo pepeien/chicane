@@ -33,10 +33,7 @@ namespace Chicane
             {
                 throw std::runtime_error("Error while resetting the fences");
             }
-        }
 
-        void VulkanSwapchainImage::reset()
-        {
             commandBuffer.reset();
         }
 

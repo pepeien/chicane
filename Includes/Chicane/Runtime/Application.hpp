@@ -49,7 +49,6 @@ namespace Chicane
 
     private:
         Application();
-        ~Application();
 
     public:
         // Lifecycle

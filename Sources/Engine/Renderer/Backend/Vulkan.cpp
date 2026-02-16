@@ -81,7 +81,6 @@ namespace Chicane
         void VulkanBackend::onRender(const Frame& inFrame)
         {
             VulkanSwapchainImage& liveImage = swapchain.images.at(swapchain.currentImageIndex);
-            liveImage.sync();
 
             vk::ResultValue<std::uint32_t> acquire = liveImage.acquire(swapchain.instance);
             if (acquire.result == vk::Result::eErrorOutOfDateKHR)
@@ -95,8 +94,10 @@ namespace Chicane
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            VulkanSwapchainImage& nextImage = swapchain.images.at(acquire.value);
-            nextImage.reset();
+            swapchain.currentImageIndex = acquire.value;
+
+            VulkanSwapchainImage& nextImage = swapchain.images.at(swapchain.currentImageIndex);
+            nextImage.sync();
             nextImage.begin(inFrame);
             renderLayers(inFrame, &nextImage);
             nextImage.end();
@@ -112,32 +113,29 @@ namespace Chicane
             submitInfo.signalSemaphoreCount = 1;
             submitInfo.pSignalSemaphores    = &nextImage.renderFinishedSemaphore;
 
-            vk::Result submit = graphicsQueue.submit(1, &submitInfo, liveImage.fence);
-            if (submit != vk::Result::eSuccess)
+            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, nextImage.fence);
+            if (submitResult != vk::Result::eSuccess)
             {
-                throw std::runtime_error("Error while submiting the next image");
+                throw std::runtime_error("Queue submit failed");
             }
 
-            vk::PresentInfoKHR presentInfo = {};
+            vk::PresentInfoKHR presentInfo;
             presentInfo.waitSemaphoreCount = 1;
             presentInfo.pWaitSemaphores    = &nextImage.renderFinishedSemaphore;
             presentInfo.swapchainCount     = 1;
             presentInfo.pSwapchains        = &swapchain.instance;
-            presentInfo.pImageIndices      = &acquire.value;
+            presentInfo.pImageIndices      = &swapchain.currentImageIndex;
 
-            vk::Result present = m_presentQueue.presentKHR(presentInfo);
-            if (present == vk::Result::eErrorOutOfDateKHR || present == vk::Result::eSuboptimalKHR)
+            vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
+            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
-
                 return;
             }
-            else if (present != vk::Result::eSuccess)
+            else if (presentResult != vk::Result::eSuccess)
             {
-                throw std::runtime_error("Error while presenting the image");
+                throw std::runtime_error("Present failed");
             }
-
-            swapchain.currentImageIndex = (swapchain.currentImageIndex + 1) % swapchain.images.size();
         }
 
         vk::Viewport VulkanBackend::getViewport(Viewport inViewport) const
