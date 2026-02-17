@@ -25,9 +25,10 @@ namespace Chicane
         public:
             std::uint32_t              code     = 0U;
             std::uint32_t              units    = 0U;
-            Vec2                       scale    = {};
-            Vec2                       box      = {};
-            Vec2                       line     = {};
+            std::uint32_t              width    = 0U;
+            std::uint32_t              height   = 0U;
+            float                      advance  = 0.0f;
+            Vec<2, std::uint32_t>      bearing  = Vec<2, std::uint32_t>(0U);
             std::vector<Vec3>          vertices = {};
             std::vector<std::uint32_t> indices  = {};
         };

@@ -66,7 +66,7 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                result.push_back({point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f});
+                result.push_back({point.x, point.y, 0.0f});
             }
         }
 

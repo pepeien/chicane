@@ -25,15 +25,12 @@ namespace Chicane
 
         void TextCharacter::refreshPrimitive()
         {
-            const Box::FontGlyph& glyph = getGlyph();
-
             Primitive primitive = {};
-            primitive.indices   = glyph.indices;
+            primitive.indices   = m_glyph.indices;
 
             Vertex vertex = {};
-            vertex.color  = m_style.foregroundColor.get();
 
-            for (const Vec3 position : glyph.vertices)
+            for (const Vec3 position : m_glyph.vertices)
             {
                 vertex.position = position;
 
@@ -50,11 +47,7 @@ namespace Chicane
                 return;
             }
 
-            m_style.background.color = m_parent->getStyle().foregroundColor;
-
-            m_parent->addCursor(m_glyph.box.x * ((m_style.font.size.get() / m_glyph.units) * 1.25f), 0.0f);
-
-            m_style.zIndex.set(getParent()->getStyle().zIndex.get() + 0.1f);
+            refreshFontStyle();
         }
 
         void TextCharacter::disable()
@@ -118,19 +111,21 @@ namespace Chicane
 
             m_glyph = font.getGlyph(m_character);
 
-            const Style& parentStyle = m_parent->getStyle();
-
-            m_style.font = parentStyle.font;
-
-            const float scale = m_style.font.size.get() / Curve::FIXED_POINT / 2.0f;
-            const float units = (m_style.font.size.get() / m_glyph.units) * 1.25f;
-
-            m_style.width.set(m_glyph.line.x * scale);
-            m_style.height.set(m_glyph.line.y * scale);
-
-            m_style.margin.top = m_glyph.box.y * units;
-
             refreshPrimitive();
+        }
+
+        void TextCharacter::refreshFontStyle()
+        {
+            const Style& parentStyle = getParent()->getStyle();
+
+            m_style.zIndex.set(parentStyle.zIndex.get());
+            m_style.background.color = parentStyle.foregroundColor;
+            m_style.font             = parentStyle.font;
+
+            const float scale = m_style.font.size.get() / m_glyph.units;
+            m_style.width.set(m_glyph.units * scale);
+            m_style.height.set(m_glyph.units * scale);
+            m_style.margin.right.set(m_glyph.width * scale);
         }
     }
 }

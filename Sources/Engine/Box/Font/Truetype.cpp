@@ -96,13 +96,22 @@ namespace Chicane
             {
                 const std::vector<Curve> contours = parseGlyphContours(inGlyph);
 
-                FontGlyph result = {};
-                result.code      = inCode;
-                result.units     = inGlyph->face->units_per_EM;
-                result.box       = {inGlyph->advance.x, inGlyph->face->ascender + inGlyph->face->descender};
-                result.line      = {inGlyph->face->size->metrics.x_ppem, inGlyph->face->size->metrics.y_ppem};
-                result.vertices  = Curve::getTriangleVertices(contours);
-                result.indices   = Curve::getTriangleIndices(contours);
+                FontGlyph result;
+                result.code     = inCode;
+                result.units    = inGlyph->face->units_per_EM;
+                result.width    = inGlyph->metrics.width;
+                result.height   = inGlyph->metrics.height;
+                result.advance  = inGlyph->advance.x;
+                result.bearing  = {inGlyph->metrics.horiBearingX, inGlyph->metrics.vertBearingY};
+                result.vertices = Curve::getTriangleVertices(contours);
+                result.indices  = Curve::getTriangleIndices(contours);
+
+                float invUnits = 1.0f / result.units;
+                for (auto& vertex : result.vertices)
+                {
+                    vertex.x *= invUnits;
+                    vertex.y *= invUnits;
+                }
 
                 return result;
             }
@@ -148,14 +157,6 @@ namespace Chicane
                     throw std::runtime_error("Failed to load the font char map");
                 }
 
-                if (FT_Set_Pixel_Sizes(face, 0, Font::BASE_SIZE))
-                {
-                    FT_Done_Face(face);
-                    FT_Done_FreeType(library);
-
-                    throw std::runtime_error("Failed to set the face pixel size");
-                }
-
                 FontParsed result = {};
                 result.name       = face->family_name;
 
@@ -163,7 +164,7 @@ namespace Chicane
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
                 while (glyphIndex != 0)
                 {
-                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP) == 0)
+                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_SCALE) == 0)
                     {
                         result.glyphs.emplace(code, parseGlyph(code, face->glyph));
                     }

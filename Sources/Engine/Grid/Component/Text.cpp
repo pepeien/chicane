@@ -23,8 +23,6 @@ namespace Chicane
             Container::onRefresh();
 
             refreshText();
-
-            m_style.gap.setAll(m_style.letterSpacing.get());
         }
 
         const String& Text::getText() const

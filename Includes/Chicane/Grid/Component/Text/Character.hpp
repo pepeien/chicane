@@ -38,6 +38,7 @@ namespace Chicane
 
         protected:
             void refreshFont();
+            void refreshFontStyle();
 
         private:
             char           m_character;
