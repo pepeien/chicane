@@ -29,3 +29,6 @@
 [submodule "Sources/Engine/Core/Vendor/xxHash"]
 	path = Sources/Engine/Core/Vendor/xxHash
 	url = https://github.com/pepeien/xxHash.git
+[submodule "Sources/Engine/Core/Vendor/libtess2"]
+	path = Sources/Engine/Core/Vendor/libtess2
+	url = https://github.com/pepeien/libtess2.git
