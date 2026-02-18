@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -24,10 +26,10 @@ namespace Chicane
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
-              m_size({}),
-              m_position({}),
+              m_size(Vec2::Zero),
+              m_position(Vec2::Zero),
+              m_cursor(Vec2::Zero),
               m_bounds({}),
-              m_cursor({}),
               m_attributes({}),
               m_primitive({})
         {
@@ -47,7 +49,7 @@ namespace Chicane
 
         bool Component::isDrawable() const
         {
-            return isVisible() && hasPrimitive();
+            return isDisplayable() && isVisible() && isSolid() && hasPrimitive();
         }
 
         void Component::tick(float inDeltaTime)
@@ -77,16 +79,29 @@ namespace Chicane
             return (!m_parent && !m_root) || (m_parent == this && m_root == this);
         }
 
-        bool Component::isVisible() const
+        bool Component::isDisplayable() const
         {
-            const bool isParentVisible = isRoot() ? true : m_parent->isVisible();
-            const bool isDisplayable =
+            const bool bIsParentDisplyable = isRoot() ? true : m_parent->isDisplayable();
+            const bool bIsDisplayable =
                 !m_style.isDisplay(StyleDisplay::None) && !m_style.isDisplay(StyleDisplay::Hidden);
 
-            return isParentVisible && isDisplayable;
+            return bIsParentDisplyable && bIsDisplayable;
         }
 
-        bool Component::isValidChild(Component* inComponent) const
+        bool Component::isVisible() const
+        {
+            const bool bIsBackgroundImageVisible = !m_style.background.image.getRaw().isEmpty();
+            const bool bIsBackgroundColorVisible = m_style.background.color.get().a > 0.0f;
+
+            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible) && m_style.opacity.get() > 0.0f;
+        }
+
+        bool Component::isSolid() const
+        {
+            return m_size.x > 0.0f && m_size.y > 0.0f;
+        }
+
+        bool Component::canAdopt(Component* inComponent) const
         {
             return inComponent != nullptr && inComponent != this;
         }
@@ -472,7 +487,7 @@ namespace Chicane
 
         void Component::addChild(Component* inComponent)
         {
-            if (!isValidChild(inComponent))
+            if (!canAdopt(inComponent))
             {
                 return;
             }
@@ -492,7 +507,7 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isVisible())
+                if (!child || !child->isDisplayable())
                 {
                     continue;
                 }
@@ -522,7 +537,7 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isVisible())
+                if (!child || !child->isDisplayable())
                 {
                     continue;
                 }
@@ -548,19 +563,14 @@ namespace Chicane
             return getChildrenContentSizeBlock();
         }
 
-        Vec2 Component::getAvailableSize() const
-        {
-            return m_size - m_cursor;
-        }
-
         const Vec2& Component::getSize() const
         {
             return m_size;
         }
 
-        void Component::setSize(const Vec2& inSize)
+        void Component::setSize(const Vec2& inValue)
         {
-            setSize(inSize.x, inSize.y);
+            setSize(inValue.x, inValue.y);
         }
 
         void Component::setSize(float inWidth, float inHeight)
@@ -574,9 +584,9 @@ namespace Chicane
             return m_position;
         }
 
-        void Component::addPosition(const Vec2& inPosition)
+        void Component::addPosition(const Vec2& inValue)
         {
-            addPosition(inPosition.x, inPosition.y);
+            addPosition(inValue.x, inValue.y);
         }
 
         void Component::addPosition(float inX, float inY)
@@ -584,9 +594,9 @@ namespace Chicane
             setPosition(m_position.x + inX, m_position.y + inY);
         }
 
-        void Component::setPosition(const Vec2& inPosition)
+        void Component::setPosition(const Vec2& inValue)
         {
-            setPosition(inPosition.x, inPosition.y);
+            setPosition(inValue.x, inValue.y);
         }
 
         void Component::setPosition(float inX, float inY)
@@ -602,9 +612,9 @@ namespace Chicane
             return m_cursor;
         }
 
-        void Component::addCursor(const Vec2& inCursor)
+        void Component::addCursor(const Vec2& inValue)
         {
-            addCursor(inCursor.x, inCursor.y);
+            addCursor(inValue.x, inValue.y);
         }
 
         void Component::addCursor(float inX, float inY)
@@ -612,9 +622,9 @@ namespace Chicane
             setCursor(m_cursor.x + inX, m_cursor.y + inY);
         }
 
-        void Component::setCursor(const Vec2& inCursor)
+        void Component::setCursor(const Vec2& inValue)
         {
-            setCursor(inCursor.x, inCursor.y);
+            setCursor(inValue.x, inValue.y);
         }
 
         void Component::setCursor(float inX, float inY)
@@ -748,17 +758,9 @@ namespace Chicane
                 return;
             }
 
-            Vec2 content = getChildrenContentSize();
+            const Vec2 content = getChildrenContentSize();
 
-            Vec2 padding = {
-                m_style.padding.left.get() + m_style.padding.right.get(),
-                m_style.padding.top.get() + m_style.padding.bottom.get()
-            };
-
-            setSize(
-                bIsWidthAuto ? content.x + padding.x : m_style.width.get(),
-                bIsHeightAuto ? content.y + padding.y : m_style.height.get()
-            );
+            setSize(bIsWidthAuto ? content.x : m_style.width.get(), bIsHeightAuto ? content.y : m_style.height.get());
         }
 
         void Component::refreshPosition()

@@ -184,7 +184,7 @@ namespace Chicane
         void OpenGLLGrid::buildPrimitiveVertexBuffer()
         {
             glCreateBuffers(1, &m_primitiveVertexBuffer);
-            glNamedBufferData(m_primitiveVertexBuffer, sizeof(Vertex) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(m_primitiveVertexBuffer, sizeof(Vertex) * 65000, nullptr, GL_DYNAMIC_DRAW);
 
             // Position
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 0);
@@ -210,7 +210,7 @@ namespace Chicane
         void OpenGLLGrid::buildPrimitiveIndexBuffer()
         {
             glCreateBuffers(1, &m_primitiveIndexBuffer);
-            glNamedBufferData(m_primitiveIndexBuffer, sizeof(std::uint32_t) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(m_primitiveIndexBuffer, sizeof(std::uint32_t) * 65000, nullptr, GL_DYNAMIC_DRAW);
         }
 
         void OpenGLLGrid::destroyPrimitiveData()

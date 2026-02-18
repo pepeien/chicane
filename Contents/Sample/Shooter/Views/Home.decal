@@ -4,9 +4,10 @@
 $grayColor: rgb(51, 51, 51);
 
 // Crosshair
-$xhairSize:      ref(crosshairSize)px;
-$xhairThickness: ref(crosshairThickness)px;
-$xhairGap:       ref(crosshairGap)px;
+$xhairPixel:     calc(100vh / 480px);
+$xhairSize:      calc(ref(crosshairSize) * $xhairPixel);
+$xhairThickness: calc(ref(crosshairThickness) * $xhairPixel);
+$xhairGap:       calc(ref(crosshairGap) * $xhairPixel);
 
 $xhairThicknessOffset: calc($xhairThickness * 0.5);
 $xhairPositiveOffset:  calc(50% + calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 0.5)));
@@ -54,24 +55,24 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 
     &__dot {
         display: ref(crosshairDotDisplay);
-        margin: auto $xhairThicknessOffset $xhairThicknessOffset auto;
+        margin: 50% $xhairThicknessOffset $xhairThicknessOffset 50%;
         height: $xhairThickness;
         width: $xhairThickness;
     }
 
     &__top {
-        margin: auto $xhairThicknessOffset $xhairNegativeOffset auto;
+        margin: 50% $xhairThicknessOffset $xhairNegativeOffset 50%;
     }
 
     &__bottom {
-        margin: $xhairPositiveOffset $xhairThicknessOffset 0 auto;
+        margin: $xhairPositiveOffset $xhairThicknessOffset 0 50%;
     }
 
     &__left {
-        margin: auto $xhairNegativeOffset $xhairThicknessOffset auto;
+        margin: 50% $xhairNegativeOffset $xhairThicknessOffset 50%;
     }
 
     &__right {
-        margin: auto 0 $xhairThicknessOffset $xhairPositiveOffset;
+        margin: 50% 0 $xhairThicknessOffset $xhairPositiveOffset;
     }
 }

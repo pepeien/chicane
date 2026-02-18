@@ -34,15 +34,7 @@ namespace Chicane
         public:
             inline bool isRaw(const String& inValue) const { return m_raw.equals(inValue); }
             inline const String& getRaw() const { return m_raw; }
-            inline void setRaw(const String& inValue)
-            {
-                if (inValue.isEmpty())
-                {
-                    return;
-                }
-
-                m_raw = inValue;
-            }
+            inline void setRaw(const String& inValue) { m_raw = inValue; }
 
             inline T get() const { return m_parsed; }
             inline void set(const StyleProperty<T>& inProperty) { m_parsed = inProperty.get(); }

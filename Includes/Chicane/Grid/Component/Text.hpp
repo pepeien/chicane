@@ -3,13 +3,13 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE_GRID Text : public Container
+        class CHICANE_GRID Text : public Component
         {
         public:
             // Tag

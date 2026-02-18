@@ -2,8 +2,6 @@
 
 #include "Chicane/Box/Font/Manager.hpp"
 
-#include "Chicane/Core/Math/Curve.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -20,17 +18,19 @@ namespace Chicane
 
         bool TextCharacter::isDrawable() const
         {
-            return m_parent->isVisible() && hasGlyph() && hasPrimitive();
+            return m_parent->isDisplayable() && hasGlyph() && hasPrimitive();
         }
 
         void TextCharacter::refreshPrimitive()
         {
+            const Box::FontGlyph& glyph = getGlyph();
+
             Primitive primitive = {};
-            primitive.indices   = m_glyph.indices;
+            primitive.indices   = glyph.indices;
 
             Vertex vertex = {};
 
-            for (const Vec3 position : m_glyph.vertices)
+            for (const Vec3 position : glyph.vertices)
             {
                 vertex.position = position;
 
@@ -42,7 +42,7 @@ namespace Chicane
 
         void TextCharacter::onRefresh()
         {
-            if (!hasParent() || !hasGlyph())
+            if (!hasParent())
             {
                 return;
             }
@@ -60,12 +60,12 @@ namespace Chicane
             return m_character != NULL_CHARACTER;
         }
 
-        char TextCharacter::getCharacter() const
+        char32_t TextCharacter::getCharacter() const
         {
             return m_character;
         }
 
-        void TextCharacter::setCharacter(char inValue)
+        void TextCharacter::setCharacter(char32_t inValue)
         {
             if (m_character == inValue)
             {
@@ -79,7 +79,7 @@ namespace Chicane
 
         bool TextCharacter::hasGlyph() const
         {
-            return m_glyph.indices.size() > 0;
+            return !m_glyph.vertices.empty();
         }
 
         const Box::FontGlyph& TextCharacter::getGlyph() const
@@ -98,7 +98,9 @@ namespace Chicane
                 return;
             }
 
-            const Box::FontParsed& font = Box::getFontManager()->getFamily(m_style.font.family.get());
+            const Style& parentStyle = m_parent->getStyle();
+
+            const Box::FontParsed& font = Box::getFontManager()->getFamily(parentStyle.font.family.get());
 
             if (!font.hasGlyph(m_character))
             {
@@ -116,16 +118,26 @@ namespace Chicane
 
         void TextCharacter::refreshFontStyle()
         {
+            if (!hasGlyph())
+            {
+                return;
+            }
+
             const Style& parentStyle = getParent()->getStyle();
 
-            m_style.zIndex.set(parentStyle.zIndex.get());
+            m_style.zIndex.set(parentStyle.zIndex.get() + 0.11f);
             m_style.background.color = parentStyle.foregroundColor;
-            m_style.font             = parentStyle.font;
 
-            const float scale = m_style.font.size.get() / m_glyph.units;
-            m_style.width.set(m_glyph.units * scale);
-            m_style.height.set(m_glyph.units * scale);
-            m_style.margin.right.set(m_glyph.width * scale);
+            float scale   = parentStyle.font.size.get() / m_glyph.units;
+            float width   = m_glyph.width * scale;
+            float height  = m_glyph.height * scale;
+            float advance = m_glyph.advance * scale;
+            Vec2  bearing = m_glyph.bearing * scale;
+
+            m_style.width.setRaw(std::to_string(width));
+            m_style.height.setRaw(std::to_string(height));
+            m_style.margin.left.setRaw(std::to_string(bearing.x));
+            m_style.margin.top.setRaw(std::to_string(bearing.y));
         }
     }
 }

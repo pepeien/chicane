@@ -7,6 +7,7 @@
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font.hpp"
 
+#include "Chicane/Core/Math/Contour.hpp"
 #include "Chicane/Core/Math/Curve.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 
@@ -25,15 +26,8 @@ namespace Chicane
                 {
                     std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
-                    if (!contours->empty() && contours->back().isEmpty())
-                    {
-                        contours->back().addPoint(Vec2(inPoint->x, inPoint->y));
-
-                        return 0;
-                    }
-
                     Curve curve = {};
-                    curve.setSegmentCount(4);
+                    curve.setSegmentCount(12);
                     curve.addPoint(Vec2(inPoint->x, inPoint->y));
 
                     contours->push_back(curve);
@@ -42,41 +36,41 @@ namespace Chicane
                 };
                 funcs.line_to = [](const FT_Vector* inPoint, void* inData)
                 {
-                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
+                    std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
-                    if (!curve)
+                    if (contours->empty())
                     {
                         return 0;
                     }
 
-                    curve->addPoint(Vec2(inPoint->x, inPoint->y));
+                    contours->back().addPoint(Vec2(inPoint->x, inPoint->y));
 
                     return 0;
                 };
                 funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData)
                 {
-                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
+                    std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
-                    if (!curve)
+                    if (contours->empty())
                     {
                         return 0;
                     }
 
-                    curve->addQuadraticPoint(Vec2(inControl->x, inControl->y), Vec2(inPoint->x, inPoint->y));
+                    contours->back().addQuadraticPoint(Vec2(inControl->x, inControl->y), Vec2(inPoint->x, inPoint->y));
 
                     return 0;
                 };
                 funcs.cubic_to =
                     [](const FT_Vector* inControlA, const FT_Vector* inControlB, const FT_Vector* inPoint, void* inData)
                 {
-                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
+                    std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
-                    if (!curve)
+                    if (contours->empty())
                     {
                         return 0;
                     }
 
-                    curve->addBezierPoint(
+                    contours->back().addBezierPoint(
                         Vec2(inControlA->x, inControlA->y),
                         Vec2(inControlB->x, inControlB->y),
                         Vec2(inPoint->x, inPoint->y)
@@ -94,7 +88,8 @@ namespace Chicane
 
             FontGlyph parseGlyph(std::uint32_t inCode, FT_GlyphSlot inGlyph)
             {
-                const std::vector<Curve> contours = parseGlyphContours(inGlyph);
+                Contour contour;
+                contour.triangulate(parseGlyphContours(inGlyph));
 
                 FontGlyph result;
                 result.code     = inCode;
@@ -103,8 +98,8 @@ namespace Chicane
                 result.height   = inGlyph->metrics.height;
                 result.advance  = inGlyph->advance.x;
                 result.bearing  = {inGlyph->metrics.horiBearingX, inGlyph->metrics.vertBearingY};
-                result.vertices = Curve::getTriangleVertices(contours);
-                result.indices  = Curve::getTriangleIndices(contours);
+                result.vertices = contour.getVertices();
+                result.indices  = contour.getIndices();
 
                 float invUnits = 1.0f / result.units;
                 for (auto& vertex : result.vertices)
@@ -119,17 +114,13 @@ namespace Chicane
             FontParsed parse(const FontRaw& inData)
             {
                 FT_Library library = nullptr;
-                FT_Init_FreeType(&library);
-
-                if (!library)
+                if (FT_Init_FreeType(&library))
                 {
                     throw std::runtime_error("Failed to parse the font");
                 }
 
                 FT_Face face = nullptr;
-                FT_New_Memory_Face(library, inData.data(), inData.size(), 0, &face);
-
-                if (!face)
+                if (FT_New_Memory_Face(library, inData.data(), inData.size(), 0, &face))
                 {
                     FT_Done_FreeType(library);
 
@@ -143,18 +134,16 @@ namespace Chicane
 
                     if (charmap->encoding == FT_ENCODING_UNICODE)
                     {
-                        FT_Set_Charmap(face, charmap);
+                        if (FT_Set_Charmap(face, charmap))
+                        {
+                            FT_Done_Face(face);
+                            FT_Done_FreeType(library);
+
+                            throw std::runtime_error("Failed to load the font char map");
+                        };
 
                         break;
                     }
-                }
-
-                if (!charmap)
-                {
-                    FT_Done_Face(face);
-                    FT_Done_FreeType(library);
-
-                    throw std::runtime_error("Failed to load the font char map");
                 }
 
                 FontParsed result = {};

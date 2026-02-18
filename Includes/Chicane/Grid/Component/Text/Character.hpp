@@ -30,8 +30,8 @@ namespace Chicane
             void disable();
 
             bool hasCharacter() const;
-            char getCharacter() const;
-            void setCharacter(char inValue);
+            char32_t getCharacter() const;
+            void setCharacter(char32_t inValue);
 
             bool hasGlyph() const;
             const Box::FontGlyph& getGlyph() const;
@@ -41,7 +41,7 @@ namespace Chicane
             void refreshFontStyle();
 
         private:
-            char           m_character;
+            char32_t       m_character;
 
             Box::FontGlyph m_glyph;
         };

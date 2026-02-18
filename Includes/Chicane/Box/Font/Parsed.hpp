@@ -21,10 +21,10 @@ namespace Chicane
 
         public:
             bool hasGlyph(char inCharacter) const;
-            bool hasGlyph(std::uint32_t inCode) const;
+            bool hasGlyph(char32_t inCode) const;
 
             const FontGlyph& getGlyph(char inCharacter) const;
-            const FontGlyph& getGlyph(std::uint32_t inCode) const;
+            const FontGlyph& getGlyph(char32_t inCode) const;
 
         public:
             String         name   = "";

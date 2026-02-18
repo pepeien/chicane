@@ -14,28 +14,28 @@ namespace Chicane
 
             Vertex vertex = {};
 
-            // Bottom-left
+            // Top Left
             vertex.uv.x       = 0.0f;
             vertex.uv.y       = 0.0f;
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;
             primitive.vertices.push_back(vertex);
 
-            // Bottom-right
+            // Top right
             vertex.uv.x       = 1.0f;
             vertex.uv.y       = 0.0f;
             vertex.position.x = 1.0f;
             vertex.position.y = -1.0f;
             primitive.vertices.push_back(vertex);
 
-            // Top-right
+            // Bottom Right
             vertex.uv.x       = 1.0f;
             vertex.uv.y       = 1.0f;
             vertex.position.x = 1.0f;
             vertex.position.y = 1.0f;
             primitive.vertices.push_back(vertex);
 
-            // Top-left
+            // Bottom Left
             vertex.uv.x       = 0.0f;
             vertex.uv.y       = 1.0f;
             vertex.position.x = -1.0f;

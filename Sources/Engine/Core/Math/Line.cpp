@@ -27,7 +27,7 @@ namespace Chicane
         return m_points.back();
     }
 
-    const std::vector<Vec2>& Line::getPoints() const
+    const Line::Points& Line::getPoints() const
     {
         return m_points;
     }
