@@ -14,8 +14,9 @@ namespace Chicane
         {
             switch (inData.getVendor())
             {
+            case FontVendor::OpenType:
             case FontVendor::TrueType:
-                add(inId, FontTrueType::parse(inData.getData()));
+                add(inId, FontTrueType::parse(inData));
 
                 break;
 

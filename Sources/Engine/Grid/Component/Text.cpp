@@ -7,7 +7,7 @@ namespace Chicane
     namespace Grid
     {
         Text::Text(const pugi::xml_node& inNode)
-            : Component(inNode),
+            : Container(inNode),
               m_text("")
         {
             setText(inNode.text().as_string());
@@ -21,6 +21,8 @@ namespace Chicane
 
         void Text::onRefresh()
         {
+            Container::onRefresh();
+
             refreshText();
         }
 
