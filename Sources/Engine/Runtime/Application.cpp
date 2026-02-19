@@ -516,7 +516,7 @@ namespace Chicane
             command.polygon.vertices  = primitive.vertices;
             command.polygon.indices   = primitive.indices;
             command.instance.screen   = viewSize;
-            command.instance.size     = component->getSize();
+            command.instance.size     = primitive.scale == Vec2::Zero ? component->getSize() : primitive.scale;
             command.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
             command.textureReference  = style.background.image.get();
             command.opacity           = style.opacity.get();

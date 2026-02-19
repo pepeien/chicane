@@ -25,6 +25,17 @@ namespace Chicane
             using LayerList = std::vector<std::unique_ptr<Layer>>;
 
         public:
+            static constexpr inline const std::size_t TEXTURE_COUNT = 512;
+
+            static constexpr inline const std::size_t SCENE_INDEX_COUNT    = 1048576; // 1M (2^20)
+            static constexpr inline const std::size_t SCENE_VERTEX_COUNT   = SCENE_INDEX_COUNT * 3;
+            static constexpr inline const std::size_t SCENE_INSTANCE_COUNT = 4096;
+
+            static constexpr inline const std::size_t UI_INDEX_COUNT    = 65536; // 64K (2^16)
+            static constexpr inline const std::size_t UI_VERTEX_COUNT   = UI_INDEX_COUNT * 3;
+            static constexpr inline const std::size_t UI_INSTANCE_COUNT = 2048;
+
+        public:
             Backend();
 
         public:

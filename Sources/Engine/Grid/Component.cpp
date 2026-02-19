@@ -822,9 +822,9 @@ namespace Chicane
         void Component::refreshBounds()
         {
             m_bounds.top    = m_position.y;
-            m_bounds.bottom = m_bounds.top + m_size.y;
+            m_bounds.bottom = m_position.y + m_size.y;
             m_bounds.left   = m_position.x;
-            m_bounds.right  = m_bounds.left + m_size.x;
+            m_bounds.right  = m_position.x + m_size.x;
         }
 
         String Component::parseText(const String& inValue) const

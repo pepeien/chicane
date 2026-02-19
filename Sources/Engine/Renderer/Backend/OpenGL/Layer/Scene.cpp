@@ -117,7 +117,12 @@ namespace Chicane
         void OpenGLLScene::buildModelVertexBuffer()
         {
             glCreateBuffers(1, &m_modelVertexBuffer);
-            glNamedBufferData(m_modelVertexBuffer, sizeof(Vertex) * 2000000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_modelVertexBuffer,
+                sizeof(Vertex) * Backend::SCENE_VERTEX_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             // Position
             glEnableVertexArrayAttrib(m_modelVertexArray, 0);
@@ -143,7 +148,12 @@ namespace Chicane
         void OpenGLLScene::buildModelIndexBuffer()
         {
             glCreateBuffers(1, &m_modelIndexBuffer);
-            glNamedBufferData(m_modelIndexBuffer, sizeof(std::uint32_t) * 2000000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_modelIndexBuffer,
+                sizeof(std::uint32_t) * Backend::SCENE_INDEX_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
         }
 
         void OpenGLLScene::destroyModelData()
@@ -156,7 +166,12 @@ namespace Chicane
         void OpenGLLScene::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly3DInstance) * 1000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_instanceBuffer,
+                sizeof(DrawPoly3DInstance) * Backend::SCENE_INSTANCE_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, m_instanceBuffer);
         }

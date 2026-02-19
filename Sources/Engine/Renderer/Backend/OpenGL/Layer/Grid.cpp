@@ -184,7 +184,12 @@ namespace Chicane
         void OpenGLLGrid::buildPrimitiveVertexBuffer()
         {
             glCreateBuffers(1, &m_primitiveVertexBuffer);
-            glNamedBufferData(m_primitiveVertexBuffer, sizeof(Vertex) * 65000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_primitiveVertexBuffer,
+                sizeof(Vertex) * Backend::UI_VERTEX_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             // Position
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 0);
@@ -210,7 +215,12 @@ namespace Chicane
         void OpenGLLGrid::buildPrimitiveIndexBuffer()
         {
             glCreateBuffers(1, &m_primitiveIndexBuffer);
-            glNamedBufferData(m_primitiveIndexBuffer, sizeof(std::uint32_t) * 65000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_primitiveIndexBuffer,
+                sizeof(std::uint32_t) * Backend::UI_INDEX_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
         }
 
         void OpenGLLGrid::destroyPrimitiveData()
@@ -223,7 +233,12 @@ namespace Chicane
         void OpenGLLGrid::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly2DInstance) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_instanceBuffer,
+                sizeof(DrawPoly2DInstance) * Backend::UI_INSTANCE_COUNT,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, m_instanceBuffer);
         }

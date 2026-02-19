@@ -294,7 +294,7 @@ namespace Chicane
 
             layoutBidings.indices.push_back(0);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            layoutBidings.counts.push_back(512);
+            layoutBidings.counts.push_back(Backend::TEXTURE_COUNT);
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);

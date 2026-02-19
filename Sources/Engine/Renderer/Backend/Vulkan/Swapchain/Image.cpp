@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 
+#include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
@@ -173,7 +174,7 @@ namespace Chicane
             bufferCreateInfo.physicalDevice = physicalDevice;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(DrawPoly2DInstance) * 1000;
+            bufferCreateInfo.size  = sizeof(DrawPoly2DInstance) * Backend::UI_INSTANCE_COUNT;
             bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
 
             poly2DResource.setup(bufferCreateInfo);
@@ -201,7 +202,7 @@ namespace Chicane
             bufferCreateInfo.physicalDevice = physicalDevice;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(DrawPoly3DInstance) * 1000;
+            bufferCreateInfo.size  = sizeof(DrawPoly3DInstance) * Backend::SCENE_INSTANCE_COUNT;
             bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
 
             poly3DResource.setup(bufferCreateInfo);

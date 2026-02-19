@@ -120,28 +120,35 @@ namespace Chicane
 
         void TextCharacter::refreshFontStyle()
         {
+            const Style& parentStyle = getParent()->getStyle();
+
             if (!hasGlyph())
             {
+                if (m_character == ' ')
+                {
+                    m_parent->addCursor(Box::Font::BASE_SIZE * 0.4f, 0.0f);
+                }
+
                 return;
             }
 
-            const Style& parentStyle = getParent()->getStyle();
+            m_primitive.scale = parentStyle.font.size.get();
 
             m_style.zIndex.set(parentStyle.zIndex.get() + 0.11f);
             m_style.background.color = parentStyle.foregroundColor;
 
-            float scale   = parentStyle.font.size.get() / m_glyph.units;
-            float width   = m_glyph.width * scale;
-            float height  = m_glyph.height * scale;
-            float advance = m_glyph.advance * scale;
-            Vec2  bearing = m_glyph.bearing * scale;
+            float scale    = parentStyle.font.size.get() * m_glyph.units;
+            float width    = m_glyph.width * scale;
+            float height   = m_glyph.height * scale;
+            float advance  = m_glyph.advance * scale;
+            float ascender = m_glyph.ascender * scale;
+            Vec2  bearing  = m_glyph.bearing * scale;
 
-            m_style.width.setRaw(parentStyle.font.size.getRaw());
-            m_style.height.setRaw(parentStyle.font.size.getRaw());
+            m_style.width.setRaw(std::to_string(width));
+            m_style.height.setRaw(std::to_string(height));
             m_style.margin.left.setRaw(std::to_string(bearing.x));
-            m_style.margin.top.setRaw(std::to_string(bearing.y));
 
-            m_parent->addCursor(-(parentStyle.font.size.get() * 0.5f), 0.0f);
+            m_parent->addCursor(advance - width, 0.0f);
         }
     }
 }

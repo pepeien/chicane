@@ -28,6 +28,7 @@ namespace Chicane
             float                      width    = 0U;
             float                      height   = 0U;
             float                      advance  = 0.0f;
+            float                      ascender = 0.0f;
             Vec2                       bearing  = Vec2::Zero;
             std::vector<Vec3>          vertices = {};
             std::vector<std::uint32_t> indices  = {};

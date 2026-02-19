@@ -93,19 +93,19 @@ namespace Chicane
 
                 FontGlyph result;
                 result.code     = inCode;
-                result.units    = inGlyph->face->units_per_EM;
-                result.width    = inGlyph->metrics.width >> 6;
-                result.height   = inGlyph->metrics.height >> 6;
-                result.advance  = inGlyph->advance.x >> 6;
-                result.bearing  = {inGlyph->metrics.horiBearingX >> 6, inGlyph->metrics.horiBearingY >> 6};
+                result.units    = 1.0f / inGlyph->face->units_per_EM;
+                result.width    = inGlyph->metrics.width;
+                result.height   = inGlyph->metrics.height;
+                result.advance  = inGlyph->advance.x;
+                result.ascender = inGlyph->face->ascender;
+                result.bearing  = {inGlyph->metrics.horiBearingX, inGlyph->metrics.horiBearingY};
                 result.vertices = contour.getVertices();
                 result.indices  = contour.getIndices();
 
-                float invUnits = 1.0f / result.units;
                 for (auto& vertex : result.vertices)
                 {
-                    vertex.x *= invUnits;
-                    vertex.y *= invUnits;
+                    vertex.x *= result.units;
+                    vertex.y *= result.units;
                 }
 
                 return result;
