@@ -86,8 +86,8 @@ namespace Chicane
 
         Viewport Backend::getLayerViewport(Layer* inLayer) const
         {
-            const Vec<2, std::uint32_t>& resolution = m_renderer->getResolution();
-            const ViewportSettings       viewport   = inLayer->m_viewport;
+            Vec<2, std::uint32_t>  resolution = m_renderer->getResolution();
+            const ViewportSettings viewport   = inLayer->m_viewport;
 
             Size size;
             size.setIsAsobute(true);

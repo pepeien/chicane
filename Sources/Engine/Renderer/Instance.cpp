@@ -191,8 +191,15 @@ namespace Chicane
             }
         }
 
+        std::uint32_t Instance::getFrameInFlighCount() const
+        {
+            return m_settings.framesInFlight;
+        }
+
         void Instance::setFramesInFlight(std::uint32_t inValue)
         {
+            m_settings.framesInFlight = inValue;
+
             m_frames.resize(inValue);
         }
 

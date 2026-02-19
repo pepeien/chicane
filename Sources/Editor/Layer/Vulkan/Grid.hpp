@@ -9,14 +9,13 @@
 
 namespace Editor
 {
-    class VulkanLGrid : public Chicane::Renderer::Layer
+    class VulkanLUI : public Chicane::Renderer::Layer
     {
     public:
-        VulkanLGrid();
+        VulkanLUI();
 
     protected:
         void onInit() override;
-        void onShutdown() override;
         void onRestart() override;
         void onDestruction() override;
 

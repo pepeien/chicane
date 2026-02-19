@@ -12,7 +12,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLScene::OpenGLLScene()
-            : Layer(ID)
+            : Layer(SCENE_LAYER_ID)
         {}
 
         void OpenGLLScene::onInit()

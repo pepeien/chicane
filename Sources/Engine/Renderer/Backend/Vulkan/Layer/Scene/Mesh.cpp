@@ -5,6 +5,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
@@ -14,7 +15,7 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLSceneMesh::VulkanLSceneMesh()
-            : Layer(ID),
+            : Layer(SCENE_MESH_LAYER_ID),
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
@@ -26,19 +27,15 @@ namespace Chicane
             initFramebuffers();
         }
 
-        void VulkanLSceneMesh::onShutdown()
-        {
-            destroyFrameResources();
-        }
-
         void VulkanLSceneMesh::onRestart()
         {
-            initFrameResources();
             initFramebuffers();
         }
 
         void VulkanLSceneMesh::onDestruction()
         {
+            destroyFrameResources();
+
             m_graphicsPipeline.destroy();
         }
 
@@ -55,10 +52,10 @@ namespace Chicane
         void VulkanLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(VulkanLScene::ID);
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
-            VulkanSwapchainImage image         = *((VulkanSwapchainImage*)inData);
-            vk::CommandBuffer    commandBuffer = image.commandBuffer;
+            VulkanFrame       frame         = *((VulkanFrame*)inData);
+            vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
             vk::Viewport viewport = backend->getVkViewport(this);
             commandBuffer.setViewport(0, 1, &viewport);
@@ -68,7 +65,7 @@ namespace Chicane
 
             vk::RenderPassBeginInfo beginInfo  = {};
             beginInfo.renderPass               = m_graphicsPipeline.renderPass;
-            beginInfo.framebuffer              = image.getFramebuffer(m_id);
+            beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
             beginInfo.renderArea.extent.width  = viewport.width;
             beginInfo.renderArea.extent.height = viewport.height;
             beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
@@ -80,7 +77,7 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bind(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
             m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
@@ -114,6 +111,7 @@ namespace Chicane
         void VulkanLSceneMesh::initFrameResources()
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
             bidings.count = 4;
@@ -145,7 +143,7 @@ namespace Chicane
             VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, backend->logicalDevice, bidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->swapchain.images.size());
+            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
             );
@@ -161,7 +159,7 @@ namespace Chicane
 
             VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
 
-            for (VulkanSwapchainImage& image : backend->swapchain.images)
+            for (VulkanFrame& frame : backend->frames)
             {
                 vk::DescriptorSet descriptorSet;
 
@@ -171,7 +169,7 @@ namespace Chicane
                     m_frameDescriptor.setLayout,
                     m_frameDescriptor.pool
                 );
-                image.addDescriptorSet(m_id, descriptorSet);
+                frame.addDescriptorSet(m_id, descriptorSet);
 
                 vk::WriteDescriptorSet cameraWriteInfo;
                 cameraWriteInfo.dstSet          = descriptorSet;
@@ -179,8 +177,8 @@ namespace Chicane
                 cameraWriteInfo.dstArrayElement = 0;
                 cameraWriteInfo.descriptorCount = 1;
                 cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                cameraWriteInfo.pBufferInfo     = &image.cameraResource.bufferInfo;
-                image.addWriteDescriptorSet(cameraWriteInfo);
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
 
                 vk::WriteDescriptorSet lightWriteInfo;
                 lightWriteInfo.dstSet          = descriptorSet;
@@ -188,8 +186,8 @@ namespace Chicane
                 lightWriteInfo.dstArrayElement = 0;
                 lightWriteInfo.descriptorCount = 1;
                 lightWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                lightWriteInfo.pBufferInfo     = &image.lightResource.bufferInfo;
-                image.addWriteDescriptorSet(lightWriteInfo);
+                lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
+                frame.addWriteDescriptorSet(lightWriteInfo);
 
                 vk::WriteDescriptorSet poly3DWriteInfo;
                 poly3DWriteInfo.dstSet          = descriptorSet;
@@ -197,8 +195,8 @@ namespace Chicane
                 poly3DWriteInfo.dstArrayElement = 0;
                 poly3DWriteInfo.descriptorCount = 1;
                 poly3DWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                poly3DWriteInfo.pBufferInfo     = &image.poly3DResource.bufferInfo;
-                image.addWriteDescriptorSet(poly3DWriteInfo);
+                poly3DWriteInfo.pBufferInfo     = &frame.poly3DResource.bufferInfo;
+                frame.addWriteDescriptorSet(poly3DWriteInfo);
 
                 vk::WriteDescriptorSet shadowWriteInfo;
                 shadowWriteInfo.dstSet          = descriptorSet;
@@ -206,8 +204,8 @@ namespace Chicane
                 shadowWriteInfo.dstArrayElement = 0;
                 shadowWriteInfo.descriptorCount = 1;
                 shadowWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                shadowWriteInfo.pImageInfo      = &image.shadowImageInfo;
-                image.addWriteDescriptorSet(shadowWriteInfo);
+                shadowWriteInfo.pImageInfo      = &parent->shadowImageInfo;
+                frame.addWriteDescriptorSet(shadowWriteInfo);
             }
         }
 
@@ -338,7 +336,7 @@ namespace Chicane
 
             for (VulkanSwapchainImage& frame : backend->swapchain.images)
             {
-                VulkanFrameCreateInfo createInfo;
+                VulkanFrameBufferCreateInfo createInfo;
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;

@@ -3,6 +3,7 @@
 #include <Chicane/Core/List.hpp>
 #include <Chicane/Core/Window/Backend.hpp>
 #include <Chicane/Core/Window/Type.hpp>
+#include <Chicane/Renderer.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
@@ -10,14 +11,10 @@
 #include "View.hpp"
 
 #if CHICANE_OPENGL
-    #include <Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp>
-
     #include "Layer/OpenGL/Grid.hpp"
 #endif
 
 #if CHICANE_VULKAN
-    #include <Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp>
-
     #include "Layer/Vulkan/Grid.hpp"
 #endif
 
@@ -34,7 +31,7 @@ namespace Editor
         createInfo.window.size    = Chicane::Vec<2, std::uint32_t>(1600, 900);
         createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::Windowed;
-        createInfo.window.backend = Chicane::WindowBackend::OpenGL;
+        createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 
         // Setup
         createInfo.onSetup = [&]()
@@ -71,27 +68,23 @@ namespace Editor
             [](Chicane::WindowBackend inValue)
             {
                 Chicane::ListPush<Chicane::Renderer::Layer*> settings;
-                settings.strategy = Chicane::ListPushStrategy::After;
+                settings.strategy  = Chicane::ListPushStrategy::After;
+                settings.predicate = [](Chicane::Renderer::Layer* inLayer)
+                { return inLayer->getId().equals(Chicane::Renderer::SCENE_MESH_LAYER_ID); };
 
                 switch (inValue)
                 {
 #if CHICANE_OPENGL
                 case Chicane::WindowBackend::OpenGL:
-                    settings.predicate = [](Chicane::Renderer::Layer* inLayer)
-                    { return inLayer->getId().equals(Chicane::Renderer::OpenGLLSceneMesh::ID); };
 
-                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLGrid>(settings);
+                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLUI>(settings);
 
                     break;
 #endif
 
 #if CHICANE_VULKAN
                 case Chicane::WindowBackend::Vulkan:
-
-                    settings.predicate = [](Chicane::Renderer::Layer* inLayer)
-                    { return inLayer->getId().equals(Chicane::Renderer::VulkanLSceneMesh::ID); };
-
-                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<VulkanLGrid>(settings);
+                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<VulkanLUI>(settings);
 
                     break;
 #endif

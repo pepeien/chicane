@@ -7,8 +7,8 @@
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
 
 namespace Chicane
 {
@@ -216,7 +216,7 @@ namespace Chicane
             addLayer<OpenGLLScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<OpenGLLGrid>(settings);
+            addLayer<OpenGLLUI>(settings);
         }
     }
 }

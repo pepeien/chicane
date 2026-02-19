@@ -11,7 +11,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLSceneSky::OpenGLLSceneSky()
-            : Layer(ID)
+            : Layer(SCENE_SKY_LAYER_ID)
         {}
 
         void OpenGLLSceneSky::onInit()

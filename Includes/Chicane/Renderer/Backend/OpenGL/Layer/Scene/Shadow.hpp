@@ -11,9 +11,6 @@ namespace Chicane
         class CHICANE_RENDERER OpenGLLSceneShadow : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Scene_Shadow";
-
-        public:
             OpenGLLSceneShadow();
 
         public:

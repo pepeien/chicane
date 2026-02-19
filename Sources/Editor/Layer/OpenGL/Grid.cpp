@@ -8,24 +8,24 @@
 
 namespace Editor
 {
-    OpenGLLGrid::OpenGLLGrid()
+    OpenGLLUI::OpenGLLUI()
         : Layer("Editor_Scene_Grid")
     {}
 
-    void OpenGLLGrid::onInit()
+    void OpenGLLUI::onInit()
     {
         buildShader();
         buildVertexArray();
         buildViewport();
     }
 
-    void OpenGLLGrid::onDestruction()
+    void OpenGLLUI::onDestruction()
     {
         destroyVertexArray();
         destroyShader();
     }
 
-    void OpenGLLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
+    void OpenGLLUI::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
         Chicane::Renderer::Viewport viewport = getBackend<Chicane::Renderer::OpenGLBackend>()->getGLViewport(this);
         glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
@@ -48,14 +48,14 @@ namespace Editor
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    void OpenGLLGrid::onEndRender()
+    void OpenGLLUI::onEndRender()
     {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glDisable(GL_BLEND);
     }
 
-    void OpenGLLGrid::buildShader()
+    void OpenGLLUI::buildShader()
     {
         GLint result = GL_FALSE;
 
@@ -117,22 +117,22 @@ namespace Editor
         glDeleteShader(fragmentShader);
     }
 
-    void OpenGLLGrid::destroyShader()
+    void OpenGLLUI::destroyShader()
     {
         glDeleteProgram(m_shaderProgram);
     }
 
-    void OpenGLLGrid::buildVertexArray()
+    void OpenGLLUI::buildVertexArray()
     {
         glCreateVertexArrays(1, &m_vertexArray);
     }
 
-    void OpenGLLGrid::destroyVertexArray()
+    void OpenGLLUI::destroyVertexArray()
     {
         glDeleteVertexArrays(1, &m_vertexArray);
     }
 
-    void OpenGLLGrid::buildViewport()
+    void OpenGLLUI::buildViewport()
     {
         Chicane::Renderer::ViewportSettings viewport;
         viewport.width  = "85vw";
@@ -141,7 +141,8 @@ namespace Editor
         setViewport(viewport);
 
         for (Layer* layer :
-             m_backend->findLayers([](const Layer* inLayer) { return inLayer->getId().contains("Engine_Scene"); }))
+             m_backend->findLayers([](const Layer* inLayer)
+                                   { return inLayer->getId().contains(Chicane::Renderer::SCENE_LAYER_ID); }))
         {
             layer->setViewport(viewport);
         }

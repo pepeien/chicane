@@ -11,7 +11,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLSceneMesh::OpenGLLSceneMesh()
-            : Layer(ID)
+            : Layer(SCENE_MESH_LAYER_ID)
         {}
 
         void OpenGLLSceneMesh::onInit()

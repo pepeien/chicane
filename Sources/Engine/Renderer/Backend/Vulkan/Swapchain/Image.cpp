@@ -1,7 +1,6 @@
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
@@ -11,45 +10,6 @@ namespace Chicane
 {
     namespace Renderer
     {
-        void VulkanSwapchainImage::sync()
-        {
-            vk::Result result = logicalDevice.waitForFences(1, &fence, VK_TRUE, UINT64_MAX);
-            if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
-            {
-                throw std::runtime_error("Error while waiting the fences");
-            }
-
-            result = logicalDevice.resetFences(1, &fence);
-            if (result != vk::Result::eSuccess)
-            {
-                throw std::runtime_error("Error while resetting the fences");
-            }
-
-            commandBuffer.reset();
-        }
-
-        vk::ResultValue<std::uint32_t> VulkanSwapchainImage::acquire(const vk::SwapchainKHR& inSwapchain)
-        {
-            return logicalDevice.acquireNextImageKHR(inSwapchain, UINT64_MAX, imageAvailableSemaphore, nullptr);
-        }
-
-        void VulkanSwapchainImage::begin(const Frame& inFrame)
-        {
-            updateCameraData(inFrame.getCamera());
-            updateLightData(inFrame.getLights());
-            update2DData(inFrame.getInstances2D());
-            update3DData(inFrame.getInstances3D());
-
-            vk::CommandBufferBeginInfo commandBufferBegin;
-            commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
-            commandBuffer.begin(commandBufferBegin);
-        }
-
-        void VulkanSwapchainImage::end()
-        {
-            commandBuffer.end();
-        }
-
         void VulkanSwapchainImage::destroy()
         {
             for (auto& [id, frambuffer] : framebuffers)
@@ -59,20 +19,10 @@ namespace Chicane
 
             destroyColorImage();
             destroyDepthImage();
-            destroyShadowImage();
-            destroyCameraData();
-            destroyLightData();
-            destroy2DData();
-            destroy3DData();
             destroySync();
         }
 
-        void VulkanSwapchainImage::setupCommandBuffer(const vk::CommandPool& inPool)
-        {
-            VulkanCommandBuffer::init(commandBuffer, {logicalDevice, inPool});
-        }
-
-        void VulkanSwapchainImage::addBuffer(const VulkanFrameCreateInfo& inCreateInfo)
+        void VulkanSwapchainImage::addBuffer(const VulkanFrameBufferCreateInfo& inCreateInfo)
         {
             vk::FramebufferCreateInfo createInfo;
             createInfo.renderPass      = inCreateInfo.renderPass;
@@ -88,129 +38,12 @@ namespace Chicane
 
         void VulkanSwapchainImage::setupSync()
         {
-            VulkanSync::initSempahore(imageAvailableSemaphore, logicalDevice);
-            VulkanSync::initSempahore(renderFinishedSemaphore, logicalDevice);
-            VulkanSync::initFence(fence, logicalDevice);
+            VulkanSync::initSempahore(renderFineshedSemaphore, logicalDevice);
         }
 
         void VulkanSwapchainImage::destroySync()
         {
-            logicalDevice.destroyFence(fence);
-            logicalDevice.destroySemaphore(imageAvailableSemaphore);
-            logicalDevice.destroySemaphore(renderFinishedSemaphore);
-        }
-
-        void VulkanSwapchainImage::setupCameraData()
-        {
-            VulkanBufferCreateInfo bufferCreateInfo;
-            bufferCreateInfo.logicalDevice  = logicalDevice;
-            bufferCreateInfo.physicalDevice = physicalDevice;
-            bufferCreateInfo.memoryProperties =
-                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(View);
-            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
-
-            cameraResource.setup(bufferCreateInfo);
-        }
-
-        void VulkanSwapchainImage::updateCameraData(const View& inData)
-        {
-            View data = inData;
-            data.flipY();
-
-            cameraResource.copyToBuffer(&data, sizeof(View));
-        }
-
-        void VulkanSwapchainImage::destroyCameraData()
-        {
-            cameraResource.destroy(logicalDevice);
-        }
-
-        void VulkanSwapchainImage::setupLightData()
-        {
-            VulkanBufferCreateInfo bufferCreateInfo;
-            bufferCreateInfo.logicalDevice  = logicalDevice;
-            bufferCreateInfo.physicalDevice = physicalDevice;
-            bufferCreateInfo.memoryProperties =
-                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(View);
-            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
-
-            lightResource.setup(bufferCreateInfo);
-        }
-
-        void VulkanSwapchainImage::updateLightData(const View::List& inData)
-        {
-            if (inData.empty())
-            {
-                return;
-            }
-
-            View data = inData.at(0);
-            data.flipY();
-
-            lightResource.copyToBuffer(&data, sizeof(View));
-        }
-
-        void VulkanSwapchainImage::destroyLightData()
-        {
-            lightResource.destroy(logicalDevice);
-        }
-
-        void VulkanSwapchainImage::setup2DData(std::size_t inBudget)
-        {
-            VulkanBufferCreateInfo bufferCreateInfo;
-            bufferCreateInfo.logicalDevice  = logicalDevice;
-            bufferCreateInfo.physicalDevice = physicalDevice;
-            bufferCreateInfo.memoryProperties =
-                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = inBudget;
-            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
-
-            poly2DResource.setup(bufferCreateInfo);
-        }
-
-        void VulkanSwapchainImage::update2DData(const DrawPoly2DInstance::List& inData)
-        {
-            if (inData.empty())
-            {
-                return;
-            }
-
-            poly2DResource.copyToBuffer(inData.data(), sizeof(DrawPoly2DInstance) * inData.size());
-        }
-
-        void VulkanSwapchainImage::destroy2DData()
-        {
-            poly2DResource.destroy(logicalDevice);
-        }
-
-        void VulkanSwapchainImage::setup3DData(std::size_t inBudget)
-        {
-            VulkanBufferCreateInfo bufferCreateInfo;
-            bufferCreateInfo.logicalDevice  = logicalDevice;
-            bufferCreateInfo.physicalDevice = physicalDevice;
-            bufferCreateInfo.memoryProperties =
-                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = inBudget;
-            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
-
-            poly3DResource.setup(bufferCreateInfo);
-        }
-
-        void VulkanSwapchainImage::update3DData(const DrawPoly3DInstance::List& inData)
-        {
-            if (inData.empty())
-            {
-                return;
-            }
-
-            poly3DResource.copyToBuffer(inData.data(), sizeof(DrawPoly3DInstance) * inData.size());
-        }
-
-        void VulkanSwapchainImage::destroy3DData()
-        {
-            poly3DResource.destroy(logicalDevice);
+            logicalDevice.destroySemaphore(renderFineshedSemaphore);
         }
 
         void VulkanSwapchainImage::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)
@@ -291,70 +124,6 @@ namespace Chicane
             logicalDevice.destroySampler(depthImage.sampler);
         }
 
-        void VulkanSwapchainImage::setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent)
-        {
-            shadowImage.format = inFormat;
-            shadowImage.extent = inExtent;
-
-            VulkanImageCreateInfo instanceCreateInfo = {};
-            instanceCreateInfo.width                 = shadowImage.extent.width;
-            instanceCreateInfo.height                = shadowImage.extent.height;
-            instanceCreateInfo.count                 = 1;
-            instanceCreateInfo.tiling                = vk::ImageTiling::eOptimal;
-            instanceCreateInfo.flags                 = vk::ImageCreateFlagBits();
-            instanceCreateInfo.usage =
-                vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
-            instanceCreateInfo.format        = inFormat;
-            instanceCreateInfo.logicalDevice = logicalDevice;
-            VulkanImage::initInstance(shadowImage.instance, instanceCreateInfo);
-
-            vk::SamplerCreateInfo samplerCreateInfo   = {};
-            samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
-            samplerCreateInfo.minFilter               = vk::Filter::eLinear;
-            samplerCreateInfo.magFilter               = vk::Filter::eLinear;
-            samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-            samplerCreateInfo.mipLodBias              = 0.0f;
-            samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
-            samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
-            samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
-            samplerCreateInfo.anisotropyEnable        = false;
-            samplerCreateInfo.maxAnisotropy           = 1.0f;
-            samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
-            samplerCreateInfo.unnormalizedCoordinates = false;
-            samplerCreateInfo.compareEnable           = true;
-            samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
-            samplerCreateInfo.minLod                  = 0.0f;
-            samplerCreateInfo.maxLod                  = 1.0f;
-            samplerCreateInfo.unnormalizedCoordinates = false;
-            shadowImage.sampler                       = logicalDevice.createSampler(samplerCreateInfo);
-
-            VulkanImageMemoryCreateInfo memoryCreateInfo = {};
-            memoryCreateInfo.properties                  = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            memoryCreateInfo.logicalDevice               = logicalDevice;
-            memoryCreateInfo.physicalDevice              = physicalDevice;
-            VulkanImage::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
-
-            VulkanImageViewCreateInfo viewCreateInfo = {};
-            viewCreateInfo.count                     = instanceCreateInfo.count;
-            viewCreateInfo.type                      = vk::ImageViewType::e2D;
-            viewCreateInfo.aspect                    = vk::ImageAspectFlagBits::eDepth;
-            viewCreateInfo.format                    = instanceCreateInfo.format;
-            viewCreateInfo.logicalDevice             = logicalDevice;
-            VulkanImage::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
-
-            shadowImageInfo.imageLayout = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
-            shadowImageInfo.imageView   = shadowImage.view;
-            shadowImageInfo.sampler     = shadowImage.sampler;
-        }
-
-        void VulkanSwapchainImage::destroyShadowImage()
-        {
-            logicalDevice.freeMemory(shadowImage.memory);
-            logicalDevice.destroyImage(shadowImage.instance);
-            logicalDevice.destroyImageView(shadowImage.view);
-            logicalDevice.destroySampler(shadowImage.sampler);
-        }
-
         void VulkanSwapchainImage::addFramebuffer(const String& inId, const vk::Framebuffer& inFramebuffer)
         {
             if (framebuffers.find(inId) != framebuffers.end())
@@ -368,38 +137,6 @@ namespace Chicane
         vk::Framebuffer VulkanSwapchainImage::getFramebuffer(const String& inId) const
         {
             return framebuffers.at(inId);
-        }
-
-        void VulkanSwapchainImage::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)
-        {
-            if (descriptorSets.find(inId) != descriptorSets.end())
-            {
-                throw std::runtime_error("Descriptor set " + inId + " already exists");
-            }
-
-            descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
-        }
-
-        vk::DescriptorSet VulkanSwapchainImage::getDescriptorSet(const String& inId) const
-        {
-            return descriptorSets.at(inId);
-        }
-
-        void VulkanSwapchainImage::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
-        {
-            descriptorSetWrites.push_back(inWriteDescriptorSet);
-
-            updateDescriptorSets();
-        }
-
-        void VulkanSwapchainImage::updateDescriptorSets()
-        {
-            if (descriptorSetWrites.empty())
-            {
-                return;
-            }
-
-            logicalDevice.updateDescriptorSets(descriptorSetWrites, nullptr);
         }
     }
 }

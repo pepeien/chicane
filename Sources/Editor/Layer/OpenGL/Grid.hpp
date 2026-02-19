@@ -5,10 +5,10 @@
 
 namespace Editor
 {
-    class OpenGLLGrid : public Chicane::Renderer::Layer
+    class OpenGLLUI : public Chicane::Renderer::Layer
     {
     public:
-        OpenGLLGrid();
+        OpenGLLUI();
 
     public:
         void onInit() override;

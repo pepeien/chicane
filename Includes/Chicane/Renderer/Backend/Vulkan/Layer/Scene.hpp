@@ -4,6 +4,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane
@@ -12,9 +13,6 @@ namespace Chicane
     {
         class CHICANE_RENDERER VulkanLScene : public Layer
         {
-        public:
-            static constexpr inline const char* ID = "Engine_Scene";
-
         public:
             VulkanLScene();
 
@@ -32,12 +30,19 @@ namespace Chicane
             void buildModelIndexData(const Vertex::Indices& inIndices);
             void destroyModelData();
 
+            // Images
+            void buildShadowImage();
+            void destroyShadowImage();
+
             // Layer
             void buildLayers();
 
         public:
-            VulkanBuffer modelVertexBuffer;
-            VulkanBuffer modelIndexBuffer;
+            VulkanBuffer            modelVertexBuffer;
+            VulkanBuffer            modelIndexBuffer;
+
+            VulkanImageData         shadowImage;
+            vk::DescriptorImageInfo shadowImageInfo;
         };
     }
 }

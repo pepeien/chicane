@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
 
 #include <GL/glew.h>
 
@@ -10,11 +10,11 @@ namespace Chicane
 {
     namespace Renderer
     {
-        OpenGLLGrid::OpenGLLGrid()
-            : Layer(ID)
+        OpenGLLUI::OpenGLLUI()
+            : Layer(UI_LAYER_ID)
         {}
 
-        void OpenGLLGrid::onInit()
+        void OpenGLLUI::onInit()
         {
             buildShader();
             buildPrimitiveVertexArray();
@@ -23,14 +23,14 @@ namespace Chicane
             buildInstanceData();
         }
 
-        void OpenGLLGrid::onDestruction()
+        void OpenGLLUI::onDestruction()
         {
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();
         }
 
-        void OpenGLLGrid::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
+        void OpenGLLUI::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
         {
             if (inType == DrawPolyType::e2D)
             {
@@ -49,7 +49,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLGrid::onBeginRender(const Frame& inFrame)
+        bool OpenGLLUI::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
             {
@@ -59,7 +59,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLGrid::onRender(const Frame& inFrame, void* inData)
+        void OpenGLLUI::onRender(const Frame& inFrame, void* inData)
         {
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
@@ -105,13 +105,13 @@ namespace Chicane
             }
         }
 
-        void OpenGLLGrid::onEndRender()
+        void OpenGLLUI::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);
         }
 
-        void OpenGLLGrid::buildShader()
+        void OpenGLLUI::buildShader()
         {
             GLint result = GL_FALSE;
 
@@ -171,17 +171,17 @@ namespace Chicane
             glDeleteShader(fragmentShader);
         }
 
-        void OpenGLLGrid::destroyShader()
+        void OpenGLLUI::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
         }
 
-        void OpenGLLGrid::buildPrimitiveVertexArray()
+        void OpenGLLUI::buildPrimitiveVertexArray()
         {
             glCreateVertexArrays(1, &m_primitiveVertexArray);
         }
 
-        void OpenGLLGrid::buildPrimitiveVertexBuffer()
+        void OpenGLLUI::buildPrimitiveVertexBuffer()
         {
             glCreateBuffers(1, &m_primitiveVertexBuffer);
             glNamedBufferData(
@@ -212,7 +212,7 @@ namespace Chicane
             glVertexArrayAttribBinding(m_primitiveVertexArray, 3, 0);
         }
 
-        void OpenGLLGrid::buildPrimitiveIndexBuffer()
+        void OpenGLLUI::buildPrimitiveIndexBuffer()
         {
             glCreateBuffers(1, &m_primitiveIndexBuffer);
             glNamedBufferData(
@@ -223,14 +223,14 @@ namespace Chicane
             );
         }
 
-        void OpenGLLGrid::destroyPrimitiveData()
+        void OpenGLLUI::destroyPrimitiveData()
         {
             glDeleteVertexArrays(1, &m_primitiveVertexArray);
             glDeleteBuffers(1, &m_primitiveVertexBuffer);
             glDeleteBuffers(1, &m_primitiveIndexBuffer);
         }
 
-        void OpenGLLGrid::buildInstanceData()
+        void OpenGLLUI::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
             glNamedBufferData(
@@ -243,7 +243,7 @@ namespace Chicane
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, m_instanceBuffer);
         }
 
-        void OpenGLLGrid::destroyInstanceData()
+        void OpenGLLUI::destroyInstanceData()
         {
             glDeleteBuffers(1, &m_instanceBuffer);
         }

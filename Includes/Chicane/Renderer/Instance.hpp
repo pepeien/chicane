@@ -88,6 +88,7 @@ namespace Chicane
             Vec<2, std::uint32_t> getResolution() const;
             void setResolution(const Vec<2, std::uint32_t>& inValue);
 
+            std::uint32_t getFrameInFlighCount() const;
             void setFramesInFlight(std::uint32_t inValue);
 
             const ResourceBudget& getResourceBudget() const;

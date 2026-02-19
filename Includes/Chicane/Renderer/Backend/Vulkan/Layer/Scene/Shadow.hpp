@@ -13,14 +13,10 @@ namespace Chicane
         class CHICANE_RENDERER VulkanLSceneShadow : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Scene_Shadow";
-
-        public:
             VulkanLSceneShadow();
 
         protected:
             void onInit() override;
-            void onShutdown() override;
             void onRestart() override;
             void onDestruction() override;
 

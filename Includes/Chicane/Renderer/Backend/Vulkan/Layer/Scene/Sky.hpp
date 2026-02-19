@@ -14,14 +14,10 @@ namespace Chicane
         class CHICANE_RENDERER VulkanLSceneSky : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Scene_Sky";
-
-        public:
             VulkanLSceneSky();
 
         public:
             void onInit() override;
-            void onShutdown() override;
             void onRestart() override;
             void onDestruction() override;
 

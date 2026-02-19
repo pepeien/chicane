@@ -7,13 +7,10 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLGrid : public Layer
+        class CHICANE_RENDERER OpenGLLUI : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Grid";
-
-        public:
-            OpenGLLGrid();
+            OpenGLLUI();
 
         public:
             void onInit() override;

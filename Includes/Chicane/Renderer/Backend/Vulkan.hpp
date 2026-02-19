@@ -9,6 +9,7 @@
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
@@ -56,14 +57,17 @@ namespace Chicane
 
             void updateResourceBudget();
 
-            void buildSwapchain();
-            void destroySwapchain();
-            void rebuildSwapchain();
-
             void buildCommandPool();
             void destroyCommandPool();
 
             void buildMainCommandBuffer();
+
+            void buildSwapchain();
+            void destroySwapchain();
+            void rebuildSwapchain();
+
+            void buildFrames();
+            void destroyFrames();
 
             void buildLayers();
 
@@ -91,11 +95,17 @@ namespace Chicane
             // Swap Chain
             VulkanSwapchainBundle                       swapchain;
 
+            // Frames
+            std::vector<VulkanFrame>                    frames;
+
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;
             std::vector<std::unique_ptr<VulkanTexture>> textures;
 
         private:
+            // Frame
+            std::uint32_t                     m_currentFrameIndex;
+
             // Instance
             vk::detail::DispatchLoaderDynamic m_dispatcher;
 

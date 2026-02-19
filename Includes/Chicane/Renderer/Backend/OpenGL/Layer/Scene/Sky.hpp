@@ -10,9 +10,6 @@ namespace Chicane
         class CHICANE_RENDERER OpenGLLSceneSky : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Scene_Sky";
-
-        public:
             OpenGLLSceneSky();
 
         public:

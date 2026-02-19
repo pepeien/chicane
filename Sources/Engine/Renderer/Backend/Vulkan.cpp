@@ -10,8 +10,8 @@
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
@@ -21,7 +21,9 @@ namespace Chicane
     {
         VulkanBackend::VulkanBackend()
             : Backend(),
-              swapchain({})
+              swapchain({}),
+              frames({}),
+              m_currentFrameIndex(0U)
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -38,8 +40,9 @@ namespace Chicane
             updateResourceBudget();
             buildQueues();
             buildCommandPool();
-            buildSwapchain();
             buildMainCommandBuffer();
+            buildSwapchain();
+            buildFrames();
             buildTextureDescriptor();
             buildLayers();
         }
@@ -51,6 +54,7 @@ namespace Chicane
             // Vulkan
             destroyCommandPool();
             destroySwapchain();
+            destroyFrames();
             destroyTextureData();
             destroyLayers();
 
@@ -81,40 +85,41 @@ namespace Chicane
 
         void VulkanBackend::onRender(const Frame& inFrame)
         {
-            VulkanSwapchainImage& liveImage = swapchain.images.at(swapchain.currentImageIndex);
+            VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
+            nextFrame.wait();
 
-            vk::ResultValue<std::uint32_t> acquire = liveImage.acquire(swapchain.instance);
-            if (acquire.result == vk::Result::eErrorOutOfDateKHR)
+            const auto [result, imageIndex] =
+                logicalDevice
+                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, nextFrame.imageAvailableSemaphore, nullptr);
+            if (result == vk::Result::eErrorOutOfDateKHR)
             {
                 rebuildSwapchain();
 
                 return;
             }
-            else if (acquire.result != vk::Result::eSuccess && acquire.result != vk::Result::eSuboptimalKHR)
+            else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            swapchain.currentImageIndex = acquire.value;
+            VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
 
-            VulkanSwapchainImage& nextImage = swapchain.images.at(swapchain.currentImageIndex);
-            nextImage.sync();
-            nextImage.begin(inFrame);
-            renderLayers(inFrame, &nextImage);
-            nextImage.end();
+            nextFrame.begin(inFrame, nextImage);
+            renderLayers(inFrame, &nextFrame);
+            nextFrame.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
             vk::SubmitInfo submitInfo;
             submitInfo.waitSemaphoreCount   = 1;
-            submitInfo.pWaitSemaphores      = &liveImage.imageAvailableSemaphore;
+            submitInfo.pWaitSemaphores      = &nextFrame.imageAvailableSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
             submitInfo.commandBufferCount   = 1;
-            submitInfo.pCommandBuffers      = &nextImage.commandBuffer;
+            submitInfo.pCommandBuffers      = &nextFrame.commandBuffer;
             submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores    = &nextImage.renderFinishedSemaphore;
+            submitInfo.pSignalSemaphores    = &nextImage.renderFineshedSemaphore;
 
-            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, nextImage.fence);
+            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, nextFrame.fence);
             if (submitResult != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Queue submit failed");
@@ -122,21 +127,24 @@ namespace Chicane
 
             vk::PresentInfoKHR presentInfo;
             presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores    = &nextImage.renderFinishedSemaphore;
+            presentInfo.pWaitSemaphores    = &nextImage.renderFineshedSemaphore;
             presentInfo.swapchainCount     = 1;
             presentInfo.pSwapchains        = &swapchain.instance;
-            presentInfo.pImageIndices      = &swapchain.currentImageIndex;
+            presentInfo.pImageIndices      = &imageIndex;
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
             if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
+
                 return;
             }
             else if (presentResult != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Present failed");
             }
+
+            m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
         }
 
         vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
@@ -146,8 +154,8 @@ namespace Chicane
             vk::Viewport result;
             result.x        = viewport.position.x;
             result.y        = viewport.position.y;
-            result.width    = viewport.size.x;
-            result.height   = viewport.size.y;
+            result.width    = swapchain.extent.width;
+            result.height   = swapchain.extent.height;
             result.minDepth = 0.0f;
             result.maxDepth = 1.0f;
 
@@ -230,6 +238,21 @@ namespace Chicane
             logicalDevice.destroy();
         }
 
+        void VulkanBackend::buildCommandPool()
+        {
+            VulkanCommandBufferPool::init(m_mainCommandPool, logicalDevice, physicalDevice, surface);
+        }
+
+        void VulkanBackend::destroyCommandPool()
+        {
+            logicalDevice.destroyCommandPool(m_mainCommandPool);
+        }
+
+        void VulkanBackend::buildMainCommandBuffer()
+        {
+            VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
+            VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
+        }
         void VulkanBackend::buildSwapchain()
         {
             VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
@@ -239,19 +262,9 @@ namespace Chicane
                 // Sync
                 image.setupSync();
 
-                // Data
-                image.setupCameraData();
-                image.setupLightData();
-                image.setup2DData(getResourceBudget(Resource::UIInstances));
-                image.setup3DData(getResourceBudget(Resource::SceneInstances));
-
-                // Commandbuffer
-                image.setupCommandBuffer(m_mainCommandPool);
-
                 // Images
                 image.setupColorImage(swapchain.colorFormat, swapchain.extent);
                 image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
-                image.setupShadowImage(swapchain.depthFormat, swapchain.extent);
             }
         }
 
@@ -284,20 +297,37 @@ namespace Chicane
             rebuildLayers();
         }
 
-        void VulkanBackend::buildCommandPool()
+        void VulkanBackend::buildFrames()
         {
-            VulkanCommandBufferPool::init(m_mainCommandPool, logicalDevice, physicalDevice, surface);
+            frames.resize(m_renderer->getFrameInFlighCount());
+
+            for (VulkanFrame& frame : frames)
+            {
+                frame.logicalDevice  = logicalDevice;
+                frame.physicalDevice = physicalDevice;
+
+                // Commandbuffer
+                frame.setupCommandBuffer(m_mainCommandPool);
+
+                // Sync
+                frame.setupSync();
+
+                // Data
+                frame.setupCameraData();
+                frame.setupLightData();
+                frame.setup2DData(getResourceBudget(Resource::UIInstances));
+                frame.setup3DData(getResourceBudget(Resource::SceneInstances));
+            }
         }
 
-        void VulkanBackend::destroyCommandPool()
+        void VulkanBackend::destroyFrames()
         {
-            logicalDevice.destroyCommandPool(m_mainCommandPool);
-        }
+            for (VulkanFrame& frame : frames)
+            {
+                frame.destroy();
+            }
 
-        void VulkanBackend::buildMainCommandBuffer()
-        {
-            VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
-            VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
+            frames.clear();
         }
 
         void VulkanBackend::buildLayers()
@@ -308,7 +338,7 @@ namespace Chicane
             addLayer<VulkanLScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<VulkanLGrid>(settings);
+            addLayer<VulkanLUI>(settings);
         }
 
         void VulkanBackend::buildTextureDescriptor()

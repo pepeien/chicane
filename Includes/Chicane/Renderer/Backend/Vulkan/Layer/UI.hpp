@@ -12,18 +12,14 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLGrid : public Layer
+        class CHICANE_RENDERER VulkanLUI : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Grid";
-
-        public:
-            VulkanLGrid();
+            VulkanLUI();
 
         protected:
             void onInit() override;
             void onRestart() override;
-            void onShutdown() override;
             void onDestruction() override;
 
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;

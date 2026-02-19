@@ -13,14 +13,10 @@ namespace Chicane
         class CHICANE_RENDERER VulkanLSceneMesh : public Layer
         {
         public:
-            static constexpr inline const char* ID = "Engine_Scene_Mesh";
-
-        public:
             VulkanLSceneMesh();
 
         protected:
             void onInit() override;
-            void onShutdown() override;
             void onRestart() override;
             void onDestruction() override;
 

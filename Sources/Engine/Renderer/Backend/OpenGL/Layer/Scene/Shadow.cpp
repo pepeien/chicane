@@ -11,7 +11,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLSceneShadow::OpenGLLSceneShadow()
-            : Layer(ID)
+            : Layer(SCENE_SHADOW_LAYER_ID)
         {}
 
         void OpenGLLSceneShadow::onInit()
