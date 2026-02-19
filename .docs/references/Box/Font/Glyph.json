@@ -16,7 +16,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::uint32_t",
+                            "name": "char32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -62,7 +62,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "char32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -75,7 +75,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -88,13 +88,52 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec2",
+                    "name": "float",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
+                    "path": "",
                     "templates": []
                 },
-                "name": "scale",
-                "description": "CHICANE_BOX_FONTGLYPH_SCALE_DESCRIPTION"
+                "name": "width",
+                "description": "CHICANE_BOX_FONTGLYPH_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_BOX_FONTGLYPH_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "advance",
+                "description": "CHICANE_BOX_FONTGLYPH_ADVANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ascender",
+                "description": "CHICANE_BOX_FONTGLYPH_ASCENDER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -106,21 +145,8 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "box",
-                "description": "CHICANE_BOX_FONTGLYPH_BOX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "line",
-                "description": "CHICANE_BOX_FONTGLYPH_LINE_DESCRIPTION"
+                "name": "bearing",
+                "description": "CHICANE_BOX_FONTGLYPH_BEARING_DESCRIPTION"
             },
             {
                 "accessor": "public",

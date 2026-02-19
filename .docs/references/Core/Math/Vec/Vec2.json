@@ -75,44 +75,6 @@
                     "const"
                 ],
                 "description": "CHICANE_VEC2_TOSTRING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "operator==",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inLeft"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inRight"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_VEC2_OPERATOR==_DESCRIPTION"
             }
         ],
         "members": [

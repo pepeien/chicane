@@ -1,0 +1,160 @@
+{
+    "title": "Contour",
+    "filename": "Contour",
+    "path": "Core/Math/Contour",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Contour.hpp",
+        "namespace": "Chicane::Contour",
+        "types": [
+            {
+                "name": "Vertices",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec3",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_CONTOUR_VERTICES_DESCRIPTION"
+            },
+            {
+                "name": "Indices",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_CONTOUR_INDICES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Contour",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTOUR_CONTOUR_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "triangulate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Curve::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Curve",
+                            "templates": []
+                        },
+                        "name": "inCurves"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CONTOUR_TRIANGULATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertices",
+                    "suffix": "&",
+                    "path": "Core/Math/Contour",
+                    "templates": []
+                },
+                "name": "getVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CONTOUR_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Indices",
+                    "suffix": "&",
+                    "path": "Core/Math/Contour",
+                    "templates": []
+                },
+                "name": "getIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CONTOUR_GETINDICES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertices",
+                    "suffix": "",
+                    "path": "Core/Math/Contour",
+                    "templates": []
+                },
+                "name": "m_vertices",
+                "description": "CHICANE_CONTOUR_M_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Contour",
+                    "templates": []
+                },
+                "name": "m_indices",
+                "description": "CHICANE_CONTOUR_M_INDICES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_CONTOUR_DESCRIPTION"
+    },
+    "children": []
+}

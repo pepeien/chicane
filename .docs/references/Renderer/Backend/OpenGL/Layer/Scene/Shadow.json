@@ -24,30 +24,14 @@
                 "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_OPENGLLSCENESHADOW_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~OpenGLLSceneShadow",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_~OPENGLLSCENESHADOW_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -62,12 +46,27 @@
                 "type": "override",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_ONDESTRUCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "onSetup",
+                "name": "onBeginRender",
                 "parameters": [
                     {
                         "type": {
@@ -81,7 +80,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_ONSETUP_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_ONBEGINRENDER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -129,10 +128,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onCleanup",
+                "name": "onEndRender",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_ONCLEANUP_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_ONENDRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -196,19 +195,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Viewport",
-                    "suffix": "",
-                    "path": "Renderer/Viewport",
-                    "templates": []
-                },
-                "name": "m_viewport",
-                "description": "CHICANE_RENDERER_OPENGLLSCENESHADOW_M_VIEWPORT_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],

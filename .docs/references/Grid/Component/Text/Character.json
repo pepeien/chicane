@@ -80,7 +80,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "char",
+                    "name": "char32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -107,7 +107,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "char",
+                            "name": "char32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -196,6 +196,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHFONT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshFontStyle",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHFONTSTYLE_DESCRIPTION"
             }
         ],
         "members": [
@@ -220,7 +235,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "char",
+                    "name": "char32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

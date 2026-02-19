@@ -1,35 +1,28 @@
 {
-    "title": "Renderer",
+    "title": "Backend",
     "filename": "Backend",
     "path": "Renderer/Backend",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend.hpp",
-        "namespace": "Chicane::Renderer",
+        "namespace": "Chicane::Renderer::Backend",
         "types": [
             {
-                "name": "ResolutionObservable",
+                "name": "LayerList",
                 "type": {
                     "prefix": "",
-                    "name": "EventObservable",
+                    "name": "std::vector",
                     "suffix": "",
-                    "path": "Core/Event/Observable",
+                    "path": "",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Vec",
+                            "name": "std::unique_ptr",
                             "suffix": "",
-                            "path": "Core/Math/Vec",
+                            "path": "",
                             "templates": [
                                 {
                                     "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
+                                    "name": "Layer",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -38,41 +31,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_RENDERER_RESOLUTIONOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "ResolutionSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec",
-                            "suffix": "",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_RESOLUTIONSUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_RENDERER_BACKEND_LAYERLIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -89,31 +48,11 @@
                 },
                 "name": "Backend",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_BACKEND_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Backend",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_~BACKEND_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -127,9 +66,7 @@
                 },
                 "name": "onInit",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONINIT_DESCRIPTION"
             },
             {
@@ -142,37 +79,24 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onShutdown",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ONSHUTDOWN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onResize",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inResolution"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
+                "parameters": [],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONRESIZE_DESCRIPTION"
             },
             {
@@ -208,9 +132,7 @@
                         "name": "inResource"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
             },
             {
@@ -236,9 +158,7 @@
                         "name": "inResources"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
             },
             {
@@ -264,9 +184,7 @@
                         "name": "inResource"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONLOAD_DESCRIPTION"
             },
             {
@@ -279,12 +197,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onSetup",
+                "name": "onBeginRender",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_ONSETUP_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ONBEGINRENDER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -309,9 +225,7 @@
                         "name": "inFrame"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_ONRENDER_DESCRIPTION"
             },
             {
@@ -324,68 +238,71 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onCleanup",
+                "name": "onEndRender",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_ONCLEANUP_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ONENDRENDER_DESCRIPTION"
             },
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "prefix": "const ",
+                    "name": "Instance",
+                    "suffix": "*",
+                    "path": "Renderer/Instance",
                     "templates": []
                 },
-                "name": "onHandle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
+                "name": "getRenderer",
+                "parameters": [],
                 "modifiers": [
-                    "inline"
+                    "const"
                 ],
-                "description": "CHICANE_RENDERER_BACKEND_ONHANDLE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_BACKEND_GETRENDERER_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "setWindow",
+                "name": "findLayers",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "bool(const Layer *inLayer)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         },
-                        "name": "inWindow"
+                        "name": "inPredicate"
                     }
                 ],
                 "modifiers": [
-                    "inline"
+                    "const"
                 ],
-                "description": "CHICANE_RENDERER_BACKEND_SETWINDOW_DESCRIPTION"
+                "description": "CHICANE_RENDERER_BACKEND_FINDLAYERS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -398,9 +315,21 @@
                     "templates": []
                 },
                 "name": "getLayer",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
                 "modifiers": [
-                    "inline"
+                    "inline",
+                    "const"
                 ],
                 "description": "CHICANE_RENDERER_BACKEND_GETLAYER_DESCRIPTION"
             },
@@ -428,15 +357,7 @@
                                     "name": "Layer",
                                     "suffix": "*",
                                     "path": "Renderer/Layer",
-                                    "templates": [
-                                        {
-                                            "prefix": "",
-                                            "name": "F",
-                                            "suffix": "",
-                                            "path": "",
-                                            "templates": []
-                                        }
-                                    ]
+                                    "templates": []
                                 }
                             ]
                         },
@@ -459,6 +380,112 @@
                 "description": "CHICANE_RENDERER_BACKEND_ADDLAYER_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getResourceSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Resource",
+                            "suffix": "",
+                            "path": "Renderer/Resource",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_GETRESOURCESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getResourceBudget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Resource",
+                            "suffix": "",
+                            "path": "Renderer/Resource",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_GETRESOURCEBUDGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getResourceBudgetCount",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Resource",
+                            "suffix": "",
+                            "path": "Renderer/Resource",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_GETRESOURCEBUDGETCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Viewport",
+                    "suffix": "",
+                    "path": "Renderer/Viewport",
+                    "templates": []
+                },
+                "name": "getLayerViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETLAYERVIEWPORT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -473,9 +500,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "F",
+                            "name": "Frame",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Renderer/Frame",
                             "templates": []
                         },
                         "name": "inFrame"
@@ -491,9 +518,7 @@
                         "name": "inData"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_RENDERLAYERS_DESCRIPTION"
             },
             {
@@ -506,12 +531,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyLayers",
+                "name": "shutdownLayers",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_DESTROYLAYERS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_SHUTDOWNLAYERS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -525,9 +548,7 @@
                 },
                 "name": "rebuildLayers",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_BACKEND_REBUILDLAYERS_DESCRIPTION"
             },
             {
@@ -540,15 +561,13 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "deleteLayers",
+                "name": "destroyLayers",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_DELETELAYERS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_DESTROYLAYERS_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -557,128 +576,104 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "OpenGLDebugCallback",
+                "name": "setVRAM",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "unsigned int",
+                            "name": "std::size_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "source"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "type"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "id"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "severity"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "length"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "message"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "userParam"
+                        "name": "inBytes"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLDEBUGCALLBACK_DESCRIPTION"
+                "description": "CHICANE_RENDERER_BACKEND_SETVRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Instance",
+                            "suffix": "*",
+                            "path": "Renderer/Instance",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_SETRENDERER_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "friend",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "description": "CHICANE_RENDERER_BACKEND_INSTANCE_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "const ",
-                    "name": "Window",
+                    "name": "Instance",
                     "suffix": "*",
-                    "path": "Core/Window",
+                    "path": "Renderer/Instance",
                     "templates": []
                 },
-                "name": "m_window",
-                "description": "CHICANE_RENDERER_BACKEND_M_WINDOW_DESCRIPTION"
+                "name": "m_renderer",
+                "description": "CHICANE_RENDERER_BACKEND_M_RENDERER_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "List",
+                    "name": "LayerList",
                     "suffix": "",
-                    "path": "Core/List",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Layer",
-                            "suffix": "*",
-                            "path": "Renderer/Layer",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "F",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
+                    "path": "Renderer/Backend",
+                    "templates": []
                 },
                 "name": "m_layers",
                 "description": "CHICANE_RENDERER_BACKEND_M_LAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_VRAM",
+                "description": "CHICANE_RENDERER_BACKEND_M_VRAM_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_BACKEND_DESCRIPTION"
     },
     "children": []
 }

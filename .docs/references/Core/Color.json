@@ -410,6 +410,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "HEX_COLOR_GRAY",
+                "description": "CHICANE_COLOR_HEX_COLOR_GRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "HEX_COLOR_BLACK",
                 "description": "CHICANE_COLOR_HEX_COLOR_BLACK_DESCRIPTION"
             },
@@ -428,22 +444,6 @@
                 },
                 "name": "TEXT_COLOR_TRANSPARENT",
                 "description": "CHICANE_COLOR_TEXT_COLOR_TRANSPARENT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "TEXT_COLOR_BLACK",
-                "description": "CHICANE_COLOR_TEXT_COLOR_BLACK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -506,8 +506,104 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "TEXT_COLOR_LIME",
+                "description": "CHICANE_COLOR_TEXT_COLOR_LIME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXT_COLOR_YELLOW",
+                "description": "CHICANE_COLOR_TEXT_COLOR_YELLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXT_COLOR_ORANGE",
+                "description": "CHICANE_COLOR_TEXT_COLOR_ORANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXT_COLOR_CYAN",
+                "description": "CHICANE_COLOR_TEXT_COLOR_CYAN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TEXT_COLOR_WHITE",
                 "description": "CHICANE_COLOR_TEXT_COLOR_WHITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXT_COLOR_GRAY",
+                "description": "CHICANE_COLOR_TEXT_COLOR_GRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXT_COLOR_BLACK",
+                "description": "CHICANE_COLOR_TEXT_COLOR_BLACK_DESCRIPTION"
             }
         ],
         "description": "CHICANE_COLOR_DESCRIPTION"

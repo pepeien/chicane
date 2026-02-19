@@ -1,0 +1,40 @@
+{
+    "title": "SizeDirection",
+    "filename": "Direction",
+    "path": "Core/Size/Direction",
+    "source": {
+        "header": "Includes/Chicane/Core/Size/Direction.hpp",
+        "namespace": "Chicane::SizeDirection",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vertical",
+                "description": "CHICANE_SIZEDIRECTION_VERTICAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Horizontal",
+                "description": "CHICANE_SIZEDIRECTION_HORIZONTAL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SIZEDIRECTION_DESCRIPTION"
+    },
+    "children": []
+}

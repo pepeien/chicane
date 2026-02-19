@@ -50,19 +50,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "currentImageIndex",
-                "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_CURRENTIMAGEINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "vk::Format",
                     "suffix": "",
                     "path": "",

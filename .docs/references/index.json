@@ -1227,6 +1227,22 @@
                         ]
                     },
                     {
+                        "title": "Contour",
+                        "filename": "Contour",
+                        "path": "Core/Math/Contour",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Math/Contour.hpp",
+                            "namespace": "Chicane::Contour",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Curve",
                         "filename": "Curve",
                         "path": "Core/Math/Curve",
@@ -1471,6 +1487,39 @@
                     "members": []
                 },
                 "children": []
+            },
+            {
+                "title": "Size",
+                "filename": "Size",
+                "path": "Core/Size",
+                "source": {
+                    "header": "Includes/Chicane/Core/Size.hpp",
+                    "namespace": "Chicane::Size",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": [
+                    {
+                        "title": "SizeDirection",
+                        "filename": "Direction",
+                        "path": "Core/Size/Direction",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Size/Direction.hpp",
+                            "namespace": "Chicane::SizeDirection",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "String",
@@ -2072,22 +2121,6 @@
                         "children": []
                     },
                     {
-                        "title": "StyleDirection",
-                        "filename": "Direction",
-                        "path": "Grid/Style/Direction",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Style/Direction.hpp",
-                            "namespace": "Chicane::Grid::StyleDirection",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "StyleDisplay",
                         "filename": "Display",
                         "path": "Grid/Style/Display",
@@ -2373,8 +2406,8 @@
         "filename": "Renderer",
         "path": "Renderer",
         "source": {
-            "header": null,
-            "namespace": null,
+            "header": "Includes/Chicane/Renderer.hpp",
+            "namespace": "Chicane::Renderer",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -2384,420 +2417,12 @@
         },
         "children": [
             {
-                "title": "Draw",
-                "filename": "Draw",
-                "path": "Renderer/Draw",
-                "source": {
-                    "header": "Includes/Chicane/Renderer/Draw.hpp",
-                    "namespace": "Chicane::Renderer::Draw",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": [
-                    {
-                        "title": "DrawData",
-                        "filename": "Data",
-                        "path": "Renderer/Draw/Data",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Draw/Data.hpp",
-                            "namespace": "Chicane::Renderer::DrawData",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "DrawPoly",
-                        "filename": "Poly",
-                        "path": "Renderer/Draw/Poly",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Draw/Poly.hpp",
-                            "namespace": "Chicane::Renderer::DrawPoly",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": [
-                            {
-                                "title": "2D",
-                                "filename": "2D",
-                                "path": "Renderer/Draw/Poly/2D",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null,
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": [
-                                    {
-                                        "title": "DrawPoly2DCommand",
-                                        "filename": "Command",
-                                        "path": "Renderer/Draw/Poly/2D/Command",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Command.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly2DCommand",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "DrawPoly2DInstance",
-                                        "filename": "Instance",
-                                        "path": "Renderer/Draw/Poly/2D/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Instance.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly2DInstance",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "3D",
-                                "filename": "3D",
-                                "path": "Renderer/Draw/Poly/3D",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null,
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": [
-                                    {
-                                        "title": "DrawPoly3DCommand",
-                                        "filename": "Command",
-                                        "path": "Renderer/Draw/Poly/3D/Command",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly3DCommand",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "DrawPoly3DCommandMesh",
-                                                "filename": "Mesh",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Mesh",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
-                                                    "types": [],
-                                                    "enums": [],
-                                                    "constructors": [],
-                                                    "destructors": [],
-                                                    "functions": [],
-                                                    "members": []
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "title": "DrawPoly3DCommandType",
-                                                "filename": "Type",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Type",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandType",
-                                                    "types": [],
-                                                    "enums": [],
-                                                    "constructors": [],
-                                                    "destructors": [],
-                                                    "functions": [],
-                                                    "members": []
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "DrawPoly3DInstance",
-                                        "filename": "Instance",
-                                        "path": "Renderer/Draw/Poly/3D/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Instance.hpp",
-                                            "namespace": "Chicane::Renderer::DrawPoly3DInstance",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "DrawPolyData",
-                                "filename": "Data",
-                                "path": "Renderer/Draw/Poly/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyData",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawPolyResource",
-                                "filename": "Resource",
-                                "path": "Renderer/Draw/Poly/Resource",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Resource.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyResource",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawPolyType",
-                                "filename": "Type",
-                                "path": "Renderer/Draw/Poly/Type",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyType",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "title": "DrawResource",
-                        "filename": "Resource",
-                        "path": "Renderer/Draw/Resource",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Draw/Resource.hpp",
-                            "namespace": "Chicane::Renderer::DrawResource",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "DrawSky",
-                        "filename": "Sky",
-                        "path": "Renderer/Draw/Sky",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Draw/Sky.hpp",
-                            "namespace": "Chicane::Renderer::DrawSky",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": [
-                            {
-                                "title": "DrawSkyData",
-                                "filename": "Data",
-                                "path": "Renderer/Draw/Sky/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawSkyData",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawSkyInstance",
-                                "filename": "Instance",
-                                "path": "Renderer/Draw/Sky/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Instance.hpp",
-                                    "namespace": "Chicane::Renderer::DrawSkyInstance",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "title": "DrawTexture",
-                        "filename": "Texture",
-                        "path": "Renderer/Draw/Texture",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Draw/Texture.hpp",
-                            "namespace": "Chicane::Renderer::DrawTexture",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": [
-                            {
-                                "title": "DrawTextureData",
-                                "filename": "Data",
-                                "path": "Renderer/Draw/Texture/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Texture/Data.hpp",
-                                    "namespace": "Chicane::Renderer::DrawTextureData",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawTextureResource",
-                                "filename": "Resource",
-                                "path": "Renderer/Draw/Texture/Resource",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Texture/Resource.hpp",
-                                    "namespace": "Chicane::Renderer::DrawTextureResource",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "title": "Frame",
-                "filename": "Frame",
-                "path": "Renderer/Frame",
-                "source": {
-                    "header": "Includes/Chicane/Renderer/Frame.hpp",
-                    "namespace": "Chicane::Renderer::Frame",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": []
-            },
-            {
-                "title": "Instance",
-                "filename": "Instance",
-                "path": "Renderer/Instance",
-                "source": {
-                    "header": "Includes/Chicane/Renderer/Instance.hpp",
-                    "namespace": "Chicane::Renderer::Instance",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": []
-            },
-            {
-                "title": "Layer",
-                "filename": "Layer",
-                "path": "Renderer/Layer",
-                "source": {
-                    "header": "Includes/Chicane/Renderer/Layer.hpp",
-                    "namespace": "Chicane::Renderer::Layer",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": [
-                    {
-                        "title": "LayerStatus",
-                        "filename": "Status",
-                        "path": "Renderer/Layer/Status",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Layer/Status.hpp",
-                            "namespace": "Chicane::Renderer::LayerStatus",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "title": "Renderer",
+                "title": "Backend",
                 "filename": "Backend",
                 "path": "Renderer/Backend",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Backend.hpp",
-                    "namespace": "Chicane::Renderer",
+                    "namespace": "Chicane::Renderer::Backend",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2836,22 +2461,6 @@
                                     "members": []
                                 },
                                 "children": [
-                                    {
-                                        "title": "OpenGLLGrid",
-                                        "filename": "Grid",
-                                        "path": "Renderer/Backend/OpenGL/Layer/Grid",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp",
-                                            "namespace": "Chicane::Renderer::OpenGLLGrid",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    },
                                     {
                                         "title": "OpenGLLScene",
                                         "filename": "Scene",
@@ -2916,6 +2525,22 @@
                                                 "children": []
                                             }
                                         ]
+                                    },
+                                    {
+                                        "title": "OpenGLLUI",
+                                        "filename": "UI",
+                                        "path": "Renderer/Backend/OpenGL/Layer/UI",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp",
+                                            "namespace": "Chicane::Renderer::OpenGLLUI",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
                                     }
                                 ]
                             }
@@ -3052,55 +2677,6 @@
                                 ]
                             },
                             {
-                                "title": "Frame",
-                                "filename": "Frame",
-                                "path": "Renderer/Backend/Vulkan/Frame",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null,
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": [
-                                    {
-                                        "title": "VulkanFrameCreateInfo",
-                                        "filename": "CreateInfo",
-                                        "path": "Renderer/Backend/Vulkan/Frame/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameCreateInfo",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "VulkanFrameResource",
-                                        "filename": "Resource",
-                                        "path": "Renderer/Backend/Vulkan/Frame/Resource",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanFrameResource",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
                                 "title": "Layer",
                                 "filename": "Layer",
                                 "path": "Renderer/Backend/Vulkan/Layer",
@@ -3115,22 +2691,6 @@
                                     "members": []
                                 },
                                 "children": [
-                                    {
-                                        "title": "VulkanLGrid",
-                                        "filename": "Grid",
-                                        "path": "Renderer/Backend/Vulkan/Layer/Grid",
-                                        "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanLGrid",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": []
-                                        },
-                                        "children": []
-                                    },
                                     {
                                         "title": "VulkanLScene",
                                         "filename": "Scene",
@@ -3195,6 +2755,22 @@
                                                 "children": []
                                             }
                                         ]
+                                    },
+                                    {
+                                        "title": "VulkanLUI",
+                                        "filename": "UI",
+                                        "path": "Renderer/Backend/Vulkan/Layer/UI",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanLUI",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
                                     }
                                 ]
                             },
@@ -3327,6 +2903,72 @@
                                     "members": []
                                 },
                                 "children": []
+                            },
+                            {
+                                "title": "VulkanFrame",
+                                "filename": "Frame",
+                                "path": "Renderer/Backend/Vulkan/Frame",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame.hpp",
+                                    "namespace": "Chicane::Renderer::VulkanFrame",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "Buffer",
+                                        "filename": "Buffer",
+                                        "path": "Renderer/Backend/Vulkan/Frame/Buffer",
+                                        "source": {
+                                            "header": null,
+                                            "namespace": null,
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "VulkanFrameBufferCreateInfo",
+                                                "filename": "CreateInfo",
+                                                "path": "Renderer/Backend/Vulkan/Frame/Buffer/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Buffer/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Renderer::VulkanFrameBufferCreateInfo",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "VulkanFrameResource",
+                                        "filename": "Resource",
+                                        "path": "Renderer/Backend/Vulkan/Frame/Resource",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanFrameResource",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
                                 "title": "VulkanGraphicsPipeline",
@@ -3808,6 +3450,413 @@
                 ]
             },
             {
+                "title": "Draw",
+                "filename": "Draw",
+                "path": "Renderer/Draw",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Draw.hpp",
+                    "namespace": "Chicane::Renderer::Draw",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": [
+                    {
+                        "title": "DrawData",
+                        "filename": "Data",
+                        "path": "Renderer/Draw/Data",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Data.hpp",
+                            "namespace": "Chicane::Renderer::DrawData",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "DrawPoly",
+                        "filename": "Poly",
+                        "path": "Renderer/Draw/Poly",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Poly.hpp",
+                            "namespace": "Chicane::Renderer::DrawPoly",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "2D",
+                                "filename": "2D",
+                                "path": "Renderer/Draw/Poly/2D",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "DrawPoly2DCommand",
+                                        "filename": "Command",
+                                        "path": "Renderer/Draw/Poly/2D/Command",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Command.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly2DCommand",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "DrawPoly2DInstance",
+                                        "filename": "Instance",
+                                        "path": "Renderer/Draw/Poly/2D/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Instance.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly2DInstance",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "3D",
+                                "filename": "3D",
+                                "path": "Renderer/Draw/Poly/3D",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null,
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "DrawPoly3DCommand",
+                                        "filename": "Command",
+                                        "path": "Renderer/Draw/Poly/3D/Command",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly3DCommand",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "DrawPoly3DCommandMesh",
+                                                "filename": "Mesh",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "title": "DrawPoly3DCommandType",
+                                                "filename": "Type",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Type",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandType",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "DrawPoly3DInstance",
+                                        "filename": "Instance",
+                                        "path": "Renderer/Draw/Poly/3D/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Instance.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly3DInstance",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "DrawPolyData",
+                                "filename": "Data",
+                                "path": "Renderer/Draw/Poly/Data",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Data.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawPolyResource",
+                                "filename": "Resource",
+                                "path": "Renderer/Draw/Poly/Resource",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Resource.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyResource",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawPolyType",
+                                "filename": "Type",
+                                "path": "Renderer/Draw/Poly/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "DrawResource",
+                        "filename": "Resource",
+                        "path": "Renderer/Draw/Resource",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Resource.hpp",
+                            "namespace": "Chicane::Renderer::DrawResource",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "DrawSky",
+                        "filename": "Sky",
+                        "path": "Renderer/Draw/Sky",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Sky.hpp",
+                            "namespace": "Chicane::Renderer::DrawSky",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "DrawSkyData",
+                                "filename": "Data",
+                                "path": "Renderer/Draw/Sky/Data",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Data.hpp",
+                                    "namespace": "Chicane::Renderer::DrawSkyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawSkyInstance",
+                                "filename": "Instance",
+                                "path": "Renderer/Draw/Sky/Instance",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Instance.hpp",
+                                    "namespace": "Chicane::Renderer::DrawSkyInstance",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "DrawTexture",
+                        "filename": "Texture",
+                        "path": "Renderer/Draw/Texture",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Texture.hpp",
+                            "namespace": "Chicane::Renderer::DrawTexture",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "DrawTextureData",
+                                "filename": "Data",
+                                "path": "Renderer/Draw/Texture/Data",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Texture/Data.hpp",
+                                    "namespace": "Chicane::Renderer::DrawTextureData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawTextureResource",
+                                "filename": "Resource",
+                                "path": "Renderer/Draw/Texture/Resource",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Texture/Resource.hpp",
+                                    "namespace": "Chicane::Renderer::DrawTextureResource",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Frame",
+                "filename": "Frame",
+                "path": "Renderer/Frame",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Frame.hpp",
+                    "namespace": "Chicane::Renderer::Frame",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Instance",
+                "filename": "Instance",
+                "path": "Renderer/Instance",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Instance.hpp",
+                    "namespace": "Chicane::Renderer::Instance",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Layer",
+                "filename": "Layer",
+                "path": "Renderer/Layer",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Layer.hpp",
+                    "namespace": "Chicane::Renderer::Layer",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Resource",
+                "filename": "Resource",
+                "path": "Renderer/Resource",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Resource.hpp",
+                    "namespace": "Chicane::Renderer::Resource",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
                 "title": "Settings",
                 "filename": "Settings",
                 "path": "Renderer/Settings",
@@ -3837,7 +3886,24 @@
                     "functions": [],
                     "members": []
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "ViewportSettings",
+                        "filename": "Settings",
+                        "path": "Renderer/Viewport/Settings",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Viewport/Settings.hpp",
+                            "namespace": "Chicane::Renderer::ViewportSettings",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
             }
         ]
     },
@@ -4146,6 +4212,22 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Object",
+                        "filename": "Object",
+                        "path": "Runtime/Scene/Object",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/Object.hpp",
+                            "namespace": "Chicane::Object",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
                     }
                 ]
             }

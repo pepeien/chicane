@@ -1,10 +1,10 @@
 {
-    "title": "OpenGLLScene",
-    "filename": "Scene",
-    "path": "Renderer/Backend/OpenGL/Layer/Scene",
+    "title": "VulkanLUI",
+    "filename": "UI",
+    "path": "Renderer/Backend/Vulkan/Layer/UI",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp",
-        "namespace": "Chicane::Renderer::OpenGLLScene",
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp",
+        "namespace": "Chicane::Renderer::VulkanLUI",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,16 +18,16 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "OpenGLLScene",
+                "name": "VulkanLUI",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_OPENGLLSCENE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_VULKANLUI_DESCRIPTION"
             }
         ],
         "destructors": [],
         "functions": [
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -39,10 +39,25 @@
                 "name": "onInit",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_ONINIT_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_ONINIT_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRestart",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLUI_ONRESTART_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -54,10 +69,10 @@
                 "name": "onDestruction",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_ONDESTRUCTION_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_ONDESTRUCTION_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -90,10 +105,10 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_ONLOAD_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -116,10 +131,10 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_ONBEGINRENDER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_ONBEGINRENDER_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -152,7 +167,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_ONRENDER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_ONRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -164,10 +179,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildCameraData",
+                "name": "initFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDCAMERADATA_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_INITFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -179,10 +194,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyCameraData",
+                "name": "destroyFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_DESTROYCAMERADATA_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_DESTROYFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -194,10 +209,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildLightData",
+                "name": "initGraphicsPipeline",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDLIGHTDATA_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_INITGRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -209,10 +224,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyLightData",
+                "name": "initFramebuffers",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_DESTROYLIGHTDATA_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_INITFRAMEBUFFERS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -224,10 +239,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildModelVertexArray",
+                "name": "buildPrimitiveVertexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDMODELVERTEXARRAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDPRIMITIVEVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -239,10 +254,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildModelVertexBuffer",
-                "parameters": [],
+                "name": "buildPrimitiveVertexData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDMODELVERTEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDPRIMITIVEVERTEXDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -254,10 +280,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildModelIndexBuffer",
+                "name": "buildPrimitiveIndexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDMODELINDEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDPRIMITIVEINDEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -269,10 +295,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyModelData",
-                "parameters": [],
+                "name": "buildPrimitiveIndexData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::Indices",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inIndices"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_DESTROYMODELDATA_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDPRIMITIVEINDEXDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -284,40 +321,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildInstanceData",
+                "name": "destroyPrimitiveData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDINSTANCEDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroyInstanceData",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_DESTROYINSTANCEDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "buildLayers",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_BUILDLAYERS_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLUI_DESTROYPRIMITIVEDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -326,81 +333,76 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "VulkanGraphicsPipeline",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
                     "templates": []
                 },
-                "name": "m_cameraBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_CAMERABUFFER_DESCRIPTION"
+                "name": "m_graphicsPipeline",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_GRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "VulkanDescriptorBundle",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
                     "templates": []
                 },
-                "name": "m_lightBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_LIGHTBUFFER_DESCRIPTION"
+                "name": "m_frameDescriptor",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_FRAMEDESCRIPTOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "VulkanBuffer",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
                     "templates": []
                 },
-                "name": "m_modelVertexArray",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_MODELVERTEXARRAY_DESCRIPTION"
+                "name": "m_primitiveVertexBuffer",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_PRIMITIVEVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "VulkanBuffer",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
                     "templates": []
                 },
-                "name": "m_modelVertexBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_MODELVERTEXBUFFER_DESCRIPTION"
+                "name": "m_primitiveIndexBuffer",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_PRIMITIVEINDEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::ClearValue",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "m_modelIndexBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_MODELINDEXBUFFER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_instanceBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_INSTANCEBUFFER_DESCRIPTION"
+                "name": "m_clear",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_CLEAR_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_OPENGLLSCENE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANLUI_DESCRIPTION"
     },
     "children": []
 }

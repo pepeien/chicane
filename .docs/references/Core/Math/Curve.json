@@ -7,7 +7,7 @@
         "namespace": "Chicane::Curve",
         "types": [
             {
-                "name": "Polygon",
+                "name": "List",
                 "type": {
                     "prefix": "",
                     "name": "std::vector",
@@ -16,203 +16,20 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::array",
-                            "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "float",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "description": "CHICANE_CURVE_POLYGON_DESCRIPTION"
-            }
-        ],
-        "enums": [],
-        "constructors": [],
-        "destructors": [],
-        "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Polygon",
-                    "suffix": "",
-                    "path": "Core/Math/Curve",
-                    "templates": []
-                },
-                "name": "getPolygon",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Curve",
-                                    "suffix": "",
-                                    "path": "Core/Math/Curve",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inContours"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_CURVE_GETPOLYGON_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Polygon",
+                            "name": "Curve",
                             "suffix": "",
                             "path": "Core/Math/Curve",
                             "templates": []
                         }
                     ]
                 },
-                "name": "getPolygons",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Curve",
-                                    "suffix": "",
-                                    "path": "Core/Math/Curve",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inContours"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_CURVE_GETPOLYGONS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec3",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getTriangleVertices",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Curve",
-                                    "suffix": "",
-                                    "path": "Core/Math/Curve",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inContours"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_CURVE_GETTRIANGLEVERTICES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getTriangleIndices",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Curve",
-                                    "suffix": "",
-                                    "path": "Core/Math/Curve",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inContours"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_CURVE_GETTRIANGLEINDICES_DESCRIPTION"
-            },
+                "description": "CHICANE_CURVE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
             {
                 "accessor": "public",
                 "type": "standard",
@@ -320,58 +137,9 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_CURVE_ADDBEZIERPOINT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isHole",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CURVE_ISHOLE_DESCRIPTION"
             }
         ],
         "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "FIXED_POINT",
-                "description": "CHICANE_CURVE_FIXED_POINT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "FIXED_SCALE",
-                "description": "CHICANE_CURVE_FIXED_SCALE_DESCRIPTION"
-            },
             {
                 "accessor": "protected",
                 "modifiers": [],

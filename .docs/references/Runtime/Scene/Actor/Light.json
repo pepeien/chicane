@@ -25,7 +25,23 @@
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ALIGHT_ONLOAD_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "protected",

@@ -89,7 +89,17 @@
                             "path": "Core/FileSystem",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInShouldFlip"
                     }
                 ],
                 "modifiers": [],
@@ -126,6 +136,16 @@
                             "templates": []
                         },
                         "name": "inVendor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInShouldFlip"
                     }
                 ],
                 "modifiers": [],

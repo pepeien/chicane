@@ -23,9 +23,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
+                            "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/String",
+                            "path": "Core/FileSystem",
                             "templates": []
                         },
                         "name": "inSource"
@@ -47,21 +47,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setWindow",
+                "name": "handle",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
                             "templates": []
                         },
-                        "name": "inWindow"
+                        "name": "inEvent"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_SETWINDOW_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -81,7 +81,7 @@
                         }
                     ]
                 },
-                "name": "getChildrenOn",
+                "name": "getChildrenAt",
                 "parameters": [
                     {
                         "type": {
@@ -97,7 +97,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_VIEW_GETCHILDRENON_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_GETCHILDRENAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -141,32 +141,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_IMPORTSTYLEFILE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "handle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
             }
         ],
         "members": [
@@ -201,32 +175,6 @@
                 },
                 "name": "PATH_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_VIEW_PATH_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "const ",
-                    "name": "Window",
-                    "suffix": "*",
-                    "path": "Core/Window",
-                    "templates": []
-                },
-                "name": "m_window",
-                "description": "CHICANE_GRID_VIEW_M_WINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "WindowEventSubscription",
-                    "suffix": "",
-                    "path": "Box",
-                    "templates": []
-                },
-                "name": "m_windowEventSubscription",
-                "description": "CHICANE_GRID_VIEW_M_WINDOWEVENTSUBSCRIPTION_DESCRIPTION"
             },
             {
                 "accessor": "protected",

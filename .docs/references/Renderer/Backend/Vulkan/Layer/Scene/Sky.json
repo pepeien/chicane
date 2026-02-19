@@ -24,30 +24,14 @@
                 "description": "CHICANE_RENDERER_VULKANLSCENESKY_VULKANLSCENESKY_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~VulkanLSceneSky",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENESKY_~VULKANLSCENESKY_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -62,30 +46,30 @@
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "onDestroy",
+                "name": "onRestart",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONDESTROY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONRESTART_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "onRebuild",
+                "name": "onDestruction",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONREBUILD_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONDESTRUCTION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -123,7 +107,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onSetup",
+                "name": "onBeginRender",
                 "parameters": [
                     {
                         "type": {
@@ -137,7 +121,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONSETUP_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENESKY_ONBEGINRENDER_DESCRIPTION"
             },
             {
                 "accessor": "public",

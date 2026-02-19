@@ -26,6 +26,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "OpenType",
+                "description": "CHICANE_BOX_FONTVENDOR_OPENTYPE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TrueType",
                 "description": "CHICANE_BOX_FONTVENDOR_TRUETYPE_DESCRIPTION"
             }

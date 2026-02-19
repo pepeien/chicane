@@ -1,0 +1,70 @@
+{
+    "title": "ViewportSettings",
+    "filename": "Settings",
+    "path": "Renderer/Viewport/Settings",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Viewport/Settings.hpp",
+        "namespace": "Chicane::Renderer::ViewportSettings",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_VIEWPORTSETTINGS_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_VIEWPORTSETTINGS_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "offsetX",
+                "description": "CHICANE_RENDERER_VIEWPORTSETTINGS_OFFSETX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "offsetY",
+                "description": "CHICANE_RENDERER_VIEWPORTSETTINGS_OFFSETY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VIEWPORTSETTINGS_DESCRIPTION"
+    },
+    "children": []
+}

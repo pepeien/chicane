@@ -54,10 +54,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Scene",
-                            "suffix": "*",
-                            "path": "Runtime/Scene",
-                            "templates": []
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -73,10 +81,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Scene",
-                            "suffix": "*",
-                            "path": "Runtime/Scene",
-                            "templates": []
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -92,10 +108,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Grid::View",
-                            "suffix": "*",
-                            "path": "Grid/Component/View",
-                            "templates": []
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -111,10 +135,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Grid::View",
-                            "suffix": "*",
-                            "path": "Grid/Component/View",
-                            "templates": []
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -169,23 +201,7 @@
                 "description": "CHICANE_APPLICATION_APPLICATION_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Application",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_~APPLICATION_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -385,15 +401,25 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "hasScene",
+                "name": "getScene",
                 "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_HASSCENE_DESCRIPTION"
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -422,23 +448,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_APPLICATION_SETSCENE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "T",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getScene",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -491,25 +500,18 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
-                    "templates": []
-                },
-                "name": "hasView",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_HASVIEW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "T",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "getView",
                 "parameters": [],
@@ -714,6 +716,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "shutdownRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SHUTDOWNRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initWindow",
                 "parameters": [
                     {
@@ -785,10 +802,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "initSceneThread",
+                "name": "initScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_INITSCENETHREAD_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_INITSCENE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -800,10 +817,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "shutdownSceneThread",
+                "name": "shutdownScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_SHUTDOWNSCENETHREAD_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SHUTDOWNSCENE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -831,7 +848,26 @@
                     "templates": []
                 },
                 "name": "buildSceneCommands",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inScene"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_BUILDSCENECOMMANDS_DESCRIPTION"
             },
@@ -875,10 +911,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "shutdownViewThread",
+                "name": "shutdownView",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_SHUTDOWNVIEWTHREAD_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SHUTDOWNVIEW_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -906,7 +942,26 @@
                     "templates": []
                 },
                 "name": "buildViewCommands",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "Grid/Component/View",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inView"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_BUILDVIEWCOMMANDS_DESCRIPTION"
             },
@@ -992,7 +1047,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::unique_ptr",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
                     "templates": [
@@ -1007,19 +1062,6 @@
                 },
                 "name": "m_scene",
                 "description": "CHICANE_APPLICATION_M_SCENE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_sceneMutex",
-                "description": "CHICANE_APPLICATION_M_SCENEMUTEX_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1115,7 +1157,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::unique_ptr",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
                     "templates": [
@@ -1130,19 +1172,6 @@
                 },
                 "name": "m_view",
                 "description": "CHICANE_APPLICATION_M_VIEW_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_viewMutex",
-                "description": "CHICANE_APPLICATION_M_VIEWMUTEX_DESCRIPTION"
             },
             {
                 "accessor": "private",

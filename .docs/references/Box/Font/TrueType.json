@@ -25,12 +25,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "FontRaw",
+                            "name": "Font",
                             "suffix": "&",
-                            "path": "Box",
+                            "path": "Box/Font",
                             "templates": []
                         },
-                        "name": "inData"
+                        "name": "inAsset"
                     }
                 ],
                 "modifiers": [],

@@ -49,8 +49,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bufferCount",
-                "description": "CHICANE_RENDERER_SETTINGS_BUFFERCOUNT_DESCRIPTION"
+                "name": "framesInFlight",
+                "description": "CHICANE_RENDERER_SETTINGS_FRAMESINFLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ResourceBudget",
+                    "suffix": "",
+                    "path": "Renderer",
+                    "templates": []
+                },
+                "name": "resourceBudget",
+                "description": "CHICANE_RENDERER_SETTINGS_RESOURCEBUDGET_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_SETTINGS_DESCRIPTION"

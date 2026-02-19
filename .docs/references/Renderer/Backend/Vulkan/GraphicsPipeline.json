@@ -7,40 +7,8 @@
         "namespace": "Chicane::Renderer::VulkanGraphicsPipeline",
         "types": [],
         "enums": [],
-        "constructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "VulkanGraphicsPipeline",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_VULKANGRAPHICSPIPELINE_DESCRIPTION"
-            }
-        ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~VulkanGraphicsPipeline",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_~VULKANGRAPHICSPIPELINE_DESCRIPTION"
-            }
-        ],
+        "constructors": [],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -661,7 +629,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bindDescriptorSet",
+                "name": "bind",
                 "parameters": [
                     {
                         "type": {
@@ -695,7 +663,22 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_BINDDESCRIPTORSET_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_BIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_DESTROY_DESCRIPTION"
             }
         ],
         "members": [

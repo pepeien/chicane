@@ -36,7 +36,23 @@
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_CONTAINER_ONREFRESH_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

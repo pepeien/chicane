@@ -90,6 +90,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "scale",
+                "description": "CHICANE_GRID_PRIMITIVE_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vertex::List",
                     "suffix": "",
                     "path": "Core/Math/Vertex",

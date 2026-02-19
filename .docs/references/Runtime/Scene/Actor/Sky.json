@@ -5,46 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Runtime/Scene/Actor/Sky.hpp",
         "namespace": "Chicane::ASky",
-        "types": [
-            {
-                "name": "AssetObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "const ",
-                            "name": "Box::Sky",
-                            "suffix": "*",
-                            "path": "Box/Sky",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_ASKY_ASSETOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "AssetSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "const ",
-                            "name": "Box::Sky",
-                            "suffix": "*",
-                            "path": "Box/Sky",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_ASKY_ASSETSUBSCRIPTION_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -107,52 +68,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_ASKY_SETSKY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "AssetSubscription",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Actor/Sky",
-                    "templates": []
-                },
-                "name": "watchSky",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "AssetSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "AssetSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "AssetSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_ASKY_WATCHSKY_DESCRIPTION"
             }
         ],
         "members": [
@@ -168,19 +83,6 @@
                 },
                 "name": "m_asset",
                 "description": "CHICANE_ASKY_M_ASSET_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "AssetObservable",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Actor/Sky",
-                    "templates": []
-                },
-                "name": "m_assetObservable",
-                "description": "CHICANE_ASKY_M_ASSETOBSERVABLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ASKY_DESCRIPTION"

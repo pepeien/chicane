@@ -5,7 +5,27 @@
     "source": {
         "header": "Includes/Chicane/Core/Math/Line.hpp",
         "namespace": "Chicane::Line",
-        "types": [],
+        "types": [
+            {
+                "name": "Points",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_LINE_POINTS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -66,18 +86,10 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::vector",
+                    "name": "Points",
                     "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec2",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Line",
+                    "templates": []
                 },
                 "name": "getPoints",
                 "parameters": [],
@@ -119,18 +131,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Points",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec2",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Line",
+                    "templates": []
                 },
                 "name": "m_points",
                 "description": "CHICANE_LINE_M_POINTS_DESCRIPTION"

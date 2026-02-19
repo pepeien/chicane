@@ -62,6 +62,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "shutdown",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SHUTDOWN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "render",
                 "parameters": [],
                 "modifiers": [],
@@ -144,32 +159,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_ADDLIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setFrameCount",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SETFRAMECOUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -416,9 +405,69 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasWindow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_HASWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "getWindow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setWindow",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Window",
+                            "suffix": "*",
+                            "path": "Core/Window",
+                            "templates": []
+                        },
+                        "name": "inWindow"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Vec",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/Math/Vec",
                     "templates": [
                         {
@@ -490,46 +539,86 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ResolutionSubscription",
+                    "name": "std::uint32_t",
                     "suffix": "",
-                    "path": "Renderer/Backend",
+                    "path": "",
                     "templates": []
                 },
-                "name": "watchResolution",
+                "name": "getFrameInFlighCount",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETFRAMEINFLIGHCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFramesInFlight",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ResolutionSubscription::NextCallback",
+                            "name": "std::uint32_t",
                             "suffix": "",
-                            "path": "Core/Event/Subscription",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ResolutionSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ResolutionSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_WATCHRESOLUTION_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_SETFRAMESINFLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ResourceBudget",
+                    "suffix": "&",
+                    "path": "Renderer",
+                    "templates": []
+                },
+                "name": "getResourceBudget",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETRESOURCEBUDGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setResourceBudget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ResourceBudget",
+                            "suffix": "&",
+                            "path": "Renderer",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SETRESOURCEBUDGET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -595,48 +684,7 @@
                 "description": "CHICANE_RENDERER_INSTANCE_ADDBACKENDLAYER_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "handle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_HANDLE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "shutdownBackend",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_SHUTDOWNBACKEND_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -646,23 +694,12 @@
                     "templates": []
                 },
                 "name": "reloadBackend",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Window",
-                            "suffix": "*",
-                            "path": "Core/Window",
-                            "templates": []
-                        },
-                        "name": "inWindow"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_RELOADBACKEND_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -706,42 +743,27 @@
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
-                    "prefix": "",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "prefix": "const ",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
                 },
-                "name": "m_resolution",
-                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTION_DESCRIPTION"
+                "name": "m_window",
+                "description": "CHICANE_RENDERER_INSTANCE_M_WINDOW_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "ResolutionObservable",
+                    "name": "Settings",
                     "suffix": "",
-                    "path": "Renderer/Backend",
+                    "path": "Renderer/Settings",
                     "templates": []
                 },
-                "name": "m_resolutionObservable",
-                "description": "CHICANE_RENDERER_INSTANCE_M_RESOLUTIONOBSERVABLE_DESCRIPTION"
+                "name": "m_settings",
+                "description": "CHICANE_RENDERER_INSTANCE_M_SETTINGS_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -104,40 +104,6 @@
                 "description": "CHICANE_CMESH_GETMESH_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "getModel",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CMESH_GETMODEL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "getTexture",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CMESH_GETTEXTURE_DESCRIPTION"
-            },
-            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -152,9 +118,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Transformable",
+                            "name": "Object",
                             "suffix": "*",
-                            "path": "Core/Transformable",
+                            "path": "Runtime/Scene/Object",
                             "templates": []
                         },
                         "name": "inRoot"
@@ -203,8 +169,8 @@
                     "path": "Box/Mesh",
                     "templates": []
                 },
-                "name": "m_mesh",
-                "description": "CHICANE_CMESH_M_MESH_DESCRIPTION"
+                "name": "m_asset",
+                "description": "CHICANE_CMESH_M_ASSET_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CMESH_DESCRIPTION"

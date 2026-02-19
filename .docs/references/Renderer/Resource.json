@@ -1,0 +1,128 @@
+{
+    "title": "Resource",
+    "filename": "Resource",
+    "path": "Renderer/Resource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Resource.hpp",
+        "namespace": "Chicane::Renderer::Resource",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scene",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneIndices",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENEINDICES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneVertices",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENEVERTICES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneInstances",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENEINSTANCES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Texture",
+                "description": "CHICANE_RENDERER_RESOURCE_TEXTURE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UI",
+                "description": "CHICANE_RENDERER_RESOURCE_UI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UIIndices",
+                "description": "CHICANE_RENDERER_RESOURCE_UIINDICES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UIVertices",
+                "description": "CHICANE_RENDERER_RESOURCE_UIVERTICES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UIInstances",
+                "description": "CHICANE_RENDERER_RESOURCE_UIINSTANCES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc",
+                "description": "CHICANE_RENDERER_RESOURCE_MISC_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_RESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

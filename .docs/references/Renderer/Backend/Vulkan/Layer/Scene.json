@@ -24,30 +24,14 @@
                 "description": "CHICANE_RENDERER_VULKANLSCENE_VULKANLSCENE_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~VulkanLScene",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_~VULKANLSCENE_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -56,6 +40,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENE_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_ONDESTRUCTION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -200,6 +199,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildShadowImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_BUILDSHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyShadowImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_DESTROYSHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -232,6 +261,32 @@
                 },
                 "name": "modelIndexBuffer",
                 "description": "CHICANE_RENDERER_VULKANLSCENE_MODELINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanImageData",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "shadowImage",
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorImageInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shadowImageInfo",
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SHADOWIMAGEINFO_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANLSCENE_DESCRIPTION"

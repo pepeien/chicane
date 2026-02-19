@@ -27,7 +27,7 @@
         "destructors": [
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "",
@@ -42,6 +42,62 @@
             }
         ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Viewport",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getVkViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETVKVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Rect2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getVkScissor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETVKSCISSOR_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "type": "override",
@@ -67,34 +123,23 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onShutdown",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_ONSHUTDOWN_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onResize",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inResolution"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_ONRESIZE_DESCRIPTION"
             },
@@ -149,32 +194,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_ONRENDER_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onHandle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_ONHANDLE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -321,40 +340,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildSwapchain",
+                "name": "updateResourceBudget",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDSWAPCHAIN_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroySwapchain",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_DESTROYSWAPCHAIN_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "rebuildSwapchain",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_REBUILDSWAPCHAIN_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANBACKEND_UPDATERESOURCEBUDGET_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -411,21 +400,70 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "renderViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "vk::CommandBuffer",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCommandBuffer"
-                    }
-                ],
+                "name": "buildSwapchain",
+                "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_RENDERVIEWPORT_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySwapchain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_DESTROYSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildSwapchain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_REBUILDSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_DESTROYFRAMES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -596,26 +634,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::Viewport",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanFrame",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "viewport",
-                "description": "CHICANE_RENDERER_VULKANBACKEND_VIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::Rect2D",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "scissor",
-                "description": "CHICANE_RENDERER_VULKANBACKEND_SCISSOR_DESCRIPTION"
+                "name": "frames",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_FRAMES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -658,6 +691,19 @@
                 },
                 "name": "textures",
                 "description": "CHICANE_RENDERER_VULKANBACKEND_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_currentFrameIndex",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_CURRENTFRAMEINDEX_DESCRIPTION"
             },
             {
                 "accessor": "private",

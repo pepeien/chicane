@@ -15,9 +15,9 @@
                     "path": "Core/Event/Observable",
                     "templates": [
                         {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "WindowEvent",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "Core/Window/Event",
                             "templates": []
                         }
@@ -34,9 +34,9 @@
                     "path": "Core/Event/Subscription",
                     "templates": [
                         {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "WindowEvent",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "Core/Window/Event",
                             "templates": []
                         }
@@ -53,9 +53,9 @@
                     "path": "Core/Event/Observable",
                     "templates": [
                         {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "Vec",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "Core/Math/Vec",
                             "templates": [
                                 {
@@ -87,9 +87,9 @@
                     "path": "Core/Event/Subscription",
                     "templates": [
                         {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "Vec",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "Core/Math/Vec",
                             "templates": [
                                 {
@@ -371,40 +371,7 @@
                 "description": "CHICANE_BOX_LOAD_DESCRIPTION"
             }
         ],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "APPLICATION_NAME",
-                "description": "CHICANE_APPLICATION_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "ENGINE_NAME",
-                "description": "CHICANE_ENGINE_NAME_DESCRIPTION"
-            }
-        ],
+        "members": [],
         "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []

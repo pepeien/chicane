@@ -24,24 +24,34 @@
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_OPENGLBACKEND_DESCRIPTION"
             }
         ],
-        "destructors": [
+        "destructors": [],
+        "functions": [
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "",
+                    "name": "Viewport",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Viewport",
                     "templates": []
                 },
-                "name": "~OpenGLBackend",
-                "parameters": [],
+                "name": "getGLViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_~OPENGLBACKEND_DESCRIPTION"
-            }
-        ],
-        "functions": [
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_GETGLVIEWPORT_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "type": "override",
@@ -56,6 +66,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onShutdown",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONSHUTDOWN_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -93,10 +118,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onSetup",
+                "name": "onBeginRender",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONSETUP_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONBEGINRENDER_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -134,10 +159,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onCleanup",
+                "name": "onEndRender",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONCLEANUP_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ONENDRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -198,6 +223,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_ENABLEFEATURES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateResourcesBudget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_UPDATERESOURCESBUDGET_DESCRIPTION"
             },
             {
                 "accessor": "private",

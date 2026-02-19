@@ -71,7 +71,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::uint32_t",
+                            "name": "char32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -127,7 +127,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::uint32_t",
+                            "name": "char32_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
