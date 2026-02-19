@@ -35,6 +35,7 @@ namespace Chicane
             buildDebugMessenger();
             buildSurface();
             buildDevices();
+            updateResourceBudget();
             buildQueues();
             buildCommandPool();
             buildSwapchain();
@@ -208,6 +209,22 @@ namespace Chicane
             VulkanDevice::initLogicalDevice(logicalDevice, physicalDevice, surface);
         }
 
+        void VulkanBackend::updateResourceBudget()
+        {
+            vk::PhysicalDeviceMemoryProperties properties = physicalDevice.getMemoryProperties();
+
+            std::size_t VRAM = 0U;
+            for (const auto& memoryHeap : properties.memoryHeaps)
+            {
+                if (memoryHeap.flags & vk::MemoryHeapFlagBits::eDeviceLocal)
+                {
+                    VRAM += memoryHeap.size;
+                }
+            }
+
+            setResourceBudget(VRAM);
+        }
+
         void VulkanBackend::destroyDevices()
         {
             logicalDevice.destroy();
@@ -219,7 +236,14 @@ namespace Chicane
 
             for (VulkanSwapchainImage& image : swapchain.images)
             {
-                image.init();
+                // Sync
+                image.setupSync();
+
+                // Data
+                image.setupCameraData();
+                image.setupLightData();
+                image.setup2DData(getResourceBudget(BackendResource::UIInstances));
+                image.setup3DData(getResourceBudget(BackendResource::SceneInstances));
 
                 // Commandbuffer
                 image.setupCommandBuffer(m_mainCommandPool);

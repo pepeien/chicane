@@ -45,7 +45,7 @@ namespace Chicane
             VulkanBufferCreateInfo createInfo;
             createInfo.physicalDevice = backend->physicalDevice;
             createInfo.logicalDevice  = backend->logicalDevice;
-            createInfo.size           = sizeof(Vertex) * Backend::SCENE_VERTEX_COUNT;
+            createInfo.size           = m_backend->getResourceBudget(BackendResource::SceneVertices);
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
@@ -82,7 +82,7 @@ namespace Chicane
             VulkanBufferCreateInfo createInfo;
             createInfo.physicalDevice   = backend->physicalDevice;
             createInfo.logicalDevice    = backend->logicalDevice;
-            createInfo.size             = sizeof(Vertex::Index) * Backend::SCENE_INDEX_COUNT;
+            createInfo.size             = m_backend->getResourceBudget(BackendResource::SceneIndices);
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 

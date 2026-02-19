@@ -37,6 +37,7 @@ namespace Chicane
             void destroyContext();
             void buildGlew();
             void enableFeatures();
+            void updateResourcesBudget();
 
             void buildTextureData();
             void destroyTextureData();

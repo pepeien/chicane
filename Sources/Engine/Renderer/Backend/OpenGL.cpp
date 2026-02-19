@@ -25,6 +25,7 @@ namespace Chicane
             buildContext();
             buildGlew();
             enableFeatures();
+            updateResourcesBudget();
             buildTextureData();
             buildLayers();
         }
@@ -162,6 +163,31 @@ namespace Chicane
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
                 glDebugMessageCallback(OpenGLDebugCallback, nullptr);
             }
+        }
+
+        void OpenGLBackend::updateResourcesBudget()
+        {
+            std::size_t VRAM = 512ULL * 1024 * 1024; // 512MB
+
+            // NVIDIA
+            if (GLEW_NVX_gpu_memory_info)
+            {
+                GLint total = 0;
+                glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &total);
+
+                VRAM = static_cast<size_t>(total) * 1024;
+            }
+
+            // AMD
+            if (GLEW_ATI_meminfo)
+            {
+                GLint mem[4] = {};
+                glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem);
+
+                VRAM = static_cast<size_t>(mem[0]) * 1024;
+            }
+
+            setResourceBudget(VRAM);
         }
 
         void OpenGLBackend::buildTextureData()

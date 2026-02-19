@@ -1,8 +1,11 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "Chicane/Core/List.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend/Resource.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
@@ -24,16 +27,10 @@ namespace Chicane
         public:
             using LayerList = std::vector<std::unique_ptr<Layer>>;
 
+            using ResourceMap = std::unordered_map<BackendResource, std::size_t>;
+
         public:
             static constexpr inline const std::size_t TEXTURE_COUNT = 512;
-
-            static constexpr inline const std::size_t SCENE_INDEX_COUNT    = 1048576; // 1M (2^20)
-            static constexpr inline const std::size_t SCENE_VERTEX_COUNT   = SCENE_INDEX_COUNT * 3;
-            static constexpr inline const std::size_t SCENE_INSTANCE_COUNT = 4096;
-
-            static constexpr inline const std::size_t UI_INDEX_COUNT    = 65536; // 64K (2^16)
-            static constexpr inline const std::size_t UI_VERTEX_COUNT   = UI_INDEX_COUNT * 3;
-            static constexpr inline const std::size_t UI_INSTANCE_COUNT = 2048;
 
         public:
             Backend();
@@ -126,6 +123,10 @@ namespace Chicane
                 location->get()->onInit();
             }
 
+            std::size_t getResourceSize(BackendResource inType);
+            std::size_t getResourceBudget(BackendResource inType);
+            std::uint32_t getResourceBudgetCount(BackendResource inType);
+
         protected:
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
@@ -134,12 +135,15 @@ namespace Chicane
             void rebuildLayers();
             void destroyLayers();
 
+            void setResourceBudget(std::size_t inBytes);
+
         private:
             void setRenderer(const Instance* inValue);
 
         protected:
             const Instance* m_renderer;
             LayerList       m_layers;
+            ResourceMap     m_resourceBudget;
         };
     }
 }

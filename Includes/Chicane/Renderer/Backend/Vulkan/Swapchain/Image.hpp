@@ -21,7 +21,6 @@ namespace Chicane
         {
         public:
             // Lifecycle
-            void init();
             void sync();
             vk::ResultValue<std::uint32_t> acquire(const vk::SwapchainKHR& inSwapchain);
             void begin(const Frame& inFrame);
@@ -47,11 +46,11 @@ namespace Chicane
             void updateLightData(const View::List& inData);
             void destroyLightData();
 
-            void setup2DData();
+            void setup2DData(std::size_t inBudget);
             void update2DData(const DrawPoly2DInstance::List& inData);
             void destroy2DData();
 
-            void setup3DData();
+            void setup3DData(std::size_t inBudget);
             void update3DData(const DrawPoly3DInstance::List& inData);
             void destroy3DData();
 

@@ -11,16 +11,6 @@ namespace Chicane
 {
     namespace Renderer
     {
-        void VulkanSwapchainImage::init()
-        {
-            setupSync();
-
-            setupCameraData();
-            setupLightData();
-            setup2DData();
-            setup3DData();
-        }
-
         void VulkanSwapchainImage::sync()
         {
             vk::Result result = logicalDevice.waitForFences(1, &fence, VK_TRUE, UINT64_MAX);
@@ -167,14 +157,14 @@ namespace Chicane
             lightResource.destroy(logicalDevice);
         }
 
-        void VulkanSwapchainImage::setup2DData()
+        void VulkanSwapchainImage::setup2DData(std::size_t inBudget)
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(DrawPoly2DInstance) * Backend::UI_INSTANCE_COUNT;
+            bufferCreateInfo.size  = inBudget;
             bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
 
             poly2DResource.setup(bufferCreateInfo);
@@ -195,14 +185,14 @@ namespace Chicane
             poly2DResource.destroy(logicalDevice);
         }
 
-        void VulkanSwapchainImage::setup3DData()
+        void VulkanSwapchainImage::setup3DData(std::size_t inBudget)
         {
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(DrawPoly3DInstance) * Backend::SCENE_INSTANCE_COUNT;
+            bufferCreateInfo.size  = inBudget;
             bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
 
             poly3DResource.setup(bufferCreateInfo);

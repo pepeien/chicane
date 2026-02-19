@@ -54,6 +54,8 @@ namespace Chicane
             void buildDevices();
             void destroyDevices();
 
+            void updateResourceBudget();
+
             void buildSwapchain();
             void destroySwapchain();
             void rebuildSwapchain();

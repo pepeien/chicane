@@ -186,7 +186,7 @@ namespace Chicane
             glCreateBuffers(1, &m_primitiveVertexBuffer);
             glNamedBufferData(
                 m_primitiveVertexBuffer,
-                sizeof(Vertex) * Backend::UI_VERTEX_COUNT,
+                m_backend->getResourceBudget(BackendResource::UIVertices),
                 nullptr,
                 GL_DYNAMIC_DRAW
             );
@@ -217,7 +217,7 @@ namespace Chicane
             glCreateBuffers(1, &m_primitiveIndexBuffer);
             glNamedBufferData(
                 m_primitiveIndexBuffer,
-                sizeof(std::uint32_t) * Backend::UI_INDEX_COUNT,
+                m_backend->getResourceBudget(BackendResource::UIIndices),
                 nullptr,
                 GL_DYNAMIC_DRAW
             );
@@ -235,7 +235,7 @@ namespace Chicane
             glCreateBuffers(1, &m_instanceBuffer);
             glNamedBufferData(
                 m_instanceBuffer,
-                sizeof(DrawPoly2DInstance) * Backend::UI_INSTANCE_COUNT,
+                m_backend->getResourceBudget(BackendResource::UIInstances),
                 nullptr,
                 GL_DYNAMIC_DRAW
             );
