@@ -3,23 +3,33 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
+#include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLBackend : public Backend<Frame>
+        class CHICANE_RENDERER OpenGLBackend : public Backend
         {
         public:
             OpenGLBackend();
-            virtual ~OpenGLBackend();
 
         protected:
+            // Lifecycle
             void onInit() override;
+            void onShutdown() override;
+
+            // Event
             void onLoad(const DrawTextureResource& inResources) override;
-            void onSetup() override;
+
+            // Render
+            void onBeginRender() override;
             void onRender(const Frame& inFrame);
-            void onCleanup() override;
+            void onEndRender() override;
+
+        public:
+            // Layer
+            Viewport getGLViewport(Layer* inLayer);
 
         private:
             // OpenGL
@@ -27,6 +37,7 @@ namespace Chicane
             void destroyContext();
             void buildGlew();
             void enableFeatures();
+            void updateResourcesBudget();
 
             void buildTextureData();
             void destroyTextureData();

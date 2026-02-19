@@ -10,16 +10,17 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLSceneMesh : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLSceneMesh : public Layer
         {
         public:
             VulkanLSceneMesh();
 
         protected:
-            bool onInit() override;
-            bool onDestroy() override;
-            bool onRebuild() override;
-            bool onSetup(const Frame& inFrame) override;
+            void onInit() override;
+            void onRestart() override;
+            void onDestruction() override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData = nullptr) override;
 
         private:

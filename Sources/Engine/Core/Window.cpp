@@ -286,7 +286,7 @@ namespace Chicane
             emmitError("The window icon [ " + inPath.string() + " ] doesn't exists");
         }
 
-        const Image image = Image(inPath);
+        const Image image(inPath, false);
 
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
             image.getWidth(),
@@ -335,6 +335,8 @@ namespace Chicane
         );
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
+
+        m_settings.display = display;
     }
 
     WindowType Window::getType() const

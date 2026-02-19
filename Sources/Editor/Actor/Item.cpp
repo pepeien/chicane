@@ -1,16 +1,20 @@
 #include "Actor/Item.hpp"
 
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Scene.hpp>
 
 namespace Editor
 {
     Item::Item(const Chicane::FileSystem::Path& inMesh)
         : Chicane::Actor(),
-          m_mesh(nullptr)
+          m_mesh(inMesh),
+          m_asset(nullptr)
+    {}
+
+    void Item::onLoad()
     {
-        m_mesh = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
-        m_mesh->attachTo(this);
-        m_mesh->setMesh(inMesh);
-        m_mesh->activate();
+        m_asset = getScene()->createComponent<Chicane::CMesh>();
+        m_asset->attachTo(this);
+        m_asset->setMesh(m_mesh);
+        m_asset->activate();
     }
 }

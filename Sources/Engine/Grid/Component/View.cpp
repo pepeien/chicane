@@ -9,28 +9,26 @@ namespace Chicane
 {
     namespace Grid
     {
-        View::View(const String& inSource)
+        View::View(const FileSystem::Path& inSource)
             : Component(TAG_ID),
-              m_window(nullptr),
-              m_windowEventSubscription({}),
               m_path(""),
               m_styles({})
         {
-            if (inSource.isEmpty())
+            if (inSource.empty())
             {
                 return;
             }
 
             pugi::xml_document document;
 
-            if (!document.load_file(inSource.toChar()))
+            if (!document.load_file(inSource.c_str()))
             {
-                throw std::runtime_error("Failed to read " + inSource);
+                throw std::runtime_error("Failed to read " + inSource.string());
             }
 
             if (document.empty() || document.children().empty())
             {
-                throw std::runtime_error("UI document " + inSource + " does not have any components");
+                throw std::runtime_error("UI document " + inSource.string() + " does not have any components");
             }
 
             const pugi::xml_node& node = document.first_child();
@@ -59,21 +57,7 @@ namespace Chicane
             addChildren(node);
         }
 
-        void View::setWindow(Window* inWindow)
-        {
-            m_windowEventSubscription.complete();
-
-            m_window = inWindow;
-
-            if (!m_window)
-            {
-                return;
-            }
-
-            m_windowEventSubscription = inWindow->watchEvent([this](WindowEvent inEvent) { handle(inEvent); });
-        }
-
-        std::vector<Component*> View::getChildrenOn(const Vec2& inLocation) const
+        std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const
         {
             std::vector<Component*> contenders = {};
             for (Component* child : getChildrenFlat())
@@ -119,7 +103,7 @@ namespace Chicane
             {
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
 
-                for (Component* contender : getChildrenOn(event.location))
+                for (Component* contender : getChildrenAt(event.location))
                 {
                     contender->click();
                 }
@@ -129,7 +113,7 @@ namespace Chicane
             {
                 Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
 
-                for (Component* contender : getChildrenOn(event.location))
+                for (Component* contender : getChildrenAt(event.location))
                 {
                     contender->hover();
                 }

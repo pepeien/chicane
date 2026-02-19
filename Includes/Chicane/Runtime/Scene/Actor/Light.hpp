@@ -12,6 +12,9 @@ namespace Chicane
         ALight();
 
     protected:
+        void onLoad() override;
+
+    protected:
         CLight* m_light;
     };
 }

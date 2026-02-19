@@ -10,8 +10,8 @@
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
@@ -20,21 +20,43 @@ namespace Chicane
     namespace Renderer
     {
         VulkanBackend::VulkanBackend()
-            : Backend<Frame>(),
+            : Backend(),
               swapchain({}),
-              viewport({}),
-              scissor(vk::Rect2D())
+              frames({}),
+              m_currentFrameIndex(0U)
         {}
 
         VulkanBackend::~VulkanBackend()
+        {
+            onShutdown();
+        }
+
+        void VulkanBackend::onInit()
+        {
+            buildInstance();
+            buildDebugMessenger();
+            buildSurface();
+            buildDevices();
+            updateResourceBudget();
+            buildQueues();
+            buildCommandPool();
+            buildMainCommandBuffer();
+            buildSwapchain();
+            buildFrames();
+            buildTextureDescriptor();
+            buildLayers();
+        }
+
+        void VulkanBackend::onShutdown()
         {
             logicalDevice.waitIdle();
 
             // Vulkan
             destroyCommandPool();
             destroySwapchain();
+            destroyFrames();
             destroyTextureData();
-            deleteLayers();
+            destroyLayers();
 
             destroyDevices();
             destroySurface();
@@ -47,37 +69,11 @@ namespace Chicane
             destroyInstance();
         }
 
-        void VulkanBackend::onInit()
+        void VulkanBackend::onResize()
         {
-            buildInstance();
-            buildDebugMessenger();
-            buildSurface();
-            buildDevices();
-            buildQueues();
-            buildCommandPool();
-            buildSwapchain();
-            buildMainCommandBuffer();
-            buildTextureDescriptor();
-            buildLayers();
+            rebuildSwapchain();
 
-            Backend::onInit();
-        }
-
-        void VulkanBackend::onResize(const Vec<2, std::uint32_t>& inResolution)
-        {
-            viewport.x        = 0.0f;
-            viewport.y        = 0.0f;
-            viewport.width    = inResolution.x;
-            viewport.height   = inResolution.y;
-            viewport.minDepth = 0.0f;
-            viewport.maxDepth = 1.0f;
-
-            scissor.offset.x      = 0U;
-            scissor.offset.y      = 0U;
-            scissor.extent.width  = static_cast<uint32_t>(viewport.width);
-            scissor.extent.height = static_cast<uint32_t>(viewport.height);
-
-            Backend::onResize(inResolution);
+            Backend::onResize();
         }
 
         void VulkanBackend::onLoad(const DrawTextureResource& inResources)
@@ -89,74 +85,94 @@ namespace Chicane
 
         void VulkanBackend::onRender(const Frame& inFrame)
         {
-            VulkanSwapchainImage& liveImage = swapchain.images.at(swapchain.currentImageIndex);
-            liveImage.wait();
+            VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
+            nextFrame.wait();
 
-            vk::ResultValue<std::uint32_t> acquire = liveImage.acquire(swapchain.instance);
-            if (acquire.result == vk::Result::eErrorOutOfDateKHR)
+            const auto [result, imageIndex] =
+                logicalDevice
+                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, nextFrame.imageAvailableSemaphore, nullptr);
+            if (result == vk::Result::eErrorOutOfDateKHR)
             {
                 rebuildSwapchain();
 
                 return;
             }
-            else if (acquire.result != vk::Result::eSuccess && acquire.result != vk::Result::eSuboptimalKHR)
+            else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            VulkanSwapchainImage& nextImage = swapchain.images.at(acquire.value);
-            nextImage.begin(inFrame);
-            renderViewport(nextImage.commandBuffer);
-            renderLayers(inFrame, &nextImage);
-            nextImage.end();
+            VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
+
+            nextFrame.begin(inFrame, nextImage);
+            renderLayers(inFrame, &nextFrame);
+            nextFrame.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
             vk::SubmitInfo submitInfo;
             submitInfo.waitSemaphoreCount   = 1;
-            submitInfo.pWaitSemaphores      = &liveImage.imageAvailableSemaphore;
+            submitInfo.pWaitSemaphores      = &nextFrame.imageAvailableSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
             submitInfo.commandBufferCount   = 1;
-            submitInfo.pCommandBuffers      = &nextImage.commandBuffer;
+            submitInfo.pCommandBuffers      = &nextFrame.commandBuffer;
             submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores    = &nextImage.renderFinishedSemaphore;
+            submitInfo.pSignalSemaphores    = &nextImage.renderFineshedSemaphore;
 
-            vk::Result submit = graphicsQueue.submit(1, &submitInfo, liveImage.fence);
-            if (submit != vk::Result::eSuccess)
+            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, nextFrame.fence);
+            if (submitResult != vk::Result::eSuccess)
             {
-                throw std::runtime_error("Error while submiting the next image");
+                throw std::runtime_error("Queue submit failed");
             }
 
-            vk::PresentInfoKHR presentInfo = {};
+            vk::PresentInfoKHR presentInfo;
             presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores    = &nextImage.renderFinishedSemaphore;
+            presentInfo.pWaitSemaphores    = &nextImage.renderFineshedSemaphore;
             presentInfo.swapchainCount     = 1;
             presentInfo.pSwapchains        = &swapchain.instance;
-            presentInfo.pImageIndices      = &acquire.value;
+            presentInfo.pImageIndices      = &imageIndex;
 
-            vk::Result present = m_presentQueue.presentKHR(presentInfo);
-            if (present == vk::Result::eErrorOutOfDateKHR || present == vk::Result::eSuboptimalKHR)
+            vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
+            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
 
                 return;
             }
-            else if (present != vk::Result::eSuccess)
+            else if (presentResult != vk::Result::eSuccess)
             {
-                throw std::runtime_error("Error while presenting the image");
+                throw std::runtime_error("Present failed");
             }
 
-            swapchain.currentImageIndex = (swapchain.currentImageIndex + 1) % swapchain.images.size();
+            m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
         }
 
-        void VulkanBackend::onHandle(const WindowEvent& inEvent)
+        vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
         {
-            if (inEvent.type == WindowEventType::WindowResized)
-            {
-                rebuildSwapchain();
-            }
+            const Viewport viewport = getLayerViewport(inLayer);
 
-            Backend::onHandle(inEvent);
+            vk::Viewport result;
+            result.x        = viewport.position.x;
+            result.y        = viewport.position.y;
+            result.width    = swapchain.extent.width;
+            result.height   = swapchain.extent.height;
+            result.minDepth = 0.0f;
+            result.maxDepth = 1.0f;
+
+            return result;
+        }
+
+        vk::Rect2D VulkanBackend::getVkScissor(Layer* inLayer) const
+        {
+            const Viewport viewport = getLayerViewport(inLayer);
+
+            vk::Rect2D result;
+            result.offset.x      = 0.0f;
+            result.offset.y      = 0.0f;
+            result.extent.width  = viewport.size.x;
+            result.extent.height = viewport.size.y;
+
+            return result;
         }
 
         void VulkanBackend::buildInstance()
@@ -181,7 +197,7 @@ namespace Chicane
 
         void VulkanBackend::buildSurface()
         {
-            VulkanSurface::init(surface, instance, m_window->getInstance());
+            VulkanSurface::init(surface, instance, getRenderer()->getWindow()->getInstance());
         }
 
         void VulkanBackend::destroySurface()
@@ -201,56 +217,25 @@ namespace Chicane
             VulkanDevice::initLogicalDevice(logicalDevice, physicalDevice, surface);
         }
 
+        void VulkanBackend::updateResourceBudget()
+        {
+            vk::PhysicalDeviceMemoryProperties properties = physicalDevice.getMemoryProperties();
+
+            std::size_t VRAM = 0U;
+            for (const auto& memoryHeap : properties.memoryHeaps)
+            {
+                if (memoryHeap.flags & vk::MemoryHeapFlagBits::eDeviceLocal)
+                {
+                    VRAM += memoryHeap.size;
+                }
+            }
+
+            setVRAM(VRAM);
+        }
+
         void VulkanBackend::destroyDevices()
         {
             logicalDevice.destroy();
-        }
-
-        void VulkanBackend::buildSwapchain()
-        {
-            VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
-
-            for (VulkanSwapchainImage& image : swapchain.images)
-            {
-                image.init();
-
-                // Commandbuffer
-                image.setupCommandBuffer(m_mainCommandPool);
-
-                // Images
-                image.setupColorImage(swapchain.colorFormat, swapchain.extent);
-                image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
-                image.setupShadowImage(swapchain.depthFormat, swapchain.extent);
-            }
-        }
-
-        void VulkanBackend::destroySwapchain()
-        {
-            for (VulkanSwapchainImage& image : swapchain.images)
-            {
-                image.destroy();
-            }
-
-            swapchain.images.clear();
-
-            logicalDevice.destroySwapchainKHR(swapchain.instance);
-
-            destroyLayers();
-        }
-
-        void VulkanBackend::rebuildSwapchain()
-        {
-            if (m_window->isMinimized())
-            {
-                return;
-            }
-
-            logicalDevice.waitIdle();
-
-            destroySwapchain();
-            buildSwapchain();
-
-            rebuildLayers();
         }
 
         void VulkanBackend::buildCommandPool()
@@ -268,22 +253,92 @@ namespace Chicane
             VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
             VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
         }
-
-        void VulkanBackend::renderViewport(const vk::CommandBuffer& inCommandBuffer)
+        void VulkanBackend::buildSwapchain()
         {
-            inCommandBuffer.setViewport(0, 1, &viewport);
-            inCommandBuffer.setScissor(0, 1, &scissor);
+            VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
+
+            for (VulkanSwapchainImage& image : swapchain.images)
+            {
+                // Sync
+                image.setupSync();
+
+                // Images
+                image.setupColorImage(swapchain.colorFormat, swapchain.extent);
+                image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
+            }
+        }
+
+        void VulkanBackend::destroySwapchain()
+        {
+            logicalDevice.waitIdle();
+
+            for (VulkanSwapchainImage& image : swapchain.images)
+            {
+                image.destroy();
+            }
+
+            swapchain.images.clear();
+
+            logicalDevice.destroySwapchainKHR(swapchain.instance);
+
+            shutdownLayers();
+        }
+
+        void VulkanBackend::rebuildSwapchain()
+        {
+            if (getRenderer()->getWindow()->isMinimized())
+            {
+                return;
+            }
+
+            destroySwapchain();
+            buildSwapchain();
+
+            rebuildLayers();
+        }
+
+        void VulkanBackend::buildFrames()
+        {
+            frames.resize(m_renderer->getFrameInFlighCount());
+
+            for (VulkanFrame& frame : frames)
+            {
+                frame.logicalDevice  = logicalDevice;
+                frame.physicalDevice = physicalDevice;
+
+                // Commandbuffer
+                frame.setupCommandBuffer(m_mainCommandPool);
+
+                // Sync
+                frame.setupSync();
+
+                // Data
+                frame.setupCameraData();
+                frame.setupLightData();
+                frame.setup2DData(getResourceBudget(Resource::UIInstances));
+                frame.setup3DData(getResourceBudget(Resource::SceneInstances));
+            }
+        }
+
+        void VulkanBackend::destroyFrames()
+        {
+            for (VulkanFrame& frame : frames)
+            {
+                frame.destroy();
+            }
+
+            frames.clear();
         }
 
         void VulkanBackend::buildLayers()
         {
-            ListPush<Layer<Frame>*> settings;
+            ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<VulkanLScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<VulkanLGrid>(settings);
+            addLayer<VulkanLUI>(settings);
         }
 
         void VulkanBackend::buildTextureDescriptor()
@@ -293,14 +348,14 @@ namespace Chicane
 
             layoutBidings.indices.push_back(0);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            layoutBidings.counts.push_back(512);
+            layoutBidings.counts.push_back(TEXTURE_COUNT);
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
-            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 512});
+            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, TEXTURE_COUNT});
 
             VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
 

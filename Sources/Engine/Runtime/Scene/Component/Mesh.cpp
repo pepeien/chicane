@@ -8,10 +8,10 @@ namespace Chicane
     CMesh::CMesh()
         : Component(),
           m_bIsVisible(false),
-          m_mesh(nullptr)
+          m_asset(nullptr)
     {}
 
-    void CMesh::onAttachment(Transformable* inRoot)
+    void CMesh::onAttachment(Object* inRoot)
     {
         if (!inRoot)
         {
@@ -28,7 +28,7 @@ namespace Chicane
 
     bool CMesh::hasMesh() const
     {
-        return m_mesh != nullptr;
+        return m_asset != nullptr;
     }
 
     void CMesh::setMesh(const FileSystem::Path& inFilePath)
@@ -38,14 +38,14 @@ namespace Chicane
             return;
         }
 
-        m_mesh = Box::load<Box::Mesh>(inFilePath);
+        m_asset = Box::load<Box::Mesh>(inFilePath);
 
         generateBounds();
     }
 
     const Box::Mesh* CMesh::getMesh() const
     {
-        return m_mesh;
+        return m_asset;
     }
 
     void CMesh::generateBounds()
@@ -57,7 +57,7 @@ namespace Chicane
 
         const Box::ModelManager* manager = Box::getModelManager();
 
-        for (const Box::MeshGroup& group : m_mesh->getGroups())
+        for (const Box::MeshGroup& group : m_asset->getGroups())
         {
             const Box::ModelParsed& model = manager->get(group.getModel().getReference());
 

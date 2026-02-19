@@ -1,14 +1,17 @@
 #include "Chicane/Runtime/Scene/Actor/Camera.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 
 namespace Chicane
 {
     ACamera::ACamera()
         : Actor(),
           m_camera(nullptr)
+    {}
+
+    void ACamera::onLoad()
     {
-        m_camera = Application::getInstance().getScene()->createComponent<CCamera>();
+        m_camera = getScene()->createComponent<CCamera>();
         m_camera->attachTo(this);
     }
 

@@ -17,6 +17,9 @@ namespace Chicane
 
         public:
             Container(const pugi::xml_node& inNode);
+
+        protected:
+            void onRefresh() override;
         };
     }
 }

@@ -59,11 +59,11 @@ namespace Chicane
                 }
             );
 
-            zIndex.parseWith([this](const String& inValue) { return parseNumber(inValue); });
+            zIndex.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
 
-            width.parseWith([this](const String& inValue) { return parseSize(inValue, StyleDirection::Horizontal); });
+            width.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
 
-            height.parseWith([this](const String& inValue) { return parseSize(inValue, StyleDirection::Vertical); });
+            height.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); });
 
             flex.parseWith(
                 [this](const String& inValue)
@@ -112,13 +112,13 @@ namespace Chicane
                 }
             );
 
-            margin.parseWith([this](const String& inValue, StyleDirection inDirection)
+            margin.parseWith([this](const String& inValue, SizeDirection inDirection)
                              { return parseSize(inValue, inDirection); });
 
-            padding.parseWith([this](const String& inValue, StyleDirection inDirection)
+            padding.parseWith([this](const String& inValue, SizeDirection inDirection)
                               { return parseSize(inValue, inDirection); });
 
-            gap.parseWith([this](const String& inValue, StyleDirection inDirection)
+            gap.parseWith([this](const String& inValue, SizeDirection inDirection)
                           { return parseSize(inValue, inDirection); });
 
             background.parseWith(
@@ -128,15 +128,15 @@ namespace Chicane
 
             foregroundColor.parseWith([this](const String& inValue) { return parseColor(inValue); });
 
-            opacity.parseWith([this](const String& inValue) { return parseNumber(inValue); });
+            opacity.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
 
             font.parseWith(
                 [this](const String& inValue) { return parseText(inValue); },
-                [this](const String& inValue) { return parseSize(inValue, StyleDirection::Vertical); }
+                [this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); }
             );
 
             letterSpacing.parseWith([this](const String& inValue)
-                                    { return parseSize(inValue, StyleDirection::Horizontal); });
+                                    { return parseSize(inValue, SizeDirection::Horizontal); });
         }
 
         bool Style::isDisplay(StyleDisplay inValue) const
@@ -165,10 +165,18 @@ namespace Chicane
             {
                 width.setRaw(inProperties.at(WIDTH_ATTRIBUTE_NAME));
             }
+            else
+            {
+                width.setRaw(Size::AUTO_KEYWORD);
+            }
 
             if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) != inProperties.end())
             {
                 height.setRaw(inProperties.at(HEIGHT_ATTRIBUTE_NAME));
+            }
+            else
+            {
+                height.setRaw(Size::AUTO_KEYWORD);
             }
 
             if (inProperties.find(POSITION_ATTRIBUTE_NAME) != inProperties.end())
@@ -367,46 +375,20 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
-        float Style::parseSize(const String& inValue, StyleDirection inDirection) const
+        float Style::parseSize(const String& inValue, SizeDirection inDirection) const
         {
-            const String value = parseText(inValue);
+            Size result;
+            result.setIsAsobute(isPosition(StylePosition::Absolute));
+            result.setFontSize(Box::Font::BASE_SIZE);
+            result.setTextParser([this](const String& inValue) { return parseText(inValue); });
 
-            if (value.startsWith(CALCULATION_KEYWORD))
+            if (hasParent() && m_parent->hasParent())
             {
-                return parseCalculation(value, inDirection);
+                result.setRoot(m_parent->getRoot()->getSize());
+                result.setParent(m_parent->getParent()->getSize());
             }
 
-            if (value.equals(AUTO_SIZE_UNIT))
-            {
-                return parsePercentage("100%", inDirection);
-            }
-
-            if (value.endsWith(EM_SIZE_UNIT))
-            {
-                return parseEM(value);
-            }
-
-            if (value.endsWith(PERCENTAGE_SIZE_UNIT))
-            {
-                return parsePercentage(value, inDirection);
-            }
-
-            if (value.endsWith(VIEWPORT_HEIGHT_SIZE_UNIT))
-            {
-                return parseViewportHeight(value);
-            }
-
-            if (value.endsWith(VIEWPORT_WIDTH_SIZE_UNIT))
-            {
-                return parseViewportWidth(value);
-            }
-
-            if (value.endsWith(PIXEL_SIZE_UNIT))
-            {
-                return parsePixel(value);
-            }
-
-            return parseNumber(value);
+            return result.parse(inValue, inDirection);
         }
 
         String Style::parseReference(const String& inValue) const
@@ -443,196 +425,6 @@ namespace Chicane
             }
 
             return m_parent->parseText(value);
-        }
-
-        float Style::parseCalculation(const String& inValue, StyleDirection inDirection) const
-        {
-            if (!inValue.startsWith(CALCULATION_KEYWORD))
-            {
-                return 0.0f;
-            }
-
-            const String operation = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
-
-            std::uint32_t parathesisCount = 0;
-
-            for (std::uint32_t i = 0; i < operation.size(); i++)
-            {
-                const char character = operation.at(i);
-
-                if (character == FUNCTION_PARAMS_OPENING)
-                {
-                    parathesisCount++;
-
-                    continue;
-                }
-
-                if (character == FUNCTION_PARAMS_CLOSING)
-                {
-                    parathesisCount--;
-
-                    continue;
-                }
-
-                const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
-
-                if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
-                {
-                    continue;
-                }
-
-                const float left  = parseSize(operation.substr(0, i), inDirection);
-                const float right = parseSize(operation.substr(i + 1), inDirection);
-
-                if (character == CALCULATION_OPERATOR_SUM)
-                {
-                    return left + right;
-                }
-
-                if (character == CALCULATION_OPERATOR_SUB)
-                {
-                    return left - right;
-                }
-
-                if (character == CALCULATION_OPERATOR_MUL)
-                {
-                    return left * right;
-                }
-
-                if (character == CALCULATION_OPERATOR_DIV)
-                {
-                    return left / right;
-                }
-
-                break;
-            }
-
-            return 0.0f;
-        }
-
-        float Style::parseEM(const String& inValue) const
-        {
-            if (!inValue.endsWith(EM_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return parseEM(parseNumberUnit(inValue, EM_SIZE_UNIT));
-        }
-
-        float Style::parseEM(float inValue) const
-        {
-            return inValue * Box::Font::BASE_SIZE;
-        }
-
-        float Style::parsePercentage(const String& inValue, StyleDirection inDirection) const
-        {
-            if (!inValue.endsWith(PERCENTAGE_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return parsePercentage(parseNumberUnit(inValue, PERCENTAGE_SIZE_UNIT), inDirection);
-        }
-
-        float Style::parsePercentage(float inValue, StyleDirection inDirection) const
-        {
-            const float value = inValue / 100;
-
-            if (!hasParent() || !m_parent->hasRoot() || !m_parent->hasParent())
-            {
-                return value;
-            }
-
-            const Vec2& size = isPosition(StylePosition::Absolute) ? m_parent->getRoot()->getSize()
-                                                                   : m_parent->getParent()->getAvailableSize();
-
-            if (inDirection == StyleDirection::Horizontal)
-            {
-                return std::max(0.0f, size.x) * value;
-            }
-
-            return std::max(0.0f, size.y) * value;
-        }
-
-        float Style::parseViewportHeight(const String& inValue) const
-        {
-            if (!inValue.endsWith(VIEWPORT_HEIGHT_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return parseViewportHeight(parseNumberUnit(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
-        }
-
-        float Style::parseViewportHeight(float inValue) const
-        {
-            if (!hasParent())
-            {
-                return inValue;
-            }
-
-            return m_parent->getRoot()->getSize().y * (inValue / 100.0f);
-        }
-
-        float Style::parseViewportWidth(const String& inValue) const
-        {
-            if (!inValue.endsWith(VIEWPORT_WIDTH_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return parseViewportWidth(parseNumberUnit(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
-        }
-
-        float Style::parseViewportWidth(float inValue) const
-        {
-            if (!hasParent())
-            {
-                return inValue;
-            }
-
-            return m_parent->getRoot()->getSize().x * (inValue / 100.0f);
-        }
-
-        float Style::parsePixel(const String& inValue) const
-        {
-            if (!inValue.endsWith(PIXEL_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return parseNumberUnit(inValue, PIXEL_SIZE_UNIT);
-        }
-
-        float Style::parseNumberUnit(const String& inValue, const String& inUnit) const
-        {
-            if (inValue.isEmpty() || inValue.size() < inUnit.size())
-            {
-                return 0.0f;
-            }
-
-            return parseNumber(inValue.substr(0, inValue.size() - inUnit.size()));
-        }
-
-        float Style::parseNumber(const String& inValue) const
-        {
-            try
-            {
-                const String value = inValue.trim();
-
-                if (value.isNaN())
-                {
-                    return 0.0f;
-                }
-
-                char* end;
-                return std::strtod(value.toChar(), &end);
-            }
-            catch (...)
-            {
-                return 0.0f;
-            }
         }
 
         std::vector<String> splitOneliner(const String& inValue)

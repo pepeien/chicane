@@ -1,4 +1,12 @@
 <View path="home" style="Contents/Editor/Views/Home.decal">
-    <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
-    <Text class="telemetry">{{ frameTime }} ms</Text>
+    <Container>
+        <Text>{{ framesPerSecond }} FPS</Text>
+        <Text>{{ frameTime }} ms</Text>
+    </Container>
+    <Container class="menu --side">
+        <Button class="button">
+            <Text class="button__text">Import File</Text>
+        </Button>
+    </Container>
+    <Container class="menu --bottom"></Container>
 </View>

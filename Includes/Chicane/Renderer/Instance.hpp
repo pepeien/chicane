@@ -8,7 +8,6 @@
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Window/Backend.hpp"
-#include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
@@ -29,9 +28,6 @@ namespace Chicane
 
     namespace Renderer
     {
-        using ResolutionObservable   = EventObservable<Vec<2, std::uint32_t>>;
-        using ResolutionSubscription = EventSubscription<Vec<2, std::uint32_t>>;
-
         class CHICANE_RENDERER Instance
         {
             friend Application;
@@ -42,6 +38,9 @@ namespace Chicane
         public:
             // Lifecycle
             void init(const Settings& inSettings);
+            void shutdown();
+
+            // Render
             void render();
 
             // View
@@ -50,7 +49,6 @@ namespace Chicane
             void addLight(const View::List& inData);
 
             // Frame
-            void setFrameCount(std::uint32_t inValue);
             Frame& getCurrentFrame();
 
             // Render
@@ -81,51 +79,54 @@ namespace Chicane
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);
 
+            // Window
+            bool hasWindow() const;
+            const Window* getWindow() const;
+            void setWindow(const Window* inWindow);
+
             // Settings
-            const Vec<2, std::uint32_t>& getResolution() const;
+            Vec<2, std::uint32_t> getResolution() const;
             void setResolution(const Vec<2, std::uint32_t>& inValue);
-            ResolutionSubscription watchResolution(
-                ResolutionSubscription::NextCallback     inNext,
-                ResolutionSubscription::ErrorCallback    inError    = nullptr,
-                ResolutionSubscription::CompleteCallback inComplete = nullptr
-            );
+
+            std::uint32_t getFrameInFlighCount() const;
+            void setFramesInFlight(std::uint32_t inValue);
+
+            const ResourceBudget& getResourceBudget() const;
+            void setResourceBudget(const ResourceBudget& inValue);
 
             // Backend
             bool hasBackend() const;
-
-            template <typename Target = Layer<>, typename... Params>
-            inline void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
+            template <typename Target = Layer, typename... Params>
+            inline void addBackendLayer(const ListPush<Layer*>& inSettings, Params... inParams)
             {
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }
 
-        protected:
-            // Window
-            void handle(const WindowEvent& inEvent);
-
+        private:
             // Backend
-            void shutdownBackend();
-            void reloadBackend(const Window* inWindow);
+            void reloadBackend();
 
             // Draw
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 
         private:
+            // Window
+            const Window*            m_window;
+
             // Settings
-            Vec<2, std::uint32_t>      m_resolution;
-            ResolutionObservable       m_resolutionObservable;
+            Settings                 m_settings;
 
             // Frame
-            std::vector<Frame>         m_frames;
-            std::uint32_t              m_currentFrame;
+            std::vector<Frame>       m_frames;
+            std::uint32_t            m_currentFrame;
 
             // Draw
-            DrawPolyResource::Map      m_polyResources;
-            DrawTextureResource        m_textureResources;
-            DrawSky                    m_skyResource;
+            DrawPolyResource::Map    m_polyResources;
+            DrawTextureResource      m_textureResources;
+            DrawSky                  m_skyResource;
 
             // Backend
-            std::unique_ptr<Backend<>> m_backend;
+            std::unique_ptr<Backend> m_backend;
         };
     }
 }

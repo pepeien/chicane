@@ -11,6 +11,9 @@ namespace Chicane
     public:
         ACamera();
 
+    protected:
+        void onLoad() override;
+
     public:
         void activate();
         void deactivate();

@@ -1,20 +1,21 @@
 #pragma once
 
-#include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Layer.hpp"
+#include <Chicane/Renderer/Frame.hpp>
+#include <Chicane/Renderer/Layer.hpp>
 
 namespace Editor
 {
-    class OpenGLLGrid : public Chicane::Renderer::Layer<>
+    class OpenGLLUI : public Chicane::Renderer::Layer
     {
     public:
-        OpenGLLGrid();
-        ~OpenGLLGrid();
+        OpenGLLUI();
 
     public:
-        bool onInit() override;
+        void onInit() override;
+        void onDestruction() override;
+
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData) override;
-        void onCleanup() override;
+        void onEndRender() override;
 
     private:
         void buildShader();
@@ -22,6 +23,8 @@ namespace Editor
 
         void buildVertexArray();
         void destroyVertexArray();
+
+        void buildViewport();
 
     private:
         // Shader

@@ -55,15 +55,10 @@ namespace Chicane
             );
 
         public:
-            VulkanGraphicsPipeline() = default;
-            ~VulkanGraphicsPipeline();
-
-        public:
             void init(const vk::Device& inLogicalDevice, const vk::GraphicsPipelineCreateInfo& inCreateInfo);
             void bind(vk::CommandBuffer& inCommandBuffer);
-            void bindDescriptorSet(
-                vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
-            );
+            void bind(vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet);
+            void destroy();
 
         public:
             vk::PipelineLayout layout;

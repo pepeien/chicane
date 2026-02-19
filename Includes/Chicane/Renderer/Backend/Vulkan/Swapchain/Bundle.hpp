@@ -13,11 +13,10 @@ namespace Chicane
         {
         public:
             vk::SwapchainKHR                  instance;
-            std::vector<VulkanSwapchainImage> images;
-            std::uint32_t                     currentImageIndex;
+            std::vector<VulkanSwapchainImage> images = {};
             vk::Format                        colorFormat;
             vk::Format                        depthFormat;
-            vk::Extent2D                      extent;
+            vk::Extent2D                      extent = {};
         };
     }
 }

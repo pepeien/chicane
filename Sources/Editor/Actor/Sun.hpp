@@ -9,6 +9,9 @@ namespace Editor
     public:
         Sun();
 
+    protected:
+        void onLoad() override;
+
     private:
         float m_distance;
     };

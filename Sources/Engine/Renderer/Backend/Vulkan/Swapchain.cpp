@@ -146,8 +146,6 @@ namespace Chicane
                     image.logicalDevice         = inLogicalDevice;
                     image.colorImage.instance   = images[i];
                 }
-
-                outSwapChain.currentImageIndex = 0U;
             }
         }
     }

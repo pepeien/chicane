@@ -21,8 +21,8 @@ namespace Chicane
         static String extractVendor(ImageVendor inValue);
 
     public:
-        Image(const FileSystem::Path& inFilepath);
-        Image(const Raw& inData, ImageVendor inVendor);
+        Image(const FileSystem::Path& inLocation, bool bInShouldFlip = true);
+        Image(const Raw& inData, ImageVendor inVendor, bool bInShouldFlip = true);
         Image();
 
         Image(const Image& inInstance);

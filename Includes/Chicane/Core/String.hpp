@@ -173,6 +173,7 @@ namespace Chicane
 
         String toUpper() const;
         String toLower() const;
+        std::vector<char32_t> toUnicode() const;
 
         char at(std::size_t inIndex) const;
 

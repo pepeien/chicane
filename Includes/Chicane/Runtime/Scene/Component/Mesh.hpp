@@ -13,7 +13,7 @@ namespace Chicane
         CMesh();
 
     protected:
-        void onAttachment(Transformable* inRoot) override;
+        void onAttachment(Object* inRoot) override;
 
     public:
         bool isDrawable() const;
@@ -21,8 +21,6 @@ namespace Chicane
         bool hasMesh() const;
         void setMesh(const FileSystem::Path& inFilePath);
         const Box::Mesh* getMesh() const;
-        const String& getModel() const;
-        const String& getTexture() const;
 
     protected:
         void generateBounds();
@@ -30,6 +28,6 @@ namespace Chicane
     protected:
         bool             m_bIsVisible;
 
-        const Box::Mesh* m_mesh;
+        const Box::Mesh* m_asset;
     };
 }

@@ -38,15 +38,21 @@ namespace Chicane
         static constexpr inline const char* HEX_COLOR_ORANGE      = "#FC850DFF";
         static constexpr inline const char* HEX_COLOR_CYAN        = "#05AEB0FF";
         static constexpr inline const char* HEX_COLOR_WHITE       = "#FFFFFFFF";
+        static constexpr inline const char* HEX_COLOR_GRAY        = "#7B7B7BFF";
         static constexpr inline const char* HEX_COLOR_BLACK       = "#000000FF";
 
         // Text
         static constexpr inline const char* TEXT_COLOR_TRANSPARENT = "transparent";
-        static constexpr inline const char* TEXT_COLOR_BLACK       = "black";
         static constexpr inline const char* TEXT_COLOR_RED         = "red";
         static constexpr inline const char* TEXT_COLOR_GREEN       = "green";
         static constexpr inline const char* TEXT_COLOR_BLUE        = "blue";
+        static constexpr inline const char* TEXT_COLOR_LIME        = "lime";
+        static constexpr inline const char* TEXT_COLOR_YELLOW      = "yellow";
+        static constexpr inline const char* TEXT_COLOR_ORANGE      = "orange";
+        static constexpr inline const char* TEXT_COLOR_CYAN        = "cyan";
         static constexpr inline const char* TEXT_COLOR_WHITE       = "white";
+        static constexpr inline const char* TEXT_COLOR_GRAY        = "gray";
+        static constexpr inline const char* TEXT_COLOR_BLACK       = "black";
 
         CHICANE_CORE bool areEquals(const Rgba& inA, const Rgba& inB);
 

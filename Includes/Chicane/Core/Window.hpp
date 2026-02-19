@@ -11,11 +11,11 @@
 
 namespace Chicane
 {
-    using WindowEventObservable   = EventObservable<WindowEvent>;
-    using WindowEventSubscription = EventSubscription<WindowEvent>;
+    using WindowEventObservable   = EventObservable<const WindowEvent&>;
+    using WindowEventSubscription = EventSubscription<const WindowEvent&>;
 
-    using WindowSizeObservable   = EventObservable<Vec<2, std::uint32_t>>;
-    using WindowSizeSubscription = EventSubscription<Vec<2, std::uint32_t>>;
+    using WindowSizeObservable   = EventObservable<const Vec<2, std::uint32_t>&>;
+    using WindowSizeSubscription = EventSubscription<const Vec<2, std::uint32_t>&>;
 
     using WindowBackendObservable   = EventObservable<WindowBackend>;
     using WindowBackendSubscription = EventSubscription<WindowBackend>;

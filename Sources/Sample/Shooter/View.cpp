@@ -6,6 +6,8 @@
 #include "Game.hpp"
 #include "Level.hpp"
 
+static int switcher = 1;
+
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
       m_bDidPlayerWin(true),
@@ -18,11 +20,11 @@ View::View()
       m_uiCurrentCamera(Chicane::Reference::fromValue<Chicane::String>(&m_currentCamera)),
       m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
       m_uiCrosshairDotVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_crosshairDotVisibility)),
-      m_crosshairSize(1.5f),
+      m_crosshairSize(2.0f),
       m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
-      m_crosshairThickness(0.25f),
+      m_crosshairThickness(1.0f),
       m_uiCrosshairThickness(Chicane::Reference::fromValue<float>(&m_crosshairThickness)),
-      m_crosshairGap(0.05f),
+      m_crosshairGap(1.0f),
       m_uiCrosshairGap(Chicane::Reference::fromValue<float>(&m_crosshairGap)),
       m_crosshairColorR(255),
       m_uiCrosshairColorR(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorR)),

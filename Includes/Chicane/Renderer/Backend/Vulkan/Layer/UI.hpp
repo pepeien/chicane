@@ -12,19 +12,20 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLGrid : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLUI : public Layer
         {
         public:
-            VulkanLGrid();
-            ~VulkanLGrid();
+            VulkanLUI();
 
         protected:
-            bool onInit() override;
+            void onInit() override;
+            void onRestart() override;
+            void onDestruction() override;
+
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
-            bool onRebuild() override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            bool onDestroy() override;
 
         private:
             // Resource

@@ -4,27 +4,27 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         OpenGLLSceneMesh::OpenGLLSceneMesh()
-            : Layer("Engine_Scene_Mesh")
+            : Layer(SCENE_MESH_LAYER_ID)
         {}
 
-        OpenGLLSceneMesh::~OpenGLLSceneMesh()
+        void OpenGLLSceneMesh::onInit()
+        {
+            buildShader();
+        }
+
+        void OpenGLLSceneMesh::onDestruction()
         {
             destroyShader();
         }
 
-        bool OpenGLLSceneMesh::onInit()
-        {
-            buildShader();
-
-            return true;
-        }
-
-        bool OpenGLLSceneMesh::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -36,8 +36,6 @@ namespace Chicane
 
         void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_DEPTH_TEST);
@@ -52,6 +50,9 @@ namespace Chicane
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             glClear(GL_DEPTH_BUFFER_BIT);
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -72,7 +73,7 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneMesh::onCleanup()
+        void OpenGLLSceneMesh::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);

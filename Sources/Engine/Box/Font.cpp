@@ -10,7 +10,8 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, FontVendor> VENDOR_MAP{
+        static const std::unordered_map<String, FontVendor> VENDOR_MAP = {
+            {"OTF", FontVendor::OpenType},
             {"TTF", FontVendor::TrueType}
         };
 

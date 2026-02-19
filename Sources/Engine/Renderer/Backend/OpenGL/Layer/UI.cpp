@@ -1,37 +1,36 @@
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
 
 #include <GL/glew.h>
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
-        OpenGLLGrid::OpenGLLGrid()
-            : Layer("Engine_Grid")
+        OpenGLLUI::OpenGLLUI()
+            : Layer(UI_LAYER_ID)
         {}
 
-        OpenGLLGrid::~OpenGLLGrid()
+        void OpenGLLUI::onInit()
+        {
+            buildShader();
+            buildPrimitiveVertexArray();
+            buildPrimitiveVertexBuffer();
+            buildPrimitiveIndexBuffer();
+            buildInstanceData();
+        }
+
+        void OpenGLLUI::onDestruction()
         {
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();
         }
 
-        bool OpenGLLGrid::onInit()
-        {
-            buildShader();
-
-            buildPrimitiveVertexArray();
-            buildPrimitiveVertexBuffer();
-            buildPrimitiveIndexBuffer();
-            buildInstanceData();
-
-            return true;
-        }
-
-        void OpenGLLGrid::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
+        void OpenGLLUI::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
         {
             if (inType == DrawPolyType::e2D)
             {
@@ -50,7 +49,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLGrid::onSetup(const Frame& inFrame)
+        bool OpenGLLUI::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
             {
@@ -60,10 +59,8 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLGrid::onRender(const Frame& inFrame, void* inData)
+        void OpenGLLUI::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glClear(GL_DEPTH_BUFFER_BIT);
@@ -75,6 +72,8 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            glFrontFace(GL_CCW);
+
             glBindVertexArray(m_primitiveVertexArray);
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
@@ -85,6 +84,9 @@ namespace Chicane
                 sizeof(DrawPoly2DInstance) * inFrame.getInstances2D().size(),
                 inFrame.getInstances2D().data()
             );
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             for (const DrawPoly& draw : inFrame.get2DDraws())
             {
@@ -105,18 +107,18 @@ namespace Chicane
             }
         }
 
-        void OpenGLLGrid::onCleanup()
+        void OpenGLLUI::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);
         }
 
-        void OpenGLLGrid::buildShader()
+        void OpenGLLUI::buildShader()
         {
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -136,7 +138,7 @@ namespace Chicane
             result = GL_FALSE;
 
             // Fragment
-            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.ofrag");
+            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -171,20 +173,25 @@ namespace Chicane
             glDeleteShader(fragmentShader);
         }
 
-        void OpenGLLGrid::destroyShader()
+        void OpenGLLUI::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
         }
 
-        void OpenGLLGrid::buildPrimitiveVertexArray()
+        void OpenGLLUI::buildPrimitiveVertexArray()
         {
             glCreateVertexArrays(1, &m_primitiveVertexArray);
         }
 
-        void OpenGLLGrid::buildPrimitiveVertexBuffer()
+        void OpenGLLUI::buildPrimitiveVertexBuffer()
         {
             glCreateBuffers(1, &m_primitiveVertexBuffer);
-            glNamedBufferData(m_primitiveVertexBuffer, sizeof(Vertex) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_primitiveVertexBuffer,
+                m_backend->getResourceBudget(Resource::UIVertices),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             // Position
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 0);
@@ -207,28 +214,38 @@ namespace Chicane
             glVertexArrayAttribBinding(m_primitiveVertexArray, 3, 0);
         }
 
-        void OpenGLLGrid::buildPrimitiveIndexBuffer()
+        void OpenGLLUI::buildPrimitiveIndexBuffer()
         {
             glCreateBuffers(1, &m_primitiveIndexBuffer);
-            glNamedBufferData(m_primitiveIndexBuffer, sizeof(std::uint32_t) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_primitiveIndexBuffer,
+                m_backend->getResourceBudget(Resource::UIIndices),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
         }
 
-        void OpenGLLGrid::destroyPrimitiveData()
+        void OpenGLLUI::destroyPrimitiveData()
         {
             glDeleteVertexArrays(1, &m_primitiveVertexArray);
             glDeleteBuffers(1, &m_primitiveVertexBuffer);
             glDeleteBuffers(1, &m_primitiveIndexBuffer);
         }
 
-        void OpenGLLGrid::buildInstanceData()
+        void OpenGLLUI::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly2DInstance) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_instanceBuffer,
+                m_backend->getResourceBudget(Resource::UIInstances),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, m_instanceBuffer);
         }
 
-        void OpenGLLGrid::destroyInstanceData()
+        void OpenGLLUI::destroyInstanceData()
         {
             glDeleteBuffers(1, &m_instanceBuffer);
         }

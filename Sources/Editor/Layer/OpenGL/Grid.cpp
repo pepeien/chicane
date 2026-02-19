@@ -2,30 +2,34 @@
 
 #include <GL/glew.h>
 
-#include "Chicane/Core/FileSystem.hpp"
+#include <Chicane/Core/FileSystem.hpp>
+
+#include <Chicane/Renderer/Backend/OpenGL.hpp>
 
 namespace Editor
 {
-    OpenGLLGrid::OpenGLLGrid()
-        : Layer<>("Editor_Scene_Grid")
+    OpenGLLUI::OpenGLLUI()
+        : Layer("Editor_Scene_Grid")
     {}
 
-    OpenGLLGrid::~OpenGLLGrid()
+    void OpenGLLUI::onInit()
+    {
+        buildShader();
+        buildVertexArray();
+        buildViewport();
+    }
+
+    void OpenGLLUI::onDestruction()
     {
         destroyVertexArray();
         destroyShader();
     }
 
-    bool OpenGLLGrid::onInit()
+    void OpenGLLUI::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        buildShader();
-        buildVertexArray();
+        Chicane::Renderer::Viewport viewport = getBackend<Chicane::Renderer::OpenGLBackend>()->getGLViewport(this);
+        glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-        return true;
-    }
-
-    void OpenGLLGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
-    {
         glUseProgram(m_shaderProgram);
 
         glEnable(GL_DEPTH_TEST);
@@ -44,14 +48,14 @@ namespace Editor
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    void OpenGLLGrid::onCleanup()
+    void OpenGLLUI::onEndRender()
     {
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
         glDisable(GL_BLEND);
     }
 
-    void OpenGLLGrid::buildShader()
+    void OpenGLLUI::buildShader()
     {
         GLint result = GL_FALSE;
 
@@ -113,18 +117,34 @@ namespace Editor
         glDeleteShader(fragmentShader);
     }
 
-    void OpenGLLGrid::destroyShader()
+    void OpenGLLUI::destroyShader()
     {
         glDeleteProgram(m_shaderProgram);
     }
 
-    void OpenGLLGrid::buildVertexArray()
+    void OpenGLLUI::buildVertexArray()
     {
         glCreateVertexArrays(1, &m_vertexArray);
     }
 
-    void OpenGLLGrid::destroyVertexArray()
+    void OpenGLLUI::destroyVertexArray()
     {
         glDeleteVertexArrays(1, &m_vertexArray);
+    }
+
+    void OpenGLLUI::buildViewport()
+    {
+        Chicane::Renderer::ViewportSettings viewport;
+        viewport.width  = "85vw";
+        viewport.height = "80vh";
+
+        setViewport(viewport);
+
+        for (Layer* layer :
+             m_backend->findLayers([](const Layer* inLayer)
+                                   { return inLayer->getId().contains(Chicane::Renderer::SCENE_LAYER_ID); }))
+        {
+            layer->setViewport(viewport);
+        }
     }
 }

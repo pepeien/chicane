@@ -13,8 +13,7 @@ namespace Chicane
     namespace Renderer
     {
         Instance::Instance()
-            : m_resolution(Vec<2, std::uint32_t>(0)),
-              m_resolutionObservable({}),
+            : m_settings({}),
               m_frames({}),
               m_currentFrame(0U),
               m_polyResources({}),
@@ -25,8 +24,17 @@ namespace Chicane
 
         void Instance::init(const Settings& inSettings)
         {
-            setFrameCount(inSettings.bufferCount);
-            setResolution(inSettings.resolution);
+            m_settings = inSettings;
+
+            setFramesInFlight(m_settings.framesInFlight);
+        }
+
+        void Instance::shutdown()
+        {
+            if (hasBackend())
+            {
+                m_backend->onShutdown();
+            }
         }
 
         void Instance::render()
@@ -57,9 +65,9 @@ namespace Chicane
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_backend->onSetup();
+            m_backend->onBeginRender();
             m_backend->onRender(currentFrame);
-            m_backend->onCleanup();
+            m_backend->onEndRender();
 
             currentFrame.reset();
 
@@ -79,11 +87,6 @@ namespace Chicane
         void Instance::addLight(const View& inData)
         {
             getCurrentFrame().addLight(inData);
-        }
-
-        void Instance::setFrameCount(std::uint32_t inValue)
-        {
-            m_frames.resize(inValue);
         }
 
         Frame& Instance::getCurrentFrame()
@@ -149,35 +152,65 @@ namespace Chicane
             return m_skyResource.id;
         }
 
-        const Vec<2, std::uint32_t>& Instance::getResolution() const
+        bool Instance::hasWindow() const
         {
-            return m_resolution;
+            return m_window != nullptr;
+        }
+
+        const Window* Instance::getWindow() const
+        {
+            return m_window;
+        }
+
+        void Instance::setWindow(const Window* inWindow)
+        {
+            m_window = inWindow;
+
+            reloadBackend();
+        }
+
+        Vec<2, std::uint32_t> Instance::getResolution() const
+        {
+            if (!hasWindow())
+            {
+                return m_settings.resolution;
+            }
+
+            const Vec<2, std::uint32_t>& windowSize = m_window->getSize();
+
+            return {std::max(m_settings.resolution.x, windowSize.x), std::max(m_settings.resolution.y, windowSize.y)};
         }
 
         void Instance::setResolution(const Vec<2, std::uint32_t>& inValue)
         {
-            if (m_resolution == inValue)
-            {
-                return;
-            }
-
-            m_resolution = inValue;
+            m_settings.resolution = inValue;
 
             if (hasBackend())
             {
-                m_backend->onResize(m_resolution);
+                m_backend->onResize();
             }
-
-            m_resolutionObservable.next(m_resolution);
         }
 
-        ResolutionSubscription Instance::watchResolution(
-            ResolutionSubscription::NextCallback     inNext,
-            ResolutionSubscription::ErrorCallback    inError,
-            ResolutionSubscription::CompleteCallback inComplete
-        )
+        std::uint32_t Instance::getFrameInFlighCount() const
         {
-            return m_resolutionObservable.subscribe(inNext, inError, inComplete).next(m_resolution);
+            return m_settings.framesInFlight;
+        }
+
+        void Instance::setFramesInFlight(std::uint32_t inValue)
+        {
+            m_settings.framesInFlight = inValue;
+
+            m_frames.resize(inValue);
+        }
+
+        const ResourceBudget& Instance::getResourceBudget() const
+        {
+            return m_settings.resourceBudget;
+        }
+
+        void Instance::setResourceBudget(const ResourceBudget& inValue)
+        {
+            m_settings.resourceBudget = inValue;
         }
 
         bool Instance::hasBackend() const
@@ -185,27 +218,14 @@ namespace Chicane
             return m_backend && m_backend.get() != nullptr;
         }
 
-        void Instance::handle(const WindowEvent& inEvent)
+        void Instance::reloadBackend()
         {
-            if (hasBackend())
-            {
-                m_backend->onHandle(inEvent);
-            }
-        }
-
-        void Instance::shutdownBackend()
-        {
-            if (!hasBackend())
+            if (!hasWindow())
             {
                 return;
             }
 
-            m_backend.reset();
-        }
-
-        void Instance::reloadBackend(const Window* inWindow)
-        {
-            switch (inWindow->getBackend())
+            switch (m_window->getBackend())
             {
 #if CHICANE_OPENGL
             case WindowBackend::OpenGL:
@@ -222,15 +242,14 @@ namespace Chicane
 #endif
 
             default:
-                m_backend = std::make_unique<Backend<>>();
+                m_backend = std::make_unique<Backend>();
 
                 break;
             }
 
-            m_backend->setWindow(inWindow);
+            m_backend->setRenderer(this);
 
             m_backend->onInit();
-            m_backend->onResize(m_resolution);
 
             for (const auto& [type, resource] : m_polyResources)
             {

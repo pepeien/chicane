@@ -1,6 +1,29 @@
 @import(Font, Contents/Engine/Fonts/Poppins.bfon);
 
-.telemetry {
-    width: 12em;
-    color: green;
+$sideBarSize:   15vw;
+$bottomBarSize: 20vh;
+
+.menu {
+    position: absolute;
+    background-color: #242424;
+
+    .--side {
+        width: $sideBarSize;
+        height: 100%;
+        margin-left: calc(100% - $sideBarSize);
+    }
+
+    .--bottom {
+        width: calc(100% - $sideBarSize);
+        height: $bottomBarSize;
+        margin-top: calc(100% - $bottomBarSize);
+    }
+}
+
+.button {
+    width: calc(100% - 2em);
+    height: 2em;
+    background-color: gray;
+    margin: calc(100% - 3em) 0 0 1em;
+    alignment: center;
 }

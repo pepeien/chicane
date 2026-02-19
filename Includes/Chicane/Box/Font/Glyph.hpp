@@ -12,7 +12,7 @@ namespace Chicane
         struct CHICANE_BOX FontGlyph
         {
         public:
-            using Map = std::unordered_map<std::uint32_t, FontGlyph>;
+            using Map = std::unordered_map<char32_t, FontGlyph>;
 
         public:
             static const FontGlyph& empty()
@@ -23,11 +23,13 @@ namespace Chicane
             }
 
         public:
-            std::uint32_t              code     = 0U;
-            std::uint32_t              units    = 0U;
-            Vec2                       scale    = {};
-            Vec2                       box      = {};
-            Vec2                       line     = {};
+            char32_t                   code     = 0U;
+            float                      units    = 0U;
+            float                      width    = 0U;
+            float                      height   = 0U;
+            float                      advance  = 0.0f;
+            float                      ascender = 0.0f;
+            Vec2                       bearing  = Vec2::Zero;
             std::vector<Vec3>          vertices = {};
             std::vector<std::uint32_t> indices  = {};
         };

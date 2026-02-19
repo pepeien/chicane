@@ -1,3 +1,8 @@
+##################### Values #######################
+
+# Dirs
+set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
+
 ##################### Files #######################
 file(
     GLOB_RECURSE
@@ -7,7 +12,6 @@ file(
     ${CORE_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Core.hpp)
-list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
@@ -17,11 +21,6 @@ file(
     ${CORE_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
-
-##################### Values #######################
-
-# Dirs
-set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)
@@ -75,7 +74,7 @@ target_link_libraries(
 
     PRIVATE
         base64
-        earcut_hpp::earcut_hpp
+        libtess2::libtess2
 )
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})

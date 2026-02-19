@@ -12,18 +12,10 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLScene::OpenGLLScene()
-            : Layer("Engine_Scene")
+            : Layer(SCENE_LAYER_ID)
         {}
 
-        OpenGLLScene::~OpenGLLScene()
-        {
-            destroyCameraData();
-            destroyLightData();
-            destroyModelData();
-            destroyInstanceData();
-        }
-
-        bool OpenGLLScene::onInit()
+        void OpenGLLScene::onInit()
         {
             buildCameraData();
             buildLightData();
@@ -32,8 +24,14 @@ namespace Chicane
             buildModelIndexBuffer();
             buildInstanceData();
             buildLayers();
+        }
 
-            return true;
+        void OpenGLLScene::onDestruction()
+        {
+            destroyCameraData();
+            destroyLightData();
+            destroyModelData();
+            destroyInstanceData();
         }
 
         void OpenGLLScene::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -55,7 +53,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLScene::onSetup(const Frame& inFrame)
+        bool OpenGLLScene::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.get3DDraws().empty() && inFrame.getInstances3D().empty() && inFrame.getLights().empty())
             {
@@ -67,8 +65,6 @@ namespace Chicane
 
         void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
             glVertexArrayVertexBuffer(m_modelVertexArray, 0, m_modelVertexBuffer, 0, sizeof(Vertex));
@@ -121,7 +117,12 @@ namespace Chicane
         void OpenGLLScene::buildModelVertexBuffer()
         {
             glCreateBuffers(1, &m_modelVertexBuffer);
-            glNamedBufferData(m_modelVertexBuffer, sizeof(Vertex) * 2000000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_modelVertexBuffer,
+                m_backend->getResourceBudget(Resource::SceneVertices),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             // Position
             glEnableVertexArrayAttrib(m_modelVertexArray, 0);
@@ -147,7 +148,12 @@ namespace Chicane
         void OpenGLLScene::buildModelIndexBuffer()
         {
             glCreateBuffers(1, &m_modelIndexBuffer);
-            glNamedBufferData(m_modelIndexBuffer, sizeof(std::uint32_t) * 2000000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_modelIndexBuffer,
+                m_backend->getResourceBudget(Resource::SceneIndices),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
         }
 
         void OpenGLLScene::destroyModelData()
@@ -160,7 +166,12 @@ namespace Chicane
         void OpenGLLScene::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly3DInstance) * 1000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_instanceBuffer,
+                m_backend->getResourceBudget(Resource::SceneInstances),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, m_instanceBuffer);
         }
@@ -175,9 +186,9 @@ namespace Chicane
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneSky>(settings);
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneShadow>(settings);
-            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneMesh>(settings);
+            m_backend->addLayer<OpenGLLSceneSky>(settings);
+            m_backend->addLayer<OpenGLLSceneShadow>(settings);
+            m_backend->addLayer<OpenGLLSceneMesh>(settings);
         }
     }
 }

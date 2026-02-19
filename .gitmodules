@@ -8,9 +8,6 @@
 [submodule "Sources/Engine/Core/Vendor/base64"]
 	path = Sources/Engine/Core/Vendor/base64
 	url = https://github.com/pepeien/base64.git
-[submodule "Sources/Engine/Core/Vendor/earcut"]
-	path = Sources/Engine/Core/Vendor/earcut
-	url = https://github.com/pepeien/earcut.hpp.git
 [submodule "Sources/Engine/Core/Vendor/glm"]
 	path = Sources/Engine/Core/Vendor/glm
 	url = https://github.com/pepeien/glm.git
@@ -29,3 +26,6 @@
 [submodule "Sources/Engine/Core/Vendor/xxHash"]
 	path = Sources/Engine/Core/Vendor/xxHash
 	url = https://github.com/pepeien/xxHash.git
+[submodule "Sources/Engine/Core/Vendor/libtess2"]
+	path = Sources/Engine/Core/Vendor/libtess2
+	url = https://github.com/pepeien/libtess2.git

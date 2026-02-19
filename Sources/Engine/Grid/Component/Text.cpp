@@ -8,15 +8,14 @@ namespace Chicane
     {
         Text::Text(const pugi::xml_node& inNode)
             : Container(inNode),
-              m_parsedText("")
+              m_text("")
         {
             setText(inNode.text().as_string());
 
             addStyleProperties({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
                 {Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW},
-                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         },
-                {Style::HEIGHT_ATTRIBUTE_NAME,         Style::FONT_SIZE_DEFAULT_VALUE}
+                {Style::FONT_SIZE_ATTRIBUTE_NAME,      Style::FONT_SIZE_DEFAULT_VALUE}
             });
         }
 
@@ -25,8 +24,6 @@ namespace Chicane
             Container::onRefresh();
 
             refreshText();
-
-            m_style.gap.setAll(m_style.letterSpacing.get());
         }
 
         const String& Text::getText() const
@@ -53,9 +50,9 @@ namespace Chicane
                 return;
             }
 
-            m_parsedText = value;
+            std::vector<char32_t> codepoints = value.toUnicode();
 
-            for (std::uint32_t i = 0; i < m_parsedText.size(); i++)
+            for (std::uint32_t i = 0; i < codepoints.size(); i++)
             {
                 if (i >= m_children.size())
                 {
@@ -69,19 +66,17 @@ namespace Chicane
                     continue;
                 }
 
-                static_cast<TextCharacter*>(child)->setCharacter(m_parsedText.at(i));
+                static_cast<TextCharacter*>(child)->setCharacter(codepoints.at(i));
             }
 
-            for (std::uint32_t i = m_parsedText.size(); i < m_children.size(); i++)
+            for (std::uint32_t i = codepoints.size(); i < m_children.size(); i++)
             {
-                Component* child = m_children.at(i);
-
-                if (typeid(*child) != typeid(TextCharacter))
+                if (typeid(*m_children.at(i)) != typeid(TextCharacter))
                 {
                     continue;
                 }
 
-                static_cast<TextCharacter*>(child)->disable();
+                static_cast<TextCharacter*>(m_children.at(i))->disable();
             }
         }
     }

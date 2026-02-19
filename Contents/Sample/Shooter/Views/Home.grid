@@ -1,8 +1,10 @@
 <View path="home" style="Contents/Sample/Shooter/Views/Home.decal">
     <Text class="victory">YOU WIN</Text>
-    <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
-    <Text class="telemetry">{{ frameTime }} ms</Text>
-    <Text class="camera">{{ currentCamera }}</Text>
+    <Container>
+        <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
+        <Text class="telemetry">{{ frameTime }} ms</Text>
+        <Text class="telemetry">{{ currentCamera }}</Text>
+    </Container>
     <Text class="score">Score {{ playerScore }}</Text>
     <Container class="crosshair">
         <Container class="crosshair__dot"></Container>

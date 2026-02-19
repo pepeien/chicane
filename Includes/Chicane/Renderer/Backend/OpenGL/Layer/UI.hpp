@@ -7,18 +7,20 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLGrid : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLUI : public Layer
         {
         public:
-            OpenGLLGrid();
-            ~OpenGLLGrid();
+            OpenGLLUI();
 
         public:
-            bool onInit() override;
+            void onInit() override;
+            void onDestruction() override;
+
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            void onCleanup() override;
+            void onEndRender() override;
 
         private:
             // Shader

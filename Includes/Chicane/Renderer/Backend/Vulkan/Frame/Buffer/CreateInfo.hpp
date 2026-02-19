@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER VulkanFrameCreateInfo
+        struct CHICANE_RENDERER VulkanFrameBufferCreateInfo
         {
         public:
             String                     id;

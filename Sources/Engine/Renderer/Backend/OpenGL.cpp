@@ -7,8 +7,8 @@
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
 
 namespace Chicane
 {
@@ -17,28 +17,27 @@ namespace Chicane
         static SDL_GLContext g_context;
 
         OpenGLBackend::OpenGLBackend()
-            : Backend<Frame>()
+            : Backend()
         {}
-
-        OpenGLBackend::~OpenGLBackend()
-        {
-            // Layers
-            deleteLayers();
-
-            // OpenGL
-            destroyTextureData();
-            destroyContext();
-        }
 
         void OpenGLBackend::onInit()
         {
             buildContext();
             buildGlew();
             enableFeatures();
+            updateResourcesBudget();
             buildTextureData();
             buildLayers();
+        }
 
-            Backend::onInit();
+        void OpenGLBackend::onShutdown()
+        {
+            // Layers
+            destroyLayers();
+
+            // OpenGL
+            destroyTextureData();
+            destroyContext();
         }
 
         void OpenGLBackend::onLoad(const DrawTextureResource& inResources)
@@ -68,7 +67,7 @@ namespace Chicane
             Backend::onLoad(inResources);
         }
 
-        void OpenGLBackend::onSetup()
+        void OpenGLBackend::onBeginRender()
         {
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
@@ -85,9 +84,9 @@ namespace Chicane
             renderLayers(inFrame);
         }
 
-        void OpenGLBackend::onCleanup()
+        void OpenGLBackend::onEndRender()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
             {
@@ -95,9 +94,19 @@ namespace Chicane
             }
         }
 
+        Viewport OpenGLBackend::getGLViewport(Layer* inLayer)
+        {
+            const Vec<2, std::uint32_t> resolution = getRenderer()->getResolution();
+
+            Viewport result   = getLayerViewport(inLayer);
+            result.position.y = resolution.y - (result.position.y + result.size.y);
+
+            return result;
+        }
+
         void OpenGLBackend::buildContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             g_context = SDL_GL_CreateContext(window);
 
@@ -119,7 +128,7 @@ namespace Chicane
 
         void OpenGLBackend::destroyContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_MakeCurrent(window, nullptr))
             {
@@ -156,10 +165,35 @@ namespace Chicane
             }
         }
 
+        void OpenGLBackend::updateResourcesBudget()
+        {
+            std::size_t VRAM = 512ULL * 1024 * 1024; // 512MB
+
+            // NVIDIA
+            if (GLEW_NVX_gpu_memory_info)
+            {
+                GLint total = 0;
+                glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &total);
+
+                VRAM = static_cast<size_t>(total) * 1024;
+            }
+
+            // AMD
+            if (GLEW_ATI_meminfo)
+            {
+                GLint mem[4] = {};
+                glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem);
+
+                VRAM = static_cast<size_t>(mem[0]) * 1024;
+            }
+
+            setVRAM(VRAM);
+        }
+
         void OpenGLBackend::buildTextureData()
         {
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, 64);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, TEXTURE_COUNT);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -176,13 +210,13 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            ListPush<Layer<Frame>*> settings;
+            ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<OpenGLLScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<OpenGLLGrid>(settings);
+            addLayer<OpenGLLUI>(settings);
         }
     }
 }

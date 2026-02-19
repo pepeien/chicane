@@ -10,15 +10,18 @@ namespace Chicane
     struct CHICANE_CORE Line
     {
     public:
+        using Points = std::vector<Vec2>;
+
+    public:
         bool isEmpty() const;
 
         Vec2 getStartPoint() const;
         Vec2 getEndPoint() const;
 
-        const std::vector<Vec2>& getPoints() const;
+        const Points& getPoints() const;
         void addPoint(const Vec2& inPoint);
 
     protected:
-        std::vector<Vec2> m_points;
+        Points m_points;
     };
 }

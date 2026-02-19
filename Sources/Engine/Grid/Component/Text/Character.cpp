@@ -2,7 +2,7 @@
 
 #include "Chicane/Box/Font/Manager.hpp"
 
-#include "Chicane/Core/Math/Curve.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -20,7 +20,7 @@ namespace Chicane
 
         bool TextCharacter::isDrawable() const
         {
-            return m_parent->isVisible() && hasGlyph() && hasPrimitive();
+            return m_parent->isDisplayable() && hasGlyph() && hasPrimitive();
         }
 
         void TextCharacter::refreshPrimitive()
@@ -31,7 +31,6 @@ namespace Chicane
             primitive.indices   = glyph.indices;
 
             Vertex vertex = {};
-            vertex.color  = m_style.foregroundColor.get();
 
             for (const Vec3 position : glyph.vertices)
             {
@@ -45,16 +44,12 @@ namespace Chicane
 
         void TextCharacter::onRefresh()
         {
-            if (!hasParent() || !hasGlyph())
+            if (!hasParent())
             {
                 return;
             }
 
-            m_style.background.color = m_parent->getStyle().foregroundColor;
-
-            m_parent->addCursor(m_glyph.box.x * ((m_style.font.size.get() / m_glyph.units) * 1.25f), 0.0f);
-
-            m_style.zIndex.set(getParent()->getStyle().zIndex.get() + 0.1f);
+            refreshFontStyle();
         }
 
         void TextCharacter::disable()
@@ -67,12 +62,12 @@ namespace Chicane
             return m_character != NULL_CHARACTER;
         }
 
-        char TextCharacter::getCharacter() const
+        char32_t TextCharacter::getCharacter() const
         {
             return m_character;
         }
 
-        void TextCharacter::setCharacter(char inValue)
+        void TextCharacter::setCharacter(char32_t inValue)
         {
             if (m_character == inValue)
             {
@@ -86,7 +81,7 @@ namespace Chicane
 
         bool TextCharacter::hasGlyph() const
         {
-            return m_glyph.indices.size() > 0;
+            return !m_glyph.vertices.empty();
         }
 
         const Box::FontGlyph& TextCharacter::getGlyph() const
@@ -105,7 +100,9 @@ namespace Chicane
                 return;
             }
 
-            const Box::FontParsed& font = Box::getFontManager()->getFamily(m_style.font.family.get());
+            const Style& parentStyle = m_parent->getStyle();
+
+            const Box::FontParsed& font = Box::getFontManager()->getFamily(parentStyle.font.family.get());
 
             if (!font.hasGlyph(m_character))
             {
@@ -118,19 +115,40 @@ namespace Chicane
 
             m_glyph = font.getGlyph(m_character);
 
-            const Style& parentStyle = m_parent->getStyle();
-
-            m_style.font = parentStyle.font;
-
-            const float scale = m_style.font.size.get() / Curve::FIXED_POINT / 2.0f;
-            const float units = (m_style.font.size.get() / m_glyph.units) * 1.25f;
-
-            m_style.width.set(m_glyph.line.x * scale);
-            m_style.height.set(m_glyph.line.y * scale);
-
-            m_style.margin.top = m_glyph.box.y * units;
-
             refreshPrimitive();
+        }
+
+        void TextCharacter::refreshFontStyle()
+        {
+            const Style& parentStyle = getParent()->getStyle();
+
+            if (!hasGlyph())
+            {
+                if (m_character == ' ')
+                {
+                    m_parent->addCursor(Box::Font::BASE_SIZE * 0.4f, 0.0f);
+                }
+
+                return;
+            }
+
+            m_primitive.scale = parentStyle.font.size.get();
+
+            m_style.zIndex.setRaw(std::to_string(parentStyle.zIndex.get() + 1.0f));
+            m_style.background.color = parentStyle.foregroundColor;
+
+            float scale    = parentStyle.font.size.get() * m_glyph.units;
+            float width    = m_glyph.width * scale;
+            float height   = m_glyph.height * scale;
+            float advance  = m_glyph.advance * scale;
+            float ascender = m_glyph.ascender * scale;
+            Vec2  bearing  = m_glyph.bearing * scale;
+
+            m_style.width.setRaw(std::to_string(width));
+            m_style.height.setRaw(std::to_string(height));
+            m_style.margin.left.setRaw(std::to_string(bearing.x));
+
+            m_parent->addCursor(advance - width, 0.0f);
         }
     }
 }

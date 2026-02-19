@@ -6,6 +6,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
 
@@ -14,21 +15,14 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLSceneSky::VulkanLSceneSky()
-            : Layer("Engine_Scene_Sky"),
+            : Layer(SCENE_SKY_LAYER_ID),
               m_frameDescriptor({}),
               m_textureDescriptor({}),
               m_sky(nullptr),
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f)})
         {}
 
-        VulkanLSceneSky::~VulkanLSceneSky()
-        {
-            destroyTextureData();
-
-            m_sky.reset();
-        }
-
-        bool VulkanLSceneSky::onInit()
+        void VulkanLSceneSky::onInit()
         {
             initFrameResources();
 
@@ -36,23 +30,21 @@ namespace Chicane
 
             initGraphicsPipeline();
             initFramebuffers();
-
-            return true;
         }
 
-        bool VulkanLSceneSky::onDestroy()
+        void VulkanLSceneSky::onRestart()
+        {
+            initFramebuffers();
+        }
+
+        void VulkanLSceneSky::onDestruction()
         {
             destroyFrameResources();
+            destroyTextureData();
 
-            return true;
-        }
+            m_sky.reset();
 
-        bool VulkanLSceneSky::onRebuild()
-        {
-            initFrameResources();
-            initFramebuffers();
-
-            return true;
+            m_graphicsPipeline.destroy();
         }
 
         void VulkanLSceneSky::onLoad(const DrawSky& inResource)
@@ -65,7 +57,7 @@ namespace Chicane
             buildTextureData(inResource);
         }
 
-        bool VulkanLSceneSky::onSetup(const Frame& inFrame)
+        bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId || !m_sky)
             {
@@ -79,24 +71,31 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
-            VulkanSwapchainImage image         = *((VulkanSwapchainImage*)inData);
-            vk::CommandBuffer    commandBuffer = image.commandBuffer;
+            VulkanFrame       frame         = *((VulkanFrame*)inData);
+            vk::CommandBuffer commandBuffer = frame.commandBuffer;
+
+            vk::Viewport viewport = backend->getVkViewport(this);
+            commandBuffer.setViewport(0, 1, &viewport);
+
+            vk::Rect2D scissor = backend->getVkScissor(this);
+            commandBuffer.setScissor(0, 1, &scissor);
 
             vk::RenderPassBeginInfo beginInfo;
-            beginInfo.renderPass        = m_graphicsPipeline.renderPass;
-            beginInfo.framebuffer       = image.getFramebuffer(m_id);
-            beginInfo.renderArea.extent = backend->swapchain.extent;
-            beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
-            beginInfo.pClearValues      = m_clear.data();
+            beginInfo.renderPass               = m_graphicsPipeline.renderPass;
+            beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
+            beginInfo.renderArea.extent.width  = viewport.width;
+            beginInfo.renderArea.extent.height = viewport.height;
+            beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
+            beginInfo.pClearValues             = m_clear.data();
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
             // Pipeline
             m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, image.getDescriptorSet(m_id));
+            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
             m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
@@ -132,14 +131,14 @@ namespace Chicane
             VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, backend->logicalDevice, bidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->swapchain.images.size());
+            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
             );
 
             VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
 
-            for (VulkanSwapchainImage& image : backend->swapchain.images)
+            for (VulkanFrame& frame : backend->frames)
             {
                 vk::DescriptorSet descriptorSet;
 
@@ -149,7 +148,7 @@ namespace Chicane
                     m_frameDescriptor.setLayout,
                     m_frameDescriptor.pool
                 );
-                image.addDescriptorSet(m_id, descriptorSet);
+                frame.addDescriptorSet(m_id, descriptorSet);
 
                 vk::WriteDescriptorSet cameraWriteInfo;
                 cameraWriteInfo.dstSet          = descriptorSet;
@@ -157,8 +156,8 @@ namespace Chicane
                 cameraWriteInfo.dstArrayElement = 0;
                 cameraWriteInfo.descriptorCount = 1;
                 cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                cameraWriteInfo.pBufferInfo     = &image.cameraResource.bufferInfo;
-                image.addWriteDescriptorSet(cameraWriteInfo);
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
             }
         }
 
@@ -174,7 +173,7 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
@@ -231,9 +230,9 @@ namespace Chicane
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
                 .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
-                .addViewport(backend->viewport)
+                .addViewport(backend->getVkViewport(this))
                 .addDynamicState(vk::DynamicState::eViewport)
-                .addScissor(backend->scissor)
+                .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .addShaderStage(fragmentShader, backend->logicalDevice)
@@ -249,15 +248,17 @@ namespace Chicane
 
         void VulkanLSceneSky::initFramebuffers()
         {
-            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanBackend* backend  = getBackend<VulkanBackend>();
+            vk::Viewport   viewport = backend->getVkViewport(this);
 
             for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
-                VulkanFrameCreateInfo createInfo;
+                VulkanFrameBufferCreateInfo createInfo;
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent        = backend->swapchain.extent;
+                createInfo.extent.width  = viewport.width;
+                createInfo.extent.height = viewport.height;
                 createInfo.attachments.push_back(image.colorImage.view);
 
                 image.addBuffer(createInfo);

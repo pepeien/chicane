@@ -56,8 +56,11 @@ namespace Chicane
         public:
             // Checkers
             bool isRoot() const;
+            bool isDisplayable() const;
             bool isVisible() const;
-            bool isValidChild(Component* inComponent) const;
+            bool isSolid() const;
+
+            bool canAdopt(Component* inComponent) const;
 
             // Mouse Events
             void hover();
@@ -135,22 +138,25 @@ namespace Chicane
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
 
+            Vec2 getChildrenContentSizeBlock() const;
+            Vec2 getChildrenContentSizeFlex() const;
+            Vec2 getChildrenContentSize() const;
+
             // Positioning
-            Vec2 getAvailableSize() const;
             const Vec2& getSize() const;
             void setSize(const Vec2& inSize);
             void setSize(float inWidth, float inHeight);
 
             const Vec2& getPosition() const;
-            void addPosition(const Vec2& inPosition);
+            void addPosition(const Vec2& inValue);
             void addPosition(float inX, float inY);
-            void setPosition(const Vec2& inPosition);
+            void setPosition(const Vec2& inValue);
             void setPosition(float inX, float inY);
 
             const Vec2& getCursor() const;
-            void addCursor(const Vec2& inCursor);
+            void addCursor(const Vec2& inValue);
             void addCursor(float inX, float inY);
-            void setCursor(const Vec2& inCursor);
+            void setCursor(const Vec2& inValue);
             void setCursor(float inX, float inY);
 
             // Collision

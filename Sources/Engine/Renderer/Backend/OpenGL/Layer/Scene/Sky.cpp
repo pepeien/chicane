@@ -4,26 +4,26 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         OpenGLLSceneSky::OpenGLLSceneSky()
-            : Layer("Engine_Scene_Sky")
+            : Layer(SCENE_SKY_LAYER_ID)
         {}
 
-        OpenGLLSceneSky::~OpenGLLSceneSky()
-        {
-            destroyShader();
-            destroyTextureData();
-        }
-
-        bool OpenGLLSceneSky::onInit()
+        void OpenGLLSceneSky::onInit()
         {
             buildShader();
             buildTextureData();
+        }
 
-            return true;
+        void OpenGLLSceneSky::onDestruction()
+        {
+            destroyShader();
+            destroyTextureData();
         }
 
         void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
@@ -56,7 +56,7 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLSceneSky::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
             {
@@ -68,8 +68,6 @@ namespace Chicane
 
         void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_CULL_FACE);
@@ -77,6 +75,9 @@ namespace Chicane
             glFrontFace(GL_CCW);
 
             glBindTextureUnit(1, m_texturesBuffer);
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
             glDrawElementsBaseVertex(
@@ -88,7 +89,7 @@ namespace Chicane
             );
         }
 
-        void OpenGLLSceneSky::onCleanup()
+        void OpenGLLSceneSky::onEndRender()
         {
             glDisable(GL_CULL_FACE);
         }

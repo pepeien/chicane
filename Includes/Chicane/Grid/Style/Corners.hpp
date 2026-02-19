@@ -4,10 +4,10 @@
 #include <cmath>
 #include <functional>
 
+#include "Chicane/Core/Size/Direction.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 
@@ -43,7 +43,7 @@ namespace Chicane
                 const String&                   inRightAttributeName
             );
 
-            void parseWith(std::function<float(const String&, StyleDirection)> inParser);
+            void parseWith(std::function<float(const String&, SizeDirection)> inParser);
 
             void setAll(float inValue);
 

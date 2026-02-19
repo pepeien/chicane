@@ -1,6 +1,7 @@
 #include "Actor/Character.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Scene.hpp>
 
 static constexpr inline const float MOVE_COEFFICIENT = 1.0f;
 
@@ -9,8 +10,13 @@ namespace Editor
     Character::Character()
         : Chicane::ACharacter(),
           m_camera(nullptr)
+    {}
+
+    void Character::onLoad()
     {
-        m_camera = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CCamera>();
+        Chicane::ACharacter::onLoad();
+
+        m_camera = getScene()->createComponent<Chicane::CCamera>();
         m_camera->attachTo(this);
         m_camera->activate();
     }
@@ -19,17 +25,6 @@ namespace Editor
     {
         // Mouse
         m_controller->bindEvent(std::bind(&Character::onMouseMotion, this, std::placeholders::_1));
-
-        m_controller->bindEvent(
-            Chicane::Input::MouseButton::Left,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().getWindow()->focus(); }
-        );
-        m_controller->bindEvent(
-            Chicane::Input::MouseButton::Right,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().getWindow()->blur(); }
-        );
 
         // Keyboard
         m_controller->bindEvent(
@@ -65,12 +60,7 @@ namespace Editor
         m_controller->bindEvent(
             Chicane::Input::KeyboardButton::F1,
             Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::Vulkan); }
-        );
-        m_controller->bindEvent(
-            Chicane::Input::KeyboardButton::F2,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::OpenGL); }
+            []() { Chicane::Application::getInstance().getWindow()->switchFocus(); }
         );
 
         // Gamepad

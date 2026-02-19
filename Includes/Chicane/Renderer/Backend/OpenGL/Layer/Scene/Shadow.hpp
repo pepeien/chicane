@@ -8,17 +8,18 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer<Frame>
+        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer
         {
         public:
             OpenGLLSceneShadow();
-            ~OpenGLLSceneShadow();
 
         public:
-            bool onInit() override;
-            bool onSetup(const Frame& inFrame) override;
+            void onInit() override;
+            void onDestruction() override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
-            void onCleanup() override;
+            void onEndRender() override;
 
         private:
             void buildShader();
@@ -28,9 +29,6 @@ namespace Chicane
             void destroyShadowMap();
 
         private:
-            // Viewport
-            Viewport      m_viewport;
-
             // Shader
             std::uint32_t m_shaderProgram;
 

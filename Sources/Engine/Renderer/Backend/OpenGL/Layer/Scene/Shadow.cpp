@@ -4,32 +4,29 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         OpenGLLSceneShadow::OpenGLLSceneShadow()
-            : Layer("Engine_Scene_Shadow"),
-              m_viewport({})
+            : Layer(SCENE_SHADOW_LAYER_ID)
+        {}
+
+        void OpenGLLSceneShadow::onInit()
         {
-            m_viewport.size = Vec2(1024, 1024);
+            buildShader();
+            buildShadowMap();
         }
 
-        OpenGLLSceneShadow::~OpenGLLSceneShadow()
+        void OpenGLLSceneShadow::onDestruction()
         {
             destroyShader();
             destroyShadowMap();
         }
 
-        bool OpenGLLSceneShadow::onInit()
-        {
-            buildShader();
-            buildShadowMap();
-
-            return true;
-        }
-
-        bool OpenGLLSceneShadow::onSetup(const Frame& inFrame)
+        bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
             {
@@ -41,11 +38,11 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
-            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
+
+            glClear(GL_DEPTH_BUFFER_BIT);
 
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
@@ -54,6 +51,9 @@ namespace Chicane
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);
             glCullFace(GL_FRONT);
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -78,7 +78,7 @@ namespace Chicane
             glBindTextureUnit(2, m_depthMapBuffer);
         }
 
-        void OpenGLLSceneShadow::onCleanup()
+        void OpenGLLSceneShadow::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
@@ -135,7 +135,7 @@ namespace Chicane
 
             // Depth Map
             glCreateTextures(GL_TEXTURE_2D, 1, &m_depthMapBuffer);
-            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT32F, m_viewport.size.x, m_viewport.size.y);
+            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT32F, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

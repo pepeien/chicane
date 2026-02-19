@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    static std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
+    static const std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
         {".jpg",  ImageVendor::Jpg},
         {".jpeg", ImageVendor::Jpg},
         {".png",  ImageVendor::Png}
@@ -56,14 +56,16 @@ namespace Chicane
         return "";
     }
 
-    Image::Image(const FileSystem::Path& inFilepath)
+    Image::Image(const FileSystem::Path& inLocation, bool bInShouldFlip)
         : Image()
     {
-        m_vendor = extractVendor(inFilepath.extension());
+        stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
+
+        m_vendor = extractVendor(inLocation.extension());
 
         m_format = STBI_rgb_alpha;
 
-        m_pixels = stbi_load(inFilepath.string().c_str(), &m_width, &m_height, &m_channel, m_format);
+        m_pixels = stbi_load(inLocation.string().c_str(), &m_width, &m_height, &m_channel, m_format);
 
         if (!m_pixels)
         {
@@ -71,9 +73,11 @@ namespace Chicane
         }
     }
 
-    Image::Image(const Raw& inData, ImageVendor inVendor)
+    Image::Image(const Raw& inData, ImageVendor inVendor, bool bInShouldFlip)
         : Image()
     {
+        stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
+
         m_vendor = inVendor;
 
         m_format = STBI_rgb_alpha;
@@ -100,9 +104,7 @@ namespace Chicane
           m_channel(0),
           m_format(0),
           m_pixels(nullptr)
-    {
-        stbi_set_flip_vertically_on_load(1);
-    }
+    {}
 
     Image::Image(const Image& inImage)
         : m_width(inImage.m_width),

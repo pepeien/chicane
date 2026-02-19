@@ -7,7 +7,9 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
@@ -16,19 +18,27 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanBackend : public Backend<Frame>
+        class CHICANE_RENDERER VulkanBackend : public Backend
         {
         public:
             VulkanBackend();
-            virtual ~VulkanBackend();
+            ~VulkanBackend();
 
         protected:
+            // Lifecycle
             void onInit() override;
-            void onResize(const Vec<2, std::uint32_t>& inResolution) override;
+            void onShutdown() override;
+
+            // Event
+            void onResize() override;
             void onLoad(const DrawTextureResource& inResources) override;
+
+            // Render
             void onRender(const Frame& inFrame) override;
 
-            void onHandle(const WindowEvent& inEvent) override;
+        public:
+            vk::Viewport getVkViewport(Layer* inLayer) const;
+            vk::Rect2D getVkScissor(Layer* inLayer) const;
 
         private:
             void buildInstance();
@@ -45,16 +55,19 @@ namespace Chicane
             void buildDevices();
             void destroyDevices();
 
-            void buildSwapchain();
-            void destroySwapchain();
-            void rebuildSwapchain();
+            void updateResourceBudget();
 
             void buildCommandPool();
             void destroyCommandPool();
 
             void buildMainCommandBuffer();
 
-            void renderViewport(const vk::CommandBuffer& inCommandBuffer);
+            void buildSwapchain();
+            void destroySwapchain();
+            void rebuildSwapchain();
+
+            void buildFrames();
+            void destroyFrames();
 
             void buildLayers();
 
@@ -82,15 +95,17 @@ namespace Chicane
             // Swap Chain
             VulkanSwapchainBundle                       swapchain;
 
-            // Viewport
-            vk::Viewport                                viewport;
-            vk::Rect2D                                  scissor;
+            // Frames
+            std::vector<VulkanFrame>                    frames;
 
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;
             std::vector<std::unique_ptr<VulkanTexture>> textures;
 
         private:
+            // Frame
+            std::uint32_t                     m_currentFrameIndex;
+
             // Instance
             vk::detail::DispatchLoaderDynamic m_dispatcher;
 

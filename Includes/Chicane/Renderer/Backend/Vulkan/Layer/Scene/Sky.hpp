@@ -11,18 +11,19 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLSceneSky : public Layer<Frame>
+        class CHICANE_RENDERER VulkanLSceneSky : public Layer
         {
         public:
             VulkanLSceneSky();
-            ~VulkanLSceneSky();
 
         public:
-            bool onInit() override;
-            bool onDestroy() override;
-            bool onRebuild() override;
+            void onInit() override;
+            void onRestart() override;
+            void onDestruction() override;
+
             void onLoad(const DrawSky& inResource) override;
-            bool onSetup(const Frame& inFrame) override;
+
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
 
         private:

@@ -11,15 +11,25 @@ namespace Chicane
             {HEX_COLOR_RED,          Rgba(255U, 0U,   0U,   255U)},
             {HEX_COLOR_GREEN,        Rgba(0U,   255U, 0U,   255U)},
             {HEX_COLOR_BLUE,         Rgba(0U,   0U,   255U, 255U)},
-            {HEX_COLOR_BLACK,        Rgba(0U,   0U,   0U,   255U)},
+            {HEX_COLOR_LIME,         Rgba(7U,   232U, 183U, 255U)},
+            {HEX_COLOR_YELLOW,       Rgba(232U, 232U, 5U,   255U)},
+            {HEX_COLOR_ORANGE,       Rgba(252U, 133U, 13U,  255U)},
+            {HEX_COLOR_CYAN,         Rgba(5U,   174U, 176U, 255U)},
             {HEX_COLOR_WHITE,        Rgba(255U, 255U, 255U, 255U)},
+            {HEX_COLOR_GRAY,         Rgba(123U, 123U, 123U, 255U)},
+            {HEX_COLOR_BLACK,        Rgba(0U,   0U,   0U,   255U)},
 
             {TEXT_COLOR_TRANSPARENT, Rgba(0U,   0U,   0U,   0U)  },
             {TEXT_COLOR_RED,         Rgba(255U, 0U,   0U,   255U)},
             {TEXT_COLOR_GREEN,       Rgba(0U,   255U, 0U,   255U)},
             {TEXT_COLOR_BLUE,        Rgba(0U,   0U,   255U, 255U)},
+            {TEXT_COLOR_LIME,        Rgba(7U,   232U, 183U, 255U)},
+            {TEXT_COLOR_YELLOW,      Rgba(232U, 232U, 5U,   255U)},
+            {TEXT_COLOR_ORANGE,      Rgba(252U, 133U, 13U,  255U)},
+            {TEXT_COLOR_CYAN,        Rgba(5U,   174U, 176U, 255U)},
+            {TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U)},
+            {TEXT_COLOR_GRAY,        Rgba(123U, 123U, 123U, 255U)},
             {TEXT_COLOR_BLACK,       Rgba(0U,   0U,   0U,   255U)},
-            {TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U)}
         };
 
         bool areEquals(const Rgba& inA, const Rgba& inB)
