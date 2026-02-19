@@ -58,13 +58,13 @@ namespace Chicane
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
             vk::Viewport viewport = backend->getVkViewport(this);
-            viewport.width        = 512;
-            viewport.height       = 512;
+            viewport.width        = SHADOW_MAP_HEIGHT;
+            viewport.height       = SHADOW_MAP_HEIGHT;
             commandBuffer.setViewport(0, 1, &viewport);
 
             vk::Rect2D scissor    = backend->getVkScissor(this);
-            scissor.extent.width  = 512;
-            scissor.extent.height = 512;
+            scissor.extent.width  = viewport.width;
+            scissor.extent.height = viewport.height;
             commandBuffer.setScissor(0, 1, &scissor);
 
             vk::RenderPassBeginInfo beginInfo  = {};
@@ -273,8 +273,8 @@ namespace Chicane
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent.width  = 512;
-                createInfo.extent.height = 512;
+                createInfo.extent.width  = SHADOW_MAP_WIDTH;
+                createInfo.extent.height = SHADOW_MAP_HEIGHT;
                 createInfo.attachments.push_back(parent->shadowImage.view);
 
                 image.addBuffer(createInfo);

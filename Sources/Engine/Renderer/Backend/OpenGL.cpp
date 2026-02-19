@@ -193,7 +193,7 @@ namespace Chicane
         void OpenGLBackend::buildTextureData()
         {
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, Backend::TEXTURE_COUNT);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, TEXTURE_COUNT);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

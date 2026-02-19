@@ -348,14 +348,14 @@ namespace Chicane
 
             layoutBidings.indices.push_back(0);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            layoutBidings.counts.push_back(Backend::TEXTURE_COUNT);
+            layoutBidings.counts.push_back(TEXTURE_COUNT);
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
-            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 512});
+            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, TEXTURE_COUNT});
 
             VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
 

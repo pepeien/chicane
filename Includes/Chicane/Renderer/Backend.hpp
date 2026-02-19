@@ -26,9 +26,6 @@ namespace Chicane
             using LayerList = std::vector<std::unique_ptr<Layer>>;
 
         public:
-            static constexpr inline const std::size_t TEXTURE_COUNT = 512;
-
-        public:
             Backend();
 
         public:

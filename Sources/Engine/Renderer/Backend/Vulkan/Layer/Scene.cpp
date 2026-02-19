@@ -129,8 +129,8 @@ namespace Chicane
             shadowImage.extent = backend->swapchain.extent;
 
             VulkanImageCreateInfo instanceCreateInfo = {};
-            instanceCreateInfo.width                 = 512;
-            instanceCreateInfo.height                = 512;
+            instanceCreateInfo.width                 = SHADOW_MAP_WIDTH;
+            instanceCreateInfo.height                = SHADOW_MAP_HEIGHT;
             instanceCreateInfo.count                 = 1;
             instanceCreateInfo.tiling                = vk::ImageTiling::eOptimal;
             instanceCreateInfo.flags                 = vk::ImageCreateFlagBits();

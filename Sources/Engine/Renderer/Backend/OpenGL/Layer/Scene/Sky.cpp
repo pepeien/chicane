@@ -68,9 +68,6 @@ namespace Chicane
 
         void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
         {
-            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
-            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_CULL_FACE);
@@ -78,6 +75,9 @@ namespace Chicane
             glFrontFace(GL_CCW);
 
             glBindTextureUnit(1, m_texturesBuffer);
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
             glDrawElementsBaseVertex(

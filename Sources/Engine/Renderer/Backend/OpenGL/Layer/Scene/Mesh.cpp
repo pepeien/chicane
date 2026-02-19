@@ -36,9 +36,6 @@ namespace Chicane
 
         void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
-            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
-            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_DEPTH_TEST);
@@ -53,6 +50,9 @@ namespace Chicane
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             glClear(GL_DEPTH_BUFFER_BIT);
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {

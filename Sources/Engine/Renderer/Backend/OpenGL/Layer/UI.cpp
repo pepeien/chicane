@@ -61,9 +61,6 @@ namespace Chicane
 
         void OpenGLLUI::onRender(const Frame& inFrame, void* inData)
         {
-            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
-            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
-
             glUseProgram(m_shaderProgram);
 
             glClear(GL_DEPTH_BUFFER_BIT);
@@ -85,6 +82,9 @@ namespace Chicane
                 sizeof(DrawPoly2DInstance) * inFrame.getInstances2D().size(),
                 inFrame.getInstances2D().data()
             );
+
+            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             for (const DrawPoly& draw : inFrame.get2DDraws())
             {
@@ -116,7 +116,7 @@ namespace Chicane
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -136,7 +136,7 @@ namespace Chicane
             result = GL_FALSE;
 
             // Fragment
-            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.ofrag");
+            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
