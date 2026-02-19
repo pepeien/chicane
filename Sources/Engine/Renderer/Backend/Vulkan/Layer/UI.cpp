@@ -258,7 +258,7 @@ namespace Chicane
             rasterization.depthBiasEnable         = VK_FALSE;
             rasterization.rasterizerDiscardEnable = VK_FALSE;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
-            rasterization.cullMode                = vk::CullModeFlagBits::eBack;
+            rasterization.cullMode                = vk::CullModeFlagBits::eNone;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
             rasterization.lineWidth               = 1.0f;
             rasterization.depthBiasConstantFactor = 0.0f;

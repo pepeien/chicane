@@ -72,6 +72,8 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            glFrontFace(GL_CCW);
+
             glBindVertexArray(m_primitiveVertexArray);
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));

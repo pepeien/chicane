@@ -134,7 +134,7 @@ namespace Chicane
 
             m_primitive.scale = parentStyle.font.size.get();
 
-            m_style.zIndex.set(parentStyle.zIndex.get() + 0.11f);
+            m_style.zIndex.setRaw(std::to_string(parentStyle.zIndex.get() + 1.0f));
             m_style.background.color = parentStyle.foregroundColor;
 
             float scale    = parentStyle.font.size.get() * m_glyph.units;
