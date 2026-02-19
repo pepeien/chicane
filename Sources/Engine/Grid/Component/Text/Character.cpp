@@ -140,6 +140,8 @@ namespace Chicane
             m_style.height.setRaw(parentStyle.font.size.getRaw());
             m_style.margin.left.setRaw(std::to_string(bearing.x));
             m_style.margin.top.setRaw(std::to_string(bearing.y));
+
+            m_parent->addCursor(-(parentStyle.font.size.get() * 0.5f), 0.0f);
         }
     }
 }
