@@ -1,3 +1,6 @@
+const vec3 LIGHT_COLOR   = vec3(1.0);
+const vec3 AMBIENT_LIGHT = LIGHT_COLOR * 0.3;
+
 float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 lightDirection) {
     vec3 projCoords = projection.xyz / projection.w;
     projCoords.xy = projCoords.xy * 0.5 + 0.5;
