@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, ModelVendor> VENDOR_MAP{
+        static const std::unordered_map<String, ModelVendor> VENDOR_MAP = {
             {"OBJ", ModelVendor::Wavefront}
         };
 

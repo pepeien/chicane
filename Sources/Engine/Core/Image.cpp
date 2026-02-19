@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    static std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
+    static const std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
         {".jpg",  ImageVendor::Jpg},
         {".jpeg", ImageVendor::Jpg},
         {".png",  ImageVendor::Png}
