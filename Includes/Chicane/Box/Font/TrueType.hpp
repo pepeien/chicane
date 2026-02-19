@@ -2,7 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Font/Parsed.hpp"
-#include "Chicane/Box/Font/Raw.hpp"
+#include "Chicane/Box/Font.hpp"
 
 namespace Chicane
 {

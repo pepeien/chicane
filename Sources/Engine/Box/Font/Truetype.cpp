@@ -27,7 +27,7 @@ namespace Chicane
                     std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
                     Curve curve = {};
-                    curve.setSegmentCount(12);
+                    curve.setSegmentCount(8);
                     curve.addPoint(Vec2(inPoint->x, inPoint->y));
 
                     contours->push_back(curve);
@@ -94,10 +94,10 @@ namespace Chicane
                 FontGlyph result;
                 result.code     = inCode;
                 result.units    = inGlyph->face->units_per_EM;
-                result.width    = inGlyph->metrics.width;
-                result.height   = inGlyph->metrics.height;
-                result.advance  = inGlyph->advance.x;
-                result.bearing  = {inGlyph->metrics.horiBearingX, inGlyph->metrics.vertBearingY};
+                result.width    = inGlyph->metrics.width >> 6;
+                result.height   = inGlyph->metrics.height >> 6;
+                result.advance  = inGlyph->advance.x >> 6;
+                result.bearing  = {inGlyph->metrics.horiBearingX >> 6, inGlyph->metrics.horiBearingY >> 6};
                 result.vertices = contour.getVertices();
                 result.indices  = contour.getIndices();
 

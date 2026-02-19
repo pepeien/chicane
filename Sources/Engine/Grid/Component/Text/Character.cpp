@@ -2,6 +2,8 @@
 
 #include "Chicane/Box/Font/Manager.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -134,8 +136,8 @@ namespace Chicane
             float advance = m_glyph.advance * scale;
             Vec2  bearing = m_glyph.bearing * scale;
 
-            m_style.width.setRaw(std::to_string(width));
-            m_style.height.setRaw(std::to_string(height));
+            m_style.width.setRaw(parentStyle.font.size.getRaw());
+            m_style.height.setRaw(parentStyle.font.size.getRaw());
             m_style.margin.left.setRaw(std::to_string(bearing.x));
             m_style.margin.top.setRaw(std::to_string(bearing.y));
         }

@@ -25,5 +25,5 @@ $bottomBarSize: 20vh;
     height: 2em;
     background-color: gray;
     margin: calc(100% - 3em) 0 0 1em;
-    alignment: center
+    alignment: center;
 }

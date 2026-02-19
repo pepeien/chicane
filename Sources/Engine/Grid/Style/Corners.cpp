@@ -19,16 +19,6 @@ namespace Chicane
             left.refresh();
             bottom.refresh();
             right.refresh();
-
-            if (left.getRaw().equals(Size::AUTO_KEYWORD) && right.getRaw().equals(Size::AUTO_KEYWORD))
-            {
-                right.set(right.get() * 0.5f);
-            }
-
-            if (top.getRaw().equals(Size::AUTO_KEYWORD) && bottom.getRaw().equals(Size::AUTO_KEYWORD))
-            {
-                bottom.set(bottom.get() * 0.5f);
-            }
         }
 
         void StyleCorners::setProperties(
