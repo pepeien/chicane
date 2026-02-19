@@ -120,45 +120,46 @@ namespace Chicane
             return result;
         }
 
-        std::size_t Backend::getResourceSize(BackendResource inType)
+        std::size_t Backend::getResourceSize(Resource inType)
         {
             switch (inType)
             {
-            case BackendResource::SceneIndices:
+            case Resource::SceneIndices:
                 return sizeof(Vertex::Index);
 
-            case BackendResource::SceneVertices:
+            case Resource::SceneVertices:
                 return sizeof(Vertex);
 
-            case BackendResource::SceneInstances:
+            case Resource::SceneInstances:
                 return sizeof(DrawPoly3DInstance);
 
-            case BackendResource::Scene:
-                return getResourceSize(BackendResource::SceneIndices) +
-                       getResourceSize(BackendResource::SceneVertices) +
-                       getResourceSize(BackendResource::SceneInstances);
+            case Resource::Scene:
+                return getResourceSize(Resource::SceneIndices) + getResourceSize(Resource::SceneVertices) +
+                       getResourceSize(Resource::SceneInstances);
 
-            case BackendResource::UIIndices:
+            case Resource::UIIndices:
                 return sizeof(Vertex::Index);
 
-            case BackendResource::UIVertices:
+            case Resource::UIVertices:
                 return sizeof(Vertex);
 
-            case BackendResource::UIInstances:
+            case Resource::UIInstances:
                 return sizeof(DrawPoly2DInstance);
 
-            case BackendResource::UI:
-                return getResourceSize(BackendResource::UIIndices) + getResourceSize(BackendResource::UIVertices) +
-                       getResourceSize(BackendResource::UIInstances);
+            case Resource::UI:
+                return getResourceSize(Resource::UIIndices) + getResourceSize(Resource::UIVertices) +
+                       getResourceSize(Resource::UIInstances);
 
             default:
                 return 0U;
             }
         }
 
-        std::size_t Backend::getResourceBudget(BackendResource inType)
+        std::size_t Backend::getResourceBudget(Resource inType)
         {
-            if (m_resourceBudget.find(inType) == m_resourceBudget.end())
+            const ResourceBudget& budget = m_renderer->getResourceBudget();
+
+            if (budget.find(inType) == budget.end())
             {
                 return 0U;
             }
@@ -168,16 +169,18 @@ namespace Chicane
             return resourceSize * getResourceBudgetCount(inType);
         }
 
-        std::uint32_t Backend::getResourceBudgetCount(BackendResource inType)
+        std::uint32_t Backend::getResourceBudgetCount(Resource inType)
         {
-            if (m_resourceBudget.find(inType) == m_resourceBudget.end())
+            const ResourceBudget& budget = m_renderer->getResourceBudget();
+
+            if (budget.find(inType) == budget.end())
             {
                 return 0U;
             }
 
             const std::size_t resourceSize = getResourceSize(inType);
 
-            return m_resourceBudget.at(inType) / resourceSize;
+            return (budget.at(inType) * m_VRAM) / resourceSize;
         }
 
         void Backend::renderLayers(const Frame& inFrame, void* inData)
@@ -240,21 +243,9 @@ namespace Chicane
             m_layers.clear();
         }
 
-        void Backend::setResourceBudget(std::size_t inBytes)
+        void Backend::setVRAM(std::size_t inBytes)
         {
-            m_resourceBudget[BackendResource::Scene]          = inBytes * 0.4f;                                  // 40%
-            m_resourceBudget[BackendResource::SceneIndices]   = m_resourceBudget[BackendResource::Scene] * 0.2f; // 20%
-            m_resourceBudget[BackendResource::SceneVertices]  = m_resourceBudget[BackendResource::Scene] * 0.6f; // 60%
-            m_resourceBudget[BackendResource::SceneInstances] = m_resourceBudget[BackendResource::Scene] * 0.2f; // 20%
-
-            m_resourceBudget[BackendResource::Texture] = inBytes * 0.4f; // 30%
-
-            m_resourceBudget[BackendResource::UI]          = inBytes * 0.1f;                               // 10%
-            m_resourceBudget[BackendResource::UIIndices]   = m_resourceBudget[BackendResource::UI] * 0.2f; // 20%
-            m_resourceBudget[BackendResource::UIVertices]  = m_resourceBudget[BackendResource::UI] * 0.6f; // 60%
-            m_resourceBudget[BackendResource::UIInstances] = m_resourceBudget[BackendResource::UI] * 0.2f; // 20%
-
-            m_resourceBudget[BackendResource::Misc] = inBytes * 0.15f; // 15%
+            m_VRAM = inBytes;
         }
 
         void Backend::setRenderer(const Instance* inValue)

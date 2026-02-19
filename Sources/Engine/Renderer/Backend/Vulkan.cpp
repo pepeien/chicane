@@ -222,7 +222,7 @@ namespace Chicane
                 }
             }
 
-            setResourceBudget(VRAM);
+            setVRAM(VRAM);
         }
 
         void VulkanBackend::destroyDevices()
@@ -242,8 +242,8 @@ namespace Chicane
                 // Data
                 image.setupCameraData();
                 image.setupLightData();
-                image.setup2DData(getResourceBudget(BackendResource::UIInstances));
-                image.setup3DData(getResourceBudget(BackendResource::SceneInstances));
+                image.setup2DData(getResourceBudget(Resource::UIInstances));
+                image.setup3DData(getResourceBudget(Resource::SceneInstances));
 
                 // Commandbuffer
                 image.setupCommandBuffer(m_mainCommandPool);

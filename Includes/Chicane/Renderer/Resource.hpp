@@ -1,12 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <unordered_map>
 
 namespace Chicane
 {
     namespace Renderer
     {
-        enum class BackendResource : std::uint8_t
+        enum class Resource : std::uint8_t
         {
             Scene,
             SceneIndices,
@@ -22,5 +23,7 @@ namespace Chicane
 
             Misc
         };
+
+        using ResourceBudget = std::unordered_map<Resource, float>;
     }
 }

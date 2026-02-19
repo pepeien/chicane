@@ -49,7 +49,6 @@ namespace Chicane
             void addLight(const View::List& inData);
 
             // Frame
-            void setFrameCount(std::uint32_t inValue);
             Frame& getCurrentFrame();
 
             // Render
@@ -89,6 +88,11 @@ namespace Chicane
             Vec<2, std::uint32_t> getResolution() const;
             void setResolution(const Vec<2, std::uint32_t>& inValue);
 
+            void setFramesInFlight(std::uint32_t inValue);
+
+            const ResourceBudget& getResourceBudget() const;
+            void setResourceBudget(const ResourceBudget& inValue);
+
             // Backend
             bool hasBackend() const;
             template <typename Target = Layer, typename... Params>
@@ -109,7 +113,7 @@ namespace Chicane
             const Window*            m_window;
 
             // Settings
-            Vec<2, std::uint32_t>    m_resolution;
+            Settings                 m_settings;
 
             // Frame
             std::vector<Frame>       m_frames;

@@ -13,7 +13,7 @@ namespace Chicane
     namespace Renderer
     {
         Instance::Instance()
-            : m_resolution(Vec<2, std::uint32_t>(0)),
+            : m_settings({}),
               m_frames({}),
               m_currentFrame(0U),
               m_polyResources({}),
@@ -24,8 +24,9 @@ namespace Chicane
 
         void Instance::init(const Settings& inSettings)
         {
-            setFrameCount(inSettings.bufferCount);
-            setResolution(inSettings.resolution);
+            m_settings = inSettings;
+
+            setFramesInFlight(m_settings.framesInFlight);
         }
 
         void Instance::shutdown()
@@ -86,11 +87,6 @@ namespace Chicane
         void Instance::addLight(const View& inData)
         {
             getCurrentFrame().addLight(inData);
-        }
-
-        void Instance::setFrameCount(std::uint32_t inValue)
-        {
-            m_frames.resize(inValue);
         }
 
         Frame& Instance::getCurrentFrame()
@@ -177,27 +173,37 @@ namespace Chicane
         {
             if (!hasWindow())
             {
-                return m_resolution;
+                return m_settings.resolution;
             }
 
             const Vec<2, std::uint32_t>& windowSize = m_window->getSize();
 
-            return {std::max(m_resolution.x, windowSize.x), std::max(m_resolution.y, windowSize.y)};
+            return {std::max(m_settings.resolution.x, windowSize.x), std::max(m_settings.resolution.y, windowSize.y)};
         }
 
         void Instance::setResolution(const Vec<2, std::uint32_t>& inValue)
         {
-            if (m_resolution == inValue)
-            {
-                return;
-            }
-
-            m_resolution = inValue;
+            m_settings.resolution = inValue;
 
             if (hasBackend())
             {
                 m_backend->onResize();
             }
+        }
+
+        void Instance::setFramesInFlight(std::uint32_t inValue)
+        {
+            m_frames.resize(inValue);
+        }
+
+        const ResourceBudget& Instance::getResourceBudget() const
+        {
+            return m_settings.resourceBudget;
+        }
+
+        void Instance::setResourceBudget(const ResourceBudget& inValue)
+        {
+            m_settings.resourceBudget = inValue;
         }
 
         bool Instance::hasBackend() const

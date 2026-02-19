@@ -187,7 +187,7 @@ namespace Chicane
                 VRAM = static_cast<size_t>(mem[0]) * 1024;
             }
 
-            setResourceBudget(VRAM);
+            setVRAM(VRAM);
         }
 
         void OpenGLBackend::buildTextureData()

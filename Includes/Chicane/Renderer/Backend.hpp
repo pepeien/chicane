@@ -1,17 +1,15 @@
 #pragma once
 
-#include <unordered_map>
-
 #include "Chicane/Core/List.hpp"
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Backend/Resource.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Resource.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane
@@ -26,8 +24,6 @@ namespace Chicane
 
         public:
             using LayerList = std::vector<std::unique_ptr<Layer>>;
-
-            using ResourceMap = std::unordered_map<BackendResource, std::size_t>;
 
         public:
             static constexpr inline const std::size_t TEXTURE_COUNT = 512;
@@ -123,9 +119,9 @@ namespace Chicane
                 location->get()->onInit();
             }
 
-            std::size_t getResourceSize(BackendResource inType);
-            std::size_t getResourceBudget(BackendResource inType);
-            std::uint32_t getResourceBudgetCount(BackendResource inType);
+            std::size_t getResourceSize(Resource inType);
+            std::size_t getResourceBudget(Resource inType);
+            std::uint32_t getResourceBudgetCount(Resource inType);
 
         protected:
             // Layer
@@ -135,7 +131,7 @@ namespace Chicane
             void rebuildLayers();
             void destroyLayers();
 
-            void setResourceBudget(std::size_t inBytes);
+            void setVRAM(std::size_t inBytes);
 
         private:
             void setRenderer(const Instance* inValue);
@@ -143,7 +139,7 @@ namespace Chicane
         protected:
             const Instance* m_renderer;
             LayerList       m_layers;
-            ResourceMap     m_resourceBudget;
+            std::size_t     m_VRAM;
         };
     }
 }
