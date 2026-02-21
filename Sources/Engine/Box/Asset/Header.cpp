@@ -52,18 +52,40 @@ namespace Chicane
             return false;
         }
 
-        AssetType AssetHeader::getType(const FileSystem::Path& inFilepath)
+        AssetType AssetHeader::getTypeFromExtension(const FileSystem::Path& inValue)
         {
-            if (!isFileAsset(inFilepath))
+            if (!isFileAsset(inValue))
             {
                 return AssetType::Undefined;
             }
 
-            const String value = inFilepath.extension().string();
+            const String value = inValue.extension().string();
 
             for (const auto& [type, extension] : EXTENSIONS)
             {
                 if (!extension.equals(value))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return AssetType::Undefined;
+        }
+
+        AssetType AssetHeader::getTypeFromTag(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return AssetType::Undefined;
+            }
+
+            const String value = inValue.trim();
+
+            for (const auto& [type, tag] : TAGS)
+            {
+                if (!tag.equals(value))
                 {
                     continue;
                 }
@@ -175,7 +197,7 @@ namespace Chicane
 
         void AssetHeader::fetchType()
         {
-            type = getType(filepath.string());
+            type = getTypeFromExtension(filepath);
         }
     }
 }

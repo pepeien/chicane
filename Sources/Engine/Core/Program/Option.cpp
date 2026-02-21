@@ -4,7 +4,7 @@ namespace Chicane
 {
     bool ProgramOption::isValueValid() const
     {
-        if (m_values.empty())
+        if (m_value.empty())
         {
             return !m_bIsRequired;
         }
@@ -14,7 +14,7 @@ namespace Chicane
             return true;
         }
 
-        for (const String& value : m_values)
+        for (const String& value : m_value)
         {
             if (m_validValues.find(value) != m_validValues.end())
             {
@@ -67,27 +67,19 @@ namespace Chicane
         m_description = inValue.trim();
     }
 
-    const ProgramOption::Values& ProgramOption::getValues() const
+    const String& ProgramOption::getValue() const
     {
-        return m_values;
+        return m_value;
     }
 
-    void ProgramOption::addValue(const String& inValue)
+    void ProgramOption::setValue(const String& inValue)
     {
         if (inValue.isEmpty())
         {
             return;
         }
 
-        for (const String value : inValue.trim().split(','))
-        {
-            if (!isValueValid(value))
-            {
-                return;
-            }
-
-            m_values.insert(value);
-        }
+        m_value = inValue.trim();
     }
 
     const ProgramOption::Values& ProgramOption::getValidValues() const

@@ -53,7 +53,7 @@ namespace Chicane
 
                     if (ProgramOption* option = getOption(name))
                     {
-                        option->addValue(value);
+                        option->setValue(value);
                     }
 
                     continue;
@@ -75,7 +75,7 @@ namespace Chicane
 
                     if (ProgramOption* option = getOption(opt))
                     {
-                        option->addValue(value);
+                        option->setValue(value);
                     }
 
                     continue;

@@ -35,6 +35,8 @@ namespace Chicane
             }
 
             std::cout << "Option [ " << option.getName() << " ] is invalid." << std::endl;
+
+            return;
         }
 
         onExec(m_param);

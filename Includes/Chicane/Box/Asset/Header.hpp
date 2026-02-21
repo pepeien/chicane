@@ -15,7 +15,8 @@ namespace Chicane
         public:
             static bool isFileAsset(const FileSystem::Path& inFilepath);
 
-            static AssetType getType(const FileSystem::Path& inFilepath);
+            static AssetType getTypeFromExtension(const FileSystem::Path& inFilepath);
+            static AssetType getTypeFromTag(const String& inValue);
 
             static std::vector<String> getTypeTags();
             static const String& getTypeTag(AssetType inValue);

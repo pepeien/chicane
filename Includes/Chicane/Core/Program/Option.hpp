@@ -31,8 +31,8 @@ namespace Chicane
         const String& getDescription() const;
         void setDescription(const String& inValue);
 
-        const Values& getValues() const;
-        void addValue(const String& inValue);
+        const String& getValue() const;
+        void setValue(const String& inValue);
 
         const Values& getValidValues() const;
         void addValidValue(const std::vector<String>& inValue);
@@ -47,7 +47,7 @@ namespace Chicane
         String m_name        = "";
         String m_description = "";
 
-        Values m_values      = {};
+        String m_value       = "";
         Values m_validValues = {};
     };
 }
