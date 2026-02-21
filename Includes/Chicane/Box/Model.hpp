@@ -18,12 +18,17 @@ namespace Chicane
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
         public:
+            static ModelVendor parseVendor(const String& inValue);
+            static const String& getVendorExtension(ModelVendor inValue);
+
+        public:
             Model(const FileSystem::Path& inFilepath);
             virtual ~Model() = default;
 
         public:
             ModelVendor getVendor() const;
-            void setVendor(ModelVendor inVendor);
+            void setVendor(const String& inValue);
+            void setVendor(ModelVendor inValue);
 
             const ModelRaw& getData() const;
             void setData(const FileSystem::Path& inFilepath);

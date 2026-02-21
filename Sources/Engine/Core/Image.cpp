@@ -8,52 +8,43 @@
 
 namespace Chicane
 {
-    static const std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
-        {".jpg",  ImageVendor::Jpg},
-        {".jpeg", ImageVendor::Jpg},
-        {".png",  ImageVendor::Png}
+    static const std::unordered_map<ImageVendor, String> EXTENSIONS = {
+        {ImageVendor::Undefined, "N/A" },
+        {ImageVendor::Jpg,       "JPG" },
+        {ImageVendor::Jpg,       "JPEG"},
+        {ImageVendor::Png,       "PNG" },
     };
 
-    ImageVendor Image::extractVendor(const String& inValue)
+    ImageVendor Image::parseVendor(const String& inValue)
     {
         if (inValue.isEmpty())
         {
             return ImageVendor::Undefined;
         }
 
-        const String value = inValue.toLower();
+        const String& value = inValue.trim().toUpper();
 
-        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
+        for (const auto& [type, extension] : EXTENSIONS)
         {
-            if (!extension.contains(value))
+            if (!value.contains(extension))
             {
                 continue;
             }
 
-            return vendor;
+            return type;
         }
 
         return ImageVendor::Undefined;
     }
 
-    String Image::extractVendor(ImageVendor inValue)
+    const String& Image::getVendorExtension(ImageVendor inValue)
     {
-        if (inValue == ImageVendor::Undefined)
+        if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
         {
-            return "";
+            return EXTENSIONS.at(ImageVendor::Undefined);
         }
 
-        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
-        {
-            if (vendor != inValue)
-            {
-                continue;
-            }
-
-            return extension.toUpper().filter(".");
-        }
-
-        return "";
+        return EXTENSIONS.at(inValue);
     }
 
     Image::Image(const FileSystem::Path& inLocation, bool bInShouldFlip)
@@ -61,7 +52,7 @@ namespace Chicane
     {
         stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
 
-        m_vendor = extractVendor(inLocation.extension());
+        m_vendor = parseVendor(inLocation.extension());
 
         m_format = STBI_rgb_alpha;
 

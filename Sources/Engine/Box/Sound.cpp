@@ -7,7 +7,8 @@ namespace Chicane
     namespace Box
     {
         Sound::Sound(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_data({})
         {
             fetchData();
         }
@@ -21,7 +22,7 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                return;
+                throw std::runtime_error("Sound source file was not found");
             }
 
             setData(FileSystem::readUnsigned(inFilepath));
@@ -29,19 +30,17 @@ namespace Chicane
 
         void Sound::setData(const Raw& inData)
         {
-            if (inData.empty())
-            {
-                return;
-            }
-
             m_data = inData;
 
-            getXML().text().set(Base64::encode(inData));
+            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            {
+                throw std::runtime_error("Failed to save the sound [" + m_header.filepath.string() + "] data");
+            }
         }
 
         void Sound::fetchData()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }

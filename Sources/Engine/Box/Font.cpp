@@ -10,24 +10,48 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<FontVendor, String> VENDORS = {
+        static const std::unordered_map<FontVendor, String> EXTENSIONS = {
+            {FontVendor::Undefined, "N/A"},
             {FontVendor::OpenType,  "OTF"},
             {FontVendor::TrueType,  "TTF"},
-            {FontVendor::Undefined, "N/A"}
         };
+
+        FontVendor Font::parseVendor(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return FontVendor::Undefined;
+            }
+
+            const String& value = inValue.trim().toUpper();
+
+            for (const auto& [type, extension] : EXTENSIONS)
+            {
+                if (!value.contains(extension))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return FontVendor::Undefined;
+        }
 
         const String& Font::getVendorExtension(FontVendor inValue)
         {
-            if (VENDORS.find(inValue) == VENDORS.end())
+            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
             {
-                return VENDORS.at(FontVendor::Undefined);
+                return EXTENSIONS.at(FontVendor::Undefined);
             }
 
-            return VENDORS.at(inValue);
+            return EXTENSIONS.at(inValue);
         }
 
         Font::Font(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_vendor(FontVendor::Undefined),
+              m_data({})
         {
             fetchVendor();
             fetchData();
@@ -38,30 +62,9 @@ namespace Chicane
             return m_vendor;
         }
 
-        void Font::setVendor(const String& inExtension)
+        void Font::setVendor(const String& inValue)
         {
-            if (inExtension.isEmpty())
-            {
-                setVendor(FontVendor::Undefined);
-
-                return;
-            }
-
-            const String& value = inExtension.trim().toUpper();
-
-            for (const auto& [type, extension] : VENDORS)
-            {
-                if (!value.contains(extension))
-                {
-                    continue;
-                }
-
-                setVendor(type);
-
-                return;
-            }
-
-            setVendor(FontVendor::Undefined);
+            setVendor(parseVendor(inValue));
         }
 
         void Font::setVendor(FontVendor inValue)
@@ -89,11 +92,6 @@ namespace Chicane
 
         void Font::setData(const FontRaw& inData)
         {
-            if (inData.empty())
-            {
-                return;
-            }
-
             m_data = inData;
 
             if (!getXML().text().set(Base64::encode(m_data).toChar()))
@@ -109,7 +107,7 @@ namespace Chicane
                 return;
             }
 
-            setVendor(Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string());
+            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
         void Font::fetchData()
@@ -119,7 +117,7 @@ namespace Chicane
                 return;
             }
 
-            setData(Base64::decodeToUnsigned(getXML().text().as_string()));
+            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
         }
     }
 }

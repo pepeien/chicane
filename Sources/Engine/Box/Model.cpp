@@ -10,12 +10,47 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, ModelVendor> VENDOR_MAP = {
-            {"OBJ", ModelVendor::Wavefront}
+        static const std::unordered_map<ModelVendor, String> EXTENSIONS = {
+            {ModelVendor::Undefined, "N/A"},
+            {ModelVendor::Wavefront, "OBJ"},
         };
 
+        ModelVendor Model::parseVendor(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return ModelVendor::Undefined;
+            }
+
+            const String& value = inValue.trim().toUpper();
+
+            for (const auto& [type, extension] : EXTENSIONS)
+            {
+                if (!value.contains(extension))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return ModelVendor::Undefined;
+        }
+
+        const String& Model::getVendorExtension(ModelVendor inValue)
+        {
+            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            {
+                return EXTENSIONS.at(ModelVendor::Undefined);
+            }
+
+            return EXTENSIONS.at(inValue);
+        }
+
         Model::Model(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_vendor(ModelVendor::Undefined),
+              m_data({})
         {
             fetchVendor();
             fetchData();
@@ -26,33 +61,16 @@ namespace Chicane
             return m_vendor;
         }
 
-        void Model::setVendor(ModelVendor inVendor)
+        void Model::setVendor(const String& inValue)
         {
-            m_vendor = inVendor;
+            setVendor(parseVendor(inValue));
+        }
 
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
-            );
+        void Model::setVendor(ModelVendor inValue)
+        {
+            m_vendor = inValue;
 
-            if (vendor == VENDOR_MAP.end())
-            {
-                return;
-            }
-
-            String vendorID = vendor->first;
-
-            pugi::xml_node root = getXML();
-
-            if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
-            {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
-
-                return;
-            }
-
-            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+            setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
         const ModelRaw& Model::getData() const
@@ -64,46 +82,36 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                return;
+                throw std::runtime_error("Model source file was not found");
             }
 
+            setVendor(inFilepath.extension().string());
             setData(FileSystem::readUnsigned(inFilepath));
         }
 
         void Model::setData(const ModelRaw& inData)
         {
-            if (inData.empty())
-            {
-                return;
-            }
-
             m_data = inData;
 
-            getXML().text().set(Base64::encode(inData));
+            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            {
+                throw std::runtime_error("Failed to save the model [" + m_header.filepath.string() + "] data");
+            }
         }
 
         void Model::fetchVendor()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }
 
-            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-
-            if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
-            {
-                m_vendor = ModelVendor::Undefined;
-
-                return;
-            }
-
-            m_vendor = VENDOR_MAP.at(vendor);
+            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
         void Model::fetchData()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }

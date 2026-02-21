@@ -20,6 +20,7 @@ namespace Chicane
             static constexpr inline const float BASE_SIZE = 16.0f;
 
         public:
+            static FontVendor parseVendor(const String& inValue);
             static const String& getVendorExtension(FontVendor inValue);
 
         public:
@@ -28,7 +29,7 @@ namespace Chicane
 
         public:
             FontVendor getVendor() const;
-            void setVendor(const String& inExtension);
+            void setVendor(const String& inValue);
             void setVendor(FontVendor inValue);
 
             const FontRaw& getData() const;

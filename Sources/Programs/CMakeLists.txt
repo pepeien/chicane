@@ -4,4 +4,4 @@ set(PROGRAMS_HEADER_DIR  "${SOURCES_DIR}/Programs")
 set(PROGRAMS_SOURCE_DIR  "${SOURCES_DIR}/Programs")
 
 ######################### Directories #########################
-add_subdirectory(Box)
+add_subdirectory(BoxUtils)

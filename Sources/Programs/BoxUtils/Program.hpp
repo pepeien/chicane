@@ -27,4 +27,22 @@ private:
         const Chicane::ProgramParam::Positionals& inSources,
         const Chicane::FileSystem::Path&          inOutput
     );
+
+    void createTexture(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createModel(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createSound(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
 };
