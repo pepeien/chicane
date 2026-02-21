@@ -11,7 +11,7 @@ namespace Chicane
 
         bool isEmpty(const pugi::xml_node& inNode)
         {
-            return inNode.children().empty() && !inNode.value();
+            return inNode.empty();
         }
 
         void save(const pugi::xml_document& inDocument, const FileSystem::Path& inFilepath)

@@ -4,6 +4,7 @@
 
 #include <Chicane/Box/Asset/Header.hpp>
 #include <Chicane/Box/Font.hpp>
+#include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
 #include <Chicane/Box/Texture.hpp>
 #include <Chicane/Box/Sky.hpp>
@@ -106,7 +107,88 @@ void Program::createMesh(
     const Chicane::ProgramParam::Positionals& inSources,
     const Chicane::FileSystem::Path&          inOutput
 )
-{}
+{
+    std::unordered_map<Chicane::Box::AssetType, std::vector<Chicane::FileSystem::Path>> sources = {
+        {Chicane::Box::AssetType::Model,   {}},
+        {Chicane::Box::AssetType::Texture, {}}
+    };
+
+    for (const Chicane::String& source : inSources)
+    {
+        const Chicane::FileSystem::Path path(source.toStandard());
+        const Chicane::Box::AssetType   type = Chicane::Box::AssetHeader::getTypeFromExtension(path);
+
+        if (sources.find(type) == sources.end())
+        {
+            continue;
+        }
+
+        if (!Chicane::FileSystem::exists(path))
+        {
+            throw std::runtime_error(
+                "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(type) + "] reference file doesn't exist"
+            );
+        }
+
+        sources.at(type).push_back(path);
+    }
+
+    const std::vector<Chicane::FileSystem::Path>& models = sources.at(Chicane::Box::AssetType::Model);
+    if (models.empty())
+    {
+        throw std::runtime_error(
+            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) +
+            "] reference file is missing"
+        );
+    }
+
+    const std::vector<Chicane::FileSystem::Path>& textures = sources.at(Chicane::Box::AssetType::Texture);
+    if (textures.empty())
+    {
+        throw std::runtime_error(
+            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Texture) +
+            "] reference file is missing"
+        );
+    }
+
+    Chicane::FileSystem::Path output = inOutput;
+
+    if (output.empty())
+    {
+        Chicane::String location = inId;
+        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Mesh));
+
+        output = location.toStandard();
+    }
+
+    Chicane::Box::Mesh asset(output);
+    asset.setId(inId);
+
+    Chicane::Box::Model                  model(models.at(0));
+    Chicane::Box::ModelManager::Children modelGroups = getModelChildren(model);
+
+    Chicane::Box::Texture texture(textures.at(0));
+
+    if (modelGroups.empty())
+    {
+        throw std::runtime_error(
+            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) +
+            "] groups are missing"
+        );
+    }
+
+    for (const Chicane::String& reference : modelGroups)
+    {
+        Chicane::Box::MeshGroup group;
+        group.setId(reference);
+        group.setModel(model.getFilepath(), reference);
+        group.setTexture(texture.getFilepath(), texture.getId());
+
+        asset.appendGroup(group);
+    }
+
+    asset.saveXML();
+}
 
 void Program::createModel(
     const Chicane::String&                    inId,
@@ -203,7 +285,18 @@ void Program::createSky(
 
     Chicane::Box::Sky asset(output);
     asset.setId(inId);
-    asset.setModel(models.at(0));
+
+    Chicane::Box::Model                  model(models.at(0));
+    Chicane::Box::ModelManager::Children modelGroups = getModelChildren(model);
+
+    if (modelGroups.empty())
+    {
+        throw std::runtime_error(
+            "The Sky [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) + "] groups are missing"
+        );
+    }
+
+    asset.setModel(model.getFilepath(), modelGroups.at(0));
     asset.addTexture(textures);
     asset.saveXML();
 }
@@ -274,4 +367,11 @@ void Program::createSound(
     asset.setId(inId);
     asset.setData(source);
     asset.saveXML();
+}
+
+Chicane::Box::ModelManager::Children Program::getModelChildren(const Chicane::Box::Model& inAsset)
+{
+    Chicane::Box::getModelManager()->load(inAsset.getId(), inAsset);
+
+    return Chicane::Box::getModelManager()->getChildren(inAsset.getId());
 }

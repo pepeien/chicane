@@ -21,7 +21,7 @@ namespace Chicane
                 break;
 
             default:
-                throw std::runtime_error("Failed to import Model due to invalid type");
+                throw std::runtime_error("Failed to import Font due to invalid type");
             }
         }
 

@@ -20,6 +20,8 @@ namespace Editor
         spawnSky();
         spawnLights();
         spawnCharacter();
+
+        createActor<Item>("Mesh.bmsh");
     }
 
     void Scene::spawnSky()

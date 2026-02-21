@@ -16,10 +16,8 @@ namespace Chicane
             using List = std::vector<DrawPoly2DCommand>;
 
         public:
-            Renderer::DrawPolyData       polygon          = {};
-            Renderer::DrawPoly2DInstance instance         = {};
-            String                       textureReference = "";
-            float                        opacity          = 1.0f;
+            Renderer::DrawPolyData       polygon  = {};
+            Renderer::DrawPoly2DInstance instance = {};
         };
     }
 }

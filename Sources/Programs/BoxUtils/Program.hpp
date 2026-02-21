@@ -1,5 +1,8 @@
 #pragma once
 
+#include <Chicane/Box/Model.hpp>
+#include <Chicane/Box/Model/Manager.hpp>
+
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/Program.hpp>
 
@@ -57,4 +60,7 @@ private:
         const Chicane::ProgramParam::Positionals& inSources,
         const Chicane::FileSystem::Path&          inOutput
     );
+
+private:
+    Chicane::Box::ModelManager::Children getModelChildren(const Chicane::Box::Model& inAsset);
 };

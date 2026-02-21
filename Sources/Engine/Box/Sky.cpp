@@ -45,6 +45,19 @@ namespace Chicane
 
         void Sky::addTexture(const String& inSource, const String& inReference)
         {
+            if (std::find_if(
+                    m_textures.begin(),
+                    m_textures.end(),
+                    [&inSource, &inReference](const AssetReference& inAsset)
+                    {
+                        return inSource.equals(inAsset.getSource().string()) &&
+                               inReference.equals(inAsset.getReference());
+                    }
+                ) != m_textures.end())
+            {
+                return;
+            }
+
             pugi::xml_node textures = getXML().child(TEXTURES_TAG);
 
             if (textures.empty())
