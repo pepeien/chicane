@@ -11,6 +11,7 @@ namespace Game
 
     void watchScore(std::function<void(std::uint32_t)> inNext);
 
+    std::uint32_t getMaxScore();
     bool didReachMaxScore();
     void setMaxScore(std::uint32_t inScore);
 }

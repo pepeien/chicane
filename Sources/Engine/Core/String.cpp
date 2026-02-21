@@ -256,24 +256,24 @@ namespace Chicane
         return m_value.substr(inStart, inEnd);
     }
 
-    std::size_t String::firstOf(char inValue) const
+    std::size_t String::firstOf(char inValue, std::size_t inLocation) const
     {
-        return m_value.find_first_of(inValue);
+        return m_value.find_first_of(inValue, inLocation);
     }
 
-    std::size_t String::firstOf(const String& inValue) const
+    std::size_t String::firstOf(const String& inValue, std::size_t inLocation) const
     {
-        return m_value.find_first_of(inValue.toStandard());
+        return m_value.find_first_of(inValue.toStandard(), inLocation);
     }
 
-    std::size_t String::lastOf(char inValue) const
+    std::size_t String::lastOf(char inValue, std::size_t inLocation) const
     {
-        return m_value.find_last_of(inValue);
+        return m_value.find_last_of(inValue, inLocation);
     }
 
-    std::size_t String::lastOf(const String& inValue) const
+    std::size_t String::lastOf(const String& inValue, std::size_t inLocation) const
     {
-        return m_value.find_last_of(inValue.toStandard());
+        return m_value.find_last_of(inValue.toStandard(), inLocation);
     }
 
     String String::filter(char inValue) const

@@ -47,4 +47,6 @@ private:
     // Score
     std::uint32_t      m_playerScore;
     Chicane::Reference m_uiPlayerScore;
+    std::uint32_t      m_maxScore;
+    Chicane::Reference m_uiMaxScore;
 };
