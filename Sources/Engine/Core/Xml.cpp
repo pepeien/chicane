@@ -21,11 +21,14 @@ namespace Chicane
                 throw std::runtime_error("The XML document path is empty");
             }
 
-            inDocument.save_file(
-                inFilepath.c_str(),
-                "    ",
-                pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
-            );
+            if (!inDocument.save_file(
+                    inFilepath.c_str(),
+                    "    ",
+                    pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
+                ))
+            {
+                throw std::runtime_error("Failed to save the XML [ " + inFilepath.string() + " ]");
+            }
         }
 
         pugi::xml_document load(const FileSystem::Path& inFilepath)

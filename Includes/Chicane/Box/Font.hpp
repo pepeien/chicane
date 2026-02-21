@@ -20,16 +20,20 @@ namespace Chicane
             static constexpr inline const float BASE_SIZE = 16.0f;
 
         public:
+            static const String& getVendorExtension(FontVendor inValue);
+
+        public:
             Font(const FileSystem::Path& inFilepath);
             virtual ~Font() = default;
 
         public:
             FontVendor getVendor() const;
-            void setVendor(FontVendor inVendor);
+            void setVendor(const String& inExtension);
+            void setVendor(FontVendor inValue);
 
             const FontRaw& getData() const;
             void setData(const FileSystem::Path& inFilepath);
-            void setData(const FontRaw& inData);
+            void setData(const FontRaw& inValue);
 
         private:
             void fetchVendor();

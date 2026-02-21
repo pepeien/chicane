@@ -67,26 +67,22 @@ namespace Chicane
 
         std::vector<unsigned char> readUnsigned(const Path& inFilepath)
         {
-            std::basic_ifstream<unsigned char> file(inFilepath.string(), std::ios::ate | std::ios::binary);
+            std::ifstream file(inFilepath, std::ios::binary | std::ios::ate);
 
             if (!file)
             {
                 throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
             }
 
-            std::vector<unsigned char> result = {};
-            result.reserve(file.tellg());
-
-            unsigned char character;
-
+            std::streamsize size = file.tellg();
             file.seekg(0);
 
-            while (file.read(&character, sizeof(unsigned char)))
-            {
-                result.push_back(character);
-            }
+            std::vector<unsigned char> result(size);
 
-            file.close();
+            if (!file.read(reinterpret_cast<char*>(result.data()), size))
+            {
+                throw std::runtime_error(String::sprint("Failed to read the file [%s]", inFilepath.c_str()).toChar());
+            }
 
             return result;
         }

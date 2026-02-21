@@ -10,10 +10,21 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, FontVendor> VENDOR_MAP = {
-            {"OTF", FontVendor::OpenType},
-            {"TTF", FontVendor::TrueType}
+        static const std::unordered_map<FontVendor, String> VENDORS = {
+            {FontVendor::OpenType,  "OTF"},
+            {FontVendor::TrueType,  "TTF"},
+            {FontVendor::Undefined, "N/A"}
         };
+
+        const String& Font::getVendorExtension(FontVendor inValue)
+        {
+            if (VENDORS.find(inValue) == VENDORS.end())
+            {
+                return VENDORS.at(FontVendor::Undefined);
+            }
+
+            return VENDORS.at(inValue);
+        }
 
         Font::Font(const FileSystem::Path& inFilepath)
             : Asset(inFilepath)
@@ -27,33 +38,37 @@ namespace Chicane
             return m_vendor;
         }
 
-        void Font::setVendor(FontVendor inVendor)
+        void Font::setVendor(const String& inExtension)
         {
-            m_vendor = inVendor;
-
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
-            );
-
-            if (vendor == VENDOR_MAP.end())
+            if (inExtension.isEmpty())
             {
-                return;
-            }
-
-            String vendorID = vendor->first;
-
-            pugi::xml_node root = getXML();
-
-            if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
-            {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+                setVendor(FontVendor::Undefined);
 
                 return;
             }
 
-            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+            const String& value = inExtension.trim().toUpper();
+
+            for (const auto& [type, extension] : VENDORS)
+            {
+                if (!value.contains(extension))
+                {
+                    continue;
+                }
+
+                setVendor(type);
+
+                return;
+            }
+
+            setVendor(FontVendor::Undefined);
+        }
+
+        void Font::setVendor(FontVendor inValue)
+        {
+            m_vendor = inValue;
+
+            setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
         const FontRaw& Font::getData() const
@@ -65,9 +80,10 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                return;
+                throw std::runtime_error("Font source file was not found");
             }
 
+            setVendor(inFilepath.extension().string());
             setData(FileSystem::readUnsigned(inFilepath));
         }
 
@@ -80,36 +96,30 @@ namespace Chicane
 
             m_data = inData;
 
-            getXML().text().set(Base64::encode(inData));
+            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            {
+                throw std::runtime_error("Failed to save the font [" + m_header.filepath.string() + "] data");
+            }
         }
 
         void Font::fetchVendor()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }
 
-            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-
-            if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
-            {
-                m_vendor = FontVendor::Undefined;
-
-                return;
-            }
-
-            m_vendor = VENDOR_MAP.at(vendor);
+            setVendor(Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string());
         }
 
         void Font::fetchData()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            setData(Base64::decodeToUnsigned(getXML().text().as_string()));
         }
     }
 }

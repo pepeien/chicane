@@ -4,7 +4,7 @@ namespace Chicane
 {
     bool ProgramOption::isValueValid() const
     {
-        if (m_value.empty())
+        if (m_value.isEmpty())
         {
             return !m_bIsRequired;
         }
@@ -14,17 +14,7 @@ namespace Chicane
             return true;
         }
 
-        for (const String& value : m_value)
-        {
-            if (m_validValues.find(value) != m_validValues.end())
-            {
-                continue;
-            }
-
-            return false;
-        }
-
-        return true;
+        return m_validValues.find(m_value) != m_validValues.end();
     }
 
     bool ProgramOption::isRequired() const
