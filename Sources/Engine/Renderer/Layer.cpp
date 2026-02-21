@@ -24,6 +24,11 @@ namespace Chicane
             return m_id;
         }
 
+        const ViewportSettings& Layer::getViewport() const
+        {
+            return m_viewport;
+        }
+
         void Layer::setViewport(const ViewportSettings& inValue)
         {
             m_viewport = inValue;
