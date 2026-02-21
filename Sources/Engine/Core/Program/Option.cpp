@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    bool ProgramOption::isValid() const
+    bool ProgramOption::isValueValid() const
     {
         if (m_values.empty())
         {

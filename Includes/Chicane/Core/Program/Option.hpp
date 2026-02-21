@@ -19,7 +19,7 @@ namespace Chicane
         static constexpr inline const char* EXTENDED_PREFIX = "--";
 
     public:
-        bool isValid() const;
+        bool isValueValid() const;
 
         bool isRequired() const;
         void setIsRequired(bool bInValue);

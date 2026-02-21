@@ -29,14 +29,12 @@ namespace Chicane
 
         for (const ProgramOption& option : m_param.getOptions())
         {
-            if (option.isValid())
+            if (option.isValueValid())
             {
                 continue;
             }
 
             std::cout << "Option [ " << option.getName() << " ] is invalid." << std::endl;
-
-            return;
         }
 
         onExec(m_param);
