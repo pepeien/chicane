@@ -24,6 +24,7 @@ namespace Chicane
                 throw std::runtime_error("Failed to import Model due to invalid type");
             }
 
+            Children children = {};
             for (const auto& [name, model] : data)
             {
                 String id = inId;
@@ -31,7 +32,21 @@ namespace Chicane
                 id.append(name);
 
                 add(id, model);
+
+                children.push_back(id);
             }
+
+            m_groups[inId] = children;
+        }
+
+        ModelManager::Children ModelManager::getChildren(const String& inId) const
+        {
+            if (m_groups.find(inId) == m_groups.end())
+            {
+                return {};
+            }
+
+            return m_groups.at(inId);
         }
     }
 }

@@ -29,12 +29,11 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 
 .score {
     position: absolute;
-    width: 12em;
+    width: auto;
     height: 3em;
-    margin: 0 12em 0 100%;
+    margin: 100% 0 3em 0;
     background-color: rgba($grayColor, 0.3);
     font-size: 2em;
-    padding-left: 0.5em;
 }
 
 .crosshair {

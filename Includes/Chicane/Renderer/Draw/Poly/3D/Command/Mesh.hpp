@@ -5,6 +5,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 
 namespace Chicane
 {
@@ -16,8 +17,8 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommandMesh>;
 
         public:
-            String model   = {};
-            String texture = {};
+            String             model    = String::empty();
+            DrawPoly3DInstance instance = {};
         };
     }
 }

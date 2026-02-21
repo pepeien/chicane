@@ -1,11 +1,11 @@
 <Asset version="1" id="Debug">
+    <Model source="Contents/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
     <Textures>
-        <Texture source="Contents/Engine/Textures/Debug/Left.btex">Debug_Left</Texture>
         <Texture source="Contents/Engine/Textures/Debug/Right.btex">Debug_Right</Texture>
+        <Texture source="Contents/Engine/Textures/Debug/Left.btex">Debug_Left</Texture>
         <Texture source="Contents/Engine/Textures/Debug/Front.btex">Debug_Front</Texture>
         <Texture source="Contents/Engine/Textures/Debug/Back.btex">Debug_Back</Texture>
         <Texture source="Contents/Engine/Textures/Debug/Up.btex">Debug_Up</Texture>
         <Texture source="Contents/Engine/Textures/Debug/Down.btex">Debug_Down</Texture>
     </Textures>
-    <Model source="Contents/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
 </Asset>

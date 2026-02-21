@@ -12,13 +12,22 @@ namespace Chicane
 {
     namespace Box
     {
-        const std::unordered_map<String, AssetType> TYPES = {
-            {Sound::EXTENSION,   AssetType::Sound  },
-            {Font::EXTENSION,    AssetType::Font   },
-            {Mesh::EXTENSION,    AssetType::Mesh   },
-            {Model::EXTENSION,   AssetType::Model  },
-            {Sky::EXTENSION,     AssetType::Sky    },
-            {Texture::EXTENSION, AssetType::Texture}
+        const std::unordered_map<AssetType, String> TAGS = {
+            {AssetType::Font,    Font::TAG   },
+            {AssetType::Mesh,    Mesh::TAG   },
+            {AssetType::Model,   Model::TAG  },
+            {AssetType::Sky,     Sky::TAG    },
+            {AssetType::Sound,   Sound::TAG  },
+            {AssetType::Texture, Texture::TAG}
+        };
+
+        const std::unordered_map<AssetType, String> EXTENSIONS = {
+            {AssetType::Font,    Font::EXTENSION   },
+            {AssetType::Mesh,    Mesh::EXTENSION   },
+            {AssetType::Model,   Model::EXTENSION  },
+            {AssetType::Sky,     Sky::EXTENSION    },
+            {AssetType::Sound,   Sound::EXTENSION  },
+            {AssetType::Texture, Texture::EXTENSION}
         };
 
         bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)
@@ -28,32 +37,107 @@ namespace Chicane
                 return false;
             }
 
-            return TYPES.find(inFilepath.extension().string()) != TYPES.end();
-        }
+            const String value = inFilepath.extension().string();
 
-        AssetType AssetHeader::getType(const FileSystem::Path& inFilepath)
-        {
-            if (!isFileAsset(inFilepath))
+            for (const auto& [type, extension] : EXTENSIONS)
             {
-                return AssetType::Undefined;
-            }
-
-            return TYPES.at(inFilepath.extension().string());
-        }
-
-        String AssetHeader::getTypeExtension(AssetType inType)
-        {
-            for (const auto& [extension, type] : TYPES)
-            {
-                if (type != inType)
+                if (!extension.equals(value))
                 {
                     continue;
                 }
 
-                return extension;
+                return true;
             }
 
-            return "";
+            return false;
+        }
+
+        AssetType AssetHeader::getTypeFromExtension(const FileSystem::Path& inValue)
+        {
+            if (!isFileAsset(inValue))
+            {
+                return AssetType::Undefined;
+            }
+
+            const String value = inValue.extension().string();
+
+            for (const auto& [type, extension] : EXTENSIONS)
+            {
+                if (!extension.equals(value))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return AssetType::Undefined;
+        }
+
+        AssetType AssetHeader::getTypeFromTag(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return AssetType::Undefined;
+            }
+
+            const String value = inValue.trim();
+
+            for (const auto& [type, tag] : TAGS)
+            {
+                if (!tag.equals(value))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return AssetType::Undefined;
+        }
+
+        std::vector<String> AssetHeader::getTypeTags()
+        {
+            std::vector<String> result;
+
+            for (const auto& [type, name] : TAGS)
+            {
+                result.push_back(name);
+            }
+
+            return result;
+        }
+
+        const String& AssetHeader::getTypeTag(AssetType inValue)
+        {
+            if (TAGS.find(inValue) == TAGS.end())
+            {
+                return String::empty();
+            }
+
+            return TAGS.at(inValue);
+        }
+
+        std::vector<String> AssetHeader::getTypeExtensions()
+        {
+            std::vector<String> result;
+
+            for (const auto& [type, extension] : EXTENSIONS)
+            {
+                result.push_back(extension);
+            }
+
+            return result;
+        }
+
+        const String& AssetHeader::getTypeExtension(AssetType inValue)
+        {
+            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            {
+                return String::empty();
+            }
+
+            return EXTENSIONS.at(inValue);
         }
 
         AssetHeader::AssetHeader(const FileSystem::Path& inFilepath)
@@ -113,7 +197,7 @@ namespace Chicane
 
         void AssetHeader::fetchType()
         {
-            type = getType(filepath.string());
+            type = getTypeFromExtension(filepath);
         }
     }
 }

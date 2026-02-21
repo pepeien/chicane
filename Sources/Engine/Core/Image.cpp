@@ -8,52 +8,43 @@
 
 namespace Chicane
 {
-    static const std::unordered_map<String, ImageVendor> VENDOR_EXTENSIONS = {
-        {".jpg",  ImageVendor::Jpg},
-        {".jpeg", ImageVendor::Jpg},
-        {".png",  ImageVendor::Png}
+    static const std::unordered_map<ImageVendor, String> EXTENSIONS = {
+        {ImageVendor::Undefined, "N/A" },
+        {ImageVendor::Jpg,       "JPG" },
+        {ImageVendor::Jpg,       "JPEG"},
+        {ImageVendor::Png,       "PNG" },
     };
 
-    ImageVendor Image::extractVendor(const String& inValue)
+    ImageVendor Image::parseVendor(const String& inValue)
     {
         if (inValue.isEmpty())
         {
             return ImageVendor::Undefined;
         }
 
-        const String value = inValue.toLower();
+        const String& value = inValue.trim().toUpper();
 
-        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
+        for (const auto& [type, extension] : EXTENSIONS)
         {
-            if (!extension.contains(value))
+            if (!value.contains(extension))
             {
                 continue;
             }
 
-            return vendor;
+            return type;
         }
 
         return ImageVendor::Undefined;
     }
 
-    String Image::extractVendor(ImageVendor inValue)
+    const String& Image::getVendorExtension(ImageVendor inValue)
     {
-        if (inValue == ImageVendor::Undefined)
+        if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
         {
-            return "";
+            return EXTENSIONS.at(ImageVendor::Undefined);
         }
 
-        for (const auto& [extension, vendor] : VENDOR_EXTENSIONS)
-        {
-            if (vendor != inValue)
-            {
-                continue;
-            }
-
-            return extension.toUpper().filter(".");
-        }
-
-        return "";
+        return EXTENSIONS.at(inValue);
     }
 
     Image::Image(const FileSystem::Path& inLocation, bool bInShouldFlip)
@@ -61,7 +52,7 @@ namespace Chicane
     {
         stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
 
-        m_vendor = extractVendor(inLocation.extension());
+        m_vendor = parseVendor(inLocation.extension());
 
         m_format = STBI_rgb_alpha;
 
@@ -168,36 +159,52 @@ namespace Chicane
 
     void Image::rotate(float inAngle)
     {
-        float angle = inAngle * (M_PI / 180.0f);
+        const float angle = inAngle * (M_PI / 180.0f);
+        const float cosA  = std::cos(angle);
+        const float sinA  = std::sin(angle);
 
-        std::vector<unsigned char> src(m_pixels, m_pixels + m_width * m_height * m_channel);
+        const int pixelCount = m_width * m_height * m_channel;
 
-        int cx = m_width / 2;
-        int cy = m_height / 2;
+        std::vector<unsigned char> src(m_pixels, m_pixels + pixelCount);
+
+        const float cx = (m_width - 1) * 0.5f;
+        const float cy = (m_height - 1) * 0.5f;
 
         for (int y = 0; y < m_height; y++)
         {
+            float dy = y - cy;
+
             for (int x = 0; x < m_width; x++)
             {
                 float dx = x - cx;
-                float dy = y - cy;
 
-                float fx = std::cos(angle) * dx - std::sin(angle) * dy + cx;
-                float fy = std::sin(angle) * dx + std::cos(angle) * dy + cy;
+                float srcX = cosA * dx + sinA * dy + cx;
+                float srcY = -sinA * dx + cosA * dy + cy;
 
-                int x2 = static_cast<int>(std::round(fx));
-                int y2 = static_cast<int>(std::round(fy));
+                srcX = std::clamp(srcX, 0.0f, (float)(m_width - 1));
+                srcY = std::clamp(srcY, 0.0f, (float)(m_height - 1));
+
+                int x0 = (int)srcX;
+                int y0 = (int)srcY;
+                int x1 = std::min(x0 + 1, m_width - 1);
+                int y1 = std::min(y0 + 1, m_height - 1);
+
+                float tx = srcX - x0;
+                float ty = srcY - y0;
 
                 unsigned char* dst = m_pixels + m_channel * (y * m_width + x);
 
-                if (x2 < 0 || x2 >= m_width || y2 < 0 || y2 >= m_height)
+                unsigned char* p00 = &src[m_channel * (y0 * m_width + x0)];
+                unsigned char* p10 = &src[m_channel * (y0 * m_width + x1)];
+                unsigned char* p01 = &src[m_channel * (y1 * m_width + x0)];
+                unsigned char* p11 = &src[m_channel * (y1 * m_width + x1)];
+
+                for (int c = 0; c < m_channel; c++)
                 {
-                    std::fill(dst, dst + m_channel, 0);
-                }
-                else
-                {
-                    unsigned char* srcp = &src[m_channel * (y2 * m_width + x2)];
-                    std::copy(srcp, srcp + m_channel, dst);
+                    float v = (1 - tx) * (1 - ty) * p00[c] + tx * (1 - ty) * p10[c] + (1 - tx) * ty * p01[c] +
+                              tx * ty * p11[c];
+
+                    dst[c] = (unsigned char)(v + 0.5f);
                 }
             }
         }

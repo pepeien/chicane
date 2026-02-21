@@ -14,10 +14,20 @@ namespace Chicane
         class CHICANE_BOX ModelManager : public Box::Manager<Model, ModelParsed>
         {
         public:
+            using Children = std::vector<String>;
+            using Groups   = std::unordered_map<String, Children>;
+
+        public:
             ModelManager();
 
         protected:
             void onLoad(const String& inId, const Model& inData) override;
+
+        public:
+            Children getChildren(const String& inId) const;
+
+        private:
+            Groups m_groups;
         };
     }
 }

@@ -11,21 +11,21 @@
 [submodule "Sources/Engine/Core/Vendor/glm"]
 	path = Sources/Engine/Core/Vendor/glm
 	url = https://github.com/pepeien/glm.git
+[submodule "Sources/Engine/Core/Vendor/libtess2"]
+	path = Sources/Engine/Core/Vendor/libtess2
+	url = https://github.com/pepeien/libtess2.git
 [submodule "Sources/Engine/Core/Vendor/pugixml"]
 	path = Sources/Engine/Core/Vendor/pugixml
 	url = https://github.com/pepeien/pugixml.git
 [submodule "Sources/Engine/Core/Vendor/SDL"]
 	path = Sources/Engine/Core/Vendor/SDL
 	url = https://github.com/pepeien/SDL.git
+[submodule "Sources/Engine/Core/Vendor/xxHash"]
+	path = Sources/Engine/Core/Vendor/xxHash
+	url = https://github.com/pepeien/xxHash.git
 [submodule "Sources/Engine/Kerb/Vendor/JoltPhysics"]
 	path = Sources/Engine/Kerb/Vendor/JoltPhysics
 	url = https://github.com/pepeien/JoltPhysics
 [submodule "Sources/Engine/Screech/Vendor/miniaudio"]
 	path = Sources/Engine/Screech/Vendor/miniaudio
 	url = https://github.com/pepeien/miniaudio.git
-[submodule "Sources/Engine/Core/Vendor/xxHash"]
-	path = Sources/Engine/Core/Vendor/xxHash
-	url = https://github.com/pepeien/xxHash.git
-[submodule "Sources/Engine/Core/Vendor/libtess2"]
-	path = Sources/Engine/Core/Vendor/libtess2
-	url = https://github.com/pepeien/libtess2.git

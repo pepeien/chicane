@@ -1,0 +1,11 @@
+<Asset version="1" id="Editor_Default">
+    <Model source="Contents/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
+    <Textures>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Right.btex">Editor_Default_Right</Texture>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Left.btex">Editor_Default_Left</Texture>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Front.btex">Editor_Default_Front</Texture>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Back.btex">Editor_Default_Back</Texture>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Up.btex">Editor_Default_Up</Texture>
+        <Texture source="Contents/Editor/Textures/Sky/Default/Down.btex">Editor_Default_Down</Texture>
+    </Textures>
+</Asset>

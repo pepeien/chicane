@@ -51,6 +51,7 @@ namespace Chicane
             // Settings
             const String& getId() const;
 
+            const ViewportSettings& getViewport() const;
             void setViewport(const ViewportSettings& inValue);
 
             template <typename T = Backend>

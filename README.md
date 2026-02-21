@@ -10,28 +10,31 @@
 - Multiplataform:
     - Windows (^=10);
     - Linux.
-- Asset system: 
+- Multi graphical API support:
+    - OpenGL;
+    - Vulkan.
+- Asset system (`Chicane::Box`): 
     - Audio:
         - Waves Audio (.wav).
     - Fonts:
+        - OpenType Font (.otf);
         - TrueType Font (.ttf).
     - 3D Models:
         - Wavefront (.obj).
     - Textures:
-        - JPG (.jpg);
-        - PNG (.png).
-- UI system:
+        - JPG  (.jpg);
+        - JPEG (.jpeg);
+        - PNG  (.png).
+- UI system (`Chicane::Grid`):
     - Button;
     - Container;
     - Popup;
-    - Text;
-    - Input;
+    - Text:
+        - Input;
+        - Character;
     - View.
-- Graphics API support:
-    - OpenGL:
-        - Shadow Mapping. 
-    - Vulkan:
-        - Shadow mapping.
+- Rendering system (`Chicane::Renderer`):
+    - Shadow Mapping.
 
 ## Compiling
 This project uses CMake to generate and build files, it should pretty straight forward both on linux and windows platforms.

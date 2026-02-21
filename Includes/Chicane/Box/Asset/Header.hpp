@@ -14,8 +14,15 @@ namespace Chicane
         {
         public:
             static bool isFileAsset(const FileSystem::Path& inFilepath);
-            static AssetType getType(const FileSystem::Path& inFilepath);
-            static String getTypeExtension(AssetType inType);
+
+            static AssetType getTypeFromExtension(const FileSystem::Path& inFilepath);
+            static AssetType getTypeFromTag(const String& inValue);
+
+            static std::vector<String> getTypeTags();
+            static const String& getTypeTag(AssetType inValue);
+
+            static std::vector<String> getTypeExtensions();
+            static const String& getTypeExtension(AssetType inValue);
 
         public:
             AssetHeader(const FileSystem::Path& inFilepath);

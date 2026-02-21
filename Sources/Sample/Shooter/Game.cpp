@@ -14,21 +14,6 @@ namespace Game
         return m_score;
     }
 
-    bool didReachMaxScore()
-    {
-        return m_score >= m_maxScore;
-    }
-
-    void setMaxScore(std::uint32_t inScore)
-    {
-        m_maxScore = inScore;
-    }
-
-    void watchScore(std::function<void(std::uint32_t)> inNext)
-    {
-        m_scoreObservable.subscribe(inNext);
-    }
-
     void incrementScore(std::uint32_t inScore)
     {
         m_score = std::min(m_score + inScore, m_maxScore);
@@ -41,5 +26,25 @@ namespace Game
         m_score = std::max(m_score - inScore, 0U);
 
         m_scoreObservable.next(m_score);
+    }
+
+    void watchScore(std::function<void(std::uint32_t)> inNext)
+    {
+        m_scoreObservable.subscribe(inNext);
+    }
+
+    std::uint32_t getMaxScore()
+    {
+        return m_maxScore;
+    }
+
+    bool didReachMaxScore()
+    {
+        return m_score >= m_maxScore;
+    }
+
+    void setMaxScore(std::uint32_t inScore)
+    {
+        m_maxScore = inScore;
     }
 }

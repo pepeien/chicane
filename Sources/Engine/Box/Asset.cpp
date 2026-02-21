@@ -11,15 +11,14 @@ namespace Chicane
                 return;
             }
 
-            if (FileSystem::exists(inSource))
-            {
-                fetchXML(inSource);
-            }
-            else
+            if (!FileSystem::exists(inSource))
             {
                 createXML(inSource);
-                saveXML();
+
+                return;
             }
+
+            fetchXML(inSource);
 
             m_header = AssetHeader(inSource);
         }
@@ -78,7 +77,7 @@ namespace Chicane
 
             m_header.version = inVersion;
 
-            m_xml.first_child().attribute(VERSION_ATTRIBUTE_NAME).set_value(inVersion);
+            getXML().attribute(VERSION_ATTRIBUTE_NAME).set_value(inVersion);
         }
 
         const String& Asset::getId() const
@@ -95,7 +94,7 @@ namespace Chicane
 
             m_header.id = inId;
 
-            m_xml.first_child().attribute(ID_ATTRIBUTE_NAME).set_value(inId);
+            setAttribute(ID_ATTRIBUTE_NAME, m_header.id);
         }
 
         AssetType Asset::getType() const
@@ -113,6 +112,30 @@ namespace Chicane
             Xml::save(m_xml, getFilepath().string());
         }
 
+        pugi::xml_attribute Asset::getAttribute(const String& inId)
+        {
+            return getXML().attribute(inId);
+        }
+
+        void Asset::setAttribute(const String& inId, const String& inData)
+        {
+            if (inId.isEmpty() || inData.isEmpty())
+            {
+                return;
+            }
+
+            const String id = inId.trim();
+
+            pugi::xml_attribute attribute = getAttribute(inId);
+
+            if (attribute.empty())
+            {
+                attribute = getXML().append_attribute(id);
+            }
+
+            attribute.set_value(inData.toChar());
+        }
+
         pugi::xml_node Asset::getXML() const
         {
             return m_xml.first_child();
@@ -128,6 +151,8 @@ namespace Chicane
             pugi::xml_node root = m_xml.append_child(TAG);
 
             root.append_attribute(VERSION_ATTRIBUTE_NAME).set_value(CURRENT_VERSION);
+
+            setFilepath(inFilepath);
         }
 
         void Asset::fetchXML(const FileSystem::Path& inFilepath)

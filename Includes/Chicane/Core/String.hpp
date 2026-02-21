@@ -179,11 +179,11 @@ namespace Chicane
 
         String substr(std::size_t inStart, std::size_t inEnd = npos) const;
 
-        std::size_t firstOf(char inValue) const;
-        std::size_t firstOf(const String& inValue) const;
+        std::size_t firstOf(char inValue, std::size_t inLocation = 0L) const;
+        std::size_t firstOf(const String& inValue, std::size_t inLocation = 0L) const;
 
-        std::size_t lastOf(char inValue) const;
-        std::size_t lastOf(const String& inValue) const;
+        std::size_t lastOf(char inValue, std::size_t inLocation = npos) const;
+        std::size_t lastOf(const String& inValue, std::size_t inLocation = npos) const;
 
         String filter(char inValue) const;
         String filter(const String& inValue) const;

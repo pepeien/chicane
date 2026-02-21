@@ -23,8 +23,41 @@ namespace Chicane
             return m_textures;
         }
 
+        void Sky::addTexture(const std::vector<FileSystem::Path>& inFilepaths)
+        {
+            for (const FileSystem::Path& path : inFilepaths)
+            {
+                addTexture(path);
+            }
+        }
+
+        void Sky::addTexture(const FileSystem::Path& inFilepath)
+        {
+            if (!FileSystem::exists(inFilepath))
+            {
+                throw std::runtime_error("Texture reference file [" + inFilepath.string() + "] was not found");
+            }
+
+            Box::Texture asset(inFilepath);
+
+            addTexture(asset.getFilepath().string(), asset.getId());
+        }
+
         void Sky::addTexture(const String& inSource, const String& inReference)
         {
+            if (std::find_if(
+                    m_textures.begin(),
+                    m_textures.end(),
+                    [&inSource, &inReference](const AssetReference& inAsset)
+                    {
+                        return inSource.equals(inAsset.getSource().string()) &&
+                               inReference.equals(inAsset.getReference());
+                    }
+                ) != m_textures.end())
+            {
+                return;
+            }
+
             pugi::xml_node textures = getXML().child(TEXTURES_TAG);
 
             if (textures.empty())
@@ -45,6 +78,18 @@ namespace Chicane
         const AssetReference& Sky::getModel() const
         {
             return m_model;
+        }
+
+        void Sky::setModel(const FileSystem::Path& inFilepath)
+        {
+            if (!FileSystem::exists(inFilepath))
+            {
+                throw std::runtime_error("Model reference file [" + inFilepath.string() + "] was not found");
+            }
+
+            Box::Model asset(inFilepath);
+
+            setModel(asset.getFilepath().string(), asset.getId());
         }
 
         void Sky::setModel(const String& inSource, const String& inReference)
@@ -81,14 +126,14 @@ namespace Chicane
 
         void Sky::fetchModel()
         {
-            const pugi::xml_node node = getXML().child(Model::TAG);
+            const pugi::xml_node model = getXML().child(Model::TAG);
 
-            if (node.empty())
+            if (model.empty())
             {
                 return;
             }
 
-            m_model.setFrom(node);
+            m_model.setFrom(model);
         }
     }
 }

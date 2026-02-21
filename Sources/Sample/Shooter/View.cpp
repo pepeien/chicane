@@ -35,8 +35,12 @@ View::View()
       m_crosshairColorA(1.0f),
       m_uiCrosshairColorA(Chicane::Reference::fromValue<float>(&m_crosshairColorA)),
       m_playerScore(0U),
-      m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore))
+      m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore)),
+      m_maxScore(0U),
+      m_uiMaxScore(Chicane::Reference::fromValue<std::uint32_t>(&m_maxScore))
 {
+    m_maxScore = Game::getMaxScore();
+
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
@@ -79,4 +83,5 @@ View::View()
     addReference("crosshairColorB", &m_uiCrosshairColorB);
     addReference("crosshairColorA", &m_uiCrosshairColorA);
     addReference("playerScore", &m_uiPlayerScore);
+    addReference("maxScore", &m_uiMaxScore);
 }

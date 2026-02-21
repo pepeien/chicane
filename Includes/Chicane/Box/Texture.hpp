@@ -26,10 +26,11 @@ namespace Chicane
 
         public:
             ImageVendor getVendor() const;
-            void setVendor(ImageVendor inVendor);
+            void setVendor(const String& inValue);
+            void setVendor(ImageVendor inValue);
 
             const Image::Raw& getData() const;
-            void setData(const String& inFilepath);
+            void setData(const FileSystem::Path& inFilepath);
             void setData(const Image::Raw& inData);
 
         private:

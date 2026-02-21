@@ -10,13 +10,48 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, FontVendor> VENDOR_MAP = {
-            {"OTF", FontVendor::OpenType},
-            {"TTF", FontVendor::TrueType}
+        static const std::unordered_map<FontVendor, String> EXTENSIONS = {
+            {FontVendor::Undefined, "N/A"},
+            {FontVendor::OpenType,  "OTF"},
+            {FontVendor::TrueType,  "TTF"},
         };
 
+        FontVendor Font::parseVendor(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return FontVendor::Undefined;
+            }
+
+            const String& value = inValue.trim().toUpper();
+
+            for (const auto& [type, extension] : EXTENSIONS)
+            {
+                if (!value.contains(extension))
+                {
+                    continue;
+                }
+
+                return type;
+            }
+
+            return FontVendor::Undefined;
+        }
+
+        const String& Font::getVendorExtension(FontVendor inValue)
+        {
+            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            {
+                return EXTENSIONS.at(FontVendor::Undefined);
+            }
+
+            return EXTENSIONS.at(inValue);
+        }
+
         Font::Font(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_vendor(FontVendor::Undefined),
+              m_data({})
         {
             fetchVendor();
             fetchData();
@@ -27,33 +62,16 @@ namespace Chicane
             return m_vendor;
         }
 
-        void Font::setVendor(FontVendor inVendor)
+        void Font::setVendor(const String& inValue)
         {
-            m_vendor = inVendor;
+            setVendor(parseVendor(inValue));
+        }
 
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
-            );
+        void Font::setVendor(FontVendor inValue)
+        {
+            m_vendor = inValue;
 
-            if (vendor == VENDOR_MAP.end())
-            {
-                return;
-            }
-
-            String vendorID = vendor->first;
-
-            pugi::xml_node root = getXML();
-
-            if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
-            {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
-
-                return;
-            }
-
-            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+            setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
         const FontRaw& Font::getData() const
@@ -65,46 +83,36 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                return;
+                throw std::runtime_error("Font source file was not found");
             }
 
+            setVendor(inFilepath.extension().string());
             setData(FileSystem::readUnsigned(inFilepath));
         }
 
         void Font::setData(const FontRaw& inData)
         {
-            if (inData.empty())
-            {
-                return;
-            }
-
             m_data = inData;
 
-            getXML().text().set(Base64::encode(inData));
+            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            {
+                throw std::runtime_error("Failed to save the font [" + m_header.filepath.string() + "] data");
+            }
         }
 
         void Font::fetchVendor()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }
 
-            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-
-            if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
-            {
-                m_vendor = FontVendor::Undefined;
-
-                return;
-            }
-
-            m_vendor = VENDOR_MAP.at(vendor);
+            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
         void Font::fetchData()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (isEmpty())
             {
                 return;
             }

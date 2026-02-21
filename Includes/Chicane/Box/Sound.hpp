@@ -17,7 +17,6 @@ namespace Chicane
             static constexpr inline const char* TAG       = "Sound";
 
         public:
-            Sound(const Raw& inData);
             Sound(const FileSystem::Path& inFilepath);
             virtual ~Sound() = default;
 

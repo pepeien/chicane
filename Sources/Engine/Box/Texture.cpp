@@ -9,7 +9,8 @@ namespace Chicane
     {
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-              m_vendor(ImageVendor::Undefined)
+              m_vendor(ImageVendor::Undefined),
+              m_data({})
         {
             fetchVendor();
             fetchData();
@@ -20,22 +21,16 @@ namespace Chicane
             return m_vendor;
         }
 
-        void Texture::setVendor(ImageVendor inVendor)
+        void Texture::setVendor(const String& inValue)
         {
-            m_vendor = inVendor;
+            setVendor(Image::parseVendor(inValue));
+        }
 
-            String vendorValue = Image::extractVendor(m_vendor);
+        void Texture::setVendor(ImageVendor inValue)
+        {
+            m_vendor = inValue;
 
-            pugi::xml_node root = getXML();
-
-            if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
-            {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorValue.toChar());
-
-                return;
-            }
-
-            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorValue.toChar());
+            setAttribute(VENDOR_ATTRIBUTE_NAME, Image::getVendorExtension(m_vendor));
         }
 
         const Image::Raw& Texture::getData() const
@@ -43,35 +38,45 @@ namespace Chicane
             return m_data;
         }
 
-        void Texture::setData(const String& inFilepath)
+        void Texture::setData(const FileSystem::Path& inFilepath)
         {
-            if (!FileSystem::exists(inFilepath.toStandard()))
+            if (!FileSystem::exists(inFilepath))
             {
-                m_data.clear();
-
-                return;
+                throw std::runtime_error("Texture source file was not found");
             }
 
-            setData(FileSystem::readUnsigned(inFilepath.toStandard()));
+            setVendor(inFilepath.extension().string());
+            setData(FileSystem::readUnsigned(inFilepath));
         }
 
         void Texture::setData(const Image::Raw& inData)
         {
             m_data = inData;
 
-            getXML().text().set(Base64::encode(inData));
+            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            {
+                throw std::runtime_error("Failed to save the texture [" + m_header.filepath.string() + "] data");
+            }
         }
 
         void Texture::fetchVendor()
         {
-            const String value = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
-            m_vendor           = Image::extractVendor(value);
+            if (isEmpty())
+            {
+                return;
+            }
+
+            m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
         void Texture::fetchData()
         {
-            const String& value = getXML().text().as_string();
-            m_data              = Base64::decodeToUnsigned(value);
+            if (isEmpty())
+            {
+                return;
+            }
+
+            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
         }
     }
 }

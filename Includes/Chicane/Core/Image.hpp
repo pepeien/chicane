@@ -17,8 +17,8 @@ namespace Chicane
         using List   = std::vector<Image>;
 
     public:
-        static ImageVendor extractVendor(const String& inValue);
-        static String extractVendor(ImageVendor inValue);
+        static ImageVendor parseVendor(const String& inValue);
+        static const String& getVendorExtension(ImageVendor inValue);
 
     public:
         Image(const FileSystem::Path& inLocation, bool bInShouldFlip = true);

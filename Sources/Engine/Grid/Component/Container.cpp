@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Component/Container.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Grid

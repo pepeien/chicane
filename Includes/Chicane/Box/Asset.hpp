@@ -46,6 +46,10 @@ namespace Chicane
             pugi::xml_node getXML() const;
             void saveXML();
 
+        protected:
+            pugi::xml_attribute getAttribute(const String& inId);
+            void setAttribute(const String& inId, const String& inData);
+
         private:
             void createXML(const FileSystem::Path& inFilepath);
             void fetchXML(const FileSystem::Path& inFilepath);

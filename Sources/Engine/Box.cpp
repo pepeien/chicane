@@ -74,7 +74,7 @@ namespace Chicane
 
         const Sound* loadSound(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Sound)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sound)
             {
                 throw std::runtime_error(inFilePath.string() + " is not a audio");
             }
@@ -93,7 +93,7 @@ namespace Chicane
 
         const Font* loadFont(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Font)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Font)
             {
                 throw std::runtime_error(inFilePath.string() + " is not a font");
             }
@@ -112,7 +112,7 @@ namespace Chicane
 
         const Model* loadModel(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Model)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Model)
             {
                 throw std::runtime_error(inFilePath.string() + " is not a model");
             }
@@ -131,7 +131,7 @@ namespace Chicane
 
         const Texture* loadTexture(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Texture)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Texture)
             {
                 throw std::runtime_error(inFilePath.string() + "is not a texture");
             }
@@ -150,7 +150,7 @@ namespace Chicane
 
         const Mesh* loadMesh(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Mesh)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Mesh)
             {
                 throw std::runtime_error(inFilePath.string() + "is not a mesh");
             }
@@ -173,7 +173,7 @@ namespace Chicane
 
         const Sky* loadSky(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getType(inFilePath) != AssetType::Sky)
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sky)
             {
                 throw std::runtime_error(inFilePath.string() + " is not a skybox");
             }

@@ -149,13 +149,19 @@ namespace Chicane
 
         vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
         {
-            const Viewport viewport = getLayerViewport(inLayer);
+            Vec<2, std::uint32_t>   resolution = {swapchain.extent.width, swapchain.extent.height};
+            const ViewportSettings& viewport   = inLayer->getViewport();
+
+            Size size;
+            size.setIsAsobute(true);
+            size.setRoot(resolution);
+            size.setParent(resolution);
 
             vk::Viewport result;
-            result.x        = viewport.position.x;
-            result.y        = viewport.position.y;
-            result.width    = swapchain.extent.width;
-            result.height   = swapchain.extent.height;
+            result.x        = size.parse(viewport.offsetX, SizeDirection::Horizontal);
+            result.y        = size.parse(viewport.offsetY, SizeDirection::Vertical);
+            result.width    = size.parse(viewport.width, SizeDirection::Horizontal);
+            result.height   = size.parse(viewport.height, SizeDirection::Vertical);
             result.minDepth = 0.0f;
             result.maxDepth = 1.0f;
 
