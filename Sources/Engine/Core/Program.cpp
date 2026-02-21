@@ -1,6 +1,7 @@
 #include "Chicane/Core/Program.hpp"
 
 #include <iostream>
+#include <iomanip>
 
 namespace Chicane
 {
@@ -47,57 +48,68 @@ namespace Chicane
         std::cout << "Usage: " << m_name << " [options] [--] [args]" << std::endl;
         std::cout << "Options:" << std::endl;
 
+        std::size_t maxNameSize        = 0U;
         std::size_t maxDescriptionSize = 0U;
         for (const ProgramOption& option : m_param.getOptions())
         {
-            if (option.getName().isEmpty())
+            if (!option.getName().isEmpty())
             {
-                continue;
+                std::size_t nameSize = option.getName().size();
+                if (nameSize > maxNameSize)
+                {
+                    maxNameSize = nameSize;
+                }
             }
 
-            std::size_t descriptionSize = option.getDescription().size();
-
-            if (descriptionSize <= maxDescriptionSize)
+            if (!option.getDescription().isEmpty())
             {
-                continue;
+                std::size_t descriptionSize = option.getDescription().size();
+                if (descriptionSize > maxDescriptionSize)
+                {
+                    maxDescriptionSize = descriptionSize;
+                }
             }
-
-            maxDescriptionSize = option.getDescription().size();
         }
 
         for (const ProgramOption& option : m_param.getOptions())
         {
-            if (option.getName().isEmpty())
-            {
-                continue;
-            }
+            const String& name        = option.getName();
+            const String& description = option.getDescription();
 
-            std::cout << "\t-" << option.getName().at(0) << " --" << option.getName();
-
-            if (option.getDescription().size() >= maxDescriptionSize)
-            {
-                std::cout << " ";
-            }
-
-            for (std::size_t i = option.getDescription().size(); i < maxDescriptionSize; i++)
-            {
-                std::cout << " ";
-            }
-
-            std::cout << " \"" << option.getDescription() << "\"";
-
+            String validValues = "";
             if (!option.getValidValues().empty())
             {
-                String validValues = "";
-
                 for (const String& validValue : option.getValidValues())
                 {
                     validValues.append(validValue);
                     validValues.append(',');
                 }
                 validValues.popBack();
+            }
 
-                std::cout << " [ " << validValues.toStandard() << " ] ";
+            std::cout << std::left;
+
+            if (!description.isEmpty())
+            {
+                std::cout << "\t-" << name.at(0) << " --" << name;
+                std::cout << std::setw(maxNameSize - name.size()) << " ";
+
+                if (name.size() < maxNameSize)
+                {
+                    std::cout << " ";
+                }
+            }
+
+            if (!description.isEmpty())
+            {
+                std::cout << "\"" << description << "\"";
+            }
+
+            if (!validValues.isEmpty())
+            {
+                std::cout << " ";
+                std::cout << std::setw(maxDescriptionSize - description.size()) << " ";
+                std::cout << "[ " << validValues << " ]";
             }
 
             std::cout << std::endl;
