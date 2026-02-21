@@ -8,6 +8,26 @@ namespace Chicane
           m_options({})
     {}
 
+    bool ProgramParam::isEmpty() const
+    {
+        if (!m_flags.empty() || !m_positionals.empty())
+        {
+            return false;
+        }
+
+        for (const ProgramOption& option : m_options)
+        {
+            if (option.getValue().isEmpty())
+            {
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     void ProgramParam::addOption(const ProgramOptionSetting& inSetting)
     {
         ProgramOption* option = getOption(inSetting.name);

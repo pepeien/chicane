@@ -19,6 +19,8 @@ namespace Chicane
         ProgramParam();
 
     public:
+        bool isEmpty() const;
+
         void addOption(const ProgramOptionSetting& inSetting);
 
         void parse(int inParamCount, char* inParamValue[]);

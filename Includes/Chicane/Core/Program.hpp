@@ -12,6 +12,10 @@ namespace Chicane
     class CHICANE_CORE Program
     {
     public:
+        static constexpr inline const char* HELP_OPTION_NAME        = "help";
+        static constexpr inline const char* HELP_OPTION_DESCRIPTION = "Show this menu";
+
+    public:
         Program(const String& inName);
 
     protected:

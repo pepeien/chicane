@@ -8,7 +8,13 @@ namespace Chicane
     Program::Program(const String& inName)
         : m_name(inName.trim()),
           m_param({})
-    {}
+    {
+        ProgramOptionSetting helpOption;
+        helpOption.bIsRequired = false;
+        helpOption.name        = HELP_OPTION_NAME;
+        helpOption.description = HELP_OPTION_DESCRIPTION;
+        addOption(helpOption);
+    }
 
     Program& Program::addOption(const ProgramOptionSetting& inSetting)
     {
@@ -21,7 +27,7 @@ namespace Chicane
     {
         m_param.parse(inParamCount, inParamValue);
 
-        if (m_param.hasFlag('h') || m_param.hasFlag("help"))
+        if (m_param.hasFlag(HELP_OPTION_NAME[0]) || m_param.hasFlag(HELP_OPTION_NAME) || m_param.isEmpty())
         {
             showHelp();
 
