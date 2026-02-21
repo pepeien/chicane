@@ -84,13 +84,39 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_SETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVendor",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "",
                             "name": "ImageVendor",
                             "suffix": "",
                             "path": "Core/Image/Vendor",
                             "templates": []
                         },
-                        "name": "inVendor"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
@@ -128,9 +154,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
+                            "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/String",
+                            "path": "Core/FileSystem",
                             "templates": []
                         },
                         "name": "inFilepath"

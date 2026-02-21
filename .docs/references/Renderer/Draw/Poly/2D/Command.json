@@ -56,32 +56,6 @@
                 },
                 "name": "instance",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_INSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "textureReference",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_TEXTUREREFERENCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "opacity",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_OPACITY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_DESCRIPTION"

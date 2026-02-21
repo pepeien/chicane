@@ -221,7 +221,7 @@
                     "path": "Core/Image/Vendor",
                     "templates": []
                 },
-                "name": "extractVendor",
+                "name": "parseVendor",
                 "parameters": [
                     {
                         "type": {
@@ -237,19 +237,19 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_EXTRACTVENDOR_DESCRIPTION"
+                "description": "CHICANE_IMAGE_PARSEVENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "String",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "extractVendor",
+                "name": "getVendorExtension",
                 "parameters": [
                     {
                         "type": {
@@ -265,7 +265,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_EXTRACTVENDOR_DESCRIPTION"
+                "description": "CHICANE_IMAGE_GETVENDOREXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -1,0 +1,325 @@
+{
+    "title": "ProgramParam",
+    "filename": "Param",
+    "path": "Core/Program/Param",
+    "source": {
+        "header": "Includes/Chicane/Core/Program/Param.hpp",
+        "namespace": "Chicane::ProgramParam",
+        "types": [
+            {
+                "name": "Flags",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_PROGRAMPARAM_FLAGS_DESCRIPTION"
+            },
+            {
+                "name": "Positionals",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_PROGRAMPARAM_POSITIONALS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ProgramParam",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAMPARAM_PROGRAMPARAM_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addOption",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ProgramOptionSetting",
+                            "suffix": "&",
+                            "path": "Core/Program/Option/Setting",
+                            "templates": []
+                        },
+                        "name": "inSetting"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAMPARAM_ADDOPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParamCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParamValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAMPARAM_PARSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasFlag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_HASFLAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Flags",
+                    "suffix": "&",
+                    "path": "Core/Program/Param",
+                    "templates": []
+                },
+                "name": "getFlags",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_GETFLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Positionals",
+                    "suffix": "&",
+                    "path": "Core/Program/Param",
+                    "templates": []
+                },
+                "name": "getPositionals",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_GETPOSITIONALS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ProgramOption::List",
+                    "suffix": "&",
+                    "path": "Core/Program/Option",
+                    "templates": []
+                },
+                "name": "getOptions",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_GETOPTIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ProgramOption",
+                    "suffix": "*",
+                    "path": "Core/Program/Option",
+                    "templates": []
+                },
+                "name": "getOption",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PROGRAMPARAM_GETOPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ProgramOption",
+                    "suffix": "*",
+                    "path": "Core/Program/Option",
+                    "templates": []
+                },
+                "name": "getOption",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAMPARAM_GETOPTION_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Flags",
+                    "suffix": "",
+                    "path": "Core/Program/Param",
+                    "templates": []
+                },
+                "name": "m_flags",
+                "description": "CHICANE_PROGRAMPARAM_M_FLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Positionals",
+                    "suffix": "",
+                    "path": "Core/Program/Param",
+                    "templates": []
+                },
+                "name": "m_positionals",
+                "description": "CHICANE_PROGRAMPARAM_M_POSITIONALS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ProgramOption::List",
+                    "suffix": "",
+                    "path": "Core/Program/Option",
+                    "templates": []
+                },
+                "name": "m_options",
+                "description": "CHICANE_PROGRAMPARAM_M_OPTIONS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_PROGRAMPARAM_DESCRIPTION"
+    },
+    "children": []
+}

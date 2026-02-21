@@ -26,17 +26,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Sound",
-                "description": "CHICANE_BOX_ASSETTYPE_SOUND_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "Font",
                 "description": "CHICANE_BOX_ASSETTYPE_FONT_DESCRIPTION"
             },
@@ -83,6 +72,17 @@
                 },
                 "name": "Sky",
                 "description": "CHICANE_BOX_ASSETTYPE_SKY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sound",
+                "description": "CHICANE_BOX_ASSETTYPE_SOUND_DESCRIPTION"
             }
         ],
         "constructors": [],

@@ -5,7 +5,53 @@
     "source": {
         "header": "Includes/Chicane/Box/Model/Manager.hpp",
         "namespace": "Chicane::Box::ModelManager",
-        "types": [],
+        "types": [
+            {
+                "name": "Children",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MODELMANAGER_CHILDREN_DESCRIPTION"
+            },
+            {
+                "name": "Groups",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Children",
+                            "suffix": "",
+                            "path": "Box/Model/Manager",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MODELMANAGER_GROUPS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -26,6 +72,34 @@
         ],
         "destructors": [],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Children",
+                    "suffix": "",
+                    "path": "Box/Model/Manager",
+                    "templates": []
+                },
+                "name": "getChildren",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODELMANAGER_GETCHILDREN_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "type": "override",
@@ -63,7 +137,21 @@
                 "description": "CHICANE_BOX_MODELMANAGER_ONLOAD_DESCRIPTION"
             }
         ],
-        "members": [],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Groups",
+                    "suffix": "",
+                    "path": "Box/Model/Manager",
+                    "templates": []
+                },
+                "name": "m_groups",
+                "description": "CHICANE_BOX_MODELMANAGER_M_GROUPS_DESCRIPTION"
+            }
+        ],
         "description": "CHICANE_BOX_MODELMANAGER_DESCRIPTION"
     },
     "children": []

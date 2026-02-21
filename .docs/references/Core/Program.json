@@ -1,31 +1,11 @@
 {
-    "title": "Sound",
-    "filename": "Sound",
-    "path": "Box/Sound",
+    "title": "Program",
+    "filename": "Program",
+    "path": "Core/Program",
     "source": {
-        "header": "Includes/Chicane/Box/Sound.hpp",
-        "namespace": "Chicane::Box::Sound",
-        "types": [
-            {
-                "name": "Raw",
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "unsigned char",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_SOUND_RAW_DESCRIPTION"
-            }
-        ],
+        "header": "Includes/Chicane/Core/Program.hpp",
+        "namespace": "Chicane::Program",
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -38,124 +18,129 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Sound",
+                "name": "Program",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "FileSystem::Path",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inName"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_SOUND_DESCRIPTION"
+                "description": "CHICANE_PROGRAM_PROGRAM_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Sound",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_~SOUND_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "Raw",
+                    "prefix": "",
+                    "name": "Program",
                     "suffix": "&",
-                    "path": "Box/Sound",
+                    "path": "Core/Program",
                     "templates": []
                 },
-                "name": "getData",
+                "name": "addOption",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ProgramOptionSetting",
+                            "suffix": "&",
+                            "path": "Core/Program/Option/Setting",
+                            "templates": []
+                        },
+                        "name": "inSetting"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAM_ADDOPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "exec",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParamCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParamValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAM_EXEC_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onExec",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ProgramParam",
+                            "suffix": "&",
+                            "path": "Core/Program/Param",
+                            "templates": []
+                        },
+                        "name": "inParam"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PROGRAM_ONEXEC_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "showHelp",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_SOUND_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem",
-                            "templates": []
-                        },
-                        "name": "inFilepath"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_SETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Raw",
-                            "suffix": "&",
-                            "path": "Box/Sound",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_SETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "fetchData",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_FETCHDATA_DESCRIPTION"
+                "description": "CHICANE_PROGRAM_SHOWHELP_DESCRIPTION"
             }
         ],
         "members": [
@@ -172,8 +157,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "EXTENSION",
-                "description": "CHICANE_BOX_SOUND_EXTENSION_DESCRIPTION"
+                "name": "HELP_OPTION_NAME",
+                "description": "CHICANE_PROGRAM_HELP_OPTION_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -188,24 +173,37 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TAG",
-                "description": "CHICANE_BOX_SOUND_TAG_DESCRIPTION"
+                "name": "HELP_OPTION_DESCRIPTION",
+                "description": "CHICANE_PROGRAM_HELP_OPTION_DESCRIPTION_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Raw",
+                    "name": "String",
                     "suffix": "",
-                    "path": "Box/Sound",
+                    "path": "Core/String",
                     "templates": []
                 },
-                "name": "m_data",
-                "description": "CHICANE_BOX_SOUND_M_DATA_DESCRIPTION"
+                "name": "m_name",
+                "description": "CHICANE_PROGRAM_M_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ProgramParam",
+                    "suffix": "",
+                    "path": "Core/Program/Param",
+                    "templates": []
+                },
+                "name": "m_param",
+                "description": "CHICANE_PROGRAM_M_PARAM_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_SOUND_DESCRIPTION"
+        "description": "CHICANE_PROGRAM_DESCRIPTION"
     },
     "children": []
 }

@@ -330,6 +330,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "ViewportSettings",
+                    "suffix": "&",
+                    "path": "Renderer/Viewport/Settings",
+                    "templates": []
+                },
+                "name": "getViewport",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_LAYER_GETVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",

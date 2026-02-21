@@ -90,7 +90,7 @@
                     "path": "Box/Asset/Type",
                     "templates": []
                 },
-                "name": "getType",
+                "name": "getTypeFromExtension",
                 "parameters": [
                     {
                         "type": {
@@ -106,15 +106,121 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETHEADER_GETTYPE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPEFROMEXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "AssetType",
                     "suffix": "",
+                    "path": "Box/Asset/Type",
+                    "templates": []
+                },
+                "name": "getTypeFromTag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPEFROMTAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getTypeTags",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPETAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTypeTag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetType",
+                            "suffix": "",
+                            "path": "Box/Asset/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPETAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getTypeExtensions",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPEEXTENSIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
                     "path": "Core/String",
                     "templates": []
                 },
@@ -128,7 +234,7 @@
                             "path": "Box/Asset/Type",
                             "templates": []
                         },
-                        "name": "inType"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [

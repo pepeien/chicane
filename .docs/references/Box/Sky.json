@@ -85,6 +85,66 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "FileSystem::Path",
+                                    "suffix": "",
+                                    "path": "Core/FileSystem",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inFilepaths"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKY_ADDTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKY_ADDTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "String",
                             "suffix": "&",
                             "path": "Core/String",
@@ -122,6 +182,32 @@
                     "const"
                 ],
                 "description": "CHICANE_BOX_SKY_GETMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setModel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKY_SETMODEL_DESCRIPTION"
             },
             {
                 "accessor": "public",

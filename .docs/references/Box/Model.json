@@ -63,6 +63,62 @@
                     "path": "Box/Model/Vendor",
                     "templates": []
                 },
+                "name": "parseVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_MODEL_PARSEVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getVendorExtension",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ModelVendor",
+                            "suffix": "",
+                            "path": "Box/Model/Vendor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETVENDOREXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelVendor",
+                    "suffix": "",
+                    "path": "Box/Model/Vendor",
+                    "templates": []
+                },
                 "name": "getVendor",
                 "parameters": [],
                 "modifiers": [
@@ -84,13 +140,39 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_SETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVendor",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "",
                             "name": "ModelVendor",
                             "suffix": "",
                             "path": "Box/Model/Vendor",
                             "templates": []
                         },
-                        "name": "inVendor"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],

@@ -1,0 +1,78 @@
+{
+    "title": "ProgramOptionSetting",
+    "filename": "Setting",
+    "path": "Core/Program/Option/Setting",
+    "source": {
+        "header": "Includes/Chicane/Core/Program/Option/Setting.hpp",
+        "namespace": "Chicane::ProgramOptionSetting",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsRequired",
+                "description": "CHICANE_PROGRAMOPTIONSETTING_BISREQUIRED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_PROGRAMOPTIONSETTING_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "description",
+                "description": "CHICANE_PROGRAMOPTIONSETTING_DESCRIPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "validValues",
+                "description": "CHICANE_PROGRAMOPTIONSETTING_VALIDVALUES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_PROGRAMOPTIONSETTING_DESCRIPTION"
+    },
+    "children": []
+}

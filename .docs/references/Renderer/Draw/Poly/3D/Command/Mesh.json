@@ -49,13 +49,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "DrawPoly3DInstance",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
                     "templates": []
                 },
-                "name": "texture",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_TEXTURE_DESCRIPTION"
+                "name": "instance",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_INSTANCE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_DESCRIPTION"
