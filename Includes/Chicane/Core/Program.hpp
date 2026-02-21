@@ -22,7 +22,7 @@ namespace Chicane
 
         void exec(int inParamCount, char* inParamValue[]);
 
-    private:
+    protected:
         void showHelp() const;
 
     private:

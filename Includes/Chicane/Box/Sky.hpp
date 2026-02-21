@@ -26,9 +26,12 @@ namespace Chicane
 
         public:
             const AssetReference::List& getTextures() const;
+            void addTexture(const std::vector<FileSystem::Path>& inFilepaths);
+            void addTexture(const FileSystem::Path& inFilepath);
             void addTexture(const String& inSource, const String& inReference);
 
             const AssetReference& getModel() const;
+            void setModel(const FileSystem::Path& inFilepath);
             void setModel(const String& inSource, const String& inReference);
 
         private:

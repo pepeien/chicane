@@ -28,13 +28,25 @@ private:
         const Chicane::FileSystem::Path&          inOutput
     );
 
-    void createTexture(
+    void createMesh(
         const Chicane::String&                    inId,
         const Chicane::ProgramParam::Positionals& inSources,
         const Chicane::FileSystem::Path&          inOutput
     );
 
     void createModel(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createSky(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createTexture(
         const Chicane::String&                    inId,
         const Chicane::ProgramParam::Positionals& inSources,
         const Chicane::FileSystem::Path&          inOutput

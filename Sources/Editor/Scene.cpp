@@ -25,7 +25,7 @@ namespace Editor
     void Scene::spawnSky()
     {
         createActor<Chicane::ASky>()->setSky(
-            Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Color/Black.bsky")
+            Chicane::Box::load<Chicane::Box::Sky>("Contents/Editor/Skies/Editor.bsky")
         );
     }
 
