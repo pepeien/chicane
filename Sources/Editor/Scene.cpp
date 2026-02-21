@@ -20,8 +20,7 @@ namespace Editor
         spawnSky();
         spawnLights();
         spawnCharacter();
-
-        createActor<Item>("Mesh.bmsh");
+        spawnDefaultItem();
     }
 
     void Scene::spawnSky()
@@ -43,5 +42,10 @@ namespace Editor
         character->look(45.0f, -35.0f);
 
         Chicane::Application::getInstance().getController()->attachTo(character);
+    }
+
+    void Scene::spawnDefaultItem()
+    {
+        createActor<Item>("Contents/Engine/Meshes/Shape/Cube.bmsh");
     }
 }
