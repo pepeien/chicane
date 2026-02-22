@@ -308,26 +308,66 @@ namespace Chicane
         Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
         commands.clear();
 
-        for (CCamera* camera : inScene->getActiveComponents<CCamera>())
+        for (Component* component : inScene->getComponents())
         {
-            camera->onResize(m_renderer->getResolution());
+            if (!component->isActive())
+            {
+                continue;
+            }
 
-            Renderer::DrawPoly3DCommand command;
-            command.type   = Renderer::DrawPoly3DCommandType::Camera;
-            command.camera = camera->getData();
+            if (typeid(*component) == typeid(CCamera))
+            {
+                CCamera* camera = static_cast<CCamera*>(component);
+                camera->onResize(m_renderer->getResolution());
 
-            commands.emplace_back(std::move(command));
-        }
+                Renderer::DrawPoly3DCommand command;
+                command.type   = Renderer::DrawPoly3DCommandType::Camera;
+                command.camera = camera->getData();
 
-        for (CLight* light : inScene->getActiveComponents<CLight>())
-        {
-            light->onResize(m_renderer->getResolution());
+                commands.emplace_back(std::move(command));
 
-            Renderer::DrawPoly3DCommand command;
-            command.type  = Renderer::DrawPoly3DCommandType::Light;
-            command.light = light->getData();
+                continue;
+            }
 
-            commands.emplace_back(std::move(command));
+            if (typeid(*component) == typeid(CLight))
+            {
+                CLight* light = static_cast<CLight*>(component);
+                light->onResize(m_renderer->getResolution());
+
+                Renderer::DrawPoly3DCommand command;
+                command.type  = Renderer::DrawPoly3DCommandType::Light;
+                command.light = light->getData();
+
+                commands.emplace_back(std::move(command));
+
+                continue;
+            }
+
+            if (typeid(*component) == typeid(CMesh))
+            {
+                CMesh* mesh = static_cast<CMesh*>(component);
+
+                if (!mesh->hasMesh())
+                {
+                    continue;
+                }
+
+                Renderer::DrawPoly3DCommand command;
+                command.type = Renderer::DrawPoly3DCommandType::Mesh;
+
+                for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+                {
+                    Renderer::DrawPoly3DCommandMesh commandMesh;
+                    commandMesh.model =
+                        m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
+                    commandMesh.instance.model   = mesh->getTransform().getMatrix();
+                    commandMesh.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
+
+                    command.meshes.push_back(commandMesh);
+                }
+
+                commands.emplace_back(std::move(command));
+            }
         }
 
         for (ASky* sky : inScene->getActors<ASky>())
@@ -346,29 +386,6 @@ namespace Chicane
             Renderer::DrawPoly3DCommand command;
             command.type = Renderer::DrawPoly3DCommandType::Sky;
             command.sky  = data;
-
-            commands.emplace_back(std::move(command));
-        }
-
-        for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
-        {
-            if (!mesh->hasMesh())
-            {
-                continue;
-            }
-
-            Renderer::DrawPoly3DCommand command;
-            command.type = Renderer::DrawPoly3DCommandType::Mesh;
-
-            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-            {
-                Renderer::DrawPoly3DCommandMesh commandMesh;
-                commandMesh.model            = group.getModel().getReference();
-                commandMesh.instance.model   = mesh->getTransform().getMatrix();
-                commandMesh.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
-
-                command.meshes.push_back(commandMesh);
-            }
 
             commands.emplace_back(std::move(command));
         }
@@ -403,7 +420,7 @@ namespace Chicane
             case Renderer::DrawPoly3DCommandType::Mesh:
                 for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
                 {
-                    m_renderer->drawPoly(Renderer::DrawPolyType::e3D, mesh.model, mesh.instance);
+                    m_renderer->drawPoly(mesh.model, mesh.instance);
                 }
 
                 break;

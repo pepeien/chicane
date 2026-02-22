@@ -52,12 +52,13 @@ namespace Chicane
             Frame& getCurrentFrame();
 
             // Render
+            Draw::Id findPoly(DrawPolyType inType, const Draw::Reference& inReference);
             Draw::Id loadPoly(DrawPolyType inType, const DrawPolyData& inData);
 
             template <typename T>
             inline void drawPoly(DrawPolyType inType, const Draw::Reference& inReference, const T& inInstance)
             {
-                Draw::Id id = getPolyResource(inType).findId(inReference);
+                Draw::Id id = findPoly(inType, inReference);
 
                 if (id <= Draw::UnknownId)
                 {

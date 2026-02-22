@@ -17,7 +17,7 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommandMesh>;
 
         public:
-            String             model    = String::empty();
+            Draw::Id           model    = Draw::UnknownId;
             DrawPoly3DInstance instance = {};
         };
     }

@@ -94,6 +94,11 @@ namespace Chicane
             return m_frames.at(m_currentFrame);
         }
 
+        Draw::Id Instance::findPoly(DrawPolyType inType, const Draw::Reference& inReference)
+        {
+            return getPolyResource(inType).findId(inReference);
+        }
+
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
         {
             return getPolyResource(inType).add(inData);
