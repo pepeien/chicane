@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -21,7 +23,7 @@ namespace Chicane
         {
             for (const auto& [type, resource] : inResources)
             {
-                DrawPoly::List& draws = m_draws[type];
+                DrawPoly::List& draws = m_polys[type];
                 draws.insert(draws.end(), resource.getDraws().begin(), resource.getDraws().end());
 
                 std::sort(
@@ -67,7 +69,7 @@ namespace Chicane
 
         const DrawPoly::List& Frame::get2DDraws() const
         {
-            return m_draws.at(DrawPolyType::e2D);
+            return m_polys.at(DrawPolyType::e2D);
         }
 
         const DrawPoly2DInstance::List Frame::getInstances2D() const
@@ -91,7 +93,7 @@ namespace Chicane
 
         const DrawPoly::List& Frame::get3DDraws() const
         {
-            return m_draws.at(DrawPolyType::e3D);
+            return m_polys.at(DrawPolyType::e3D);
         }
 
         const DrawPoly3DInstance::List Frame::getInstances3D() const
@@ -138,7 +140,7 @@ namespace Chicane
                     continue;
                 }
 
-                for (DrawPoly& draw : m_draws[DrawPolyType::e2D])
+                for (DrawPoly& draw : m_polys[DrawPolyType::e2D])
                 {
                     if (draw.id != id)
                     {
@@ -155,7 +157,7 @@ namespace Chicane
 
         void Frame::reset2DDraws()
         {
-            m_draws[DrawPolyType::e2D].clear();
+            m_polys[DrawPolyType::e2D].clear();
             m_2DInstances.clear();
         }
 
@@ -169,7 +171,7 @@ namespace Chicane
                     continue;
                 }
 
-                for (DrawPoly& draw : m_draws[DrawPolyType::e3D])
+                for (DrawPoly& draw : m_polys[DrawPolyType::e3D])
                 {
                     if (draw.id != id)
                     {
@@ -186,7 +188,7 @@ namespace Chicane
 
         void Frame::reset3DDraws()
         {
-            m_draws[DrawPolyType::e3D].clear();
+            m_polys[DrawPolyType::e3D].clear();
             m_3DInstances.clear();
         }
     }

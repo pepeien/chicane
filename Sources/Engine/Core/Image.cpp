@@ -47,11 +47,9 @@ namespace Chicane
         return EXTENSIONS.at(inValue);
     }
 
-    Image::Image(const FileSystem::Path& inLocation, bool bInShouldFlip)
+    Image::Image(const FileSystem::Path& inLocation)
         : Image()
     {
-        stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
-
         m_vendor = parseVendor(inLocation.extension());
 
         m_format = STBI_rgb_alpha;
@@ -64,11 +62,9 @@ namespace Chicane
         }
     }
 
-    Image::Image(const Raw& inData, ImageVendor inVendor, bool bInShouldFlip)
+    Image::Image(const Raw& inData, ImageVendor inVendor)
         : Image()
     {
-        stbi_set_flip_vertically_on_load_thread(bInShouldFlip);
-
         m_vendor = inVendor;
 
         m_format = STBI_rgb_alpha;
@@ -157,7 +153,41 @@ namespace Chicane
         return m_width * m_height;
     }
 
-    void Image::rotate(float inAngle)
+    void Image::flipHorizontally()
+    {
+        const int rowSize = m_width * m_channel;
+
+        for (int y = 0; y < m_height; y++)
+        {
+            unsigned char* row = m_pixels + y * rowSize;
+
+            for (int x = 0; x < m_width / 2; x++)
+            {
+                for (int c = 0; c < m_channel; c++)
+                {
+                    std::swap(row[x * m_channel + c], row[(m_width - 1 - x) * m_channel + c]);
+                }
+            }
+        }
+    }
+
+    void Image::flipVertically()
+    {
+        const int rowSize = m_width * m_channel;
+
+        for (int y = 0; y < m_height / 2; y++)
+        {
+            unsigned char* topRow    = m_pixels + y * rowSize;
+            unsigned char* bottomRow = m_pixels + (m_height - 1 - y) * rowSize;
+
+            for (int x = 0; x < rowSize; x++)
+            {
+                std::swap(topRow[x], bottomRow[x]);
+            }
+        }
+    }
+
+    void Image::rotateBy(float inAngle)
     {
         const float angle = inAngle * (M_PI / 180.0f);
         const float cosA  = std::cos(angle);

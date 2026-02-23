@@ -42,8 +42,6 @@ namespace Chicane
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
 
-            glClear(GL_DEPTH_BUFFER_BIT);
-
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
             glDepthFunc(GL_LEQUAL);
@@ -51,6 +49,10 @@ namespace Chicane
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);
             glCullFace(GL_FRONT);
+
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+            glClear(GL_DEPTH_BUFFER_BIT);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
@@ -66,7 +68,7 @@ namespace Chicane
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
-                    (void*)(sizeof(uint32_t) * draw.indexStart),
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
                     draw.instanceCount,
                     draw.vertexStart,
                     draw.instanceStart

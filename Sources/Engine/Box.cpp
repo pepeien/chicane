@@ -1,16 +1,12 @@
 #include "Chicane/Box.hpp"
 
-#include "Chicane/Box/Font.hpp"
-#include "Chicane/Box/Font/Manager.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
-#include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Sky.hpp"
 #include "Chicane/Box/Sound.hpp"
-#include "Chicane/Box/Sound/Manager.hpp"
 #include "Chicane/Box/Texture.hpp"
-#include "Chicane/Box/Texture/Manager.hpp"
 
 #include "Chicane/Core/Log.hpp"
 
@@ -18,32 +14,8 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unique_ptr<SoundManager>   g_soundManager   = std::make_unique<SoundManager>();
-        static const std::unique_ptr<FontManager>    g_fontManager    = std::make_unique<FontManager>();
-        static const std::unique_ptr<ModelManager>   g_modelManager   = std::make_unique<ModelManager>();
-        static const std::unique_ptr<TextureManager> g_textureManager = std::make_unique<TextureManager>();
-
-        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache = {};
-
-        SoundManager* getSoundManager()
-        {
-            return g_soundManager.get();
-        }
-
-        FontManager* getFontManager()
-        {
-            return g_fontManager.get();
-        }
-
-        ModelManager* getModelManager()
-        {
-            return g_modelManager.get();
-        }
-
-        TextureManager* getTextureManager()
-        {
-            return g_textureManager.get();
-        }
+        static AssetObservable                                                    g_assetObservable = {};
+        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache           = {};
 
         bool hasAsset(const FileSystem::Path& inSource)
         {
@@ -67,6 +39,8 @@ namespace Chicane
             if (!hasAsset(inSource))
             {
                 g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
+
+                g_assetObservable.next(g_cache.at(inSource).get());
             }
 
             return getAsset<T>(inSource);
@@ -81,11 +55,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Sound* asset = addAsset<Sound>(inFilePath);
-
-                g_soundManager->load(inFilePath.string(), *asset);
-
-                return asset;
+                return addAsset<Sound>(inFilePath);
             }
 
             return getAsset<Sound>(inFilePath);
@@ -100,11 +70,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Font* asset = addAsset<Font>(inFilePath);
-
-                g_fontManager->load(inFilePath.string(), *asset);
-
-                return asset;
+                return addAsset<Font>(inFilePath);
             }
 
             return getAsset<Font>(inFilePath);
@@ -119,11 +85,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Model* asset = addAsset<Model>(inFilePath);
-
-                g_modelManager->load(asset->getId(), *asset);
-
-                return asset;
+                return addAsset<Model>(inFilePath);
             }
 
             return getAsset<Model>(inFilePath);
@@ -138,11 +100,7 @@ namespace Chicane
 
             if (!hasAsset(inFilePath))
             {
-                const Texture* asset = addAsset<Texture>(inFilePath);
-
-                g_textureManager->load(asset->getId(), *asset);
-
-                return asset;
+                return addAsset<Texture>(inFilePath);
             }
 
             return getAsset<Texture>(inFilePath);
@@ -274,6 +232,15 @@ namespace Chicane
             default:
                 return nullptr;
             }
+        }
+
+        AssetSubscription watchAssets(
+            AssetSubscription::NextCallback     inNext,
+            AssetSubscription::ErrorCallback    inError,
+            AssetSubscription::CompleteCallback inComplete
+        )
+        {
+            return g_assetObservable.subscribe(inNext, inError, inComplete);
         }
     }
 }

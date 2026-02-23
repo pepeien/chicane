@@ -1,8 +1,6 @@
 #include "Chicane/Grid/Component/Text/Character.hpp"
 
-#include "Chicane/Box/Font/Manager.hpp"
-
-#include "Chicane/Core/Log.hpp"
+#include "Chicane/Box/Font.hpp"
 
 namespace Chicane
 {
@@ -15,7 +13,7 @@ namespace Chicane
               m_character(NULL_CHARACTER),
               m_glyph({})
         {
-            Box::getFontManager()->watch([&](const Box::FontManager::Instances& inData) { refreshFont(); });
+            //Box::getFontManager()->watch([&](const Box::FontManager::Instances& inData) { refreshFont(); });
         }
 
         bool TextCharacter::isDrawable() const
@@ -102,20 +100,20 @@ namespace Chicane
 
             const Style& parentStyle = m_parent->getStyle();
 
-            const Box::FontParsed& font = Box::getFontManager()->getFamily(parentStyle.font.family.get());
+            //const Box::FontParsed& font = Box::getFontManager()->getFamily(parentStyle.font.family.get());
 
-            if (!font.hasGlyph(m_character))
-            {
-                clearPrimitive();
+            //if (!font.hasGlyph(m_character))
+            //{
+            //    clearPrimitive();
 
-                m_glyph = {};
+            //    m_glyph = {};
 
-                return;
-            }
+            //    return;
+            //}
 
-            m_glyph = font.getGlyph(m_character);
+            //m_glyph = font.getGlyph(m_character);
 
-            refreshPrimitive();
+            //refreshPrimitive();
         }
 
         void TextCharacter::refreshFontStyle()

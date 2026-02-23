@@ -13,7 +13,7 @@ public:
     Level();
 
 public:
-    void onActivation() override;
+    void onLoad() override;
 
 public:
     void activateLeftCamera();

@@ -12,14 +12,13 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawTextureResource : DrawResource<ImageVendor, Image::Pixel>
+        struct CHICANE_RENDERER DrawTextureResource : DrawResource<int, int>
         {
         public:
             bool isEmpty() const;
 
             const DrawTexture::List& getDraws() const;
 
-            Draw::Id findId(const DrawTextureData& inData);
             Draw::Id findId(const Draw::Reference& inReference);
 
             const DrawTexture& getDraw(const Draw::Reference& inReference);

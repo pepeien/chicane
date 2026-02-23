@@ -1,7 +1,5 @@
 #include "Chicane/Core/Math/Bounds/3D.hpp"
 
-constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
-
 namespace Chicane
 {
     Bounds3D::Bounds3D(const Vertex::List& inVertices, const Vertex::Indices& inIndices)
@@ -36,7 +34,8 @@ namespace Chicane
           m_baseCenter(Vec3::Zero),
           m_bottom(Vec3::Zero),
           m_baseBottom(Vec3::Zero),
-          m_vertices({}),
+          m_size(Vec3::One),
+          m_positions({}),
           m_indices({})
     {}
 
@@ -151,9 +150,13 @@ namespace Chicane
         m_bottom.y = m_center.y;
         m_bottom.z = m_min.z;
 
-        if (m_vertices.empty())
+        m_size.x = m_max.x - m_min.x;
+        m_size.y = m_max.y - m_min.y;
+        m_size.z = m_max.z - m_min.z;
+
+        if (m_positions.empty())
         {
-            m_vertices.resize(8);
+            m_positions.resize(8);
         }
 
         //   7+------+6
@@ -164,65 +167,65 @@ namespace Chicane
         //  |/     |/
         // 0+------+1
 
-        m_vertices = {
-            {m_baseMin.x, m_baseMin.y, m_baseMin.z}, // 0
-            {m_baseMax.x, m_baseMin.y, m_baseMin.z}, // 1
-            {m_baseMin.x, m_baseMax.y, m_baseMin.z}, // 2
-            {m_baseMax.x, m_baseMax.y, m_baseMin.z}, // 3
-            {m_baseMin.x, m_baseMin.y, m_baseMax.z}, // 4
-            {m_baseMax.x, m_baseMin.y, m_baseMax.z}, // 5
-            {m_baseMin.x, m_baseMax.y, m_baseMax.z}, // 6
-            {m_baseMax.x, m_baseMax.y, m_baseMax.z}  // 7
+        m_positions = {
+            {m_min.x, m_min.y, m_min.z}, // 0 left  front bottom
+            {m_max.x, m_min.y, m_min.z}, // 1 right front bottom
+            {m_max.x, m_max.y, m_min.z}, // 2 right back  bottom
+            {m_min.x, m_max.y, m_min.z}, // 3 left  back  bottom
+            {m_min.x, m_min.y, m_max.z}, // 4 left  front top
+            {m_max.x, m_min.y, m_max.z}, // 5 right front top
+            {m_max.x, m_max.y, m_max.z}, // 6 right back  top
+            {m_min.x, m_max.y, m_max.z}, // 7 left  back  top
         };
 
         m_indices = {
-            // Front face  (z = m_min.z): 0, 1, 2, 2, 3, 0
+            // Bottom face (z = m_min.z): 0, 1, 2, 3
             0,
             1,
             2,
+            0,
             2,
             3,
-            0,
 
-            // Back face   (z = m_max.z): 4, 5, 6, 6, 7, 4
+            // Top face    (z = m_max.z): 4, 5, 6, 7
             4,
             5,
             6,
+            4,
             6,
             7,
-            4,
 
-            // Left face   (x = m_min.x): 0, 4, 6, 6, 2, 0
+            // Front face  (y = m_min.y): 0, 1, 4, 5
             0,
-            4,
-            6,
-            6,
-            2,
-            0,
-
-            // Right face  (x = m_max.x): 1, 5, 7, 7, 3, 1
             1,
             5,
-            7,
-            7,
+            0,
+            5,
+            4,
+
+            // Back face   (y = m_max.y): 2, 3, 6, 7
+            2,
             3,
-            1,
+            7,
+            2,
+            7,
+            6,
 
-            // Top face    (y = m_max.y): 2, 6, 7, 7, 3, 2
+            // Left face   (x = m_min.x): 0, 3, 4, 7
+            0,
+            3,
+            7,
+            0,
+            7,
+            4,
+
+            // Right face  (x = m_max.x): 1, 2, 5, 6
+            1,
             2,
             6,
-            7,
-            7,
-            3,
-            2,
-
-            // Bottom face (y = m_min.y): 0, 1, 5, 5, 4, 0
-            0,
             1,
+            6,
             5,
-            5,
-            4,
-            0
         };
     }
 
@@ -276,14 +279,40 @@ namespace Chicane
         return m_baseBottom;
     }
 
-    const std::vector<Vec3>& Bounds3D::getVertices() const
+    const Vec3& Bounds3D::getSize() const
     {
-        return m_vertices;
+        return m_size;
+    }
+
+    const Vertex::Positions& Bounds3D::getPositions() const
+    {
+        return m_positions;
     }
 
     const Vertex::Indices& Bounds3D::getIndices() const
     {
         return m_indices;
+    }
+
+    Vertex::List Bounds3D::getVertices() const
+    {
+        Vertex::List result;
+
+        Vertex vertex;
+        vertex.color  = Vec4(255.0f);
+        vertex.normal = Vec3::Zero;
+        vertex.uv     = Vec3::Zero;
+
+        for (const Vertex::Position& position : m_positions)
+        {
+            vertex.position.x = position.x;
+            vertex.position.y = position.y;
+            vertex.position.z = position.z;
+
+            result.push_back(vertex);
+        }
+
+        return result;
     }
 
     void Bounds3D::refresh()

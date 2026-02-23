@@ -15,7 +15,7 @@ namespace Editor
         : Chicane::Scene()
     {}
 
-    void Scene::onActivation()
+    void Scene::onLoad()
     {
         spawnSky();
         spawnLights();

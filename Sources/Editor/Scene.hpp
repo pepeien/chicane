@@ -10,7 +10,7 @@ namespace Editor
         Scene();
 
     public:
-        void onActivation() override;
+        void onLoad() override;
 
     private:
         void spawnSky();

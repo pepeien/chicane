@@ -122,7 +122,7 @@ namespace Chicane
 
                 for (const auto& assetNode : groupNode.children())
                 {
-                    String currentTag = assetNode.name();
+                    const String currentTag = assetNode.name();
 
                     if (currentTag.equals(Model::TAG))
                     {

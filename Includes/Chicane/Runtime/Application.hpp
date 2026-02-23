@@ -82,8 +82,13 @@ namespace Chicane
         template <class T, typename... Params>
         void setScene(Params... inParams)
         {
+            if (std::shared_ptr<Scene> currentScene = getScene())
+            {
+                currentScene->unload();
+            }
+
             std::shared_ptr<Scene> scene = std::make_shared<T>(std::forward<Params>(inParams)...);
-            scene->activate();
+            scene->load();
 
             std::atomic_store_explicit(&m_scene, scene, std::memory_order_release);
 

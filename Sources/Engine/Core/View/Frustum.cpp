@@ -5,7 +5,7 @@ namespace Chicane
     bool ViewFrustum::contains(const Transformable* inSubject) const
     {
         const std::vector<ViewPlane> planes  = {m_top, m_bottom, m_near, m_far, m_right, m_left};
-        const std::vector<Vec3>&     corners = inSubject->getBounds().getVertices();
+        const std::vector<Vec3>&     corners = inSubject->getBounds().getPositions();
 
         for (const ViewPlane& plane : planes)
         {

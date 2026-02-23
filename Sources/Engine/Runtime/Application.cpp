@@ -4,8 +4,8 @@
 #include <thread>
 
 #include "Chicane/Box/Asset/Header.hpp"
-#include "Chicane/Box/Model/Manager.hpp"
-#include "Chicane/Box/Texture/Manager.hpp"
+#include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Kerb.hpp"
 
@@ -227,30 +227,37 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::getModelManager()->watch(
-            [&](const Box::ModelManager::Instances& inInstances)
+        Box::watchAssets(
+            [&](const Box::Asset* inAsset)
             {
-                for (const auto& [id, model] : inInstances)
+                if (typeid(*inAsset) == typeid(Box::Model))
                 {
-                    Renderer::DrawPolyData data;
-                    data.reference = id;
-                    data.vertices  = model.vertices;
-                    data.indices   = model.indices;
+                    const Box::Model* model = static_cast<const Box::Model*>(inAsset);
 
-                    m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                    for (const auto& [id, model] : model->getData())
+                    {
+                        Renderer::DrawPolyData data;
+                        data.reference = id;
+                        data.vertices  = model.vertices;
+                        data.indices   = model.indices;
+
+                        m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                    }
+
+                    return;
                 }
-            }
-        );
-        Box::getTextureManager()->watch(
-            [&](const Box::TextureManager::Instances& inInstances)
-            {
-                for (const auto& [id, texture] : inInstances)
+
+                if (typeid(*inAsset) == typeid(Box::Texture))
                 {
+                    const Box::Texture* texture = static_cast<const Box::Texture*>(inAsset);
+
                     Renderer::DrawTextureData data;
-                    data.reference = id;
-                    data.image     = texture;
+                    data.reference = texture->getId();
+                    data.image     = texture->getData();
 
                     m_renderer->loadTexture(data);
+
+                    return;
                 }
             }
         );
@@ -308,66 +315,49 @@ namespace Chicane
         Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
         commands.clear();
 
-        for (Component* component : inScene->getComponents())
+        for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
-            if (!component->isActive())
+            camera->onResize(m_renderer->getResolution());
+
+            Renderer::DrawPoly3DCommand command;
+            command.type   = Renderer::DrawPoly3DCommandType::Camera;
+            command.camera = camera->getData();
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (CLight* light : inScene->getActiveComponents<CLight>())
+        {
+            light->onResize(m_renderer->getResolution());
+
+            Renderer::DrawPoly3DCommand command;
+            command.type  = Renderer::DrawPoly3DCommandType::Light;
+            command.light = light->getData();
+
+            commands.emplace_back(std::move(command));
+        }
+
+        for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
+        {
+            if (!mesh->hasMesh())
             {
                 continue;
             }
 
-            if (typeid(*component) == typeid(CCamera))
+            Renderer::DrawPoly3DCommand command;
+            command.type = Renderer::DrawPoly3DCommandType::Mesh;
+
+            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                CCamera* camera = static_cast<CCamera*>(component);
-                camera->onResize(m_renderer->getResolution());
+                Renderer::DrawPoly3DCommandMesh commandMesh;
+                commandMesh.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
+                commandMesh.instance.model   = mesh->getTransform().getMatrix();
+                commandMesh.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
 
-                Renderer::DrawPoly3DCommand command;
-                command.type   = Renderer::DrawPoly3DCommandType::Camera;
-                command.camera = camera->getData();
-
-                commands.emplace_back(std::move(command));
-
-                continue;
+                command.meshes.push_back(commandMesh);
             }
 
-            if (typeid(*component) == typeid(CLight))
-            {
-                CLight* light = static_cast<CLight*>(component);
-                light->onResize(m_renderer->getResolution());
-
-                Renderer::DrawPoly3DCommand command;
-                command.type  = Renderer::DrawPoly3DCommandType::Light;
-                command.light = light->getData();
-
-                commands.emplace_back(std::move(command));
-
-                continue;
-            }
-
-            if (typeid(*component) == typeid(CMesh))
-            {
-                CMesh* mesh = static_cast<CMesh*>(component);
-
-                if (!mesh->hasMesh())
-                {
-                    continue;
-                }
-
-                Renderer::DrawPoly3DCommand command;
-                command.type = Renderer::DrawPoly3DCommandType::Mesh;
-
-                for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-                {
-                    Renderer::DrawPoly3DCommandMesh commandMesh;
-                    commandMesh.model =
-                        m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
-                    commandMesh.instance.model   = mesh->getTransform().getMatrix();
-                    commandMesh.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
-
-                    command.meshes.push_back(commandMesh);
-                }
-
-                commands.emplace_back(std::move(command));
-            }
+            commands.emplace_back(std::move(command));
         }
 
         for (ASky* sky : inScene->getActors<ASky>())

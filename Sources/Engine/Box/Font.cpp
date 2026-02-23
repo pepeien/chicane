@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "Chicane/Box/Font/TrueType.hpp"
+
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -50,11 +52,9 @@ namespace Chicane
 
         Font::Font(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-              m_vendor(FontVendor::Undefined),
-              m_data({})
+              m_vendor(FontVendor::Undefined)
         {
             fetchVendor();
-            fetchData();
         }
 
         FontVendor Font::getVendor() const
@@ -74,9 +74,9 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
-        const FontRaw& Font::getData() const
+        FontParsed Font::getData() const
         {
-            return m_data;
+            return parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
         }
 
         void Font::setData(const FileSystem::Path& inFilepath)
@@ -92,9 +92,7 @@ namespace Chicane
 
         void Font::setData(const FontRaw& inData)
         {
-            m_data = inData;
-
-            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
                 throw std::runtime_error("Failed to save the font [" + m_header.filepath.string() + "] data");
             }
@@ -110,14 +108,17 @@ namespace Chicane
             m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
-        void Font::fetchData()
+        FontParsed Font::parseData(const FontRaw& inValue) const
         {
-            if (isEmpty())
+            switch (m_vendor)
             {
-                return;
-            }
+            case FontVendor::OpenType:
+            case FontVendor::TrueType:
+                return FontTrueType::parse(getId(), inValue);
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            default:
+                throw std::runtime_error("Failed to parse Font due to invalid vendor");
+            }
         }
     }
 }

@@ -1,12 +1,13 @@
 #include "Chicane/Runtime/Scene/Component/Sound.hpp"
 
-#include "Chicane/Box/Sound/Manager.hpp"
+#include "Chicane/Box.hpp"
+#include "Chicane/Box/Sound.hpp"
 
 namespace Chicane
 {
     CSound::CSound()
         : Component(),
-          m_sound({})
+          m_sound()
     {}
 
     void CSound::load(const FileSystem::Path& inFilePath)

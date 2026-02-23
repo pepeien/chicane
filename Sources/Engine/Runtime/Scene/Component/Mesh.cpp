@@ -1,6 +1,5 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
-#include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Model/Parsed.hpp"
 
 namespace Chicane
@@ -55,22 +54,22 @@ namespace Chicane
             return;
         }
 
-        const Box::ModelManager* manager = Box::getModelManager();
+        //const Box::ModelManager* manager = Box::getModelManager();
 
-        for (const Box::MeshGroup& group : m_asset->getGroups())
-        {
-            const Box::ModelParsed& model = manager->get(group.getModel().getReference());
+        //for (const Box::MeshGroup& group : m_asset->getGroups())
+        //{
+        //    const Box::ModelParsed& model = manager->get(group.getModel().getReference());
 
-            const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
+        //    const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
 
-            addBounds(bounds);
+        //    addBounds(bounds);
 
-            if (!isAttached())
-            {
-                continue;
-            }
+        //    if (!isAttached())
+        //    {
+        //        continue;
+        //    }
 
-            m_parent->addBounds(bounds);
-        }
+        //    m_parent->addBounds(bounds);
+        //}
     }
 }

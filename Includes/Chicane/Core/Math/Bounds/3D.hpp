@@ -41,8 +41,11 @@ namespace Chicane
         const Vec3& getBottom() const;
         const Vec3& getBaseBottom() const;
 
-        const std::vector<Vec3>& getVertices() const;
+        const Vec3& getSize() const;
+
+        const Vertex::Positions& getPositions() const;
         const Vertex::Indices& getIndices() const;
+        Vertex::List getVertices() const;
 
     private:
         void refresh();
@@ -63,7 +66,9 @@ namespace Chicane
         Vec3              m_bottom;
         Vec3              m_baseBottom;
 
-        std::vector<Vec3> m_vertices;
+        Vec3              m_size;
+
+        Vertex::Positions m_positions;
         Vertex::Indices   m_indices;
     };
 }

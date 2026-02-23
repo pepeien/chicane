@@ -74,6 +74,8 @@ namespace Chicane
 
             glFrontFace(GL_CCW);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
             glBindVertexArray(m_primitiveVertexArray);
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
@@ -99,7 +101,7 @@ namespace Chicane
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
-                    (void*)(sizeof(uint32_t) * draw.indexStart),
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
                     draw.instanceCount,
                     draw.vertexStart,
                     draw.instanceStart

@@ -15,9 +15,14 @@ namespace Chicane
         deleteActors();
     }
 
-    void Scene::activate()
+    void Scene::load()
     {
-        onActivation();
+        onLoad();
+    }
+
+    void Scene::unload()
+    {
+        onUnload();
     }
 
     void Scene::tick(float inDeltaTime)
@@ -26,11 +31,6 @@ namespace Chicane
         tickComponents(inDeltaTime);
 
         onTick(inDeltaTime);
-    }
-
-    void Scene::deactivate()
-    {
-        onDeactivation();
     }
 
     bool Scene::hasActors() const

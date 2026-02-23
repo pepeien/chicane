@@ -164,10 +164,8 @@ void Program::createMesh(
     Chicane::Box::Mesh asset(output);
     asset.setId(inId);
 
-    Chicane::Box::Model                  model(models.at(0));
-    Chicane::Box::ModelManager::Children modelGroups = getModelChildren(model);
-
-    Chicane::Box::Texture texture(textures.at(0));
+    Chicane::Box::Model            model(models.at(0));
+    Chicane::Box::ModelParsed::Map modelGroups = model.getData();
 
     if (modelGroups.empty())
     {
@@ -177,7 +175,9 @@ void Program::createMesh(
         );
     }
 
-    for (const Chicane::String& reference : modelGroups)
+    Chicane::Box::Texture texture(textures.at(0));
+
+    for (const auto& [reference, data] : modelGroups)
     {
         Chicane::Box::MeshGroup group;
         group.setId(reference);
@@ -286,8 +286,8 @@ void Program::createSky(
     Chicane::Box::Sky asset(output);
     asset.setId(inId);
 
-    Chicane::Box::Model                  model(models.at(0));
-    Chicane::Box::ModelManager::Children modelGroups = getModelChildren(model);
+    Chicane::Box::Model            model(models.at(0));
+    Chicane::Box::ModelParsed::Map modelGroups = model.getData();
 
     if (modelGroups.empty())
     {
@@ -296,7 +296,7 @@ void Program::createSky(
         );
     }
 
-    asset.setModel(model.getFilepath(), modelGroups.at(0));
+    asset.setModel(model.getFilepath(), modelGroups.begin()->first);
     asset.addTexture(textures);
     asset.saveXML();
 }
@@ -367,11 +367,4 @@ void Program::createSound(
     asset.setId(inId);
     asset.setData(source);
     asset.saveXML();
-}
-
-Chicane::Box::ModelManager::Children Program::getModelChildren(const Chicane::Box::Model& inAsset)
-{
-    Chicane::Box::getModelManager()->load(inAsset.getId(), inAsset);
-
-    return Chicane::Box::getModelManager()->getChildren(inAsset.getId());
 }

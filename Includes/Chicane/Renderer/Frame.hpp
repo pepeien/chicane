@@ -1,7 +1,5 @@
 #pragma once
 
-#include <unordered_map>
-
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/View.hpp"
 
@@ -58,7 +56,7 @@ namespace Chicane
             View::List    m_lights = {};
 
             // Poly
-            DrawPoly::Map m_draws = {
+            DrawPoly::Map m_polys = {
                 {DrawPolyType::e2D,       {}},
                 {DrawPolyType::e3D,       {}},
                 {DrawPolyType::eParticle, {}}

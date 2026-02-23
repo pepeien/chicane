@@ -13,12 +13,10 @@ namespace Chicane
         class CHICANE_BOX Texture : public Asset
         {
         public:
-            static constexpr inline const char*         EXTENSION = ".btex";
-            static constexpr inline const char*         TAG       = "Texture";
+            static constexpr inline const char* EXTENSION = ".btex";
+            static constexpr inline const char* TAG       = "Texture";
 
-            static constexpr inline const char*         VENDOR_ATTRIBUTE_NAME = "vendor";
-
-            static constexpr inline const std::uint32_t MAX_COUNT = 1000;
+            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
         public:
             Texture(const FileSystem::Path& inFilepath);
@@ -29,17 +27,17 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(ImageVendor inValue);
 
-            const Image::Raw& getData() const;
+            const Image& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const Image::Raw& inData);
 
         private:
-            void fetchVendor();
-            void fetchData();
+            void fetchVendorFromXML();
+            void fetchDataFromXML();
 
         private:
             ImageVendor m_vendor;
-            Image::Raw  m_data;
+            Image       m_data;
         };
     }
 }

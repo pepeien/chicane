@@ -10,10 +10,10 @@ namespace Chicane
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
               m_vendor(ImageVendor::Undefined),
-              m_data({})
+              m_data()
         {
-            fetchVendor();
-            fetchData();
+            fetchVendorFromXML();
+            fetchDataFromXML();
         }
 
         ImageVendor Texture::getVendor() const
@@ -33,7 +33,7 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, Image::getVendorExtension(m_vendor));
         }
 
-        const Image::Raw& Texture::getData() const
+        const Image& Texture::getData() const
         {
             return m_data;
         }
@@ -51,15 +51,15 @@ namespace Chicane
 
         void Texture::setData(const Image::Raw& inData)
         {
-            m_data = inData;
-
-            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
                 throw std::runtime_error("Failed to save the texture [" + m_header.filepath.string() + "] data");
             }
+
+            m_data = Image(inData, m_vendor);
         }
 
-        void Texture::fetchVendor()
+        void Texture::fetchVendorFromXML()
         {
             if (isEmpty())
             {
@@ -69,14 +69,14 @@ namespace Chicane
             m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
-        void Texture::fetchData()
+        void Texture::fetchDataFromXML()
         {
             if (isEmpty())
             {
                 return;
             }
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            m_data = Image(Base64::decodeToUnsigned(getXML().text().as_string()), m_vendor);
         }
     }
 }

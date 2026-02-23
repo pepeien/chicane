@@ -49,6 +49,8 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
             glClear(GL_DEPTH_BUFFER_BIT);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
@@ -65,7 +67,7 @@ namespace Chicane
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
-                    (void*)(sizeof(uint32_t) * draw.indexStart),
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
                     draw.instanceCount,
                     draw.vertexStart,
                     draw.instanceStart
