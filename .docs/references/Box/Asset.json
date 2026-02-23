@@ -91,12 +91,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isEmpty",
+                "name": "isXMLEmpty",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_ASSET_ISEMPTY_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSET_ISXMLEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "public",

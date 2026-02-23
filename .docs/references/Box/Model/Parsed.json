@@ -36,7 +36,26 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ModelParsed",
+                    "suffix": "&",
+                    "path": "Box/Model/Parsed",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_MODELPARSED_EMPTY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

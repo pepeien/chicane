@@ -25,12 +25,22 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Font",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "Box/Font",
+                            "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inAsset"
+                        "name": "inFamily"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FontRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [],

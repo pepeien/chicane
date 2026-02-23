@@ -234,6 +234,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "SCENE_LINE_LAYER_ID",
+                "description": "CHICANE_RENDERER_SCENE_LINE_LAYER_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "UI_LAYER_ID",
                 "description": "CHICANE_RENDERER_UI_LAYER_ID_DESCRIPTION"
             },

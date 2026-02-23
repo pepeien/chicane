@@ -16,6 +16,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawPolyMode",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Mode",
+                    "templates": []
+                },
+                "name": "mode",
+                "description": "CHICANE_RENDERER_DRAWPOLYDATA_MODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vertex::List",
                     "suffix": "",
                     "path": "Core/Math/Vertex",

@@ -26,6 +26,36 @@
                 "description": "CHICANE_VERTEX_LIST_DESCRIPTION"
             },
             {
+                "name": "Position",
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "description": "CHICANE_VERTEX_POSITION_DESCRIPTION"
+            },
+            {
+                "name": "Positions",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Position",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_VERTEX_POSITIONS_DESCRIPTION"
+            },
+            {
                 "name": "Index",
                 "type": {
                     "prefix": "",

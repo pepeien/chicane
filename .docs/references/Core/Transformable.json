@@ -1574,32 +1574,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setBounds",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Bounds3D",
-                            "suffix": "&",
-                            "path": "Core/Math/Bounds/3D",
-                            "templates": []
-                        },
-                        "name": "inBounds"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORMABLE_SETBOUNDS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",

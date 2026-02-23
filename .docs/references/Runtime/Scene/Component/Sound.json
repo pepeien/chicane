@@ -79,8 +79,8 @@
                     "path": "Screech/Sound",
                     "templates": []
                 },
-                "name": "m_sound",
-                "description": "CHICANE_CSOUND_M_SOUND_DESCRIPTION"
+                "name": "m_instance",
+                "description": "CHICANE_CSOUND_M_INSTANCE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CSOUND_DESCRIPTION"

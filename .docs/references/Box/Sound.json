@@ -152,10 +152,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fetchData",
+                "name": "fetchDataFromXML",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_FETCHDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUND_FETCHDATAFROMXML_DESCRIPTION"
             }
         ],
         "members": [

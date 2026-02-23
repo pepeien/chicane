@@ -1087,7 +1087,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Renderer::DrawPoly3DCommand::List",
+                            "name": "Renderer::DrawPoly3DCommand",
                             "suffix": "",
                             "path": "Renderer/Draw/Poly/3D/Command",
                             "templates": []
@@ -1197,7 +1197,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Renderer::DrawPoly2DCommand::List",
+                            "name": "Renderer::DrawPoly2DCommand",
                             "suffix": "",
                             "path": "Renderer/Draw/Poly/2D/Command",
                             "templates": []

@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "exit",
+                "name": "shutdown",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_KERB_EXIT_DESCRIPTION"
+                "description": "CHICANE_KERB_SHUTDOWN_DESCRIPTION"
             }
         ],
         "members": [],

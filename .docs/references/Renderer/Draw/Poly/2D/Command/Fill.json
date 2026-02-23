@@ -1,10 +1,10 @@
 {
-    "title": "DrawPoly3DCommandMesh",
-    "filename": "Mesh",
-    "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+    "title": "DrawPoly2DCommandFill",
+    "filename": "Fill",
+    "path": "Renderer/Draw/Poly/2D/Command/Fill",
     "source": {
-        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
-        "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+        "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Command/Fill.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly2DCommandFill",
         "types": [
             {
                 "name": "List",
@@ -16,14 +16,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "DrawPoly3DCommandMesh",
+                            "name": "DrawPoly2DCommandFill",
                             "suffix": "",
-                            "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                            "path": "Renderer/Draw/Poly/2D/Command/Fill",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_LIST_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_LIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -36,29 +36,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Draw::Id",
+                    "name": "DrawPolyData",
                     "suffix": "",
-                    "path": "Renderer/Draw",
+                    "path": "Renderer/Draw/Poly/Data",
                     "templates": []
                 },
-                "name": "model",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_MODEL_DESCRIPTION"
+                "name": "polygon",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_POLYGON_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPoly3DInstance",
+                    "name": "DrawPoly2DInstance",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "path": "Renderer/Draw/Poly/2D/Instance",
                     "templates": []
                 },
                 "name": "instance",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_INSTANCE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_INSTANCE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_DESCRIPTION"
     },
     "children": []
 }

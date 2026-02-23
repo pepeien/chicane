@@ -81,6 +81,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawPolyMode",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Mode",
+                    "templates": []
+                },
+                "name": "mode",
+                "description": "CHICANE_RENDERER_DRAWPOLY_MODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",

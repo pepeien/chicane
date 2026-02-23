@@ -183,9 +183,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "FontRaw",
+                    "name": "FontParsed",
                     "suffix": "&",
-                    "path": "Box",
+                    "path": "Box/Font/Parsed",
                     "templates": []
                 },
                 "name": "getData",
@@ -257,10 +257,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fetchVendor",
+                "name": "fetchVendorFromXML",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_FETCHVENDOR_DESCRIPTION"
+                "description": "CHICANE_BOX_FONT_FETCHVENDORFROMXML_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -272,10 +272,38 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fetchData",
+                "name": "fetchDataFromXML",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_FETCHDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_FONT_FETCHDATAFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "FontParsed",
+                    "suffix": "",
+                    "path": "Box/Font/Parsed",
+                    "templates": []
+                },
+                "name": "parseData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FontRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONT_PARSEDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -361,9 +389,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "FontRaw",
+                    "name": "FontParsed",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Box/Font/Parsed",
                     "templates": []
                 },
                 "name": "m_data",

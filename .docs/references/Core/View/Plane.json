@@ -48,7 +48,53 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "update",
+                "name": "setNormal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inFirstEdge"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inSecondEdge"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inPosition"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VIEWPLANE_SETNORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setNormal",
                 "parameters": [
                     {
                         "type": {
@@ -68,11 +114,11 @@
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inPoint"
+                        "name": "inPosition"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VIEWPLANE_UPDATE_DESCRIPTION"
+                "description": "CHICANE_VIEWPLANE_SETNORMAL_DESCRIPTION"
             },
             {
                 "accessor": "private",

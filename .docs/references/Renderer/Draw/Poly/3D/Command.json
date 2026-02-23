@@ -29,21 +29,26 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
-        "members": [
+        "functions": [
             {
                 "accessor": "public",
-                "modifiers": [],
-                "type": {
+                "type": "standard",
+                "return": {
                     "prefix": "",
-                    "name": "DrawPoly3DCommandType",
+                    "name": "void",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/3D/Command/Type",
+                    "path": "",
                     "templates": []
                 },
-                "name": "type",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_TYPE_DESCRIPTION"
-            },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_CLEAR_DESCRIPTION"
+            }
+        ],
+        "members": [
             {
                 "accessor": "public",
                 "modifiers": [],
@@ -95,6 +100,19 @@
                 },
                 "name": "meshes",
                 "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_MESHES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DCommandLine::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Command/Line",
+                    "templates": []
+                },
+                "name": "lines",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LINES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_DESCRIPTION"

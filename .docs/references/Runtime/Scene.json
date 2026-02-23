@@ -161,12 +161,29 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onActivation",
+                "name": "onLoad",
                 "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SCENE_ONACTIVATION_DESCRIPTION"
+                "description": "CHICANE_SCENE_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onUnload",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCENE_ONUNLOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -198,7 +215,7 @@
             },
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -206,12 +223,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onDeactivation",
+                "name": "load",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_SCENE_ONDEACTIVATION_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_SCENE_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -223,10 +238,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "activate",
+                "name": "unload",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_SCENE_ACTIVATE_DESCRIPTION"
+                "description": "CHICANE_SCENE_UNLOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -253,21 +268,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_SCENE_TICK_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "deactivate",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SCENE_DEACTIVATE_DESCRIPTION"
             },
             {
                 "accessor": "public",

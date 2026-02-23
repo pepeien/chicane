@@ -193,18 +193,77 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "DrawPoly::List",
-                    "suffix": "&",
-                    "path": "Renderer/Draw/Poly",
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
                     "templates": []
                 },
-                "name": "get2DDraws",
-                "parameters": [],
+                "name": "hasDraws",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyMode",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_FRAME_GET2DDRAWS_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_HASDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getDraws",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyMode",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETDRAWS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -233,7 +292,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "use",
+                "name": "draw",
                 "parameters": [
                     {
                         "type": {
@@ -257,24 +316,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_USE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "DrawPoly::List",
-                    "suffix": "&",
-                    "path": "Renderer/Draw/Poly",
-                    "templates": []
-                },
-                "name": "get3DDraws",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_FRAME_GET3DDRAWS_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_DRAW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -303,7 +345,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "use",
+                "name": "draw",
                 "parameters": [
                     {
                         "type": {
@@ -327,7 +369,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_USE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_DRAW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -474,8 +516,8 @@
                     "path": "Renderer/Draw/Poly",
                     "templates": []
                 },
-                "name": "m_draws",
-                "description": "CHICANE_RENDERER_FRAME_M_DRAWS_DESCRIPTION"
+                "name": "m_polys",
+                "description": "CHICANE_RENDERER_FRAME_M_POLYS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

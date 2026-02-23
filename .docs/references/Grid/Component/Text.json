@@ -96,7 +96,39 @@
                 "description": "CHICANE_GRID_TEXT_ONREFRESH_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasFont",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXT_HASFONT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshFont",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESHFONT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -153,6 +185,19 @@
                 },
                 "name": "m_parsedText",
                 "description": "CHICANE_GRID_TEXT_M_PARSEDTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Box::Font",
+                    "suffix": "*",
+                    "path": "Box/Font",
+                    "templates": []
+                },
+                "name": "m_font",
+                "description": "CHICANE_GRID_TEXT_M_FONT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_TEXT_DESCRIPTION"

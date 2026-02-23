@@ -1,0 +1,40 @@
+{
+    "title": "DrawPolyMode",
+    "filename": "Mode",
+    "path": "Renderer/Draw/Poly/Mode",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/Mode.hpp",
+        "namespace": "Chicane::Renderer::DrawPolyMode",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Fill",
+                "description": "CHICANE_RENDERER_DRAWPOLYMODE_FILL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Line",
+                "description": "CHICANE_RENDERER_DRAWPOLYMODE_LINE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DRAWPOLYMODE_DESCRIPTION"
+    },
+    "children": []
+}

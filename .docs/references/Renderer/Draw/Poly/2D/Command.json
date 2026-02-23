@@ -29,33 +29,38 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_CLEAR_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Renderer::DrawPolyData",
+                    "name": "DrawPoly2DCommandFill::List",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/Data",
+                    "path": "Renderer/Draw/Poly/2D/Command/Fill",
                     "templates": []
                 },
-                "name": "polygon",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_POLYGON_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Renderer::DrawPoly2DInstance",
-                    "suffix": "",
-                    "path": "Renderer/Draw/Poly/2D/Instance",
-                    "templates": []
-                },
-                "name": "instance",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_INSTANCE_DESCRIPTION"
+                "name": "fills",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_FILLS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMAND_DESCRIPTION"

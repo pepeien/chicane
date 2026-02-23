@@ -183,9 +183,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "ModelRaw",
+                    "name": "ModelParsed::Map",
                     "suffix": "&",
-                    "path": "Box",
+                    "path": "Box/Model/Parsed",
                     "templates": []
                 },
                 "name": "getData",
@@ -248,19 +248,32 @@
                 "description": "CHICANE_BOX_MODEL_SETDATA_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "prefix": "const ",
+                    "name": "ModelParsed",
+                    "suffix": "&",
+                    "path": "Box/Model/Parsed",
                     "templates": []
                 },
-                "name": "fetchVendor",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODEL_FETCHVENDOR_DESCRIPTION"
+                "name": "getModel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETMODEL_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -272,10 +285,81 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fetchData",
+                "name": "fetchVendorFromXML",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MODEL_FETCHDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_MODEL_FETCHVENDORFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchDataFromXML",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_FETCHDATAFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelParsed::Map",
+                    "suffix": "",
+                    "path": "Box/Model/Parsed",
+                    "templates": []
+                },
+                "name": "parseData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_PARSEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelParsed::Map",
+                    "suffix": "",
+                    "path": "Box/Model/Parsed",
+                    "templates": []
+                },
+                "name": "normalizeData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelParsed::Map",
+                            "suffix": "&",
+                            "path": "Box/Model/Parsed",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_NORMALIZEDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -345,9 +429,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "ModelRaw",
+                    "name": "ModelParsed::Map",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Box/Model/Parsed",
                     "templates": []
                 },
                 "name": "m_data",

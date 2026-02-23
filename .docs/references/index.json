@@ -111,22 +111,6 @@
                         "children": []
                     },
                     {
-                        "title": "FontManager",
-                        "filename": "Manager",
-                        "path": "Box/Font/Manager",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Font/Manager.hpp",
-                            "namespace": "Chicane::Box::FontManager",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "FontParsed",
                         "filename": "Parsed",
                         "path": "Box/Font/Parsed",
@@ -165,39 +149,6 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Vendor.hpp",
                             "namespace": "Chicane::Box::FontVendor",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "title": "Manager",
-                "filename": "Manager",
-                "path": "Box/Manager",
-                "source": {
-                    "header": "Includes/Chicane/Box/Manager.hpp",
-                    "namespace": "Chicane::Box::Manager",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": [
-                    {
-                        "title": "ManagerEvent",
-                        "filename": "Event",
-                        "path": "Box/Manager/Event",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Manager/Event.hpp",
-                            "namespace": "Chicane::Box::ManagerEvent",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -273,22 +224,6 @@
                     "members": []
                 },
                 "children": [
-                    {
-                        "title": "ModelManager",
-                        "filename": "Manager",
-                        "path": "Box/Model/Manager",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Model/Manager.hpp",
-                            "namespace": "Chicane::Box::ModelManager",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
                     {
                         "title": "ModelParsed",
                         "filename": "Parsed",
@@ -386,24 +321,7 @@
                     "functions": [],
                     "members": []
                 },
-                "children": [
-                    {
-                        "title": "SoundManager",
-                        "filename": "Manager",
-                        "path": "Box/Sound/Manager",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Sound/Manager.hpp",
-                            "namespace": "Chicane::Box::SoundManager",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
+                "children": []
             },
             {
                 "title": "Texture",
@@ -419,24 +337,7 @@
                     "functions": [],
                     "members": []
                 },
-                "children": [
-                    {
-                        "title": "TextureManager",
-                        "filename": "Manager",
-                        "path": "Box/Texture/Manager",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Texture/Manager.hpp",
-                            "namespace": "Chicane::Box::TextureManager",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
+                "children": []
             }
         ]
     },
@@ -1215,6 +1116,22 @@
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Bounds/3D.hpp",
                                     "namespace": "Chicane::Bounds3D",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "BoundsCorner",
+                                "filename": "Corner",
+                                "path": "Core/Math/Bounds/Corner",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Math/Bounds/Corner.hpp",
+                                    "namespace": "Chicane::BoundsCorner",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -2527,6 +2444,22 @@
                                         },
                                         "children": [
                                             {
+                                                "title": "OpenGLLSceneLine",
+                                                "filename": "Line",
+                                                "path": "Renderer/Backend/OpenGL/Layer/Scene/Line",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp",
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneLine",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            },
+                                            {
                                                 "title": "OpenGLLSceneMesh",
                                                 "filename": "Mesh",
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Mesh",
@@ -2756,6 +2689,22 @@
                                             "members": []
                                         },
                                         "children": [
+                                            {
+                                                "title": "VulkanLSceneLine",
+                                                "filename": "Line",
+                                                "path": "Renderer/Backend/Vulkan/Layer/Scene/Line",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp",
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneLine",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            },
                                             {
                                                 "title": "VulkanLSceneMesh",
                                                 "filename": "Mesh",
@@ -3574,7 +3523,24 @@
                                             "functions": [],
                                             "members": []
                                         },
-                                        "children": []
+                                        "children": [
+                                            {
+                                                "title": "DrawPoly2DCommandFill",
+                                                "filename": "Fill",
+                                                "path": "Renderer/Draw/Poly/2D/Command/Fill",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Command/Fill.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly2DCommandFill",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": []
+                                                },
+                                                "children": []
+                                            }
+                                        ]
                                     },
                                     {
                                         "title": "DrawPoly2DInstance",
@@ -3625,12 +3591,12 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "DrawPoly3DCommandMesh",
-                                                "filename": "Mesh",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                                                "title": "DrawPoly3DCommandLine",
+                                                "filename": "Line",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Line",
                                                 "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandLine",
                                                     "types": [],
                                                     "enums": [],
                                                     "constructors": [],
@@ -3641,12 +3607,12 @@
                                                 "children": []
                                             },
                                             {
-                                                "title": "DrawPoly3DCommandType",
-                                                "filename": "Type",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Type",
+                                                "title": "DrawPoly3DCommandMesh",
+                                                "filename": "Mesh",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Mesh",
                                                 "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandType",
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
                                                     "types": [],
                                                     "enums": [],
                                                     "constructors": [],
@@ -3683,6 +3649,22 @@
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Data.hpp",
                                     "namespace": "Chicane::Renderer::DrawPolyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawPolyMode",
+                                "filename": "Mode",
+                                "path": "Renderer/Draw/Poly/Mode",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Mode.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyMode",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],

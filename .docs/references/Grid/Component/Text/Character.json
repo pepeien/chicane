@@ -48,81 +48,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "disable",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_TEXTCHARACTER_DISABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasCharacter",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_TEXTCHARACTER_HASCHARACTER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "char32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getCharacter",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_TEXTCHARACTER_GETCHARACTER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setCharacter",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "char32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_TEXTCHARACTER_SETCHARACTER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -139,18 +64,27 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "Box::FontGlyph",
-                    "suffix": "&",
-                    "path": "Box/Font/Glyph",
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
                     "templates": []
                 },
-                "name": "getGlyph",
-                "parameters": [],
-                "modifiers": [
-                    "const"
+                "name": "setGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::FontGlyph",
+                            "suffix": "*",
+                            "path": "Box/Font/Glyph",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
                 ],
-                "description": "CHICANE_GRID_TEXTCHARACTER_GETGLYPH_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTCHARACTER_SETGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -192,25 +126,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refreshFont",
+                "name": "refreshGlyphStyle",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHFONT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshFontStyle",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHFONTSTYLE_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHGLYPHSTYLE_DESCRIPTION"
             }
         ],
         "members": [
@@ -234,22 +153,9 @@
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
-                    "prefix": "",
-                    "name": "char32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_character",
-                "description": "CHICANE_GRID_TEXTCHARACTER_M_CHARACTER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Box::FontGlyph",
-                    "suffix": "",
+                    "suffix": "*",
                     "path": "Box/Font/Glyph",
                     "templates": []
                 },

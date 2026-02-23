@@ -90,16 +90,6 @@
                             "templates": []
                         },
                         "name": "inLocation"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "bInShouldFlip"
                     }
                 ],
                 "modifiers": [],
@@ -136,16 +126,6 @@
                             "templates": []
                         },
                         "name": "inVendor"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "bInShouldFlip"
                     }
                 ],
                 "modifiers": [],
@@ -413,7 +393,37 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "rotate",
+                "name": "flipHorizontally",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_FLIPHORIZONTALLY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flipVertically",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_FLIPVERTICALLY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rotateBy",
                 "parameters": [
                     {
                         "type": {
@@ -427,7 +437,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_IMAGE_ROTATE_DESCRIPTION"
+                "description": "CHICANE_IMAGE_ROTATEBY_DESCRIPTION"
             }
         ],
         "members": [

@@ -59,32 +59,6 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawTextureData",
-                            "suffix": "&",
-                            "path": "Renderer/Draw/Texture/Data",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DRAWTEXTURERESOURCE_FINDID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "findId",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
                             "name": "Draw::Reference",
                             "suffix": "&",
                             "path": "Renderer/Draw",

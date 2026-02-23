@@ -36,24 +36,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isType",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_COMPONENT_ISTYPE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "isActive",
                 "parameters": [],
                 "modifiers": [
