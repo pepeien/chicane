@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
-#include "Chicane/Box/Model/Parsed.hpp"
+#include "Chicane/Box/Model.hpp"
 
 namespace Chicane
 {
@@ -17,7 +17,7 @@ namespace Chicane
             return;
         }
 
-        inRoot->setBounds(getBounds());
+        inRoot->addBounds(getBounds());
     }
 
     bool CMesh::isDrawable() const
@@ -54,22 +54,11 @@ namespace Chicane
             return;
         }
 
-        //const Box::ModelManager* manager = Box::getModelManager();
+        for (const Box::MeshGroup& group : m_asset->getGroups())
+        {
+            const Box::Model* model = Box::load<Box::Model>(group.getModel().getSource());
 
-        //for (const Box::MeshGroup& group : m_asset->getGroups())
-        //{
-        //    const Box::ModelParsed& model = manager->get(group.getModel().getReference());
-
-        //    const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
-
-        //    addBounds(bounds);
-
-        //    if (!isAttached())
-        //    {
-        //        continue;
-        //    }
-
-        //    m_parent->addBounds(bounds);
-        //}
+            addBounds(Bounds3D(model->getModel(group.getModel().getReference()).vertices));
+        }
     }
 }

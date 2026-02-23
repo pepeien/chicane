@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Box/Font.hpp"
+
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -25,12 +27,17 @@ namespace Chicane
             const String& getText() const;
             void setText(const String& inValue);
 
-        protected:
+        private:
+            bool hasFont() const;
+
+            void refreshFont();
             void refreshText();
 
         private:
-            String m_text;
-            String m_parsedText;
+            String           m_text;
+            String           m_parsedText;
+
+            const Box::Font* m_font;
         };
     }
 }

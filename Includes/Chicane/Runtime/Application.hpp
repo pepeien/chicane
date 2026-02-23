@@ -170,32 +170,32 @@ namespace Chicane
 
     private:
         // Status
-        Telemetry                                      m_telemetry;
-        std::atomic<bool>                              m_bIsRunning;
+        Telemetry                                m_telemetry;
+        std::atomic<bool>                        m_bIsRunning;
 
         // Scene
-        Controller*                                    m_controller;
-        ControllerObservable                           m_controllerObservable;
+        Controller*                              m_controller;
+        ControllerObservable                     m_controllerObservable;
 
-        std::shared_ptr<Scene>                         m_scene;
-        std::thread                                    m_sceneThread;
-        std::vector<Renderer::DrawPoly3DCommand::List> m_sceneCommandBuffers;
-        std::atomic<uint32_t>                          m_sceneWriteIndex;
-        std::atomic<uint32_t>                          m_sceneReadIndex;
-        SceneObservable                                m_sceneObservable;
+        std::shared_ptr<Scene>                   m_scene;
+        std::thread                              m_sceneThread;
+        std::vector<Renderer::DrawPoly3DCommand> m_sceneCommandBuffers;
+        std::atomic<uint32_t>                    m_sceneWriteIndex;
+        std::atomic<uint32_t>                    m_sceneReadIndex;
+        SceneObservable                          m_sceneObservable;
 
         // Grid
-        std::shared_ptr<Grid::View>                    m_view;
-        std::thread                                    m_viewThread;
-        std::vector<Renderer::DrawPoly2DCommand::List> m_viewCommandBuffers;
-        std::atomic<uint32_t>                          m_viewWriteIndex;
-        std::atomic<uint32_t>                          m_viewReadIndex;
-        ViewObservable                                 m_viewObservable;
+        std::shared_ptr<Grid::View>              m_view;
+        std::thread                              m_viewThread;
+        std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
+        std::atomic<uint32_t>                    m_viewWriteIndex;
+        std::atomic<uint32_t>                    m_viewReadIndex;
+        ViewObservable                           m_viewObservable;
 
         // Window
-        std::unique_ptr<Window>                        m_window;
+        std::unique_ptr<Window>                  m_window;
 
         // Renderer
-        std::unique_ptr<Renderer::Instance>            m_renderer;
+        std::unique_ptr<Renderer::Instance>      m_renderer;
     };
 }

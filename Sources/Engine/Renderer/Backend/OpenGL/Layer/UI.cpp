@@ -51,7 +51,7 @@ namespace Chicane
 
         bool OpenGLLUI::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
+            if (!inFrame.hasDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
                 return false;
             }
@@ -90,13 +90,8 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.get2DDraws())
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
-                if (draw.instanceCount == 0)
-                {
-                    continue;
-                }
-
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,

@@ -5,6 +5,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Data.hpp"
+#include "Chicane/Renderer/Draw/Poly/Mode.hpp"
 
 namespace Chicane
 {
@@ -13,6 +14,7 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPolyData : DrawData
         {
         public:
+            DrawPolyMode    mode     = DrawPolyMode::Fill;
             Vertex::List    vertices = {};
             Vertex::Indices indices  = {};
         };

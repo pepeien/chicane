@@ -30,13 +30,14 @@ namespace Chicane
             void addLight(const View::List& inData);
             void addLight(const View& inData);
 
-            const DrawPoly::List& get2DDraws() const;
-            const DrawPoly2DInstance::List getInstances2D() const;
-            void use(Draw::Id inId, const DrawPoly2DInstance& inInstance);
+            bool hasDraws(DrawPolyType inType, DrawPolyMode inMode) const;
+            DrawPoly::List getDraws(DrawPolyType inType, DrawPolyMode inMode) const;
 
-            const DrawPoly::List& get3DDraws() const;
+            const DrawPoly2DInstance::List getInstances2D() const;
+            void draw(Draw::Id inId, const DrawPoly2DInstance& inInstance);
+
             const DrawPoly3DInstance::List getInstances3D() const;
-            void use(Draw::Id inId, const DrawPoly3DInstance& inInstance);
+            void draw(Draw::Id inId, const DrawPoly3DInstance& inInstance);
 
             const DrawSkyInstance& getSkyInstance() const;
 
@@ -52,15 +53,11 @@ namespace Chicane
 
         protected:
             // View
-            View          m_camera = {};
-            View::List    m_lights = {};
+            View                    m_camera = {};
+            View::List              m_lights = {};
 
             // Poly
-            DrawPoly::Map m_polys = {
-                {DrawPolyType::e2D,       {}},
-                {DrawPolyType::e3D,       {}},
-                {DrawPolyType::eParticle, {}}
-            };
+            DrawPoly::Map           m_polys = {};
 
             // Instances
             DrawPoly2DInstance::Map m_2DInstances = {};

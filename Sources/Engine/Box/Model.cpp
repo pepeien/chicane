@@ -101,6 +101,16 @@ namespace Chicane
             m_data = parseData(inData);
         }
 
+        const ModelParsed& Model::getModel(const String& inId) const
+        {
+            if (m_data.find(inId) == m_data.end())
+            {
+                return ModelParsed::empty();
+            }
+
+            return m_data.at(inId);
+        }
+
         void Model::fetchVendorFromXML()
         {
             if (isEmpty())

@@ -71,7 +71,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
-                getCurrentFrame().use(inId, inInstance);
+                getCurrentFrame().draw(inId, inInstance);
             }
 
             Draw::Id findTexture(const Draw::Reference& inReference);

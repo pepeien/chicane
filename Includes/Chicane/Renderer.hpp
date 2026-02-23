@@ -32,6 +32,7 @@ namespace Chicane
         static constexpr inline const char*         SCENE_SKY_LAYER_ID    = "Engine_Scene_Sky";
         static constexpr inline const char*         SCENE_SHADOW_LAYER_ID = "Engine_Scene_Shadow";
         static constexpr inline const char*         SCENE_MESH_LAYER_ID   = "Engine_Scene_Mesh";
+        static constexpr inline const char*         SCENE_LINE_LAYER_ID   = "Engine_Scene_Line";
 
         static constexpr inline const char*         UI_LAYER_ID = "Engine_UI";
 

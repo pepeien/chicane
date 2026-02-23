@@ -5,6 +5,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp"
 
@@ -197,6 +198,7 @@ namespace Chicane
             m_backend->addLayer<VulkanLSceneSky>(settings);
             m_backend->addLayer<VulkanLSceneShadow>(settings);
             m_backend->addLayer<VulkanLSceneMesh>(settings);
+            m_backend->addLayer<VulkanLSceneLine>(settings);
         }
     }
 }

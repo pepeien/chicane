@@ -85,7 +85,6 @@ namespace Chicane
         // Bounds
         const Bounds3D& getBounds() const;
         void addBounds(const Bounds3D& inBounds);
-        void setBounds(const Bounds3D& inBounds);
 
         const Vec3& getTop() const;
         const Vec3& getCenter() const;

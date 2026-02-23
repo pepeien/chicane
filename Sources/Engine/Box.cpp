@@ -198,6 +198,23 @@ namespace Chicane
             }
         }
 
+        std::vector<const Asset*> getById(const String& inId)
+        {
+            std::vector<const Asset*> result;
+
+            for (const auto& [path, asset] : g_cache)
+            {
+                if (!asset->getId().equals(inId))
+                {
+                    continue;
+                }
+
+                result.push_back(asset.get());
+            }
+
+            return result;
+        }
+
         const Asset* load(const FileSystem::Path& inFilePath)
         {
             if (!AssetHeader::isFileAsset(inFilePath))
@@ -234,7 +251,7 @@ namespace Chicane
             }
         }
 
-        AssetSubscription watchAssets(
+        AssetSubscription watch(
             AssetSubscription::NextCallback     inNext,
             AssetSubscription::ErrorCallback    inError,
             AssetSubscription::CompleteCallback inComplete

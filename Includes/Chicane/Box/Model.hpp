@@ -35,6 +35,8 @@ namespace Chicane
             void setData(const FileSystem::Path& inFilepath);
             void setData(const ModelRaw& inData);
 
+            const ModelParsed& getModel(const String& inId) const;
+
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();

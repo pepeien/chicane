@@ -17,6 +17,14 @@ namespace Chicane
             using Map = std::unordered_map<String, ModelParsed>;
 
         public:
+            static const ModelParsed& empty()
+            {
+                static ModelParsed result;
+
+                return result;
+            }
+
+        public:
             Vertex::List    vertices = {};
             Vertex::Indices indices  = {};
         };

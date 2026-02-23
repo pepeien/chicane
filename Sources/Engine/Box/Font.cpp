@@ -52,9 +52,11 @@ namespace Chicane
 
         Font::Font(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-              m_vendor(FontVendor::Undefined)
+              m_vendor(FontVendor::Undefined),
+              m_data({})
         {
-            fetchVendor();
+            fetchVendorFromXML();
+            fetchDataFromXML();
         }
 
         FontVendor Font::getVendor() const
@@ -74,9 +76,9 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
-        FontParsed Font::getData() const
+        const FontParsed& Font::getData() const
         {
-            return parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
+            return m_data;
         }
 
         void Font::setData(const FileSystem::Path& inFilepath)
@@ -96,9 +98,11 @@ namespace Chicane
             {
                 throw std::runtime_error("Failed to save the font [" + m_header.filepath.string() + "] data");
             }
+
+            m_data = parseData(inData);
         }
 
-        void Font::fetchVendor()
+        void Font::fetchVendorFromXML()
         {
             if (isEmpty())
             {
@@ -106,6 +110,16 @@ namespace Chicane
             }
 
             m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
+        }
+
+        void Font::fetchDataFromXML()
+        {
+            if (isEmpty())
+            {
+                return;
+            }
+
+            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
         }
 
         FontParsed Font::parseData(const FontRaw& inValue) const

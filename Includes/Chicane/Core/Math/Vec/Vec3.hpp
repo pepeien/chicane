@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -33,6 +34,7 @@ namespace Chicane
 
         inline operator String() const { return toString(); }
 
+    public:
         inline String toString() const { return String::sprint("[%.2f, %.2f, %.2f]", x, y, z); }
     };
 }

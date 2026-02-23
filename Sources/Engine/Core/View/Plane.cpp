@@ -15,6 +15,6 @@ namespace Chicane
 
     float ViewPlane::distanceToPoint(const Vec3& inPoint) const
     {
-        return m_normal.dot(inPoint) - m_distance;
+        return m_normal.dot(inPoint) + m_distance;
     }
 }

@@ -8,7 +8,8 @@ namespace Chicane
     {
         Text::Text(const pugi::xml_node& inNode)
             : Container(inNode),
-              m_text("")
+              m_text(""),
+              m_font(nullptr)
         {
             setText(inNode.text().as_string());
 
@@ -21,9 +22,10 @@ namespace Chicane
 
         void Text::onRefresh()
         {
-            Container::onRefresh();
-
+            refreshFont();
             refreshText();
+
+            Container::onRefresh();
         }
 
         const String& Text::getText() const
@@ -41,14 +43,31 @@ namespace Chicane
             m_text = inValue;
         }
 
+        bool Text::hasFont() const
+        {
+            return m_font != nullptr;
+        }
+
+        void Text::refreshFont()
+        {
+            m_font = Box::getById<Box::Font>(m_style.font.family.get().toStandard());
+        }
+
         void Text::refreshText()
         {
+            if (!hasFont())
+            {
+                return;
+            }
+
             const String value = parseText(m_text);
 
             if (value.equals(m_parsedText))
             {
                 return;
             }
+
+            const Box::FontParsed& fontFamily = m_font->getData();
 
             std::vector<char32_t> codepoints = value.toUnicode();
 
@@ -66,17 +85,24 @@ namespace Chicane
                     continue;
                 }
 
-                static_cast<TextCharacter*>(child)->setCharacter(codepoints.at(i));
-            }
+                char32_t character = codepoints.at(i);
 
-            for (std::uint32_t i = codepoints.size(); i < m_children.size(); i++)
-            {
-                if (typeid(*m_children.at(i)) != typeid(TextCharacter))
+                if (!fontFamily.hasGlyph(character))
                 {
                     continue;
                 }
 
-                static_cast<TextCharacter*>(m_children.at(i))->disable();
+                static_cast<TextCharacter*>(child)->setGlyph(&fontFamily.getGlyph(character));
+            }
+
+            for (std::uint32_t i = codepoints.size(); i < m_children.size(); i++)
+            {
+                if (typeid(m_children.at(i)) != typeid(TextCharacter))
+                {
+                    continue;
+                }
+
+                static_cast<TextCharacter*>(m_children.at(i))->setGlyph(nullptr);
             }
         }
     }

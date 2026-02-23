@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
@@ -14,12 +14,12 @@ namespace Chicane
 {
     namespace Renderer
     {
-        VulkanLSceneShadow::VulkanLSceneShadow()
-            : Layer(SCENE_SHADOW_LAYER_ID),
-              m_clear({vk::ClearDepthStencilValue(1.0f, 0)})
+        VulkanLSceneLine::VulkanLSceneLine()
+            : Layer(SCENE_LINE_LAYER_ID),
+              m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        void VulkanLSceneShadow::onInit()
+        void VulkanLSceneLine::onInit()
         {
             initFrameResources();
 
@@ -27,21 +27,21 @@ namespace Chicane
             initFramebuffers();
         }
 
-        void VulkanLSceneShadow::onRestart()
+        void VulkanLSceneLine::onRestart()
         {
             initFramebuffers();
         }
 
-        void VulkanLSceneShadow::onDestruction()
+        void VulkanLSceneLine::onDestruction()
         {
             destroyFrameResources();
 
             m_graphicsPipeline.destroy();
         }
 
-        bool VulkanLSceneShadow::onBeginRender(const Frame& inFrame)
+        bool VulkanLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Line))
             {
                 return false;
             }
@@ -49,7 +49,7 @@ namespace Chicane
             return true;
         }
 
-        void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
+        void VulkanLSceneLine::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
             VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
@@ -58,13 +58,9 @@ namespace Chicane
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
             vk::Viewport viewport = backend->getVkViewport(this);
-            viewport.width        = SHADOW_MAP_HEIGHT;
-            viewport.height       = SHADOW_MAP_HEIGHT;
             commandBuffer.setViewport(0, 1, &viewport);
 
-            vk::Rect2D scissor    = backend->getVkScissor(this);
-            scissor.extent.width  = viewport.width;
-            scissor.extent.height = viewport.height;
+            vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
 
             vk::RenderPassBeginInfo beginInfo  = {};
@@ -76,6 +72,7 @@ namespace Chicane
             beginInfo.pClearValues             = m_clear.data();
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+
             // Pipeline
             m_graphicsPipeline.bind(commandBuffer);
 
@@ -90,7 +87,7 @@ namespace Chicane
 
             commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
             {
                 commandBuffer.drawIndexed(
                     draw.indexCount,
@@ -103,22 +100,16 @@ namespace Chicane
             commandBuffer.endRenderPass();
         }
 
-        void VulkanLSceneShadow::initFrameResources()
+        void VulkanLSceneLine::initFrameResources()
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
-            bidings.count = 2;
+            bidings.count = 1;
 
-            // Light
+            // Camera
             bidings.indices.push_back(0);
             bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
-            bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-            // Poly 3D
-            bidings.indices.push_back(1);
-            bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
@@ -128,9 +119,6 @@ namespace Chicane
             descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
-            );
-            descriptorPoolCreateInfo.sizes.push_back(
-                {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets}
             );
 
             VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
@@ -147,27 +135,18 @@ namespace Chicane
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
 
-                vk::WriteDescriptorSet lightWriteInfo;
-                lightWriteInfo.dstSet          = descriptorSet;
-                lightWriteInfo.dstBinding      = 0;
-                lightWriteInfo.dstArrayElement = 0;
-                lightWriteInfo.descriptorCount = 1;
-                lightWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
-                frame.addWriteDescriptorSet(lightWriteInfo);
-
-                vk::WriteDescriptorSet poly3DWriteInfo;
-                poly3DWriteInfo.dstSet          = descriptorSet;
-                poly3DWriteInfo.dstBinding      = 1;
-                poly3DWriteInfo.dstArrayElement = 0;
-                poly3DWriteInfo.descriptorCount = 1;
-                poly3DWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                poly3DWriteInfo.pBufferInfo     = &frame.poly3DResource.bufferInfo;
-                frame.addWriteDescriptorSet(poly3DWriteInfo);
+                vk::WriteDescriptorSet cameraWriteInfo;
+                cameraWriteInfo.dstSet          = descriptorSet;
+                cameraWriteInfo.dstBinding      = 0;
+                cameraWriteInfo.dstArrayElement = 0;
+                cameraWriteInfo.descriptorCount = 1;
+                cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
             }
         }
 
-        void VulkanLSceneShadow::destroyFrameResources()
+        void VulkanLSceneLine::destroyFrameResources()
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
@@ -175,16 +154,19 @@ namespace Chicane
             backend->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
-        void VulkanLSceneShadow::initGraphicsPipeline()
+        void VulkanLSceneLine::initGraphicsPipeline()
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Shadow.vvert";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Line.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo fragmentShader;
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Line.vfrag";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Depth
             vk::PipelineDepthStencilStateCreateInfo depth;
@@ -197,18 +179,40 @@ namespace Chicane
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
-            // Attachments
+            // Render pass
+            vk::AttachmentDescription colorAttachment;
+            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
+            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.samples       = vk::SampleCountFlagBits::e1;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+            colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
+            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+
+            vk::AttachmentReference colorReference;
+            colorReference.attachment = 0;
+            colorReference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
+
+            vk::SubpassDependency colorSubpassDepedency;
+            colorSubpassDepedency.srcSubpass    = 0;
+            colorSubpassDepedency.dstSubpass    = VK_SUBPASS_EXTERNAL;
+            colorSubpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;
+            colorSubpassDepedency.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
+
             vk::AttachmentDescription depthAttachment;
             depthAttachment.flags         = vk::AttachmentDescriptionFlags();
             depthAttachment.format        = backend->swapchain.depthFormat;
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
-            depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            depthAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            depthAttachment.finalLayout   = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+            depthAttachment.initialLayout = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             vk::AttachmentReference depthReference;
-            depthReference.attachment = 0;
+            depthReference.attachment = 1;
             depthReference.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             vk::SubpassDependency depthSubpassDepedency;
@@ -222,6 +226,8 @@ namespace Chicane
             vk::SubpassDescription subpass;
             subpass.flags                   = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
+            subpass.colorAttachmentCount    = 1;
+            subpass.pColorAttachments       = &colorReference;
             subpass.pDepthStencilAttachment = &depthReference;
 
             // Rasterizer
@@ -229,14 +235,12 @@ namespace Chicane
             rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
             rasterization.depthClampEnable        = VK_FALSE;
             rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.lineWidth               = 1.0f;
             rasterization.depthBiasEnable         = VK_TRUE;
             rasterization.depthBiasClamp          = 0.0f;
-            rasterization.polygonMode             = vk::PolygonMode::eFill;
-            rasterization.cullMode                = vk::CullModeFlagBits::eFront;
-            rasterization.frontFace               = vk::FrontFace::eClockwise;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasConstantFactor = 1.25f;
-            rasterization.depthBiasSlopeFactor    = 1.75f;
+            rasterization.polygonMode             = vk::PolygonMode::eLine;
+            rasterization.cullMode                = vk::CullModeFlagBits::eNone;
+            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
 
             // Build
             VulkanGraphicsPipelineBuilder()
@@ -248,6 +252,10 @@ namespace Chicane
                 .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
                 .addShaderStage(vertexShader, backend->logicalDevice)
+                .addShaderStage(fragmentShader, backend->logicalDevice)
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
+                .addAttachment(colorAttachment)
+                .addSubpassDependecy(colorSubpassDepedency)
                 .setDepthStencil(depth)
                 .addAttachment(depthAttachment)
                 .addSubpassDependecy(depthSubpassDepedency)
@@ -257,22 +265,23 @@ namespace Chicane
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }
 
-        void VulkanLSceneShadow::initFramebuffers()
+        void VulkanLSceneLine::initFramebuffers()
         {
-            VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
+            VulkanBackend* backend  = getBackend<VulkanBackend>();
+            vk::Viewport   viewport = backend->getVkViewport(this);
 
-            for (VulkanSwapchainImage& image : backend->swapchain.images)
+            for (VulkanSwapchainImage& frame : backend->swapchain.images)
             {
                 VulkanFrameBufferCreateInfo createInfo;
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = backend->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent.width  = SHADOW_MAP_WIDTH;
-                createInfo.extent.height = SHADOW_MAP_HEIGHT;
-                createInfo.attachments.push_back(parent->shadowImage.view);
+                createInfo.extent.width  = viewport.width;
+                createInfo.extent.height = viewport.height;
+                createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.push_back(frame.depthImage.view);
 
-                image.addBuffer(createInfo);
+                frame.addBuffer(createInfo);
             }
         }
     }

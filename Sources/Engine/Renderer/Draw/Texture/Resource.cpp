@@ -1,7 +1,5 @@
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Renderer

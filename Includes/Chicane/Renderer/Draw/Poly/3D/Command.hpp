@@ -6,7 +6,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
-#include "Chicane/Renderer/Draw/Poly/3D/Command/Type.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 
@@ -20,8 +20,17 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommand>;
 
         public:
-            DrawPoly3DCommandType       type = DrawPoly3DCommandType::Undefined;
+            void clear()
+            {
+                camera = {};
+                light  = {};
+                sky    = {};
 
+                meshes.clear();
+                lines.clear();
+            }
+
+        public:
             // View
             View                        camera = {};
             View                        light  = {};
@@ -31,6 +40,9 @@ namespace Chicane
 
             // Mesh
             DrawPoly3DCommandMesh::List meshes = {};
+
+            // Line
+            DrawPoly3DCommandLine::List lines = {};
         };
     }
 }

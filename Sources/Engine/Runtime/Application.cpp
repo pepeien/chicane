@@ -227,7 +227,7 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::watchAssets(
+        Box::watch(
             [&](const Box::Asset* inAsset)
             {
                 if (typeid(*inAsset) == typeid(Box::Model))
@@ -238,6 +238,7 @@ namespace Chicane
                     {
                         Renderer::DrawPolyData data;
                         data.reference = id;
+                        data.mode      = Renderer::DrawPolyMode::Fill;
                         data.vertices  = model.vertices;
                         data.indices   = model.indices;
 
@@ -311,30 +312,23 @@ namespace Chicane
             return;
         }
 
-        std::uint32_t                      index    = m_sceneWriteIndex.load(std::memory_order_relaxed);
-        Renderer::DrawPoly3DCommand::List& commands = m_sceneCommandBuffers[index];
-        commands.clear();
+        const std::size_t index = m_sceneWriteIndex.load(std::memory_order_relaxed);
+
+        Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
+        command.clear();
 
         for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
             camera->onResize(m_renderer->getResolution());
 
-            Renderer::DrawPoly3DCommand command;
-            command.type   = Renderer::DrawPoly3DCommandType::Camera;
             command.camera = camera->getData();
-
-            commands.emplace_back(std::move(command));
         }
 
         for (CLight* light : inScene->getActiveComponents<CLight>())
         {
             light->onResize(m_renderer->getResolution());
 
-            Renderer::DrawPoly3DCommand command;
-            command.type  = Renderer::DrawPoly3DCommandType::Light;
             command.light = light->getData();
-
-            commands.emplace_back(std::move(command));
         }
 
         for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
@@ -344,20 +338,17 @@ namespace Chicane
                 continue;
             }
 
-            Renderer::DrawPoly3DCommand command;
-            command.type = Renderer::DrawPoly3DCommandType::Mesh;
+            const Mat4& matrix = mesh->getTransform().getMatrix();
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                Renderer::DrawPoly3DCommandMesh commandMesh;
-                commandMesh.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
-                commandMesh.instance.model   = mesh->getTransform().getMatrix();
-                commandMesh.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
+                Renderer::DrawPoly3DCommandMesh subcommand;
+                subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
+                subcommand.instance.model   = matrix;
+                subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
 
-                command.meshes.push_back(commandMesh);
+                command.meshes.emplace_back(std::move(subcommand));
             }
-
-            commands.emplace_back(std::move(command));
         }
 
         for (ASky* sky : inScene->getActors<ASky>())
@@ -373,11 +364,7 @@ namespace Chicane
                 data.textures.push_back(texture.getReference());
             }
 
-            Renderer::DrawPoly3DCommand command;
-            command.type = Renderer::DrawPoly3DCommandType::Sky;
-            command.sky  = data;
-
-            commands.emplace_back(std::move(command));
+            command.sky = data;
         }
 
         m_sceneReadIndex.store(index, std::memory_order_release);
@@ -386,38 +373,27 @@ namespace Chicane
 
     void Application::renderScene()
     {
-        std::uint32_t index = m_sceneReadIndex.load(std::memory_order_acquire);
+        const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
-        for (const Renderer::DrawPoly3DCommand& command : m_sceneCommandBuffers[index])
+        const Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
+
+        m_renderer->useCamera(command.camera);
+        m_renderer->addLight(command.light);
+        m_renderer->loadSky(command.sky);
+
+        for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
         {
-            switch (command.type)
-            {
-            case Renderer::DrawPoly3DCommandType::Camera:
-                m_renderer->useCamera(command.camera);
+            m_renderer->drawPoly(mesh.model, mesh.instance);
+        }
 
-                break;
+        for (const Renderer::DrawPoly3DCommandLine& line : command.lines)
+        {
+            Renderer::DrawPolyData data;
+            data.mode     = Renderer::DrawPolyMode::Line;
+            data.indices  = line.polygon.indices;
+            data.vertices = line.polygon.vertices;
 
-            case Renderer::DrawPoly3DCommandType::Light:
-                m_renderer->addLight(command.light);
-
-                break;
-
-            case Renderer::DrawPoly3DCommandType::Sky:
-                m_renderer->loadSky(command.sky);
-
-                break;
-
-            case Renderer::DrawPoly3DCommandType::Mesh:
-                for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
-                {
-                    m_renderer->drawPoly(mesh.model, mesh.instance);
-                }
-
-                break;
-
-            default:
-                break;
-            }
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data), line.instance);
         }
     }
 
@@ -501,9 +477,10 @@ namespace Chicane
             return;
         }
 
-        std::uint32_t                      index    = m_viewWriteIndex.load(std::memory_order_relaxed);
-        Renderer::DrawPoly2DCommand::List& commands = m_viewCommandBuffers[index];
-        commands.clear();
+        std::size_t index = m_viewWriteIndex.load(std::memory_order_relaxed);
+
+        Renderer::DrawPoly2DCommand& command = m_viewCommandBuffers.at(index);
+        command.clear();
 
         const Vec2& viewSize = inView->getSize();
 
@@ -517,19 +494,19 @@ namespace Chicane
             const Grid::Primitive& primitive = component->getPrimitive();
             const Grid::Style&     style     = component->getStyle();
 
-            Renderer::DrawPoly2DCommand command;
-            command.polygon.vertices  = primitive.vertices;
-            command.polygon.indices   = primitive.indices;
-            command.instance.screen   = viewSize;
-            command.instance.size     = primitive.scale == Vec2::Zero ? component->getSize() : primitive.scale;
-            command.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
-            command.instance.texture  = m_renderer->findTexture(style.background.image.get());
-            command.instance.color    = style.background.color.get();
-            command.instance.color.a =
-                (command.instance.texture > Renderer::Draw::UnknownId ? 255.0f : command.instance.color.a) *
+            Renderer::DrawPoly2DCommandFill subcommand;
+            subcommand.polygon.vertices  = primitive.vertices;
+            subcommand.polygon.indices   = primitive.indices;
+            subcommand.instance.screen   = viewSize;
+            subcommand.instance.size     = primitive.scale == Vec2::Zero ? component->getSize() : primitive.scale;
+            subcommand.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
+            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
+            subcommand.instance.color    = style.background.color.get();
+            subcommand.instance.color.a =
+                (subcommand.instance.texture > Renderer::Draw::UnknownId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();
 
-            commands.emplace_back(std::move(command));
+            command.fills.emplace_back(std::move(subcommand));
         }
 
         m_viewReadIndex.store(index, std::memory_order_release);
@@ -543,11 +520,13 @@ namespace Chicane
             return;
         }
 
-        std::uint32_t index = m_viewReadIndex.load(std::memory_order_acquire);
+        const std::size_t index = m_viewReadIndex.load(std::memory_order_acquire);
 
-        for (const Renderer::DrawPoly2DCommand& command : m_viewCommandBuffers[index])
+        const Renderer::DrawPoly2DCommand& command = m_viewCommandBuffers.at(index);
+
+        for (const Renderer::DrawPoly2DCommandFill& fill : command.fills)
         {
-            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, command.polygon), command.instance);
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, fill.polygon), fill.instance);
         }
     }
 }

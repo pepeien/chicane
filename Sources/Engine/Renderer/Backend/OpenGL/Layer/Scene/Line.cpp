@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 
 #include <GL/glew.h>
 
@@ -10,23 +10,23 @@ namespace Chicane
 {
     namespace Renderer
     {
-        OpenGLLSceneMesh::OpenGLLSceneMesh()
-            : Layer(SCENE_MESH_LAYER_ID)
+        OpenGLLSceneLine::OpenGLLSceneLine()
+            : Layer(SCENE_LINE_LAYER_ID)
         {}
 
-        void OpenGLLSceneMesh::onInit()
+        void OpenGLLSceneLine::onInit()
         {
             buildShader();
         }
 
-        void OpenGLLSceneMesh::onDestruction()
+        void OpenGLLSceneLine::onDestruction()
         {
             destroyShader();
         }
 
-        bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
+        bool OpenGLLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Line))
             {
                 return false;
             }
@@ -34,7 +34,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
+        void OpenGLLSceneLine::onRender(const Frame& inFrame, void* inData)
         {
             glUseProgram(m_shaderProgram);
 
@@ -42,21 +42,18 @@ namespace Chicane
             glDepthMask(GL_TRUE);
             glDepthFunc(GL_LEQUAL);
 
-            glEnable(GL_CULL_FACE);
+            glDisable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
-            glCullFace(GL_BACK);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-            glClear(GL_DEPTH_BUFFER_BIT);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
             {
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
@@ -70,20 +67,19 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneMesh::onEndRender()
+        void OpenGLLSceneLine::onEndRender()
         {
             glDisable(GL_DEPTH_TEST);
-            glDisable(GL_CULL_FACE);
             glDisable(GL_BLEND);
         }
 
-        void OpenGLLSceneMesh::buildShader()
+        void OpenGLLSceneLine::buildShader()
         {
             GLint result = GL_FALSE;
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.overt");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Line.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -104,7 +100,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Line.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -139,7 +135,7 @@ namespace Chicane
             glDeleteShader(fragmentShader);
         }
 
-        void OpenGLLSceneMesh::destroyShader()
+        void OpenGLLSceneLine::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
         }

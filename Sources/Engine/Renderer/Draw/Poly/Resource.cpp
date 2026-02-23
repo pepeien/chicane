@@ -87,6 +87,7 @@ namespace Chicane
 
             DrawPoly draw    = {};
             draw.id          = m_draws.size();
+            draw.mode        = inData.mode;
             draw.reference   = inData.reference;
             draw.vertexStart = m_vertices.empty() ? 0U : m_vertices.size();
             draw.vertexCount = inData.vertices.size();

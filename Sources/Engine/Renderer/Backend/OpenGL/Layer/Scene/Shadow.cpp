@@ -28,7 +28,7 @@ namespace Chicane
 
         bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
+            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return false;
             }
@@ -57,13 +57,8 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
-            for (const DrawPoly& draw : inFrame.get3DDraws())
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
-                if (draw.instanceCount == 0)
-                {
-                    continue;
-                }
-
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,

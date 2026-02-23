@@ -27,23 +27,14 @@ namespace Chicane
             void onRefresh() override;
 
         public:
-            void disable();
-
-            bool hasCharacter() const;
-            char32_t getCharacter() const;
-            void setCharacter(char32_t inValue);
-
             bool hasGlyph() const;
-            const Box::FontGlyph& getGlyph() const;
+            void setGlyph(const Box::FontGlyph* inValue);
 
         protected:
-            void refreshFont();
-            void refreshFontStyle();
+            void refreshGlyphStyle();
 
         private:
-            char32_t       m_character;
-
-            Box::FontGlyph m_glyph;
+            const Box::FontGlyph* m_glyph;
         };
     }
 }

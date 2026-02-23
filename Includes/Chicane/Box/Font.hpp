@@ -33,17 +33,19 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(FontVendor inValue);
 
-            FontParsed getData() const;
+            const FontParsed& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const FontRaw& inValue);
 
         private:
-            void fetchVendor();
+            void fetchVendorFromXML();
+            void fetchDataFromXML();
 
             FontParsed parseData(const FontRaw& inValue) const;
 
         private:
             FontVendor m_vendor;
+            FontParsed m_data;
         };
     }
 }
