@@ -18,12 +18,6 @@ namespace Chicane
         inline virtual void onAttachment(Object* inParent) { return; }
 
     public:
-        template <class T>
-        inline bool isType() const
-        {
-            return typeid(*this) == typeid(T);
-        }
-
         bool isActive() const;
         void activate();
         void deactivate();

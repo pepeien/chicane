@@ -2,6 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Model/Parsed.hpp"
 #include "Chicane/Box/Model/Raw.hpp"
 #include "Chicane/Box/Model/Vendor.hpp"
 
@@ -30,17 +31,22 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(ModelVendor inValue);
 
-            const ModelRaw& getData() const;
+            const ModelParsed::Map& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const ModelRaw& inData);
 
-        private:
-            void fetchVendor();
-            void fetchData();
+            const ModelParsed& getModel(const String& inId) const;
 
         private:
-            ModelVendor m_vendor;
-            ModelRaw    m_data;
+            void fetchVendorFromXML();
+            void fetchDataFromXML();
+
+            ModelParsed::Map parseData(const ModelRaw& inValue) const;
+            ModelParsed::Map normalizeData(const ModelParsed::Map& inValue) const;
+
+        private:
+            ModelVendor      m_vendor;
+            ModelParsed::Map m_data;
         };
     }
 }

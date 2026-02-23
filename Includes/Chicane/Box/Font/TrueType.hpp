@@ -2,7 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Font/Parsed.hpp"
-#include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Font/Raw.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace FontTrueType
         {
-            CHICANE_BOX FontParsed parse(const Font& inAsset);
+            CHICANE_BOX FontParsed parse(const String& inFamily, const FontRaw& inData);
         }
     }
 }

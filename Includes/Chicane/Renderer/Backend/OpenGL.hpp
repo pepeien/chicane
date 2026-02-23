@@ -24,7 +24,7 @@ namespace Chicane
 
             // Render
             void onBeginRender() override;
-            void onRender(const Frame& inFrame);
+            void onRender(const Frame& inFrame) override;
             void onEndRender() override;
 
         public:

@@ -14,20 +14,13 @@ namespace Chicane
             return m_draws;
         }
 
-        Draw::Id DrawTextureResource::findId(const DrawTextureData& inData)
-        {
-            ImageVendor vendor = inData.image.getVendor();
-
-            return findHash(
-                &vendor,
-                sizeof(ImageVendor),
-                inData.image.getPixels(),
-                inData.image.getSize() * sizeof(Image::Pixel)
-            );
-        }
-
         Draw::Id DrawTextureResource::findId(const Draw::Reference& inReference)
         {
+            if (inReference.isEmpty())
+            {
+                return Draw::UnknownId;
+            }
+
             for (const DrawTexture& draw : m_draws)
             {
                 if (!draw.reference.equals(inReference))
@@ -70,7 +63,7 @@ namespace Chicane
 
         Draw::Id DrawTextureResource::add(const DrawTextureData& inData)
         {
-            Draw::Id id = findId(inData);
+            Draw::Id id = findId(inData.reference);
 
             if (id > Draw::UnknownId)
             {
@@ -84,15 +77,7 @@ namespace Chicane
 
             m_draws.push_back(draw);
 
-            ImageVendor vendor = inData.image.getVendor();
-
-            addHash(
-                &vendor,
-                sizeof(ImageVendor),
-                inData.image.getPixels(),
-                inData.image.getSize() * sizeof(Image::Pixel),
-                draw.id
-            );
+            markAsDirty();
 
             return draw.id;
         }

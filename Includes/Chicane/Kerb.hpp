@@ -22,6 +22,6 @@ namespace Chicane
     namespace Kerb
     {
         CHICANE_KERB void init();
-        CHICANE_KERB void exit();
+        CHICANE_KERB void shutdown();
     }
 }

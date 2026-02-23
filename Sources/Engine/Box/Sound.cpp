@@ -10,7 +10,7 @@ namespace Chicane
             : Asset(inFilepath),
               m_data({})
         {
-            fetchData();
+            fetchDataFromXML();
         }
 
         const Sound::Raw& Sound::getData() const
@@ -30,17 +30,17 @@ namespace Chicane
 
         void Sound::setData(const Raw& inData)
         {
-            m_data = inData;
-
-            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
                 throw std::runtime_error("Failed to save the sound [" + m_header.filepath.string() + "] data");
             }
+
+            m_data = inData;
         }
 
-        void Sound::fetchData()
+        void Sound::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }

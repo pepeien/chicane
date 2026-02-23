@@ -1,0 +1,35 @@
+#version 460
+
+#extension GL_ARB_shading_language_include : require
+#extension GL_ARB_shader_draw_parameters : require
+
+#include "../../Common/Constant.glsl"
+#include "../../Common/Poly/3D.glsl"
+
+layout(binding = 0) uniform Camera {
+    vec4 clip;
+
+    mat4 view;
+    mat4 projection;
+
+    vec4 up;
+    vec4 right;
+    vec4 forward;
+
+    vec4 translation;
+} camera;
+
+layout(location = 0) out Data {
+    vec4 color;
+} outData;
+
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec4 inColor;
+layout(location = 2) in vec2 inUV;
+layout(location = 3) in vec3 inNormal;
+
+void main() {
+    outData.color = inColor;
+
+    gl_Position = camera.projection * camera.view * vec4(inPosition, 1.0);
+}

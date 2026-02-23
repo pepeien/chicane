@@ -53,7 +53,7 @@ namespace Chicane
 
         bool VulkanLUI::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
+            if (!inFrame.hasDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
                 return false;
             }
@@ -101,13 +101,8 @@ namespace Chicane
 
             commandBuffer.bindIndexBuffer(m_primitiveIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
-            for (const DrawPoly& draw : inFrame.get2DDraws())
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
-                if (draw.instanceCount == 0)
-                {
-                    continue;
-                }
-
                 commandBuffer.drawIndexed(
                     draw.indexCount,
                     draw.instanceCount,

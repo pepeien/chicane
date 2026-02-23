@@ -1,0 +1,19 @@
+#version 460
+
+#ifndef OPENGL
+    #define OPENGL
+#endif
+
+#extension GL_ARB_shading_language_include : require
+
+#include "../../Common/Shadow.glsl"
+
+layout(location = 0) out vec4 outColor;
+
+layout(location = 0) in Data {
+    vec4 color;
+} inData;
+
+void main() {
+    outColor = inData.color;
+}

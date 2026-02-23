@@ -3,6 +3,7 @@
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font/Raw.hpp"
+#include "Chicane/Box/Font/Parsed.hpp"
 #include "Chicane/Box/Font/Vendor.hpp"
 
 namespace Chicane
@@ -32,17 +33,19 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(FontVendor inValue);
 
-            const FontRaw& getData() const;
+            const FontParsed& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const FontRaw& inValue);
 
         private:
-            void fetchVendor();
-            void fetchData();
+            void fetchVendorFromXML();
+            void fetchDataFromXML();
+
+            FontParsed parseData(const FontRaw& inValue) const;
 
         private:
             FontVendor m_vendor;
-            FontRaw    m_data;
+            FontParsed m_data;
         };
     }
 }

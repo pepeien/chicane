@@ -21,8 +21,8 @@ namespace Chicane
         static const String& getVendorExtension(ImageVendor inValue);
 
     public:
-        Image(const FileSystem::Path& inLocation, bool bInShouldFlip = true);
-        Image(const Raw& inData, ImageVendor inVendor, bool bInShouldFlip = true);
+        Image(const FileSystem::Path& inLocation);
+        Image(const Raw& inData, ImageVendor inVendor);
         Image();
 
         Image(const Image& inInstance);
@@ -41,7 +41,9 @@ namespace Chicane
         int getPitch() const;
         int getSize() const;
 
-        void rotate(float inAngle);
+        void flipHorizontally();
+        void flipVertically();
+        void rotateBy(float inAngle);
 
     protected:
         ImageVendor m_vendor;

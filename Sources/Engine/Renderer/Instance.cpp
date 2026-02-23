@@ -94,6 +94,11 @@ namespace Chicane
             return m_frames.at(m_currentFrame);
         }
 
+        Draw::Id Instance::findPoly(DrawPolyType inType, const Draw::Reference& inReference)
+        {
+            return getPolyResource(inType).findId(inReference);
+        }
+
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
         {
             return getPolyResource(inType).add(inData);
@@ -129,11 +134,6 @@ namespace Chicane
             {
                 sky.textures.push_back(m_textureResources.getDraw(texture));
             }
-
-            sky.textures.at(0).image.rotate(90.0f);   // Right
-            sky.textures.at(1).image.rotate(-90.0f);  // Left
-            sky.textures.at(3).image.rotate(-180.0f); // Back
-            sky.textures.at(5).image.rotate(180.0f);  // Down
 
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
 

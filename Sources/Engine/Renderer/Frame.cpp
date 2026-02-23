@@ -21,7 +21,7 @@ namespace Chicane
         {
             for (const auto& [type, resource] : inResources)
             {
-                DrawPoly::List& draws = m_draws[type];
+                DrawPoly::List& draws = m_polys[type];
                 draws.insert(draws.end(), resource.getDraws().begin(), resource.getDraws().end());
 
                 std::sort(
@@ -65,9 +65,30 @@ namespace Chicane
             m_lights.push_back(std::move(inData));
         }
 
-        const DrawPoly::List& Frame::get2DDraws() const
+        bool Frame::hasDraws(DrawPolyType inType, DrawPolyMode inMode) const
         {
-            return m_draws.at(DrawPolyType::e2D);
+            return !getDraws(inType, inMode).empty();
+        }
+
+        DrawPoly::List Frame::getDraws(DrawPolyType inType, DrawPolyMode inMode) const
+        {
+            if (m_polys.find(inType) == m_polys.end())
+            {
+                return {};
+            }
+
+            DrawPoly::List result;
+            for (const DrawPoly& draw : m_polys.at(inType))
+            {
+                if (draw.mode != inMode || draw.instanceCount <= 0)
+                {
+                    continue;
+                }
+
+                result.emplace_back(std::move(draw));
+            }
+
+            return result;
         }
 
         const DrawPoly2DInstance::List Frame::getInstances2D() const
@@ -82,16 +103,11 @@ namespace Chicane
             return result;
         }
 
-        void Frame::use(Draw::Id inId, const DrawPoly2DInstance& inInstance)
+        void Frame::draw(Draw::Id inId, const DrawPoly2DInstance& inInstance)
         {
             m_2DInstances[inId].push_back(inInstance);
 
             refresh2DDraws();
-        }
-
-        const DrawPoly::List& Frame::get3DDraws() const
-        {
-            return m_draws.at(DrawPolyType::e3D);
         }
 
         const DrawPoly3DInstance::List Frame::getInstances3D() const
@@ -106,7 +122,7 @@ namespace Chicane
             return result;
         }
 
-        void Frame::use(Draw::Id inId, const DrawPoly3DInstance& inInstance)
+        void Frame::draw(Draw::Id inId, const DrawPoly3DInstance& inInstance)
         {
             m_3DInstances[inId].push_back(inInstance);
 
@@ -138,7 +154,7 @@ namespace Chicane
                     continue;
                 }
 
-                for (DrawPoly& draw : m_draws[DrawPolyType::e2D])
+                for (DrawPoly& draw : m_polys[DrawPolyType::e2D])
                 {
                     if (draw.id != id)
                     {
@@ -155,7 +171,7 @@ namespace Chicane
 
         void Frame::reset2DDraws()
         {
-            m_draws[DrawPolyType::e2D].clear();
+            m_polys[DrawPolyType::e2D].clear();
             m_2DInstances.clear();
         }
 
@@ -169,7 +185,7 @@ namespace Chicane
                     continue;
                 }
 
-                for (DrawPoly& draw : m_draws[DrawPolyType::e3D])
+                for (DrawPoly& draw : m_polys[DrawPolyType::e3D])
                 {
                     if (draw.id != id)
                     {
@@ -186,7 +202,7 @@ namespace Chicane
 
         void Frame::reset3DDraws()
         {
-            m_draws[DrawPolyType::e3D].clear();
+            m_polys[DrawPolyType::e3D].clear();
             m_3DInstances.clear();
         }
     }

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
@@ -55,7 +56,7 @@ namespace Chicane
 
         bool OpenGLLScene::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.get3DDraws().empty() && inFrame.getInstances3D().empty() && inFrame.getLights().empty())
+            if (inFrame.getInstances3D().empty() && inFrame.getLights().empty())
             {
                 return false;
             }
@@ -189,6 +190,7 @@ namespace Chicane
             m_backend->addLayer<OpenGLLSceneSky>(settings);
             m_backend->addLayer<OpenGLLSceneShadow>(settings);
             m_backend->addLayer<OpenGLLSceneMesh>(settings);
+            m_backend->addLayer<OpenGLLSceneLine>(settings);
         }
     }
 }

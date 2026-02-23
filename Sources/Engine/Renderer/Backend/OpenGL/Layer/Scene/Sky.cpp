@@ -74,6 +74,8 @@ namespace Chicane
             glCullFace(GL_FRONT);
             glFrontFace(GL_CCW);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
             glBindTextureUnit(1, m_texturesBuffer);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);

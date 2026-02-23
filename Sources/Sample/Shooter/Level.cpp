@@ -22,7 +22,7 @@ Level::Level()
       m_cameraObservable({})
 {}
 
-void Level::onActivation()
+void Level::onLoad()
 {
     spawnSky();
     spawnLights();

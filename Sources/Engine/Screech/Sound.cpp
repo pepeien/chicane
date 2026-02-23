@@ -41,9 +41,7 @@ namespace Chicane
                 throw std::runtime_error("Sound source is empty");
             }
 
-            m_data->data = inValue;
-
-            if (ma_decoder_init_memory(m_data->data.data(), m_data->data.size(), NULL, &m_data->decoder) != MA_SUCCESS)
+            if (ma_decoder_init_memory(inValue.data(), inValue.size(), NULL, &m_data->decoder) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to initialize sound decoder");
             }

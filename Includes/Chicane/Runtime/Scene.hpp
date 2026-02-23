@@ -24,15 +24,17 @@ namespace Chicane
         virtual ~Scene();
 
     public:
-        inline virtual void onActivation() { return; }
+        inline virtual void onLoad() { return; }
+        inline virtual void onUnload() { return; }
+
         inline virtual void onTick(float inDeltaTime) { return; }
-        inline virtual void onDeactivation() { return; }
 
     public:
         // Lifecycle
-        void activate();
+        void load();
+        void unload();
+
         void tick(float inDeltaTime);
-        void deactivate();
 
         // Actors
         bool hasActors() const;
@@ -58,9 +60,10 @@ namespace Chicane
         template <class T>
         inline std::vector<T*> getActors() const
         {
-            std::vector<T*> result{};
+            std::vector<T*> result;
+            result.reserve(m_actors.size());
 
-            for (Actor* actor : getActors())
+            for (Actor* actor : m_actors)
             {
                 if (typeid(*actor) != typeid(T))
                 {
@@ -116,9 +119,10 @@ namespace Chicane
         template <class T>
         inline std::vector<T*> getComponents() const
         {
-            std::vector<T*> result{};
+            std::vector<T*> result;
+            result.reserve(m_components.size());
 
-            for (Component* component : getComponents())
+            for (Component* component : m_components)
             {
                 if (typeid(*component) != typeid(T))
                 {
@@ -134,9 +138,10 @@ namespace Chicane
         template <class T>
         inline std::vector<T*> getActiveComponents() const
         {
-            std::vector<T*> result{};
+            std::vector<T*> result;
+            result.reserve(m_components.size());
 
-            for (Component* component : getComponents())
+            for (Component* component : m_components)
             {
                 if (typeid(*component) != typeid(T) || !component->isActive())
                 {

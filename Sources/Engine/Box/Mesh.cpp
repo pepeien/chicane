@@ -104,7 +104,7 @@ namespace Chicane
 
         void Mesh::fetchGroups()
         {
-            if (getFilepath().empty() || isEmpty())
+            if (getFilepath().empty() || isXMLEmpty())
             {
                 return;
             }
@@ -122,7 +122,7 @@ namespace Chicane
 
                 for (const auto& assetNode : groupNode.children())
                 {
-                    String currentTag = assetNode.name();
+                    const String currentTag = assetNode.name();
 
                     if (currentTag.equals(Model::TAG))
                     {

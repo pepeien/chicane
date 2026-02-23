@@ -26,7 +26,7 @@ namespace Chicane
 
         public:
             bool isType(AssetType inType) const;
-            bool isEmpty() const;
+            bool isXMLEmpty() const;
 
             const AssetHeader& getHeader() const;
             void setHeader(const AssetHeader& inHeader);

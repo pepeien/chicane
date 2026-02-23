@@ -839,35 +839,35 @@ namespace Chicane
                 return inValue;
             }
 
-            const std::uint32_t openPos = inValue.firstOf(REFERENCE_VALUE_OPENING);
-            if (openPos == String::npos)
+            const std::size_t openPosition = inValue.firstOf(REFERENCE_VALUE_OPENING);
+            if (openPosition == String::npos)
             {
                 return inValue;
             }
 
-            const std::uint32_t closePos = inValue.firstOf(REFERENCE_VALUE_CLOSING, openPos + 2);
-            if (closePos == String::npos)
+            const std::size_t closePosition = inValue.firstOf(REFERENCE_VALUE_CLOSING, openPosition + 2);
+            if (closePosition == String::npos)
             {
                 return inValue;
             }
 
-            const std::uint32_t valueStart = openPos + 2;
+            const std::size_t valueStart = openPosition + 2;
 
             String result;
 
-            const String prefix = inValue.substr(0, openPos);
+            const String prefix = inValue.substr(0, openPosition);
             if (!prefix.isEmpty())
             {
                 result.append(parseText(prefix));
             }
 
-            const String value = inValue.substr(valueStart, closePos - valueStart).trim();
+            const String value = inValue.substr(valueStart, closePosition - valueStart).trim();
             if (!value.isEmpty())
             {
                 result.append(parseReference(value).toString());
             }
 
-            const String suffix = inValue.substr(closePos + 2);
+            const String suffix = inValue.substr(closePosition + 2);
             if (!suffix.isEmpty())
             {
                 result.append(parseText(suffix));
@@ -926,11 +926,10 @@ namespace Chicane
                 return {};
             }
 
+            FunctionData data;
+            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
+
             const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
-
-            FunctionData data = {};
-            data.name         = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
-
             for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {
                 data.params.push_back(parseReference(value.trim()));

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "Chicane/Box/Font/TrueType.hpp"
+
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -53,8 +55,8 @@ namespace Chicane
               m_vendor(FontVendor::Undefined),
               m_data({})
         {
-            fetchVendor();
-            fetchData();
+            fetchVendorFromXML();
+            fetchDataFromXML();
         }
 
         FontVendor Font::getVendor() const
@@ -74,7 +76,7 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
-        const FontRaw& Font::getData() const
+        const FontParsed& Font::getData() const
         {
             return m_data;
         }
@@ -92,17 +94,17 @@ namespace Chicane
 
         void Font::setData(const FontRaw& inData)
         {
-            m_data = inData;
-
-            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
                 throw std::runtime_error("Failed to save the font [" + m_header.filepath.string() + "] data");
             }
+
+            m_data = parseData(inData);
         }
 
-        void Font::fetchVendor()
+        void Font::fetchVendorFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
@@ -110,14 +112,27 @@ namespace Chicane
             m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
-        void Font::fetchData()
+        void Font::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
+        }
+
+        FontParsed Font::parseData(const FontRaw& inValue) const
+        {
+            switch (m_vendor)
+            {
+            case FontVendor::OpenType:
+            case FontVendor::TrueType:
+                return FontTrueType::parse(getId(), inValue);
+
+            default:
+                throw std::runtime_error("Failed to parse Font due to invalid vendor");
+            }
         }
     }
 }

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "Chicane/Box/Model/Wavefront.hpp"
+
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -52,8 +54,8 @@ namespace Chicane
               m_vendor(ModelVendor::Undefined),
               m_data({})
         {
-            fetchVendor();
-            fetchData();
+            fetchVendorFromXML();
+            fetchDataFromXML();
         }
 
         ModelVendor Model::getVendor() const
@@ -73,7 +75,7 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
-        const ModelRaw& Model::getData() const
+        const ModelParsed::Map& Model::getData() const
         {
             return m_data;
         }
@@ -91,17 +93,27 @@ namespace Chicane
 
         void Model::setData(const ModelRaw& inData)
         {
-            m_data = inData;
-
-            if (!getXML().text().set(Base64::encode(m_data).toChar()))
+            if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
                 throw std::runtime_error("Failed to save the model [" + m_header.filepath.string() + "] data");
             }
+
+            m_data = parseData(inData);
         }
 
-        void Model::fetchVendor()
+        const ModelParsed& Model::getModel(const String& inId) const
         {
-            if (isEmpty())
+            if (m_data.find(inId) == m_data.end())
+            {
+                return ModelParsed::empty();
+            }
+
+            return m_data.at(inId);
+        }
+
+        void Model::fetchVendorFromXML()
+        {
+            if (isXMLEmpty())
             {
                 return;
             }
@@ -109,14 +121,48 @@ namespace Chicane
             m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
         }
 
-        void Model::fetchData()
+        void Model::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
+        }
+
+        ModelParsed::Map Model::parseData(const ModelRaw& inValue) const
+        {
+            ModelParsed::Map result;
+
+            switch (m_vendor)
+            {
+            case ModelVendor::Wavefront:
+                result = ModelWavefront::parse(inValue);
+
+                break;
+
+            default:
+                throw std::runtime_error("Failed to parse Model due to invalid vendor");
+            }
+
+            return normalizeData(result);
+        }
+
+        ModelParsed::Map Model::normalizeData(const ModelParsed::Map& inValue) const
+        {
+            ModelParsed::Map result;
+
+            for (const auto& [name, model] : inValue)
+            {
+                String id = getId();
+                id.append("_");
+                id.append(name);
+
+                result[id] = model;
+            }
+
+            return result;
         }
     }
 }

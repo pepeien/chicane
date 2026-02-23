@@ -305,13 +305,7 @@ namespace Chicane
     void Transformable::addBounds(const Bounds3D& inBounds)
     {
         m_bounds.add(inBounds);
-        m_bounds.update(m_transform);
-    }
-
-    void Transformable::setBounds(const Bounds3D& inBounds)
-    {
-        m_bounds.set(inBounds);
-        m_bounds.update(m_transform);
+        m_bounds.transform(m_transform.getMatrix());
     }
 
     const Vec3& Transformable::getTop() const
@@ -331,7 +325,7 @@ namespace Chicane
 
     void Transformable::refresh()
     {
-        m_bounds.update(m_transform);
+        m_bounds.transform(m_transform.getMatrix());
 
         onTransform();
 

@@ -26,7 +26,7 @@ namespace Chicane
             void setData(const Raw& inData);
 
         private:
-            void fetchData();
+            void fetchDataFromXML();
 
         private:
             Raw m_data;

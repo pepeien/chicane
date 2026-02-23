@@ -9,7 +9,11 @@ namespace Chicane
     struct CHICANE_CORE Vertex
     {
     public:
-        using List    = std::vector<Vertex>;
+        using List = std::vector<Vertex>;
+
+        using Position  = Vec3;
+        using Positions = std::vector<Position>;
+
         using Index   = std::uint32_t;
         using Indices = std::vector<Index>;
 

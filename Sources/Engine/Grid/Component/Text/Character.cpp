@@ -1,22 +1,15 @@
 #include "Chicane/Grid/Component/Text/Character.hpp"
 
-#include "Chicane/Box/Font/Manager.hpp"
-
-#include "Chicane/Core/Log.hpp"
+#include "Chicane/Box/Font.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        static constexpr inline const char NULL_CHARACTER = '\0';
-
         TextCharacter::TextCharacter()
             : Component(TAG_ID),
-              m_character(NULL_CHARACTER),
-              m_glyph({})
-        {
-            Box::getFontManager()->watch([&](const Box::FontManager::Instances& inData) { refreshFont(); });
-        }
+              m_glyph(nullptr)
+        {}
 
         bool TextCharacter::isDrawable() const
         {
@@ -25,14 +18,18 @@ namespace Chicane
 
         void TextCharacter::refreshPrimitive()
         {
-            const Box::FontGlyph& glyph = getGlyph();
+            if (!hasParent() || !hasGlyph())
+            {
+                clearPrimitive();
+
+                return;
+            }
 
             Primitive primitive = {};
-            primitive.indices   = glyph.indices;
+            primitive.indices   = m_glyph->indices;
 
             Vertex vertex = {};
-
-            for (const Vec3 position : glyph.vertices)
+            for (const Vec3 position : m_glyph->vertices)
             {
                 vertex.position = position;
 
@@ -44,105 +41,41 @@ namespace Chicane
 
         void TextCharacter::onRefresh()
         {
-            if (!hasParent())
-            {
-                return;
-            }
-
-            refreshFontStyle();
-        }
-
-        void TextCharacter::disable()
-        {
-            setCharacter(NULL_CHARACTER);
-        }
-
-        bool TextCharacter::hasCharacter() const
-        {
-            return m_character != NULL_CHARACTER;
-        }
-
-        char32_t TextCharacter::getCharacter() const
-        {
-            return m_character;
-        }
-
-        void TextCharacter::setCharacter(char32_t inValue)
-        {
-            if (m_character == inValue)
-            {
-                return;
-            }
-
-            m_character = inValue;
-
-            refreshFont();
+            refreshGlyphStyle();
         }
 
         bool TextCharacter::hasGlyph() const
         {
-            return !m_glyph.vertices.empty();
+            return m_glyph != nullptr;
         }
 
-        const Box::FontGlyph& TextCharacter::getGlyph() const
+        void TextCharacter::setGlyph(const Box::FontGlyph* inValue)
         {
-            return m_glyph;
-        }
-
-        void TextCharacter::refreshFont()
-        {
-            if (!hasParent())
-            {
-                clearPrimitive();
-
-                m_glyph = {};
-
-                return;
-            }
-
-            const Style& parentStyle = m_parent->getStyle();
-
-            const Box::FontParsed& font = Box::getFontManager()->getFamily(parentStyle.font.family.get());
-
-            if (!font.hasGlyph(m_character))
-            {
-                clearPrimitive();
-
-                m_glyph = {};
-
-                return;
-            }
-
-            m_glyph = font.getGlyph(m_character);
+            m_glyph = inValue;
 
             refreshPrimitive();
         }
 
-        void TextCharacter::refreshFontStyle()
+        void TextCharacter::refreshGlyphStyle()
         {
-            const Style& parentStyle = getParent()->getStyle();
-
-            if (!hasGlyph())
+            if (!hasParent() || !hasGlyph())
             {
-                if (m_character == ' ')
-                {
-                    m_parent->addCursor(Box::Font::BASE_SIZE * 0.4f, 0.0f);
-                }
-
                 return;
             }
+
+            const Style& parentStyle = getParent()->getStyle();
 
             m_primitive.scale = parentStyle.font.size.get();
 
             m_style.zIndex.setRaw(std::to_string(parentStyle.zIndex.get() + 1.0f));
             m_style.background.color = parentStyle.foregroundColor;
 
-            float scale    = parentStyle.font.size.get() * m_glyph.units;
-            float width    = m_glyph.width * scale;
-            float height   = m_glyph.height * scale;
-            float advance  = m_glyph.advance * scale;
-            float ascender = m_glyph.ascender * scale;
-            Vec2  bearing  = m_glyph.bearing * scale;
+            float scale    = parentStyle.font.size.get() * m_glyph->units;
+            float width    = m_glyph->width * scale;
+            float height   = m_glyph->height * scale;
+            float advance  = m_glyph->advance * scale;
+            float ascender = m_glyph->ascender * scale;
+            Vec2  bearing  = m_glyph->bearing * scale;
 
             m_style.width.setRaw(std::to_string(width));
             m_style.height.setRaw(std::to_string(height));

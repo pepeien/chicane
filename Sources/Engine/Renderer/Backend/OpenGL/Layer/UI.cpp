@@ -51,7 +51,7 @@ namespace Chicane
 
         bool OpenGLLUI::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances2D().empty() || inFrame.get2DDraws().empty())
+            if (!inFrame.hasDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
                 return false;
             }
@@ -74,6 +74,8 @@ namespace Chicane
 
             glFrontFace(GL_CCW);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
             glBindVertexArray(m_primitiveVertexArray);
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
@@ -88,18 +90,13 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.get2DDraws())
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
-                if (draw.instanceCount == 0)
-                {
-                    continue;
-                }
-
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
-                    (void*)(sizeof(uint32_t) * draw.indexStart),
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
                     draw.instanceCount,
                     draw.vertexStart,
                     draw.instanceStart

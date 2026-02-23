@@ -19,7 +19,7 @@ namespace Chicane
             using Map  = std::map<Draw::Id, List>;
 
         public:
-            Mat4         model   = Mat4::Zero;
+            Mat4         model   = Mat4::One;
             Draw::Id     texture = -1;
 
             std::int32_t _padding[3]; // Shader alignment

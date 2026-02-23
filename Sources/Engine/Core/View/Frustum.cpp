@@ -5,15 +5,15 @@ namespace Chicane
     bool ViewFrustum::contains(const Transformable* inSubject) const
     {
         const std::vector<ViewPlane> planes  = {m_top, m_bottom, m_near, m_far, m_right, m_left};
-        const std::vector<Vec3>&     corners = inSubject->getBounds().getVertices();
+        const Vertex::List&          corners = inSubject->getBounds().getCorners();
 
         for (const ViewPlane& plane : planes)
         {
             bool bIsFullyOutside = true;
 
-            for (const Vec3& corner : corners)
+            for (const Vertex& corner : corners)
             {
-                if (plane.contains(corner))
+                if (plane.contains(corner.position))
                 {
                     bIsFullyOutside = false;
 
@@ -35,9 +35,9 @@ namespace Chicane
         const Rotator& rotation    = inView->getRotation();
         const Vec3&    translation = inView->getTranslation();
 
-        const Vec3& up      = rotation.getUp();
-        const Vec3& right   = rotation.getRight();
-        const Vec3& forward = rotation.getForward();
+        const Vec3 up      = rotation.getUp();
+        const Vec3 right   = rotation.getRight();
+        const Vec3 forward = rotation.getForward();
 
         const float aspectRatio = inSettings.aspectRatio;
         const float fieldOfView = inSettings.fieldOfView;
@@ -47,14 +47,20 @@ namespace Chicane
         const float halfVertical   = farClip * tanf(fieldOfView * 0.5f);
         const float halfHorizontal = halfVertical * aspectRatio;
 
-        const Vec3 nearCenter = translation + (nearClip * forward);
-        const Vec3 farCenter  = translation + (farClip * forward);
+        const Vec3 nearCenter = translation + forward * nearClip;
+        const Vec3 farCenter  = translation + forward * farClip;
 
-        m_near.update(-forward, nearCenter);
-        m_far.update(forward, farCenter);
-        m_top.update(up, farCenter + up * halfVertical);
-        m_bottom.update(-up, farCenter - up * halfVertical);
-        m_right.update(right, farCenter + right * halfHorizontal);
-        m_left.update(-right, farCenter - right * halfHorizontal);
+        m_near.setNormal(forward, nearCenter);
+        m_far.setNormal(-forward, farCenter);
+
+        const Vec3 farTopRight    = farCenter + up * halfVertical + right * halfHorizontal;
+        const Vec3 farTopLeft     = farCenter + up * halfVertical - right * halfHorizontal;
+        const Vec3 farBottomRight = farCenter - up * halfVertical + right * halfHorizontal;
+        const Vec3 farBottomLeft  = farCenter - up * halfVertical - right * halfHorizontal;
+
+        m_top.setNormal(farTopLeft, farTopRight, translation);
+        m_bottom.setNormal(farBottomRight, farBottomLeft, translation);
+        m_right.setNormal(farTopRight, farBottomRight, translation);
+        m_left.setNormal(farBottomLeft, farTopLeft, translation);
     }
 }

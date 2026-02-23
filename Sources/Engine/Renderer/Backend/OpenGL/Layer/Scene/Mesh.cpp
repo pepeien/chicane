@@ -26,7 +26,7 @@ namespace Chicane
 
         bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().empty() || inFrame.get3DDraws().empty())
+            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return false;
             }
@@ -49,23 +49,20 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
             glClear(GL_DEPTH_BUFFER_BIT);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.get3DDraws())
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
-                if (draw.instanceCount == 0)
-                {
-                    continue;
-                }
-
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
-                    (void*)(sizeof(uint32_t) * draw.indexStart),
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
                     draw.instanceCount,
                     draw.vertexStart,
                     draw.instanceStart

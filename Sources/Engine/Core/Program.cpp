@@ -9,11 +9,7 @@ namespace Chicane
         : m_name(inName.trim()),
           m_param({})
     {
-        ProgramOptionSetting helpOption;
-        helpOption.bIsRequired = false;
-        helpOption.name        = HELP_OPTION_NAME;
-        helpOption.description = HELP_OPTION_DESCRIPTION;
-        addOption(helpOption);
+        addOption({.bIsRequired = false, .name = HELP_OPTION_NAME, .description = HELP_OPTION_DESCRIPTION});
     }
 
     Program& Program::addOption(const ProgramOptionSetting& inSetting)
