@@ -7,21 +7,19 @@ namespace Chicane
 {
     CSound::CSound()
         : Component(),
-          m_sound()
+          m_instance()
     {}
 
     void CSound::load(const FileSystem::Path& inFilePath)
     {
-        if (inFilePath.empty())
+        if (const Box::Sound* asset = Box::load<Box::Sound>(inFilePath))
         {
-            return;
+            m_instance.setData(asset->getData());
         }
-
-        m_sound.setData(Box::load<Box::Sound>(inFilePath)->getData());
     }
 
     void CSound::play()
     {
-        m_sound.play();
+        m_instance.play();
     }
 }

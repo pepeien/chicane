@@ -113,7 +113,7 @@ namespace Chicane
 
         void Model::fetchVendorFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
@@ -123,7 +123,7 @@ namespace Chicane
 
         void Model::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }

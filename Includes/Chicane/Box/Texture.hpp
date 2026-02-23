@@ -35,6 +35,8 @@ namespace Chicane
             void fetchVendorFromXML();
             void fetchDataFromXML();
 
+            Image parseData(const Image::Raw& inValue);
+
         private:
             ImageVendor m_vendor;
             Image       m_data;

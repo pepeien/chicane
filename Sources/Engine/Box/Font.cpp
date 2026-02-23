@@ -104,7 +104,7 @@ namespace Chicane
 
         void Font::fetchVendorFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace Chicane
 
         void Font::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }

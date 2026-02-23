@@ -56,12 +56,12 @@ namespace Chicane
                 throw std::runtime_error("Failed to save the texture [" + m_header.filepath.string() + "] data");
             }
 
-            m_data = Image(inData, m_vendor);
+            m_data = parseData(inData);
         }
 
         void Texture::fetchVendorFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
@@ -71,12 +71,17 @@ namespace Chicane
 
         void Texture::fetchDataFromXML()
         {
-            if (isEmpty())
+            if (isXMLEmpty())
             {
                 return;
             }
 
-            m_data = Image(Base64::decodeToUnsigned(getXML().text().as_string()), m_vendor);
+            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
+        }
+
+        Image Texture::parseData(const Image::Raw& inValue)
+        {
+            return Image(inValue, m_vendor)
         }
     }
 }

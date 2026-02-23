@@ -28,7 +28,7 @@ namespace Chicane
             return m_header.type == inType;
         }
 
-        bool Asset::isEmpty() const
+        bool Asset::isXMLEmpty() const
         {
             pugi::xml_node root = getXML();
 

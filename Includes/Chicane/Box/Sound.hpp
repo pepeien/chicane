@@ -21,9 +21,15 @@ namespace Chicane
             virtual ~Sound() = default;
 
         public:
-            Raw getData() const;
+            const Raw& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const Raw& inData);
+
+        private:
+            void fetchDataFromXML();
+
+        private:
+            Raw m_data;
         };
     }
 }

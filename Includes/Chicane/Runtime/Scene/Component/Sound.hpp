@@ -17,6 +17,6 @@ namespace Chicane
         void play();
 
     protected:
-        Screech::Sound m_sound;
+        Screech::Sound m_instance;
     };
 }
