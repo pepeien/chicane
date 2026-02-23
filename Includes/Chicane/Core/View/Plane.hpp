@@ -9,7 +9,9 @@ namespace Chicane
     {
     public:
         bool contains(const Vec3& inPoint) const;
-        void update(const Vec3& inNormal, const Vec3& inPoint);
+
+        void setNormal(const Vec3& inFirstEdge, const Vec3& inSecondEdge, const Vec3& inPosition);
+        void setNormal(const Vec3& inNormal, const Vec3& inPosition);
 
     private:
         float distanceToPoint(const Vec3& inPoint) const;

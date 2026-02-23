@@ -317,11 +317,14 @@ namespace Chicane
         Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
         command.clear();
 
+        CCamera* activeCamera = nullptr;
         for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
             camera->onResize(m_renderer->getResolution());
 
             command.camera = camera->getData();
+
+            activeCamera = camera;
         }
 
         for (CLight* light : inScene->getActiveComponents<CLight>())
@@ -336,6 +339,14 @@ namespace Chicane
             if (!mesh->hasMesh())
             {
                 continue;
+            }
+
+            if (activeCamera != nullptr)
+            {
+                if (!activeCamera->canSee(mesh))
+                {
+                    continue;
+                }
             }
 
             const Mat4& matrix = mesh->getTransform().getMatrix();

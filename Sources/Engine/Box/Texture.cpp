@@ -81,7 +81,7 @@ namespace Chicane
 
         Image Texture::parseData(const Image::Raw& inValue)
         {
-            return Image(inValue, m_vendor)
+            return Image(inValue, m_vendor);
         }
     }
 }

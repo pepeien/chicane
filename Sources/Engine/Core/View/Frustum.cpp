@@ -50,42 +50,17 @@ namespace Chicane
         const Vec3 nearCenter = translation + forward * nearClip;
         const Vec3 farCenter  = translation + forward * farClip;
 
-        m_near.update(forward, nearCenter);
-        m_far.update(-forward, farCenter);
+        m_near.setNormal(forward, nearCenter);
+        m_far.setNormal(-forward, farCenter);
 
         const Vec3 farTopRight    = farCenter + up * halfVertical + right * halfHorizontal;
         const Vec3 farTopLeft     = farCenter + up * halfVertical - right * halfHorizontal;
         const Vec3 farBottomRight = farCenter - up * halfVertical + right * halfHorizontal;
         const Vec3 farBottomLeft  = farCenter - up * halfVertical - right * halfHorizontal;
 
-        const Vec3 camPos = translation;
-
-        {
-            Vec3 edge1  = farTopLeft - camPos;
-            Vec3 edge2  = farTopRight - camPos;
-            Vec3 normal = edge2.cross(edge1).normalize();
-            m_top.update(normal, camPos);
-        }
-
-        {
-            Vec3 edge1  = farBottomRight - camPos;
-            Vec3 edge2  = farBottomLeft - camPos;
-            Vec3 normal = edge2.cross(edge1).normalize();
-            m_bottom.update(normal, camPos);
-        }
-
-        {
-            Vec3 edge1  = farTopRight - camPos;
-            Vec3 edge2  = farBottomRight - camPos;
-            Vec3 normal = edge2.cross(edge1).normalize();
-            m_right.update(normal, camPos);
-        }
-
-        {
-            Vec3 edge1  = farBottomLeft - camPos;
-            Vec3 edge2  = farTopLeft - camPos;
-            Vec3 normal = edge2.cross(edge1).normalize();
-            m_left.update(normal, camPos);
-        }
+        m_top.setNormal(farTopLeft, farTopRight, translation);
+        m_bottom.setNormal(farBottomRight, farBottomLeft, translation);
+        m_right.setNormal(farTopRight, farBottomRight, translation);
+        m_left.setNormal(farBottomLeft, farTopLeft, translation);
     }
 }
