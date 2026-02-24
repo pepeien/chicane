@@ -30,11 +30,9 @@ namespace Chicane
         void attachController(Controller* inController);
         void deattachController();
 
-        CPhysics* getPhysicsComponent() const;
-
     protected:
         Controller* m_controller;
 
-        CPhysics*   m_physicsComponent;
+        CPhysics*   m_physics;
     };
 }

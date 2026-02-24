@@ -8,6 +8,7 @@
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Kerb.hpp"
+#include "Chicane/Kerb/Engine.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -296,6 +297,8 @@ namespace Chicane
             }
 
             {
+                Kerb::Engine::getInstance().tick(m_telemetry.delta);
+
                 scene->tick(m_telemetry.delta);
 
                 buildSceneCommands(scene);

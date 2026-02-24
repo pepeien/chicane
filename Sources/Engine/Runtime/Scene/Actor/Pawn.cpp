@@ -8,16 +8,18 @@ namespace Chicane
     APawn::APawn()
         : Actor(),
           m_controller(nullptr),
-          m_physicsComponent(nullptr)
+          m_physics(nullptr)
     {
         setCanCollide(true);
     }
 
     void APawn::onLoad()
     {
-        m_physicsComponent = getScene()->createComponent<CPhysics>();
-        m_physicsComponent->attachTo(this);
-        m_physicsComponent->activate();
+        addAbsoluteTranslation(0.0f, 0.0f, 10.0f);
+
+        m_physics = getScene()->createComponent<CPhysics>();
+        m_physics->attachTo(this);
+        m_physics->activate();
     }
 
     bool APawn::isControlled() const
@@ -37,10 +39,5 @@ namespace Chicane
         m_controller = nullptr;
 
         onControleDeattachment();
-    }
-
-    CPhysics* APawn::getPhysicsComponent() const
-    {
-        return m_physicsComponent;
     }
 }

@@ -109,7 +109,7 @@ void Level::spawnCameras()
 
 void Level::spawnStructures()
 {
-    createActor<Strcuture>()->setAbsoluteScale(500.0f, 500.0f, 0.25f);
+    createActor<Strcuture>();
 }
 
 void Level::spawnApples()

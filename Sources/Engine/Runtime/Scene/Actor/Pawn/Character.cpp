@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Scene/Actor/Pawn/Character.hpp"
 
+#include "Chicane/Runtime/Scene.hpp"
+
 namespace Chicane
 {
     ACharacter::ACharacter()
@@ -8,12 +10,12 @@ namespace Chicane
 
     void ACharacter::move(const Vec3& inDirection, float inScale)
     {
-        addAbsoluteTranslation(inDirection * inScale);
+        m_physics->moveTo(getTranslation() + (inDirection * inScale));
     }
 
     void ACharacter::jump()
     {
-        getPhysicsComponent()->addForce(getUp(), 0.22f);
+        m_physics->addImpulse(getUp(), 10.0f, getBottom());
     }
 
     void ACharacter::addPitch(float inValue)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Kerb/Engine.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
@@ -14,23 +16,21 @@ namespace Chicane
 
     protected:
         void onTick(float inDeltaTime) override;
+        void onAttachment(Object* inAttachment) override;
 
     public:
         bool canCollide() const;
 
-        void addForce(const Vec3& inDirection, float inForce);
+        void moveTo(const Vec3& inLocation);
+
+        void addImpulse(const Vec3& inDirection, float inForce, const Vec3& inLocation);
+
+        std::pair<Vertex::Indices, Vertex::List> getBodyPolygon() const;
+
+    public:
+        bool bisDynamic = true;
 
     protected:
-        void updateCollision();
-        void resetCollision(Actor* inSubject);
-
-        void updateForce();
-        void resetForce();
-
-    protected:
-        bool m_bIsApplyingForce;
-
-        Vec3 m_forceDirection;
-        Vec3 m_forceVelocity;
+        JPH::BodyID m_bodyID;
     };
 }

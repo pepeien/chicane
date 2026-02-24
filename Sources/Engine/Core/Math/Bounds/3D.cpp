@@ -165,6 +165,11 @@ namespace Chicane
 
     void Bounds3D::transform(const Mat4& inModel)
     {
+        if (m_baseCorners.empty())
+        {
+            return;
+        }
+
         Vec3 min(FLT_MAX);
         Vec3 max(-FLT_MAX);
 
@@ -190,6 +195,8 @@ namespace Chicane
         m_bottom.x = m_center.x;
         m_bottom.y = m_center.y;
         m_bottom.z = m_min.transformed.z;
+
+        m_size = m_max.transformed - m_min.transformed;
 
         refreshCorners(m_corners, m_min.transformed, m_max.transformed);
     }

@@ -10,14 +10,14 @@ namespace Chicane
           m_asset(nullptr)
     {}
 
-    void CMesh::onAttachment(Object* inRoot)
+    void CMesh::onAttachment(Object* inParent)
     {
-        if (!inRoot)
+        if (!inParent)
         {
             return;
         }
 
-        inRoot->addBounds(getBounds());
+        inParent->addBounds(getBounds());
     }
 
     bool CMesh::isDrawable() const
@@ -60,5 +60,12 @@ namespace Chicane
 
             addBounds(Bounds3D(model->getModel(group.getModel().getReference()).vertices));
         }
+
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_parent->addBounds(getBounds());
     }
 }
