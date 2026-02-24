@@ -12,6 +12,7 @@
 #include "Chicane/Core/Math/Bounds/3D.hpp"
 
 #include "Chicane/Kerb.hpp"
+#include "Chicane/Kerb/Body/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -41,23 +42,39 @@ namespace Chicane
             ~Engine();
 
         public:
+            // Lifetime
             void tick(float inDeltaTime);
 
-            void addImpulse(JPH::BodyID inId, const Vec3& inDirection, float inForce, const Vec3& inLocation);
+            // Body creation
+            JPH::BodyID createBody(const BodyCreateInfo& inCreateInfo);
+            void activateBody(JPH::BodyID inId);
+            void deactivateBody(JPH::BodyID inId);
+            void destroyBody(JPH::BodyID inId);
 
-            Transform getTransform(JPH::BodyID inId);
-            void setTransform(JPH::BodyID inId, const Transform& inValue);
+            // Body settings
+            void setBodyMotion(JPH::BodyID inId, MotionType inType);
 
-            JPH::BodyID createStaticBody(
-                const Vec3& inTranslation, const Rotator& inRotation, const Bounds3D& inBounds
-            );
-            JPH::BodyID createDynamicBody(
-                const Vec3& inTranslation, const Rotator& inRotation, const Bounds3D& inBounds
-            );
+            // Body movement
+            void addBodyImpulse(JPH::BodyID inId, const Vec3& inDirection, float inForce, const Vec3& inLocation);
 
+            Transform getBodyTransform(JPH::BodyID inId);
+            void setBodyTransform(JPH::BodyID inId, const Transform& inValue);
+
+            // Body drawing
             std::pair<Vertex::Indices, Vertex::List> getBodyPolygon(JPH::BodyID inId) const;
 
-        protected:
+        private:
+            // Body creation
+            JPH::BodyID createDynamicBody(const BodyCreateInfo& inCreateInfo);
+            JPH::BodyID createKinematicBody(const BodyCreateInfo& inCreateInfo);
+            JPH::BodyID createStaticBody(const BodyCreateInfo& inCreateInfo);
+
+            JPH::Shape* generateShape(BodyShape inType, const Bounds3D& inBounds) const;
+
+            // Body settings
+            JPH::EMotionType toPhysicsMotionType(MotionType inValue) const;
+
+            // Body movement
             JPH::Vec3 toPhysicsPosition(Vec3 inValue) const;
             JPH::Vec3 toPhysicsSize(Vec3 inValue) const;
             JPH::Quat toPhysicsRotation(QuatFloat inValue) const;
@@ -65,7 +82,7 @@ namespace Chicane
             Vec3 toEnginePosition(JPH::Vec3 inValue) const;
             QuatFloat toEngineRotation(JPH::Quat inValue) const;
 
-        private:
+            // Cache
             Hash::Value hashShape(const Vertex::Positions& inPositions, const Vertex::Indices& inIndices);
 
         private:

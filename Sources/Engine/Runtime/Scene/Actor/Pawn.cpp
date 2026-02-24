@@ -18,13 +18,34 @@ namespace Chicane
         addAbsoluteTranslation(0.0f, 0.0f, 10.0f);
 
         m_physics = getScene()->createComponent<CPhysics>();
+        m_physics->setShape(Kerb::BodyShape::Capsule);
+        m_physics->setMotion(Kerb::MotionType::Dynamic);
         m_physics->attachTo(this);
-        m_physics->activate();
     }
 
     bool APawn::isControlled() const
     {
         return m_controller != nullptr;
+    }
+
+    void APawn::enablePhysics()
+    {
+        if (!m_physics)
+        {
+            return;
+        }
+
+        m_physics->activate();
+    }
+
+    void APawn::disabledPhysics()
+    {
+        if (!m_physics)
+        {
+            return;
+        }
+
+        m_physics->deactivate();
     }
 
     void APawn::attachController(Controller* inController)

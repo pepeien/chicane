@@ -82,9 +82,9 @@ namespace Chicane
             m_system.Update(1 / 120.0f, 8, &m_tempAllocator, &m_threadPool);
         }
 
-        void Engine::addImpulse(JPH::BodyID inId, const Vec3& inDirection, float inForce, const Vec3& inLocation)
+        void Engine::addBodyImpulse(JPH::BodyID inId, const Vec3& inDirection, float inForce, const Vec3& inLocation)
         {
-            m_system.GetBodyInterface().ActivateBody(inId);
+            activateBody(inId);
 
             JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
             if (!lock.Succeeded())
@@ -101,7 +101,7 @@ namespace Chicane
             body.AddImpulse(toPhysicsPosition(inDirection * inForce), toPhysicsPosition(inLocation));
         }
 
-        Transform Engine::getTransform(JPH::BodyID inId)
+        Transform Engine::getBodyTransform(JPH::BodyID inId)
         {
             JPH::BodyLockRead lock(m_system.GetBodyLockInterface(), inId);
             if (!lock.Succeeded())
@@ -118,9 +118,9 @@ namespace Chicane
             return result;
         }
 
-        void Engine::setTransform(JPH::BodyID inId, const Transform& inValue)
+        void Engine::setBodyTransform(JPH::BodyID inId, const Transform& inValue)
         {
-            m_system.GetBodyInterface().ActivateBody(inId);
+            activateBody(inId);
 
             JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
             if (!lock.Succeeded())
@@ -135,45 +135,69 @@ namespace Chicane
             );
         }
 
-        JPH::BodyID Engine::createStaticBody(
-            const Vec3& inTranslation, const Rotator& inRotation, const Bounds3D& inBounds
-        )
+        JPH::BodyID Engine::createBody(const BodyCreateInfo& inCreateInfo)
         {
-            JPH::BodyCreationSettings settings(
-                new JPH::BoxShape(toPhysicsSize(inBounds.getSize() * 0.5f), 0.05f),
-                toPhysicsPosition(inTranslation),
-                toPhysicsRotation(inRotation.get()),
-                JPH::EMotionType::Static,
-                ObjectLayer::NonMoving
-            );
+            switch (inCreateInfo.motion)
+            {
+            case MotionType::Dynamic:
+                return createDynamicBody(inCreateInfo);
 
-            JPH::BodyID id = m_system.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::Activate);
-            m_bodies.push_back(id);
+            case MotionType::Kinematic:
+                return createDynamicBody(inCreateInfo);
 
-            return id;
+            case MotionType::Static:
+                return createStaticBody(inCreateInfo);
+
+            default:
+                return JPH::BodyID(JPH::BodyID::cInvalidBodyID);
+            }
         }
 
-        JPH::BodyID Engine::createDynamicBody(
-            const Vec3& inTranslation, const Rotator& inRotation, const Bounds3D& inBounds
-        )
+        void Engine::activateBody(JPH::BodyID inId)
         {
-            JPH::BodyCreationSettings settings(
-                new JPH::CapsuleShape(inBounds.getSize().z * 0.5f, inBounds.getSize().x),
-                toPhysicsPosition(inTranslation),
-                toPhysicsRotation(inRotation.get()),
-                JPH::EMotionType::Dynamic,
-                ObjectLayer::Moving
-            );
-            settings.mAllowSleeping                = false;
-            settings.mGravityFactor                = 1.0f;
-            settings.mMotionQuality                = JPH::EMotionQuality::Discrete;
-            settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
-            settings.mMassPropertiesOverride.mMass = 40.0f;
+            if (inId.IsInvalid())
+            {
+                return;
+            }
 
-            JPH::BodyID id = m_system.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::Activate);
-            m_bodies.push_back(id);
+            m_system.GetBodyInterface().AddBody(inId, JPH::EActivation::DontActivate);
+        }
 
-            return id;
+        void Engine::deactivateBody(JPH::BodyID inId)
+        {
+            if (inId.IsInvalid())
+            {
+                return;
+            }
+
+            m_system.GetBodyInterface().RemoveBody(inId);
+        }
+
+        void Engine::destroyBody(JPH::BodyID inId)
+        {
+            if (inId.IsInvalid())
+            {
+                return;
+            }
+
+            m_system.GetBodyInterface().RemoveBody(inId);
+            m_system.GetBodyInterface().DestroyBody(inId);
+        }
+
+        void Engine::setBodyMotion(JPH::BodyID inId, MotionType inType)
+        {
+            deactivateBody(inId);
+
+            JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
+            if (!lock.Succeeded())
+            {
+                return;
+            }
+
+            JPH::Body& body = lock.GetBody();
+            body.SetMotionType(toPhysicsMotionType(inType));
+
+            activateBody(inId);
         }
 
         std::pair<Vertex::Indices, Vertex::List> Engine::getBodyPolygon(JPH::BodyID inId) const
@@ -221,6 +245,106 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        JPH::BodyID Engine::createDynamicBody(const BodyCreateInfo& inCreateInfo)
+        {
+            JPH::BodyCreationSettings settings(
+                generateShape(inCreateInfo.shape, inCreateInfo.bounds),
+                toPhysicsPosition(inCreateInfo.bounds.getCenter()),
+                JPH::Quat::sIdentity(),
+                JPH::EMotionType::Dynamic,
+                ObjectLayer::Moving
+            );
+            // Runtime
+            settings.mAllowSleeping = false;
+
+            // Gravity
+            settings.mGravityFactor                = 1.0f;
+            settings.mMotionQuality                = JPH::EMotionQuality::Discrete;
+            settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
+            settings.mMassPropertiesOverride.mMass = inCreateInfo.mass;
+
+            JPH::BodyID id = m_system.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
+            m_bodies.push_back(id);
+
+            return id;
+        }
+
+        JPH::BodyID Engine::createKinematicBody(const BodyCreateInfo& inCreateInfo)
+        {
+            JPH::BodyCreationSettings settings(
+                generateShape(inCreateInfo.shape, inCreateInfo.bounds),
+                toPhysicsPosition(inCreateInfo.bounds.getCenter()),
+                JPH::Quat::sIdentity(),
+                JPH::EMotionType::Kinematic,
+                ObjectLayer::Moving
+            );
+            // Runtime
+            settings.mAllowSleeping = false;
+
+            // Gravity
+            settings.mGravityFactor                = 1.0f;
+            settings.mMotionQuality                = JPH::EMotionQuality::Discrete;
+            settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
+            settings.mMassPropertiesOverride.mMass = inCreateInfo.mass;
+
+            JPH::BodyID id = m_system.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
+            m_bodies.push_back(id);
+
+            return id;
+        }
+
+        JPH::BodyID Engine::createStaticBody(const BodyCreateInfo& inCreateInfo)
+        {
+            JPH::BodyCreationSettings settings(
+                generateShape(inCreateInfo.shape, inCreateInfo.bounds),
+                toPhysicsPosition(inCreateInfo.bounds.getCenter()),
+                JPH::Quat::sIdentity(),
+                JPH::EMotionType::Static,
+                ObjectLayer::NonMoving
+            );
+            // Runtime
+            settings.mAllowDynamicOrKinematic = true;
+            settings.mAllowSleeping           = false;
+
+            // Gravity
+            settings.mGravityFactor                = 1.0f;
+            settings.mMotionQuality                = JPH::EMotionQuality::Discrete;
+            settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
+            settings.mMassPropertiesOverride.mMass = inCreateInfo.mass;
+
+            JPH::BodyID id = m_system.GetBodyInterface().CreateAndAddBody(settings, JPH::EActivation::DontActivate);
+            m_bodies.push_back(id);
+
+            return id;
+        }
+
+        JPH::Shape* Engine::generateShape(BodyShape inType, const Bounds3D& inBounds) const
+        {
+            switch (inType)
+            {
+            case BodyShape::Capsule:
+                return new JPH::CapsuleShape(inBounds.getSize().z * 0.5f, inBounds.getSize().x);
+
+            default:
+                return new JPH::BoxShape(toPhysicsSize(inBounds.getSize() * 0.5f), 0.05f);
+            }
+        }
+
+        JPH::EMotionType Engine::toPhysicsMotionType(MotionType inValue) const
+        {
+            switch (inValue)
+            {
+            case MotionType::Dynamic:
+                return JPH::EMotionType::Dynamic;
+
+            case MotionType::Kinematic:
+                return JPH::EMotionType::Kinematic;
+
+            default:
+                return JPH::EMotionType::Static;
+            }
         }
 
         JPH::Vec3 Engine::toPhysicsPosition(Vec3 inValue) const
