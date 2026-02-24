@@ -11,8 +11,8 @@ public:
     Application();
 
 private:
+    void initController();
     void initLevel();
-    void initCharacter();
     void initView();
 
 private:

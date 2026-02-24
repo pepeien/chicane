@@ -31,6 +31,7 @@ private:
     void spawnLights();
     void spawnCameras();
     void spawnStructures();
+    void spawnCharacter();
     void spawnApples();
 
 private:

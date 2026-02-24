@@ -15,7 +15,7 @@ namespace Chicane
 
     void ACharacter::jump()
     {
-        m_physics->addImpulse(getUp(), 10.0f, getBottom());
+        m_physics->addImpulse(getUp(), 1000.0f, getBottom());
     }
 
     void ACharacter::addPitch(float inValue)

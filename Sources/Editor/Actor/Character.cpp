@@ -16,9 +16,13 @@ namespace Editor
     {
         Chicane::ACharacter::onLoad();
 
+        setAbsoluteTranslation(10.0f, -10.0f, 10.0f);
+
         m_camera = getScene()->createComponent<Chicane::CCamera>();
         m_camera->attachTo(this);
         m_camera->activate();
+
+        look(45.0f, -35.0f);
     }
 
     void Character::onControlAttachment()

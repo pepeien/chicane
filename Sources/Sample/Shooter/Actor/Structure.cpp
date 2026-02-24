@@ -12,15 +12,14 @@ Strcuture::Strcuture()
 
 void Strcuture::onLoad()
 {
-    setAbsoluteScale(500.0f, 500.0f, 0.5);
-
     m_mesh = getScene()->createComponent<Chicane::CMesh>();
     m_mesh->attachTo(this);
     m_mesh->setMesh("Contents/Sample/Shooter/Meshes/Structure.bmsh");
     m_mesh->activate();
 
-    m_physics             = getScene()->createComponent<Chicane::CPhysics>();
-    m_physics->bisDynamic = false;
+    m_physics = getScene()->createComponent<Chicane::CPhysics>();
+    m_physics->setShape(Chicane::Kerb::BodyShape::Box);
+    m_physics->setMotion(Chicane::Kerb::MotionType::Static);
     m_physics->attachTo(this);
     m_physics->activate();
 }

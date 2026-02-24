@@ -18,10 +18,30 @@ namespace Chicane
     void Scene::load()
     {
         onLoad();
+
+        for (Actor* actor : m_actors)
+        {
+            actor->onLoad();
+        }
+
+        for (Component* component : m_components)
+        {
+            component->onLoad();
+        }
     }
 
     void Scene::unload()
     {
+        for (Component* component : m_components)
+        {
+            component->onUnload();
+        }
+
+        for (Actor* actor : m_actors)
+        {
+            actor->onUnload();
+        }
+
         onUnload();
     }
 

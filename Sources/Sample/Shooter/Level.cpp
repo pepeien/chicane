@@ -1,9 +1,11 @@
 #include "Level.hpp"
 
+#include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 #include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 
 #include "Actor/Apple.hpp"
+#include "Actor/Character.hpp"
 #include "Actor/Structure.hpp"
 #include "Actor/Sun.hpp"
 
@@ -28,6 +30,7 @@ void Level::onLoad()
     spawnLights();
     spawnCameras();
     spawnStructures();
+    spawnCharacter();
     spawnApples();
 }
 
@@ -109,7 +112,12 @@ void Level::spawnCameras()
 
 void Level::spawnStructures()
 {
-    createActor<Strcuture>();
+    createActor<Strcuture>()->setAbsoluteScale(500.0f, 500.0f, 0.5);
+}
+
+void Level::spawnCharacter()
+{
+    Chicane::Application::getInstance().getController()->attachTo(createActor<Character>());
 }
 
 void Level::spawnApples()
