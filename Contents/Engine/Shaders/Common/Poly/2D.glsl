@@ -2,15 +2,25 @@ struct PolyInstance2D {
     vec2 view;
     vec2 scale;
     vec2 size;
+    vec2 offset;
     vec3 position;
     vec4 color;
     int textureIndex;
 };
 
+float normalize2DDepth(float inValue) {
+    float result = inValue;
+    result /= 999.0;
+    result  = clamp(abs(result - 1.0), 0.0, 1.0);
+
+    return result;
+}
+
 vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMultipliers) {
     vec2 position = inPosition;
-    position *= inInstance.scale; // Scale vertex to UI size
-    position /= inInstance.view; // Normalize to view size
+    position *= inInstance.scale;  // Apply vertex scale
+    position += inInstance.offset; // Apply vertex offset
+    position /= inInstance.view;   // Normalize to view size
     position *= inMultipliers;
 
     return position;
@@ -18,13 +28,11 @@ vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMult
 
 vec3 get2DScreenPosition(PolyInstance2D inInstance, vec2 inMultipliers) {
     vec3 position = inInstance.position;
-    position.xy += inInstance.size * 0.5; // Account offset
-    position.xy /= inInstance.view;     // Normalize to view size
-    position.xy *= 2.0;                   // Normalize to NDC
-    position.xy -= 1.0;                   // Normalize to NDC
-    position.xy *= inMultipliers;
-    position.z  /= 999.9;
-    position.z   = clamp(abs(position.z - 1.0), 0.0001, 0.9999);
+    position.xy  += inInstance.size * 0.5;     // Convert to top-left origin
+    position.xy  /= inInstance.view;           // Normalize to view size
+    position.xy   = (position.xy * 2.0) - 1.0; // Normalize to NDC
+    position.xy  *= inMultipliers;
+    position.z    = normalize2DDepth(position.z);
 
     return position;
 }

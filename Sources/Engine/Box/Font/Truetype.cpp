@@ -94,15 +94,14 @@ namespace Chicane
                 const float units = 1.0f / inGlyph->face->units_per_EM;
 
                 FontGlyph result;
-                result.code       = inCode;
-                result.width      = inGlyph->metrics.width * units;
-                result.height     = inGlyph->metrics.height * units;
-                result.advance    = inGlyph->advance.x * units;
-                result.ascender   = inGlyph->face->ascender * units;
-                result.descender  = inGlyph->face->descender * units;
-                result.lineHeight = result.ascender - result.descender;
-                result.bearing    = {inGlyph->metrics.horiBearingX * units, inGlyph->metrics.vertBearingY * units};
-                result.indices    = contour.getIndices();
+                result.code      = inCode;
+                result.width     = inGlyph->metrics.width * units;
+                result.height    = inGlyph->metrics.height * units;
+                result.advance   = inGlyph->metrics.horiAdvance * units;
+                result.ascender  = inGlyph->face->ascender * units;
+                result.descender = inGlyph->face->descender * units;
+                result.bearing   = {inGlyph->metrics.horiBearingX * units, inGlyph->metrics.horiBearingY * units};
+                result.indices   = contour.getIndices();
 
                 Vertex vertex;
                 vertex.color = Vec4(255.0f);
@@ -159,7 +158,12 @@ namespace Chicane
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
                 while (glyphIndex != 0)
                 {
-                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_SCALE) == 0)
+                    if (FT_Load_Glyph(
+                            face,
+                            glyphIndex,
+                            FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING | FT_LOAD_NO_AUTOHINT | FT_LOAD_NO_SCALE |
+                                FT_LOAD_LINEAR_DESIGN | FT_LOAD_IGNORE_TRANSFORM
+                        ) == 0)
                     {
                         result.glyphs.emplace(code, parseGlyph(code, face->glyph));
                     }

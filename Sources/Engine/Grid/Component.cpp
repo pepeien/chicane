@@ -24,6 +24,7 @@ namespace Chicane
               m_children({}),
               m_size(Vec2::Zero),
               m_position(Vec2::Zero),
+              m_offset(Vec2::Zero),
               m_cursor(Vec2::Zero),
               m_bounds({}),
               m_attributes({}),
@@ -600,7 +601,7 @@ namespace Chicane
 
         const Vec2& Component::getScale() const
         {
-            return m_scale;
+            return (m_scale.x <= 0.0f && m_scale.y <= 0.0f) ? m_size : m_scale;
         }
 
         void Component::setScale(const Vec2& inValue)
@@ -612,6 +613,22 @@ namespace Chicane
         {
             m_scale.x = inX;
             m_scale.y = inY;
+        }
+
+        const Vec2& Component::getOffset() const
+        {
+            return m_offset;
+        }
+
+        void Component::setOffset(const Vec2& inValue)
+        {
+            setOffset(inValue.x, inValue.y);
+        }
+
+        void Component::setOffset(float inX, float inY)
+        {
+            m_offset.x = inX;
+            m_offset.y = inY;
         }
 
         const Vec2& Component::getPosition() const
@@ -823,7 +840,7 @@ namespace Chicane
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
-                if (parentStyle.flex.direction == StyleFlexDirection::Row)
+                if (parentStyle.flex.direction.get() == StyleFlexDirection::Row)
                 {
                     m_parent->addCursor(m_size.x + endMargin.x + m_style.gap.left.get(), 0.0f);
                 }
@@ -835,7 +852,7 @@ namespace Chicane
                 break;
 
             default:
-                m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
+                m_parent->addCursor(0.0f, m_size.y + endMargin.y);
 
                 break;
             }

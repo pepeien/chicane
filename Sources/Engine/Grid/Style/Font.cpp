@@ -7,9 +7,12 @@ namespace Chicane
     namespace Grid
     {
         StyleFont::StyleFont()
-            : family(Style::FONT_FAMILY_DEFAULT_VALUE),
-              size(16.0f)
-        {}
+            : family(),
+              size()
+        {
+            family.setRaw(Style::FONT_FAMILY_DEFAULT_VALUE);
+            size.setRaw(Style::FONT_SIZE_DEFAULT_VALUE);
+        }
 
         void StyleFont::refresh()
         {

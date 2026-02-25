@@ -25,11 +25,8 @@ namespace Chicane
                 return;
             }
 
-            Primitive primitive = {};
-            primitive.indices   = m_glyph->indices;
-            primitive.vertices  = m_glyph->vertices;
-
-            setPrimitive(primitive);
+            m_primitive.indices  = m_glyph->indices;
+            m_primitive.vertices = m_glyph->vertices;
         }
 
         void TextCharacter::onRefresh()
@@ -66,26 +63,28 @@ namespace Chicane
 
             m_style.background.color = parentStyle.foregroundColor;
 
-            const float scale      = parentStyle.font.size.get();
-            const float width      = m_glyph->width * scale;
-            const float height     = m_glyph->height * scale;
-            const float advance    = m_glyph->advance * scale;
-            const float ascender   = m_glyph->ascender * scale;
-            const float descender  = m_glyph->descender * scale;
-            const float lineHeight = m_glyph->lineHeight * scale;
-            const Vec2  bearing    = m_glyph->bearing * scale;
+            const float scale     = parentStyle.font.size.get();
+            const float width     = m_glyph->width * scale;
+            const float height    = m_glyph->height * scale;
+            const float advance   = m_glyph->advance * scale;
+            const float ascender  = m_glyph->ascender * scale;
+            const float descender = m_glyph->descender * scale;
+            const Vec2  bearing   = m_glyph->bearing * scale;
 
-            m_style.width.set(width);
-            m_style.height.set(height);
-
-            m_style.margin.left.set(bearing.x);
-            m_style.margin.right.set(advance - width);
-            m_style.margin.top.set(bearing.y - (ascender * 0.25f));
-            m_style.margin.bottom.set(descender);
+            const float baseline = descender - ascender;
 
             setScale(scale, scale);
+            setOffset(-width, baseline + bearing.y);
 
-            m_parent->addCursor(width * -0.5f, 0.0f);
+            m_style.width.set(advance);
+            m_style.height.set(height);
+
+            const float widthOffset = m_style.width.get() * -0.5f;
+            m_style.margin.right.set(widthOffset);
+
+            const float heightOffset = m_style.height.get() * -0.5f;
+            const float topOffset    = bearing.y * -0.5f;
+            m_style.margin.top.set(heightOffset - topOffset - (ascender * 0.25f)); // I don't even know anymore
         }
     }
 }

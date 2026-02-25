@@ -512,9 +512,9 @@ namespace Chicane
             subcommand.polygon.vertices = primitive.vertices;
             subcommand.polygon.indices  = primitive.indices;
             subcommand.instance.view    = viewSize;
-            subcommand.instance.scale =
-                component->getScale() == Vec2::Zero ? component->getSize() : component->getScale();
-            subcommand.instance.size = component->getSize();
+            subcommand.instance.scale   = component->getScale();
+            subcommand.instance.size    = component->getSize();
+            subcommand.instance.offset  = component->getOffset();
             subcommand.instance
                 .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
             subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());

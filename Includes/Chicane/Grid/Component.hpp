@@ -155,6 +155,10 @@ namespace Chicane
             void setScale(const Vec2& inValue);
             void setScale(float inX, float inY);
 
+            const Vec2& getOffset() const;
+            void setOffset(const Vec2& inValue);
+            void setOffset(float inX, float inY);
+
             const Vec2& getPosition() const;
             void addPosition(const Vec2& inValue);
             void addPosition(float inX, float inY);
@@ -214,6 +218,7 @@ namespace Chicane
             // Position
             Vec2                    m_size;
             Vec2                    m_scale;
+            Vec2                    m_offset;
             Vec2                    m_position;
             Vec2                    m_cursor;
 
