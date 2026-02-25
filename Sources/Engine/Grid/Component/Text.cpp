@@ -97,7 +97,7 @@ namespace Chicane
 
             for (std::uint32_t i = codepoints.size(); i < m_children.size(); i++)
             {
-                if (typeid(m_children.at(i)) != typeid(TextCharacter))
+                if (typeid(*m_children.at(i)) != typeid(TextCharacter))
                 {
                     continue;
                 }

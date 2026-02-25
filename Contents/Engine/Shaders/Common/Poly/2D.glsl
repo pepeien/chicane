@@ -1,5 +1,6 @@
 struct PolyInstance2D {
-    vec2 screen;
+    vec2 view;
+    vec2 scale;
     vec2 size;
     vec3 position;
     vec4 color;
@@ -8,8 +9,8 @@ struct PolyInstance2D {
 
 vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMultipliers) {
     vec2 position = inPosition;
-    position *= inInstance.size;   // Scale vertex to UI size
-    position /= inInstance.screen; // Normalize to screen size
+    position *= inInstance.scale; // Scale vertex to UI size
+    position /= inInstance.view; // Normalize to view size
     position *= inMultipliers;
 
     return position;
@@ -18,7 +19,7 @@ vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMult
 vec3 get2DScreenPosition(PolyInstance2D inInstance, vec2 inMultipliers) {
     vec3 position = inInstance.position;
     position.xy += inInstance.size * 0.5; // Account offset
-    position.xy /= inInstance.screen;     // Normalize to screen size
+    position.xy /= inInstance.view;     // Normalize to view size
     position.xy *= 2.0;                   // Normalize to NDC
     position.xy -= 1.0;                   // Normalize to NDC
     position.xy *= inMultipliers;

@@ -15,8 +15,6 @@ namespace Chicane
 
     void APawn::onLoad()
     {
-        addAbsoluteTranslation(0.0f, 0.0f, 10.0f);
-
         m_physics = getScene()->createComponent<CPhysics>();
         m_physics->setShape(Kerb::BodyShape::Capsule);
         m_physics->setMotion(Kerb::MotionType::Dynamic);

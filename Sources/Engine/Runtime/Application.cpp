@@ -509,10 +509,12 @@ namespace Chicane
             const Grid::Style&     style     = component->getStyle();
 
             Renderer::DrawPoly2DCommandFill subcommand;
-            subcommand.polygon.vertices  = primitive.vertices;
-            subcommand.polygon.indices   = primitive.indices;
-            subcommand.instance.screen   = viewSize;
-            subcommand.instance.size     = primitive.scale == Vec2::Zero ? component->getSize() : primitive.scale;
+            subcommand.polygon.vertices = primitive.vertices;
+            subcommand.polygon.indices  = primitive.indices;
+            subcommand.instance.view    = viewSize;
+            subcommand.instance.scale =
+                component->getScale() == Vec2::Zero ? component->getSize() : component->getScale();
+            subcommand.instance.size     = component->getSize();
             subcommand.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
             subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
             subcommand.instance.color    = style.background.color.get();

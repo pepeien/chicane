@@ -32,13 +32,13 @@ namespace Chicane
     }
 
     Contour::Contour()
-        : m_vertices({}),
+        : m_positions({}),
           m_indices({})
     {}
 
     void Contour::triangulate(const Curve::List& inCurves)
     {
-        m_vertices.clear();
+        m_positions.clear();
         m_indices.clear();
 
         if (inCurves.empty())
@@ -100,7 +100,7 @@ namespace Chicane
 
         for (int i = 0; i < nverts; ++i)
         {
-            m_vertices.push_back({verts[i * 2], verts[i * 2 + 1], 0.0f});
+            m_positions.push_back({verts[i * 2], verts[i * 2 + 1], 0.0f});
         }
 
         for (int i = 0; i < nelems; ++i)
@@ -120,12 +120,12 @@ namespace Chicane
         tessDeleteTess(tess);
     }
 
-    const Contour::Vertices& Contour::getVertices() const
+    const Vertex::Positions& Contour::getPositions() const
     {
-        return m_vertices;
+        return m_positions;
     }
 
-    const Contour::Indices& Contour::getIndices() const
+    const Vertex::Indices& Contour::getIndices() const
     {
         return m_indices;
     }

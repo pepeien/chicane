@@ -28,6 +28,7 @@ namespace Chicane
 
         public:
             bool hasGlyph() const;
+            const Box::FontGlyph* getGlyph() const;
             void setGlyph(const Box::FontGlyph* inValue);
 
         protected:

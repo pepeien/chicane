@@ -84,54 +84,43 @@ namespace Chicane
 
         void Engine::addBodyImpulse(JPH::BodyID inId, const Vec3& inDirection, float inForce, const Vec3& inLocation)
         {
-            activateBody(inId);
-
-            JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
-            if (!lock.Succeeded())
+            if (inId.IsInvalid())
             {
                 return;
             }
 
-            JPH::Body& body = lock.GetBody();
-            if (!body.IsDynamic())
-            {
-                return;
-            }
-
-            body.AddImpulse(toPhysicsPosition(inDirection * inForce), toPhysicsPosition(inLocation));
+            m_system.GetBodyInterface()
+                .AddImpulse(inId, toPhysicsPosition(inDirection * inForce), toPhysicsPosition(inLocation));
         }
 
         Transform Engine::getBodyTransform(JPH::BodyID inId)
         {
-            JPH::BodyLockRead lock(m_system.GetBodyLockInterface(), inId);
-            if (!lock.Succeeded())
+            if (inId.IsInvalid())
             {
                 return {};
             }
 
-            const JPH::Body& body = lock.GetBody();
+            const JPH::Mat44 transform = m_system.GetBodyInterface().GetWorldTransform(inId);
 
             Transform result;
-            result.setTranslation(toEnginePosition(body.GetPosition()));
-            result.setRotation(Rotator(toEngineRotation(body.GetRotation())));
+            result.setTranslation(toEnginePosition(transform.GetTranslation()));
+            result.setRotation(Rotator(toEngineRotation(transform.GetRotation().GetQuaternion())));
 
             return result;
         }
 
         void Engine::setBodyTransform(JPH::BodyID inId, const Transform& inValue)
         {
-            activateBody(inId);
-
-            JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
-            if (!lock.Succeeded())
+            if (inId.IsInvalid())
             {
                 return;
             }
 
-            JPH::Body& body = lock.GetBody();
-            body.SetPositionAndRotationInternal(
+            m_system.GetBodyInterface().SetPositionAndRotation(
+                inId,
                 toPhysicsPosition(inValue.getTranslation()),
-                toPhysicsRotation(inValue.getRotation().get())
+                toPhysicsRotation(inValue.getRotation().get()),
+                JPH::EActivation::Activate
             );
         }
 
@@ -186,30 +175,22 @@ namespace Chicane
 
         void Engine::setBodyMotion(JPH::BodyID inId, MotionType inType)
         {
-            deactivateBody(inId);
-
-            JPH::BodyLockWrite lock(m_system.GetBodyLockInterface(), inId);
-            if (!lock.Succeeded())
+            if (inId.IsInvalid())
             {
                 return;
             }
 
-            JPH::Body& body = lock.GetBody();
-            body.SetMotionType(toPhysicsMotionType(inType));
-
-            activateBody(inId);
+            m_system.GetBodyInterface().SetMotionType(inId, toPhysicsMotionType(inType), JPH::EActivation::Activate);
         }
 
         std::pair<Vertex::Indices, Vertex::List> Engine::getBodyPolygon(JPH::BodyID inId) const
         {
-            JPH::BodyLockRead lock(m_system.GetBodyLockInterface(), inId);
-            if (!lock.Succeeded())
+            if (inId.IsInvalid())
             {
                 return {};
             }
 
-            const JPH::Body&            body  = lock.GetBody();
-            const JPH::TransformedShape shape = body.GetTransformedShape();
+            const JPH::TransformedShape shape = m_system.GetBodyInterface().GetTransformedShape(inId);
 
             JPH::Shape::GetTrianglesContext context;
             shape.GetTrianglesStart(context, shape.GetWorldSpaceBounds(), JPH::Vec3::sReplicate(0.0f));

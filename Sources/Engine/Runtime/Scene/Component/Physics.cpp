@@ -9,12 +9,12 @@ namespace Chicane
         : Component(),
           m_bodyID(JPH::BodyID::cInvalidBodyID),
           m_bodySettings({})
-    {
-        setCanTick(true);
-    }
+    {}
 
     void CPhysics::onLoad()
     {
+        setCanTick(true);
+
         if (!isAttached())
         {
             return;

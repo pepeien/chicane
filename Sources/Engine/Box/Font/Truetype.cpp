@@ -91,21 +91,27 @@ namespace Chicane
                 Contour contour;
                 contour.triangulate(parseGlyphContours(inGlyph));
 
-                FontGlyph result;
-                result.code     = inCode;
-                result.units    = 1.0f / inGlyph->face->units_per_EM;
-                result.width    = inGlyph->metrics.width;
-                result.height   = inGlyph->metrics.height;
-                result.advance  = inGlyph->advance.x;
-                result.ascender = inGlyph->face->ascender;
-                result.bearing  = {inGlyph->metrics.horiBearingX, inGlyph->metrics.horiBearingY};
-                result.vertices = contour.getVertices();
-                result.indices  = contour.getIndices();
+                const float units = 1.0f / inGlyph->face->units_per_EM;
 
-                for (auto& vertex : result.vertices)
+                FontGlyph result;
+                result.code       = inCode;
+                result.width      = inGlyph->metrics.width * units;
+                result.height     = inGlyph->metrics.height * units;
+                result.advance    = inGlyph->advance.x * units;
+                result.ascender   = inGlyph->face->ascender * units;
+                result.descender  = inGlyph->face->descender * units;
+                result.lineHeight = result.ascender - result.descender;
+                result.bearing    = {inGlyph->metrics.horiBearingX * units, inGlyph->metrics.vertBearingY * units};
+                result.indices    = contour.getIndices();
+
+                Vertex vertex;
+                vertex.color = Vec4(255.0f);
+                for (const Vertex::Position& position : contour.getPositions())
                 {
-                    vertex.x *= result.units;
-                    vertex.y *= result.units;
+                    vertex.position.x = position.x * units;
+                    vertex.position.y = position.y * units;
+
+                    result.vertices.push_back(vertex);
                 }
 
                 return result;
@@ -147,7 +153,10 @@ namespace Chicane
                 }
 
                 FontParsed result;
-                result.name = inFamily;
+                result.name       = inFamily;
+                result.ascender   = face->ascender * (1.0f / face->units_per_EM);
+                result.descender  = face->descender * (1.0f / face->units_per_EM);
+                result.lineHeight = result.ascender - result.descender;
 
                 FT_UInt  glyphIndex;
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
