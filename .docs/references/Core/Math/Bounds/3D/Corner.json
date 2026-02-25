@@ -1,0 +1,96 @@
+{
+    "title": "Bounds3DCorner",
+    "filename": "Corner",
+    "path": "Core/Math/Bounds/3D/Corner",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Bounds/3D/Corner.hpp",
+        "namespace": "Chicane::Bounds3DCorner",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds3DCorner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inBase"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTransformed"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3DCORNER_BOUNDS3DCORNER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds3DCorner",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3DCORNER_BOUNDS3DCORNER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "base",
+                "description": "CHICANE_BOUNDS3DCORNER_BASE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "transformed",
+                "description": "CHICANE_BOUNDS3DCORNER_TRANSFORMED_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOUNDS3DCORNER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -31,17 +31,26 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "canCollide",
-                "parameters": [],
-                "modifiers": [
-                    "const"
+                "name": "setShape",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Kerb::BodyShape",
+                            "suffix": "",
+                            "path": "Kerb/Body/Shape",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
                 ],
-                "description": "CHICANE_CPHYSICS_CANCOLLIDE_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETSHAPE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -53,7 +62,85 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "addForce",
+                "name": "setShape",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Kerb::BodyPolygon",
+                            "suffix": "&",
+                            "path": "Kerb",
+                            "templates": []
+                        },
+                        "name": "inPolygon"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETSHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setMotion",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Kerb::MotionType",
+                            "suffix": "",
+                            "path": "Kerb/Motion/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETMOTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "moveTo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_MOVETO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addImpulse",
                 "parameters": [
                     {
                         "type": {
@@ -74,10 +161,35 @@
                             "templates": []
                         },
                         "name": "inForce"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inLocation"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_CPHYSICS_ADDFORCE_DESCRIPTION"
+                "description": "CHICANE_CPHYSICS_ADDIMPULSE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONLOAD_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -107,7 +219,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "standard",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -115,66 +227,59 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "updateCollision",
+                "name": "onActivation",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_CPHYSICS_UPDATECOLLISION_DESCRIPTION"
+                "description": "CHICANE_CPHYSICS_ONACTIVATION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDeactivation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONDEACTIVATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "resetCollision",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Actor",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Actor",
-                            "templates": []
-                        },
-                        "name": "inSubject"
-                    }
+                "name": "canCollide",
+                "parameters": [],
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_CPHYSICS_RESETCOLLISION_DESCRIPTION"
+                "description": "CHICANE_CPHYSICS_CANCOLLIDE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "updateForce",
+                "name": "hasBody",
                 "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CPHYSICS_UPDATEFORCE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "resetForce",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CPHYSICS_RESETFORCE_DESCRIPTION"
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CPHYSICS_HASBODY_DESCRIPTION"
             }
         ],
         "members": [
@@ -183,39 +288,26 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "JPH::BodyID",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bIsApplyingForce",
-                "description": "CHICANE_CPHYSICS_M_BISAPPLYINGFORCE_DESCRIPTION"
+                "name": "m_bodyID",
+                "description": "CHICANE_CPHYSICS_M_BODYID_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "Kerb::BodyCreateInfo",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Kerb/Body/CreateInfo",
                     "templates": []
                 },
-                "name": "m_forceDirection",
-                "description": "CHICANE_CPHYSICS_M_FORCEDIRECTION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "m_forceVelocity",
-                "description": "CHICANE_CPHYSICS_M_FORCEVELOCITY_DESCRIPTION"
+                "name": "m_bodySettings",
+                "description": "CHICANE_CPHYSICS_M_BODYSETTINGS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CPHYSICS_DESCRIPTION"

@@ -64,6 +64,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Box::FontGlyph",
+                    "suffix": "*",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "getGlyph",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXTCHARACTER_GETGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",

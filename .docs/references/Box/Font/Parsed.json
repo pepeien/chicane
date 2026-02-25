@@ -160,6 +160,45 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ascender",
+                "description": "CHICANE_BOX_FONTPARSED_ASCENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "descender",
+                "description": "CHICANE_BOX_FONTPARSED_DESCENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lineHeight",
+                "description": "CHICANE_BOX_FONTPARSED_LINEHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "FontGlyph::Map",
                     "suffix": "",
                     "path": "Box/Font/Glyph",

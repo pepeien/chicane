@@ -80,19 +80,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "units",
-                "description": "CHICANE_BOX_FONTGLYPH_UNITS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "width",
                 "description": "CHICANE_BOX_FONTGLYPH_WIDTH_DESCRIPTION"
             },
@@ -140,6 +127,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "descender",
+                "description": "CHICANE_BOX_FONTGLYPH_DESCENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lineHeight",
+                "description": "CHICANE_BOX_FONTGLYPH_LINEHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -153,18 +166,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Vertex::List",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec3",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Vertex",
+                    "templates": []
                 },
                 "name": "vertices",
                 "description": "CHICANE_BOX_FONTGLYPH_VERTICES_DESCRIPTION"
@@ -174,18 +179,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Vertex::Indices",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Vertex",
+                    "templates": []
                 },
                 "name": "indices",
                 "description": "CHICANE_BOX_FONTGLYPH_INDICES_DESCRIPTION"

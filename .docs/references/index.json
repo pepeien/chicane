@@ -1123,23 +1123,24 @@
                                     "functions": [],
                                     "members": []
                                 },
-                                "children": []
-                            },
-                            {
-                                "title": "BoundsCorner",
-                                "filename": "Corner",
-                                "path": "Core/Math/Bounds/Corner",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Math/Bounds/Corner.hpp",
-                                    "namespace": "Chicane::BoundsCorner",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "Bounds3DCorner",
+                                        "filename": "Corner",
+                                        "path": "Core/Math/Bounds/3D/Corner",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Math/Bounds/3D/Corner.hpp",
+                                            "namespace": "Chicane::Bounds3DCorner",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -2302,6 +2303,55 @@
         },
         "children": [
             {
+                "title": "Body",
+                "filename": "Body",
+                "path": "Kerb/Body",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": [
+                    {
+                        "title": "BodyCreateInfo",
+                        "filename": "CreateInfo",
+                        "path": "Kerb/Body/CreateInfo",
+                        "source": {
+                            "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
+                            "namespace": "Chicane::Kerb::BodyCreateInfo",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "BodyShape",
+                        "filename": "Shape",
+                        "path": "Kerb/Body/Shape",
+                        "source": {
+                            "header": "Includes/Chicane/Kerb/Body/Shape.hpp",
+                            "namespace": "Chicane::Kerb::BodyShape",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Engine",
                 "filename": "Engine",
                 "path": "Kerb/Engine",
@@ -2318,9 +2368,9 @@
                 "children": []
             },
             {
-                "title": "Layer",
-                "filename": "Layer",
-                "path": "Kerb/Layer",
+                "title": "Motion",
+                "filename": "Motion",
+                "path": "Kerb/Motion",
                 "source": {
                     "header": null,
                     "namespace": null,
@@ -2333,28 +2383,12 @@
                 },
                 "children": [
                     {
-                        "title": "BroadPhaseLayer",
-                        "filename": "BroadPhase",
-                        "path": "Kerb/Layer/BroadPhase",
+                        "title": "MotionType",
+                        "filename": "Type",
+                        "path": "Kerb/Motion/Type",
                         "source": {
-                            "header": "Includes/Chicane/Kerb/Layer/BroadPhase.hpp",
-                            "namespace": "Chicane::Kerb::BroadPhaseLayer",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "ObjectLayer",
-                        "filename": "Object",
-                        "path": "Kerb/Layer/Object",
-                        "source": {
-                            "header": "Includes/Chicane/Kerb/Layer/Object.hpp",
-                            "namespace": "Chicane::Kerb::ObjectLayer",
+                            "header": "Includes/Chicane/Kerb/Motion/Type.hpp",
+                            "namespace": "Chicane::Kerb::MotionType",
                             "types": [],
                             "enums": [],
                             "constructors": [],

@@ -112,34 +112,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "getOverlap",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Bounds3D",
-                            "suffix": "&",
-                            "path": "Core/Math/Bounds/3D",
-                            "templates": []
-                        },
-                        "name": "inBounds"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOUNDS3D_GETOVERLAP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
@@ -209,9 +181,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "BoundsCorner",
+                    "name": "Bounds3DCorner",
                     "suffix": "&",
-                    "path": "Core/Math/Bounds/Corner",
+                    "path": "Core/Math/Bounds/3D/Corner",
                     "templates": []
                 },
                 "name": "getMin",
@@ -226,9 +198,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "BoundsCorner",
+                    "name": "Bounds3DCorner",
                     "suffix": "&",
-                    "path": "Core/Math/Bounds/Corner",
+                    "path": "Core/Math/Bounds/3D/Corner",
                     "templates": []
                 },
                 "name": "getMax",
@@ -457,9 +429,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "BoundsCorner",
+                    "name": "Bounds3DCorner",
                     "suffix": "",
-                    "path": "Core/Math/Bounds/Corner",
+                    "path": "Core/Math/Bounds/3D/Corner",
                     "templates": []
                 },
                 "name": "m_min",
@@ -470,9 +442,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "BoundsCorner",
+                    "name": "Bounds3DCorner",
                     "suffix": "",
-                    "path": "Core/Math/Bounds/Corner",
+                    "path": "Core/Math/Bounds/3D/Corner",
                     "templates": []
                 },
                 "name": "m_max",

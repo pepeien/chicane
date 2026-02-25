@@ -1,0 +1,51 @@
+{
+    "title": "MotionType",
+    "filename": "Type",
+    "path": "Kerb/Motion/Type",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Motion/Type.hpp",
+        "namespace": "Chicane::Kerb::MotionType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Dynamic",
+                "description": "CHICANE_KERB_MOTIONTYPE_DYNAMIC_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kinematic",
+                "description": "CHICANE_KERB_MOTIONTYPE_KINEMATIC_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Static",
+                "description": "CHICANE_KERB_MOTIONTYPE_STATIC_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_KERB_MOTIONTYPE_DESCRIPTION"
+    },
+    "children": []
+}

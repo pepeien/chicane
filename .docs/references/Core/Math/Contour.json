@@ -5,46 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Core/Math/Contour.hpp",
         "namespace": "Chicane::Contour",
-        "types": [
-            {
-                "name": "Vertices",
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec3",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_CONTOUR_VERTICES_DESCRIPTION"
-            },
-            {
-                "name": "Indices",
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_CONTOUR_INDICES_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -96,26 +57,26 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Vertices",
+                    "name": "Vertex::Positions",
                     "suffix": "&",
-                    "path": "Core/Math/Contour",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "getVertices",
+                "name": "getPositions",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_CONTOUR_GETVERTICES_DESCRIPTION"
+                "description": "CHICANE_CONTOUR_GETPOSITIONS_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Indices",
+                    "name": "Vertex::Indices",
                     "suffix": "&",
-                    "path": "Core/Math/Contour",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
                 "name": "getIndices",
@@ -132,22 +93,22 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vertices",
+                    "name": "Vertex::Positions",
                     "suffix": "",
-                    "path": "Core/Math/Contour",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "m_vertices",
-                "description": "CHICANE_CONTOUR_M_VERTICES_DESCRIPTION"
+                "name": "m_positions",
+                "description": "CHICANE_CONTOUR_M_POSITIONS_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Indices",
+                    "name": "Vertex::Indices",
                     "suffix": "",
-                    "path": "Core/Math/Contour",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
                 "name": "m_indices",

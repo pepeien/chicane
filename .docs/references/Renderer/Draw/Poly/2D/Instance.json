@@ -67,8 +67,21 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "screen",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_SCREEN_DESCRIPTION"
+                "name": "view",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "scale",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_SCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -82,6 +95,19 @@
                 },
                 "name": "size",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_padding0",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING0_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -106,8 +132,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_padding0",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING0_DESCRIPTION"
+                "name": "_padding1",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING1_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -145,8 +171,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_padding1",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING1_DESCRIPTION"
+                "name": "_padding2",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING2_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DESCRIPTION"

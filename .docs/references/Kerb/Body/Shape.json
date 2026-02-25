@@ -1,0 +1,51 @@
+{
+    "title": "BodyShape",
+    "filename": "Shape",
+    "path": "Kerb/Body/Shape",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Body/Shape.hpp",
+        "namespace": "Chicane::Kerb::BodyShape",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Box",
+                "description": "CHICANE_KERB_BODYSHAPE_BOX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Capsule",
+                "description": "CHICANE_KERB_BODYSHAPE_CAPSULE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Polygon",
+                "description": "CHICANE_KERB_BODYSHAPE_POLYGON_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_KERB_BODYSHAPE_DESCRIPTION"
+    },
+    "children": []
+}

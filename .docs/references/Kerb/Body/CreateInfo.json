@@ -1,0 +1,83 @@
+{
+    "title": "BodyCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Kerb/Body/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
+        "namespace": "Chicane::Kerb::BodyCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BodyShape",
+                    "suffix": "",
+                    "path": "Kerb/Body/Shape",
+                    "templates": []
+                },
+                "name": "shape",
+                "description": "CHICANE_KERB_BODYCREATEINFO_SHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "MotionType",
+                    "suffix": "",
+                    "path": "Kerb/Motion/Type",
+                    "templates": []
+                },
+                "name": "motion",
+                "description": "CHICANE_KERB_BODYCREATEINFO_MOTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds3D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/3D",
+                    "templates": []
+                },
+                "name": "bounds",
+                "description": "CHICANE_KERB_BODYCREATEINFO_BOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mass",
+                "description": "CHICANE_KERB_BODYCREATEINFO_MASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BodyPolygon",
+                    "suffix": "",
+                    "path": "Kerb",
+                    "templates": []
+                },
+                "name": "polygon",
+                "description": "CHICANE_KERB_BODYCREATEINFO_POLYGON_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_BODYCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}
