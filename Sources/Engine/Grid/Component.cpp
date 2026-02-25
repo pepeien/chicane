@@ -58,6 +58,8 @@ namespace Chicane
             {
                 child->tick(inDeltaTime);
             }
+
+            addSize(m_style.padding.right.get(), m_style.padding.bottom.get());
         }
 
         void Component::refresh()
@@ -560,9 +562,29 @@ namespace Chicane
             return getChildrenContentSizeBlock();
         }
 
+        float Component::getDepth() const
+        {
+            if (isRoot())
+            {
+                return 0.0f;
+            }
+
+            return std::max(m_parent->getDepth() + 0.1f, m_style.zIndex.get());
+        }
+
         const Vec2& Component::getSize() const
         {
             return m_size;
+        }
+
+        void Component::addSize(const Vec2& inValue)
+        {
+            addSize(inValue);
+        }
+
+        void Component::addSize(float inWidth, float inHeight)
+        {
+            setSize(m_size.x + inWidth, m_size.y + inHeight);
         }
 
         void Component::setSize(const Vec2& inValue)
@@ -796,22 +818,24 @@ namespace Chicane
             setPosition(m_parent->getCursor() + startMargin);
             addCursor(startPadding);
 
+            const Vec2 endMargin(m_style.margin.right.get(), m_style.margin.bottom.get());
+
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
                 if (parentStyle.flex.direction == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(m_size.x + m_style.margin.right.get(), 0.0f);
+                    m_parent->addCursor(m_size.x + endMargin.x + m_style.gap.left.get(), 0.0f);
                 }
                 else
                 {
-                    m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
+                    m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
                 }
 
                 break;
 
             default:
-                m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
+                m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
 
                 break;
             }

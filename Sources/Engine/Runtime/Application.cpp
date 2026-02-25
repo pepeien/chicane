@@ -514,10 +514,11 @@ namespace Chicane
             subcommand.instance.view    = viewSize;
             subcommand.instance.scale =
                 component->getScale() == Vec2::Zero ? component->getSize() : component->getScale();
-            subcommand.instance.size     = component->getSize();
-            subcommand.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
-            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
-            subcommand.instance.color    = style.background.color.get();
+            subcommand.instance.size = component->getSize();
+            subcommand.instance
+                .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
+            subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());
+            subcommand.instance.color   = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::UnknownId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();

@@ -153,10 +153,7 @@ namespace Chicane
                 }
 
                 FontParsed result;
-                result.name       = inFamily;
-                result.ascender   = face->ascender * (1.0f / face->units_per_EM);
-                result.descender  = face->descender * (1.0f / face->units_per_EM);
-                result.lineHeight = result.ascender - result.descender;
+                result.name = inFamily;
 
                 FT_UInt  glyphIndex;
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);

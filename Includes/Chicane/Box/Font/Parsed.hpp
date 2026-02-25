@@ -27,11 +27,8 @@ namespace Chicane
             const FontGlyph& getGlyph(char32_t inCode) const;
 
         public:
-            String         name       = "";
-            float          ascender   = 0.0f;
-            float          descender  = 0.0f;
-            float          lineHeight = 0.0f;
-            FontGlyph::Map glyphs     = {};
+            String         name   = "";
+            FontGlyph::Map glyphs = {};
         };
     }
 }

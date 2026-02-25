@@ -143,7 +143,11 @@ namespace Chicane
             Vec2 getChildrenContentSize() const;
 
             // Positioning
+            float getDepth() const;
+
             const Vec2& getSize() const;
+            void addSize(const Vec2& inValue);
+            void addSize(float inWidth, float inHeight);
             void setSize(const Vec2& inValue);
             void setSize(float inWidth, float inHeight);
 

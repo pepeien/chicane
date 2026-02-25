@@ -64,7 +64,6 @@ namespace Chicane
 
             const Style& parentStyle = getParent()->getStyle();
 
-            m_style.zIndex.set(parentStyle.zIndex.get() + 1.0f);
             m_style.background.color = parentStyle.foregroundColor;
 
             const float scale      = parentStyle.font.size.get();
