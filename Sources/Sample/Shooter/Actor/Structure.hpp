@@ -2,6 +2,7 @@
 
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
+#include <Chicane/Runtime/Scene/Component/Physics.hpp>
 
 class Strcuture : public Chicane::Actor
 {
@@ -12,5 +13,6 @@ protected:
     void onLoad() override;
 
 private:
-    Chicane::CMesh* m_mesh;
+    Chicane::CMesh*    m_mesh;
+    Chicane::CPhysics* m_physics;
 };

@@ -10,6 +10,8 @@ namespace Chicane
 
     class CHICANE_RUNTIME APawn : public Actor
     {
+        friend Controller;
+
     public:
         APawn();
 
@@ -27,14 +29,18 @@ namespace Chicane
         {
             return dynamic_cast<T*>(m_controller);
         }
+
+    protected:
+        void enablePhysics();
+        void disabledPhysics();
+
+    private:
         void attachController(Controller* inController);
         void deattachController();
-
-        CPhysics* getPhysicsComponent() const;
 
     protected:
         Controller* m_controller;
 
-        CPhysics*   m_physicsComponent;
+        CPhysics*   m_physics;
     };
 }

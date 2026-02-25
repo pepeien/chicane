@@ -7,9 +7,22 @@ namespace Chicane
 {
     CPhysics::CPhysics()
         : Component(),
-          m_bodyID(JPH::BodyID::cInvalidBodyID)
+          m_bodyID(JPH::BodyID::cInvalidBodyID),
+          m_bodySettings({})
+    {}
+
+    void CPhysics::onLoad()
     {
         setCanTick(true);
+
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_bodySettings.bounds = m_parent->getBounds();
+
+        m_bodyID = Kerb::Engine::getInstance().createBody(m_bodySettings);
     }
 
     void CPhysics::onTick(float inDeltaTime)
@@ -19,28 +32,50 @@ namespace Chicane
             return;
         }
 
-        Transform transform = Kerb::Engine::getInstance().getTransform(m_bodyID);
+        Transform transform = Kerb::Engine::getInstance().getBodyTransform(m_bodyID);
 
         m_parent->setAbsoluteTranslation(transform.getTranslation());
     }
 
-    void CPhysics::onAttachment(Object* inAttachment)
+    void CPhysics::onActivation()
     {
-        m_bodyID = bisDynamic ? Kerb::Engine::getInstance().createDynamicBody(
-                                    inAttachment->getTranslation(),
-                                    inAttachment->getRotation(),
-                                    inAttachment->getBounds()
-                                )
-                              : Kerb::Engine::getInstance().createStaticBody(
-                                    inAttachment->getTranslation(),
-                                    inAttachment->getRotation(),
-                                    inAttachment->getBounds()
-                                );
+        Kerb::Engine::getInstance().activateBody(m_bodyID);
     }
 
-    bool CPhysics::canCollide() const
+    void CPhysics::onDeactivation()
     {
-        return isAttached() && !m_bodyID.IsInvalid();
+        Kerb::Engine::getInstance().deactivateBody(m_bodyID);
+    }
+
+    void CPhysics::setShape(Kerb::BodyShape inType)
+    {
+        m_bodySettings.shape = inType;
+    }
+
+    void CPhysics::setShape(const Kerb::BodyPolygon& inPolygon)
+    {
+        m_bodySettings.shape   = Kerb::BodyShape::Polygon;
+        m_bodySettings.polygon = std::move(inPolygon);
+    }
+
+    void CPhysics::setMotion(Kerb::MotionType inType)
+    {
+        m_bodySettings.motion = inType;
+    }
+
+    void CPhysics::moveTo(const Vec3& inLocation)
+    {
+        if (!canCollide())
+        {
+            return;
+        }
+
+        Transform transform;
+        transform.setScale(m_parent->getTransform().getScale());
+        transform.setRotation(m_parent->getTransform().getRotation());
+        transform.setTranslation(inLocation);
+
+        Kerb::Engine::getInstance().setBodyTransform(m_bodyID, transform);
     }
 
     void CPhysics::addImpulse(const Vec3& inDirection, float inForce, const Vec3& inLocation)
@@ -50,6 +85,16 @@ namespace Chicane
             return;
         }
 
-        Kerb::Engine::getInstance().addImpulse(m_bodyID, inDirection, inForce, inLocation);
+        Kerb::Engine::getInstance().addBodyImpulse(m_bodyID, inDirection, inForce, inLocation);
+    }
+
+    bool CPhysics::canCollide() const
+    {
+        return isAttached() && isActive() && hasBody();
+    }
+
+    bool CPhysics::hasBody() const
+    {
+        return !m_bodyID.IsInvalid();
     }
 }

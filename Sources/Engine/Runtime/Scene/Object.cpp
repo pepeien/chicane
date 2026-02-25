@@ -42,14 +42,5 @@ namespace Chicane
     void Object::setScene(Scene* inScene)
     {
         m_scene = inScene;
-
-        if (m_scene)
-        {
-            onLoad();
-        }
-        else
-        {
-            onUnload();
-        }
     }
 }

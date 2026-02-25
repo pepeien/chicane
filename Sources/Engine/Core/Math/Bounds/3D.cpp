@@ -92,41 +92,6 @@ namespace Chicane
         return bIsWithinX && bIsWithinY && bIsWithinZ;
     }
 
-    Vec3 Bounds3D::getOverlap(const Bounds3D& inOther) const
-    {
-        const Vec3& min = getMin().transformed;
-        const Vec3& max = getMax().transformed;
-
-        const Vec3& otherMin = inOther.getMin().transformed;
-        const Vec3& otherMax = inOther.getMax().transformed;
-
-        float overlapX = std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
-        float overlapY = std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
-        float overlapZ = std::min(max.z, otherMax.z) - std::max(min.z, otherMin.z);
-
-        if (overlapX <= 0 || overlapY <= 0 || overlapZ <= 0)
-        {
-            return Vec3::Zero;
-        }
-
-        Vec3 result = Vec3::Zero;
-
-        if (overlapX < overlapY && overlapX < overlapZ)
-        {
-            result.x = overlapX;
-        }
-        else if (overlapY < overlapX && overlapY < overlapZ)
-        {
-            result.y = overlapY;
-        }
-        else
-        {
-            result.z = overlapZ;
-        }
-
-        return result;
-    }
-
     const Vec3& Bounds3D::getTop() const
     {
         return m_top;
@@ -147,12 +112,12 @@ namespace Chicane
         return m_size;
     }
 
-    const BoundsCorner& Bounds3D::getMin() const
+    const Bounds3DCorner& Bounds3D::getMin() const
     {
         return m_min;
     }
 
-    const BoundsCorner& Bounds3D::getMax() const
+    const Bounds3DCorner& Bounds3D::getMax() const
     {
         return m_max;
     }
@@ -200,6 +165,11 @@ namespace Chicane
 
     void Bounds3D::transform(const Mat4& inModel)
     {
+        if (m_baseCorners.empty())
+        {
+            return;
+        }
+
         Vec3 min(FLT_MAX);
         Vec3 max(-FLT_MAX);
 
@@ -225,6 +195,8 @@ namespace Chicane
         m_bottom.x = m_center.x;
         m_bottom.y = m_center.y;
         m_bottom.z = m_min.transformed.z;
+
+        m_size = m_max.transformed - m_min.transformed;
 
         refreshCorners(m_corners, m_min.transformed, m_max.transformed);
     }

@@ -14,23 +14,15 @@ Character::Character()
       m_wand(nullptr),
       m_body(nullptr),
       m_victorySound(nullptr)
-{
-    Game::watchScore(
-        [this](std::uint32_t inScore)
-        {
-            if (Game::didReachMaxScore())
-            {
-                m_victorySound->play();
-
-                return;
-            }
-        }
-    );
-}
+{}
 
 void Character::onLoad()
 {
     Chicane::ACharacter::onLoad();
+
+    setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 0.0f));
+
+    enablePhysics();
 
     m_camera = getScene()->createComponent<Chicane::CCamera>();
     m_camera->setId("First Person");
@@ -55,6 +47,18 @@ void Character::onLoad()
     m_victorySound->attachTo(this);
     m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
     m_victorySound->activate();
+
+    Game::watchScore(
+        [this](std::uint32_t inScore)
+        {
+            if (Game::didReachMaxScore())
+            {
+                m_victorySound->play();
+
+                return;
+            }
+        }
+    );
 }
 
 void Character::onControlAttachment()
@@ -96,13 +100,13 @@ void Character::onControlAttachment()
     );
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::Space,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         std::bind(&Character::onJump, this)
     );
 
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F1,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         [this]()
         {
             m_camera->activate();
@@ -112,7 +116,7 @@ void Character::onControlAttachment()
     );
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F2,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         [this]()
         {
             getScene<Level>()->activateLeftCamera();
@@ -122,7 +126,7 @@ void Character::onControlAttachment()
     );
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F3,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         [this]()
         {
             getScene<Level>()->activateCenterCamera();
@@ -132,7 +136,7 @@ void Character::onControlAttachment()
     );
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F4,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         [this]() { getScene<Level>()->activateRightCamera(); }
     );
 
@@ -141,7 +145,7 @@ void Character::onControlAttachment()
 
     m_controller->bindEvent(
         Chicane::Input::GamepadButton::South,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         std::bind(&Character::onJump, this)
     );
 }

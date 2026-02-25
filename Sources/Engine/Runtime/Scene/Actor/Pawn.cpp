@@ -8,21 +8,42 @@ namespace Chicane
     APawn::APawn()
         : Actor(),
           m_controller(nullptr),
-          m_physicsComponent(nullptr)
+          m_physics(nullptr)
     {
         setCanCollide(true);
     }
 
     void APawn::onLoad()
     {
-        m_physicsComponent = getScene()->createComponent<CPhysics>();
-        m_physicsComponent->attachTo(this);
-        m_physicsComponent->activate();
+        m_physics = getScene()->createComponent<CPhysics>();
+        m_physics->setShape(Kerb::BodyShape::Capsule);
+        m_physics->setMotion(Kerb::MotionType::Dynamic);
+        m_physics->attachTo(this);
     }
 
     bool APawn::isControlled() const
     {
         return m_controller != nullptr;
+    }
+
+    void APawn::enablePhysics()
+    {
+        if (!m_physics)
+        {
+            return;
+        }
+
+        m_physics->activate();
+    }
+
+    void APawn::disabledPhysics()
+    {
+        if (!m_physics)
+        {
+            return;
+        }
+
+        m_physics->deactivate();
     }
 
     void APawn::attachController(Controller* inController)
@@ -37,10 +58,5 @@ namespace Chicane
         m_controller = nullptr;
 
         onControleDeattachment();
-    }
-
-    CPhysics* APawn::getPhysicsComponent() const
-    {
-        return m_physicsComponent;
     }
 }

@@ -37,11 +37,7 @@ namespace Editor
 
     void Scene::spawnCharacter()
     {
-        Character* character = createActor<Character>();
-        character->setAbsoluteTranslation(10.0f, -10.0f, 10.0f);
-        character->look(45.0f, -35.0f);
-
-        Chicane::Application::getInstance().getController()->attachTo(character);
+        Chicane::Application::getInstance().getController()->attachTo(createActor<Character>());
     }
 
     void Scene::spawnDefaultItem()

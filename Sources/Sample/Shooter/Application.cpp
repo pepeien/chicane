@@ -5,8 +5,6 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Actor/Character.hpp"
-
 Application::Application()
 {
     Chicane::ApplicationCreateInfo createInfo = {};
@@ -21,8 +19,8 @@ Application::Application()
     // Setup
     createInfo.onSetup = [this]()
     {
+        initController();
         initLevel();
-        initCharacter();
         initView();
     };
 
@@ -34,17 +32,11 @@ void Application::initLevel()
     Chicane::Application::getInstance().setScene<Level>();
 }
 
-void Application::initCharacter()
+void Application::initController()
 {
-    Chicane::Application& application = Chicane::Application::getInstance();
-
     m_controller = std::make_unique<Chicane::Controller>();
-    application.setController(m_controller.get());
 
-    Character* character = application.getScene<Level>()->createActor<Character>();
-    character->setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 0.0f));
-
-    m_controller->attachTo(character);
+    Chicane::Application::getInstance().setController(m_controller.get());
 }
 
 void Application::initView()

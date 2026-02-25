@@ -63,11 +63,12 @@ namespace Chicane
         void Component::refresh()
         {
             refreshStyle();
+
+            onRefresh();
+
             refreshSize();
             refreshPosition();
             refreshBounds();
-
-            onRefresh();
         }
 
         bool Component::isRoot() const
@@ -575,6 +576,22 @@ namespace Chicane
             m_size.y = inHeight;
         }
 
+        const Vec2& Component::getScale() const
+        {
+            return m_scale;
+        }
+
+        void Component::setScale(const Vec2& inValue)
+        {
+            setScale(inValue.x, inValue.y);
+        }
+
+        void Component::setScale(float inX, float inY)
+        {
+            m_scale.x = inX;
+            m_scale.y = inY;
+        }
+
         const Vec2& Component::getPosition() const
         {
             return m_position;
@@ -763,57 +780,38 @@ namespace Chicane
         {
             setPosition(0.0f, 0.0f);
 
-            Vec2 margin = Vec2(
-                m_style.margin.left.get() == m_style.margin.right.get()
-                    ? m_style.margin.left.get()
-                    : (m_style.margin.left.get() - m_style.margin.right.get()),
-                m_style.margin.top.get() == m_style.margin.bottom.get()
-                    ? m_style.margin.top.get()
-                    : (m_style.margin.top.get() - m_style.margin.bottom.get())
-            );
-            Vec2 padding = Vec2(
-                m_style.padding.left.get() == m_style.padding.right.get()
-                    ? m_style.padding.left.get()
-                    : (m_style.padding.left.get() - m_style.padding.right.get()),
-                m_style.padding.top.get() == m_style.padding.bottom.get()
-                    ? m_style.padding.top.get()
-                    : (m_style.padding.top.get() - m_style.padding.bottom.get())
-            );
+            const Vec2 startMargin(m_style.margin.left.get(), m_style.margin.top.get());
+            const Vec2 startPadding(m_style.padding.left.get(), m_style.padding.top.get());
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(margin);
-                addCursor(padding);
+                setPosition(startMargin);
+                addCursor(startPadding);
 
                 return;
             }
 
-            const Style& parentStyle  = m_parent->getStyle();
-            const Vec2&  parentCursor = m_parent->getCursor();
+            const Style& parentStyle = m_parent->getStyle();
 
-            const Vec2 addedSpacing  = margin;
-            const Vec2 occupiedSpace = m_size + margin;
-
-            setPosition(parentCursor + addedSpacing);
-            addCursor(padding);
+            setPosition(m_parent->getCursor() + startMargin);
+            addCursor(startPadding);
 
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
                 if (parentStyle.flex.direction == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(parentStyle.gap.left.get() + occupiedSpace.x, 0.0f);
+                    m_parent->addCursor(m_size.x + m_style.margin.right.get(), 0.0f);
                 }
-
-                if (parentStyle.flex.direction == StyleFlexDirection::Column)
+                else
                 {
-                    m_parent->addCursor(0.0f, parentStyle.gap.top.get() + occupiedSpace.y);
+                    m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
                 }
 
                 break;
 
             default:
-                m_parent->addCursor(0.0f, occupiedSpace.y);
+                m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
 
                 break;
             }

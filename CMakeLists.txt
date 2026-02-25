@@ -3,7 +3,7 @@ include(CMakePackageConfigHelpers)
 
 include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
 
-include(Functions.cmake)
+include(CMake/Functions.cmake)
 
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)

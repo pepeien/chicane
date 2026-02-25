@@ -10,7 +10,6 @@ Apple::Apple()
       m_fallRate(std::max(0.001f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f)),
       m_startPosition(Chicane::Vec3::Zero),
       m_meshComponent(nullptr),
-      m_physicsComponent(nullptr),
       m_hitSound(nullptr)
 {
     setCanTick(true);
@@ -24,10 +23,6 @@ void Apple::onLoad()
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
-    m_physicsComponent = getScene()->createComponent<Chicane::CPhysics>();
-    m_physicsComponent->attachTo(this);
-    m_physicsComponent->activate();
-
     m_hitSound = getScene()->createComponent<Chicane::CSound>();
     m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
     m_hitSound->attachTo(this);
@@ -37,7 +32,7 @@ void Apple::onLoad()
 void Apple::onTick(float inDeltaTime)
 {
     addAbsoluteRotation(0.0f, 0.0f, m_rotateRate);
-    addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
+    //addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)

@@ -34,7 +34,7 @@ namespace Editor
         createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
         // Setup
-        createInfo.onSetup = [&]()
+        createInfo.onSetup = [this]()
         {
             initController();
             initScene();

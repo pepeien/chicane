@@ -1,11 +1,9 @@
 #pragma once
 
-#include <vector>
-
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Math/Bounds/Corner.hpp"
-#include "Chicane/Core/Math/Transform/Spatial.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Math/Bounds/3D/Corner.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
 namespace Chicane
@@ -20,16 +18,14 @@ namespace Chicane
         bool intersects(const Bounds3D& inOther) const;
         bool intersects(const Vec3& inPoint) const;
 
-        Vec3 getOverlap(const Bounds3D& inBounds) const;
-
         const Vec3& getTop() const;
         const Vec3& getCenter() const;
         const Vec3& getBottom() const;
 
         const Vec3& getSize() const;
 
-        const BoundsCorner& getMin() const;
-        const BoundsCorner& getMax() const;
+        const Bounds3DCorner& getMin() const;
+        const Bounds3DCorner& getMax() const;
 
         const Vertex::List& getCorners() const;
         const Vertex::Indices& getIndices() const;
@@ -49,8 +45,8 @@ namespace Chicane
 
         Vec3            m_size;
 
-        BoundsCorner    m_min;
-        BoundsCorner    m_max;
+        Bounds3DCorner  m_min;
+        Bounds3DCorner  m_max;
 
         Vertex::List    m_corners;
         Vertex::List    m_baseCorners;
