@@ -40,7 +40,7 @@ namespace Chicane
 
             Box::Texture asset(inFilepath);
 
-            addTexture(asset.getFilepath().string(), asset.getId());
+            addTexture(asset.getFilepath(), asset.getId());
         }
 
         void Sky::addTexture(const String& inSource, const String& inReference)
@@ -89,7 +89,7 @@ namespace Chicane
 
             Box::Model asset(inFilepath);
 
-            setModel(asset.getFilepath().string(), asset.getId());
+            setModel(asset.getFilepath(), asset.getId());
         }
 
         void Sky::setModel(const String& inSource, const String& inReference)

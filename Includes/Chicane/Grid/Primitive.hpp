@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
 
@@ -17,17 +18,20 @@ namespace Chicane
             }
 
         public:
-            inline bool isEmpty() const { return vertices.empty() || indices.empty(); }
+            inline bool isEmpty() const { return (vertices.empty() || indices.empty()) && reference.isEmpty(); }
 
             inline void clear()
             {
+                reference = "";
+
                 vertices.clear();
                 indices.clear();
             }
 
         public:
-            Vertex::List    vertices = {};
-            Vertex::Indices indices  = {};
+            String          reference = "";
+            Vertex::List    vertices  = {};
+            Vertex::Indices indices   = {};
         };
     }
 }

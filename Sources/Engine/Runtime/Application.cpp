@@ -1,9 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
-#include <iostream>
-#include <thread>
-
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
 
@@ -261,6 +259,22 @@ namespace Chicane
 
                     return;
                 }
+
+                if (typeid(*inAsset) == typeid(Box::Font))
+                {
+                    for (const auto& [code, glyph] : static_cast<const Box::Font*>(inAsset)->getData().getGlyphs())
+                    {
+                        Renderer::DrawPolyData data;
+                        data.reference = glyph.name;
+                        data.mode      = Renderer::DrawPolyMode::Fill;
+                        data.vertices  = glyph.vertices;
+                        data.indices   = glyph.indices;
+
+                        m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+                    }
+
+                    return;
+                }
             }
         );
     }
@@ -356,7 +370,7 @@ namespace Chicane
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                Renderer::DrawPoly3DCommandMesh subcommand;
+                Renderer::DrawPoly3DCommandMesh subcommand = {};
                 subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
                 subcommand.instance.model   = matrix;
                 subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
@@ -370,7 +384,7 @@ namespace Chicane
             const Box::Sky* asset = sky->getSky();
 
             Renderer::DrawSkyData data;
-            data.reference = asset->getFilepath().string();
+            data.reference = asset->getFilepath();
             data.model     = asset->getModel().getReference();
 
             for (const Box::AssetReference& texture : asset->getTextures())
@@ -389,7 +403,7 @@ namespace Chicane
     {
         const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
+        const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
 
         m_renderer->useCamera(command.camera);
         m_renderer->addLight(command.light);
@@ -509,18 +523,19 @@ namespace Chicane
             const Grid::Style&     style     = component->getStyle();
 
             Renderer::DrawPoly2DCommandFill subcommand;
-            subcommand.polygon.vertices = primitive.vertices;
-            subcommand.polygon.indices  = primitive.indices;
-            subcommand.instance.view    = viewSize;
-            subcommand.instance.scale   = component->getScale();
-            subcommand.instance.size    = component->getSize();
-            subcommand.instance.offset  = component->getOffset();
+            subcommand.polygon.reference = primitive.reference;
+            subcommand.polygon.vertices  = primitive.vertices;
+            subcommand.polygon.indices   = primitive.indices;
+            subcommand.instance.view     = viewSize;
+            subcommand.instance.scale    = component->getScale();
+            subcommand.instance.size     = component->getSize();
+            subcommand.instance.offset   = component->getOffset();
             subcommand.instance
                 .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
             subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());
             subcommand.instance.color   = style.background.color.get();
             subcommand.instance.color.a =
-                (subcommand.instance.texture > Renderer::Draw::UnknownId ? 255.0f : subcommand.instance.color.a) *
+                (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();
 
             command.fills.emplace_back(std::move(subcommand));
@@ -539,7 +554,7 @@ namespace Chicane
 
         const std::size_t index = m_viewReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly2DCommand& command = m_viewCommandBuffers.at(index);
+        const Renderer::DrawPoly2DCommand command = m_viewCommandBuffers.at(index);
 
         for (const Renderer::DrawPoly2DCommandFill& fill : command.fills)
         {

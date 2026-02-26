@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <filesystem>
 #include <regex>
 #include <stdexcept>
 #include <string>
@@ -50,104 +51,99 @@ namespace Chicane
         }
 
     public:
-        template <typename... T>
-        inline String(T... inParams)
-            : m_value(inParams...)
+        inline String() = default;
+
+        inline String(const char* value)
+            : m_value(value ? value : "")
         {}
 
-        inline String(const short unsigned int* inValue)
-            : String()
-        {
-            if (inValue == nullptr)
-            {
-                return;
-            }
-
-            m_value = std::to_string(*inValue);
-        }
-
-        inline String(char inValue)
-            : m_value(1, inValue)
+        inline String(char value)
+            : m_value(1, value)
         {}
 
-        inline String(const String& inValue)
-            : m_value(inValue.m_value)
+        inline String(size_t count, char ch)
+            : m_value(count, ch)
         {}
 
-        inline String(String&& inValue) noexcept
-            : m_value(std::move(inValue.m_value))
+        inline String(const std::string& value)
+            : m_value(value)
         {}
 
-        inline String()
-            : m_value("")
+        inline String(std::string&& value) noexcept
+            : m_value(std::move(value))
         {}
+
+        inline String(const std::filesystem::path& p)
+            : m_value(p.string())
+        {}
+
+        template <typename InputIt, typename = std::enable_if_t<!std::is_integral_v<InputIt>>>
+        inline String(InputIt first, InputIt last)
+            : m_value(first, last)
+        {}
+
+        inline String(const String&)     = default;
+        inline String(String&&) noexcept = default;
 
     public:
-        inline operator const char*() const { return m_value.c_str(); }
-
-        inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
-
-        inline String& operator=(const String& other)
-        {
-            m_value = other.m_value;
-            return *this;
-        }
-
-        inline String& operator=(String&& other) noexcept
-        {
-            m_value = std::move(other.m_value);
-            return *this;
-        }
-
-        inline String& operator=(const std::string& rhs)
-        {
-            m_value = std::move(rhs);
-            return *this;
-        }
-
-        inline String& operator=(const char* rhs)
-        {
-            m_value = rhs;
-            return *this;
-        }
-
-        inline String& operator+=(const String& rhs)
-        {
-            append(rhs);
-            return *this;
-        }
-
-        inline String& operator+=(const std::string& rhs)
-        {
-            append(rhs);
-            return *this;
-        }
-
-        inline String& operator+=(const char* rhs)
-        {
-            append(rhs);
-            return *this;
-        }
+        inline String& operator=(const String&)     = default;
+        inline String& operator=(String&&) noexcept = default;
 
         inline friend String operator+(String lhs, const String& rhs)
         {
             lhs += rhs;
-            return lhs;
-        }
 
-        inline friend String operator+(String lhs, const std::string& rhs)
-        {
-            lhs += rhs;
             return lhs;
         }
 
         inline friend String operator+(String lhs, const char* rhs)
         {
             lhs += rhs;
+
             return lhs;
         }
 
+        inline friend String operator+(const char* lhs, const String& rhs)
+        {
+            String result(lhs);
+            result += rhs;
+
+            return result;
+        }
+
+        inline String& operator+=(const String& rhs)
+        {
+            m_value += rhs.m_value;
+
+            return *this;
+        }
+
+        inline String& operator+=(const char* rhs)
+        {
+            m_value += rhs;
+
+            return *this;
+        }
+
+        inline String& operator+=(char rhs)
+        {
+            m_value += rhs;
+
+            return *this;
+        }
+
+        inline friend std::ostream& operator<<(std::ostream& os, const String& str)
+        {
+            os << str.m_value;
+
+            return os;
+        }
+
         inline bool operator<(const String& rhs) const { return m_value < rhs.m_value; }
+
+        inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
+
+        inline operator std::string() const { return m_value; }
 
     public:
         bool isEmpty() const;
@@ -194,9 +190,10 @@ namespace Chicane
         template <typename... Args>
         inline std::vector<String> split(Args... inDelimeters) const
         {
-            std::vector<String> delimeters = {inDelimeters...};
+            std::vector<String> delimeters;
+            (delimeters.emplace_back(std::forward<Args>(inDelimeters)), ...);
 
-            if (size() == 0 || delimeters.size() == 0)
+            if (size() == 0 || delimeters.empty())
             {
                 return {};
             }

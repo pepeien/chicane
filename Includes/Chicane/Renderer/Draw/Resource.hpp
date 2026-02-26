@@ -35,12 +35,14 @@ namespace Chicane
 
             inline Draw::Id findHash(Hash::Value inValue)
             {
-                if (m_hashes.find(inValue) == m_hashes.end())
+                const auto& found = m_hashes.find(inValue);
+
+                if (found == m_hashes.end())
                 {
-                    return Draw::UnknownId;
+                    return Draw::InvalidId;
                 }
 
-                return m_hashes.at(inValue);
+                return found->second;
             }
 
             inline void addHash(
@@ -56,7 +58,7 @@ namespace Chicane
 
             inline void addHash(Hash::Value inValue, Draw::Id inId)
             {
-                if (findHash(inValue) > Draw::UnknownId)
+                if (findHash(inValue) > Draw::InvalidId)
                 {
                     return;
                 }

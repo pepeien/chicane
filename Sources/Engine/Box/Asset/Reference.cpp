@@ -16,7 +16,7 @@ namespace Chicane
 
         void AssetReference::saveTo(pugi::xml_node& outNode) const
         {
-            Xml::addAttribute(outNode, ASSET_SOURCE_ATTRIBUTE_NAME, getSource());
+            Xml::addAttribute(outNode, ASSET_SOURCE_ATTRIBUTE_NAME, getSource().string());
             Xml::addText(outNode, getReference());
         }
 

@@ -17,12 +17,13 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPolyResource : DrawResource<Vertex::Index, Vertex>
         {
         public:
-            using Map = std::map<DrawPolyType, DrawPolyResource>;
+            using Map   = std::unordered_map<DrawPolyType, DrawPolyResource>;
+            using Draws = std::unordered_map<String, DrawPoly>;
 
         public:
             bool isEmpty() const;
 
-            const DrawPoly::List& getDraws() const;
+            const Draws& getDraws() const;
             const Vertex::List& getVertices() const;
             const Vertex::Indices& getIndices() const;
 
@@ -37,7 +38,10 @@ namespace Chicane
             void reset();
 
         private:
-            DrawPoly::List  m_draws    = {};
+            String generateInternalReference(DrawPolyMode inMode, Draw::Id inId) const;
+
+        private:
+            Draws           m_draws    = {};
             Vertex::List    m_vertices = {};
             Vertex::Indices m_indices  = {};
         };

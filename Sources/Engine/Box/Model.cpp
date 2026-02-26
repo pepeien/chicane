@@ -41,12 +41,14 @@ namespace Chicane
 
         const String& Model::getVendorExtension(ModelVendor inValue)
         {
-            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            const auto& found = EXTENSIONS.find(inValue);
+
+            if (found == EXTENSIONS.end())
             {
                 return EXTENSIONS.at(ModelVendor::Undefined);
             }
 
-            return EXTENSIONS.at(inValue);
+            return found->second;
         }
 
         Model::Model(const FileSystem::Path& inFilepath)
@@ -103,12 +105,14 @@ namespace Chicane
 
         const ModelParsed& Model::getModel(const String& inId) const
         {
-            if (m_data.find(inId) == m_data.end())
+            const auto& found = m_data.find(inId);
+
+            if (found == m_data.end())
             {
                 return ModelParsed::empty();
             }
 
-            return m_data.at(inId);
+            return found->second;
         }
 
         void Model::fetchVendorFromXML()

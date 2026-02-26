@@ -42,12 +42,14 @@ namespace Chicane
 
         const String& Font::getVendorExtension(FontVendor inValue)
         {
-            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            const auto& found = EXTENSIONS.find(inValue);
+
+            if (found == EXTENSIONS.end())
             {
                 return EXTENSIONS.at(FontVendor::Undefined);
             }
 
-            return EXTENSIONS.at(inValue);
+            return found->second;
         }
 
         Font::Font(const FileSystem::Path& inFilepath)
@@ -76,7 +78,7 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
         }
 
-        const FontParsed& Font::getData() const
+        const FontFamily& Font::getData() const
         {
             return m_data;
         }
@@ -122,7 +124,7 @@ namespace Chicane
             m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
         }
 
-        FontParsed Font::parseData(const FontRaw& inValue) const
+        FontFamily Font::parseData(const FontRaw& inValue) const
         {
             switch (m_vendor)
             {

@@ -49,7 +49,7 @@ namespace Chicane
 
         void VulkanLSceneSky::onLoad(const DrawSky& inResource)
         {
-            if (inResource.textures.empty() || inResource.model.id == Draw::UnknownId)
+            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
             {
                 return;
             }
@@ -59,7 +59,7 @@ namespace Chicane
 
         bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getSkyInstance().model.id == Draw::UnknownId || !m_sky)
+            if (inFrame.getSkyInstance().model.id <= Draw::InvalidId || !m_sky)
             {
                 return false;
             }

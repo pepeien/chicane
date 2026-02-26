@@ -109,12 +109,12 @@ namespace Chicane
 
         void Asset::saveXML()
         {
-            Xml::save(m_xml, getFilepath().string());
+            Xml::save(m_xml, getFilepath());
         }
 
         pugi::xml_attribute Asset::getAttribute(const String& inId)
         {
-            return getXML().attribute(inId);
+            return getXML().attribute(inId.toStandard());
         }
 
         void Asset::setAttribute(const String& inId, const String& inData)
@@ -130,7 +130,7 @@ namespace Chicane
 
             if (attribute.empty())
             {
-                attribute = getXML().append_attribute(id);
+                attribute = getXML().append_attribute(id.toStandard());
             }
 
             attribute.set_value(inData.toChar());
@@ -173,7 +173,9 @@ namespace Chicane
 
             if (!name.equals(TAG))
             {
-                throw std::runtime_error(String::sprint("Asset files root element must be have [%s] as a tag", TAG));
+                throw std::runtime_error(
+                    String::sprint("Asset files root element must be have [%s] as a tag", TAG).toStandard()
+                );
             }
         }
     }

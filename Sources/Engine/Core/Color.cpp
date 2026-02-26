@@ -97,7 +97,7 @@ namespace Chicane
                 }
                 else
                 {
-                    current += character;
+                    current.append(character);
                 }
             }
 

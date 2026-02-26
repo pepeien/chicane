@@ -9,7 +9,7 @@ namespace Chicane
             return m_draws.empty() || m_vertices.empty() || m_indices.empty();
         }
 
-        const DrawPoly::List& DrawPolyResource::getDraws() const
+        const DrawPolyResource::Draws& DrawPolyResource::getDraws() const
         {
             return m_draws;
         }
@@ -26,6 +26,11 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::findId(const DrawPolyData& inData)
         {
+            if (!inData.reference.isEmpty())
+            {
+                return findId(inData.reference);
+            }
+
             return findHash(
                 inData.indices.data(),
                 inData.indices.size() * sizeof(Vertex::Index),
@@ -36,34 +41,29 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::findId(const Draw::Reference& inReference)
         {
-            for (const DrawPoly& draw : m_draws)
-            {
-                if (!draw.reference.equals(inReference))
-                {
-                    continue;
-                }
+            const auto& found = m_draws.find(inReference);
 
-                return draw.id;
+            if (found == m_draws.end())
+            {
+                return Draw::InvalidId;
             }
 
-            return Draw::UnknownId;
+            return found->second.id;
         }
 
         const DrawPoly& DrawPolyResource::getDraw(const Draw::Reference& inReference)
         {
-            const Draw::Id id = findId(inReference);
-
-            if (id <= Draw::UnknownId)
+            if (findId(inReference) <= Draw::InvalidId)
             {
                 return DrawPoly::empty();
             }
 
-            return getDraw(id);
+            return m_draws.at(inReference);
         }
 
         const DrawPoly& DrawPolyResource::getDraw(Draw::Id inId)
         {
-            for (const DrawPoly& draw : m_draws)
+            for (const auto& [reference, draw] : m_draws)
             {
                 if (draw.id != inId)
                 {
@@ -78,22 +78,24 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::add(const DrawPolyData& inData)
         {
-            Draw::Id id = findId(inData);
+            const Draw::Id id = findId(inData);
 
-            if (id > Draw::UnknownId)
+            if (id > Draw::InvalidId)
             {
                 return id;
             }
 
-            DrawPoly draw    = {};
-            draw.id          = m_draws.size();
-            draw.mode        = inData.mode;
-            draw.reference   = inData.reference;
+            DrawPoly draw;
+            draw.id   = m_draws.size();
+            draw.mode = inData.mode;
+            draw.reference =
+                inData.reference.isEmpty() ? generateInternalReference(draw.mode, draw.id) : inData.reference;
             draw.vertexStart = m_vertices.empty() ? 0U : m_vertices.size();
             draw.vertexCount = inData.vertices.size();
             draw.indexStart  = m_indices.empty() ? 0U : m_indices.size();
             draw.indexCount  = inData.indices.size();
-            m_draws.push_back(draw);
+
+            m_draws.emplace(draw.reference, draw);
 
             m_vertices.reserve(m_vertices.size() + inData.vertices.size());
             m_vertices.insert(m_vertices.end(), inData.vertices.begin(), inData.vertices.end());
@@ -118,6 +120,17 @@ namespace Chicane
             m_vertices.clear();
             m_indices.clear();
             clearHashes();
+        }
+
+        String DrawPolyResource::generateInternalReference(DrawPolyMode inMode, Draw::Id inId) const
+        {
+            String result = "__internal";
+            result.append('_');
+            result.append(std::to_string(static_cast<int>(inMode)));
+            result.append('_');
+            result.append(std::to_string(static_cast<int>(inId)));
+
+            return result;
         }
     }
 }

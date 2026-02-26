@@ -184,14 +184,16 @@ namespace Chicane
             refreshStyleRuleset();
         }
 
-        String Component::getAttribute(const String& inName) const
+        const String& Component::getAttribute(const String& inName) const
         {
-            if (m_attributes.find(inName) == m_attributes.end())
+            const auto& found = m_attributes.find(inName);
+
+            if (found == m_attributes.end())
             {
-                return "";
+                return String::empty();
             }
 
-            return m_attributes.at(inName);
+            return found->second;
         }
 
         const Style& Component::getStyle() const

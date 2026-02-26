@@ -30,7 +30,7 @@ namespace Chicane
         {
             glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
-            if (inResource.textures.empty() || inResource.model.id == Draw::UnknownId)
+            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
             {
                 return;
             }
@@ -58,7 +58,7 @@ namespace Chicane
 
         bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
+            if (inFrame.getSkyInstance().model.id <= Draw::InvalidId)
             {
                 return false;
             }

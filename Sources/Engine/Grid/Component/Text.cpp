@@ -72,7 +72,7 @@ namespace Chicane
                 return;
             }
 
-            const Box::FontParsed& fontFamily = m_font->getData();
+            const Box::FontFamily& fontFamily = m_font->getData();
 
             std::vector<char32_t> codepoints = value.toUnicode();
 

@@ -116,7 +116,7 @@ namespace Chicane
                 return result;
             }
 
-            FontParsed parse(const String& inFamily, const FontRaw& inData)
+            FontFamily parse(const String& inFamily, const FontRaw& inData)
             {
                 FT_Library library = nullptr;
                 if (FT_Init_FreeType(&library))
@@ -151,8 +151,8 @@ namespace Chicane
                     }
                 }
 
-                FontParsed result;
-                result.name = inFamily;
+                FontFamily result;
+                result.setName(inFamily);
 
                 FT_UInt  glyphIndex;
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
@@ -165,7 +165,7 @@ namespace Chicane
                                 FT_LOAD_LINEAR_DESIGN | FT_LOAD_IGNORE_TRANSFORM
                         ) == 0)
                     {
-                        result.glyphs.emplace(code, parseGlyph(code, face->glyph));
+                        result.addGlyph(parseGlyph(code, face->glyph));
                     }
 
                     code = FT_Get_Next_Char(face, code, &glyphIndex);

@@ -25,8 +25,10 @@ namespace Chicane
                 return;
             }
 
-            m_primitive.indices  = m_glyph->indices;
-            m_primitive.vertices = m_glyph->vertices;
+            Primitive primitive;
+            primitive.reference = m_glyph->name;
+
+            setPrimitive(primitive);
         }
 
         void TextCharacter::onRefresh()

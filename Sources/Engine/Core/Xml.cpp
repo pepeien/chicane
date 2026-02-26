@@ -71,7 +71,7 @@ namespace Chicane
                 return;
             }
 
-            outNode.append_attribute(inName.toChar()).set_value(inValue);
+            outNode.append_attribute(inName.toChar()).set_value(inValue.toStandard());
         }
 
         void addText(pugi::xml_node& outNode, const String& inText)

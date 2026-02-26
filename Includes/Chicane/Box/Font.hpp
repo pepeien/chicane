@@ -3,7 +3,7 @@
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font/Raw.hpp"
-#include "Chicane/Box/Font/Parsed.hpp"
+#include "Chicane/Box/Font/Family.hpp"
 #include "Chicane/Box/Font/Vendor.hpp"
 
 namespace Chicane
@@ -33,7 +33,7 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(FontVendor inValue);
 
-            const FontParsed& getData() const;
+            const FontFamily& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const FontRaw& inValue);
 
@@ -41,11 +41,11 @@ namespace Chicane
             void fetchVendorFromXML();
             void fetchDataFromXML();
 
-            FontParsed parseData(const FontRaw& inValue) const;
+            FontFamily parseData(const FontRaw& inValue) const;
 
         private:
             FontVendor m_vendor;
-            FontParsed m_data;
+            FontFamily m_data;
         };
     }
 }

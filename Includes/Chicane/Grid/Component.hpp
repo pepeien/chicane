@@ -96,7 +96,7 @@ namespace Chicane
                 setClassName(className.trim());
             }
 
-            String getAttribute(const String& inName) const;
+            const String& getAttribute(const String& inName) const;
 
             // Style
             bool hasStyleFile() const;

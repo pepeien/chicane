@@ -106,9 +106,9 @@ namespace Chicane
                 continue;
             }
 
-            const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
-
-            if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
+            if (std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character) ==
+                    CALCULATION_OPERATORS.end() ||
+                parathesisCount > 0)
             {
                 continue;
             }

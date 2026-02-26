@@ -137,9 +137,9 @@ namespace Chicane
 
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
 
-            if (sky.model.id == Draw::UnknownId)
+            if (sky.model.id <= Draw::InvalidId)
             {
-                return Draw::UnknownId;
+                return Draw::InvalidId;
             }
 
             m_skyResource = sky;

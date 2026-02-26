@@ -18,12 +18,12 @@ namespace Chicane
             using ReferenceList = std::vector<Reference>;
 
         public:
-            static constexpr inline const Id    UnknownId        = -1;
-            static constexpr inline const char* UnknownReference = "";
+            static constexpr inline const Id    InvalidId        = -1;
+            static constexpr inline const char* InvalidReference = "";
 
         public:
-            Id        id        = UnknownId;
-            Reference reference = UnknownReference;
+            Id        id        = InvalidId;
+            Reference reference = InvalidReference;
         };
     }
 }
