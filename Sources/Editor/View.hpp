@@ -11,6 +11,9 @@ namespace Editor
         View();
 
     private:
+        Chicane::Reference onAssetImport(const Chicane::Grid::Event& inEvent);
+
+    private:
         // Status
         const Chicane::Telemetry& m_telemetry;
 

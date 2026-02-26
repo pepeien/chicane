@@ -82,6 +82,11 @@ namespace Chicane
             m_actors.push_back(new T(inParams...));
             m_actors.back()->setScene(this);
 
+            if (isLoaded())
+            {
+                m_actors.back()->onLoad();
+            }
+
             m_actorsObservable.next(m_actors);
 
             return static_cast<T*>(m_actors.back());
@@ -160,6 +165,11 @@ namespace Chicane
             m_components.push_back(new T(inParams...));
             m_components.back()->setScene(this);
 
+            if (isLoaded())
+            {
+                m_components.back()->onLoad();
+            }
+
             m_componentsObservable.next(m_components);
 
             return static_cast<T*>(m_components.back());
@@ -234,6 +244,8 @@ namespace Chicane
         }
 
     protected:
+        bool isLoaded() const;
+
         void tickActors(float inDeltaTime);
         void deleteActors();
 
@@ -241,6 +253,8 @@ namespace Chicane
         void deleteComponents();
 
     private:
+        bool                    m_bIsLoaded;
+
         std::vector<Actor*>     m_actors;
         ActorsObservable        m_actorsObservable;
 

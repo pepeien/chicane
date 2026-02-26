@@ -4,7 +4,7 @@
         <Text>{{ frameTime }} ms</Text>
     </Container>
     <Container class="menu --side">
-        <Button class="button">
+        <Button onClick="{{ onAssetImport() }}" class="button">
             <Text class="button__text">Import File</Text>
         </Button>
     </Container>
