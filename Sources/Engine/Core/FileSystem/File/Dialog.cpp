@@ -24,6 +24,7 @@ namespace Chicane
             String filepaths = "";
 
 #if IS_WINDOWS
+/*
             String command = "";
 
             if (filters.empty())
@@ -93,7 +94,7 @@ namespace Chicane
 
                 delete filepath;
             }
-
+*/
 #elif IS_LINUX
             String command = "zenity";
 
@@ -186,7 +187,7 @@ namespace Chicane
             Item::List result;
             for (const String& filepath : filepaths.split(','))
             {
-                result.push_back(Item(ItemType::File, FileSystem::Path(filepath)));
+                result.push_back(Item(ItemType::File, FileSystem::Path(filepath.toStandard())));
             }
 
             inCallback(result);

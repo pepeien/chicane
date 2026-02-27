@@ -1,0 +1,16 @@
+services:
+  compiler:
+    build:
+      context: ../../../
+      dockerfile: Scripts/Build/Windows/Dockerfile
+    image: chicane-windows
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ../../../:/src
+    working_dir: /src
+    command: >
+      bash -c "cmake --preset windows
+      -DCMAKE_EXE_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread'
+      -DCMAKE_SHARED_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread'
+      -DCMAKE_MODULE_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread'
+      && cmake --build --preset windows"

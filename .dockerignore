@@ -1,0 +1,10 @@
+# Ignore local build artifacts — prevents stale CMakeCache.txt conflicts
+build/
+Bin/
+
+# Common local clutter
+.git/
+.cache/
+*.user
+.vscode/
+.idea/

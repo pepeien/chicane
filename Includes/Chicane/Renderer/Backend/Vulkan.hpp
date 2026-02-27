@@ -104,19 +104,19 @@ namespace Chicane
 
         private:
             // Frame
-            std::uint32_t                     m_currentFrameIndex;
+            std::uint32_t              m_currentFrameIndex;
 
             // Instance
-            vk::detail::DispatchLoaderDynamic m_dispatcher;
+            vk::DispatchLoaderDynamic  m_dispatcher;
 
             // Debug
-            vk::DebugUtilsMessengerEXT        m_debugMessenger;
+            vk::DebugUtilsMessengerEXT m_debugMessenger;
 
             // Queues
-            vk::Queue                         m_presentQueue;
+            vk::Queue                  m_presentQueue;
 
             // Command
-            vk::CommandPool                   m_mainCommandPool;
+            vk::CommandPool            m_mainCommandPool;
         };
     }
 }

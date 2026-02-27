@@ -1,0 +1,12 @@
+services:
+  compiler:
+    build:
+      context: ../../../
+      dockerfile: Scripts/Build/Linux/Dockerfile
+    image: chicane-linux
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ../../../:/src
+    working_dir: /src
+    command: >
+      bash -c "cmake --preset linux && cmake --build --preset linux"

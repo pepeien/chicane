@@ -4,7 +4,7 @@
 
 # Build results
 [Bb]in/*
-[Bb]uild/*
+[Bb]uild*/*
 __pycache__/*
 
 # Microsoft Fakes

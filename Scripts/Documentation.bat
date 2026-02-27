@@ -4,7 +4,7 @@ set SCRIPT_DIR=%~dp0
 cd /d "%SCRIPT_DIR%\.."
 
 doxygen -q Doxyfile
-python Scripts/Documentation.py ^
+python Scripts/Documentation/Helper.py ^
 -i .docs/xml ^
 -o .docs/references ^
 -d Includes/Chicane/ ^

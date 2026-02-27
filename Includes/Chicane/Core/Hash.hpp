@@ -11,6 +11,6 @@ namespace Chicane
     {
         typedef typename std::uint64_t Value;
 
-        Value generate(const Subject& inData, const Subject& inSeed);
+        CHICANE_CORE Value generate(const Subject& inData, const Subject& inSeed);
     }
 }
