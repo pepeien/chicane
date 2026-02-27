@@ -3,6 +3,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem/Dialog.hpp"
 #include "Chicane/Core/FileSystem/File/Filter.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {

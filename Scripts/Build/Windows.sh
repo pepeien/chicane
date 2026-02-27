@@ -1,3 +1,5 @@
 #!/bin/bash
 
-cd ./Windows && sudo docker compose --verbose up --build
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+cd $SCRIPT_DIR/Windows && docker compose --verbose up --build

@@ -24,7 +24,6 @@ namespace Chicane
             String filepaths = "";
 
 #if IS_WINDOWS
-/*
             String command = "";
 
             if (filters.empty())
@@ -46,7 +45,10 @@ namespace Chicane
                 }
                 extensions.popBack();
 
-                command = "All Files (" + extensions + ")\0" + extensions + "\0";
+                command = "All Files (" + extensions + ")";
+                command.append('\0');
+                command.append(extensions);
+                command.append('\0');
             }
 
             std::uint32_t filterCount = 0U;
@@ -61,13 +63,16 @@ namespace Chicane
                     filter.title.isEmpty() ? String("File filter " + std::to_string(filterCount)) : filter.title;
                 String extensions = getExtensionsFilter(filter, ";");
 
-                command.append(title.trim() + " (" + extensions + ")\0" + extensions + "\0");
+                command.append(title.trim() + " (" + extensions + ")");
+                command.append('\0');
+                command.append(extensions);
+                command.append('\0');
 
                 filterCount++;
             }
             command.append('\0');
 
-            OPENFILENAME ofn;
+            OPENFILENAMEW ofn;
             ZeroMemory(&ofn, sizeof(ofn));
 
             ofn.lStructSize = sizeof(ofn);
@@ -80,21 +85,20 @@ namespace Chicane
             ofn.nMaxFile  = MAX_PATH;
             ofn.Flags     = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
 
-            std::wstring sFileFilter = std::wstring(filters.begin(), filters.end());
+            std::wstring sFileFilter = std::wstring(command.begin(), command.end());
             ofn.lpstrFilter          = sFileFilter.c_str();
 
-            std::wstring sInTitle = std::wstring(ititle.begin(), title.end());
+            std::wstring sInTitle = std::wstring(title.begin(), title.end());
             ofn.lpstrTitle        = sInTitle.c_str();
 
-            if (GetOpenFileName(&ofn))
+            if (GetOpenFileNameW(&ofn))
             {
                 std::wstring filePathWString(ofn.lpstrFile);
 
                 filepaths = String(filePathWString.begin(), filePathWString.end());
-
-                delete filepath;
             }
-*/
+
+            delete filepath;
 #elif IS_LINUX
             String command = "zenity";
 
