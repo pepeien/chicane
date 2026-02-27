@@ -1,3 +1,8 @@
+##################### Values #######################
+
+# Dirs
+set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
+
 ##################### Files #######################
 file(
     GLOB_RECURSE
@@ -27,11 +32,15 @@ else()
 endif()
 
 if (CHICANE_OPENGL)
+    add_subdirectory(${VENDORS_DIR}/GLEW/build/cmake GLEW)
+    set_target_properties(glew_s PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
     find_package(OpenGL REQUIRED)
-    find_package(GLEW REQUIRED)
 
     list(APPEND GRAPHICS_LIBS OpenGL::GL)
-    list(APPEND GRAPHICS_LIBS GLEW)
+    list(APPEND GRAPHICS_LIBS glew_s)
+
+    list(APPEND GRAPHICS_HEADERS ${VENDORS_DIR}/GLEW/include)
 else()
     list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/OpenGL")
@@ -71,6 +80,8 @@ target_include_directories(
         # Alias
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+
+        ${GRAPHICS_HEADERS}
 )
 
 target_link_libraries(
