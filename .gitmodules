@@ -29,3 +29,6 @@
 [submodule "Sources/Engine/Screech/Vendor/miniaudio"]
 	path = Sources/Engine/Screech/Vendor/miniaudio
 	url = https://github.com/pepeien/miniaudio.git
+[submodule "Sources/Engine/Renderer/Vendor/GLEW"]
+	path = Sources/Engine/Renderer/Vendor/GLEW
+	url = https://github.com/pepeien/glew.git
