@@ -72,18 +72,13 @@ namespace Chicane
             }
             command.append('\0');
 
-            OPENFILENAMEW ofn;
-            ZeroMemory(&ofn, sizeof(ofn));
+            std::vector<wchar_t> filepath(MAX_PATH, L'\0');
 
+            OPENFILENAMEW ofn{};
             ofn.lStructSize = sizeof(ofn);
-            ofn.hwndOwner   = NULL;
-
-            wchar_t* filepath = new wchar_t();
-            ZeroMemory(filepath, sizeof(filepath));
-
-            ofn.lpstrFile = filepath;
-            ofn.nMaxFile  = MAX_PATH;
-            ofn.Flags     = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+            ofn.lpstrFile   = filepath.data();
+            ofn.nMaxFile    = static_cast<DWORD>(filepath.size());
+            ofn.Flags       = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
             std::wstring sFileFilter = std::wstring(command.begin(), command.end());
             ofn.lpstrFilter          = sFileFilter.c_str();
@@ -93,12 +88,11 @@ namespace Chicane
 
             if (GetOpenFileNameW(&ofn))
             {
-                std::wstring filePathWString(ofn.lpstrFile);
+                std::wstring filePathWString(filepath.data());
 
                 filepaths = String(filePathWString.begin(), filePathWString.end());
             }
 
-            delete filepath;
 #elif IS_LINUX
             String command = "zenity";
 
@@ -220,6 +214,15 @@ namespace Chicane
             result.popBack();
 
             return result.trim();
+        }
+
+        void FileDialog::addFilter(const String& inTitle, const FileFilter::Extensions& inExtensions)
+        {
+            FileFilter filter;
+            filter.title      = inTitle;
+            filter.extensions = inExtensions;
+
+            filters.push_back(filter);
         }
     }
 }

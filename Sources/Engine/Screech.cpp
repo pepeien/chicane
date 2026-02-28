@@ -9,16 +9,36 @@ namespace Chicane
 {
     namespace Screech
     {
-        static const std::unique_ptr<Manager> g_manager = std::make_unique<Manager>();
-        static Device                         g_device  = {};
+        static bool g_bWasInitialized = false;
+
+        static std::unique_ptr<Manager> g_manager;
+        static Device                   g_device;
+
+        void init()
+        {
+            g_manager = std::make_unique<Manager>();
+            g_device  = {};
+
+            g_bWasInitialized = true;
+        }
 
         void* getContext()
         {
+            if (!g_bWasInitialized)
+            {
+                return nullptr;
+            }
+
             return g_manager->getContext();
         }
 
         void* getEngine()
         {
+            if (!g_bWasInitialized)
+            {
+                return nullptr;
+            }
+
             return g_manager->getEngine();
         }
     }

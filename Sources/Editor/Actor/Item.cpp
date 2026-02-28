@@ -13,8 +13,8 @@ namespace Editor
     void Item::onLoad()
     {
         m_asset = getScene()->createComponent<Chicane::CMesh>();
-        m_asset->attachTo(this);
         m_asset->setMesh(m_mesh);
+        m_asset->attachTo(this);
         m_asset->activate();
     }
 }

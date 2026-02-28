@@ -15,7 +15,7 @@ namespace Chicane
     namespace Input
     {
         template <typename B>
-        struct CHICANE_CORE PressableEvents : private Timer
+        struct PressableEvents : private Timer
         {
         public:
             using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;

@@ -10,7 +10,7 @@
 namespace Chicane
 {
     template <typename T = void*>
-    class CHICANE_CORE EventObservable
+    class EventObservable
     {
     public:
         using EmptyCallback    = std::function<void()>;

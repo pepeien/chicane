@@ -13,14 +13,24 @@
 Program::Program()
     : Chicane::Program("Box Utils")
 {
-    addOption({.bIsRequired = true, .name = ID_OPTION_NAME, .description = ID_OPTION_DESCRIPTION});
-    addOption(
-        {.bIsRequired = true,
-         .name        = TYPE_OPTION_NAME,
-         .description = TYPE_OPTION_DESCRIPTION,
-         .validValues = Chicane::Box::AssetHeader::getTypeTags()}
-    );
-    addOption({.bIsRequired = false, .name = OUTPUT_OPTION_NAME, .description = OUTPUT_OPTION_DESCRIPTION});
+    Chicane::ProgramOptionSetting idOption;
+    idOption.bIsRequired = true;
+    idOption.name        = ID_OPTION_NAME;
+    idOption.description = ID_OPTION_DESCRIPTION;
+    addOption(idOption);
+
+    Chicane::ProgramOptionSetting typeOption;
+    typeOption.bIsRequired = true;
+    typeOption.name        = TYPE_OPTION_NAME;
+    typeOption.description = TYPE_OPTION_DESCRIPTION;
+    typeOption.validValues = Chicane::Box::AssetHeader::getTypeTags();
+    addOption(typeOption);
+
+    Chicane::ProgramOptionSetting outputOption;
+    outputOption.bIsRequired = false;
+    outputOption.name        = OUTPUT_OPTION_NAME;
+    outputOption.description = OUTPUT_OPTION_DESCRIPTION;
+    addOption(outputOption);
 }
 
 void Program::onExec(const Chicane::ProgramParam& inParam)

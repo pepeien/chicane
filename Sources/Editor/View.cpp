@@ -26,14 +26,13 @@ namespace Editor
         dialog.bCanSelectMany = false;
         dialog.location       = "/";
         dialog.title          = "Select asset source";
-        dialog.filters        = {
-            {.title = "Fonts",    .extensions = {".bfon"}},
-            {.title = "Meshes",   .extensions = {".bmsh"}},
-            {.title = "Models",   .extensions = {".bmdl"}},
-            {.title = "Textures", .extensions = {".btex"}},
-            {.title = "Skies",    .extensions = {".bsky"}},
-            {.title = "Sounds",   .extensions = {".bsnd"}},
-        };
+        dialog.addFilter("Fonts", {".bfon"});
+        dialog.addFilter("Meshes", {".bmsh"});
+        dialog.addFilter("Models", {".bmdl"});
+        dialog.addFilter("Textures", {".btex"});
+        dialog.addFilter("Skies", {".bsky"});
+        dialog.addFilter("Sounds", {".bsnd"});
+
         dialog.open(
             [](const Chicane::FileSystem::Item::List& inFiles)
             {

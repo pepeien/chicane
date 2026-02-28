@@ -17,6 +17,9 @@ namespace Chicane
         public:
             void open(const Callback& inCallback) const override;
 
+        public:
+            void addFilter(const String& inTitle, const FileFilter::Extensions& inExtensions);
+
         private:
             String getExtensionsFilter(const FileFilter& inFilter, const String& inSeparator) const;
 

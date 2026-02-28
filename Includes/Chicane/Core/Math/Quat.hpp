@@ -8,7 +8,7 @@
 namespace Chicane
 {
     template <typename T, glm::qualifier Q = glm::packed_highp>
-    struct CHICANE_CORE Quat : glm::qua<T, Q>
+    struct Quat : glm::qua<T, Q>
     {
     public:
         template <typename... A>

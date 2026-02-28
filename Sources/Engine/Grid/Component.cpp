@@ -582,7 +582,7 @@ namespace Chicane
 
         void Component::addSize(const Vec2& inValue)
         {
-            addSize(inValue);
+            addSize(inValue.x, inValue.y);
         }
 
         void Component::addSize(float inWidth, float inHeight)

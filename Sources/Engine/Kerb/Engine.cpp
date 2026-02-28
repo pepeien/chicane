@@ -217,10 +217,11 @@ namespace Chicane
                     {
                         result.first.push_back(offset + j);
 
-                        result.second.push_back({
-                            .position = {vertices[i * 3 + j].x, vertices[i * 3 + j].y, vertices[i * 3 + j].z},
-                            .color    = Vec4(255.0f)
-                        });
+                        Vertex vertex;
+                        vertex.position = {vertices[i * 3 + j].x, vertices[i * 3 + j].y, vertices[i * 3 + j].z};
+                        vertex.color    = Vec4(255.0f);
+
+                        result.second.push_back(vertex);
                     }
                 }
             }

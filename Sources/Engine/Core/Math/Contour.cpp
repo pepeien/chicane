@@ -1,5 +1,8 @@
 #include "Chicane/Core/Math/Contour.hpp"
 
+#include <array>
+#include <vector>
+
 #include <tesselator.h>
 
 namespace Chicane

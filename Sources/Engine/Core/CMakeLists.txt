@@ -44,10 +44,15 @@ set_target_properties(
             "${NAME}Core"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
-        DEFINE_SYMBOL
-            "BUILD_EXPORT"
         POSITION_INDEPENDENT_CODE
             TRUE
+)
+
+target_compile_definitions(
+    ${CORE_TARGET_NAME}
+
+    PRIVATE
+        BUILD_EXPORT
 )
 
 target_include_directories(

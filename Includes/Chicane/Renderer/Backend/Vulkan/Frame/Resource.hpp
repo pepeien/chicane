@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 #include <vulkan/vulkan.hpp>
 
 #include "Chicane/Renderer.hpp"
@@ -11,7 +13,7 @@ namespace Chicane
     namespace Renderer
     {
         template <typename T>
-        struct CHICANE_RENDERER VulkanFrameResource
+        struct VulkanFrameResource
         {
         public:
             void setup(const VulkanBufferCreateInfo& inCreateInfo)

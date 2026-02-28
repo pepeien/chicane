@@ -27,7 +27,7 @@ namespace Chicane
 
         void Backend::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -40,7 +40,7 @@ namespace Chicane
 
         void Backend::onLoad(const DrawTextureResource& inResources)
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -53,7 +53,7 @@ namespace Chicane
 
         void Backend::onLoad(const DrawSky& inResource)
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -107,7 +107,7 @@ namespace Chicane
         {
             std::vector<Layer*> result;
 
-            for (const std::unique_ptr<Layer>& layer : m_layers)
+            for (const std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!inPredicate(layer.get()))
                 {
@@ -185,7 +185,7 @@ namespace Chicane
 
         void Backend::renderLayers(const Frame& inFrame, void* inData)
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -204,7 +204,7 @@ namespace Chicane
 
         void Backend::shutdownLayers()
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -217,7 +217,7 @@ namespace Chicane
 
         void Backend::rebuildLayers()
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {
@@ -230,7 +230,7 @@ namespace Chicane
 
         void Backend::destroyLayers()
         {
-            for (std::unique_ptr<Layer>& layer : m_layers)
+            for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
                 {

@@ -13,7 +13,7 @@ namespace Chicane
     namespace Renderer
     {
         template <typename Data, typename Seed>
-        struct CHICANE_RENDERER DrawResource
+        struct DrawResource
         {
         public:
             using HashTable = std::unordered_map<Hash::Value, Draw::Id>;

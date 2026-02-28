@@ -13,11 +13,14 @@ namespace Chicane
         struct CHICANE_CORE FileFilter
         {
         public:
+            using Extensions = std::vector<FileSystem::Path>;
+
+        public:
             using List = std::vector<FileFilter>;
 
         public:
-            String                        title      = "";
-            std::vector<FileSystem::Path> extensions = {};
+            String     title      = "";
+            Extensions extensions = {};
         };
     }
 }

@@ -145,11 +145,10 @@ namespace Chicane
         // Window
         void initWindow(const WindowSettings& inSettings);
 
-        // Box
+        // Systems
         void initBox();
-
-        // Kerb
         void initKerb();
+        void initScreech();
 
         // Lifecycle
         void render();
@@ -180,16 +179,16 @@ namespace Chicane
         std::shared_ptr<Scene>                   m_scene;
         std::thread                              m_sceneThread;
         std::vector<Renderer::DrawPoly3DCommand> m_sceneCommandBuffers;
-        std::atomic<uint32_t>                    m_sceneWriteIndex;
-        std::atomic<uint32_t>                    m_sceneReadIndex;
+        std::atomic<std::size_t>                 m_sceneWriteIndex;
+        std::atomic<std::size_t>                 m_sceneReadIndex;
         SceneObservable                          m_sceneObservable;
 
         // Grid
         std::shared_ptr<Grid::View>              m_view;
         std::thread                              m_viewThread;
         std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
-        std::atomic<uint32_t>                    m_viewWriteIndex;
-        std::atomic<uint32_t>                    m_viewReadIndex;
+        std::atomic<std::size_t>                 m_viewWriteIndex;
+        std::atomic<std::size_t>                 m_viewReadIndex;
         ViewObservable                           m_viewObservable;
 
         // Window

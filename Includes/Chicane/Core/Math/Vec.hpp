@@ -8,7 +8,7 @@
 namespace Chicane
 {
     template <std::uint32_t O, typename T, glm::qualifier Q = glm::packed_highp>
-    struct CHICANE_CORE Vec : glm::vec<O, T, Q>
+    struct Vec : glm::vec<O, T, Q>
     {
     public:
         template <typename... A>
@@ -20,8 +20,6 @@ namespace Chicane
         inline Vec<O, T, Q> normalize() const { return glm::normalize<O, T, Q>(*this); }
 
         inline T dot(const Vec<O, T, Q>& inValue) const { return glm::dot<O, T, Q>(*this, inValue); }
-
-        inline Vec<O, T, Q> cross(const Vec<O, T, Q>& inValue) const { return glm::cross<T, Q>(*this, inValue); }
 
         inline Vec<O, T, Q> abs() const { return glm::abs<O, T, Q>(*this); }
 

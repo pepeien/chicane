@@ -100,7 +100,7 @@ namespace Chicane
 
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;
-            std::vector<std::unique_ptr<VulkanTexture>> textures;
+            std::vector<std::shared_ptr<VulkanTexture>> textures;
 
         private:
             // Frame

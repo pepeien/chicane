@@ -11,7 +11,7 @@ namespace Chicane
     namespace Grid
     {
         template <typename T>
-        struct CHICANE_GRID StyleProperty
+        struct StyleProperty
         {
         public:
             using Parser = std::function<T(const String&)>;

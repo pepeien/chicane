@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Curve.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"

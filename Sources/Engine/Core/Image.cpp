@@ -1,5 +1,7 @@
 #include "Chicane/Core/Image.hpp"
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <unordered_map>
 
 #define STB_IMAGE_STATIC

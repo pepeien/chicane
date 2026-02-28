@@ -8,6 +8,8 @@
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Engine.hpp"
 
+#include "Chicane/Screech.hpp"
+
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
@@ -25,11 +27,13 @@ namespace Chicane
           m_sceneCommandBuffers({}),
           m_sceneWriteIndex(0),
           m_sceneReadIndex(1),
+          m_sceneObservable({}),
           m_view(nullptr),
           m_viewThread({}),
           m_viewCommandBuffers({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
+          m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
     {
@@ -43,13 +47,14 @@ namespace Chicane
         initRenderer(inCreateInfo.renderer);
         initBox();
         initKerb();
+        initScreech();
 
         if (inCreateInfo.onSetup)
         {
             inCreateInfo.onSetup();
         }
 
-        m_bIsRunning = true;
+        m_bIsRunning.store(true, std::memory_order_seq_cst);
         initScene();
         initView();
 
@@ -62,7 +67,7 @@ namespace Chicane
             m_telemetry.end();
         }
 
-        m_bIsRunning = false;
+        m_bIsRunning.store(false, std::memory_order_seq_cst);
         shutdownScene();
         shutdownView();
 
@@ -282,6 +287,11 @@ namespace Chicane
     void Application::initKerb()
     {
         Kerb::init();
+    }
+
+    void Application::initScreech()
+    {
+        Screech::init();
     }
 
     void Application::initScene()
