@@ -85,31 +85,31 @@ namespace Chicane
                 switch (inSettings.strategy)
                 {
                 case ListPushStrategy::Back:
-                    location = m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::Front:
-                    location = m_layers.insert(m_layers.begin(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.begin(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::After:
                     location = location != m_layers.end()
-                                   ? m_layers.insert(location + 1, std::make_unique<Target>(inParams...))
-                                   : m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                                   ? m_layers.insert(location + 1, std::make_shared<Target>(inParams...))
+                                   : m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::Before:
                     location = location != m_layers.end()
-                                   ? m_layers.insert(location, std::make_unique<Target>(inParams...))
-                                   : m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                                   ? m_layers.insert(location, std::make_shared<Target>(inParams...))
+                                   : m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 default:
-                    location = m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
                 }

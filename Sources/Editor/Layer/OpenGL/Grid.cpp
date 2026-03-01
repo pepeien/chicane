@@ -1,9 +1,5 @@
 #include "Layer/OpenGL/Grid.hpp"
 
-#include <GL/glew.h>
-
-#include <Chicane/Core/FileSystem.hpp>
-
 #include <Chicane/Renderer/Backend/OpenGL.hpp>
 
 namespace Editor
@@ -27,109 +23,72 @@ namespace Editor
 
     void OpenGLLUI::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        Chicane::Renderer::Viewport viewport = getBackend<Chicane::Renderer::OpenGLBackend>()->getGLViewport(this);
-        glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
+        Chicane::Renderer::OpenGLBackend* backend = getBackend<Chicane::Renderer::OpenGLBackend>();
 
-        glUseProgram(m_shaderProgram);
+        backend->useViewport(this);
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(GL_TRUE);
-        glDepthFunc(GL_LEQUAL);
+        backend->useProgram(m_shaderProgram);
 
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CCW);
-        glCullFace(GL_BACK);
+        Chicane::Renderer::Depth depth;
+        depth.bCanWrite = true;
+        depth.compare   = Chicane::Renderer::DepthCompare::LessOrEqual;
+        backend->enableDepth(depth);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        Chicane::Renderer::Culling culling;
+        culling.frontFace = Chicane::Renderer::CullingFrontFace::CounterClockwise;
+        culling.mode      = Chicane::Renderer::CullingMode::Back;
+        backend->enableCulling(culling);
 
-        glBindVertexArray(m_vertexArray);
+        Chicane::Renderer::Blending blending;
+        blending.source      = Chicane::Renderer::BlendingFactor::SrcAlpha;
+        blending.destination = Chicane::Renderer::BlendingFactor::OneMinusSrcAlpha;
+        backend->enableBlending(blending);
 
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        Chicane::Renderer::DrawPoly draw;
+        draw.topology   = Chicane::Renderer::DrawPolyTopology::TriangleList;
+        draw.indexCount = 6U;
+        draw.indexStart = 0U;
+        backend->drawPolyArrays(draw, m_vertexArray);
     }
 
     void OpenGLLUI::onEndRender()
     {
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_BLEND);
+        Chicane::Renderer::OpenGLBackend* backend = getBackend<Chicane::Renderer::OpenGLBackend>();
+        backend->disableDepth();
+        backend->disableCulling();
+        backend->disableBlending();
     }
 
     void OpenGLLUI::buildShader()
     {
-        GLint result = GL_FALSE;
+        Chicane::Renderer::Shader::List shaders;
 
-        // Vertex
-        const std::vector<char> vertexShaderCode =
-            Chicane::FileSystem::read("Contents/Editor/Shaders/OpenGL/Grid.overt");
+        Chicane::Renderer::Shader vertex;
+        vertex.type   = Chicane::Renderer::ShaderType::Vertex;
+        vertex.source = "Contents/Editor/Shaders/OpenGL/Grid.overt";
+        shaders.push_back(vertex);
 
-        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderBinary(
-            1,
-            &vertexShader,
-            GL_SHADER_BINARY_FORMAT_SPIR_V,
-            vertexShaderCode.data(),
-            vertexShaderCode.size()
-        );
-        glSpecializeShader(vertexShader, "main", 0, nullptr, nullptr);
-        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &result);
-        if (!result)
-        {
-            throw std::runtime_error("Failed to load vertex shader");
-        }
+        Chicane::Renderer::Shader fragment;
+        fragment.type   = Chicane::Renderer::ShaderType::Fragment;
+        fragment.source = "Contents/Editor/Shaders/OpenGL/Grid.ofrag";
+        shaders.push_back(fragment);
 
-        result = GL_FALSE;
-
-        // Fragment
-        const std::vector<char> fragmentShaderCode =
-            Chicane::FileSystem::read("Contents/Editor/Shaders/OpenGL/Grid.ofrag");
-
-        GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderBinary(
-            1,
-            &fragmentShader,
-            GL_SHADER_BINARY_FORMAT_SPIR_V,
-            fragmentShaderCode.data(),
-            fragmentShaderCode.size()
-        );
-        glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
-        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
-        if (!result)
-        {
-            throw std::runtime_error("Failed to load fragment shader");
-        }
-
-        result = GL_FALSE;
-
-        // Shader Program
-        m_shaderProgram = glCreateProgram();
-        glAttachShader(m_shaderProgram, vertexShader);
-        glAttachShader(m_shaderProgram, fragmentShader);
-        glLinkProgram(m_shaderProgram);
-
-        glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
-        if (!result)
-        {
-            throw std::runtime_error("Failed link shader program");
-        }
-
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
+        m_shaderProgram = getBackend<Chicane::Renderer::OpenGLBackend>()->initShader(shaders);
     }
 
     void OpenGLLUI::destroyShader()
     {
-        glDeleteProgram(m_shaderProgram);
+        getBackend<Chicane::Renderer::OpenGLBackend>()->destroyProgram(m_shaderProgram);
     }
 
     void OpenGLLUI::buildVertexArray()
     {
-        glCreateVertexArrays(1, &m_vertexArray);
+        m_vertexArray = getBackend<Chicane::Renderer::OpenGLBackend>()->initVertexArray(1);
     }
 
     void OpenGLLUI::destroyVertexArray()
     {
-        glDeleteVertexArrays(1, &m_vertexArray);
+        getBackend<Chicane::Renderer::OpenGLBackend>()->destroyVertexArray(m_vertexArray);
     }
 
     void OpenGLLUI::buildViewport()

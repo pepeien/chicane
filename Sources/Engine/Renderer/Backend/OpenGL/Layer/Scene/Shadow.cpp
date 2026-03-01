@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 #include "Chicane/Core/FileSystem.hpp"
 

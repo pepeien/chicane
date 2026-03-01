@@ -7,6 +7,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 
 namespace Chicane
@@ -28,14 +29,15 @@ namespace Chicane
             using Map  = std::map<DrawPolyType, List>;
 
         public:
-            DrawPolyMode  mode = DrawPolyMode::Fill;
+            DrawPolyMode     mode     = DrawPolyMode::Fill;
+            DrawPolyTopology topology = DrawPolyTopology::TriangleList;
 
-            std::uint32_t vertexStart   = 0U;
-            std::uint32_t vertexCount   = 0U;
-            std::uint32_t indexStart    = 0U;
-            std::uint32_t indexCount    = 0U;
-            std::uint32_t instanceStart = 0U;
-            std::uint32_t instanceCount = 0U;
+            std::uint32_t    vertexStart   = 0U;
+            std::uint32_t    vertexCount   = 0U;
+            std::uint32_t    indexStart    = 0U;
+            std::uint32_t    indexCount    = 0U;
+            std::uint32_t    instanceStart = 0U;
+            std::uint32_t    instanceCount = 0U;
         };
     }
 }

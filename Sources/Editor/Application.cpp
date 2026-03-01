@@ -76,7 +76,6 @@ namespace Editor
                 {
 #if CHICANE_OPENGL
                 case Chicane::WindowBackend::OpenGL:
-
                     Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLUI>(settings);
 
                     break;

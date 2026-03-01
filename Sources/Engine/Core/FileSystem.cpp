@@ -89,11 +89,13 @@ namespace Chicane
 
         std::vector<char> read(const Path& inFilepath)
         {
-            std::basic_ifstream<char> file(inFilepath.string(), std::ios::ate | std::ios::binary);
+            const Path path = std::filesystem::absolute(inFilepath);
+
+            std::basic_ifstream<char> file(path.string(), std::ios::ate | std::ios::binary);
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(String::sprint("Failed to open the file [%s]", path.c_str()).toChar());
             }
 
             size_t            fileSize = (size_t)file.tellg();

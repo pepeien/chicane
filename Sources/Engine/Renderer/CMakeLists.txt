@@ -35,8 +35,8 @@ if (CHICANE_OPENGL)
     find_package(OpenGL REQUIRED)
     list(APPEND GRAPHICS_LIBS OpenGL::GL)
 
-    add_subdirectory(${VENDORS_DIR}/GLEW)
-    list(APPEND GRAPHICS_LIBS GLEW::GLEW)
+    add_subdirectory(${VENDORS_DIR}/Glad)
+    list(APPEND PRIVATE_LIBS Glad::Glad)
 else()
     list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/OpenGL")
@@ -88,8 +88,9 @@ target_link_libraries(
 
     PUBLIC
         Chicane::Core
-
         ${GRAPHICS_LIBS}
+    PRIVATE
+        ${PRIVATE_LIBS}
 )
 
 CH_ADD_COMPILER(${RENDERER_TARGET_NAME})
