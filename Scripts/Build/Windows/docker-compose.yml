@@ -24,7 +24,7 @@ services:
       -DCMAKE_EXE_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread' \
       -DCMAKE_SHARED_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread' \
       -DCMAKE_MODULE_LINKER_FLAGS='-static-libgcc -static-libstdc++ -static -lpthread' \
-      -DBUILD_DIR='Bin/Docker-Windows' \
+      -DCHICANE_BUILD_DIR='Bin/Docker-Windows' \
       -DCHICANE_SHARED=ON \
       -DCHICANE_OPENGL=ON \
       -DCHICANE_OPENGL_MAJOR_VERSION=$$OPENGL_MAJOR_VERSION \
@@ -32,4 +32,5 @@ services:
       -DCHICANE_VULKAN=ON \
       -DCHICANE_VULKAN_MAJOR_VERSION=$$VULKAN_MAJOR_VERSION \
       -DCHICANE_VULKAN_MINOR_VERSION=$$VULKAN_MINOR_VERSION \
-      -DCHICANE_VULKAN_PATCH_VERSION=$$VULKAN_PATCH_VERSION  && cmake --build build-windows"
+      -DCHICANE_VULKAN_PATCH_VERSION=$$VULKAN_PATCH_VERSION \
+      && cmake --build build-windows"

@@ -40,7 +40,7 @@ set_target_properties(
         OUTPUT_NAME
             "${NAME}Box"
         VS_DEBUGGER_WORKING_DIRECTORY
-            "${BUILD_DIR}"
+            "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
 )

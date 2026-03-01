@@ -33,7 +33,7 @@ set_target_properties(
         OUTPUT_NAME
             "ChicaneEditor"
         VS_DEBUGGER_WORKING_DIRECTORY
-            "${BUILD_DIR}"
+            "${CHICANE_BUILD_DIR}"
 )
 
 target_include_directories(
