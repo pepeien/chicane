@@ -426,8 +426,8 @@ namespace Chicane
         case WindowBackend::OpenGL:
             flag = SDL_WINDOW_OPENGL;
 
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, (int)OPENGL_MAJOR_VERSION);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, (int)OPENGL_MINOR_VERSION);
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
             SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 

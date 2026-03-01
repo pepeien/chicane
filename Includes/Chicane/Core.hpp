@@ -37,12 +37,32 @@
 
 #if defined(BUILD_OPENGL)
     #define CHICANE_OPENGL true
+
+    #ifndef OPENGL_MAJOR_VERSION
+        #define OPENGL_MAJOR_VERSION 4
+    #endif
+
+    #ifndef OPENGL_MINOR_VERSION
+        #define OPENGL_MINOR_VERSION 6
+    #endif
 #else
     #define CHICANE_OPENGL false
 #endif
 
 #if defined(BUILD_VULKAN)
     #define CHICANE_VULKAN true
+
+    #ifndef VULKAN_MAJOR_VERSION
+        #define VULKAN_MAJOR_VERSION 1
+    #endif
+
+    #ifndef VULKAN_MINOR_VERSION
+        #define VULKAN_MINOR_VERSION 3
+    #endif
+
+    #ifndef VULKAN_PATCH_VERSION
+        #define VULKAN_PATCH_VERSION 296
+    #endif
 #else
     #define CHICANE_VULKAN false
 #endif

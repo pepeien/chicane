@@ -22,18 +22,9 @@ file(
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
-if (CHICANE_VULKAN)
-    find_package(Vulkan REQUIRED)
-
-    list(APPEND GRAPHICS_LIBS Vulkan::Vulkan)
-else()
-    list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/Vulkan")
-    list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/Vulkan")
-endif()
-
 if (CHICANE_OPENGL)
     find_package(OpenGL REQUIRED)
-    list(APPEND GRAPHICS_LIBS OpenGL::GL)
+    list(APPEND PRIVATE_LIBS OpenGL::GL)
 
     add_subdirectory(${VENDORS_DIR}/Glad)
     list(APPEND PRIVATE_LIBS Glad::Glad)
@@ -41,6 +32,15 @@ else()
     list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/OpenGL")
 endif()
+
+if (CHICANE_VULKAN)
+    find_package(Vulkan REQUIRED)
+    list(APPEND PUBLIC_LIBS Vulkan::Vulkan)
+else()
+    list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/Vulkan")
+    list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/Vulkan")
+endif()
+
 
 if (CHICANE_SHARED)
     add_library(${RENDERER_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
@@ -88,7 +88,8 @@ target_link_libraries(
 
     PUBLIC
         Chicane::Core
-        ${GRAPHICS_LIBS}
+
+        ${PUBLIC_LIBS}
     PRIVATE
         ${PRIVATE_LIBS}
 )

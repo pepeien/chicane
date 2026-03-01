@@ -28,24 +28,55 @@ option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
 option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 
 ##################### Values #######################
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
+
+if (NOT BUILD_DIR)
+    set(BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}" CACHE STRING "Build directory" FORCE)
+endif()
+
 if (CHICANE_SHARED)
     add_definitions(-DBUILD_SHARED)
 endif()
 
 if (CHICANE_OPENGL)
-    add_definitions(-DBUILD_OPENGL)
+    if (NOT CHICANE_OPENGL_MAJOR_VERSION)
+        set(CHICANE_OPENGL_MAJOR_VERSION 4 CACHE STRING "OpenGL major version" FORCE)
+    endif()
+
+    if (NOT CHICANE_OPENGL_MINOR_VERSION)
+        set(CHICANE_OPENGL_MINOR_VERSION 6 CACHE STRING "OpenGL minor version" FORCE)
+    endif()
+
+    add_definitions(
+        -DBUILD_OPENGL
+
+        -DOPENGL_MAJOR_VERSION=${CHICANE_OPENGL_MAJOR_VERSION}
+        -DOPENGL_MINOR_VERSION=${CHICANE_OPENGL_MINOR_VERSION}
+    )
 endif()
 
 if (CHICANE_VULKAN)
-    add_definitions(-DBUILD_VULKAN)
-endif()
-
-if (NOT DEFINED BUILD_DIR)
-    if (NOT CMAKE_BUILD_TYPE)
-        set(CMAKE_BUILD_TYPE Debug)
+    if (NOT CHICANE_VULKAN_MAJOR_VERSION)
+        set(CHICANE_VULKAN_MAJOR_VERSION 1 CACHE STRING "Vulkan major version" FORCE)
     endif()
 
-    set(BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}")
+    if (NOT CHICANE_VULKAN_MINOR_VERSION)
+        set(CHICANE_VULKAN_MINOR_VERSION 3 CACHE STRING "Vulkan minor version" FORCE)
+    endif()
+
+    if (NOT CHICANE_VULKAN_PATCH_VERSION)
+        set(CHICANE_VULKAN_PATCH_VERSION 296 CACHE STRING "Vulkan patch version" FORCE)
+    endif()
+
+    add_definitions(
+        -DBUILD_VULKAN
+
+        -DVULKAN_MAJOR_VERSION=${CHICANE_VULKAN_MAJOR_VERSION}
+        -DVULKAN_MINOR_VERSION=${CHICANE_VULKAN_MINOR_VERSION}
+        -DVULKAN_PATCH_VERSION=${CHICANE_VULKAN_PATCH_VERSION}
+    )
 endif()
 
 ## System
