@@ -5,7 +5,7 @@
     </Container>
     <Container class="menu --side">
         <Button onClick="{{ onAssetImport() }}" class="button">
-            <Text class="button__text">Import File</Text>
+            <Text>Import File</Text>
         </Button>
     </Container>
     <Container class="menu --bottom"></Container>

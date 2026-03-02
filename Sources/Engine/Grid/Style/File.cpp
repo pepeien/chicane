@@ -185,40 +185,46 @@ namespace Chicane
         {
             StyleRuleset::List result;
 
-            std::size_t cursor = 0;
-            while (cursor < inValue.size())
+            const size_t size   = inValue.size();
+            size_t       cursor = 0;
+
+            while (cursor < size)
             {
-                while ((cursor < inValue.size()) &&
-                       (inValue.at(cursor) != Style::INCLUSIVE_SELECTOR && inValue.at(cursor) != Style::ID_SELECTOR &&
-                        inValue.at(cursor) != Style::CLASS_SELECTOR &&
-                        inValue.at(cursor) != Style::SELECTOR_INHERITANCE))
+                while (cursor < size && std::isspace(inValue.at(cursor)))
                 {
                     cursor++;
                 }
 
-                size_t start = cursor;
-                while ((cursor < inValue.size()) && (inValue.at(cursor) != Style::RULESET_OPENING))
-                {
-                    if (inValue.at(cursor) == Style::COMMAND_ENDING)
-                    {
-                        start = cursor + 1;
-                    }
-
-                    cursor++;
-                }
-
-                if (cursor >= inValue.size())
+                if (cursor >= size)
                 {
                     break;
                 }
 
-                String selector = inValue.substr(start, cursor - start);
+                const std::size_t start = cursor;
 
-                size_t blockStart = cursor + 1;
-                int    depth      = 1;
+                const std::size_t nextBrace = inValue.firstOf(Style::RULESET_OPENING, cursor);
+                const std::size_t nextSemi  = inValue.firstOf(Style::COMMAND_ENDING, cursor);
 
-                cursor++;
-                while (cursor < inValue.size() && depth > 0)
+                if (nextBrace == String::npos)
+                {
+                    break;
+                }
+
+                if (nextSemi != String::npos && nextSemi < nextBrace)
+                {
+                    cursor = nextSemi + 1;
+
+                    continue;
+                }
+
+                const String selector = inValue.substr(start, nextBrace - start).trim();
+
+                cursor = nextBrace + 1;
+
+                const std::size_t blockStart = cursor;
+                int               depth      = 1;
+
+                while (cursor < size && depth > 0)
                 {
                     if (inValue.at(cursor) == Style::RULESET_OPENING)
                     {
@@ -232,15 +238,25 @@ namespace Chicane
                     cursor++;
                 }
 
-                size_t blockEnd = cursor - 1;
+                if (depth != 0)
+                {
+                    break;
+                }
+
+                const std::size_t blockEnd = cursor - 1;
 
                 const String blockContent = inValue.substr(blockStart, blockEnd - blockStart);
 
                 for (const String& currentSelector : selector.split(Style::SELECTOR_SEPARATOR_COMMA))
                 {
                     String trimmedSelector = currentSelector.trim();
+                    if (trimmedSelector.isEmpty())
+                    {
+                        continue;
+                    }
 
                     String resolvedSelector;
+
                     if (trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE))
                     {
                         resolvedSelector = inSelector;
@@ -256,6 +272,7 @@ namespace Chicane
                     {
                         resolvedSelector = trimmedSelector;
                     }
+
                     resolvedSelector = resolvedSelector.trim();
 
                     StyleRuleset ruleset;
@@ -263,7 +280,7 @@ namespace Chicane
                     ruleset.addProperties(stripNestedRulesets(blockContent));
                     result.push_back(ruleset);
 
-                    StyleRuleset::List inherited = extractRulesets(blockContent, resolvedSelector);
+                    const StyleRuleset::List inherited = extractRulesets(blockContent, resolvedSelector);
                     result.insert(result.end(), inherited.begin(), inherited.end());
                 }
             }

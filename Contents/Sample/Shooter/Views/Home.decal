@@ -23,13 +23,15 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
     alignment: center;
     z-index: 2;
 
-    &__text {
+    Text {
         font-size: 8vw;
     }
 }
 
 .telemetry {
-    color: green;
+    Text {
+        color: green;
+    }
 }
 
 .score {

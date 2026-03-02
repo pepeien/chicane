@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
@@ -21,7 +23,8 @@ namespace Chicane
         class CHICANE_GRID Component
         {
         public:
-            using Compiler = std::function<Component*(const pugi::xml_node& inNode)>;
+            using Compiler  = std::function<Component*(const pugi::xml_node& inNode)>;
+            using ClassList = std::set<String>;
 
         public:
             static constexpr inline const char* EVENT_KEYWORD = "$event";
@@ -76,7 +79,7 @@ namespace Chicane
             String getId() const;
             void setId(const String& inValue);
 
-            std::vector<String> getClassList() const;
+            ClassList getClassList() const;
             const String& getClassName() const;
             void setClassName(const String& inValue);
             template <typename... Args>
@@ -106,6 +109,9 @@ namespace Chicane
             void addStyleProperties(const StyleRuleset::Properties& inSource);
 
             const Style& getStyle() const;
+
+            bool hasLocalSelector(const String& inValue) const;
+            bool hasSelector(const String& inValue) const;
 
             // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;

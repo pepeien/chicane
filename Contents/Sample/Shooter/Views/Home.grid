@@ -2,10 +2,10 @@
     <Container class="victory">
         <Text class="victory__text">YOU WIN</Text>
     </Container>
-    <Container>
-        <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
-        <Text class="telemetry">{{ frameTime }} ms</Text>
-        <Text class="telemetry">{{ currentCamera }}</Text>
+    <Container class="telemetry">
+        <Text>{{ framesPerSecond }} FPS</Text>
+        <Text>{{ frameTime }} ms</Text>
+        <Text>{{ currentCamera }}</Text>
     </Container>
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>
     <Container class="crosshair">

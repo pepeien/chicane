@@ -119,6 +119,11 @@ namespace Chicane
 
     bool Controller::isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const
     {
+        if (inId == 0U) // Due to SDL inconsistent id'ing of devices on events 0 usually means default
+        {
+            return true;
+        }
+
         if (!isConnectedTo(inType))
         {
             return false;
@@ -321,10 +326,10 @@ namespace Chicane
     {
         disconnectFrom(Input::DeviceType::Gamepad);
 
-        int             gamepadCount = 0;
-        SDL_JoystickID* gamepads     = SDL_GetGamepads(&gamepadCount);
+        int             count    = 0;
+        SDL_JoystickID* gamepads = SDL_GetGamepads(&count);
 
-        if (gamepadCount > 0)
+        if (count > 0)
         {
             connectTo(Input::DeviceType::Gamepad, *gamepads);
         }
@@ -336,12 +341,12 @@ namespace Chicane
     {
         disconnectFrom(Input::DeviceType::Keyboard);
 
-        int             keyboardCount = 0;
-        SDL_KeyboardID* keyboards     = SDL_GetKeyboards(&keyboardCount);
+        int             count     = 0;
+        SDL_KeyboardID* keyboards = SDL_GetKeyboards(&count);
 
-        if (keyboardCount > 0)
+        if (count > 0)
         {
-            for (int i = 0; i < keyboardCount; i++)
+            for (int i = 0; i < count; i++)
             {
                 bool bIsDefault = false;
                 for (const String& defaultName : DEFAULT_KEYBOARDS)
@@ -372,6 +377,14 @@ namespace Chicane
     {
         disconnectFrom(Input::DeviceType::Mouse);
 
-        connectTo(Input::DeviceType::Mouse, 0);
+        int          count = 0;
+        SDL_MouseID* mice  = SDL_GetMice(&count);
+
+        if (count > 0)
+        {
+            connectTo(Input::DeviceType::Mouse, *mice);
+        }
+
+        SDL_free(mice);
     }
 }
