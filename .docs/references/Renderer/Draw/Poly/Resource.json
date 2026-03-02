@@ -10,7 +10,7 @@
                 "name": "Map",
                 "type": {
                     "prefix": "",
-                    "name": "std::map",
+                    "name": "std::unordered_map",
                     "suffix": "",
                     "path": "",
                     "templates": [
@@ -31,6 +31,32 @@
                     ]
                 },
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_MAP_DESCRIPTION"
+            },
+            {
+                "name": "Draws",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_DRAWS_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -59,9 +85,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "DrawPoly::List",
+                    "name": "Draws",
                     "suffix": "&",
-                    "path": "Renderer/Draw/Poly",
+                    "path": "Renderer/Draw/Poly/Resource",
                     "templates": []
                 },
                 "name": "getDraws",
@@ -249,6 +275,44 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "generateInternalReference",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyMode",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GENERATEINTERNALREFERENCE_DESCRIPTION"
             }
         ],
         "members": [
@@ -257,9 +321,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPoly::List",
+                    "name": "Draws",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly",
+                    "path": "Renderer/Draw/Poly/Resource",
                     "templates": []
                 },
                 "name": "m_draws",

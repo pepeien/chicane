@@ -66,8 +66,8 @@
                     "path": "Renderer/Draw",
                     "templates": []
                 },
-                "name": "UnknownId",
-                "description": "CHICANE_RENDERER_DRAW_UNKNOWNID_DESCRIPTION"
+                "name": "InvalidId",
+                "description": "CHICANE_RENDERER_DRAW_INVALIDID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -82,8 +82,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "UnknownReference",
-                "description": "CHICANE_RENDERER_DRAW_UNKNOWNREFERENCE_DESCRIPTION"
+                "name": "InvalidReference",
+                "description": "CHICANE_RENDERER_DRAW_INVALIDREFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

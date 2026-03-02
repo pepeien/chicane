@@ -1,0 +1,139 @@
+{
+    "title": "DrawPolyTopology",
+    "filename": "Topology",
+    "path": "Renderer/Draw/Poly/Topology",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/Topology.hpp",
+        "namespace": "Chicane::Renderer::DrawPolyTopology",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PointList",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_POINTLIST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LineList",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_LINELIST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LineStrip",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_LINESTRIP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleList",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_TRIANGLELIST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleStrip",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_TRIANGLESTRIP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleFan",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_TRIANGLEFAN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LineListWithAdjacency",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_LINELISTWITHADJACENCY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LineStripWithAdjacency",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_LINESTRIPWITHADJACENCY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleListWithAdjacency",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_TRIANGLELISTWITHADJACENCY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleStripWithAdjacency",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_TRIANGLESTRIPWITHADJACENCY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PatchList",
+                "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_PATCHLIST_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_DESCRIPTION"
+    },
+    "children": []
+}

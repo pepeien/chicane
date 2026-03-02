@@ -59,9 +59,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Item",
+                            "name": "class Item",
                             "suffix": "",
-                            "path": "Core/FileSystem/Item",
+                            "path": "",
                             "templates": []
                         }
                     ]

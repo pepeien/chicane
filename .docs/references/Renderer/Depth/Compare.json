@@ -1,0 +1,106 @@
+{
+    "title": "DepthCompare",
+    "filename": "Compare",
+    "path": "Renderer/Depth/Compare",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Depth/Compare.hpp",
+        "namespace": "Chicane::Renderer::DepthCompare",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Never",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_NEVER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Less",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_LESS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Equal",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_EQUAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LessOrEqual",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_LESSOREQUAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Greater",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_GREATER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NotEqual",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_NOTEQUAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GreaterOrEqual",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_GREATEROREQUAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Always",
+                "description": "CHICANE_RENDERER_DEPTHCOMPARE_ALWAYS_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DEPTHCOMPARE_DESCRIPTION"
+    },
+    "children": []
+}

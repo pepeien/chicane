@@ -24,6 +24,25 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_COMPILER_DESCRIPTION"
+            },
+            {
+                "name": "ClassList",
+                "type": {
+                    "prefix": "",
+                    "name": "std::set",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_COMPONENT_CLASSLIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -348,18 +367,10 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "ClassList",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Grid/Component",
+                    "templates": []
                 },
                 "name": "getClassList",
                 "parameters": [],
@@ -443,9 +454,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "String",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/String",
                     "templates": []
                 },
@@ -595,6 +606,62 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETSTYLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasLocalSelector",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASLOCALSELECTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSelector",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASSELECTOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1253,6 +1320,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDepth",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
@@ -1265,6 +1349,68 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDSIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1406,6 +1552,85 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getOffset",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETOFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setOffset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETOFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setOffset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETOFFSET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2389,6 +2614,19 @@
                 },
                 "name": "m_scale",
                 "description": "CHICANE_GRID_COMPONENT_M_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_offset",
+                "description": "CHICANE_GRID_COMPONENT_M_OFFSET_DESCRIPTION"
             },
             {
                 "accessor": "protected",

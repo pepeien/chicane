@@ -674,7 +674,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::unique_ptr",
+                            "name": "std::shared_ptr",
                             "suffix": "",
                             "path": "",
                             "templates": [
@@ -710,7 +710,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::detail::DispatchLoaderDynamic",
+                    "name": "vk::DispatchLoaderDynamic",
                     "suffix": "",
                     "path": "",
                     "templates": []

@@ -1,0 +1,64 @@
+{
+    "title": "Shader",
+    "filename": "Shader",
+    "path": "Renderer/Shader",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Shader.hpp",
+        "namespace": "Chicane::Renderer::Shader",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Shader",
+                            "suffix": "",
+                            "path": "Renderer/Shader",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_SHADER_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem",
+                    "templates": []
+                },
+                "name": "source",
+                "description": "CHICANE_RENDERER_SHADER_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ShaderType",
+                    "suffix": "",
+                    "path": "Renderer/Shader/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_SHADER_TYPE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_SHADER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -81,6 +81,35 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "cross",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_VEC3_CROSS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",

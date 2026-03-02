@@ -94,6 +94,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawPolyTopology",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Topology",
+                    "templates": []
+                },
+                "name": "topology",
+                "description": "CHICANE_RENDERER_DRAWPOLY_TOPOLOGY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",

@@ -1,7 +1,7 @@
 {
-    "title": "List",
-    "filename": "List",
-    "path": "Core/List",
+    "title": "Folder",
+    "filename": "Folder",
+    "path": "Core/FileSystem/Folder",
     "source": {
         "header": null,
         "namespace": null,

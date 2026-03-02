@@ -216,8 +216,7 @@
                 "name": "getInstance",
                 "parameters": [],
                 "modifiers": [
-                    "static",
-                    "inline"
+                    "static"
                 ],
                 "description": "CHICANE_APPLICATION_GETINSTANCE_DESCRIPTION"
             },
@@ -787,6 +786,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initScreech",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITSCREECH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "render",
                 "parameters": [],
                 "modifiers": [],
@@ -1108,7 +1122,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "uint32_t",
+                            "name": "std::size_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -1129,7 +1143,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "uint32_t",
+                            "name": "std::size_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -1218,7 +1232,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "uint32_t",
+                            "name": "std::size_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -1239,7 +1253,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "uint32_t",
+                            "name": "std::size_t",
                             "suffix": "",
                             "path": "",
                             "templates": []

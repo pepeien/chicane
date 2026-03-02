@@ -15,9 +15,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "FontParsed",
+                    "name": "FontFamily",
                     "suffix": "",
-                    "path": "Box/Font/Parsed",
+                    "path": "Box/Font/Family",
                     "templates": []
                 },
                 "name": "parse",

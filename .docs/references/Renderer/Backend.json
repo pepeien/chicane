@@ -16,7 +16,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::unique_ptr",
+                            "name": "std::shared_ptr",
                             "suffix": "",
                             "path": "",
                             "templates": [

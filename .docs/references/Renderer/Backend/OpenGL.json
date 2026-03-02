@@ -49,8 +49,379 @@
                         "name": "inLayer"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_GETGLVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "useViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_USEVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "useProgram",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_USEPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyProgram",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initShader",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Shader::List",
+                            "suffix": "&",
+                            "path": "Renderer/Shader",
+                            "templates": []
+                        },
+                        "name": "inShaders"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_INITSHADER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initVertexArray",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_INITVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindVertexArray",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BINDVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyVertexArray",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enableDepth",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Depth",
+                            "suffix": "&",
+                            "path": "Renderer/Depth",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ENABLEDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disableDepth",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DISABLEDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enableCulling",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Culling",
+                            "suffix": "&",
+                            "path": "Renderer/Culling",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ENABLECULLING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disableCulling",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DISABLECULLING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enableBlending",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Blending",
+                            "suffix": "&",
+                            "path": "Renderer/Blending",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ENABLEBLENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disableBlending",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DISABLEBLENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawPolyArrays",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPoly",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inVertexArrayId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DRAWPOLYARRAYS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -204,10 +575,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildGlew",
+                "name": "buildGlad",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDGLEW_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDGLAD_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -283,6 +654,146 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toGLDepthCompare",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DepthCompare",
+                            "suffix": "",
+                            "path": "Renderer/Depth/Compare",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TOGLDEPTHCOMPARE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toGLFrontFace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CullingFrontFace",
+                            "suffix": "",
+                            "path": "Renderer/Culling/FrontFace",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TOGLFRONTFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toGLCullingMode",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CullingMode",
+                            "suffix": "",
+                            "path": "Renderer/Culling/Mode",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TOGLCULLINGMODE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toGLFactor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BlendingFactor",
+                            "suffix": "",
+                            "path": "Renderer/Blending/Factor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TOGLFACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toGLDrawTopology",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyTopology",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Topology",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TOGLDRAWTOPOLOGY_DESCRIPTION"
             }
         ],
         "members": [

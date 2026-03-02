@@ -5,34 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Box/Font/Glyph.hpp",
         "namespace": "Chicane::Box::FontGlyph",
-        "types": [
-            {
-                "name": "Map",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "char32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "FontGlyph",
-                            "suffix": "",
-                            "path": "Box/Font/Glyph",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_FONTGLYPH_MAP_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -69,6 +42,19 @@
                 },
                 "name": "code",
                 "description": "CHICANE_BOX_FONTGLYPH_CODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_BOX_FONTGLYPH_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -134,19 +120,6 @@
                 },
                 "name": "descender",
                 "description": "CHICANE_BOX_FONTGLYPH_DESCENDER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "lineHeight",
-                "description": "CHICANE_BOX_FONTGLYPH_LINEHEIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",

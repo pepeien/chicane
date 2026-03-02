@@ -737,6 +737,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isLoaded",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_ISLOADED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -816,6 +833,19 @@
             }
         ],
         "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsLoaded",
+                "description": "CHICANE_SCENE_M_BISLOADED_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],

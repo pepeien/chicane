@@ -1,0 +1,44 @@
+{
+    "title": "Culling",
+    "filename": "Culling",
+    "path": "Renderer/Culling",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Culling.hpp",
+        "namespace": "Chicane::Renderer::Culling",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CullingFrontFace",
+                    "suffix": "",
+                    "path": "Renderer/Culling/FrontFace",
+                    "templates": []
+                },
+                "name": "frontFace",
+                "description": "CHICANE_RENDERER_CULLING_FRONTFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CullingMode",
+                    "suffix": "",
+                    "path": "Renderer/Culling/Mode",
+                    "templates": []
+                },
+                "name": "mode",
+                "description": "CHICANE_RENDERER_CULLING_MODE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_CULLING_DESCRIPTION"
+    },
+    "children": []
+}

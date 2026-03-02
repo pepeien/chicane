@@ -1,0 +1,40 @@
+{
+    "title": "CullingFrontFace",
+    "filename": "FrontFace",
+    "path": "Renderer/Culling/FrontFace",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Culling/FrontFace.hpp",
+        "namespace": "Chicane::Renderer::CullingFrontFace",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CounterClockwise",
+                "description": "CHICANE_RENDERER_CULLINGFRONTFACE_COUNTERCLOCKWISE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clockwise",
+                "description": "CHICANE_RENDERER_CULLINGFRONTFACE_CLOCKWISE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_CULLINGFRONTFACE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -5,9 +5,81 @@
     "source": {
         "header": "Includes/Chicane/Core/FileSystem/Item.hpp",
         "namespace": "Chicane::FileSystem::Item",
-        "types": [],
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Item",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_FILESYSTEM_ITEM_LIST_DESCRIPTION"
+            }
+        ],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Item",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ItemType",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_ITEM_ITEM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Item",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_ITEM_ITEM_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [],
         "members": [
@@ -42,9 +114,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "Path",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Core/FileSystem",
                     "templates": []
                 },
                 "name": "path",

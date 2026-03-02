@@ -1,0 +1,44 @@
+{
+    "title": "Depth",
+    "filename": "Depth",
+    "path": "Renderer/Depth",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Depth.hpp",
+        "namespace": "Chicane::Renderer::Depth",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanWrite",
+                "description": "CHICANE_RENDERER_DEPTH_BCANWRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DepthCompare",
+                    "suffix": "",
+                    "path": "Renderer/Depth/Compare",
+                    "templates": []
+                },
+                "name": "compare",
+                "description": "CHICANE_RENDERER_DEPTH_COMPARE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DEPTH_DESCRIPTION"
+    },
+    "children": []
+}

@@ -16,6 +16,21 @@
                 "return": {
                     "prefix": "",
                     "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
                     "suffix": "*",
                     "path": "",
                     "templates": []

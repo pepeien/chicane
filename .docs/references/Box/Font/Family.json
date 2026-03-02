@@ -1,0 +1,330 @@
+{
+    "title": "FontFamily",
+    "filename": "Family",
+    "path": "Box/Font/Family",
+    "source": {
+        "header": "Includes/Chicane/Box/Font/Family.hpp",
+        "namespace": "Chicane::Box::FontFamily",
+        "types": [
+            {
+                "name": "Glyphs",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "char32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "FontGlyph",
+                            "suffix": "",
+                            "path": "Box/Font/Glyph",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_FONTFAMILY_GLYPHS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FontFamily",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_FONTFAMILY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FontFamily",
+                    "suffix": "&",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCharacter"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_HASGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_HASGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_SETNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Glyphs",
+                    "suffix": "&",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "getGlyphs",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETGLYPHS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FontGlyph",
+                    "suffix": "&",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "getGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCharacter"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FontGlyph",
+                    "suffix": "&",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "getGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Glyphs",
+                            "suffix": "&",
+                            "path": "Box/Font/Family",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_ADDGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FontGlyph",
+                            "suffix": "&",
+                            "path": "Box/Font/Glyph",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_ADDGLYPH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_name",
+                "description": "CHICANE_BOX_FONTFAMILY_M_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Glyphs",
+                    "suffix": "",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "m_glyphs",
+                "description": "CHICANE_BOX_FONTFAMILY_M_GLYPHS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_FONTFAMILY_DESCRIPTION"
+    },
+    "children": []
+}

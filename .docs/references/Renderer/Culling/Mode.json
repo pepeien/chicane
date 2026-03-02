@@ -1,0 +1,62 @@
+{
+    "title": "CullingMode",
+    "filename": "Mode",
+    "path": "Renderer/Culling/Mode",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Culling/Mode.hpp",
+        "namespace": "Chicane::Renderer::CullingMode",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_RENDERER_CULLINGMODE_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Front",
+                "description": "CHICANE_RENDERER_CULLINGMODE_FRONT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Back",
+                "description": "CHICANE_RENDERER_CULLINGMODE_BACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontAndBack",
+                "description": "CHICANE_RENDERER_CULLINGMODE_FRONTANDBACK_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_CULLINGMODE_DESCRIPTION"
+    },
+    "children": []
+}

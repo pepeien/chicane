@@ -19,18 +19,7 @@
                     "templates": []
                 },
                 "name": "String",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "T...",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inParams"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
@@ -51,12 +40,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "short unsigned int",
+                            "name": "char",
                             "suffix": "*",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inValue"
+                        "name": "value"
                     }
                 ],
                 "modifiers": [
@@ -84,35 +73,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_STRING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "String",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inValue"
+                        "name": "value"
                     }
                 ],
                 "modifiers": [
@@ -135,14 +96,163 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "String",
-                            "suffix": "&&",
-                            "path": "Core/String",
+                            "name": "size_t",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inValue"
+                        "name": "count"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "ch"
                     }
                 ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "value"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "&&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "value"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::filesystem::path",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "p"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InputIt",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "first"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InputIt",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "last"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
@@ -259,42 +369,13 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "operator const char *",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_STRING_OPERATOR CONST CHAR *_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "String",
                     "suffix": "&",
                     "path": "Core/String",
                     "templates": []
                 },
                 "name": "operator=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "other"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
@@ -311,152 +392,85 @@
                     "templates": []
                 },
                 "name": "operator=",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "operator+=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "rhs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR+=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "operator+=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "rhs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR+=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "operator+=",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "String",
-                            "suffix": "&&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "other"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::string",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "rhs"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
                             "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "rhs"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator+=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "rhs"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR+=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator+=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::string",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "rhs"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR+=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator+=",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
+                            "suffix": "",
                             "path": "",
                             "templates": []
                         },
@@ -496,6 +510,24 @@
                     "const"
                 ],
                 "description": "CHICANE_STRING_OPERATOR<_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator std::string",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1775,44 +1807,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "operator==",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inA"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inB"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR==_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",
@@ -1836,44 +1830,6 @@
                             "name": "String",
                             "suffix": "&",
                             "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "rhs"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_STRING_OPERATOR+_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "operator+",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "lhs"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::string",
-                            "suffix": "&",
-                            "path": "",
                             "templates": []
                         },
                         "name": "rhs"
@@ -1921,6 +1877,120 @@
                     "inline"
                 ],
                 "description": "CHICANE_STRING_OPERATOR+_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "operator+",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "lhs"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "rhs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR+_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::ostream",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator<<",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::ostream",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "os"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "str"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR<<_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inA"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inB"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_OPERATOR==_DESCRIPTION"
             }
         ],
         "members": [

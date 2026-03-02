@@ -15,62 +15,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "vk::Bool32",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "callback",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "vk::DebugUtilsMessageSeverityFlagBitsEXT",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inMessageSeverity"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "vk::DebugUtilsMessageTypeFlagsEXT",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inMessageType"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "vk::DebugUtilsMessengerCallbackDataEXT",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "outUserData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANDEBUG_CALLBACK_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -101,7 +45,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "vk::detail::DispatchLoaderDynamic",
+                            "name": "vk::DispatchLoaderDynamic",
                             "suffix": "&",
                             "path": "",
                             "templates": []
@@ -147,7 +91,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "vk::detail::DispatchLoaderDynamic",
+                            "name": "vk::DispatchLoaderDynamic",
                             "suffix": "&",
                             "path": "",
                             "templates": []

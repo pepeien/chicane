@@ -57,6 +57,24 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Reference",
+                    "suffix": "&",
+                    "path": "Core/Reference",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFERENCE_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "Reference",
                     "suffix": "",

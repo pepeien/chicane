@@ -90,6 +90,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "reference",
+                "description": "CHICANE_GRID_PRIMITIVE_REFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vertex::List",
                     "suffix": "",
                     "path": "Core/Math/Vertex",

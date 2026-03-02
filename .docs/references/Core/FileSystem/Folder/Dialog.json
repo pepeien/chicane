@@ -1,0 +1,62 @@
+{
+    "title": "FolderDialog",
+    "filename": "Dialog",
+    "path": "Core/FileSystem/Folder/Dialog",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/Folder/Dialog.hpp",
+        "namespace": "Chicane::FileSystem::FolderDialog",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FolderDialog",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_FOLDERDIALOG_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "open",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Callback",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Dialog",
+                            "templates": []
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_OPEN_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,83 @@
+{
+    "title": "FileFilter",
+    "filename": "Filter",
+    "path": "Core/FileSystem/File/Filter",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/File/Filter.hpp",
+        "namespace": "Chicane::FileSystem::FileFilter",
+        "types": [
+            {
+                "name": "Extensions",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_FILESYSTEM_FILEFILTER_EXTENSIONS_DESCRIPTION"
+            },
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileFilter",
+                            "suffix": "",
+                            "path": "Core/FileSystem/File/Filter",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_FILESYSTEM_FILEFILTER_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "title",
+                "description": "CHICANE_FILESYSTEM_FILEFILTER_TITLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Extensions",
+                    "suffix": "",
+                    "path": "Core/FileSystem/File/Filter",
+                    "templates": []
+                },
+                "name": "extensions",
+                "description": "CHICANE_FILESYSTEM_FILEFILTER_EXTENSIONS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FILESYSTEM_FILEFILTER_DESCRIPTION"
+    },
+    "children": []
+}

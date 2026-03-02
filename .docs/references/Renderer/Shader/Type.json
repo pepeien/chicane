@@ -1,0 +1,51 @@
+{
+    "title": "ShaderType",
+    "filename": "Type",
+    "path": "Renderer/Shader/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Shader/Type.hpp",
+        "namespace": "Chicane::Renderer::ShaderType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Fragment",
+                "description": "CHICANE_RENDERER_SHADERTYPE_FRAGMENT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vertex",
+                "description": "CHICANE_RENDERER_SHADERTYPE_VERTEX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_RENDERER_SHADERTYPE_UNDEFINED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_SHADERTYPE_DESCRIPTION"
+    },
+    "children": []
+}

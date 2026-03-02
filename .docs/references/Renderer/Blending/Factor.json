@@ -1,0 +1,227 @@
+{
+    "title": "BlendingFactor",
+    "filename": "Factor",
+    "path": "Renderer/Blending/Factor",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Blending/Factor.hpp",
+        "namespace": "Chicane::Renderer::BlendingFactor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Zero",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ZERO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "One",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SrcColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_SRCCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusSrcColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSSRCCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DstColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_DSTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusDstColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSDSTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SrcAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_SRCALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusSrcAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSSRCALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DstAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_DSTALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusDstAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSDSTALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ConstantColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_CONSTANTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusConstantColor",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSCONSTANTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ConstantAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_CONSTANTALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusConstantAlpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSCONSTANTALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SrcAlphaSaturate",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_SRCALPHASATURATE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Src1Color",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_SRC1COLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusSrc1Color",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSSRC1COLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Src1Alpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_SRC1ALPHA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OneMinusSrc1Alpha",
+                "description": "CHICANE_RENDERER_BLENDINGFACTOR_ONEMINUSSRC1ALPHA_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_BLENDINGFACTOR_DESCRIPTION"
+    },
+    "children": []
+}

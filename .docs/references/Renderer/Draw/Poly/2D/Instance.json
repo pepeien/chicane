@@ -101,13 +101,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Vec2",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "_padding0",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING0_DESCRIPTION"
+                "name": "offset",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_OFFSET_DESCRIPTION"
             },
             {
                 "accessor": "public",

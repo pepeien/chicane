@@ -1,0 +1,44 @@
+{
+    "title": "Blending",
+    "filename": "Blending",
+    "path": "Renderer/Blending",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Blending.hpp",
+        "namespace": "Chicane::Renderer::Blending",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BlendingFactor",
+                    "suffix": "",
+                    "path": "Renderer/Blending/Factor",
+                    "templates": []
+                },
+                "name": "source",
+                "description": "CHICANE_RENDERER_BLENDING_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BlendingFactor",
+                    "suffix": "",
+                    "path": "Renderer/Blending/Factor",
+                    "templates": []
+                },
+                "name": "destination",
+                "description": "CHICANE_RENDERER_BLENDING_DESTINATION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_BLENDING_DESCRIPTION"
+    },
+    "children": []
+}

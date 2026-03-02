@@ -100,8 +100,7 @@
                 "name": "getInstance",
                 "parameters": [],
                 "modifiers": [
-                    "static",
-                    "inline"
+                    "static"
                 ],
                 "description": "CHICANE_KERB_ENGINE_GETINSTANCE_DESCRIPTION"
             },

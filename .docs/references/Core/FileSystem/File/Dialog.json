@@ -1,0 +1,150 @@
+{
+    "title": "FileDialog",
+    "filename": "Dialog",
+    "path": "Core/FileSystem/File/Dialog",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/File/Dialog.hpp",
+        "namespace": "Chicane::FileSystem::FileDialog",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FileDialog",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_FILEDIALOG_FILEDIALOG_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "open",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Callback",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Dialog",
+                            "templates": []
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_FILEDIALOG_OPEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addFilter",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inTitle"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileFilter::Extensions",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/File/Filter",
+                            "templates": []
+                        },
+                        "name": "inExtensions"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_FILEDIALOG_ADDFILTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getExtensionsFilter",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileFilter",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/File/Filter",
+                            "templates": []
+                        },
+                        "name": "inFilter"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inSeparator"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_FILEDIALOG_GETEXTENSIONSFILTER_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileFilter::List",
+                    "suffix": "",
+                    "path": "Core/FileSystem/File/Filter",
+                    "templates": []
+                },
+                "name": "filters",
+                "description": "CHICANE_FILESYSTEM_FILEDIALOG_FILTERS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FILESYSTEM_FILEDIALOG_DESCRIPTION"
+    },
+    "children": []
+}
