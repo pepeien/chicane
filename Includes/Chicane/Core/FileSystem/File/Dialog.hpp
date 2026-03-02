@@ -24,6 +24,8 @@ namespace Chicane
             String getExtensionsFilter(const FileFilter& inFilter, const String& inSeparator) const;
 
         public:
+            bool             bCanSelectMany = false;
+
             FileFilter::List filters = {};
         };
     }

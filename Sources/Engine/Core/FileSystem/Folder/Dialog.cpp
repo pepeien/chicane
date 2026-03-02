@@ -67,7 +67,7 @@ namespace Chicane
             }
 
             command.append(" --file-selection");
-            command.append(" -directory");
+            command.append(" --directory");
 
             char buffer[256];
 
@@ -75,12 +75,12 @@ namespace Chicane
 
             if (!pipe)
             {
-                throw std::runtime_error("Failed to open file dialog [" + title.trim() + "]");
+                throw std::runtime_error("Failed to open folder dialog [" + title.trim() + "]");
             }
 
             while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
             {
-                filepaths += buffer;
+                filepath += buffer;
             }
 
             pclose(pipe);
@@ -89,6 +89,11 @@ namespace Chicane
             if (!inCallback)
             {
                 return;
+            }
+
+            if (!filepath.isEmpty() && filepath.back() == '\n')
+            {
+                filepath.popBack();
             }
 
             inCallback(ls(filepath.toStandard()));
