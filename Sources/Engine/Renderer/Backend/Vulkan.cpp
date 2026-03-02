@@ -390,7 +390,7 @@ namespace Chicane
             for (const DrawTexture& texture : inTextures)
             {
                 createInfo.image = texture.image;
-                textures.push_back(std::make_unique<VulkanTexture>(createInfo));
+                textures.push_back(std::make_shared<VulkanTexture>(createInfo));
 
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;

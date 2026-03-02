@@ -22,13 +22,17 @@ namespace Chicane
             for (const auto& [type, resource] : inResources)
             {
                 DrawPoly::List& draws = m_polys[type];
-                draws.insert(draws.end(), resource.getDraws().begin(), resource.getDraws().end());
 
-                std::sort(
-                    draws.begin(),
-                    draws.end(),
-                    [](const Draw& inA, const Draw& inB) { return inA.id <= inB.id; }
-                );
+                for (const auto& [reference, draw] : resource.getDraws())
+                {
+                    draws.push_back(draw);
+                }
+
+                //std::sort(
+                //    draws.begin(),
+                //    draws.end(),
+                //    [](const Draw& inA, const Draw& inB) { return inA.id <= inB.id; }
+                //);
             }
 
             refresh2DDraws();
@@ -105,6 +109,11 @@ namespace Chicane
 
         void Frame::draw(Draw::Id inId, const DrawPoly2DInstance& inInstance)
         {
+            if (inId <= Draw::InvalidId)
+            {
+                return;
+            }
+
             m_2DInstances[inId].push_back(inInstance);
 
             refresh2DDraws();
@@ -124,6 +133,11 @@ namespace Chicane
 
         void Frame::draw(Draw::Id inId, const DrawPoly3DInstance& inInstance)
         {
+            if (inId <= Draw::InvalidId)
+            {
+                return;
+            }
+
             m_3DInstances[inId].push_back(inInstance);
 
             refresh3DDraws();

@@ -17,6 +17,7 @@
     #define CHICANE_RENDERER
 #endif
 
+#include <cstddef>
 #include <cstdint>
 
 namespace Chicane

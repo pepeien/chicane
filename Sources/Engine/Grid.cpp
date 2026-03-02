@@ -22,14 +22,14 @@ namespace Chicane
 
         Component* createComponent(const pugi::xml_node& inNode)
         {
-            const String& tag = inNode.name();
+            const auto& found = g_components.find(inNode.name());
 
-            if (g_components.find(tag) == g_components.end())
+            if (found == g_components.end())
             {
                 return nullptr;
             }
 
-            return g_components.at(tag)(inNode);
+            return found->second(inNode);
         }
     }
 }

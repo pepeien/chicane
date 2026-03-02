@@ -37,6 +37,13 @@ namespace Chicane
         static const JPH::Quat ENGINE_TO_JPH_QUAT = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), JPH::JPH_PI * 0.5f);
         static const JPH::Quat JPH_TO_ENGINE_QUAT = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), -JPH::JPH_PI * 0.5f);
 
+        Engine& Engine::getInstance()
+        {
+            static Engine instance;
+
+            return instance;
+        }
+
         Engine::Engine()
             : m_tempAllocator(10 * 1024 * 1024),
               m_broadLayer(ObjectLayer::Count, BroadPhaseLayer::Count),
@@ -217,10 +224,11 @@ namespace Chicane
                     {
                         result.first.push_back(offset + j);
 
-                        result.second.push_back({
-                            .position = {vertices[i * 3 + j].x, vertices[i * 3 + j].y, vertices[i * 3 + j].z},
-                            .color    = Vec4(255.0f)
-                        });
+                        Vertex vertex;
+                        vertex.position = {vertices[i * 3 + j].x, vertices[i * 3 + j].y, vertices[i * 3 + j].z};
+                        vertex.color    = Vec4(255.0f);
+
+                        result.second.push_back(vertex);
                     }
                 }
             }

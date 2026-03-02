@@ -47,7 +47,7 @@ namespace Chicane
                 return layers.empty();
             }
 
-            void init(vk::Instance& outInstance, vk::detail::DispatchLoaderDynamic& outDldi)
+            void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
             {
                 std::uint32_t sdlExtensionCount = 0;
 
@@ -78,7 +78,8 @@ namespace Chicane
                 applicationInfo.applicationVersion  = VK_MAKE_API_VERSION(0, 1, 0, 0);
                 applicationInfo.pEngineName         = ENGINE_NAME;
                 applicationInfo.engineVersion       = applicationInfo.applicationVersion;
-                applicationInfo.apiVersion          = VK_MAKE_API_VERSION(0, 1, 3, 0);
+                applicationInfo.apiVersion =
+                    VK_MAKE_API_VERSION(0, VULKAN_MAJOR_VERSION, VULKAN_MINOR_VERSION, VULKAN_PATCH_VERSION);
 
                 vk::InstanceCreateInfo createInfo  = {};
                 createInfo.pApplicationInfo        = &applicationInfo;
@@ -88,7 +89,7 @@ namespace Chicane
                 createInfo.ppEnabledExtensionNames = extensions.data();
 
                 outInstance = vk::createInstance(createInfo);
-                outDldi     = vk::detail::DispatchLoaderDynamic(outInstance, vkGetInstanceProcAddr);
+                outDldi     = vk::DispatchLoaderDynamic(outInstance, vkGetInstanceProcAddr);
             }
         }
     }

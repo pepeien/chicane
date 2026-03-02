@@ -1,9 +1,11 @@
 #include "Application.hpp"
 
-#include <Chicane/Core/List.hpp>
+#include <Chicane/Core/List/Push.hpp>
 #include <Chicane/Core/Window/Backend.hpp>
 #include <Chicane/Core/Window/Type.hpp>
+
 #include <Chicane/Renderer.hpp>
+
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
@@ -29,7 +31,7 @@ namespace Editor
         createInfo.window.title   = "Chicane Editor";
         createInfo.window.icon    = "Contents/Editor/Icon.png";
         createInfo.window.size    = Chicane::Vec<2, std::uint32_t>(1600, 900);
-        createInfo.window.display = 0;
+        createInfo.window.display = 1;
         createInfo.window.type    = Chicane::WindowType::Windowed;
         createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
@@ -76,7 +78,6 @@ namespace Editor
                 {
 #if CHICANE_OPENGL
                 case Chicane::WindowBackend::OpenGL:
-
                     Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLUI>(settings);
 
                     break;

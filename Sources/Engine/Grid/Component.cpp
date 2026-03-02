@@ -24,6 +24,7 @@ namespace Chicane
               m_children({}),
               m_size(Vec2::Zero),
               m_position(Vec2::Zero),
+              m_offset(Vec2::Zero),
               m_cursor(Vec2::Zero),
               m_bounds({}),
               m_attributes({}),
@@ -58,6 +59,8 @@ namespace Chicane
             {
                 child->tick(inDeltaTime);
             }
+
+            addSize(m_style.padding.right.get(), m_style.padding.bottom.get());
         }
 
         void Component::refresh()
@@ -164,9 +167,16 @@ namespace Chicane
             refreshStyleRuleset();
         }
 
-        std::vector<String> Component::getClassList() const
+        Component::ClassList Component::getClassList() const
         {
-            return m_className.split(Style::SELECTOR_SEPARATOR_SPACE);
+            ClassList result = {};
+
+            for (const String& className : m_className.split(Style::SELECTOR_SEPARATOR_SPACE))
+            {
+                result.insert(Style::CLASS_SELECTOR + className);
+            }
+
+            return result;
         }
 
         const String& Component::getClassName() const
@@ -181,19 +191,118 @@ namespace Chicane
             refreshStyleRuleset();
         }
 
-        String Component::getAttribute(const String& inName) const
+        const String& Component::getAttribute(const String& inName) const
         {
-            if (m_attributes.find(inName) == m_attributes.end())
+            const auto& found = m_attributes.find(inName);
+
+            if (found == m_attributes.end())
             {
-                return "";
+                return String::empty();
             }
 
-            return m_attributes.at(inName);
+            return found->second;
         }
 
         const Style& Component::getStyle() const
         {
             return m_style;
+        }
+
+        bool Component::hasLocalSelector(const String& inValue) const
+        {
+            if (inValue.isEmpty())
+            {
+                return false;
+            }
+
+            if (inValue.equals(Style::INCLUSIVE_SELECTOR))
+            {
+                return true;
+            }
+
+            String remaining = inValue;
+
+            const size_t idPos = remaining.firstOf(Style::ID_SELECTOR);
+            if (idPos != String::npos)
+            {
+                String idPart = remaining.substr(idPos);
+                remaining     = remaining.substr(0, idPos);
+
+                if (!(Style::ID_SELECTOR + getId()).equals(idPart))
+                {
+                    return false;
+                }
+            }
+
+            const ClassList classes = getClassList();
+
+            size_t classPos = remaining.firstOf(Style::CLASS_SELECTOR);
+            while (classPos != String::npos)
+            {
+                String classPart = remaining.substr(classPos);
+                remaining        = remaining.substr(0, classPos);
+
+                if (classes.find(classPart) == classes.end())
+                {
+                    return false;
+                }
+
+                classPos = remaining.firstOf(Style::CLASS_SELECTOR);
+            }
+
+            if (!remaining.isEmpty())
+            {
+                if (!remaining.equals(getTag()))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool Component::hasSelector(const String& inValue) const
+        {
+            if (inValue.isEmpty())
+            {
+                return false;
+            }
+
+            std::vector<String> parts = inValue.split(Style::SELECTOR_SEPARATOR_SPACE);
+            if (parts.empty())
+            {
+                return false;
+            }
+
+            if (!hasLocalSelector(parts.back().trim()))
+            {
+                return false;
+            }
+
+            if (parts.size() == 1)
+            {
+                return true;
+            }
+
+            if (!hasParent())
+            {
+                return false;
+            }
+
+            Component* ancestor = getParent();
+
+            int index = static_cast<int>(parts.size()) - 2;
+            while (ancestor && index >= 0)
+            {
+                if (ancestor->hasLocalSelector(parts[index].trim()))
+                {
+                    index--;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return index < 0;
         }
 
         bool Component::hasStyleFile() const
@@ -240,7 +349,7 @@ namespace Chicane
             bool bWasFoundLocally = m_references.find(inId) != m_references.end() && m_references.at(inId) &&
                                     !m_references.at(inId)->isEmpty();
 
-            if (isRoot() || !hasParent() || isLocalOnly)
+            if (!hasParent() || isLocalOnly)
             {
                 return bWasFoundLocally;
             }
@@ -250,7 +359,7 @@ namespace Chicane
 
         Reference* Component::getReference(const String& inId) const
         {
-            if (!hasParent() || isRoot())
+            if (!hasParent())
             {
                 return hasReference(inId, true) ? m_references.at(inId) : nullptr;
             }
@@ -298,7 +407,7 @@ namespace Chicane
             const bool bHasLocally =
                 m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
 
-            if (!hasParent() || isRoot() || isLocalOnly)
+            if (!hasParent() || isLocalOnly)
             {
                 return bHasLocally;
             }
@@ -315,7 +424,7 @@ namespace Chicane
 
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            if (!hasParent() || isRoot() || isLocalOnly)
+            if (!hasParent() || isLocalOnly)
             {
                 return hasFunction(id, true) ? m_functions.at(id) : nullptr;
             }
@@ -378,12 +487,12 @@ namespace Chicane
 
         bool Component::hasParent() const
         {
-            return m_parent != nullptr;
+            return m_parent != nullptr && !isRoot();
         }
 
         Component* Component::getParent() const
         {
-            return m_parent;
+            return isRoot() ? nullptr : m_parent;
         }
 
         void Component::setParent(Component* inComponent)
@@ -560,9 +669,29 @@ namespace Chicane
             return getChildrenContentSizeBlock();
         }
 
+        float Component::getDepth() const
+        {
+            if (isRoot())
+            {
+                return 0.0f;
+            }
+
+            return std::max(m_parent->getDepth() + 0.1f, m_style.zIndex.get());
+        }
+
         const Vec2& Component::getSize() const
         {
             return m_size;
+        }
+
+        void Component::addSize(const Vec2& inValue)
+        {
+            addSize(inValue.x, inValue.y);
+        }
+
+        void Component::addSize(float inWidth, float inHeight)
+        {
+            setSize(m_size.x + inWidth, m_size.y + inHeight);
         }
 
         void Component::setSize(const Vec2& inValue)
@@ -578,7 +707,7 @@ namespace Chicane
 
         const Vec2& Component::getScale() const
         {
-            return m_scale;
+            return (m_scale.x <= 0.0f && m_scale.y <= 0.0f) ? m_size : m_scale;
         }
 
         void Component::setScale(const Vec2& inValue)
@@ -590,6 +719,22 @@ namespace Chicane
         {
             m_scale.x = inX;
             m_scale.y = inY;
+        }
+
+        const Vec2& Component::getOffset() const
+        {
+            return m_offset;
+        }
+
+        void Component::setOffset(const Vec2& inValue)
+        {
+            setOffset(inValue.x, inValue.y);
+        }
+
+        void Component::setOffset(float inX, float inY)
+        {
+            m_offset.x = inX;
+            m_offset.y = inY;
         }
 
         const Vec2& Component::getPosition() const
@@ -683,25 +828,6 @@ namespace Chicane
                 return;
             }
 
-            const String& tag = getTag();
-
-            String id = Style::ID_SELECTOR;
-            id.append(getId());
-
-            std::vector<String> classList;
-            String              formattedClassName = "";
-            for (const String& className : getClassList())
-            {
-                String formatted = Style::CLASS_SELECTOR;
-                formatted.append(className);
-
-                formattedClassName.append(formatted);
-                formattedClassName.append(" ");
-
-                classList.push_back(formatted);
-            }
-            classList.push_back(formattedClassName.trim());
-
             for (const StyleRuleset& source : m_styleFile->getRulesets())
             {
                 if (source.isEmpty())
@@ -711,44 +837,9 @@ namespace Chicane
 
                 for (const String& selector : source.selectors)
                 {
-                    if (selector.equals(Style::INCLUSIVE_SELECTOR))
+                    if (hasSelector(selector.trim()))
                     {
                         addStyleProperties(source.properties);
-
-                        continue;
-                    }
-
-                    if (!tag.isEmpty())
-                    {
-                        if (selector.equals(tag))
-                        {
-                            addStyleProperties(source.properties);
-
-                            continue;
-                        }
-                    }
-
-                    if (!id.isEmpty())
-                    {
-                        if (id.equals(selector))
-                        {
-                            addStyleProperties(source.properties);
-
-                            continue;
-                        }
-                    }
-
-                    if (!classList.empty())
-                    {
-                        for (const String& className : classList)
-                        {
-                            if (className.equals(selector))
-                            {
-                                addStyleProperties(source.properties);
-
-                                continue;
-                            }
-                        }
                     }
                 }
             }
@@ -796,22 +887,24 @@ namespace Chicane
             setPosition(m_parent->getCursor() + startMargin);
             addCursor(startPadding);
 
+            const Vec2 endMargin(m_style.margin.right.get(), m_style.margin.bottom.get());
+
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
-                if (parentStyle.flex.direction == StyleFlexDirection::Row)
+                if (parentStyle.flex.direction.get() == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(m_size.x + m_style.margin.right.get(), 0.0f);
+                    m_parent->addCursor(m_size.x + endMargin.x + m_style.gap.left.get(), 0.0f);
                 }
                 else
                 {
-                    m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
+                    m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
                 }
 
                 break;
 
             default:
-                m_parent->addCursor(0.0f, m_size.y + m_style.margin.bottom.get());
+                m_parent->addCursor(0.0f, m_size.y + endMargin.y);
 
                 break;
             }

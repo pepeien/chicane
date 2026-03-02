@@ -110,12 +110,14 @@ namespace Chicane
 
         const String& AssetHeader::getTypeTag(AssetType inValue)
         {
-            if (TAGS.find(inValue) == TAGS.end())
+            const auto& found = TAGS.find(inValue);
+
+            if (found == TAGS.end())
             {
                 return String::empty();
             }
 
-            return TAGS.at(inValue);
+            return found->second;
         }
 
         std::vector<String> AssetHeader::getTypeExtensions()
@@ -132,12 +134,14 @@ namespace Chicane
 
         const String& AssetHeader::getTypeExtension(AssetType inValue)
         {
-            if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+            const auto& found = EXTENSIONS.find(inValue);
+
+            if (found == EXTENSIONS.end())
             {
                 return String::empty();
             }
 
-            return EXTENSIONS.at(inValue);
+            return found->second;
         }
 
         AssetHeader::AssetHeader(const FileSystem::Path& inFilepath)

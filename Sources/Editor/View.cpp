@@ -1,6 +1,10 @@
 #include "View.hpp"
 
+#include <Chicane/Core/FileSystem/File/Dialog.hpp>
+
 #include <Chicane/Runtime/Application.hpp>
+
+#include "Actor/Item.hpp"
 
 namespace Editor
 {
@@ -12,5 +16,43 @@ namespace Editor
     {
         addReference("frameTime", &m_uiFrameTime);
         addReference("framesPerSecond", &m_uiFramesPerSecond);
+
+        addFunction("onAssetImport", [this](const Chicane::Grid::Event& inEvent) { return onAssetImport(inEvent); });
+    }
+
+    Chicane::Reference View::onAssetImport(const Chicane::Grid::Event& inEvent)
+    {
+        Chicane::FileSystem::FileDialog dialog;
+        dialog.bCanSelectMany = false;
+        dialog.location       = "/";
+        dialog.title          = "Select asset source";
+        dialog.addFilter("Fonts", {".bfon"});
+        dialog.addFilter("Meshes", {".bmsh"});
+        dialog.addFilter("Models", {".bmdl"});
+        dialog.addFilter("Textures", {".btex"});
+        dialog.addFilter("Skies", {".bsky"});
+        dialog.addFilter("Sounds", {".bsnd"});
+
+        dialog.open(
+            [](const Chicane::FileSystem::Item::List& inFiles)
+            {
+                for (const Chicane::FileSystem::Item& item : inFiles)
+                {
+                    if (item.type != Chicane::FileSystem::ItemType::File)
+                    {
+                        continue;
+                    }
+
+                    if (item.extension.equals(Chicane::Box::Mesh::EXTENSION))
+                    {
+                        Chicane::Application::getInstance().getScene()->createActor<Item>(item.path);
+
+                        continue;
+                    }
+                }
+            }
+        );
+
+        return Chicane::Reference::empty();
     }
 }

@@ -72,7 +72,7 @@ namespace Chicane
     private:
         bool       m_bIsAbsolute = false;
 
-        float      m_fontSize = 16.0f;
+        float      m_fontSize = 0.0f;
 
         Vec2       m_root   = Vec2::Zero;
         Vec2       m_parent = Vec2::Zero;

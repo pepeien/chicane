@@ -58,14 +58,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(DrawPolyType inType, const Draw::Reference& inReference, const T& inInstance)
             {
-                Draw::Id id = findPoly(inType, inReference);
-
-                if (id <= Draw::UnknownId)
-                {
-                    return;
-                }
-
-                drawPoly(id, inInstance);
+                drawPoly(findPoly(inType, inReference), inInstance);
             }
 
             template <typename T>

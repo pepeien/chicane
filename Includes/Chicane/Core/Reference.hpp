@@ -14,6 +14,13 @@ namespace Chicane
         using Map = std::unordered_map<String, Reference*>;
 
     public:
+        static const Reference& empty()
+        {
+            static Reference result;
+
+            return result;
+        }
+
         template <typename T>
         static inline Reference fromValue(T* inValue)
         {

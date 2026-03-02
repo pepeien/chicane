@@ -39,7 +39,7 @@ set_target_properties(
         OUTPUT_NAME
             "${NAME}Kerb"
         VS_DEBUGGER_WORKING_DIRECTORY
-            "${BUILD_DIR}"
+            "${CHICANE_BUILD_DIR}"
         DEFINE_SYMBOL
             "BUILD_EXPORT"
         POSITION_INDEPENDENT_CODE

@@ -38,11 +38,16 @@ set_target_properties(
         OUTPUT_NAME
             "${NAME}Grid"
         VS_DEBUGGER_WORKING_DIRECTORY
-            "${BUILD_DIR}"
-        DEFINE_SYMBOL
-            "BUILD_EXPORT"
+            "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+)
+
+target_compile_definitions(
+    ${GRID_TARGET_NAME}
+
+    PRIVATE
+        BUILD_EXPORT
 )
 
 target_include_directories(

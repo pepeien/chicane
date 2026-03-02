@@ -1,14 +1,14 @@
 #include "Chicane/Runtime/Application.hpp"
 
-#include <iostream>
-#include <thread>
-
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Engine.hpp"
+
+#include "Chicane/Screech.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -17,6 +17,13 @@
 
 namespace Chicane
 {
+    Application& Application::getInstance()
+    {
+        static Application instance;
+
+        return instance;
+    }
+
     Application::Application()
         : m_telemetry({}),
           m_bIsRunning(false),
@@ -27,11 +34,13 @@ namespace Chicane
           m_sceneCommandBuffers({}),
           m_sceneWriteIndex(0),
           m_sceneReadIndex(1),
+          m_sceneObservable({}),
           m_view(nullptr),
           m_viewThread({}),
           m_viewCommandBuffers({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
+          m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
     {
@@ -45,13 +54,14 @@ namespace Chicane
         initRenderer(inCreateInfo.renderer);
         initBox();
         initKerb();
+        initScreech();
 
         if (inCreateInfo.onSetup)
         {
             inCreateInfo.onSetup();
         }
 
-        m_bIsRunning = true;
+        m_bIsRunning.store(true, std::memory_order_seq_cst);
         initScene();
         initView();
 
@@ -64,7 +74,7 @@ namespace Chicane
             m_telemetry.end();
         }
 
-        m_bIsRunning = false;
+        m_bIsRunning.store(false, std::memory_order_seq_cst);
         shutdownScene();
         shutdownView();
 
@@ -235,13 +245,13 @@ namespace Chicane
                 {
                     const Box::Model* model = static_cast<const Box::Model*>(inAsset);
 
-                    for (const auto& [id, model] : model->getData())
+                    for (const auto& [id, polygon] : model->getData())
                     {
                         Renderer::DrawPolyData data;
                         data.reference = id;
                         data.mode      = Renderer::DrawPolyMode::Fill;
-                        data.vertices  = model.vertices;
-                        data.indices   = model.indices;
+                        data.vertices  = polygon.vertices;
+                        data.indices   = polygon.indices;
 
                         m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
                     }
@@ -261,6 +271,22 @@ namespace Chicane
 
                     return;
                 }
+
+                if (typeid(*inAsset) == typeid(Box::Font))
+                {
+                    for (const auto& [code, glyph] : static_cast<const Box::Font*>(inAsset)->getData().getGlyphs())
+                    {
+                        Renderer::DrawPolyData data;
+                        data.reference = glyph.name;
+                        data.mode      = Renderer::DrawPolyMode::Fill;
+                        data.vertices  = glyph.vertices;
+                        data.indices   = glyph.indices;
+
+                        m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+                    }
+
+                    return;
+                }
             }
         );
     }
@@ -268,6 +294,11 @@ namespace Chicane
     void Application::initKerb()
     {
         Kerb::init();
+    }
+
+    void Application::initScreech()
+    {
+        Screech::init();
     }
 
     void Application::initScene()
@@ -356,7 +387,7 @@ namespace Chicane
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                Renderer::DrawPoly3DCommandMesh subcommand;
+                Renderer::DrawPoly3DCommandMesh subcommand = {};
                 subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
                 subcommand.instance.model   = matrix;
                 subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
@@ -370,7 +401,7 @@ namespace Chicane
             const Box::Sky* asset = sky->getSky();
 
             Renderer::DrawSkyData data;
-            data.reference = asset->getFilepath().string();
+            data.reference = asset->getFilepath();
             data.model     = asset->getModel().getReference();
 
             for (const Box::AssetReference& texture : asset->getTextures())
@@ -389,7 +420,7 @@ namespace Chicane
     {
         const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
+        const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
 
         m_renderer->useCamera(command.camera);
         m_renderer->addLight(command.light);
@@ -509,17 +540,19 @@ namespace Chicane
             const Grid::Style&     style     = component->getStyle();
 
             Renderer::DrawPoly2DCommandFill subcommand;
-            subcommand.polygon.vertices = primitive.vertices;
-            subcommand.polygon.indices  = primitive.indices;
-            subcommand.instance.view    = viewSize;
-            subcommand.instance.scale =
-                component->getScale() == Vec2::Zero ? component->getSize() : component->getScale();
+            subcommand.polygon.reference = primitive.reference;
+            subcommand.polygon.vertices  = primitive.vertices;
+            subcommand.polygon.indices   = primitive.indices;
+            subcommand.instance.view     = viewSize;
+            subcommand.instance.scale    = component->getScale();
             subcommand.instance.size     = component->getSize();
-            subcommand.instance.position = {component->getPosition().x, component->getPosition().y, style.zIndex.get()};
-            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
-            subcommand.instance.color    = style.background.color.get();
+            subcommand.instance.offset   = component->getOffset();
+            subcommand.instance
+                .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
+            subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());
+            subcommand.instance.color   = style.background.color.get();
             subcommand.instance.color.a =
-                (subcommand.instance.texture > Renderer::Draw::UnknownId ? 255.0f : subcommand.instance.color.a) *
+                (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();
 
             command.fills.emplace_back(std::move(subcommand));
@@ -538,7 +571,7 @@ namespace Chicane
 
         const std::size_t index = m_viewReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly2DCommand& command = m_viewCommandBuffers.at(index);
+        const Renderer::DrawPoly2DCommand command = m_viewCommandBuffers.at(index);
 
         for (const Renderer::DrawPoly2DCommandFill& fill : command.fills)
         {

@@ -26,46 +26,38 @@ function(CH_ADD_COMPILER TARGET_NAME)
 endfunction()
 
 function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
-    file(
-        GLOB_RECURSE
-
-        SOURCES
-            "${SOURCE_PATH}/*"
-    )
+    file(GLOB_RECURSE SOURCES "${SOURCE_PATH}/*")
 
     if (FILTER_VALUE)
-        list(
-            FILTER
-                SOURCES
-            EXCLUDE
-                REGEX
-                    ${FILTER_VALUE}
-        )
+        list(FILTER SOURCES EXCLUDE REGEX ${FILTER_VALUE})
     endif()
 
+    set(ALL_OUTPUTS "")
+
     foreach(ITEM ${SOURCES})
-        get_filename_component(FILE_DIR  ${ITEM} DIRECTORY)
-        get_filename_component(FILE_NAME ${ITEM} NAME)
+        file(RELATIVE_PATH REL_PATH "${SOURCE_PATH}" "${ITEM}")
 
-        set(ITEM_DIR "${FILE_DIR}")
-        string(REPLACE "${SOURCE_PATH}" "" ITEM_DIR ${ITEM_DIR})
+        set(ITEM_FILE "${OUTPUT_PATH}/${REL_PATH}")
 
-        set(ITEM_DIR "${OUTPUT_PATH}/${ITEM_DIR}")
-        string(REPLACE "//" "/" ITEM_DIR ${ITEM_DIR})
-
-        file(MAKE_DIRECTORY "${ITEM_DIR}")
-
-        set(ITEM_FILE "${ITEM_DIR}/${FILE_NAME}")
-        string(REPLACE "//" "/" ITEM_FILE ${ITEM_FILE})
+        get_filename_component(ITEM_DIR "${ITEM_FILE}" DIRECTORY)
 
         add_custom_command(
-            TARGET
-                ${TARGET_NAME}
-            POST_BUILD
-            COMMAND
-                ${CMAKE_COMMAND} -E copy_if_different ${ITEM} ${ITEM_FILE}
+            OUTPUT  "${ITEM_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${ITEM_DIR}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${ITEM}" "${ITEM_FILE}"
+            DEPENDS "${ITEM}"
+            COMMENT "Copying ${REL_PATH}"
         )
-    endforeach(ITEM)
+
+        list(APPEND ALL_OUTPUTS "${ITEM_FILE}")
+    endforeach()
+
+    add_custom_target(
+        "${TARGET_NAME}-copy" ALL
+        DEPENDS ${ALL_OUTPUTS}
+    )
+
+    add_dependencies(${TARGET_NAME} "${TARGET_NAME}-copy")
 endfunction()
 
 function(
@@ -132,10 +124,11 @@ endfunction()
 function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
     file(
         GLOB_RECURSE
-
         FILES
             ${SOURCES}
     )
+
+    set(ALL_OUTPUTS "")
 
     foreach(FILE ${FILES})
         get_filename_component(FILE_DIR  ${FILE} DIRECTORY)
@@ -147,11 +140,33 @@ function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
         set(RESULT_DIR "${OUTPUT_DIR}/${RELATIVE_DIR}")
         string(REPLACE "//" "/" RESULT_DIR ${RESULT_DIR})
 
-        install(
-            FILES
-                ${FILE}
-            DESTINATION
-                ${RESULT_DIR}
+        set(RESULT_FILE "${RESULT_DIR}/${FILE_NAME}")
+        string(REPLACE "//" "/" RESULT_FILE ${RESULT_FILE})
+
+        # Skip if already registered
+        get_property(REGISTERED GLOBAL PROPERTY "CH_INSTALL_REGISTERED_${RESULT_FILE}")
+        if (REGISTERED)
+            continue()
+        endif()
+        set_property(GLOBAL PROPERTY "CH_INSTALL_REGISTERED_${RESULT_FILE}" TRUE)
+
+        add_custom_command(
+            OUTPUT  "${RESULT_FILE}"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${RESULT_DIR}"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${FILE}" "${RESULT_FILE}"
+            DEPENDS "${FILE}"
+            COMMENT "Installing ${FILE_NAME}"
         )
-    endforeach(FILE)
+
+        list(APPEND ALL_OUTPUTS "${RESULT_FILE}")
+    endforeach()
+
+    if (ALL_OUTPUTS)
+        string(MD5 DIR_HASH "${OUTPUT_DIR}")
+
+        add_custom_target(
+            "CH_INSTALL_FILES_${DIR_HASH}" ALL
+            DEPENDS ${ALL_OUTPUTS}
+        )
+    endif()
 endfunction()

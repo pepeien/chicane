@@ -1,4 +1,16 @@
-##################### Directories #######################
-add_subdirectory(Engine)
-add_subdirectory(Editor)
-add_subdirectory(Sample)
+##############  Set target  #######################
+add_custom_target(${CONTENTS_TARGET_NAME})
+
+##############  Copy files  #######################
+CH_COPY_FILES(
+    ${CONTENTS_TARGET_NAME}
+    ${CONTENTS_SOURCE_DIR}
+    ${CHICANE_BUILD_DIR}/Contents
+    ".:*CMakeLists.txt|.frag|.vert$"
+)
+
+CH_COMPILE_SHADERS(
+    ${CONTENTS_TARGET_NAME}
+    ${CONTENTS_SOURCE_DIR}
+    ${CHICANE_BUILD_DIR}/Contents
+)

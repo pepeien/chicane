@@ -23,12 +23,7 @@ namespace Chicane
             friend class Application;
 
         public:
-            static inline Engine& getInstance()
-            {
-                static Engine instance;
-
-                return instance;
-            }
+            static Engine& getInstance();
 
         public:
             Engine(const Engine&)            = delete;

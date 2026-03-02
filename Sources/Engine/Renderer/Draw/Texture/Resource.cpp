@@ -18,7 +18,7 @@ namespace Chicane
         {
             if (inReference.isEmpty())
             {
-                return Draw::UnknownId;
+                return Draw::InvalidId;
             }
 
             for (const DrawTexture& draw : m_draws)
@@ -31,14 +31,14 @@ namespace Chicane
                 return draw.id;
             }
 
-            return Draw::UnknownId;
+            return Draw::InvalidId;
         }
 
         const DrawTexture& DrawTextureResource::getDraw(const Draw::Reference& inReference)
         {
             const Draw::Id id = findId(inReference);
 
-            if (id <= Draw::UnknownId)
+            if (id <= Draw::InvalidId)
             {
                 return DrawTexture::empty();
             }
@@ -65,7 +65,7 @@ namespace Chicane
         {
             Draw::Id id = findId(inData.reference);
 
-            if (id > Draw::UnknownId)
+            if (id > Draw::InvalidId)
             {
                 return id;
             }

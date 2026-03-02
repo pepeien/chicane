@@ -55,8 +55,8 @@ This project uses CMake to generate and build files, it should pretty straight f
     - [Doxygen](https://www.doxygen.nl/download.html) (1.12.0);
     - [Python](https://www.python.org/downloads) (^=3.12.0).
 - API:
-    - [OpenGL](https://www.opengl.org/sdk) (^=4.5);
-    - [Vulkan](https://www.lunarg.com/vulkan-sdk) (^=1.4.313.2).
+    - [OpenGL](https://www.opengl.org/sdk) (^=4.6);
+    - [Vulkan](https://www.lunarg.com/vulkan-sdk) (^=1.3.296).
 - Code:
     - [clang-format](https://releases.llvm.org/download.html) (^=21).
 

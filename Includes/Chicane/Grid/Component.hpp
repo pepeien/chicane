@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
@@ -21,7 +23,8 @@ namespace Chicane
         class CHICANE_GRID Component
         {
         public:
-            using Compiler = std::function<Component*(const pugi::xml_node& inNode)>;
+            using Compiler  = std::function<Component*(const pugi::xml_node& inNode)>;
+            using ClassList = std::set<String>;
 
         public:
             static constexpr inline const char* EVENT_KEYWORD = "$event";
@@ -76,7 +79,7 @@ namespace Chicane
             String getId() const;
             void setId(const String& inValue);
 
-            std::vector<String> getClassList() const;
+            ClassList getClassList() const;
             const String& getClassName() const;
             void setClassName(const String& inValue);
             template <typename... Args>
@@ -96,7 +99,7 @@ namespace Chicane
                 setClassName(className.trim());
             }
 
-            String getAttribute(const String& inName) const;
+            const String& getAttribute(const String& inName) const;
 
             // Style
             bool hasStyleFile() const;
@@ -106,6 +109,9 @@ namespace Chicane
             void addStyleProperties(const StyleRuleset::Properties& inSource);
 
             const Style& getStyle() const;
+
+            bool hasLocalSelector(const String& inValue) const;
+            bool hasSelector(const String& inValue) const;
 
             // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
@@ -143,13 +149,21 @@ namespace Chicane
             Vec2 getChildrenContentSize() const;
 
             // Positioning
+            float getDepth() const;
+
             const Vec2& getSize() const;
+            void addSize(const Vec2& inValue);
+            void addSize(float inWidth, float inHeight);
             void setSize(const Vec2& inValue);
             void setSize(float inWidth, float inHeight);
 
             const Vec2& getScale() const;
             void setScale(const Vec2& inValue);
             void setScale(float inX, float inY);
+
+            const Vec2& getOffset() const;
+            void setOffset(const Vec2& inValue);
+            void setOffset(float inX, float inY);
 
             const Vec2& getPosition() const;
             void addPosition(const Vec2& inValue);
@@ -210,6 +224,7 @@ namespace Chicane
             // Position
             Vec2                    m_size;
             Vec2                    m_scale;
+            Vec2                    m_offset;
             Vec2                    m_position;
             Vec2                    m_cursor;
 

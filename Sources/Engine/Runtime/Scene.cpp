@@ -3,7 +3,8 @@
 namespace Chicane
 {
     Scene::Scene()
-        : m_actors({}),
+        : m_bIsLoaded(false),
+          m_actors({}),
           m_actorsObservable({}),
           m_components({}),
           m_componentsObservable({})
@@ -28,10 +29,14 @@ namespace Chicane
         {
             component->onLoad();
         }
+
+        m_bIsLoaded = true;
     }
 
     void Scene::unload()
     {
+        m_bIsLoaded = false;
+
         for (Component* component : m_components)
         {
             component->onUnload();
@@ -127,6 +132,11 @@ namespace Chicane
     )
     {
         return m_componentsObservable.subscribe(inNext, inError, inComplete).next(m_components);
+    }
+
+    bool Scene::isLoaded() const
+    {
+        return m_bIsLoaded;
     }
 
     void Scene::tickActors(float inDeltaTime)

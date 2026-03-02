@@ -1,5 +1,7 @@
 #include "Chicane/Core/Image.hpp"
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <unordered_map>
 
 #define STB_IMAGE_STATIC
@@ -39,18 +41,20 @@ namespace Chicane
 
     const String& Image::getVendorExtension(ImageVendor inValue)
     {
-        if (EXTENSIONS.find(inValue) == EXTENSIONS.end())
+        const auto& found = EXTENSIONS.find(inValue);
+
+        if (found == EXTENSIONS.end())
         {
             return EXTENSIONS.at(ImageVendor::Undefined);
         }
 
-        return EXTENSIONS.at(inValue);
+        return found->second;
     }
 
     Image::Image(const FileSystem::Path& inLocation)
         : Image()
     {
-        m_vendor = parseVendor(inLocation.extension());
+        m_vendor = parseVendor(inLocation.extension().string());
 
         m_format = STBI_rgb_alpha;
 

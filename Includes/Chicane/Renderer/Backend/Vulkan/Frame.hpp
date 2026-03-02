@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 #include <vulkan/vulkan.hpp>
 
 #include "Chicane/Core/View.hpp"

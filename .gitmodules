@@ -26,6 +26,9 @@
 [submodule "Sources/Engine/Kerb/Vendor/JoltPhysics"]
 	path = Sources/Engine/Kerb/Vendor/JoltPhysics
 	url = https://github.com/pepeien/JoltPhysics
+[submodule "Sources/Engine/Renderer/Vendor/Glad"]
+	path = Sources/Engine/Renderer/Vendor/Glad
+	url = https://github.com/pepeien/glad.git
 [submodule "Sources/Engine/Screech/Vendor/miniaudio"]
 	path = Sources/Engine/Screech/Vendor/miniaudio
 	url = https://github.com/pepeien/miniaudio.git

@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Log.hpp"

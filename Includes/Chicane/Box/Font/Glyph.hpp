@@ -4,6 +4,7 @@
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -11,9 +12,6 @@ namespace Chicane
     {
         struct CHICANE_BOX FontGlyph
         {
-        public:
-            using Map = std::unordered_map<char32_t, FontGlyph>;
-
         public:
             static const FontGlyph& empty()
             {
@@ -23,16 +21,16 @@ namespace Chicane
             }
 
         public:
-            char32_t        code       = 0U;
-            float           width      = 0U;
-            float           height     = 0U;
-            float           advance    = 0.0f;
-            float           ascender   = 0.0f;
-            float           descender  = 0.0f;
-            float           lineHeight = 0.0f;
-            Vec2            bearing    = Vec2::Zero;
-            Vertex::List    vertices   = {};
-            Vertex::Indices indices    = {};
+            char32_t        code      = 0U;
+            String          name      = "";
+            float           width     = 0.0f;
+            float           height    = 0.0f;
+            float           advance   = 0.0f;
+            float           ascender  = 0.0f;
+            float           descender = 0.0f;
+            Vec2            bearing   = Vec2::Zero;
+            Vertex::List    vertices  = {};
+            Vertex::Indices indices   = {};
         };
     }
 }

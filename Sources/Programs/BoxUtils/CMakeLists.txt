@@ -28,7 +28,7 @@ set_target_properties(
         OUTPUT_NAME
             "BoxUtils"
         VS_DEBUGGER_WORKING_DIRECTORY
-            "${BUILD_DIR}"
+            "${CHICANE_BUILD_DIR}"
 )
 
 target_include_directories(

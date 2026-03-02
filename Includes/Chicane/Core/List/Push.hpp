@@ -1,12 +1,14 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/List/Push/Strategy.hpp"
 
 namespace Chicane
 {
     template <typename T>
-    struct CHICANE_CORE ListPush
+    struct ListPush
     {
     public:
         using Predicate = std::function<bool(T)>;

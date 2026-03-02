@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/FileSystem/Item/Type.hpp"
 
 namespace Chicane
@@ -30,24 +31,11 @@ namespace Chicane
                 return {};
             }
 
-            std::vector<Item> result = {};
+            std::vector<Item> result;
 
             for (const auto& entry : std::filesystem::directory_iterator(inDir))
             {
-                const auto& path = entry.path();
-
-                Item item      = {};
-                item.type      = entry.is_directory() ? ItemType::Folder : ItemType::File;
-                item.name      = path.filename().string();
-                item.extension = path.extension().string();
-                item.path      = path.lexically_normal().string();
-
-                if (item.type == ItemType::Folder)
-                {
-                    item.childCount = static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
-                }
-
-                result.push_back(item);
+                result.push_back(Item(entry.is_directory() ? ItemType::Folder : ItemType::File, entry.path()));
             }
 
             return result;
@@ -101,11 +89,13 @@ namespace Chicane
 
         std::vector<char> read(const Path& inFilepath)
         {
-            std::basic_ifstream<char> file(inFilepath.string(), std::ios::ate | std::ios::binary);
+            const Path path = std::filesystem::absolute(inFilepath);
+
+            std::basic_ifstream<char> file(path.string(), std::ios::ate | std::ios::binary);
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(String::sprint("Failed to open the file [%s]", path.c_str()).toChar());
             }
 
             size_t            fileSize = (size_t)file.tellg();

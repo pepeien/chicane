@@ -81,12 +81,8 @@ namespace Chicane
                 features.fillModeNonSolid           = true;
                 features.depthClamp                 = true;
 
-                vk::PhysicalDeviceRobustness2FeaturesKHR features2;
-                features2.nullDescriptor = true;
-
                 vk::PhysicalDeviceDescriptorIndexingFeatures descriptorFeatures;
                 descriptorFeatures.runtimeDescriptorArray = true;
-                descriptorFeatures.pNext                  = &features2;
 
                 vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
                     vk::DeviceCreateFlags(),

@@ -21,13 +21,15 @@ namespace Chicane
                 throw std::runtime_error("The XML document path is empty");
             }
 
+            const FileSystem::Path path = std::filesystem::absolute(inFilepath);
+
             if (!inDocument.save_file(
-                    inFilepath.c_str(),
+                    path.c_str(),
                     "    ",
                     pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
                 ))
             {
-                throw std::runtime_error("Failed to save the XML [ " + inFilepath.string() + " ]");
+                throw std::runtime_error("Failed to save the XML [ " + path.string() + " ]");
             }
         }
 
@@ -38,10 +40,12 @@ namespace Chicane
                 throw std::runtime_error("The XML document path is empty");
             }
 
+            const FileSystem::Path path = std::filesystem::absolute(inFilepath);
+
             pugi::xml_document result;
-            if (!result.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
+            if (!result.load_file(path.c_str(), pugi::parse_default | pugi::parse_fragment))
             {
-                throw std::runtime_error("Failed to read the XML document [" + inFilepath.string() + "]");
+                throw std::runtime_error("Failed to read the XML document [" + path.string() + "]");
             }
 
             return result;
@@ -71,7 +75,7 @@ namespace Chicane
                 return;
             }
 
-            outNode.append_attribute(inName.toChar()).set_value(inValue);
+            outNode.append_attribute(inName.toChar()).set_value(inValue.toStandard());
         }
 
         void addText(pugi::xml_node& outNode, const String& inText)

@@ -18,7 +18,6 @@ namespace Chicane
 
             std::copy(std::begin(data->dsound), std::end(data->dsound), dsound.begin());
 
-            wasapi    = data->wasapi;
             winmm     = data->winmm;
             alsa      = data->alsa;
             pulse     = data->pulse;
@@ -33,8 +32,7 @@ namespace Chicane
         }
 
         DeviceId::DeviceId()
-            : wasapi(""),
-              dsound({}),
+            : dsound({}),
               winmm(0),
               alsa(""),
               pulse(""),

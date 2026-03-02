@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd .. && doxygen -q Doxyfile
-python3 Scripts/Documentation.py \
+python3 Scripts/Documentation/Helper.py \
 -i .docs/xml \
 -o .docs/references \
 -d Includes/Chicane/ \

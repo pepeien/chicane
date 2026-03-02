@@ -21,6 +21,8 @@ namespace Chicane
 {
     namespace Screech
     {
+        CHICANE_SCREECH void init();
+
         CHICANE_SCREECH void* getContext();
         CHICANE_SCREECH void* getEngine();
     }

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Core/List.hpp"
+#include <cstddef>
+
+#include "Chicane/Core/List/Push.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -23,7 +25,7 @@ namespace Chicane
             friend Instance;
 
         public:
-            using LayerList = std::vector<std::unique_ptr<Layer>>;
+            using LayerList = std::vector<std::shared_ptr<Layer>>;
 
         public:
             Backend();
@@ -57,7 +59,7 @@ namespace Chicane
                 auto found = std::find_if(
                     m_layers.begin(),
                     m_layers.end(),
-                    [&inId](const std::unique_ptr<Layer>& inLayer) { return inLayer->getId().equals(inId); }
+                    [&inId](const std::shared_ptr<Layer>& inLayer) { return inLayer->getId().equals(inId); }
                 );
 
                 if (found == m_layers.end())
@@ -76,38 +78,38 @@ namespace Chicane
                         ? std::find_if(
                               m_layers.begin(),
                               m_layers.end(),
-                              [&](const std::unique_ptr<Layer>& inLayer) { return inSettings.predicate(inLayer.get()); }
+                              [&](const std::shared_ptr<Layer>& inLayer) { return inSettings.predicate(inLayer.get()); }
                           )
                         : m_layers.end();
 
                 switch (inSettings.strategy)
                 {
                 case ListPushStrategy::Back:
-                    location = m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::Front:
-                    location = m_layers.insert(m_layers.begin(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.begin(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::After:
                     location = location != m_layers.end()
-                                   ? m_layers.insert(location + 1, std::make_unique<Target>(inParams...))
-                                   : m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                                   ? m_layers.insert(location + 1, std::make_shared<Target>(inParams...))
+                                   : m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 case ListPushStrategy::Before:
                     location = location != m_layers.end()
-                                   ? m_layers.insert(location, std::make_unique<Target>(inParams...))
-                                   : m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                                   ? m_layers.insert(location, std::make_shared<Target>(inParams...))
+                                   : m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
 
                 default:
-                    location = m_layers.insert(m_layers.end(), std::make_unique<Target>(inParams...));
+                    location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
                     break;
                 }

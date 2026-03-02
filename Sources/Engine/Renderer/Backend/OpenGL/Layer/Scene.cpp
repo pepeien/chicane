@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
 
-#include <GL/glew.h>
+#include <glad/gl.h>
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"

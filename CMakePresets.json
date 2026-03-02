@@ -1,0 +1,55 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "debug",
+            "displayName": "Debug",
+            "description": "Building directly on your host machine",
+            "binaryDir": "${sourceDir}/build-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+
+                "CHICANE_BUILD_DIR": "Bin/Debug",
+
+                "CHICANE_OPENGL_MAJOR_VERSION": "4",
+                "CHICANE_OPENGL_MINOR_VERSION": "6",
+
+                "CHICANE_VULKAN_MAJOR_VERSION": "1",
+                "CHICANE_VULKAN_MINOR_VERSION": "3",
+                "CHICANE_VULKAN_PATCH_VERSION": "296"
+            }
+        },
+        {
+            "name": "release",
+            "displayName": "Release",
+            "description": "Building directly on your host machine",
+            "binaryDir": "${sourceDir}/build-release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+
+                "CHICANE_BUILD_DIR": "Bin/Release",
+
+                "CHICANE_OPENGL_MAJOR_VERSION": "4",
+                "CHICANE_OPENGL_MINOR_VERSION": "6",
+
+                "CHICANE_VULKAN_MAJOR_VERSION": "1",
+                "CHICANE_VULKAN_MINOR_VERSION": "3",
+                "CHICANE_VULKAN_PATCH_VERSION": "296"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug",
+            "targets": ["ALL_BUILD"],
+            "configuration": "Debug"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release",
+            "targets": ["ALL_BUILD"],
+            "configuration": "Release"
+        }
+    ]
+}

@@ -36,5 +36,7 @@ namespace Chicane
 
     public:
         inline String toString() const { return String::sprint("[%.2f, %.2f, %.2f]", x, y, z); }
+
+        inline Vec3 cross(const Vec3& inValue) const { return glm::cross(*this, inValue); }
     };
 }

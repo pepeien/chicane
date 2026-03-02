@@ -45,13 +45,6 @@ namespace Chicane
 
         void Container::onRefresh()
         {
-            Component::onRefresh();
-
-            if (m_style.height.isRaw(Size::AUTO_KEYWORD) || m_style.width.isRaw(Size::AUTO_KEYWORD))
-            {
-                return;
-            }
-
             if (!m_style.align.isRaw(Style::ALIGNMENT_TYPE_CENTER))
             {
                 return;

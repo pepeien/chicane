@@ -153,51 +153,6 @@ namespace Chicane
             return getAsset<Sky>(inFilePath);
         }
 
-        void loadAll(const String& inPath)
-        {
-            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
-            {
-                if (item.type != FileSystem::ItemType::File)
-                {
-                    loadAll(item.path);
-
-                    continue;
-                }
-
-                if (!AssetHeader::isFileAsset(item.path.toStandard()))
-                {
-                    continue;
-                }
-
-                load(item.path.toStandard());
-            }
-        }
-
-        void loadAllByExtension(const String& inExtension, const String& inPath)
-        {
-            if (inExtension.isEmpty())
-            {
-                return;
-            }
-
-            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
-            {
-                if (item.type != FileSystem::ItemType::File)
-                {
-                    loadAllByExtension(inExtension, item.path);
-
-                    continue;
-                }
-
-                if (!item.extension.contains(inExtension))
-                {
-                    continue;
-                }
-
-                load(item.path.toStandard());
-            }
-        }
-
         std::vector<const Asset*> getById(const String& inId)
         {
             std::vector<const Asset*> result;
