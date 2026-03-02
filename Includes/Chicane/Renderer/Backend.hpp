@@ -8,6 +8,7 @@
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
+#include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
@@ -39,7 +40,7 @@ namespace Chicane
             virtual void onResize();
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource);
             virtual void onLoad(const DrawTextureResource& inResources);
-            virtual void onLoad(const DrawSky& inResource);
+            virtual void onLoad(const DrawSkyResource& inResource);
 
             // Render
             virtual void onBeginRender();

@@ -47,14 +47,14 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
-        void VulkanLSceneSky::onLoad(const DrawSky& inResource)
+        void VulkanLSceneSky::onLoad(const DrawSkyResource& inResource)
         {
-            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
+            if (inResource.isEmpty())
             {
                 return;
             }
 
-            buildTextureData(inResource);
+            buildTextureData(inResource.getDraw());
         }
 
         bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)

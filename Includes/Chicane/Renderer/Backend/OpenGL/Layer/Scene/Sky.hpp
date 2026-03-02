@@ -16,7 +16,7 @@ namespace Chicane
             void onInit() override;
             void onDestruction() override;
 
-            void onLoad(const DrawSky& inResource) override;
+            void onLoad(const DrawSkyResource& inResource) override;
 
             bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
@@ -27,6 +27,7 @@ namespace Chicane
             void destroyShader();
 
             void buildTextureData();
+            void updateTextureData(const DrawSky& inValue);
             void destroyTextureData();
 
         private:

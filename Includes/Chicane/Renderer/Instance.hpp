@@ -18,6 +18,7 @@
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
+#include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
@@ -101,6 +102,9 @@ namespace Chicane
             void reloadBackend();
 
             // Draw
+            void syncDirtyResources();
+            void markResourcesAsDirty();
+
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 
         private:
@@ -117,7 +121,7 @@ namespace Chicane
             // Draw
             DrawPolyResource::Map    m_polyResources;
             DrawTextureResource      m_textureResources;
-            DrawSky                  m_skyResource;
+            DrawSkyResource          m_skyResource;
 
             // Backend
             std::unique_ptr<Backend> m_backend;

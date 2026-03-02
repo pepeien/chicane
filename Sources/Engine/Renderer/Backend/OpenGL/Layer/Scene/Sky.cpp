@@ -26,34 +26,16 @@ namespace Chicane
             destroyTextureData();
         }
 
-        void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
+        void OpenGLLSceneSky::onLoad(const DrawSkyResource& inResource)
         {
             glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
-            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
+            if (inResource.isEmpty())
             {
                 return;
             }
 
-            int side = 0;
-            for (const DrawTexture& texture : inResource.textures)
-            {
-                glTextureSubImage3D(
-                    m_texturesBuffer,
-                    0,
-                    0,
-                    0,
-                    side,
-                    texture.image.getWidth(),
-                    texture.image.getHeight(),
-                    1,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    texture.image.getPixels()
-                );
-
-                side++;
-            }
+            updateTextureData(inResource.getDraw());
         }
 
         bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
@@ -181,6 +163,29 @@ namespace Chicane
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        }
+
+        void OpenGLLSceneSky::updateTextureData(const DrawSky& inValue)
+        {
+            int side = 0;
+            for (const DrawTexture& texture : inValue.textures)
+            {
+                glTextureSubImage3D(
+                    m_texturesBuffer,
+                    0,
+                    0,
+                    0,
+                    side,
+                    texture.image.getWidth(),
+                    texture.image.getHeight(),
+                    1,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    texture.image.getPixels()
+                );
+
+                side++;
+            }
         }
 
         void OpenGLLSceneSky::destroyTextureData()

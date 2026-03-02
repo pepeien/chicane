@@ -51,7 +51,7 @@ namespace Chicane
             }
         }
 
-        void Backend::onLoad(const DrawSky& inResource)
+        void Backend::onLoad(const DrawSkyResource& inResource)
         {
             for (std::shared_ptr<Layer>& layer : m_layers)
             {

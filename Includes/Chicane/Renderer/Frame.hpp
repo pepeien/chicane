@@ -10,6 +10,7 @@
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Sky/Instance.hpp"
+#include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -21,7 +22,7 @@ namespace Chicane
         public:
             void reset();
             void setup(const DrawPolyResource::Map& inResources);
-            void setup(const DrawSky& inResource);
+            void setup(const DrawSkyResource& inResource);
 
             const View& getCamera() const;
             void useCamera(const View& inData);

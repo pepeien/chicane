@@ -44,22 +44,7 @@ namespace Chicane
                 return;
             }
 
-            for (auto& [type, resource] : m_polyResources)
-            {
-                if (resource.isDirty())
-                {
-                    m_backend->onLoad(type, resource);
-
-                    resource.markAsClean();
-                }
-            }
-
-            if (m_textureResources.isDirty())
-            {
-                m_backend->onLoad(m_textureResources);
-
-                m_textureResources.markAsClean();
-            }
+            syncDirtyResources();
 
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
@@ -116,18 +101,17 @@ namespace Chicane
 
         Draw::Id Instance::findSky(const Draw::Reference& inReference)
         {
-            return m_skyResource.id;
+            return m_skyResource.findId(inReference);
         }
 
         Draw::Id Instance::loadSky(const DrawSkyData& inData)
         {
-            if (m_skyResource.reference.equals(inData.reference))
+            if (findSky(inData.reference) != Draw::InvalidId)
             {
-                return m_skyResource.id;
+                return m_skyResource.getDraw().id;
             }
 
             DrawSky sky;
-            sky.id        = 1;
             sky.reference = inData.reference;
 
             for (const Draw::Reference& texture : inData.textures)
@@ -142,14 +126,9 @@ namespace Chicane
                 return Draw::InvalidId;
             }
 
-            m_skyResource = sky;
+            m_skyResource.add(sky);
 
-            if (hasBackend())
-            {
-                m_backend->onLoad(m_skyResource);
-            }
-
-            return m_skyResource.id;
+            return m_skyResource.findId(sky.reference);
         }
 
         bool Instance::hasWindow() const
@@ -251,13 +230,46 @@ namespace Chicane
 
             m_backend->onInit();
 
-            for (const auto& [type, resource] : m_polyResources)
+            markResourcesAsDirty();
+        }
+
+        void Instance::syncDirtyResources()
+        {
+            for (auto& [type, resource] : m_polyResources)
             {
-                m_backend->onLoad(type, resource);
+                if (resource.isDirty())
+                {
+                    m_backend->onLoad(type, resource);
+
+                    resource.markAsClean();
+                }
             }
 
-            m_backend->onLoad(m_textureResources);
-            m_backend->onLoad(m_skyResource);
+            if (m_textureResources.isDirty())
+            {
+                m_backend->onLoad(m_textureResources);
+
+                m_textureResources.markAsClean();
+            }
+
+            if (m_skyResource.isDirty())
+            {
+                m_backend->onLoad(m_skyResource);
+
+                m_skyResource.markAsClean();
+            }
+        }
+
+        void Instance::markResourcesAsDirty()
+        {
+            for (auto& [type, resource] : m_polyResources)
+            {
+                resource.markAsDirty();
+            }
+
+            m_textureResources.markAsDirty();
+
+            m_skyResource.markAsDirty();
         }
 
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
