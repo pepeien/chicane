@@ -3,7 +3,9 @@
 #include <Chicane/Core/List/Push.hpp>
 #include <Chicane/Core/Window/Backend.hpp>
 #include <Chicane/Core/Window/Type.hpp>
+
 #include <Chicane/Renderer.hpp>
+
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 

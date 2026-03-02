@@ -33,12 +33,7 @@ namespace Chicane
         using ViewSubscription = EventSubscription<std::shared_ptr<Grid::View>>;
 
     public:
-        static inline Application& getInstance()
-        {
-            static Application instance;
-
-            return instance;
-        }
+        static Application& getInstance();
 
     public:
         Application(const Application&)            = delete;

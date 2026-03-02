@@ -148,9 +148,6 @@ set(EDITOR_TARGET_NAME "${NAME}-Editor")
 set(EDITOR_HEADER_DIR  "${SOURCES_DIR}/Editor")
 set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
 
-set(EDITOR_CONTENT_TARGET_NAME "${EDITOR_TARGET_NAME}-Content")
-set(EDITOR_CONTENT_SOURCE_DIR  "${CONTENTS_DIR}/Editor")
-
 ## Sample
 set(SAMPLE_TARGET_NAME "${NAME}-Sample")
 set(SAMPLE_HEADER_DIR  "${SOURCES_DIR}/Sample")
@@ -159,9 +156,6 @@ set(SAMPLE_SOURCE_DIR  "${SOURCES_DIR}/Sample")
 set(SHOOTER_TARGET_NAME "${SAMPLE_TARGET_NAME}-Shooter")
 set(SHOOTER_HEADER_DIR  "${SAMPLE_HEADER_DIR}/Shooter")
 set(SHOOTER_SOURCE_DIR  "${SAMPLE_SOURCE_DIR}/Shooter")
-
-set(SHOOTER_CONTENT_TARGET_NAME "${SHOOTER_TARGET_NAME}-Content")
-set(SHOOTER_CONTENT_SOURCE_DIR  "${CONTENTS_DIR}/Sample/Shooter")
 
 ##################### Directories #######################
 add_subdirectory(Contents)

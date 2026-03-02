@@ -1,31 +1,40 @@
 FROM ubuntu:24.04
 
 # ──────────── Args ────────────
-ARG VULKAN_VERSION
+ARG VULKAN_SOURCE
 
 # ──────────── Envs ────────────
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV VULKAN_SOURCE=${VULKAN_SOURCE}
+
+# ──────────── Dependencies ────────────
 RUN apt-get update && apt-get install -y \
-    build-essential cmake ninja-build \
-    git wget p7zip-full \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    wget \
+    p7zip-full \
     mingw-w64 \
-    glslang-tools \
-    vulkan-tools \
     pkg-config \
+    glslang-tools \
+    glslang-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # ──────────── Vulkan SDK ────────────
 WORKDIR /opt/vulkan_setup
-RUN wget -q https://sdk.lunarg.com/sdk/download/${VULKAN_VERSION}/windows/VulkanSDK-${VULKAN_VERSION}-Installer.exe -O vulkan-sdk.exe && \
+
+RUN wget -q ${VULKAN_SOURCE} -O vulkan-sdk.exe && \
     7z x vulkan-sdk.exe -oextracted && \
     mkdir -p /opt/vulkan && \
-    mv extracted/Include /opt/vulkan/Include && \
-    mv extracted/Lib     /opt/vulkan/Lib && \
+    mv extracted/Include  /opt/vulkan/Include && \
+    mv extracted/Lib      /opt/vulkan/Lib     && \
+    mv extracted/Bin      /opt/vulkan/Bin     && \
     rm -rf /opt/vulkan_setup
 
 #──────────── Toolchain file ────────────
-RUN cat > /opt/mingw-toolchain.cmake << 'EOF'
+RUN cat > /opt/mingw.toolchain.cmake << 'EOF'
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_C_COMPILER   x86_64-w64-mingw32-gcc)
 set(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)

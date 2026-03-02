@@ -53,6 +53,6 @@ target_link_libraries(
         Chicane::Runtime
 )
 
-add_dependencies(${EDITOR_TARGET_NAME} ${EDITOR_CONTENT_TARGET_NAME})
+add_dependencies(${EDITOR_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${EDITOR_TARGET_NAME})

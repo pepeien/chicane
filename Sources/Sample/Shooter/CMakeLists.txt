@@ -43,6 +43,6 @@ target_link_libraries(
         Chicane::Runtime
 )
 
-add_dependencies(${SHOOTER_TARGET_NAME} ${SHOOTER_CONTENT_TARGET_NAME})
+add_dependencies(${SHOOTER_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${SHOOTER_TARGET_NAME})

@@ -17,6 +17,13 @@
 
 namespace Chicane
 {
+    Application& Application::getInstance()
+    {
+        static Application instance;
+
+        return instance;
+    }
+
     Application::Application()
         : m_telemetry({}),
           m_bIsRunning(false),
@@ -238,13 +245,13 @@ namespace Chicane
                 {
                     const Box::Model* model = static_cast<const Box::Model*>(inAsset);
 
-                    for (const auto& [id, model] : model->getData())
+                    for (const auto& [id, polygon] : model->getData())
                     {
                         Renderer::DrawPolyData data;
                         data.reference = id;
                         data.mode      = Renderer::DrawPolyMode::Fill;
-                        data.vertices  = model.vertices;
-                        data.indices   = model.indices;
+                        data.vertices  = polygon.vertices;
+                        data.indices   = polygon.indices;
 
                         m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
                     }

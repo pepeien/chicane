@@ -1,8 +1,11 @@
 services:
   compiler:
     build:
-      context: ../../../
-      dockerfile: Scripts/Build/Linux/Dockerfile
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VULKAN_SOURCE: "https://sdk.lunarg.com/sdk/download/1.3.296.0/linux/vulkansdk-linux-x86_64-1.3.296.0.tar.xz"
+        VULKAN_VERSION: "1.3.296.0"
     image: chicane-linux
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
@@ -15,7 +18,7 @@ services:
       VULKAN_MINOR_VERSION: 3
       VULKAN_PATCH_VERSION: 296
     command: >
-      bash -c "cmake -S . -B build-linux \
+      bash -c "cmake -S . -B build-linux -G 'Ninja' \
       -DCMAKE_BUILD_TYPE=Release \
       -DCHICANE_BUILD_DIR='Bin/Docker-Linux' \
       -DCHICANE_SHARED=ON \
@@ -26,4 +29,4 @@ services:
       -DCHICANE_VULKAN_MAJOR_VERSION=$$VULKAN_MAJOR_VERSION \
       -DCHICANE_VULKAN_MINOR_VERSION=$$VULKAN_MINOR_VERSION \
       -DCHICANE_VULKAN_PATCH_VERSION=$$VULKAN_PATCH_VERSION \
-      && cmake --build build-linux"
+      && cmake --build build-linux --config Release"

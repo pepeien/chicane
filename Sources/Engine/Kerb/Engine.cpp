@@ -37,6 +37,13 @@ namespace Chicane
         static const JPH::Quat ENGINE_TO_JPH_QUAT = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), JPH::JPH_PI * 0.5f);
         static const JPH::Quat JPH_TO_ENGINE_QUAT = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), -JPH::JPH_PI * 0.5f);
 
+        Engine& Engine::getInstance()
+        {
+            static Engine instance;
+
+            return instance;
+        }
+
         Engine::Engine()
             : m_tempAllocator(10 * 1024 * 1024),
               m_broadLayer(ObjectLayer::Count, BroadPhaseLayer::Count),
