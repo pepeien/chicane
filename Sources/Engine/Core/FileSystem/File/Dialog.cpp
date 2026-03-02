@@ -72,13 +72,18 @@ namespace Chicane
             }
             command.append('\0');
 
-            std::vector<wchar_t> filepath(MAX_PATH, L'\0');
+            std::vector<wchar_t> filepath(MAX_PATH * (bCanSelectMany ? 1 : 20), L'\0');
 
             OPENFILENAMEW ofn{};
             ofn.lStructSize = sizeof(ofn);
             ofn.lpstrFile   = filepath.data();
             ofn.nMaxFile    = static_cast<DWORD>(filepath.size());
             ofn.Flags       = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+            if (bCanSelectMany)
+            {
+                ofn.Flags |= OFN_ALLOWMULTISELECT;
+            }
 
             std::wstring sFileFilter = std::wstring(command.begin(), command.end());
             ofn.lpstrFilter          = sFileFilter.c_str();

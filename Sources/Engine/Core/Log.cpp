@@ -40,7 +40,10 @@ namespace Chicane
 
             const String& terminalColor = g_colors.at(color);
 
-            std::cout << COLOR_START << terminalColor << message << COLOR_END;
+            if (IS_DEBUGGING)
+            {
+                std::cout << COLOR_START << terminalColor << message << COLOR_END;
+            }
 
             // History
             if (g_history.size() > MAX_HISTORY_COUNT)

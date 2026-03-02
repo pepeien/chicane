@@ -17,7 +17,7 @@ services:
       VULKAN_MINOR_VERSION: 3
       VULKAN_PATCH_VERSION: 296
     command: >
-      bash -c "cmake -S . -B build-windows -G 'Ninja' \
+      bash -c "cmake -S . -B build-docker-windows -G 'Ninja' \
       -DCMAKE_TOOLCHAIN_FILE='/opt/mingw.toolchain.cmake' \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXE_LINKER_FLAGS='-static-libgcc -static-libstdc++' \
@@ -32,4 +32,4 @@ services:
       -DCHICANE_VULKAN_MAJOR_VERSION=$$VULKAN_MAJOR_VERSION \
       -DCHICANE_VULKAN_MINOR_VERSION=$$VULKAN_MINOR_VERSION \
       -DCHICANE_VULKAN_PATCH_VERSION=$$VULKAN_PATCH_VERSION \
-      && cmake --build build-windows --config Release"
+      && cmake --build build-docker-windows --config Release"

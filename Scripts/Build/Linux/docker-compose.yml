@@ -18,7 +18,7 @@ services:
       VULKAN_MINOR_VERSION: 3
       VULKAN_PATCH_VERSION: 296
     command: >
-      bash -c "cmake -S . -B build-linux -G 'Ninja' \
+      bash -c "cmake -S . -B build-docker-linux -G 'Ninja' \
       -DCMAKE_BUILD_TYPE=Release \
       -DCHICANE_BUILD_DIR='Bin/Docker-Linux' \
       -DCHICANE_SHARED=ON \
@@ -29,4 +29,4 @@ services:
       -DCHICANE_VULKAN_MAJOR_VERSION=$$VULKAN_MAJOR_VERSION \
       -DCHICANE_VULKAN_MINOR_VERSION=$$VULKAN_MINOR_VERSION \
       -DCHICANE_VULKAN_PATCH_VERSION=$$VULKAN_PATCH_VERSION \
-      && cmake --build build-linux --config Release"
+      && cmake --build build-docker-linux --config Release"
