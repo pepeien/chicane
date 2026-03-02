@@ -36,7 +36,7 @@ jobs:
               run: rm -rf .docs/references
 
             - name: Build References
-              run: bash Documentation
+              run: bash Documentation.sh
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
