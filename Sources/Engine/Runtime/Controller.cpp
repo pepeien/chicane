@@ -121,7 +121,7 @@ namespace Chicane
     {
         if (!isConnectedTo(inType))
         {
-            return true;
+            return false;
         }
 
         return m_devices.at(inType) == inId;
@@ -322,13 +322,14 @@ namespace Chicane
         disconnectFrom(Input::DeviceType::Gamepad);
 
         int             gamepadCount = 0;
-        SDL_JoystickID* gamepadId    = SDL_GetGamepads(&gamepadCount);
-        if (gamepadCount <= 0)
+        SDL_JoystickID* gamepads     = SDL_GetGamepads(&gamepadCount);
+
+        if (gamepadCount > 0)
         {
-            return;
+            connectTo(Input::DeviceType::Gamepad, *gamepads);
         }
 
-        connectTo(Input::DeviceType::Gamepad, *gamepadId);
+        SDL_free(gamepads);
     }
 
     void Controller::setupDefaultKeyboard()
@@ -336,47 +337,41 @@ namespace Chicane
         disconnectFrom(Input::DeviceType::Keyboard);
 
         int             keyboardCount = 0;
-        SDL_KeyboardID* keyboardId    = SDL_GetKeyboards(&keyboardCount);
-        if (keyboardCount <= 0)
-        {
-            return;
-        }
+        SDL_KeyboardID* keyboards     = SDL_GetKeyboards(&keyboardCount);
 
-        for (int i = 0; i < keyboardCount; i++)
+        if (keyboardCount > 0)
         {
-            bool bIsDefault = false;
-            for (const String& defaultName : DEFAULT_KEYBOARDS)
+            for (int i = 0; i < keyboardCount; i++)
             {
-                if (defaultName.equals(SDL_GetKeyboardNameForID(*keyboardId)))
+                bool bIsDefault = false;
+                for (const String& defaultName : DEFAULT_KEYBOARDS)
                 {
-                    bIsDefault = true;
+                    if (defaultName.equals(SDL_GetKeyboardNameForID(*keyboards)))
+                    {
+                        bIsDefault = true;
 
+                        break;
+                    }
+                }
+
+                if (!bIsDefault)
+                {
                     break;
                 }
+
+                keyboards++;
             }
 
-            if (!bIsDefault)
-            {
-                break;
-            }
-
-            keyboardId++;
+            connectTo(Input::DeviceType::Keyboard, *keyboards);
         }
 
-        connectTo(Input::DeviceType::Keyboard, *keyboardId);
+        SDL_free(keyboards);
     }
 
     void Controller::setupDefaultMouse()
     {
         disconnectFrom(Input::DeviceType::Mouse);
 
-        int          mouseCount = 0;
-        SDL_MouseID* mouseId    = SDL_GetMice(&mouseCount);
-        if (mouseCount <= 0)
-        {
-            return;
-        }
-
-        connectTo(Input::DeviceType::Mouse, *mouseId);
+        connectTo(Input::DeviceType::Mouse, 0);
     }
 }

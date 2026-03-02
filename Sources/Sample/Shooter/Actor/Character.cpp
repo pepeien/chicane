@@ -148,6 +148,18 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Released,
         std::bind(&Character::onJump, this)
     );
+
+    m_controller->bindEvent(
+        Chicane::Input::GamepadButton::LeftShoulder,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onShoot, this)
+    );
+
+    m_controller->bindEvent(
+        Chicane::Input::GamepadButton::Start,
+        Chicane::Input::Status::Released,
+        std::bind(&Character::onRightClick, this)
+    );
 }
 
 void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
@@ -157,6 +169,11 @@ void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
 
 void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent)
 {
+    if (std::abs(inEvent.value) <= 0.3f)
+    {
+        return;
+    }
+
     switch (inEvent.axis)
     {
     case Chicane::Input::GamepadAxis::LeftX:
