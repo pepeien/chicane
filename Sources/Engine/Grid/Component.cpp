@@ -169,11 +169,28 @@ namespace Chicane
 
         Component::ClassList Component::getClassList() const
         {
+            if (m_className.isEmpty())
+            {
+                return {};
+            }
+
             ClassList result = {};
 
+            String accumulated = "";
             for (const String& className : m_className.split(Style::SELECTOR_SEPARATOR_SPACE))
             {
-                result.insert(Style::CLASS_SELECTOR + className);
+                String part = Style::CLASS_SELECTOR + className;
+                part        = part.trim();
+
+                accumulated.append(' ');
+                accumulated.append(part);
+
+                result.emplace(std::move(part));
+            }
+
+            if (!accumulated.isEmpty())
+            {
+                result.insert(accumulated.trim());
             }
 
             return result;
@@ -220,39 +237,74 @@ namespace Chicane
                 return true;
             }
 
-            String remaining = inValue;
+            String              tag;
+            String              id;
+            std::vector<String> classes;
 
-            const size_t idPos = remaining.firstOf(Style::ID_SELECTOR);
-            if (idPos != String::npos)
+            String value = inValue.trim();
+
+            std::size_t cursor = value.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
+
+            if (cursor == String::npos)
             {
-                String idPart = remaining.substr(idPos);
-                remaining     = remaining.substr(0, idPos);
+                tag = value;
+            }
+            else
+            {
+                if (cursor > 0)
+                {
+                    tag = value.substr(0, cursor);
+                }
 
-                if (!(Style::ID_SELECTOR + getId()).equals(idPart))
+                value = value.substr(cursor);
+            }
+
+            while (!value.isEmpty())
+            {
+                if (!value.startsWithChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR))
+                {
+                    return false;
+                }
+
+                const std::size_t next   = value.substr(1).firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
+                const std::size_t length = next == String::npos ? value.size() : next + 1;
+
+                const String token = value.substr(0, length);
+
+                if (token.startsWith(Style::CLASS_SELECTOR))
+                {
+                    classes.push_back(token);
+                }
+                else if (token.startsWith(Style::ID_SELECTOR))
+                {
+                    id = token;
+                }
+
+                if (length >= value.size())
+                {
+                    break;
+                }
+
+                value = value.substr(length);
+            }
+
+            if (!tag.isEmpty() && !tag.equals(getTag()))
+            {
+                return false;
+            }
+
+            if (!id.isEmpty())
+            {
+                if (!id.equals(Style::ID_SELECTOR + getId()))
                 {
                     return false;
                 }
             }
 
-            const ClassList classes = getClassList();
-
-            size_t classPos = remaining.firstOf(Style::CLASS_SELECTOR);
-            while (classPos != String::npos)
+            const ClassList classList = getClassList();
+            for (const String& className : classes)
             {
-                String classPart = remaining.substr(classPos);
-                remaining        = remaining.substr(0, classPos);
-
-                if (classes.find(classPart) == classes.end())
-                {
-                    return false;
-                }
-
-                classPos = remaining.firstOf(Style::CLASS_SELECTOR);
-            }
-
-            if (!remaining.isEmpty())
-            {
-                if (!remaining.equals(getTag()))
+                if (classList.find(className) == classList.end())
                 {
                     return false;
                 }
@@ -274,7 +326,7 @@ namespace Chicane
                 return false;
             }
 
-            if (!hasLocalSelector(parts.back().trim()))
+            if (!hasLocalSelector(inValue))
             {
                 return false;
             }

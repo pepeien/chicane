@@ -7,13 +7,13 @@ $bottomBarSize: 20vh;
     position: absolute;
     background-color: #242424;
 
-    .--side {
+    &.--side {
         width: $sideBarSize;
         height: 100%;
         margin-left: calc(100% - $sideBarSize);
     }
 
-    .--bottom {
+    &.--bottom {
         width: calc(100% - $sideBarSize);
         height: $bottomBarSize;
         margin-top: calc(100% - $bottomBarSize);
