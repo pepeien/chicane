@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanSkyCreateInfo
         {
         public:
-            Image::List             images;
+            Image::References       images;
 
             vk::Device              logicalDevice;
             vk::PhysicalDevice      physicalDevice;

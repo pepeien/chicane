@@ -17,6 +17,7 @@ namespace Chicane
         {
         public:
             OpenGLBackend();
+            ~OpenGLBackend();
 
         protected:
             // Lifecycle

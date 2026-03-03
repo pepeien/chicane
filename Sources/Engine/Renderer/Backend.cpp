@@ -7,17 +7,18 @@ namespace Chicane
     namespace Renderer
     {
         Backend::Backend()
-            : m_renderer(nullptr)
+            : m_renderer(nullptr),
+              m_status(BackendStatus::Shutdown)
         {}
 
         void Backend::onInit()
         {
-            return;
+            m_status = BackendStatus::Running;
         }
 
         void Backend::onShutdown()
         {
-            return;
+            m_status = BackendStatus::Shutdown;
         }
 
         void Backend::onResize()
@@ -181,6 +182,11 @@ namespace Chicane
             const std::size_t resourceSize = getResourceSize(inType);
 
             return (budget.at(inType) * m_VRAM) / resourceSize;
+        }
+
+        bool Backend::isStatus(BackendStatus inValue) const
+        {
+            return m_status == inValue;
         }
 
         void Backend::renderLayers(const Frame& inFrame, void* inData)

@@ -4,6 +4,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"

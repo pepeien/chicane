@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawSkyResource : DrawResource<int, int>
+        struct CHICANE_RENDERER DrawSkyResource : public DrawResource<int, int>
         {
         public:
             bool isEmpty() const;

@@ -304,8 +304,7 @@ namespace Chicane
                 createInfo.images.push_back(texture.image);
             }
 
-            m_sky.reset();
-            m_sky = std::make_unique<VulkanSky>(createInfo);
+            m_sky.reset(new VulkanSky(createInfo));
         }
 
         void VulkanLSceneSky::destroyTextureData()

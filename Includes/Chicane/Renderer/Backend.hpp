@@ -5,6 +5,7 @@
 #include "Chicane/Core/List/Push.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend/Status.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
@@ -30,6 +31,7 @@ namespace Chicane
 
         public:
             Backend();
+            virtual ~Backend() = default;
 
         public:
             // Lifecycle
@@ -123,6 +125,8 @@ namespace Chicane
             std::size_t getResourceBudget(Resource inType);
             std::uint32_t getResourceBudgetCount(Resource inType);
 
+            bool isStatus(BackendStatus inValue) const;
+
         protected:
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
@@ -140,6 +144,9 @@ namespace Chicane
             const Instance* m_renderer;
             LayerList       m_layers;
             std::size_t     m_VRAM;
+
+        private:
+            BackendStatus m_status;
         };
     }
 }

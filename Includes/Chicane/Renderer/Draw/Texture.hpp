@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawTexture : Draw
+        struct CHICANE_RENDERER DrawTexture : public Draw
         {
         public:
             using List = std::vector<DrawTexture>;
@@ -25,7 +25,7 @@ namespace Chicane
             }
 
         public:
-            Image image = {};
+            Image::Reference image;
         };
     }
 }

@@ -10,7 +10,7 @@ namespace Chicane
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
               m_vendor(ImageVendor::Undefined),
-              m_data()
+              m_data(std::make_shared<Image>())
         {
             fetchVendorFromXML();
             fetchDataFromXML();
@@ -33,7 +33,7 @@ namespace Chicane
             setAttribute(VENDOR_ATTRIBUTE_NAME, Image::getVendorExtension(m_vendor));
         }
 
-        const Image& Texture::getData() const
+        Image::Reference Texture::getData() const
         {
             return m_data;
         }
@@ -56,7 +56,7 @@ namespace Chicane
                 throw std::runtime_error("Failed to save the texture [" + m_header.filepath.string() + "] data");
             }
 
-            m_data = parseData(inData);
+            m_data.reset(new Image(inData, m_vendor));
         }
 
         void Texture::fetchVendorFromXML()
@@ -76,12 +76,7 @@ namespace Chicane
                 return;
             }
 
-            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
-        }
-
-        Image Texture::parseData(const Image::Raw& inValue)
-        {
-            return Image(inValue, m_vendor);
+            m_data.reset(new Image(Base64::decodeToUnsigned(getXML().text().as_string()), m_vendor));
         }
     }
 }

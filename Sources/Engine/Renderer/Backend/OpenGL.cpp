@@ -20,8 +20,20 @@ namespace Chicane
             : Backend()
         {}
 
+        OpenGLBackend::~OpenGLBackend()
+        {
+            onShutdown();
+        }
+
         void OpenGLBackend::onInit()
         {
+            if (isStatus(BackendStatus::Running))
+            {
+                return;
+            }
+
+            Backend::onInit();
+
             buildContext();
             buildGlad();
             enableFeatures();
@@ -32,6 +44,13 @@ namespace Chicane
 
         void OpenGLBackend::onShutdown()
         {
+            if (isStatus(BackendStatus::Shutdown))
+            {
+                return;
+            }
+
+            Backend::onShutdown();
+
             // Layers
             destroyLayers();
 
@@ -49,19 +68,22 @@ namespace Chicane
 
             for (const DrawTexture& texture : inResources.getDraws())
             {
-                glTextureSubImage3D(
-                    m_texturesBuffer,
-                    0,
-                    0,
-                    0,
-                    texture.id,
-                    512,
-                    512,
-                    1,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    texture.image.getPixels()
-                );
+                if (const Image::Instance image = texture.image.lock())
+                {
+                    glTextureSubImage3D(
+                        m_texturesBuffer,
+                        0,
+                        0,
+                        0,
+                        texture.id,
+                        512,
+                        512,
+                        1,
+                        GL_RGBA,
+                        GL_UNSIGNED_BYTE,
+                        image->getPixels()
+                    );
+                }
             }
 
             Backend::onLoad(inResources);

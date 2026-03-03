@@ -170,19 +170,22 @@ namespace Chicane
             int side = 0;
             for (const DrawTexture& texture : inValue.textures)
             {
-                glTextureSubImage3D(
-                    m_texturesBuffer,
-                    0,
-                    0,
-                    0,
-                    side,
-                    texture.image.getWidth(),
-                    texture.image.getHeight(),
-                    1,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    texture.image.getPixels()
-                );
+                if (const Image::Instance image = texture.image.lock())
+                {
+                    glTextureSubImage3D(
+                        m_texturesBuffer,
+                        0,
+                        0,
+                        0,
+                        side,
+                        image->getWidth(),
+                        image->getHeight(),
+                        1,
+                        GL_RGBA,
+                        GL_UNSIGNED_BYTE,
+                        image->getPixels()
+                    );
+                }
 
                 side++;
             }

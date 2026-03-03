@@ -43,25 +43,25 @@ namespace Chicane
 
             void initInstance(vk::Image& outInstance, const VulkanImageCreateInfo& inCreateInfo)
             {
-                vk::ImageCreateInfo createInfo = {};
-                createInfo.flags               = vk::ImageCreateFlagBits() | inCreateInfo.flags;
-                createInfo.imageType           = vk::ImageType::e2D;
-                createInfo.extent              = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
-                createInfo.mipLevels           = 1;
-                createInfo.arrayLayers         = inCreateInfo.count;
-                createInfo.format              = inCreateInfo.format;
-                createInfo.samples             = vk::SampleCountFlagBits::e1;
-                createInfo.tiling              = inCreateInfo.tiling;
-                createInfo.initialLayout       = vk::ImageLayout::eUndefined;
-                createInfo.usage               = inCreateInfo.usage;
-                createInfo.sharingMode         = vk::SharingMode::eExclusive;
+                vk::ImageCreateInfo createInfo;
+                createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
+                createInfo.imageType     = vk::ImageType::e2D;
+                createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
+                createInfo.mipLevels     = 1;
+                createInfo.arrayLayers   = inCreateInfo.count;
+                createInfo.format        = inCreateInfo.format;
+                createInfo.samples       = vk::SampleCountFlagBits::e1;
+                createInfo.tiling        = inCreateInfo.tiling;
+                createInfo.initialLayout = vk::ImageLayout::eUndefined;
+                createInfo.usage         = inCreateInfo.usage;
+                createInfo.sharingMode   = vk::SharingMode::eExclusive;
 
                 outInstance = inCreateInfo.logicalDevice.createImage(createInfo);
             }
 
             void initSampler(vk::Sampler& outSampler, const VulkanImageSamplerCreateInfo& inCreateInfo)
             {
-                vk::SamplerCreateInfo createInfo   = {};
+                vk::SamplerCreateInfo createInfo;
                 createInfo.flags                   = vk::SamplerCreateFlags();
                 createInfo.minFilter               = vk::Filter::eNearest;
                 createInfo.magFilter               = vk::Filter::eLinear;
@@ -107,7 +107,7 @@ namespace Chicane
                 vk::ImageView& outView, const vk::Image& inInstance, const VulkanImageViewCreateInfo& inCreateInfo
             )
             {
-                vk::ImageViewCreateInfo createInfo         = {};
+                vk::ImageViewCreateInfo createInfo;
                 createInfo.image                           = inInstance;
                 createInfo.viewType                        = inCreateInfo.type;
                 createInfo.format                          = inCreateInfo.format;
@@ -135,7 +135,7 @@ namespace Chicane
             {
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
 
-                vk::ImageMemoryBarrier barrier          = {};
+                vk::ImageMemoryBarrier barrier;
                 barrier.oldLayout                       = inOldLayout;
                 barrier.newLayout                       = inNewLayout;
                 barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
@@ -179,19 +179,19 @@ namespace Chicane
             {
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
 
-                vk::ImageSubresourceLayers imageSubresourceLayers = {};
-                imageSubresourceLayers.aspectMask                 = vk::ImageAspectFlagBits::eColor;
-                imageSubresourceLayers.mipLevel                   = 0;
-                imageSubresourceLayers.baseArrayLayer             = 0;
-                imageSubresourceLayers.layerCount                 = inCount;
+                vk::ImageSubresourceLayers imageSubresourceLayers;
+                imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                imageSubresourceLayers.mipLevel       = 0;
+                imageSubresourceLayers.baseArrayLayer = 0;
+                imageSubresourceLayers.layerCount     = inCount;
 
-                vk::BufferImageCopy bufferImageCopy = {};
-                bufferImageCopy.bufferOffset        = 0;
-                bufferImageCopy.bufferRowLength     = 0;
-                bufferImageCopy.bufferImageHeight   = 0;
-                bufferImageCopy.imageSubresource    = imageSubresourceLayers;
-                bufferImageCopy.imageOffset         = vk::Offset3D(0, 0, 0);
-                bufferImageCopy.imageExtent         = vk::Extent3D(inWidth, inHeight, 1);
+                vk::BufferImageCopy bufferImageCopy;
+                bufferImageCopy.bufferOffset      = 0;
+                bufferImageCopy.bufferRowLength   = 0;
+                bufferImageCopy.bufferImageHeight = 0;
+                bufferImageCopy.imageSubresource  = imageSubresourceLayers;
+                bufferImageCopy.imageOffset       = vk::Offset3D(0, 0, 0);
+                bufferImageCopy.imageExtent       = vk::Extent3D(inWidth, inHeight, 1);
 
                 inCommandBuffer.copyBufferToImage(
                     inSourceBuffer,

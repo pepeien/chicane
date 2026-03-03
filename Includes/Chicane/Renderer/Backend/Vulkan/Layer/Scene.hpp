@@ -4,7 +4,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane
@@ -41,7 +41,7 @@ namespace Chicane
             VulkanBuffer            modelVertexBuffer;
             VulkanBuffer            modelIndexBuffer;
 
-            VulkanImageData         shadowImage;
+            VulkanImageInfo         shadowImage;
             vk::DescriptorImageInfo shadowImageInfo;
         };
     }

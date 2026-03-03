@@ -27,7 +27,7 @@ namespace Chicane
             void setVendor(const String& inValue);
             void setVendor(ImageVendor inValue);
 
-            const Image& getData() const;
+            Image::Reference getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const Image::Raw& inData);
 
@@ -35,11 +35,9 @@ namespace Chicane
             void fetchVendorFromXML();
             void fetchDataFromXML();
 
-            Image parseData(const Image::Raw& inValue);
-
         private:
-            ImageVendor m_vendor;
-            Image       m_data;
+            ImageVendor     m_vendor;
+            Image::Instance m_data;
         };
     }
 }

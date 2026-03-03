@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawPolyData : DrawData
+        struct CHICANE_RENDERER DrawPolyData : public DrawData
         {
         public:
             DrawPolyMode    mode     = DrawPolyMode::Fill;

@@ -33,6 +33,13 @@ namespace Chicane
 
         void VulkanBackend::onInit()
         {
+            if (isStatus(BackendStatus::Running))
+            {
+                return;
+            }
+
+            Backend::onInit();
+
             buildInstance();
             buildDebugMessenger();
             buildSurface();
@@ -49,6 +56,13 @@ namespace Chicane
 
         void VulkanBackend::onShutdown()
         {
+            if (isStatus(BackendStatus::Shutdown))
+            {
+                return;
+            }
+
+            Backend::onShutdown();
+
             logicalDevice.waitIdle();
 
             // Vulkan
@@ -394,8 +408,8 @@ namespace Chicane
 
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                info.imageView   = textures.back()->getImage().view;
-                info.sampler     = textures.back()->getImage().sampler;
+                info.imageView   = textures.back()->view;
+                info.sampler     = textures.back()->sampler;
                 infos.push_back(info);
             }
 
