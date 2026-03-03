@@ -9,18 +9,16 @@ public:
     View();
 
 private:
-    bool m_bDidPlayerWin;
-
-    // Status
+    // Telemetry
     const Chicane::Telemetry& m_telemetry;
+
+    // Game
+    bool               m_bDidPlayerWin;
+    Chicane::Reference m_uiDidPlayerWin;
 
     // Telemetry
     Chicane::Reference m_uiFrameTime;
     Chicane::Reference m_uiFramesPerSecond;
-
-    // Victory Banner
-    Chicane::String    m_victoryVisibility;
-    Chicane::Reference m_uiVictoryVisibility;
 
     // Camera
     Chicane::String    m_currentCamera;

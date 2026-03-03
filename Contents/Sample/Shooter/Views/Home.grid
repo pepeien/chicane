@@ -1,6 +1,6 @@
 <View path="home" style="Contents/Sample/Shooter/Views/Home.decal">
-    <Container class="victory">
-        <Text class="victory__text">YOU WIN</Text>
+    <Container dir:if="{{ didPlayerWin }}" class="victory">
+        <Text>YOU WIN</Text>
     </Container>
     <Container class="telemetry">
         <Text>{{ framesPerSecond }} FPS</Text>

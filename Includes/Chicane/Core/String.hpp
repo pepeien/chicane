@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <regex>
 #include <stdexcept>
@@ -149,8 +150,32 @@ namespace Chicane
         bool isEmpty() const;
         bool isNaN() const;
 
-        bool equals(const String& inValue) const;
-        bool equals(char inValue) const;
+        template <typename... Args>
+        inline bool equals(Args... inDelimeters) const
+        {
+            std::vector<String> delimeters;
+            (delimeters.emplace_back(std::forward<Args>(inDelimeters)), ...);
+
+            if (size() == 0 || delimeters.empty())
+            {
+                return false;
+            }
+
+            for (const String& delimeter : delimeters)
+            {
+                if (delimeter.size() == 0)
+                {
+                    continue;
+                }
+
+                if (std::strcmp(toChar(), delimeter.toChar()) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         bool contains(const String& inValue) const;
         bool contains(char inValue) const;

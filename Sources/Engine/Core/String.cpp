@@ -1,7 +1,6 @@
 #include "Chicane/Core/String.hpp"
 
 #include <algorithm>
-#include <cstring>
 
 namespace Chicane
 {
@@ -44,16 +43,6 @@ namespace Chicane
                    m_value.end(),
                    [](unsigned char c) { return !std::isdigit(c) && c != '-' && c != '.' && c != ','; }
                ) != m_value.end();
-    }
-
-    bool String::equals(const String& inValue) const
-    {
-        return std::strcmp(toChar(), inValue.toChar()) == 0;
-    }
-
-    bool String::equals(char inValue) const
-    {
-        return std::strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
     }
 
     bool String::contains(const String& inValue) const

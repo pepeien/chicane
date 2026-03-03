@@ -12,23 +12,58 @@ namespace Chicane
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
             addChildren(inNode);
+
+            setDirective(
+                IF_DIRECTIVE_KEYWORD,
+                [&](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        return;
+                    }
+
+                    if (parseText(inValue).equals("true", "1"))
+                    {
+                        return;
+                    }
+
+                    m_style.display.set(StyleDisplay::None);
+                }
+            );
+            setDirective(
+                FOR_DIRECTIVE_KEYWORD,
+                [&](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        return;
+                    }
+
+                    // In order for this to work I a reflection system is needed
+                }
+            );
         }
 
         Component::Component(const String& inTag)
             : m_tag(inTag),
+              m_id(String::empty()),
+              m_className(String::empty()),
+              m_directives({}),
               m_style({}),
               m_styleFile(nullptr),
+              m_references({}),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
               m_size(Vec2::Zero),
-              m_position(Vec2::Zero),
+              m_scale(Vec2::Zero),
               m_offset(Vec2::Zero),
+              m_position(Vec2::Zero),
               m_cursor(Vec2::Zero),
               m_bounds({}),
-              m_attributes({}),
-              m_primitive({})
+              m_primitive({}),
+              m_attributes({})
         {
             m_style.setParent(this);
         }
@@ -72,6 +107,8 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshBounds();
+
+            refreshDirectives();
         }
 
         bool Component::isRoot() const
@@ -208,6 +245,31 @@ namespace Chicane
             refreshStyleRuleset();
         }
 
+        void Component::refreshDirectives()
+        {
+            for (const auto& [key, directive] : m_directives)
+            {
+                runDirective(key, getAttribute(key));
+            }
+        }
+
+        void Component::runDirective(const String& inKey, const String& inValue)
+        {
+            const auto& found = m_directives.find(inKey);
+
+            if (found == m_directives.end() || !found->second)
+            {
+                return;
+            }
+
+            found->second(inValue);
+        }
+
+        void Component::setDirective(const String& inKey, const Directive& inValue)
+        {
+            m_directives[inKey] = inValue;
+        }
+
         const String& Component::getAttribute(const String& inName) const
         {
             const auto& found = m_attributes.find(inName);
@@ -259,33 +321,42 @@ namespace Chicane
                 value = value.substr(cursor);
             }
 
-            while (!value.isEmpty())
+            while (value.startsWithChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR))
             {
-                if (!value.startsWithChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR))
+                const char prefix = value.at(0);
+
+                std::size_t next = String::npos;
+
+                for (std::size_t i = 1; i < value.size(); ++i)
                 {
-                    return false;
+                    const char c = value.at(i);
+
+                    if (c == Style::CLASS_SELECTOR || c == Style::ID_SELECTOR)
+                    {
+                        next = i;
+                        break;
+                    }
                 }
 
-                const std::size_t next   = value.substr(1).firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
-                const std::size_t length = next == String::npos ? value.size() : next + 1;
+                const std::size_t length = (next == String::npos) ? value.size() : next;
 
                 const String token = value.substr(0, length);
 
-                if (token.startsWith(Style::CLASS_SELECTOR))
+                if (prefix == Style::CLASS_SELECTOR)
                 {
                     classes.push_back(token);
                 }
-                else if (token.startsWith(Style::ID_SELECTOR))
+                else if (prefix == Style::ID_SELECTOR)
                 {
                     id = token;
                 }
 
-                if (length >= value.size())
+                if (next == String::npos)
                 {
                     break;
                 }
 
-                value = value.substr(length);
+                value = value.substr(next);
             }
 
             if (!tag.isEmpty() && !tag.equals(getTag()))
@@ -326,7 +397,7 @@ namespace Chicane
                 return false;
             }
 
-            if (!hasLocalSelector(inValue))
+            if (!hasLocalSelector(parts.back().trim()))
             {
                 return false;
             }

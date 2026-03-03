@@ -1,6 +1,8 @@
 #pragma once
 
+#include <functional>
 #include <set>
+#include <unordered_map>
 
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
@@ -23,10 +25,15 @@ namespace Chicane
         class CHICANE_GRID Component
         {
         public:
-            using Compiler  = std::function<Component*(const pugi::xml_node& inNode)>;
-            using ClassList = std::set<String>;
+            using Compiler   = std::function<Component*(const pugi::xml_node& inNode)>;
+            using ClassList  = std::set<String>;
+            using Directive  = std::function<void(const String&)>;
+            using Directives = std::unordered_map<String, Directive>;
 
         public:
+            static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
+            static constexpr inline const char* FOR_DIRECTIVE_KEYWORD = "dir:for";
+
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
             static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
@@ -99,6 +106,12 @@ namespace Chicane
                 setClassName(className.trim());
             }
 
+            // Directive
+            void refreshDirectives();
+            void runDirective(const String& inKey, const String& inValue);
+            void setDirective(const String& inKey, const Directive& inValue);
+
+            // Attribute
             const String& getAttribute(const String& inName) const;
 
             // Style
@@ -203,10 +216,13 @@ namespace Chicane
             FunctionData parseFunction(const String& inRefValue) const;
 
         protected:
-            // Identification
+            // Properties
             String                  m_tag;
             String                  m_id;
             String                  m_className;
+
+            // Modifier
+            Directives              m_directives;
 
             // Style
             Style                   m_style;

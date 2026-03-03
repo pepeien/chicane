@@ -66,16 +66,6 @@ namespace Editor
             Chicane::Input::Status::Released,
             []() { Chicane::Application::getInstance().getWindow()->switchFocus(); }
         );
-        m_controller->bindEvent(
-            Chicane::Input::KeyboardButton::F2,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::Vulkan); }
-        );
-        m_controller->bindEvent(
-            Chicane::Input::KeyboardButton::F3,
-            Chicane::Input::Status::Released,
-            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::OpenGL); }
-        );
 
         // Gamepad
         m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));

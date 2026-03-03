@@ -10,12 +10,11 @@ static int switcher = 1;
 
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
-      m_bDidPlayerWin(true),
       m_telemetry(Chicane::Application::getInstance().getTelemetry()),
+      m_bDidPlayerWin(false),
+      m_uiDidPlayerWin(Chicane::Reference::fromValue<const bool>(&m_bDidPlayerWin)),
       m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
       m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate)),
-      m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
-      m_uiVictoryVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_victoryVisibility)),
       m_currentCamera("None"),
       m_uiCurrentCamera(Chicane::Reference::fromValue<Chicane::String>(&m_currentCamera)),
       m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
@@ -49,8 +48,6 @@ View::View()
             if (Game::didReachMaxScore())
             {
                 m_bDidPlayerWin = true;
-
-                m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
             }
         }
     );
@@ -71,8 +68,8 @@ View::View()
     );
 
     addReference("frameTime", &m_uiFrameTime);
+    addReference("didPlayerWin", &m_uiDidPlayerWin);
     addReference("framesPerSecond", &m_uiFramesPerSecond);
-    addReference("victoryDisplay", &m_uiVictoryVisibility);
     addReference("currentCamera", &m_uiCurrentCamera);
     addReference("crosshairDotDisplay", &m_uiCrosshairDotVisibility);
     addReference("crosshairSize", &m_uiCrosshairSize);
