@@ -1,17 +1,12 @@
 #version 460
 
-layout(binding = 0) uniform Camera {
-    vec4 clip;
+#extension GL_ARB_shading_language_include : require
 
-    mat4 view;
-    mat4 projection;
+#include "../../Common/View.glsl"
 
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} camera;
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+} scene;
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
@@ -23,5 +18,5 @@ layout(location = 0) out vec3 outUV;
 void main() {
     outUV = inPosition;
 
-    gl_Position = camera.projection * mat4(mat3(camera.view)) * vec4(inPosition, 1.0);
+    gl_Position = scene.camera.projection * mat4(mat3(scene.camera.view)) * vec4(inPosition, 1.0);
 }

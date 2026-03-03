@@ -365,7 +365,7 @@ namespace Chicane
         {
             light->onResize(m_renderer->getResolution());
 
-            command.light = light->getData();
+            command.lights.push_back(light->getData());
         }
 
         for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
@@ -423,7 +423,7 @@ namespace Chicane
         const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
 
         m_renderer->useCamera(command.camera);
-        m_renderer->addLight(command.light);
+        m_renderer->addLight(command.lights);
         m_renderer->loadSky(command.sky);
 
         for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)

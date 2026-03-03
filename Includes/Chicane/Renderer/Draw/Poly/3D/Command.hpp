@@ -23,9 +23,9 @@ namespace Chicane
             void clear()
             {
                 camera = {};
-                light  = {};
                 sky    = {};
 
+                lights.clear();
                 meshes.clear();
                 lines.clear();
             }
@@ -33,7 +33,7 @@ namespace Chicane
         public:
             // View
             View                        camera = {};
-            View                        light  = {};
+            View::List                  lights = {};
 
             // Sky
             Renderer::DrawSkyData       sky = {};

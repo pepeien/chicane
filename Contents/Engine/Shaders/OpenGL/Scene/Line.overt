@@ -5,19 +5,11 @@
 
 #include "../../Common/Constant.glsl"
 #include "../../Common/Poly/3D.glsl"
+#include "../../Common/View.glsl"
 
-layout(binding = 0) uniform Camera {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} camera;
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+} scene;
 
 layout(location = 0) out Data {
     vec4 color;
@@ -31,5 +23,5 @@ layout(location = 3) in vec3 inNormal;
 void main() {
     outData.color = inColor;
 
-    gl_Position = camera.projection * camera.view * vec4(inPosition, 1.0);
+    gl_Position = scene.camera.projection * scene.camera.view * vec4(inPosition, 1.0);
 }

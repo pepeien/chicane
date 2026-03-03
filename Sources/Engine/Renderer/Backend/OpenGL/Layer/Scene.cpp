@@ -18,8 +18,6 @@ namespace Chicane
 
         void OpenGLLScene::onInit()
         {
-            buildCameraData();
-            buildLightData();
             buildModelVertexArray();
             buildModelVertexBuffer();
             buildModelIndexBuffer();
@@ -29,8 +27,6 @@ namespace Chicane
 
         void OpenGLLScene::onDestruction()
         {
-            destroyCameraData();
-            destroyLightData();
             destroyModelData();
             destroyInstanceData();
         }
@@ -70,44 +66,17 @@ namespace Chicane
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
             glVertexArrayVertexBuffer(m_modelVertexArray, 0, m_modelVertexBuffer, 0, sizeof(Vertex));
 
-            glBindBuffer(GL_UNIFORM_BUFFER, m_cameraBuffer);
-            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), &inFrame.getCamera());
+            std::size_t size   = sizeof(View);
+            std::size_t offset = 0;
+            glNamedBufferSubData(m_instanceBuffer, offset, size, &inFrame.getCamera());
+            offset += size;
 
-            glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
-            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), inFrame.getLights().data());
+            size = sizeof(View) * inFrame.getLights().size();
+            glNamedBufferSubData(m_instanceBuffer, offset, size, inFrame.getLights().data());
+            offset += size;
 
-            glNamedBufferSubData(
-                m_instanceBuffer,
-                0,
-                sizeof(DrawPoly3DInstance) * inFrame.getInstances3D().size(),
-                inFrame.getInstances3D().data()
-            );
-        }
-
-        void OpenGLLScene::buildCameraData()
-        {
-            glCreateBuffers(1, &m_cameraBuffer);
-            glNamedBufferData(m_cameraBuffer, sizeof(View), nullptr, GL_DYNAMIC_DRAW);
-
-            glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_cameraBuffer);
-        }
-
-        void OpenGLLScene::destroyCameraData()
-        {
-            glDeleteBuffers(1, &m_cameraBuffer);
-        }
-
-        void OpenGLLScene::buildLightData()
-        {
-            glCreateBuffers(1, &m_lightBuffer);
-            glNamedBufferData(m_lightBuffer, sizeof(View), nullptr, GL_DYNAMIC_DRAW);
-
-            glBindBufferBase(GL_UNIFORM_BUFFER, 1, m_lightBuffer);
-        }
-
-        void OpenGLLScene::destroyLightData()
-        {
-            glDeleteBuffers(1, &m_lightBuffer);
+            size = sizeof(DrawPoly3DInstance) * inFrame.getInstances3D().size();
+            glNamedBufferSubData(m_instanceBuffer, offset, size, inFrame.getInstances3D().data());
         }
 
         void OpenGLLScene::buildModelVertexArray()
@@ -169,12 +138,14 @@ namespace Chicane
             glCreateBuffers(1, &m_instanceBuffer);
             glNamedBufferData(
                 m_instanceBuffer,
-                m_backend->getResourceBudget(Resource::SceneInstances),
+                m_backend->getResourceBudget(Resource::SceneCamera) +
+                    m_backend->getResourceBudget(Resource::SceneLights) +
+                    m_backend->getResourceBudget(Resource::SceneInstances),
                 nullptr,
                 GL_DYNAMIC_DRAW
             );
 
-            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, m_instanceBuffer);
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_instanceBuffer);
         }
 
         void OpenGLLScene::destroyInstanceData()

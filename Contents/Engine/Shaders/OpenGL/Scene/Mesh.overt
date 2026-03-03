@@ -5,36 +5,13 @@
 
 #include "../../Common/Constant.glsl"
 #include "../../Common/Poly/3D.glsl"
+#include "../../Common/View.glsl"
 
-layout(binding = 0) uniform Camera {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} camera;
-
-layout(binding = 1) uniform Light {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} light;
-
-layout(std140, binding = 2) readonly buffer Scene {
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+    LightInstance lights[];
     PolyInstance3D meshes[];
-} instance;
+} scene;
 
 layout(location = 0) out Data {
     flat int textureIndex;
@@ -53,7 +30,9 @@ layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
 void main() {
-    PolyInstance3D mesh = instance.meshes[gl_InstanceID + gl_BaseInstance];
+    CameraInstance camera = scene.camera;
+    LightInstance light   = scene.lights[0];
+    PolyInstance3D mesh   = scene.meshes[gl_InstanceID + gl_BaseInstance];
 
     vec4 position = vec4(inPosition, 1.0);
 

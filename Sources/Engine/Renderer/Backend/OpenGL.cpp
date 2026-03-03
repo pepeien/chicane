@@ -5,6 +5,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
+#include <iostream>
+
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
@@ -76,8 +78,8 @@ namespace Chicane
                         0,
                         0,
                         texture.id,
-                        512,
-                        512,
+                        TEXTURE_WIDTH,
+                        TEXTURE_HEIGHT,
                         1,
                         GL_RGBA,
                         GL_UNSIGNED_BYTE,
@@ -351,8 +353,16 @@ namespace Chicane
 
         void OpenGLBackend::buildTextureData()
         {
+            GLint hwMaxLayers = 0;
+            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &hwMaxLayers);
+
+            const std::size_t maxAccepted = std::min(
+                static_cast<std::size_t>(hwMaxLayers / 4),
+                static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture))
+            );
+
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, TEXTURE_COUNT);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, maxAccepted);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

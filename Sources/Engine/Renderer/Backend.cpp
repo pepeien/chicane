@@ -131,12 +131,22 @@ namespace Chicane
             case Resource::SceneVertices:
                 return sizeof(Vertex);
 
+            case Resource::SceneCamera:
+                return sizeof(View);
+
+            case Resource::SceneLights:
+                return sizeof(View);
+
             case Resource::SceneInstances:
-                return sizeof(DrawPoly3DInstance);
+                return sizeof(DrawPoly3DInstance) + sizeof(View);
 
             case Resource::Scene:
                 return getResourceSize(Resource::SceneIndices) + getResourceSize(Resource::SceneVertices) +
-                       getResourceSize(Resource::SceneInstances);
+                       getResourceSize(Resource::SceneInstances) + getResourceSize(Resource::SceneCamera) +
+                       getResourceSize(Resource::SceneLights);
+
+            case Resource::Texture:
+                return sizeof(Image::Pixel) * TEXTURE_WIDTH * TEXTURE_HEIGHT;
 
             case Resource::UIIndices:
                 return sizeof(Vertex::Index);
@@ -165,9 +175,7 @@ namespace Chicane
                 return 0U;
             }
 
-            const std::size_t resourceSize = getResourceSize(inType);
-
-            return resourceSize * getResourceBudgetCount(inType);
+            return getResourceSize(inType) * getResourceBudgetCount(inType) * 0.5f;
         }
 
         std::uint32_t Backend::getResourceBudgetCount(Resource inType)
@@ -179,9 +187,7 @@ namespace Chicane
                 return 0U;
             }
 
-            const std::size_t resourceSize = getResourceSize(inType);
-
-            return (budget.at(inType) * m_VRAM) / resourceSize;
+            return (budget.at(inType) * m_VRAM) / getResourceSize(inType);
         }
 
         bool Backend::isStatus(BackendStatus inValue) const
