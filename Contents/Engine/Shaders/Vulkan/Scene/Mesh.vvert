@@ -58,7 +58,7 @@ void main() {
 
     outData.textureIndex   = mesh.texture;
     outData.UV             = inUV;
-    outData.normal         = transpose(mat3(mesh.model)) * inNormal;
+    outData.normal         = mat3(transpose(inverse(mesh.model))) * inNormal;
     outData.color          = inColor;
     outData.meshPosition   = vec3(mesh.model * position);
     outData.shadowPosition = light.projection * light.view * vec4(outData.meshPosition, 1.0);

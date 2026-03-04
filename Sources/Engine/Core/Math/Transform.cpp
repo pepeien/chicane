@@ -76,6 +76,13 @@ namespace Chicane
         refresh();
     }
 
+    void Transform::lookAt(const Vec3& inTarget)
+    {
+        m_rotation.lookAt(getTranslation(), inTarget);
+
+        refresh();
+    }
+
     void Transform::refresh()
     {
         m_matrix = glm::translate(Mat4::One, m_translation);

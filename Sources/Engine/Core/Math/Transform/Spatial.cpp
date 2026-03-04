@@ -136,6 +136,13 @@ namespace Chicane
         refresh();
     }
 
+    void SpatialTransform::lookAt(const Vec3& inTarget)
+    {
+        m_absolute.lookAt(inTarget);
+
+        refresh();
+    }
+
     void SpatialTransform::refresh()
     {
         const QuatFloat& absoluteRotation = m_absolute.getRotation().get();

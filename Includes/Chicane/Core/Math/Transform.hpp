@@ -27,6 +27,8 @@ namespace Chicane
         void addScale(const Vec3& inScale);
         void setScale(const Vec3& inScale);
 
+        void lookAt(const Vec3& inTarget);
+
     protected:
         void refresh();
 

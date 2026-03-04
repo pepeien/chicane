@@ -43,6 +43,13 @@ namespace Chicane
         return m_transform.getRotation().getUp();
     }
 
+    void Transformable::lookAt(const Vec3& inTarget)
+    {
+        m_transform.lookAt(inTarget);
+
+        refresh();
+    }
+
     const Vec3& Transformable::getRelativeTranslation() const
     {
         return m_transform.getRelativeTranslation();

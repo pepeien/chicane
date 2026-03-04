@@ -20,7 +20,7 @@ services:
     command: >
       bash -c "cmake -S . -B build-docker-linux -G 'Ninja' \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCHICANE_BUILD_DIR='Bin/Docker-Linux' \
+      -DCHICANE_BUILD_DIR='Binaries/Docker-Linux' \
       -DCHICANE_SHARED=ON \
       -DCHICANE_OPENGL=ON \
       -DCHICANE_OPENGL_MAJOR_VERSION=$$OPENGL_MAJOR_VERSION \

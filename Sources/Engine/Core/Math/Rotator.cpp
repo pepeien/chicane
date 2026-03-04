@@ -2,6 +2,8 @@
 
 namespace Chicane
 {
+    static const QuatFloat CORRECTION = glm::angleAxis(glm::radians(-90.0f), Vec3::Right);
+
     Rotator::Rotator(float inAngle)
         : Rotator(inAngle, inAngle, inAngle)
     {}
@@ -50,6 +52,13 @@ namespace Chicane
     void Rotator::addWorld(const QuatFloat& inDelta)
     {
         set(glm::normalize(inDelta * m_orientation));
+    }
+
+    void Rotator::lookAt(const Vec3& inOrigin, const Vec3& inTarget)
+    {
+        const Vec3 direction = glm::normalize(inTarget - inOrigin);
+
+        set(glm::normalize(glm::quatLookAt(direction, Vec3::Up) * CORRECTION));
     }
 
     const Vec3& Rotator::getAngles() const

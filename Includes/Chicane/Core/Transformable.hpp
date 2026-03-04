@@ -28,6 +28,8 @@ namespace Chicane
         const Vec3& getRight() const;
         const Vec3& getUp() const;
 
+        void lookAt(const Vec3& inTarget);
+
         // Relative
         const Vec3& getRelativeTranslation() const;
         void addRelativeTranslation(float inValue);

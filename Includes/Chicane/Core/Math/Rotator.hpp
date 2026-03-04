@@ -22,6 +22,8 @@ namespace Chicane
         void addLocal(const QuatFloat& inDelta);
         void addWorld(const QuatFloat& inDelta);
 
+        void lookAt(const Vec3& inOrigin, const Vec3& inTarget);
+
         // Euler
         const Vec3& getAngles() const;
         void setAngles(const Vec3& inAngles);

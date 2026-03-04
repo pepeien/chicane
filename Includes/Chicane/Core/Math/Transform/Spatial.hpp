@@ -41,6 +41,8 @@ namespace Chicane
         void addAbsoluteScale(const Vec3& inScale);
         void setAbsoluteScale(const Vec3& inScale);
 
+        void lookAt(const Vec3& inTarget);
+
     private:
         void refresh();
 
