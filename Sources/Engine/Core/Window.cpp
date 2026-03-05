@@ -61,23 +61,23 @@ namespace Chicane
         while (SDL_PollEvent(&data))
         {
             // Device
-            Input::DeviceEvent deviceEvent = {};
+            Input::DeviceEvent deviceEvent;
 
             // Gamepad
-            Input::GamepadMotionEvent gamepadMotionEvent = {};
-            Input::GamepadButtonEvent gamepadButtonEvent = {};
+            Input::GamepadMotionEvent gamepadMotionEvent;
+            Input::GamepadButtonEvent gamepadButtonEvent;
 
             // Keyboard
-            Input::KeyboardEvent keyboardEvent = {};
+            Input::KeyboardEvent keyboardEvent;
 
             // Mouse
-            Input::MouseMotionEvent mouseMotionEvent = {};
-            Input::MouseButtonEvent mouseButtonEvent = {};
+            Input::MouseMotionEvent mouseMotionEvent;
+            Input::MouseButtonEvent mouseButtonEvent;
 
             // Event
-            WindowEvent event = {};
-            event.type        = (WindowEventType)data.type;
-            event.data        = nullptr;
+            WindowEvent event;
+            event.type = (WindowEventType)data.type;
+            event.data = nullptr;
 
             switch (event.type)
             {

@@ -11,11 +11,11 @@ namespace Editor
     View::View()
         : Chicane::Grid::View("Contents/Editor/Views/Home.grid"),
           m_telemetry(Chicane::Application::getInstance().getTelemetry()),
-          m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
-          m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate))
+          u_sceneFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.scene.delta)),
+          u_sceneFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.scene.rate))
     {
-        addReference("frameTime", &m_uiFrameTime);
-        addReference("framesPerSecond", &m_uiFramesPerSecond);
+        addReference("frameTime", &u_sceneFrameTime);
+        addReference("framesPerSecond", &u_sceneFramesPerSecond);
 
         addFunction("onAssetImport", [this](const Chicane::Grid::Event& inEvent) { return onAssetImport(inEvent); });
     }

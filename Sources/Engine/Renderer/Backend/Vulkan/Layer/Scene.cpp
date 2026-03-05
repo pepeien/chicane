@@ -130,19 +130,19 @@ namespace Chicane
             shadowImage.format = backend->swapchain.depthFormat;
             shadowImage.extent = backend->swapchain.extent;
 
-            VulkanImageCreateInfo instanceCreateInfo = {};
-            instanceCreateInfo.width                 = SHADOW_MAP_WIDTH;
-            instanceCreateInfo.height                = SHADOW_MAP_HEIGHT;
-            instanceCreateInfo.count                 = 1;
-            instanceCreateInfo.tiling                = vk::ImageTiling::eOptimal;
-            instanceCreateInfo.flags                 = vk::ImageCreateFlagBits();
+            VulkanImageCreateInfo instanceCreateInfo;
+            instanceCreateInfo.width  = SHADOW_MAP_WIDTH;
+            instanceCreateInfo.height = SHADOW_MAP_HEIGHT;
+            instanceCreateInfo.count  = 1;
+            instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
+            instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
             instanceCreateInfo.usage =
                 vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
             instanceCreateInfo.format        = shadowImage.format;
             instanceCreateInfo.logicalDevice = backend->logicalDevice;
             VulkanImage::initInstance(shadowImage.instance, instanceCreateInfo);
 
-            vk::SamplerCreateInfo samplerCreateInfo   = {};
+            vk::SamplerCreateInfo samplerCreateInfo;
             samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
             samplerCreateInfo.minFilter               = vk::Filter::eLinear;
             samplerCreateInfo.magFilter               = vk::Filter::eLinear;
@@ -162,18 +162,18 @@ namespace Chicane
             samplerCreateInfo.unnormalizedCoordinates = false;
             shadowImage.sampler                       = backend->logicalDevice.createSampler(samplerCreateInfo);
 
-            VulkanImageMemoryCreateInfo memoryCreateInfo = {};
-            memoryCreateInfo.properties                  = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            memoryCreateInfo.logicalDevice               = backend->logicalDevice;
-            memoryCreateInfo.physicalDevice              = backend->physicalDevice;
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = backend->logicalDevice;
+            memoryCreateInfo.physicalDevice = backend->physicalDevice;
             VulkanImage::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
 
-            VulkanImageViewCreateInfo viewCreateInfo = {};
-            viewCreateInfo.count                     = instanceCreateInfo.count;
-            viewCreateInfo.type                      = vk::ImageViewType::e2D;
-            viewCreateInfo.aspect                    = vk::ImageAspectFlagBits::eDepth;
-            viewCreateInfo.format                    = instanceCreateInfo.format;
-            viewCreateInfo.logicalDevice             = backend->logicalDevice;
+            VulkanImageViewCreateInfo viewCreateInfo;
+            viewCreateInfo.count         = instanceCreateInfo.count;
+            viewCreateInfo.type          = vk::ImageViewType::e2D;
+            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+            viewCreateInfo.format        = instanceCreateInfo.format;
+            viewCreateInfo.logicalDevice = backend->logicalDevice;
             VulkanImage::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
 
             shadowImageInfo.imageLayout = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;

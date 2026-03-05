@@ -26,7 +26,7 @@ namespace Chicane
                 {
                     std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
-                    Curve curve = {};
+                    Curve curve;
                     curve.setSegmentCount(8);
                     curve.addPoint(Vec2(inPoint->x, inPoint->y));
 
@@ -79,7 +79,7 @@ namespace Chicane
                     return 0;
                 };
 
-                std::vector<Curve> result = {};
+                std::vector<Curve> result;
 
                 FT_Outline_Decompose(&inGlyph->outline, &funcs, &result);
 

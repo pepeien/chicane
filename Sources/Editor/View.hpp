@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Chicane/Core/Telemetry.hpp>
 #include <Chicane/Grid/Component/View.hpp>
+#include <Chicane/Runtime/Application/Telemetry.hpp>
 
 namespace Editor
 {
@@ -15,10 +15,10 @@ namespace Editor
 
     private:
         // Status
-        const Chicane::Telemetry& m_telemetry;
+        const Chicane::ApplicationTelemetry& m_telemetry;
 
         // Telemetry
-        Chicane::Reference m_uiFrameTime;
-        Chicane::Reference m_uiFramesPerSecond;
+        Chicane::Reference u_sceneFrameTime;
+        Chicane::Reference u_sceneFramesPerSecond;
     };
 }

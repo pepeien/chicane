@@ -5,6 +5,11 @@ float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 
     vec3 projCoords = projection.xyz / projection.w;
     projCoords.xy = projCoords.xy * 0.5 + 0.5;
 
+    if (projCoords.z > 1.0)
+    {
+        return 0.0;
+    }
+
     if (
         projCoords.x < 0.0 || projCoords.x > 1.0 ||
         projCoords.y < 0.0 || projCoords.y > 1.0 ||

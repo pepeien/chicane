@@ -11,7 +11,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLUI::OpenGLLUI()
-            : Layer(UI_LAYER_ID)
+            : Layer(u_LAYER_ID)
         {}
 
         void OpenGLLUI::onInit()

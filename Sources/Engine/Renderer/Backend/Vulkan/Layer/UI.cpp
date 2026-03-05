@@ -14,7 +14,7 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLUI::VulkanLUI()
-            : Layer(UI_LAYER_ID),
+            : Layer(u_LAYER_ID),
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
@@ -185,23 +185,21 @@ namespace Chicane
 
             // Depth
             vk::PipelineDepthStencilStateCreateInfo depth;
-            depth.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-            depth.depthBoundsTestEnable = VK_FALSE;
-            depth.stencilTestEnable     = VK_FALSE;
-            depth.depthWriteEnable      = VK_TRUE;
-            depth.depthTestEnable       = VK_TRUE;
+            depth.depthBoundsTestEnable = false;
+            depth.stencilTestEnable     = false;
+            depth.depthWriteEnable      = true;
+            depth.depthTestEnable       = true;
             depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
             // Render pass
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
             colorAttachment.format        = backend->swapchain.colorFormat;
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             vk::AttachmentReference colorReference;
@@ -218,7 +216,6 @@ namespace Chicane
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::AttachmentDescription depthAttachment;
-            depthAttachment.flags         = vk::AttachmentDescriptionFlags();
             depthAttachment.format        = backend->swapchain.depthFormat;
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
@@ -240,7 +237,6 @@ namespace Chicane
             depthSubpassDepedency.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentRead;
 
             vk::SubpassDescription subpass;
-            subpass.flags                   = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
             subpass.colorAttachmentCount    = 1;
             subpass.pColorAttachments       = &colorReference;
@@ -248,17 +244,12 @@ namespace Chicane
 
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterization;
-            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterization.depthClampEnable        = VK_FALSE;
-            rasterization.depthBiasEnable         = VK_FALSE;
-            rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.depthClampEnable        = false;
+            rasterization.depthBiasEnable         = false;
+            rasterization.rasterizerDiscardEnable = false;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
             rasterization.cullMode                = vk::CullModeFlagBits::eNone;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasConstantFactor = 0.0f;
-            rasterization.depthBiasClamp          = 0.0f;
-            rasterization.depthBiasSlopeFactor    = 0.0f;
 
             // Build
             VulkanGraphicsPipelineBuilder()

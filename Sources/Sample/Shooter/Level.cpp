@@ -94,20 +94,22 @@ void Level::spawnLights()
 
 void Level::spawnCameras()
 {
+    const Chicane::Vec3 position(300.0f, 300.0f, 100.0f);
+
     m_leftCamera = createActor<Chicane::ACamera>();
     m_leftCamera->setId("Left");
-    m_leftCamera->setAbsoluteTranslation(-500.0f, -500.0f, 100.0f);
-    m_leftCamera->setAbsoluteRotation(-20.0f, 0.0f, -45.0f);
+    m_leftCamera->setAbsoluteTranslation(-position.x, -position.y, position.z);
+    m_leftCamera->lookAt(Chicane::Vec3::Zero);
 
     m_centerCamera = createActor<Chicane::ACamera>();
     m_centerCamera->setId("Center");
-    m_centerCamera->setAbsoluteTranslation(0.0f, -500.0f, 100.0f);
-    m_centerCamera->setAbsoluteRotation(-20.0f, 0.0f, 0.0f);
+    m_centerCamera->setAbsoluteTranslation(0.0f, -position.y, position.z);
+    m_centerCamera->lookAt(Chicane::Vec3::Zero);
 
     m_rightCamera = createActor<Chicane::ACamera>();
     m_rightCamera->setId("Right");
-    m_rightCamera->setAbsoluteTranslation(500.0f, -500.0f, 100.0f);
-    m_rightCamera->setAbsoluteRotation(-20.0f, 0.0f, 45.0f);
+    m_rightCamera->setAbsoluteTranslation(position.x, -position.y, position.z);
+    m_rightCamera->lookAt(Chicane::Vec3::Zero);
 }
 
 void Level::spawnStructures()

@@ -118,7 +118,7 @@ namespace Chicane
                     continue;
                 }
 
-                MeshGroup group = {};
+                MeshGroup group;
 
                 for (const auto& assetNode : groupNode.children())
                 {

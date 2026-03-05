@@ -96,7 +96,7 @@ namespace Chicane
             align.parseWith(
                 [this](const String& inValue)
                 {
-                    std::vector<String> values = {};
+                    std::vector<String> values;
 
                     for (const String& block : splitOneliner(inValue))
                     {
@@ -429,7 +429,7 @@ namespace Chicane
 
         std::vector<String> splitOneliner(const String& inValue)
         {
-            std::vector<String> result = {};
+            std::vector<String> result;
 
             std::uint32_t start = 0;
             std::uint32_t end   = 0;

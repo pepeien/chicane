@@ -73,15 +73,15 @@ namespace Chicane
                     throw std::runtime_error("Layers are not fully supported");
                 }
 
-                vk::ApplicationInfo applicationInfo = {};
-                applicationInfo.pApplicationName    = APPLICATION_NAME;
-                applicationInfo.applicationVersion  = VK_MAKE_API_VERSION(0, 1, 0, 0);
-                applicationInfo.pEngineName         = ENGINE_NAME;
-                applicationInfo.engineVersion       = applicationInfo.applicationVersion;
+                vk::ApplicationInfo applicationInfo;
+                applicationInfo.pApplicationName   = APPLICATION_NAME;
+                applicationInfo.applicationVersion = VK_MAKE_API_VERSION(0, 1, 0, 0);
+                applicationInfo.pEngineName        = ENGINE_NAME;
+                applicationInfo.engineVersion      = applicationInfo.applicationVersion;
                 applicationInfo.apiVersion =
                     VK_MAKE_API_VERSION(0, VULKAN_MAJOR_VERSION, VULKAN_MINOR_VERSION, VULKAN_PATCH_VERSION);
 
-                vk::InstanceCreateInfo createInfo  = {};
+                vk::InstanceCreateInfo createInfo;
                 createInfo.pApplicationInfo        = &applicationInfo;
                 createInfo.enabledLayerCount       = static_cast<std::uint32_t>(layers.size());
                 createInfo.ppEnabledLayerNames     = layers.data();

@@ -32,7 +32,7 @@ namespace Chicane
                     return;
                 }
 
-                Vertex vertex = {};
+                Vertex vertex;
 
                 vertex.color = Vec4(1.0f);
 
@@ -67,7 +67,7 @@ namespace Chicane
                     return {};
                 }
 
-                ModelParsed::Map result = {};
+                ModelParsed::Map result;
 
                 std::vector<std::uint32_t> faceIndexOffsets(mesh->face_count);
                 {
@@ -83,8 +83,8 @@ namespace Chicane
                 {
                     const fastObjGroup& obj = mesh->objects[o];
 
-                    ModelParsed                               model = {};
-                    std::unordered_map<String, std::uint32_t> map   = {};
+                    ModelParsed                               model;
+                    std::unordered_map<String, std::uint32_t> map;
 
                     for (std::uint32_t f = 0; f < obj.face_count; ++f)
                     {

@@ -29,8 +29,15 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 }
 
 .telemetry {
+    display: flex;
+    flex-direction: row;
+
     Text {
         color: green;
+    }
+
+    &__system {
+        width: 5em;
     }
 }
 

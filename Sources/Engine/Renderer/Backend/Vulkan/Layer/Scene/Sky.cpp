@@ -173,7 +173,6 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
@@ -186,13 +185,12 @@ namespace Chicane
 
             // Attachments
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
             colorAttachment.format        = backend->swapchain.colorFormat;
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;
@@ -208,19 +206,15 @@ namespace Chicane
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::SubpassDescription subpass;
-            subpass.flags                = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
             subpass.colorAttachmentCount = 1;
             subpass.pColorAttachments    = &colorReference;
 
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterization;
-            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterization.depthClampEnable        = VK_FALSE;
-            rasterization.rasterizerDiscardEnable = VK_FALSE;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasEnable         = VK_TRUE;
-            rasterization.depthBiasClamp          = 0.0f;
+            rasterization.depthClampEnable        = false;
+            rasterization.rasterizerDiscardEnable = false;
+            rasterization.depthBiasEnable         = false;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
             rasterization.cullMode                = vk::CullModeFlagBits::eFront;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
@@ -291,7 +285,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanSkyCreateInfo createInfo;
-            createInfo.images              = {};
+            createInfo.images;
             createInfo.logicalDevice       = backend->logicalDevice;
             createInfo.physicalDevice      = backend->physicalDevice;
             createInfo.commandBuffer       = backend->mainCommandBuffer;

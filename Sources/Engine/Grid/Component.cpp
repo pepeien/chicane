@@ -211,7 +211,7 @@ namespace Chicane
                 return {};
             }
 
-            ClassList result = {};
+            ClassList result;
 
             String accumulated = "";
             for (const String& className : m_className.split(Style::SELECTOR_SEPARATOR_SPACE))
@@ -637,7 +637,7 @@ namespace Chicane
                 return false;
             }
 
-            std::vector<const Component*> neighbours = {};
+            std::vector<const Component*> neighbours;
 
             for (const Component* children : m_parent->getChildren())
             {
@@ -931,7 +931,7 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            m_primitive = {};
+            m_primitive;
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
@@ -1117,7 +1117,7 @@ namespace Chicane
 
             FunctionData data = parseFunction(inValue);
 
-            Event event  = {};
+            Event event;
             event.values = data.params;
 
             return getFunction(data.name)(event);

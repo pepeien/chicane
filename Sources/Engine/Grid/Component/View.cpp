@@ -59,7 +59,7 @@ namespace Chicane
 
         std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const
         {
-            std::vector<Component*> contenders = {};
+            std::vector<Component*> contenders;
             for (Component* child : getChildrenFlat())
             {
                 if (!child->isDrawable())

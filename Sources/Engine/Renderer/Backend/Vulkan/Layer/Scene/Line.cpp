@@ -63,7 +63,7 @@ namespace Chicane
             vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
 
-            vk::RenderPassBeginInfo beginInfo  = {};
+            vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass               = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
             beginInfo.renderArea.extent.width  = viewport.width;

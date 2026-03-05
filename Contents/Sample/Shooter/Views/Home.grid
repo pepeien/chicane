@@ -3,8 +3,19 @@
         <Text>YOU WIN</Text>
     </Container>
     <Container class="telemetry">
-        <Text>{{ framesPerSecond }} FPS</Text>
-        <Text>{{ frameTime }} ms</Text>
+        <Text class="telemetry__system">Scene</Text>
+        <Text>{{ sceneFramesPerSecond }} FPS | {{ sceneFrameTime }} ms</Text>
+    </Container>
+    <Container class="telemetry">
+        <Text class="telemetry__system">UI</Text>
+        <Text>{{ uiFramesPerSecond }} FPS | {{ uiFrameTime }} ms</Text>
+    </Container>
+    <Container class="telemetry">
+        <Text class="telemetry__system">Renderer</Text>
+        <Text>{{ rendererFramesPerSecond }} FPS | {{ rendererFrameTime }} ms</Text>
+    </Container>
+    <Container class="telemetry">
+        <Text class="telemetry__system">Camera</Text>
         <Text>{{ currentCamera }}</Text>
     </Container>
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>

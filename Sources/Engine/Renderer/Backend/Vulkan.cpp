@@ -402,7 +402,7 @@ namespace Chicane
             createInfo.commandBuffer  = mainCommandBuffer;
             createInfo.queue          = graphicsQueue;
 
-            std::vector<vk::DescriptorImageInfo> infos = {};
+            std::vector<vk::DescriptorImageInfo> infos;
             for (const DrawTexture& texture : inTextures)
             {
                 createInfo.image = texture.image;

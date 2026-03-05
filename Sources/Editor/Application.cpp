@@ -25,7 +25,7 @@ namespace Editor
     Application::Application()
         : m_controller(nullptr)
     {
-        Chicane::ApplicationCreateInfo createInfo = {};
+        Chicane::ApplicationCreateInfo createInfo;
 
         // Window
         createInfo.window.title   = "Chicane Editor";

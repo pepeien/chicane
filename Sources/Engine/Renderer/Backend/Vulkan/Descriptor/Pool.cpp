@@ -12,13 +12,13 @@ namespace Chicane
                 const VulkanDescriptorPoolCreateInfo& inCreateInfo
             )
             {
-                std::vector<vk::DescriptorPoolSize> poolSizes = {};
+                std::vector<vk::DescriptorPoolSize> poolSizes;
 
                 for (const VulkanDescriptorPoolSizeCreateInfo& size : inCreateInfo.sizes)
                 {
-                    vk::DescriptorPoolSize poolSize = {};
-                    poolSize.type                   = size.type;
-                    poolSize.descriptorCount        = size.descriptorCount;
+                    vk::DescriptorPoolSize poolSize;
+                    poolSize.type            = size.type;
+                    poolSize.descriptorCount = size.descriptorCount;
 
                     poolSizes.push_back(poolSize);
                 }

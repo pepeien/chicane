@@ -342,7 +342,7 @@ namespace Chicane
             // AMD
             if (GLAD_GL_ATI_meminfo)
             {
-                GLint mem[4] = {};
+                GLint mem[4];
                 glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem);
 
                 VRAM = static_cast<size_t>(mem[0]) * 1024;
