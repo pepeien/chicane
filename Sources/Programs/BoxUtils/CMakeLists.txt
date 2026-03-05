@@ -1,28 +1,27 @@
 ######################### Values #########################
-set(BOX_TARGET_NAME "${PROGRAMS_TARGET_NAME}-Box")
-set(BOX_HEADER_DIR  "${PROGRAMS_HEADER_DIR}/Box")
-set(BOX_SOURCE_DIR  "${PROGRAMS_SOURCE_DIR}/Box")
+set(BOX_UTILS_TARGET_NAME "${PROGRAMS_TARGET_NAME}-Box")
+set(BOX_UTILS_SOURCE_DIR  "${PROGRAMS_SOURCE_DIR}/BoxUtils")
 
 ######################### Files ##########################
 file(
     GLOB_RECURSE
     HEADERS
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.hpp
+    ${BOX_UTILS_SOURCE_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
+    ${BOX_UTILS_SOURCE_DIR}/*.cpp
 )
 
 ######################### Setup #########################
-add_executable(${BOX_TARGET_NAME} ${HEADERS} ${SOURCES})
+add_executable(${BOX_UTILS_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 set_target_properties(
-    ${BOX_TARGET_NAME}
+    ${BOX_UTILS_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
@@ -32,7 +31,7 @@ set_target_properties(
 )
 
 target_include_directories(
-    ${BOX_TARGET_NAME}
+    ${BOX_UTILS_TARGET_NAME}
 
     PUBLIC
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
@@ -42,10 +41,10 @@ target_include_directories(
 )
 
 target_link_libraries(
-    ${BOX_TARGET_NAME}
+    ${BOX_UTILS_TARGET_NAME}
 
     PRIVATE
         Chicane::Box
 )
 
-CH_ADD_COMPILER(${BOX_TARGET_NAME})
+CH_ADD_COMPILER(${BOX_UTILS_TARGET_NAME})

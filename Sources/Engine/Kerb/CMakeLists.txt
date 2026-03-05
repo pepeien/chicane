@@ -66,5 +66,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${KERB_TARGET_NAME})
 
+CH_REFLECT_FILE(${KERB_TARGET_NAME} "${HEADERS}" ${KERB_HEADER_DIR})
+
 ##################### Directories #######################
 add_subdirectory(Vendor)

@@ -3,14 +3,14 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.hpp
+    ${SHOOTER_SOURCE_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
+    ${SHOOTER_SOURCE_DIR}/*.cpp
 )
 
 ##################### Directories #######################
@@ -46,3 +46,5 @@ target_link_libraries(
 add_dependencies(${SHOOTER_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${SHOOTER_TARGET_NAME})
+
+CH_REFLECT_FILE(${SHOOTER_TARGET_NAME} "${HEADERS}" ${SHOOTER_SOURCE_DIR})

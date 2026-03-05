@@ -1,10 +1,3 @@
-##################### Includes #######################
-include(CMakePackageConfigHelpers)
-
-include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
-
-include(CMake/Functions.cmake)
-
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)
 
@@ -145,17 +138,25 @@ set(SCREECH_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Screech")
 
 ## Editor
 set(EDITOR_TARGET_NAME "${NAME}-Editor")
-set(EDITOR_HEADER_DIR  "${SOURCES_DIR}/Editor")
 set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
 
 ## Sample
 set(SAMPLE_TARGET_NAME "${NAME}-Sample")
-set(SAMPLE_HEADER_DIR  "${SOURCES_DIR}/Sample")
 set(SAMPLE_SOURCE_DIR  "${SOURCES_DIR}/Sample")
 
 set(SHOOTER_TARGET_NAME "${SAMPLE_TARGET_NAME}-Shooter")
-set(SHOOTER_HEADER_DIR  "${SAMPLE_HEADER_DIR}/Shooter")
 set(SHOOTER_SOURCE_DIR  "${SAMPLE_SOURCE_DIR}/Shooter")
+
+## Programs
+set(PROGRAMS_TARGET_NAME "${NAME}-Programs")
+set(PROGRAMS_SOURCE_DIR  "${SOURCES_DIR}/Programs")
+
+##################### Includes #######################
+include(CMakePackageConfigHelpers)
+
+include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
+
+include(CMake/Functions.cmake)
 
 ##################### Directories #######################
 add_subdirectory(Contents)

@@ -3,14 +3,14 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.hpp
+    ${EDITOR_SOURCE_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
+    ${EDITOR_SOURCE_DIR}/*.cpp
 )
 ##################### Setup #######################
 if (NOT CHICANE_VULKAN)
@@ -56,3 +56,5 @@ target_link_libraries(
 add_dependencies(${EDITOR_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${EDITOR_TARGET_NAME})
+
+CH_REFLECT_FILE(${EDITOR_TARGET_NAME} "${HEADERS}" ${EDITOR_SOURCE_DIR})

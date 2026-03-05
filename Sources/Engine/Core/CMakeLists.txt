@@ -84,5 +84,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})
 
+CH_REFLECT_FILE(${CORE_TARGET_NAME} "${HEADERS}" ${CORE_HEADER_DIR})
+
 ##################### Directories #######################
 add_subdirectory(Vendor)

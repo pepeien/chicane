@@ -73,5 +73,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${SCREECH_TARGET_NAME})
 
+CH_REFLECT_FILE(${SCREECH_TARGET_NAME} "${HEADERS}" ${SCREECH_HEADER_DIR})
+
 ##################### Directories #######################
 add_subdirectory(Vendor)
