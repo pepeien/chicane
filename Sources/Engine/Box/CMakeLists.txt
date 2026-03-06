@@ -2,8 +2,7 @@
 file(
     GLOB_RECURSE
     HEADERS
-
-    # Headers
+    CONFIGURE_DEPENDS
     ${BOX_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Box.hpp)
@@ -12,8 +11,7 @@ list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 file(
     GLOB_RECURSE
     SOURCES
-
-    # Sources
+    CONFIGURE_DEPENDS
     ${BOX_SOURCE_DIR}/*.cpp
 )
 list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Box.cpp)
@@ -43,6 +41,12 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${BOX_HEADER_DIR}"
 )
 
 target_compile_definitions(
@@ -73,8 +77,6 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${BOX_TARGET_NAME})
-
-CH_REFLECT_FILE(${BOX_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${BOX_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

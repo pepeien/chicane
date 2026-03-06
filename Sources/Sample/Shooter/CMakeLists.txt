@@ -2,14 +2,14 @@
 file(
     GLOB_RECURSE
     HEADERS
-
+    CONFIGURE_DEPENDS
     ${SHOOTER_SOURCE_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
-
+    CONFIGURE_DEPENDS
     ${SHOOTER_SOURCE_DIR}/*.cpp
 )
 
@@ -24,6 +24,12 @@ set_target_properties(
             "ShooterSample"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${CHICANE_BUILD_DIR}"
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${SOURCES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${SHOOTER_SOURCE_DIR}"
 )
 
 target_include_directories(
@@ -46,5 +52,3 @@ target_link_libraries(
 add_dependencies(${SHOOTER_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${SHOOTER_TARGET_NAME})
-
-CH_REFLECT_FILE(${SHOOTER_TARGET_NAME} "${HEADERS}" ${SOURCES_DIR} ${SHOOTER_SOURCE_DIR})

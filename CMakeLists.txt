@@ -110,6 +110,7 @@ set(BOX_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Box")
 set(CORE_TARGET_NAME "${NAME}-Core")
 set(CORE_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Core")
 set(CORE_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Core")
+set(CORE_HEADERS     "")
 
 ## Grid
 set(GRID_TARGET_NAME "${NAME}-Grid")
@@ -161,3 +162,7 @@ include(CMake/Functions.cmake)
 ##################### Directories #######################
 add_subdirectory(Contents)
 add_subdirectory(Sources)
+
+##################### Reflection #######################
+
+CH_GENERATE_REFLECTION()

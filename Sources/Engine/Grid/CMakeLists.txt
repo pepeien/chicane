@@ -2,8 +2,7 @@
 file(
     GLOB_RECURSE
     HEADERS
-
-    # Headers
+    CONFIGURE_DEPENDS
     ${GRID_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Grid.hpp)
@@ -11,8 +10,7 @@ list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Grid.hpp)
 file(
     GLOB_RECURSE
     SOURCES
-
-    # Sources
+    CONFIGURE_DEPENDS
     ${GRID_SOURCE_DIR}/*.cpp
 )
 list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Grid.cpp)
@@ -41,6 +39,12 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${GRID_HEADER_DIR}"
 )
 
 target_compile_definitions(
@@ -68,5 +72,3 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${GRID_TARGET_NAME})
-
-CH_REFLECT_FILE(${GRID_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${GRID_HEADER_DIR})

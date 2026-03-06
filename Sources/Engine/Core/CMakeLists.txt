@@ -44,6 +44,12 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CORE_HEADER_DIR}"
 )
 
 target_compile_definitions(
@@ -81,8 +87,6 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})
-
-CH_REFLECT_FILE(${CORE_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${CORE_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

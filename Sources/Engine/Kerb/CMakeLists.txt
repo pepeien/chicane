@@ -2,7 +2,7 @@
 file(
     GLOB_RECURSE
     HEADERS
-
+    CONFIGURE_DEPENDS
     ${KERB_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Kerb.hpp)
@@ -11,7 +11,7 @@ list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 file(
     GLOB_RECURSE
     SOURCES
-
+    CONFIGURE_DEPENDS
     ${KERB_SOURCE_DIR}/*.cpp
 )
 list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Kerb.cpp)
@@ -39,10 +39,14 @@ set_target_properties(
             "${NAME}Kerb"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${CHICANE_BUILD_DIR}"
-        DEFINE_SYMBOL
-            "BUILD_EXPORT"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${KERB_HEADER_DIR}"
 )
 
 target_include_directories(
@@ -64,8 +68,6 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${KERB_TARGET_NAME})
-
-CH_REFLECT_FILE(${KERB_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${KERB_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

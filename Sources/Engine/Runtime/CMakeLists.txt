@@ -2,7 +2,7 @@
 file(
     GLOB_RECURSE
     HEADERS
-
+    CONFIGURE_DEPENDS
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
@@ -11,7 +11,7 @@ list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 file(
     GLOB_RECURSE
     SOURCES
-
+    CONFIGURE_DEPENDS
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
@@ -40,6 +40,12 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${RUNTIME_HEADER_DIR}"
 )
 
 target_compile_definitions(
@@ -71,5 +77,3 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
-
-CH_REFLECT_FILE(${RUNTIME_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${RUNTIME_HEADER_DIR})

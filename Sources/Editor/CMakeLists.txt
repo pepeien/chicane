@@ -34,6 +34,12 @@ set_target_properties(
             "ChicaneEditor"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${CHICANE_BUILD_DIR}"
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${SOURCES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${EDITOR_SOURCE_DIR}"
 )
 
 target_include_directories(
@@ -56,5 +62,3 @@ target_link_libraries(
 add_dependencies(${EDITOR_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${EDITOR_TARGET_NAME})
-
-CH_REFLECT_FILE(${EDITOR_TARGET_NAME} "${HEADERS}" ${SOURCES_DIR} ${EDITOR_SOURCE_DIR})

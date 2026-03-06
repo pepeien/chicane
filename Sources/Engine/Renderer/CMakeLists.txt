@@ -7,16 +7,16 @@ set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
 file(
     GLOB_RECURSE
     HEADERS
-
-    ${CHICANE_INCLUDES_DIR}/Renderer.hpp
+    CONFIGURE_DEPENDS
     ${RENDERER_HEADER_DIR}/*.hpp
 )
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Renderer.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
-
+    CONFIGURE_DEPENDS
     ${RENDERER_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
@@ -65,6 +65,12 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${RENDERER_HEADER_DIR}"
 )
 
 target_compile_definitions(
@@ -95,5 +101,3 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${RENDERER_TARGET_NAME})
-
-CH_REFLECT_FILE(${RENDERER_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${RENDERER_HEADER_DIR})

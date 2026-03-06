@@ -171,49 +171,131 @@ function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
     endif()
 endfunction()
 
-function(CH_REFLECT_FILE TARGET_NAME SOURCES BASE_DIR SOURCE_DIR)
-    set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
-    set(GENERATED_FILES "")
-    set(ALL_INPUT_FILES "")
+function(_CH_COLLECT_REFLECT_HEADERS TARGET OUT_HEADERS VISITED)
+    if(${TARGET} IN_LIST ${VISITED})
+        return()
+    endif()
 
-    foreach(FILE ${SOURCES})
-        get_filename_component(FILE_DIR  "${FILE}" DIRECTORY)
-        get_filename_component(FILE_BASE "${FILE}" NAME_WE)
-        get_filename_component(FILE_EXT  "${FILE}" EXT)
+    list(APPEND ${VISITED} ${TARGET})
 
-        # Mirror source structure under OUTPUT_DIR
-        file(RELATIVE_PATH RELATIVE_DIR "${BASE_DIR}" "${FILE_DIR}")
+    get_target_property(HEADERS ${TARGET} CH_REFLECT_HEADERS)
 
-        if(RELATIVE_DIR STREQUAL "" OR RELATIVE_DIR STREQUAL ".")
-            set(RESULT_DIR "${OUTPUT_DIR}")
-        else()
-            set(RESULT_DIR "${OUTPUT_DIR}/${RELATIVE_DIR}")
-        endif()
+    if(HEADERS AND NOT HEADERS STREQUAL "HEADERS-NOTFOUND")
+        list(APPEND ${OUT_HEADERS} ${HEADERS})
+    endif()
 
-        # e.g. Reflected/Chicane/Core/Telemetry.reflected.hpp
-        set(RESULT_FILE "${RESULT_DIR}/${FILE_BASE}.reflected${FILE_EXT}")
+    get_target_property(LINKED_LIBS ${TARGET} LINK_LIBRARIES)
 
-        file(MAKE_DIRECTORY "${RESULT_DIR}")
-        list(APPEND GENERATED_FILES "${RESULT_FILE}")
-        list(APPEND ALL_INPUT_FILES "${FILE}")
+    if(LINKED_LIBS AND NOT LINKED_LIBS STREQUAL "LINKED_LIBS-NOTFOUND")
+        foreach(LIB ${LINKED_LIBS})
+            if(LIB MATCHES "^\\$<" OR NOT TARGET ${LIB})
+                continue()
+            endif()
+
+            _CH_COLLECT_REFLECT_HEADERS(${LIB} ${OUT_HEADERS} ${VISITED})
+        endforeach()
+    endif()
+
+    set(${OUT_HEADERS} ${${OUT_HEADERS}} PARENT_SCOPE)
+    set(${VISITED}     ${${VISITED}}     PARENT_SCOPE)
+endfunction()
+
+function(_CH_GET_ALL_TARGETS OUT DIR)
+    get_property(TGTS DIRECTORY "${DIR}" PROPERTY BUILDSYSTEM_TARGETS)
+
+    list(APPEND ${OUT} ${TGTS})
+
+    get_property(SUBDIRS DIRECTORY "${DIR}" PROPERTY SUBDIRECTORIES)
+
+    foreach(SUBDIR IN LISTS SUBDIRS)
+        _CH_GET_ALL_TARGETS(${OUT} "${SUBDIR}")
+
+        set(${OUT} ${${OUT}} PARENT_SCOPE)
     endforeach()
 
-    add_custom_command(
-        OUTPUT   ${GENERATED_FILES}
-        COMMAND  dotnet run
-                 --project "${PROGRAMS_SOURCE_DIR}/Reflector/Reflector.csproj"
-                 -i ${ALL_INPUT_FILES}
-                 -b "${BASE_DIR}"
-                 -s "${SOURCE_DIR}"   
-                 -o "${OUTPUT_DIR}"
-        DEPENDS  ${SOURCES}
-        COMMENT  ""
-        VERBATIM
-    )
+    set(${OUT} ${${OUT}} PARENT_SCOPE)
+endfunction()
 
-    set(REFLECT_TARGET "Reflect_${TARGET_NAME}")
-    add_custom_target(${REFLECT_TARGET} DEPENDS ${GENERATED_FILES})
-    add_dependencies(${TARGET_NAME} ${REFLECT_TARGET})
-    target_sources(${TARGET_NAME} PRIVATE ${GENERATED_FILES})
-    target_include_directories(${TARGET_NAME} PRIVATE "${OUTPUT_DIR}")
+function(CH_GENERATE_REFLECTION)
+    set(ALL_TARGETS)
+    _CH_GET_ALL_TARGETS(ALL_TARGETS "${CMAKE_CURRENT_LIST_DIR}")
+
+    foreach(T ${ALL_TARGETS})
+        get_target_property(HEADERS    ${T} CH_REFLECT_HEADERS)
+        get_target_property(BASE_DIR   ${T} CH_BASE_HEADER_DIR)
+        get_target_property(SOURCE_DIR ${T} CH_SOURCE_HEADER_DIR)
+
+        if(NOT HEADERS OR HEADERS STREQUAL "HEADERS-NOTFOUND")
+            continue()
+        endif()
+
+        if(NOT BASE_DIR OR BASE_DIR STREQUAL "BASE_DIR-NOTFOUND")
+            continue()
+        endif()
+
+        if(NOT SOURCE_DIR OR SOURCE_DIR STREQUAL "SOURCE_DIR-NOTFOUND")
+            continue()
+        endif()
+
+        set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
+        set(GENERATED_FILES)
+
+        set(VISITED)
+        set(ALL_INPUT_FILES)
+
+        _CH_COLLECT_REFLECT_HEADERS(${T} ALL_INPUT_FILES VISITED)
+
+        list(REMOVE_DUPLICATES ALL_INPUT_FILES)
+
+        set(TARGET_GENERATED_FILES)
+
+        foreach(FILE ${HEADERS})
+            get_filename_component(FILE_DIR  "${FILE}" DIRECTORY)
+            get_filename_component(FILE_BASE "${FILE}" NAME_WE)
+            get_filename_component(FILE_EXT  "${FILE}" EXT)
+
+            file(RELATIVE_PATH RELATIVE_DIR "${BASE_DIR}" "${FILE_DIR}")
+
+            set(RESULT_DIR "${OUTPUT_DIR}/${RELATIVE_DIR}")
+            string(REPLACE "//" "/" RESULT_DIR ${RESULT_DIR})
+
+            list(APPEND TARGET_GENERATED_FILES "${RESULT_DIR}/${FILE_BASE}.reflected${FILE_EXT}")
+        endforeach()
+
+        if(NOT TARGET_GENERATED_FILES)
+            continue()
+        endif()
+
+        add_custom_command(
+            OUTPUT  ${TARGET_GENERATED_FILES}
+            COMMAND dotnet run
+                    --project "${PROGRAMS_SOURCE_DIR}/Reflector/Reflector.csproj"
+                    -i ${ALL_INPUT_FILES}   # Own headers + linked lib headers (type resolution)
+                    -b "${BASE_DIR}"
+                    -s "${SOURCE_DIR}"      # C# only emits files under this dir
+                    -o "${OUTPUT_DIR}"
+            DEPENDS ${ALL_INPUT_FILES}      # Rebuild if any header changes
+            COMMENT ""
+            VERBATIM
+        )
+
+        foreach(GEN_FILE ${TARGET_GENERATED_FILES})
+            set_source_files_properties(
+                "${GEN_FILE}"
+                DIRECTORY "${CMAKE_SOURCE_DIR}"
+                PROPERTIES GENERATED TRUE
+            )
+        endforeach()
+
+        set(REFLECT_TARGET "Reflect_${T}")
+
+        add_custom_target(${REFLECT_TARGET} ALL
+            DEPENDS ${TARGET_GENERATED_FILES}
+        )
+
+        add_dependencies(${T} ${REFLECT_TARGET})
+        target_include_directories(${T} PRIVATE "${OUTPUT_DIR}")
+
+        list(APPEND GENERATED_FILES ${TARGET_GENERATED_FILES})
+    endforeach()
 endfunction()
