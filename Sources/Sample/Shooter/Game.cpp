@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "Sample/Shooter/Game.hpp"
 
 #include <Chicane/Core/Event/Observable.hpp>
 

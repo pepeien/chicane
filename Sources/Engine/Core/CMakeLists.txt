@@ -8,7 +8,6 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    # Headers
     ${CORE_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Core.hpp)
@@ -17,7 +16,6 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    # Sources
     ${CORE_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
@@ -84,7 +82,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})
 
-CH_REFLECT_FILE(${CORE_TARGET_NAME} "${HEADERS}" ${CORE_HEADER_DIR})
+CH_REFLECT_FILE(${CORE_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${CORE_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

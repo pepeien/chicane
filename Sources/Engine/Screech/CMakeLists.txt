@@ -16,7 +16,7 @@ file(
     # Sources
     ${SCREECH_SOURCE_DIR}/*.cpp
 )
-list(APPEND HEADERS ${CHICANE_SOURCES_DIR}/Screech.cpp)
+list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Screech.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
@@ -73,7 +73,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${SCREECH_TARGET_NAME})
 
-CH_REFLECT_FILE(${SCREECH_TARGET_NAME} "${HEADERS}" ${SCREECH_HEADER_DIR})
+CH_REFLECT_FILE(${SCREECH_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${SCREECH_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

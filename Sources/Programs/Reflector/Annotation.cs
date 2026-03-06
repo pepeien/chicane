@@ -4,13 +4,13 @@ namespace Reflector
 {
     enum Annotation
     {
-        [StringValue("CHTYPE()")]
+        [StringValue("CH_TYPE()")]
         Type,
-        [StringValue("CHFIELD()")]
+        [StringValue("CH_FIELD()")]
         Field,
-        [StringValue("CHMETHOD()")]
+        [StringValue("CH_METHOD()")]
         Method,
-        [StringValue("CHENUM()")]
+        [StringValue("CH_ENUM()")]
         Enum,
     }
 }

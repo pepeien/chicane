@@ -171,46 +171,49 @@ function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
     endif()
 endfunction()
 
-function(CH_REFLECT_FILE TARGET_NAME SOURCES SOURCE_DIR)
-    set(GENERATED_FILES "")
-
+function(CH_REFLECT_FILE TARGET_NAME SOURCES BASE_DIR SOURCE_DIR)
     set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
+    set(GENERATED_FILES "")
+    set(ALL_INPUT_FILES "")
 
     foreach(FILE ${SOURCES})
-        get_filename_component(FILE_DIR  ${FILE} DIRECTORY)
-        get_filename_component(FILE_BASE ${FILE} NAME_WE)
-        get_filename_component(FILE_EXT  ${FILE} EXT)
+        get_filename_component(FILE_DIR  "${FILE}" DIRECTORY)
+        get_filename_component(FILE_BASE "${FILE}" NAME_WE)
+        get_filename_component(FILE_EXT  "${FILE}" EXT)
 
-        set(RELATIVE_DIR "${FILE_DIR}")
-        string(REPLACE "${INCLUDES_DIR}" "" RELATIVE_DIR ${RELATIVE_DIR})
-        string(REPLACE "${SOURCES_DIR}" "" RELATIVE_DIR ${RELATIVE_DIR})
-        string(REPLACE "${SOURCE_DIR}" "" RELATIVE_DIR ${RELATIVE_DIR})
+        # Mirror source structure under OUTPUT_DIR
+        file(RELATIVE_PATH RELATIVE_DIR "${BASE_DIR}" "${FILE_DIR}")
 
-        set(RESULT_DIR "${OUTPUT_DIR}/${RELATIVE_DIR}")
-        string(REPLACE "//" "/" RESULT_DIR ${RESULT_DIR})
-        file(MAKE_DIRECTORY "${RESULT_DIR}")
+        if(RELATIVE_DIR STREQUAL "" OR RELATIVE_DIR STREQUAL ".")
+            set(RESULT_DIR "${OUTPUT_DIR}")
+        else()
+            set(RESULT_DIR "${OUTPUT_DIR}/${RELATIVE_DIR}")
+        endif()
 
+        # e.g. Reflected/Chicane/Core/Telemetry.reflected.hpp
         set(RESULT_FILE "${RESULT_DIR}/${FILE_BASE}.reflected${FILE_EXT}")
-        string(REPLACE "//" "/" RESULT_FILE ${RESULT_FILE})
 
-        list(APPEND GENERATED_FILES ${RESULT_FILE})
-
-        add_custom_command(
-            OUTPUT 
-                "${RESULT_FILE}"
-            COMMAND
-                dotnet run --project "${PROGRAMS_SOURCE_DIR}/Reflector/Reflector.csproj" -i "${FILE}" -o "${RESULT_FILE}"
-            DEPENDS
-                "${FILE}"
-        )
+        file(MAKE_DIRECTORY "${RESULT_DIR}")
+        list(APPEND GENERATED_FILES "${RESULT_FILE}")
+        list(APPEND ALL_INPUT_FILES "${FILE}")
     endforeach()
 
+    add_custom_command(
+        OUTPUT   ${GENERATED_FILES}
+        COMMAND  dotnet run
+                 --project "${PROGRAMS_SOURCE_DIR}/Reflector/Reflector.csproj"
+                 -i ${ALL_INPUT_FILES}
+                 -b "${BASE_DIR}"
+                 -s "${SOURCE_DIR}"   
+                 -o "${OUTPUT_DIR}"
+        DEPENDS  ${SOURCES}
+        COMMENT  ""
+        VERBATIM
+    )
+
     set(REFLECT_TARGET "Reflect_${TARGET_NAME}")
-
-    target_sources(${TARGET_NAME} PRIVATE ${GENERATED_FILES})
-
     add_custom_target(${REFLECT_TARGET} DEPENDS ${GENERATED_FILES})
     add_dependencies(${TARGET_NAME} ${REFLECT_TARGET})
-
+    target_sources(${TARGET_NAME} PRIVATE ${GENERATED_FILES})
     target_include_directories(${TARGET_NAME} PRIVATE "${OUTPUT_DIR}")
 endfunction()

@@ -1,24 +1,17 @@
-#include "View.hpp"
+#include "Editor/View.hpp"
 
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 
 #include <Chicane/Runtime/Application.hpp>
 
-#include "Actor/Item.hpp"
+#include "Editor/Actor/Item.hpp"
 
 namespace Editor
 {
     View::View()
         : Chicane::Grid::View("Contents/Editor/Views/Home.grid"),
-          m_telemetry(Chicane::Application::getInstance().getTelemetry()),
-          u_sceneFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.scene.delta)),
-          u_sceneFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.scene.rate))
-    {
-        addReference("frameTime", &u_sceneFrameTime);
-        addReference("framesPerSecond", &u_sceneFramesPerSecond);
-
-        addFunction("onAssetImport", [this](const Chicane::Grid::Event& inEvent) { return onAssetImport(inEvent); });
-    }
+          telemetry(Chicane::Application::getInstance().getTelemetry())
+    {}
 
     Chicane::Reference View::onAssetImport(const Chicane::Grid::Event& inEvent)
     {

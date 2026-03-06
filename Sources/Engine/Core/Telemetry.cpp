@@ -1,4 +1,4 @@
-#include "Chicane/Core/Telemetry.hpp"
+#include "Chicane/Core/Telemetry.reflected.hpp"
 
 namespace Chicane
 {

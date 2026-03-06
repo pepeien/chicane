@@ -20,6 +20,7 @@ namespace Reflector
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
             StringValueAttribute[] attributes = (StringValueAttribute[])fi.GetCustomAttributes(typeof(StringValueAttribute), false);
+
             return attributes.Length > 0 ? attributes[0].Value : value.ToString();
         }
     }

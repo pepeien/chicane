@@ -1,4 +1,4 @@
-#include "Actor/Structure.hpp"
+#include "Sample/Shooter/Actor/Structure.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 

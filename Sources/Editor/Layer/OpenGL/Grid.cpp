@@ -1,4 +1,4 @@
-#include "Layer/OpenGL/Grid.hpp"
+#include "Editor/Layer/OpenGL/Grid.hpp"
 
 #include <Chicane/Renderer/Backend/OpenGL.hpp>
 

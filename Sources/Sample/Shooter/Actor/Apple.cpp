@@ -1,8 +1,8 @@
-#include "Actor/Apple.hpp"
+#include "Sample/Shooter/Actor/Apple.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 
-#include "Game.hpp"
+#include "Sample/Shooter/Game.hpp"
 
 Apple::Apple()
     : Chicane::Actor(),

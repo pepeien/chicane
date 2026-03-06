@@ -3,7 +3,6 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    ${CHICANE_INCLUDES_DIR}/Kerb.hpp
     ${KERB_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Kerb.hpp)
@@ -13,9 +12,9 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    ${CHICANE_SOURCES_DIR}/Kerb.cpp
     ${KERB_SOURCE_DIR}/*.cpp
 )
+list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Kerb.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
@@ -66,7 +65,7 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${KERB_TARGET_NAME})
 
-CH_REFLECT_FILE(${KERB_TARGET_NAME} "${HEADERS}" ${KERB_HEADER_DIR})
+CH_REFLECT_FILE(${KERB_TARGET_NAME} "${HEADERS}" ${INCLUDES_DIR} ${KERB_HEADER_DIR})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)

@@ -49,6 +49,8 @@ namespace Chicane
             return m_type == std::type_index(typeid(T));
         }
 
+        inline std::type_index getType() const { return m_type; }
+
         template <typename T>
         inline void setValue(T* inValue)
         {

@@ -1,10 +1,10 @@
-#include "Actor/Character.hpp"
+#include "Sample/Shooter/Actor/Character.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 
-#include "Actor/Apple.hpp"
-#include "Game.hpp"
-#include "Level.hpp"
+#include "Sample/Shooter/Actor/Apple.hpp"
+#include "Sample/Shooter/Game.hpp"
+#include "Sample/Shooter/Level.hpp"
 
 static constexpr inline const float MOVE_COEFFICIENT = 3.0f;
 

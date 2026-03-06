@@ -51,8 +51,6 @@ namespace Chicane
               m_directives({}),
               m_style({}),
               m_styleFile(nullptr),
-              m_references({}),
-              m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
@@ -469,57 +467,36 @@ namespace Chicane
 
         bool Component::hasReference(const String& inId, bool isLocalOnly) const
         {
-            bool bWasFoundLocally = m_references.find(inId) != m_references.end() && m_references.at(inId) &&
-                                    !m_references.at(inId)->isEmpty();
-
-            if (!hasParent() || isLocalOnly)
+            if (inId.isEmpty())
             {
-                return bWasFoundLocally;
+                return false;
             }
 
-            return bWasFoundLocally || m_parent->hasReference(inId);
-        }
-
-        Reference* Component::getReference(const String& inId) const
-        {
-            if (!hasParent())
+            if (isLocalOnly || !hasParent())
             {
-                return hasReference(inId, true) ? m_references.at(inId) : nullptr;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::get().find(typeid(*this)))
+                {
+                    const std::vector<String> fields = inId.split('.');
+
+                    if (fields.empty())
+                    {
+                        return false;
+                    }
+
+                    return type->findField(fields.at(0)) != nullptr;
+                }
+
+                return false;
             }
 
-            return hasReference(inId, true) ? m_references.at(inId) : m_parent->getReference(inId);
-        }
-
-        void Component::addReference(const Reference::Map& inReferences)
-        {
-            for (auto [id, reference] : inReferences)
-            {
-                addReference(id, reference);
-            }
-        }
-
-        void Component::addReference(const String& inId, Reference* inReference)
-        {
-            if (hasReference(inId, true))
-            {
-                return;
-            }
-
-            m_references.insert(std::make_pair(inId, inReference));
-        }
-
-        void Component::removeReference(const String& inId)
-        {
-            if (!hasReference(inId, true))
-            {
-                return;
-            }
-
-            m_references.erase(inId);
+            return m_parent->hasReference(inId, false);
         }
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
+            return false;
+
+            /*
             if (inId.isEmpty())
             {
                 return false;
@@ -536,10 +513,14 @@ namespace Chicane
             }
 
             return bHasLocally || m_parent->hasFunction(id);
+            */
         }
 
-        const Function Component::getFunction(const String& inId, bool isLocalOnly) const
+        const Function Component::getFunction(const String& inId) const
         {
+            return nullptr;
+
+            /*
             if (inId.isEmpty())
             {
                 return nullptr;
@@ -553,34 +534,7 @@ namespace Chicane
             }
 
             return hasFunction(id, true) ? m_functions.at(id) : m_parent->getFunction(id);
-        }
-
-        void Component::addFunction(const Functions& inFunctions)
-        {
-            for (auto [id, function] : inFunctions)
-            {
-                addFunction(id, function);
-            }
-        }
-
-        void Component::addFunction(const String& inId, Function inFunction)
-        {
-            if (hasFunction(inId, true))
-            {
-                return;
-            }
-
-            m_functions.insert(std::make_pair(inId, inFunction));
-        }
-
-        void Component::removeFunction(const String& inId)
-        {
-            if (!hasFunction(inId, true))
-            {
-                return;
-            }
-
-            m_functions.erase(inId);
+            */
         }
 
         bool Component::hasRoot() const
@@ -1078,7 +1032,7 @@ namespace Chicane
             const String value = inValue.substr(valueStart, closePosition - valueStart).trim();
             if (!value.isEmpty())
             {
-                result.append(parseReference(value).toString());
+                result.append(parseReference(value));
             }
 
             const String suffix = inValue.substr(closePosition + 2);
@@ -1098,29 +1052,29 @@ namespace Chicane
             return bHasOpening && bHasClosing;
         }
 
-        Reference Component::parseReference(const String& inValue) const
+        String Component::parseReference(const String& inValue) const
         {
-            if (!isFunction(inValue))
+            if (!hasReference(inValue))
             {
-                if (hasReference(inValue))
+                return inValue;
+            }
+
+            if (!hasParent())
+            {
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::get().find(typeid(*this)))
                 {
-                    return *getReference(inValue);
+                    try
+                    {
+                        return type->resolve(inValue).toString(this);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        return inValue;
+                    }
                 }
-
-                return Reference::fromValue<const String>(&inValue);
             }
 
-            if (!hasFunction(inValue))
-            {
-                return Reference::fromValue<const String>(&inValue);
-            }
-
-            FunctionData data = parseFunction(inValue);
-
-            Event event;
-            event.values = data.params;
-
-            return getFunction(data.name)(event);
+            return m_parent->parseReference(inValue);
         }
 
         bool Component::isFunction(const String& inValue) const

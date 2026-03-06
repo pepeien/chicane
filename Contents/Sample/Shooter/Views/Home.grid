@@ -4,15 +4,15 @@
     </Container>
     <Container class="telemetry">
         <Text class="telemetry__system">Scene</Text>
-        <Text>{{ sceneFramesPerSecond }} FPS | {{ sceneFrameTime }} ms</Text>
+        <Text>{{ telemetry.scene.rate }} FPS | {{ telemetry.scene.delta }} ms</Text>
     </Container>
     <Container class="telemetry">
         <Text class="telemetry__system">UI</Text>
-        <Text>{{ uiFramesPerSecond }} FPS | {{ uiFrameTime }} ms</Text>
+        <Text>{{ telemetry.ui.rate }} FPS | {{ telemetry.ui.delta }} ms</Text>
     </Container>
     <Container class="telemetry">
         <Text class="telemetry__system">Renderer</Text>
-        <Text>{{ rendererFramesPerSecond }} FPS | {{ rendererFrameTime }} ms</Text>
+        <Text>{{ telemetry.renderer.rate }} FPS | {{ telemetry.renderer.delta }} ms</Text>
     </Container>
     <Container class="telemetry">
         <Text class="telemetry__system">Camera</Text>

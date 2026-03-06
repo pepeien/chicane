@@ -8,6 +8,7 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
@@ -128,16 +129,9 @@ namespace Chicane
 
             // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
-            Reference* getReference(const String& inId) const;
-            void addReference(const Reference::Map& inReference);
-            void addReference(const String& inId, Reference* inReference);
-            void removeReference(const String& inId);
 
             bool hasFunction(const String& inId, bool isLocalOnly = false) const;
-            const Function getFunction(const String& inId, bool isLocalOnly = false) const;
-            void addFunction(const Functions& inFunctions);
-            void addFunction(const String& inId, Function inFunction);
-            void removeFunction(const String& inId);
+            const Function getFunction(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;
@@ -210,7 +204,7 @@ namespace Chicane
             void refreshBounds();
 
             bool isReference(const String& inValue) const;
-            Reference parseReference(const String& inValue) const;
+            String parseReference(const String& inValue) const;
 
             bool isFunction(const String& inValue) const;
             FunctionData parseFunction(const String& inRefValue) const;
@@ -227,10 +221,6 @@ namespace Chicane
             // Style
             Style                   m_style;
             StyleFile*              m_styleFile;
-
-            // References
-            Reference::Map          m_references;
-            Functions               m_functions;
 
             // Hierarchy
             Component*              m_root;

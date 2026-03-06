@@ -1,4 +1,4 @@
-#include "Actor/Sun.hpp"
+#include "Sample/Shooter/Actor/Sun.hpp"
 
 Sun::Sun()
     : Chicane::ALight(),

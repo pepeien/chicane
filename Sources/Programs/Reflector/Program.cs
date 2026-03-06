@@ -1,35 +1,47 @@
-﻿// ReflectTool.cs — Parses annotated C++ headers, emits *.generated.h
-// Usage:  dotnet run -- path/to/MyFile.h
-
-class Program
+﻿class Program
 {
     static int Main(string[] args)
     {
-        string inputFile = null;
-        string outputFile = null;
+        List<string> inputFiles = [];
+        string baseDir = null;
+        string sourceDir = null;
+        string outputDir = null;
 
         for (int i = 0; i < args.Length; i++)
         {
             switch (args[i])
             {
                 case "-i":
+                    while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
+                    {
+                        inputFiles.Add(args[++i]);
+                    }
+
+                    break;
+
+                case "-b":
                     if (i + 1 < args.Length)
                     {
-                        inputFile = args[++i];
+                        baseDir = args[++i];
                     }
                     else
                     {
-                        Console.WriteLine("Error: -i requires an input file path.");
+                        Console.WriteLine("Error: -s requires an base folder path.");
 
                         return 1;
                     }
 
                     break;
 
+                case "-s":
+                    if (i + 1 < args.Length)
+                        sourceDir = args[++i];
+                    break;
+
                 case "-o":
                     if (i + 1 < args.Length)
                     {
-                        outputFile = args[++i];
+                        outputDir = args[++i];
                     }
                     else
                     {
@@ -47,25 +59,58 @@ class Program
             }
         }
 
-        if (string.IsNullOrEmpty(inputFile) || string.IsNullOrEmpty(outputFile))
+        if (inputFiles.Count == 0 || string.IsNullOrEmpty(baseDir) || string.IsNullOrEmpty(sourceDir) || string.IsNullOrEmpty(outputDir))
         {
-            Console.WriteLine("Usage: program -i <input file> -o <output folder>");
+            Console.WriteLine("Usage: program -i <input files> -b <base folder> -o <output folder>");
 
             return 1;
         }
 
-        if (!File.Exists(inputFile))
+        if (!Directory.Exists(outputDir))
         {
-            Console.WriteLine($"Error: Input file does not exist: {inputFile}");
-
-            return 1;
+            Directory.CreateDirectory(outputDir);
         }
 
-        Console.WriteLine($"Processing: {inputFile}");
+        var allReflectedTypes = new Dictionary<string, string>();
 
-        var (types, enums) = Reflector.Parser.Parse(File.ReadAllText(inputFile));
+        foreach (var file in inputFiles)
+        {
+            var (types, enums) = Reflector.Parser.Parse(File.ReadAllText(file));
 
-        File.WriteAllText(outputFile, Reflector.Emitter.Emit(inputFile, types, enums));
+            foreach (var t in types)
+            {
+                var qualified = string.IsNullOrWhiteSpace(t.Namespace)
+                    ? t.Name
+                    : $"{t.Namespace}::{t.Name}";
+
+                allReflectedTypes.TryAdd(t.Name, qualified);
+
+                allReflectedTypes.TryAdd(qualified, qualified);
+            }
+        }
+
+        foreach (var file in inputFiles)
+        {
+            var (types, enums) = Reflector.Parser.Parse(File.ReadAllText(file));
+
+            var fullFile = Path.GetFullPath(file);
+
+            if (!fullFile.StartsWith(Path.GetFullPath(sourceDir)))
+                continue;
+
+            var relativePath = Path.GetRelativePath(baseDir, file);
+            var directory = Path.GetDirectoryName(relativePath) ?? "";
+            var baseName = Path.GetFileNameWithoutExtension(relativePath);
+            var extension = Path.GetExtension(relativePath);
+            var outputFileName = $"{baseName}.reflected{extension}";
+            var outputPath = Path.Combine(outputDir, directory, outputFileName);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+            File.WriteAllText(
+                outputPath,
+                Reflector.Emitter.Emit(file, types, enums, allReflectedTypes, baseDir)
+            );
+        }
 
         return 0;
     }

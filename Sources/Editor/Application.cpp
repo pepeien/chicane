@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "Editor/Application.hpp"
 
 #include <Chicane/Core/List/Push.hpp>
 #include <Chicane/Core/Window/Backend.hpp>
@@ -9,8 +9,8 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Scene.hpp"
-#include "View.hpp"
+#include "Editor/Scene.hpp"
+#include "Editor/View.hpp"
 
 #if CHICANE_OPENGL
     #include "Layer/OpenGL/Grid.hpp"
