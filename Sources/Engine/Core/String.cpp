@@ -307,10 +307,22 @@ namespace Chicane
 
     String String::getBetween(const String& inOpening, const String& inClosing) const
     {
-        const std::size_t start = firstOf(inOpening) + 1;
-        const std::size_t end   = lastOf(inClosing);
+        const std::size_t openPos = find(inOpening);
 
-        return substr(start, end - start);
+        if (openPos == std::string::npos)
+        {
+            return "";
+        }
+
+        const std::size_t start = openPos + inOpening.size();
+        const std::size_t end   = m_value.rfind(inClosing.toStandard());
+
+        if (end == std::string::npos || end <= start)
+        {
+            return "";
+        }
+
+        return substr(start, end - start).trim();
     }
 
     String String::trim() const

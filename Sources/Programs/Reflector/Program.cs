@@ -35,7 +35,10 @@
 
                 case "-s":
                     if (i + 1 < args.Length)
+                    {
                         sourceDir = args[++i];
+                    }
+
                     break;
 
                 case "-o":
@@ -61,7 +64,7 @@
 
         if (inputFiles.Count == 0 || string.IsNullOrEmpty(baseDir) || string.IsNullOrEmpty(sourceDir) || string.IsNullOrEmpty(outputDir))
         {
-            Console.WriteLine("Usage: program -i <input files> -b <base folder> -o <output folder>");
+            Console.WriteLine("Usage: program -i <input files> -b <base folder> -s <source folder> -o <output folder>");
 
             return 1;
         }

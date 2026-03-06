@@ -13,8 +13,6 @@
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Function.hpp"
-#include "Chicane/Grid/Function/Data.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
@@ -128,10 +126,10 @@ namespace Chicane
             bool hasSelector(const String& inValue) const;
 
             // Reference
-            bool hasReference(const String& inId, bool isLocalOnly = false) const;
+            bool hasField(const String& inId, bool isLocalOnly = false) const;
 
             bool hasFunction(const String& inId, bool isLocalOnly = false) const;
-            const Function getFunction(const String& inId) const;
+            const ReflectionMethodInfo* getFunction(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;
@@ -207,7 +205,7 @@ namespace Chicane
             String parseReference(const String& inValue) const;
 
             bool isFunction(const String& inValue) const;
-            FunctionData parseFunction(const String& inRefValue) const;
+            String parseFunction(const String& inValue) const;
 
         protected:
             // Properties

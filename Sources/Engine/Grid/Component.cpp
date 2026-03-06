@@ -145,44 +145,24 @@ namespace Chicane
         {
             onHover();
 
-            String onHoverAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
+            const String onHoverAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
 
-            if (onHoverAttribute.isEmpty())
+            if (const ReflectionMethodInfo* method = getFunction(parseFunction(onHoverAttribute)))
             {
-                return;
+                method->invoke(this);
             }
-
-            String functionName = parseText(onHoverAttribute);
-
-            if (!hasFunction(functionName))
-            {
-                return;
-            }
-
-            Event event;
-            getFunction(functionName)(event);
         }
 
         void Component::click()
         {
             onClick();
 
-            String onClickAttribute = getAttribute(ON_CLICK_ATTRIBUTE_NAME);
+            const String onClickAttribute = getAttribute(ON_CLICK_ATTRIBUTE_NAME);
 
-            if (onClickAttribute.isEmpty())
+            if (const ReflectionMethodInfo* method = getFunction(parseFunction(onClickAttribute)))
             {
-                return;
+                method->invoke(this);
             }
-
-            String functionName = parseText(onClickAttribute);
-
-            if (!hasFunction(functionName))
-            {
-                return;
-            }
-
-            Event event;
-            getFunction(functionName)(event);
         }
 
         const String& Component::getTag() const
@@ -465,7 +445,7 @@ namespace Chicane
             m_style.setProperties(inSource);
         }
 
-        bool Component::hasReference(const String& inId, bool isLocalOnly) const
+        bool Component::hasField(const String& inId, bool isLocalOnly) const
         {
             if (inId.isEmpty())
             {
@@ -489,52 +469,47 @@ namespace Chicane
                 return false;
             }
 
-            return m_parent->hasReference(inId, false);
+            return m_parent->hasField(inId, false);
         }
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
-            return false;
-
-            /*
             if (inId.isEmpty())
             {
                 return false;
             }
 
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
-
-            const bool bHasLocally =
-                m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
-
-            if (!hasParent() || isLocalOnly)
+            if (isLocalOnly || !hasParent())
             {
-                return bHasLocally;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    return type->findMethod(inId) != nullptr;
+                }
+
+                return false;
             }
 
-            return bHasLocally || m_parent->hasFunction(id);
-            */
+            return m_parent->hasFunction(inId, false);
         }
 
-        const Function Component::getFunction(const String& inId) const
+        const ReflectionMethodInfo* Component::getFunction(const String& inId) const
         {
-            return nullptr;
-
-            /*
             if (inId.isEmpty())
             {
                 return nullptr;
             }
 
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
-
-            if (!hasParent() || isLocalOnly)
+            if (!hasParent())
             {
-                return hasFunction(id, true) ? m_functions.at(id) : nullptr;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    return type->findMethod(inId);
+                }
+
+                return nullptr;
             }
 
-            return hasFunction(id, true) ? m_functions.at(id) : m_parent->getFunction(id);
-            */
+            return m_parent->getFunction(inId);
         }
 
         bool Component::hasRoot() const
@@ -997,12 +972,7 @@ namespace Chicane
 
         String Component::parseText(const String& inValue) const
         {
-            if (inValue.isEmpty())
-            {
-                return "";
-            }
-
-            if (!isReference(inValue))
+            if (inValue.isEmpty() || !isReference(inValue))
             {
                 return inValue;
             }
@@ -1054,7 +1024,7 @@ namespace Chicane
 
         String Component::parseReference(const String& inValue) const
         {
-            if (!hasReference(inValue))
+            if (!hasField(inValue))
             {
                 return inValue;
             }
@@ -1085,25 +1055,16 @@ namespace Chicane
             return bHasOpening && bHasClosing;
         }
 
-        FunctionData Component::parseFunction(const String& inRefValue) const
+        String Component::parseFunction(const String& inValue) const
         {
-            const String trimmedValue = inRefValue.trim();
-
-            if (trimmedValue.isEmpty())
+            if (inValue.isEmpty() || !isFunction(inValue))
             {
-                return {};
+                return inValue;
             }
 
-            FunctionData data;
-            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
+            const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
 
-            const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
-            for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
-            {
-                data.params.push_back(parseReference(value.trim()));
-            }
-
-            return data;
+            return signature.substr(0, signature.firstOf(FUNCTION_PARAMS_OPENING));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Reflector
         Type,
         [StringValue("CH_FIELD()")]
         Field,
-        [StringValue("CH_METHOD()")]
+        [StringValue("CH_FUNCTION()")]
         Method,
         [StringValue("CH_ENUM()")]
         Enum,

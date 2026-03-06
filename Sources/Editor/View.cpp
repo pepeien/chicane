@@ -13,7 +13,7 @@ namespace Editor
           telemetry(&Chicane::Application::getInstance().getTelemetry())
     {}
 
-    Chicane::Reference View::onAssetImport(const Chicane::Grid::Event& inEvent)
+    void View::onAssetImport()
     {
         Chicane::FileSystem::FileDialog dialog;
         dialog.bCanSelectMany = false;
@@ -45,7 +45,5 @@ namespace Editor
                 }
             }
         );
-
-        return Chicane::Reference::empty();
     }
 }

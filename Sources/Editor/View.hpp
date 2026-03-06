@@ -13,7 +13,8 @@ namespace Editor
         View();
 
     public:
-        Chicane::Reference onAssetImport(const Chicane::Grid::Event& inEvent);
+        CH_FUNCTION()
+        void onAssetImport();
 
     public:
         CH_FIELD()
