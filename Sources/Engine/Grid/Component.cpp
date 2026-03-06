@@ -474,7 +474,7 @@ namespace Chicane
 
             if (isLocalOnly || !hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::get().find(typeid(*this)))
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
                 {
                     const std::vector<String> fields = inId.split('.');
 
@@ -1061,7 +1061,7 @@ namespace Chicane
 
             if (!hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::get().find(typeid(*this)))
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
                 {
                     try
                     {

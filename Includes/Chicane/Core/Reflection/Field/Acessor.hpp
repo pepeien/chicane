@@ -11,13 +11,7 @@ namespace Chicane
 {
     struct CHICANE_CORE ReflectionFieldAccessor
     {
-        std::size_t                    offset    = 0;
-        std::size_t                    size      = 0;
-        String                         name      = "";
-        String                         typeName  = "";
-        std::optional<std::type_index> typeIndex = std::nullopt;
-
-        // ── Type check ───────────────────────────────────────────
+    public:
         template <typename T>
         bool isType() const
         {
@@ -25,140 +19,71 @@ namespace Chicane
             {
                 return false;
             }
+
             return typeIndex.value() == std::type_index(typeid(T));
         }
 
-        // ── Read typed pointer (returns nullptr if wrong type) ───
         template <typename T>
-        const T* getValue(const void* instance) const
+        const T* getValue(const void* inInstance) const
         {
             if (!isType<T>())
             {
                 return nullptr;
             }
-            return reinterpret_cast<const T*>(static_cast<const char*>(instance) + offset);
+
+            const char* addr = address(inInstance);
+
+            return addr ? reinterpret_cast<const T*>(addr) : nullptr;
         }
 
         template <typename T>
-        T* getValue(void* instance) const
+        T* getValue(void* inInstance) const
         {
             if (!isType<T>())
             {
                 return nullptr;
             }
-            return reinterpret_cast<T*>(static_cast<char*>(instance) + offset);
+
+            char* addr = address(inInstance);
+
+            return addr ? reinterpret_cast<T*>(addr) : nullptr;
         }
 
-        // ── Read (throws on size mismatch) ───────────────────────
         template <typename T>
-        const T& get(const void* instance) const
+        const T& get(const void* inInstance) const
         {
             assertSize<T>();
-            return *reinterpret_cast<const T*>(static_cast<const char*>(instance) + offset);
+
+            const char* addr = address(inInstance);
+            if (!addr)
+            {
+                throw std::runtime_error("ReflectionFieldAccessor::get — null pointer on field [" + name + "]");
+            }
+
+            return *reinterpret_cast<const T*>(addr);
         }
 
-        // ── Write (throws on size mismatch) ──────────────────────
         template <typename T>
-        void set(void* instance, const T& value) const
+        void set(void* inInstance, const T& inValue) const
         {
             assertSize<T>();
-            *reinterpret_cast<T*>(static_cast<char*>(instance) + offset) = value;
+
+            char* addr = address(inInstance);
+            if (!addr)
+            {
+                throw std::runtime_error("ReflectionFieldAccessor::set — null pointer on field [" + name + "]");
+            }
+
+            *reinterpret_cast<T*>(addr) = inValue;
         }
 
-        // ── Raw pointer ──────────────────────────────────────────
-        void* ptr(void* instance) const { return static_cast<char*>(instance) + offset; }
+        const char* address(const void* inInstance) const;
+        char* address(void* inInstance) const;
 
-        const void* ptr(const void* instance) const { return static_cast<const char*>(instance) + offset; }
+        void* ptr(void* inInstance) const;
+        const void* ptr(const void* inInstance) const;
 
-        // ── toString — converts primitive field value to string ──
-        String toString(const void* instance) const
-        {
-            if (isType<String>())
-            {
-                const String* v = getValue<String>(instance);
-
-                return v ? *v : "";
-            }
-
-            if (isType<std::string>())
-            {
-                const std::string* v = getValue<std::string>(instance);
-
-                return v ? *v : "";
-            }
-
-            if (isType<char>())
-            {
-                const char* v = getValue<char>(instance);
-
-                return v ? String(1, *v) : "";
-            }
-
-            if (isType<bool>())
-            {
-                const bool* v = getValue<bool>(instance);
-
-                return v ? (*v ? "true" : "false") : "";
-            }
-
-            if (isType<int>())
-            {
-                const int* v = getValue<int>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<long>())
-            {
-                const long* v = getValue<long>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<float>())
-            {
-                const float* v = getValue<float>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<double>())
-            {
-                const double* v = getValue<double>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<std::uint64_t>())
-            {
-                const std::uint64_t* v = getValue<std::uint64_t>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<std::uint32_t>())
-            {
-                const std::uint32_t* v = getValue<std::uint32_t>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<std::uint16_t>())
-            {
-                const std::uint16_t* v = getValue<std::uint16_t>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            if (isType<std::uint8_t>())
-            {
-                const std::uint8_t* v = getValue<std::uint8_t>(instance);
-
-                return v ? std::to_string(*v) : "";
-            }
-
-            return "<" + typeName + ">";
-        }
+        String toString(const void* inInstance) const;
 
     private:
         template <typename T>
@@ -166,11 +91,20 @@ namespace Chicane
         {
             if (sizeof(T) != size)
             {
-                std::ostringstream oss;
-                oss << "FieldAccessor — size mismatch on field '" << name << "': field is " << size
-                    << " bytes, requested type is " << sizeof(T) << " bytes";
-                throw std::runtime_error(oss.str());
+                throw std::runtime_error(
+                    "FieldAccessor — size mismatch on field [" + name + "]: field is [" + size +
+                    "] bytes, requested type is [" + sizeof(T) + "] bytes"
+                );
             }
         }
+
+    public:
+        std::size_t                    offset      = 0;
+        std::size_t                    ptrOffset   = 0;
+        std::size_t                    size        = 0;
+        String                         name        = "";
+        String                         typeName    = "";
+        std::optional<std::type_index> typeIndex   = std::nullopt;
+        bool                           bNeedsDeref = false;
     };
 }

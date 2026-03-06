@@ -15,11 +15,11 @@ namespace Chicane
     struct CHICANE_CORE ReflectionTypeInfo
     {
     public:
-        const ReflectionFieldInfo* findField(const String& fieldName) const;
+        const ReflectionFieldInfo* findField(const String& inName) const;
 
-        const ReflectionMethodInfo* findMethod(const String& methodName) const;
+        const ReflectionMethodInfo* findMethod(const String& inName) const;
 
-        ReflectionFieldAccessor resolve(const String& path) const;
+        ReflectionFieldAccessor resolve(const String& inAccessor) const;
 
     public:
         String                            name      = "";

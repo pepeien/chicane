@@ -232,6 +232,8 @@ namespace Reflector
         {
             line = line.TrimEnd(';').Trim();
 
+            bool isPointer = line.Contains('*');
+
             var m = Regex.Match(line, @"^(?:const\s+)?([\w:<>]+)\s*[*&]?\s+(\w+)$");
 
             if (!m.Success)
@@ -239,10 +241,7 @@ namespace Reflector
                 return null;
             }
 
-            var typeName = m.Groups[1].Value.Trim();
-            var fieldName = m.Groups[2].Value.Trim();
-
-            return new(typeName, fieldName);
+            return new(m.Groups[1].Value.Trim(), m.Groups[2].Value.Trim(), isPointer);
         }
 
         static MethodModel? ParseMethod(string line)

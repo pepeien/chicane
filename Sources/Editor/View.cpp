@@ -1,4 +1,4 @@
-#include "Editor/View.hpp"
+#include "Editor/View.reflected.hpp"
 
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 
@@ -10,7 +10,7 @@ namespace Editor
 {
     View::View()
         : Chicane::Grid::View("Contents/Editor/Views/Home.grid"),
-          telemetry(Chicane::Application::getInstance().getTelemetry())
+          telemetry(&Chicane::Application::getInstance().getTelemetry())
     {}
 
     Chicane::Reference View::onAssetImport(const Chicane::Grid::Event& inEvent)

@@ -13,7 +13,7 @@ public:
 public:
     // Telemetry
     CH_FIELD()
-    const Chicane::ApplicationTelemetry& telemetry;
+    const Chicane::ApplicationTelemetry* telemetry;
 
     // Game
     CH_FIELD()

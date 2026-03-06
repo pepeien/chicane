@@ -83,7 +83,7 @@ namespace Reflector
             var qualifiedName = QualifiedName(e.Namespace, e.Name);
 
             sb.AppendLine($"// ── Enum: {qualifiedName}");
-            sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister_reg_enum_{SafeIdentifier(qualifiedName)}(Chicane::ReflectionEnumInfo{{");
+            sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister _reg_enum_{SafeIdentifier(qualifiedName)}(Chicane::ReflectionEnumInfo{{");
             sb.AppendLine($"    \"{qualifiedName}\",");
             sb.AppendLine("    {");
 
@@ -121,8 +121,9 @@ namespace Reflector
 
                 sb.AppendLine(
                     $"        {{ \"{f.Name}\", \"{f.TypeName}\", " +
-                    $"offsetof({qualifiedName}, {f.Name}), sizeof({resolvedType}), " +
-                    $"std::type_index(typeid({resolvedType})), {(isReflected ? "true" : "false")} }},"
+                    $"offsetof({qualifiedName}, {f.Name}), sizeof({(f.IsPointer ? "void*" : resolvedType)}), " +
+                    $"std::type_index(typeid({resolvedType})), {(isReflected ? "true" : "false")}, " +
+                    $"{(f.IsPointer ? "true" : "false")} }},"
                 );
             }
 

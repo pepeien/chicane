@@ -4,11 +4,11 @@
 
 namespace Chicane
 {
-    const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& fieldName) const
+    const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
     {
         for (const auto& f : fields)
         {
-            if (f.name == fieldName)
+            if (f.name.equals(inName))
             {
                 return &f;
             }
@@ -17,11 +17,11 @@ namespace Chicane
         return nullptr;
     }
 
-    const ReflectionMethodInfo* ReflectionTypeInfo::findMethod(const String& methodName) const
+    const ReflectionMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
     {
         for (const auto& m : methods)
         {
-            if (m.name == methodName)
+            if (m.name.equals(inName))
             {
                 return &m;
             }
@@ -30,64 +30,84 @@ namespace Chicane
         return nullptr;
     }
 
-    ReflectionFieldAccessor ReflectionTypeInfo::resolve(const String& path) const
+    ReflectionFieldAccessor ReflectionTypeInfo::resolve(const String& inAccessor) const
     {
-        std::vector<String> parts = path.split('.');
+        std::vector<String> parts = inAccessor.split('.');
 
         if (parts.empty())
         {
-            throw std::runtime_error("TypeInfo::resolve — empty path on type '" + name + "'");
+            throw std::runtime_error("TypeInfo::resolve — empty path on type [" + name + "]");
         }
 
-        const ReflectionTypeInfo*  currentType = this;
-        std::size_t                totalOffset = 0;
-        const ReflectionFieldInfo* lastField   = nullptr;
+        const ReflectionTypeInfo*  currentType    = this;
+        std::size_t                offset         = 0;
+        std::size_t                ptrOffset      = 0;
+        bool                       crossedPointer = false;
+        const ReflectionFieldInfo* field          = nullptr;
 
         for (std::size_t i = 0; i < parts.size(); ++i)
         {
-            const String&              part = parts[i];
-            const ReflectionFieldInfo* fi   = currentType->findField(part);
+            const String&              part         = parts[i];
+            const ReflectionFieldInfo* currentField = currentType->findField(part);
 
-            if (!fi)
+            if (!currentField)
             {
-                std::ostringstream err;
-                err << "TypeInfo::resolve — field '" << part << "' not found on type '" << currentType->name
-                    << "' (path: '" << path << "')";
-                throw std::runtime_error(err.str());
+                throw std::runtime_error(
+                    "TypeInfo::resolve — field [" + part + "] not found on type [" + currentType->name + "] (path: [" +
+                    inAccessor + "])"
+                );
             }
 
-            totalOffset += fi->offset;
-            lastField = fi;
+            if (crossedPointer)
+            {
+                ptrOffset += currentField->offset;
+            }
+            else
+            {
+                offset += currentField->offset;
+            }
+
+            field = currentField;
 
             if (i < parts.size() - 1)
             {
-                if (!fi->isReflected || !fi->typeIndex.has_value())
+                if (!currentField->bIsReflected || !currentField->typeIndex.has_value())
                 {
-                    std::ostringstream err;
-                    err << "TypeInfo::resolve — field '" << part << "' on type '" << currentType->name
-                        << "' is not a reflected type, cannot dot-chain further"
-                        << " (path: '" << path << "')";
-                    throw std::runtime_error(err.str());
+                    throw std::runtime_error(
+                        "TypeInfo::resolve — field [" + part + "] on type [" + currentType->name +
+                        "] is not a reflected type, cannot dot-chain further"
+                        " (path: [" +
+                        inAccessor + "])"
+                    );
                 }
 
-                currentType = ReflectionTypeRegistry::get().find(fi->typeIndex.value());
+                if (currentField->bIsPointer && !crossedPointer)
+                {
+                    crossedPointer = true;
+                }
+
+                currentType = ReflectionTypeRegistry::getInstance().find(currentField->typeIndex.value());
 
                 if (!currentType)
                 {
                     throw std::runtime_error(
-                        "TypeInfo::resolve — type [" + fi->typeName + "] is marked reflected but is not registered" +
-                        " (path: [" + path + "])"
+                        "TypeInfo::resolve — type [" + currentField->typeName +
+                        "] is marked reflected but is not registered"
+                        " (path: [" +
+                        inAccessor + "])"
                     );
                 }
             }
         }
 
         return ReflectionFieldAccessor{
-            totalOffset,
-            lastField->size,
-            lastField->name,
-            lastField->typeName,
-            lastField->typeIndex
+            offset,
+            ptrOffset,
+            field->size,
+            field->name,
+            field->typeName,
+            field->typeIndex,
+            crossedPointer
         };
     }
 }

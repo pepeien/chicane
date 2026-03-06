@@ -17,6 +17,6 @@ namespace Editor
 
     public:
         CH_FIELD()
-        const Chicane::ApplicationTelemetry& telemetry;
+        const Chicane::ApplicationTelemetry* telemetry;
     };
 }

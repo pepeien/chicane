@@ -1,5 +1,7 @@
 #include "Sample/Shooter/View.reflected.hpp"
 
+#include <Chicane/Core/Log.hpp>
+
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
@@ -8,7 +10,7 @@
 
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
-      telemetry(Chicane::Application::getInstance().getTelemetry()),
+      telemetry(&Chicane::Application::getInstance().getTelemetry()),
       bDidPlayerWin(false),
       currentCamera("None"),
       crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
