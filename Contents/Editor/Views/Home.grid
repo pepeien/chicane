@@ -1,7 +1,7 @@
 <View path="home" style="Contents/Editor/Views/Home.decal">
     <Container>
-        <Text>{{ telemetry.renderer.rate }} FPS</Text>
-        <Text>{{ telemetry.renderer.delta }} ms</Text>
+        <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
+        <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
     </Container>
     <Container class="menu --side">
         <Button onClick="{{ onAssetImport() }}" class="button">

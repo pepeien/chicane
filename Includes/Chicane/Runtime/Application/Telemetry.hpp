@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Chicane/Core/Reflection.hpp"
-#include "Chicane/Core/Telemetry.hpp"
 
 #include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Telemetry.hpp"
 
 namespace Chicane
 {

@@ -330,9 +330,9 @@ namespace Chicane
             {
                 m_telemetry.scene.start();
 
-                Kerb::Engine::getInstance().tick(m_telemetry.scene.delta);
+                Kerb::Engine::getInstance().tick(m_telemetry.scene.frame.delta);
 
-                scene->tick(m_telemetry.scene.delta);
+                scene->tick(m_telemetry.scene.frame.delta);
 
                 buildSceneCommands(scene);
 
@@ -512,7 +512,7 @@ namespace Chicane
 
                 view->setSize(m_renderer->getResolution());
 
-                view->tick(m_telemetry.ui.delta);
+                view->tick(m_telemetry.ui.frame.delta);
 
                 buildUICommands(view);
                 m_telemetry.ui.end();

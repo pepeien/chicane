@@ -2,17 +2,18 @@
 
 #include <cstdio>
 
-#include "Chicane/Core.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Timer.hpp"
+
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
     CH_TYPE()
-    struct CHICANE_CORE Telemetry : public Timer
+    struct CHICANE_RUNTIME FrameTelemetry : public Timer
     {
     public:
-        Telemetry();
+        FrameTelemetry();
 
     protected:
         void onTime() override;
