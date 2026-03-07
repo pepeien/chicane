@@ -5,6 +5,10 @@ namespace Reflector
 {
     static class Parser
     {
+        static readonly HashSet<string> s_keywords = new() {
+            "enum", "class", "struct", "public", "private", "protected"
+        };
+
         public static string StripComments(string src)
         {
             src = Regex.Replace(src, @"//[^\n]*", "");
@@ -196,10 +200,22 @@ namespace Reflector
             var list = new List<EnumeratorModel>();
             int next = 0;
 
+            i++;
+
             for (; i < lines.Length; i++)
             {
                 var line = lines[i].Trim();
                 var clean = line.TrimEnd(',').Trim();
+
+                if (clean == "{" || clean == "}" || string.IsNullOrWhiteSpace(clean))
+                {
+                    if (line.Contains('}'))
+                    {
+                        break;
+                    }
+
+                    continue;
+                }
 
                 var me = Regex.Match(clean, @"(\w+)\s*=\s*(-?\d+)");
 
@@ -211,9 +227,9 @@ namespace Reflector
                 }
                 else
                 {
-                    var s = Regex.Match(clean, @"(\w+)");
+                    var s = Regex.Match(clean, @"^(\w+)");
 
-                    if (s.Success)
+                    if (s.Success && !s_keywords.Contains(s.Groups[1].Value))
                     {
                         list.Add(new(s.Groups[1].Value, next++));
                     }
@@ -260,12 +276,18 @@ namespace Reflector
             {
                 foreach (var p in raw.Split(','))
                 {
-                    var pp = p.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var param = p.Trim();
+                    if (string.IsNullOrWhiteSpace(param)) continue;
 
-                    if (pp.Length > 0)
-                    {
-                        pts.Add(pp[0]);
-                    }
+                    var lastSpace = param.LastIndexOf(' ');
+                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
+
+                    typePart = typePart
+                        .Replace("&", "")
+                        .Replace("const", "")
+                        .Trim();
+
+                    pts.Add(typePart);
                 }
             }
 

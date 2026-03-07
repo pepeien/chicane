@@ -82,16 +82,24 @@ namespace Reflector
         {
             var qualifiedName = QualifiedName(e.Namespace, e.Name);
 
-            sb.AppendLine($"// ── Enum: {qualifiedName}");
-            sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister _reg_enum_{SafeIdentifier(qualifiedName)}(Chicane::ReflectionEnumInfo{{");
-            sb.AppendLine($"    \"{qualifiedName}\",");
-            sb.AppendLine("    {");
+            sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister _reg_enum_{SafeIdentifier(qualifiedName)}(");
+            sb.AppendLine($"\tChicane::ReflectionEnumInfo");
+            sb.AppendLine($"\t{{");
+            sb.AppendLine($"\t\t\"{qualifiedName}\",");
 
+            sb.AppendLine("\t\t{");
             foreach (var en in e.Enumerators)
-                sb.AppendLine($"        {{ \"{en.Name}\", static_cast<int>({qualifiedName}::{en.Name}) }},");
+            {
+                sb.AppendLine($"\t\t\t{{");
+                sb.AppendLine($"\t\t\t\t\"{en.Name}\",");
+                sb.AppendLine($"\t\t\t\tstatic_cast<int>({qualifiedName}::{en.Name})");
+                sb.AppendLine($"\t\t\t}},");
+            }
+            sb.AppendLine("\t\t}");
 
-            sb.AppendLine("    }");
-            sb.AppendLine("});\n");
+            sb.AppendLine("\t}");
+            sb.AppendLine(");");
+            sb.AppendLine();
         }
 
         static void EmitType(StringBuilder sb, TypeModel t, Dictionary<string, string> reflectedTypes)
@@ -99,45 +107,70 @@ namespace Reflector
             var qualifiedName = QualifiedName(t.Namespace, t.Name);
             var safeId = SafeIdentifier(qualifiedName);
 
-            sb.AppendLine($"// ── {char.ToUpper(t.Kind[0])}{t.Kind[1..]}: {qualifiedName}");
-
             sb.AppendLine("#if defined(__GNUC__) || defined(__clang__)");
             sb.AppendLine("#   pragma GCC diagnostic push");
             sb.AppendLine("#   pragma GCC diagnostic ignored \"-Winvalid-offsetof\"");
             sb.AppendLine("#endif");
             sb.AppendLine();
 
-            sb.AppendLine($"inline Chicane::ReflectionTypeAutoRegister _reg_{safeId}(Chicane::ReflectionTypeInfo{{");
-            sb.AppendLine($"    \"{qualifiedName}\",");
-            sb.AppendLine($"    sizeof({qualifiedName}),");
-            sb.AppendLine($"    std::type_index(typeid({qualifiedName})),");
-            sb.AppendLine("    { // fields");
+            sb.AppendLine($"inline Chicane::ReflectionTypeAutoRegister _reg_{safeId}(");
+            sb.AppendLine($"\tChicane::ReflectionTypeInfo");
+            sb.AppendLine($"\t{{");
+            sb.AppendLine($"\t\t\"{qualifiedName}\",");
+            sb.AppendLine($"\t\tsizeof({qualifiedName}),");
+            sb.AppendLine($"\t\tstd::type_index(typeid({qualifiedName})),");
 
+            sb.AppendLine("\t\t{");
             foreach (var f in t.Fields)
             {
                 var resolvedType = ResolveFieldType(f.TypeName, reflectedTypes);
-                bool isReflected = reflectedTypes.ContainsKey(f.TypeName) ||
-                                   reflectedTypes.ContainsValue(f.TypeName);
+                bool isReflected = reflectedTypes.ContainsKey(f.TypeName) || reflectedTypes.ContainsValue(f.TypeName);
 
                 sb.AppendLine(
-                    $"        {{ \"{f.Name}\", \"{f.TypeName}\", " +
-                    $"offsetof({qualifiedName}, {f.Name}), sizeof({(f.IsPointer ? "void*" : resolvedType)}), " +
-                    $"std::type_index(typeid({resolvedType})), {(isReflected ? "true" : "false")}, " +
-                    $"{(f.IsPointer ? "true" : "false")} }},"
+                    $"\t\t\t{{\n" +
+                    $"\t\t\t\t\"{f.Name}\",\n" +
+                    $"\t\t\t\t\"{f.TypeName}\",\n" +
+                    $"\t\t\t\toffsetof({qualifiedName}, {f.Name}),\n" +
+                    $"\t\t\t\tsizeof({(f.IsPointer ? "void*" : resolvedType)}),\n" +
+                    $"\t\t\t\tstd::type_index(typeid({resolvedType})),\n" +
+                    $"\t\t\t\t{(isReflected ? "true" : "false")},\n" +
+                    $"\t\t\t\t{(f.IsPointer ? "true" : "false")}\n" +
+                    $"\t\t\t}},"
                 );
             }
+            sb.AppendLine("\t\t},");
 
-            sb.AppendLine("    },");
-            sb.AppendLine("    { // methods");
-
+            sb.AppendLine("\t\t{");
             foreach (var m in t.Methods)
             {
-                sb.AppendLine($"        {{ \"{m.Name}\", \"{m.ReturnType}\", {{}},");
-                sb.AppendLine($"          [](void* _i) {{ static_cast<{qualifiedName}*>(_i)->{m.Name}(); }} }},");
-            }
+                var paramUnpack = string.Join(",", m.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\tstd::any_cast<{p}>(inParams.at({i}))"));
 
-            sb.AppendLine("    }");
-            sb.AppendLine("});\n");
+                if (m.ParamTypes.Count() > 0)
+                {
+                    paramUnpack += "\n\t\t\t\t\t";
+                }
+
+                sb.AppendLine(
+                    $"\t\t\t{{\n" +
+                    $"\t\t\t\t\"{m.Name}\",\n" +
+                    $"\t\t\t\t\"{m.ReturnType}\",\n" +
+                    $"\t\t\t\t{{{string.Join(" ,", m.ParamTypes.Select(p => $"\"{p}\""))}}},\n" +
+                    $"\t\t\t\t[](void* inInstance, std::vector<std::any> inParams)\n" +
+                    $"\t\t\t\t{{\n" +
+                    $"\t\t\t\t\tif (inParams.size() < {m.ParamTypes.Count()})\n" +
+                    $"\t\t\t\t\t{{\n" +
+                    $"\t\t\t\t\t\tthrow std::runtime_error(\"Missing reflected method [{m.Name}] parameters\");\n" +
+                    $"\t\t\t\t\t}}\n" +
+                    $"\t\n" +
+                    $"\t\t\t\t\tstatic_cast<{qualifiedName}*>(inInstance)->{m.Name}({paramUnpack});\n" +
+                    $"\t\t\t\t}}\n" +
+                    $"\t\t\t}},"
+                );
+            }
+            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t}");
+            sb.AppendLine(");");
+            sb.AppendLine();
 
             sb.AppendLine("#if defined(__GNUC__) || defined(__clang__)");
             sb.AppendLine("#   pragma GCC diagnostic pop");

@@ -6,4 +6,5 @@
 #define CH_FUNCTION()
 #define CH_ENUM()
 
+#include "Chicane/Core/Reflection/Enum/AutoRegister.hpp"
 #include "Chicane/Core/Reflection/Type/AutoRegister.hpp"

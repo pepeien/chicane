@@ -99,7 +99,9 @@
             var fullFile = Path.GetFullPath(file);
 
             if (!fullFile.StartsWith(Path.GetFullPath(sourceDir)))
+            {
                 continue;
+            }
 
             var relativePath = Path.GetRelativePath(baseDir, file);
             var directory = Path.GetDirectoryName(relativePath) ?? "";

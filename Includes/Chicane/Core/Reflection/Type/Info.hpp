@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <functional>
 #include <optional>
+#include <vector>
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Reflection/Field/Acessor.hpp"
