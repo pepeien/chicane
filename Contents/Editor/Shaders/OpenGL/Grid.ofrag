@@ -2,22 +2,14 @@
 
 #extension GL_ARB_shading_language_include : require
 
+#include "../../../Engine/Shaders/Common/View.glsl"
 #include "../Common/Grid.glsl"
 
 layout(location = 0) out vec4 outColor;
 
-layout(binding = 0) uniform Camera {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} camera;
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+} scene;
 
 layout(location = 0) in Data {
     vec3 nearPoint;
@@ -32,11 +24,11 @@ void main() {
     }
 
     vec3 position      = inData.nearPoint + floorDistance * (inData.farPoint - inData.nearPoint);
-    vec4 worldPosition = camera.projection * camera.view * vec4(position, 1.0);
+    vec4 worldPosition = scene.camera.projection * scene.camera.view * vec4(position, 1.0);
 
     outColor    = GridCalculation(position, 0.5, false);
     outColor   += GridCalculation(position, 10.0, true);
-    outColor.a *= ComputeGridFade(position, camera.translation.xyz, ComputeGridLinearDepth(worldPosition, camera.clip.x, camera.clip.y));
+    outColor.a *= ComputeGridFade(position, scene.camera.translation.xyz, ComputeGridLinearDepth(worldPosition, scene.camera.clip.x, scene.camera.clip.y));
 
     gl_FragDepth = ComputeGridDepth(worldPosition);
 }

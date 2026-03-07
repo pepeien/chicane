@@ -2,6 +2,14 @@
 
 namespace Chicane
 {
+
+    ReflectionTypeRegistry& ReflectionTypeRegistry::getInstance()
+    {
+        static ReflectionTypeRegistry result;
+
+        return result;
+    }
+
     ReflectionTypeRegistry::ReflectionTypeRegistry()
         : m_indices({}),
           m_names({})

@@ -49,6 +49,13 @@ set_target_properties(
             "${KERB_HEADER_DIR}"
 )
 
+target_compile_definitions(
+    ${KERB_TARGET_NAME}
+
+    PRIVATE
+        BUILD_EXPORT
+)
+
 target_include_directories(
     ${KERB_TARGET_NAME}
 

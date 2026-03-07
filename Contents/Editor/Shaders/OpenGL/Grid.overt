@@ -2,20 +2,12 @@
 
 #extension GL_ARB_shading_language_include : require
 
+#include "../../../Engine/Shaders/Common/View.glsl"
 #include "../Common/Point.glsl"
 
-layout(binding = 0) uniform Camera {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} camera;
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+} scene;
 
 layout(location = 0) out Data {
     vec3 nearPoint;
@@ -36,13 +28,13 @@ void main() {
 
     outData.nearPoint = UnprojectPoint(
         vec3(point.x, point.y, 0.0),
-        camera.projection,
-        camera.view
+        scene.camera.projection,
+        scene.camera.view
     );
     outData.farPoint = UnprojectPoint(
         vec3(point.x, point.y, 1.0),
-        camera.projection,
-        camera.view
+        scene.camera.projection,
+        scene.camera.view
     );
 
     gl_Position = vec4(point, 1.0);
