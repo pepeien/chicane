@@ -25,24 +25,26 @@ namespace Chicane
             String filepath = "";
 
 #if IS_WINDOWS
-            std::wstring wTitle = std::wstring(title.begin(), title.end());
+            std::wstring wTitle    = std::wstring(title.begin(), title.end());
+            std::wstring wLocation = std::wstring(location.begin(), location.end());
 
-            IFileOpenDialog* pDialog = nullptr;
-            HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pDialog));
+            IFileOpenDialog* dialog = nullptr;
+            HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog));
 
             if (SUCCEEDED(hr))
             {
                 DWORD options = 0;
-                pDialog->GetOptions(&options);
-                pDialog->SetOptions(options | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR);
+                dialog->GetOptions(&options);
+                dialog->SetOptions(options | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR);
 
-                pDialog->SetTitle(wTitle.c_str());
+                dialog->SetTitle(wTitle.c_str());
+                dialog->SetFolder(wLocation.c_str());
 
-                hr = pDialog->Show(nullptr);
+                hr = dialog->Show(nullptr);
                 if (SUCCEEDED(hr))
                 {
                     IShellItem* pItem = nullptr;
-                    hr                = pDialog->GetResult(&pItem);
+                    hr                = dialog->GetResult(&pItem);
                     if (SUCCEEDED(hr))
                     {
                         PWSTR pszPath = nullptr;
@@ -55,15 +57,20 @@ namespace Chicane
                         pItem->Release();
                     }
                 }
-                pDialog->Release();
-            }
 
+                dialog->Release();
+            }
 #elif IS_LINUX
             String command = "zenity";
 
             if (!title.isEmpty())
             {
                 command.append(" --title='" + title.trim() + "'");
+            }
+
+            if (!location.isEmpty())
+            {
+                command.append(" --filename='" + location.trim() + "'");
             }
 
             command.append(" --file-selection");
