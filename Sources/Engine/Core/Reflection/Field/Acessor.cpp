@@ -2,6 +2,34 @@
 
 namespace Chicane
 {
+    ReflectionFieldAccessor::ReflectionFieldAccessor(
+        std::size_t   inOffset,
+        std::size_t   inPtrOffset,
+        std::size_t   inSize,
+        const String& inName,
+        const String& inTypeName,
+        TypeIndex     inTypeIndex,
+        bool          bInNeedsDeref
+    )
+        : offset(inOffset),
+          ptrOffset(inPtrOffset),
+          size(inSize),
+          name(std::move(inName)),
+          typeName(std::move(inTypeName)),
+          typeIndex(inTypeIndex),
+          bNeedsDeref(bInNeedsDeref)
+    {}
+
+    ReflectionFieldAccessor::ReflectionFieldAccessor()
+        : offset(0),
+          ptrOffset(0),
+          size(0),
+          name(""),
+          typeName(""),
+          typeIndex(std::nullopt),
+          bNeedsDeref(false)
+    {}
+
     const char* ReflectionFieldAccessor::address(const void* inInstance) const
     {
         const char* base = static_cast<const char*>(inInstance) + offset;

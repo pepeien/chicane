@@ -21,7 +21,13 @@ namespace Chicane
         using Methods  = std::vector<ReflectionMethodInfo>;
 
     public:
-        ReflectionTypeInfo(String inName, std::size_t inSize, TypeIdex inTypeIndex, Fields inFields, Methods inMethods);
+        ReflectionTypeInfo(
+            const String&  inName,
+            std::size_t    inSize,
+            TypeIdex       inTypeIndex,
+            const Fields&  inFields,
+            const Methods& inMethods
+        );
         ReflectionTypeInfo();
 
     public:

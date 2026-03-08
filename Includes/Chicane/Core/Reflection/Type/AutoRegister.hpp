@@ -9,9 +9,9 @@ namespace Chicane
 {
     struct CHICANE_CORE ReflectionTypeAutoRegister
     {
-        explicit ReflectionTypeAutoRegister(ReflectionTypeInfo info)
+        explicit ReflectionTypeAutoRegister(const ReflectionTypeInfo& inValue)
         {
-            ReflectionTypeRegistry::getInstance().add(std::move(info));
+            ReflectionTypeRegistry::getInstance().add(std::move(inValue));
         }
     };
 }

@@ -31,7 +31,7 @@ namespace Chicane
         const ReflectionTypeInfo* find(std::type_index inValue) const;
         const ReflectionTypeInfo* find(const String& inValue) const;
 
-        void add(ReflectionTypeInfo inValue);
+        void add(const ReflectionTypeInfo& inValue);
 
     private:
         Indices m_indices;

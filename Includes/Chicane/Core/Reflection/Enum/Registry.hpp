@@ -28,7 +28,7 @@ namespace Chicane
 
         const ReflectionEnumInfo* find(const String& inValue) const;
 
-        void add(ReflectionEnumInfo inValue);
+        void add(const ReflectionEnumInfo& inValue);
 
     private:
         Names m_names;

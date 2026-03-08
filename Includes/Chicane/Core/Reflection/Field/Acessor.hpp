@@ -12,6 +12,21 @@ namespace Chicane
     struct CHICANE_CORE ReflectionFieldAccessor
     {
     public:
+        using TypeIndex = std::optional<std::type_index>;
+
+    public:
+        ReflectionFieldAccessor(
+            std::size_t   inOffset,
+            std::size_t   inPtrOffset,
+            std::size_t   inSize,
+            const String& inName,
+            const String& inTypeName,
+            TypeIndex     inTypeIndex,
+            bool          bInNeedsDeref
+        );
+        ReflectionFieldAccessor();
+
+    public:
         template <typename T>
         bool isType() const
         {
@@ -99,12 +114,12 @@ namespace Chicane
         }
 
     public:
-        std::size_t                    offset      = 0;
-        std::size_t                    ptrOffset   = 0;
-        std::size_t                    size        = 0;
-        String                         name        = "";
-        String                         typeName    = "";
-        std::optional<std::type_index> typeIndex   = std::nullopt;
-        bool                           bNeedsDeref = false;
+        std::size_t offset;
+        std::size_t ptrOffset;
+        std::size_t size;
+        String      name;
+        String      typeName;
+        TypeIndex   typeIndex;
+        bool        bNeedsDeref;
     };
 }

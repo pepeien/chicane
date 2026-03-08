@@ -6,11 +6,11 @@ namespace Chicane
 {
 
     ReflectionTypeInfo::ReflectionTypeInfo(
-        String inName, std::size_t inSize, TypeIdex inTypeIndex, Fields inFields, Methods inMethods
+        const String& inName, std::size_t inSize, TypeIdex inTypeIndex, const Fields& inFields, const Methods& inMethods
     )
         : name(std::move(inName)),
           size(inSize),
-          typeIndex(std::move(inTypeIndex)),
+          typeIndex(inTypeIndex),
           fields(std::move(inFields)),
           methods(std::move(inMethods))
     {}
@@ -119,14 +119,6 @@ namespace Chicane
             }
         }
 
-        return ReflectionFieldAccessor{
-            offset,
-            ptrOffset,
-            field->size,
-            field->name,
-            field->typeName,
-            field->typeIndex,
-            crossedPointer
-        };
+        return {offset, ptrOffset, field->size, field->name, field->typeName, field->typeIndex, crossedPointer};
     }
 }

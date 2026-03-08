@@ -25,7 +25,7 @@ namespace Chicane
         return found != m_names.end() ? &found->second : nullptr;
     }
 
-    void ReflectionEnumRegistry::add(ReflectionEnumInfo inValue)
+    void ReflectionEnumRegistry::add(const ReflectionEnumInfo& inValue)
     {
         m_names[inValue.name] = std::move(inValue);
     }

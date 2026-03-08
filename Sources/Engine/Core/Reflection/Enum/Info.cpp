@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    ReflectionEnumInfo::ReflectionEnumInfo(String inName, Enumerators inEnumerators)
+    ReflectionEnumInfo::ReflectionEnumInfo(const String& inName, const Enumerators& inEnumerators)
         : name(std::move(inName)),
           enumerators(std::move(inEnumerators))
     {}

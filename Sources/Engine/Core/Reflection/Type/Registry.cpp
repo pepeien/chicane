@@ -39,7 +39,7 @@ namespace Chicane
         return found != m_names.end() ? &found->second : nullptr;
     }
 
-    void ReflectionTypeRegistry::add(ReflectionTypeInfo inValue)
+    void ReflectionTypeRegistry::add(const ReflectionTypeInfo& inValue)
     {
         if (inValue.typeIndex.has_value())
         {

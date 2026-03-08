@@ -9,9 +9,9 @@ namespace Chicane
 {
     struct CHICANE_CORE ReflectionEnumAutoRegister
     {
-        explicit ReflectionEnumAutoRegister(ReflectionEnumInfo info)
+        explicit ReflectionEnumAutoRegister(const ReflectionEnumInfo& inValue)
         {
-            ReflectionEnumRegistry::getInstance().add(std::move(info));
+            ReflectionEnumRegistry::getInstance().add(std::move(inValue));
         }
     };
 }
