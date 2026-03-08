@@ -9,6 +9,12 @@ namespace Reflector
             "enum", "class", "struct", "public", "private", "protected"
         };
 
+        static readonly HashSet<string> s_fieldSkip = new()
+        {
+            "public", "private", "protected", "virtual", "override",
+            "explicit", "static", "inline", "friend", "mutable", "constexpr"
+        };
+
         public static string StripComments(string src)
         {
             src = Regex.Replace(src, @"//[^\n]*", "");
@@ -25,7 +31,8 @@ namespace Reflector
             var types = new List<TypeModel>();
             var enums = new List<EnumModel>();
 
-            bool nextReflect = false, nextEnum = false;
+            Annotation next = Annotation.Undefined;
+            AnnotationInclusion nextInclusion = AnnotationInclusion.Manual;
 
             var namespaceStack = new Stack<string>();
             string CurrentNamespace() => namespaceStack.Count > 0
@@ -60,38 +67,41 @@ namespace Reflector
 
                 if (line.StartsWith(Enum.GetStringValue(Annotation.Type)))
                 {
-                    nextReflect = true;
+                    next = Annotation.Type;
+                    nextInclusion = line.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic)) ?
+                        AnnotationInclusion.Automatic :
+                        AnnotationInclusion.Manual;
 
                     continue;
                 }
 
                 if (line.StartsWith(Enum.GetStringValue(Annotation.Enum)))
                 {
-                    nextEnum = true;
+                    next = Annotation.Enum;
 
                     continue;
                 }
 
-                if (nextReflect)
+                if (next == Annotation.Type)
                 {
                     if (string.IsNullOrWhiteSpace(line))
                     {
                         continue;
                     }
 
-                    var t = ParseType(lines, ref i, CurrentNamespace());
+                    var t = ParseType(lines, ref i, CurrentNamespace(), nextInclusion);
 
                     if (t != null)
                     {
                         types.Add(t);
                     }
 
-                    nextReflect = false;
+                    next = Annotation.Undefined;
 
                     continue;
                 }
 
-                if (nextEnum)
+                if (next == Annotation.Enum)
                 {
                     if (string.IsNullOrWhiteSpace(line))
                     {
@@ -105,7 +115,7 @@ namespace Reflector
                         enums.Add(e);
                     }
 
-                    nextEnum = false;
+                    next = Annotation.Undefined;
 
                     continue;
                 }
@@ -114,7 +124,7 @@ namespace Reflector
             return (types, enums);
         }
 
-        static TypeModel? ParseType(string[] lines, ref int i, string currentNamespace)
+        static TypeModel? ParseType(string[] lines, ref int i, string currentNamespace, AnnotationInclusion inclusion)
         {
             var m = Regex.Match(
                 lines[i].Trim(),
@@ -129,10 +139,21 @@ namespace Reflector
             string kind = m.Groups[1].Value;
             string name = m.Groups[2].Value;
 
-            var fields = new List<FieldModel>();
-            var methods = new List<MethodModel>();
+            // Extract first base class
+            var baseMatch = Regex.Match(lines[i].Trim(), @":\s*(?:public|private|protected)\s+([\w:]+)");
+            string baseType = baseMatch.Success ? baseMatch.Groups[1].Value.Trim() : "";
+
+            List<FieldModel> fields = [];
+            List<MethodModel> methods = [];
+
             bool takeField = false;
             bool takeMethod = false;
+
+            bool isPublic = kind == "struct";
+
+            bool inUnion = false;
+            bool tookUnionField = false;
+
             int depth = 0;
 
             for (; i < lines.Length; i++)
@@ -140,6 +161,65 @@ namespace Reflector
                 var line = lines[i].Trim();
 
                 depth += Count(line, '{') - Count(line, '}');
+
+                if (line == "public:")
+                {
+                    isPublic = true;
+
+                    continue;
+                }
+
+                if (line == "private:")
+                {
+                    isPublic = false;
+
+                    continue;
+                }
+
+                if (line == "protected:")
+                {
+                    isPublic = false;
+
+                    continue;
+                }
+
+                if (!inUnion && (line == "union" || line == "union{" || line.StartsWith("union ")))
+                {
+                    inUnion = true;
+
+                    tookUnionField = false;
+
+                    continue;
+                }
+
+                if (inUnion)
+                {
+                    if (line.Contains('}'))
+                    {
+                        inUnion = false;
+                        tookUnionField = false;
+
+                        continue;
+                    }
+
+                    if (!tookUnionField && inclusion == AnnotationInclusion.Automatic && isPublic)
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            continue;
+                        }
+
+                        var uf = ParseField(line);
+                        if (uf != null)
+                        {
+                            fields.Add(uf);
+
+                            tookUnionField = true;
+                        }
+                    }
+
+                    continue;
+                }
 
                 if (line.StartsWith(Enum.GetStringValue(Annotation.Field)))
                 {
@@ -157,8 +237,12 @@ namespace Reflector
 
                 if (takeField)
                 {
-                    var f = ParseField(line);
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
 
+                    var f = ParseField(line);
                     if (f != null)
                     {
                         fields.Add(f);
@@ -168,14 +252,31 @@ namespace Reflector
                 }
                 else if (takeMethod)
                 {
-                    var me = ParseMethod(line);
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
 
+                    var me = ParseMethod(line);
                     if (me != null)
                     {
                         methods.Add(me);
                     }
 
                     takeMethod = false;
+                }
+                else if (inclusion == AnnotationInclusion.Automatic && isPublic && depth > 0)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+
+                    var f = ParseField(line);
+                    if (f != null)
+                    {
+                        fields.Add(f);
+                    }
                 }
 
                 if (depth == 0 && i > 0 && line.Contains('}'))
@@ -184,7 +285,54 @@ namespace Reflector
                 }
             }
 
-            return new(kind, name, currentNamespace, fields, methods);
+            return new(kind, name, currentNamespace, fields, methods, baseType);
+        }
+
+        static FieldModel? ParseField(string line)
+        {
+            line = line.TrimEnd(';').Trim();
+
+            if (
+                string.IsNullOrWhiteSpace(line) ||
+                line.StartsWith("//") ||
+                line.Contains('(') ||
+                line.Contains('{') ||
+                line.Contains('}')
+            )
+            {
+                return null;
+            }
+
+            if (Regex.IsMatch(line, @"(?<!:):(?!:)"))
+            {
+                return null;
+            }
+
+            var firstWord = line.Split(' ')[0].TrimStart('~');
+            if (s_fieldSkip.Contains(firstWord))
+            {
+                return null;
+            }
+
+            var member = Regex.Match(line, @"^(?:const\s+)?([\w:<>]+)\s*[*&]?\s+([\w\s,]+)$");
+            if (!member.Success)
+            {
+                return null;
+            }
+
+            string typeName = member.Groups[1].Value.Trim();
+            var propertyNames = member.Groups[2].Value
+                .Split(',')
+                .Select(n => n.Trim())
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .ToList();
+
+            if (propertyNames.Count == 0)
+            {
+                return null;
+            }
+
+            return new(typeName, propertyNames, line.Contains('*'));
         }
 
         static EnumModel? ParseEnum(string[] lines, ref int i, string currentNamespace)
@@ -242,22 +390,6 @@ namespace Reflector
             }
 
             return new(name, currentNamespace, list);
-        }
-
-        static FieldModel? ParseField(string line)
-        {
-            line = line.TrimEnd(';').Trim();
-
-            bool isPointer = line.Contains('*');
-
-            var m = Regex.Match(line, @"^(?:const\s+)?([\w:<>]+)\s*[*&]?\s+(\w+)$");
-
-            if (!m.Success)
-            {
-                return null;
-            }
-
-            return new(m.Groups[1].Value.Trim(), m.Groups[2].Value.Trim(), isPointer);
         }
 
         static MethodModel? ParseMethod(string line)

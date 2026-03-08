@@ -121,13 +121,18 @@ namespace Reflector
             sb.AppendLine("\t\t{");
             foreach (var f in t.Fields)
             {
+                if (f.Names.Count <= 0)
+                {
+                    continue;
+                }
+
                 var resolvedType = ResolveFieldType(f.TypeName, reflectedTypes);
                 bool isReflected = reflectedTypes.ContainsKey(f.TypeName) || reflectedTypes.ContainsValue(f.TypeName);
 
                 sb.AppendLine(
                     $"\t\t\t{{\n" +
-                    $"\t\t\t\t\"{f.Name}\",\n" +
-                    $"\t\t\t\t\"{f.TypeName}\",\n" +
+                    $"\t\t\t\t{{{string.Join(" ,", f.Names.Select(p => $"\"{p}\""))}}},\n" +
+                    $"\t\t\t\t\"{resolvedType}\",\n" +
                     $"\t\t\t\toffsetof({qualifiedName}, {f.Name}),\n" +
                     $"\t\t\t\tsizeof({(f.IsPointer ? "void*" : resolvedType)}),\n" +
                     $"\t\t\t\tstd::type_index(typeid({resolvedType})),\n" +
