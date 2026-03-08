@@ -29,32 +29,38 @@ namespace Chicane
             std::wstring wLocation = std::wstring(location.begin(), location.end());
 
             IFileOpenDialog* dialog = nullptr;
-            HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog));
-
-            if (SUCCEEDED(hr))
+            if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog))))
             {
                 DWORD options = 0;
                 dialog->GetOptions(&options);
                 dialog->SetOptions(options | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR);
 
                 dialog->SetTitle(wTitle.c_str());
-                dialog->SetFolder(wLocation.c_str());
 
-                hr = dialog->Show(nullptr);
-                if (SUCCEEDED(hr))
+                IShellItem* locationFolder = NULL;
+                if (SUCCEEDED(SHCreateItemFromParsingName(wLocation.c_str(), NULL, IID_PPV_ARGS(&locationFolder))))
                 {
-                    IShellItem* pItem = nullptr;
-                    hr                = dialog->GetResult(&pItem);
-                    if (SUCCEEDED(hr))
+                    dialog->SetFolder(locationFolder);
+
+                    locationFolder->Release();
+                }
+
+                if (SUCCEEDED(dialog->Show(nullptr)))
+                {
+                    IShellItem* item = nullptr;
+                    if (SUCCEEDED(dialog->GetResult(&item)))
                     {
-                        PWSTR pszPath = nullptr;
-                        if (SUCCEEDED(pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                        PWSTR path = nullptr;
+                        if (SUCCEEDED(item->GetDisplayName(SIGDN_FILESYSPATH, &path)))
                         {
-                            std::wstring wPath(pszPath);
+                            std::wstring wPath(path);
+
                             filepath = String(wPath.begin(), wPath.end());
-                            CoTaskMemFree(pszPath);
+
+                            CoTaskMemFree(path);
                         }
-                        pItem->Release();
+
+                        item->Release();
                     }
                 }
 

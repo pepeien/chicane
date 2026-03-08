@@ -25,19 +25,17 @@ namespace Chicane
             String filepaths = "";
 
 #if IS_WINDOWS
-            std::wstring sInTitle  = std::wstring(title.begin(), title.end());
-            std::wstring sLocation = std::wstring(location.begin(), location.end());
+            std::wstring wInTitle  = std::wstring(title.begin(), title.end());
+            std::wstring wLocation = std::wstring(location.begin(), location.end());
 
             IFileOpenDialog* dialog = nullptr;
-            HRESULT          hr     = CoCreateInstance(
-                CLSID_FileOpenDialog,
-                nullptr,
-                CLSCTX_ALL,
-                IID_IFileOpenDialog,
-                reinterpret_cast<void**>(&dialog)
-            );
-
-            if (SUCCEEDED(hr))
+            if (SUCCEEDED(CoCreateInstance(
+                    CLSID_FileOpenDialog,
+                    nullptr,
+                    CLSCTX_ALL,
+                    IID_IFileOpenDialog,
+                    reinterpret_cast<void**>(&dialog)
+                )))
             {
                 DWORD options;
                 dialog->GetOptions(&options);
@@ -45,8 +43,15 @@ namespace Chicane
                     options | FOS_NOCHANGEDIR | FOS_FILEMUSTEXIST | (bCanSelectMany ? FOS_ALLOWMULTISELECT : 0)
                 );
 
-                dialog->SetTitle(sInTitle.c_str());
-                dialog->setFolder(sLocation.c_str());
+                dialog->SetTitle(wInTitle.c_str());
+
+                IShellItem* locationFolder = NULL;
+                if (SUCCEEDED(SHCreateItemFromParsingName(wLocation.c_str(), NULL, IID_PPV_ARGS(&locationFolder))))
+                {
+                    dialog->SetFolder(locationFolder);
+
+                    locationFolder->Release();
+                }
 
                 std::vector<COMDLG_FILTERSPEC> specs;
                 std::vector<std::wstring>      specNames;
