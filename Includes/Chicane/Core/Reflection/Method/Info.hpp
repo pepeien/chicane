@@ -17,17 +17,18 @@ namespace Chicane
         using Invoker = std::function<void(void*, Params)>;
 
     public:
+        ReflectionMethodInfo(String inName, String inReturnType, std::vector<String> inParamTypes, Invoker inInvoker);
         ReflectionMethodInfo();
 
     public:
         void invoke(void* inInstance, Params inParams = {}) const;
 
     public:
-        String              name       = "";
-        String              returnType = "";
-        std::vector<String> paramTypes = {};
+        String              name;
+        String              returnType;
+        std::vector<String> paramTypes;
 
     private:
-        Invoker invoker = {};
+        Invoker m_invoker;
     };
 }

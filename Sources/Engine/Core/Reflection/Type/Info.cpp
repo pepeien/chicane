@@ -4,6 +4,25 @@
 
 namespace Chicane
 {
+
+    ReflectionTypeInfo::ReflectionTypeInfo(
+        String inName, std::size_t inSize, TypeIdex inTypeIndex, Fields inFields, Methods inMethods
+    )
+        : name(std::move(inName)),
+          size(inSize),
+          typeIndex(std::move(inTypeIndex)),
+          fields(std::move(inFields)),
+          methods(std::move(inMethods))
+    {}
+
+    ReflectionTypeInfo::ReflectionTypeInfo()
+        : name(""),
+          size(0),
+          typeIndex(std::nullopt),
+          fields({}),
+          methods({})
+    {}
+
     const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
     {
         for (const auto& f : fields)

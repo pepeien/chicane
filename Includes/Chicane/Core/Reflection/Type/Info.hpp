@@ -16,6 +16,15 @@ namespace Chicane
     struct CHICANE_CORE ReflectionTypeInfo
     {
     public:
+        using TypeIdex = std::optional<std::type_index>;
+        using Fields   = std::vector<ReflectionFieldInfo>;
+        using Methods  = std::vector<ReflectionMethodInfo>;
+
+    public:
+        ReflectionTypeInfo(String inName, std::size_t inSize, TypeIdex inTypeIndex, Fields inFields, Methods inMethods);
+        ReflectionTypeInfo();
+
+    public:
         const ReflectionFieldInfo* findField(const String& inName) const;
 
         const ReflectionMethodInfo* findMethod(const String& inName) const;
@@ -23,10 +32,10 @@ namespace Chicane
         ReflectionFieldAccessor resolve(const String& inAccessor) const;
 
     public:
-        String                            name      = "";
-        std::size_t                       size      = 0;
-        std::optional<std::type_index>    typeIndex = std::nullopt;
-        std::vector<ReflectionFieldInfo>  fields    = {};
-        std::vector<ReflectionMethodInfo> methods   = {};
+        String      name;
+        std::size_t size;
+        TypeIdex    typeIndex;
+        Fields      fields;
+        Methods     methods;
     };
 }

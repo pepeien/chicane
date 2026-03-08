@@ -12,12 +12,27 @@ namespace Chicane
     struct CHICANE_CORE ReflectionFieldInfo
     {
     public:
-        String                         name         = "";
-        String                         typeName     = "";
-        std::size_t                    offset       = 0;
-        std::size_t                    size         = 0;
-        std::optional<std::type_index> typeIndex    = std::nullopt;
-        bool                           bIsReflected = false;
-        bool                           bIsPointer   = false;
+        using TypeIndex = std::optional<std::type_index>;
+
+    public:
+        ReflectionFieldInfo(
+            String      inName,
+            String      typeName,
+            std::size_t inOffset,
+            std::size_t inSize,
+            TypeIndex   inTypeIndex,
+            bool        bInIsReflected,
+            bool        bInIsPointer
+        );
+        ReflectionFieldInfo();
+
+    public:
+        String      name;
+        String      typeName;
+        std::size_t offset;
+        std::size_t size;
+        TypeIndex   typeIndex;
+        bool        bIsReflected;
+        bool        bIsPointer;
     };
 }

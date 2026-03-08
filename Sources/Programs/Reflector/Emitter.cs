@@ -83,7 +83,6 @@ namespace Reflector
             var qualifiedName = QualifiedName(e.Namespace, e.Name);
 
             sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister _reg_enum_{SafeIdentifier(qualifiedName)}(");
-            sb.AppendLine($"\tChicane::ReflectionEnumInfo");
             sb.AppendLine($"\t{{");
             sb.AppendLine($"\t\t\"{qualifiedName}\",");
 
@@ -114,7 +113,6 @@ namespace Reflector
             sb.AppendLine();
 
             sb.AppendLine($"inline Chicane::ReflectionTypeAutoRegister _reg_{safeId}(");
-            sb.AppendLine($"\tChicane::ReflectionTypeInfo");
             sb.AppendLine($"\t{{");
             sb.AppendLine($"\t\t\"{qualifiedName}\",");
             sb.AppendLine($"\t\tsizeof({qualifiedName}),");

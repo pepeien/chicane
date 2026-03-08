@@ -14,7 +14,11 @@ namespace Chicane
         using Enumerators = std::vector<ReflectionEnumeratorInfo>;
 
     public:
-        String      name        = "";
-        Enumerators enumerators = {};
+        ReflectionEnumInfo(String inName, Enumerators inEnumerators);
+        ReflectionEnumInfo();
+
+    public:
+        String      name;
+        Enumerators enumerators;
     };
 }

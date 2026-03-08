@@ -2,20 +2,29 @@
 
 namespace Chicane
 {
+    ReflectionMethodInfo::ReflectionMethodInfo(
+        String inName, String inReturnType, std::vector<String> inParamTypes, Invoker inInvoker
+    )
+        : name(std::move(inName)),
+          returnType(std::move(inReturnType)),
+          paramTypes(std::move(inParamTypes)),
+          m_invoker(std::move(inInvoker))
+    {}
+
     ReflectionMethodInfo::ReflectionMethodInfo()
         : name(""),
           returnType(""),
           paramTypes({}),
-          invoker({})
+          m_invoker({})
     {}
 
-    void ReflectionMethodInfo::invoke(void* inInstance, Params inParams = {}) const
+    void ReflectionMethodInfo::invoke(void* inInstance, Params inParams) const
     {
-        if (!invoker)
+        if (!m_invoker)
         {
             return;
         }
 
-        invoker(inInstance, inParams);
+        m_invoker(inInstance, inParams);
     }
 }
