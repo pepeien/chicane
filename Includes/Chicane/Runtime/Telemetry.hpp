@@ -7,7 +7,7 @@
 
 namespace Chicane
 {
-    CH_TYPE()
+    CH_TYPE(Manual)
     struct CHICANE_RUNTIME Telemetry
     {
     public:

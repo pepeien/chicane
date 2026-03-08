@@ -34,6 +34,7 @@ namespace Chicane
 
         inline operator String() const { return toString(); }
 
-        inline String toString() const { return String::sprint("[%.2f, %.2f, %.2f, %2f]", x, y, z, w); }
+    public:
+        String toString() const;
     };
 }

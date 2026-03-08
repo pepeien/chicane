@@ -4,7 +4,7 @@
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Runtime/Application/Telemetry.hpp>
 
-CH_TYPE()
+CH_TYPE(Manual)
 class View : public Chicane::Grid::View
 {
 public:

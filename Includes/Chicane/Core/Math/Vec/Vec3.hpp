@@ -35,8 +35,8 @@ namespace Chicane
         inline operator String() const { return toString(); }
 
     public:
-        inline String toString() const { return String::sprint("[%.2f, %.2f, %.2f]", x, y, z); }
+        String toString() const;
 
-        inline Vec3 cross(const Vec3& inValue) const { return glm::cross(*this, inValue); }
+        Vec3 cross(const Vec3& inValue) const;
     };
 }

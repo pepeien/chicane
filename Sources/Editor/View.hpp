@@ -6,7 +6,7 @@
 
 namespace Editor
 {
-    CH_TYPE()
+    CH_TYPE(Manual)
     class View : public Chicane::Grid::View
     {
     public:
