@@ -13,7 +13,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Chicane::Grid::Character";
+            static constexpr inline const char* TAG_ID = "Character";
 
         public:
             TextCharacter();

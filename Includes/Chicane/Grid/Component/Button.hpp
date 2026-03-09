@@ -15,7 +15,7 @@ namespace Chicane
         {
         public:
             // Header
-            static constexpr inline const char* TAG_ID = "Chicane::Grid::Button";
+            static constexpr inline const char* TAG_ID = "Button";
 
         public:
             CH_CONSTRUCTOR()

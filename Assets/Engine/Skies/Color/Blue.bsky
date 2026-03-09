@@ -1,0 +1,11 @@
+<Asset version="1" id="Blue">
+    <Textures>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+    </Textures>
+    <Model source="Assets/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
+</Asset>

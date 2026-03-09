@@ -1,37 +1,37 @@
-##################### Files #######################
+######################### Files #########################
 file(
     GLOB_RECURSE
     HEADERS
     CONFIGURE_DEPENDS
-    ${RUNTIME_HEADER_DIR}/*.hpp
+    ${CHICANE_ENGINE_RUNTIME_INCLUDES_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
+list(APPEND HEADERS ${CHICANE_ENGINE_INCLUDES_DIR}/Runtime.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
     CONFIGURE_DEPENDS
-    ${RUNTIME_SOURCE_DIR}/*.cpp
+    ${CHICANE_ENGINE_RUNTIME_SOURCES_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
-##################### Setup #######################
+######################### Setup #########################
 if (CHICANE_SHARED)
-    add_library(${RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${RUNTIME_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_RUNTIME_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
     "${NAME}::Runtime"
 
     ALIAS
-        ${RUNTIME_TARGET_NAME}
+        ${CHICANE_ENGINE_RUNTIME_TARGET_NAME}
 )
 
 set_target_properties(
-    ${RUNTIME_TARGET_NAME}
+    ${CHICANE_ENGINE_RUNTIME_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
@@ -43,29 +43,28 @@ set_target_properties(
         CH_REFLECT_HEADERS
             "${HEADERS}"
         CH_BASE_HEADER_DIR
-            "${INCLUDES_DIR}"
+            "${CHICANE_INCLUDES_DIR}"
         CH_SOURCE_HEADER_DIR
-            "${RUNTIME_HEADER_DIR}"
+            "${CHICANE_ENGINE_RUNTIME_INCLUDES_DIR}"
 )
 
 target_compile_definitions(
-    ${RUNTIME_TARGET_NAME}
+    ${CHICANE_ENGINE_RUNTIME_TARGET_NAME}
 
     PRIVATE
         BUILD_EXPORT
 )
 
 target_include_directories(
-    ${RUNTIME_TARGET_NAME}
+    ${CHICANE_ENGINE_RUNTIME_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
 )
 
 target_link_libraries(
-    ${RUNTIME_TARGET_NAME}
+    ${CHICANE_ENGINE_RUNTIME_TARGET_NAME}
 
     PUBLIC
         Chicane::Box
@@ -76,4 +75,4 @@ target_link_libraries(
         Chicane::Screech
 )
 
-CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_ENGINE_RUNTIME_TARGET_NAME})

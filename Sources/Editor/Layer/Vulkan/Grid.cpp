@@ -143,11 +143,11 @@ namespace Editor
 
         // Shader
         Chicane::Renderer::VulkanShaderStageCreateInfo vertexShader;
-        vertexShader.path = "Contents/Editor/Shaders/Vulkan/Grid.vvert";
+        vertexShader.path = "Assets/Editor/Shaders/Vulkan/Grid.vvert";
         vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
         Chicane::Renderer::VulkanShaderStageCreateInfo fragmentShader;
-        fragmentShader.path = "Contents/Editor/Shaders/Vulkan/Grid.vfrag";
+        fragmentShader.path = "Assets/Editor/Shaders/Vulkan/Grid.vfrag";
         fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
         // Depth

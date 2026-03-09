@@ -19,12 +19,12 @@ Apple::Apple()
 void Apple::onLoad()
 {
     m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
-    m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
+    m_meshComponent->setMesh("Assets/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
     m_hitSound = getScene()->createComponent<Chicane::CSound>();
-    m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
+    m_hitSound->load("Assets/Sample/Shooter/Sounds/Hit.bsnd");
     m_hitSound->attachTo(this);
     m_hitSound->activate();
 }

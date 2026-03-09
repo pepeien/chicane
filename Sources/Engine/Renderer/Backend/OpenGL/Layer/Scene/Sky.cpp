@@ -83,8 +83,7 @@ namespace Chicane
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Sky.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -107,7 +106,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.ofrag");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Sky.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(

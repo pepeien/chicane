@@ -1,0 +1,12 @@
+<View path="home" style="Assets/Editor/Views/Home.decal">
+    <Container>
+        <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
+        <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
+    </Container>
+    <Container class="menu --side">
+        <Button onClick="{{ onAssetImport() }}" class="button">
+            <Text>Import File</Text>
+        </Button>
+    </Container>
+    <Container class="menu --bottom"></Container>
+</View>

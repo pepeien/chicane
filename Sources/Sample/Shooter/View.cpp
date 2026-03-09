@@ -7,7 +7,7 @@
 #include "Sample/Shooter/Level.hpp"
 
 View::View()
-    : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
+    : Chicane::Grid::View("Assets/Sample/Shooter/Views/Home.grid"),
       telemetry(&Chicane::Application::getInstance().getTelemetry()),
       bDidPlayerWin(false),
       crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),

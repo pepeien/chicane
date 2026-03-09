@@ -660,11 +660,35 @@ namespace Chicane
                 return;
             }
 
+            const String defaultNamespace = "Chicane::Grid::";
             for (const auto& child : inNode.children())
             {
+                /**
+                 * Try to find component by tag with system default namespace.
+                 * 
+                 * Even tough the `Grid` system is supposed to accept custom components,
+                 * system defaults (prefixed by `Chicane::Grid` namespace) should take priority.
+                 */
+                const String defaultedTypeName = defaultNamespace + child.name();
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName))
+                {
+                    addChild(type->create<Component>({child}));
+
+                    continue;
+                }
+
+                /**
+                 * Try to find component by tag as is.
+                 * 
+                 * Try to create custom components using <TAG></TAG> with `TAG` being the full type signature,
+                 * custom components should be referenced using the full namespace.
+                 */
+                const String customTypeName = child.name();
                 if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(child.name()))
                 {
                     addChild(type->create<Component>({child}));
+
+                    continue;
                 }
             }
         }

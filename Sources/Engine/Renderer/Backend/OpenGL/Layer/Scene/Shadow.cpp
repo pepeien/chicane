@@ -91,7 +91,7 @@ namespace Chicane
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Shadow.overt");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Shadow.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(

@@ -9,7 +9,7 @@
 namespace Editor
 {
     View::View()
-        : Chicane::Grid::View("Contents/Editor/Views/Home.grid"),
+        : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
           telemetry(&Chicane::Application::getInstance().getTelemetry())
     {}
 

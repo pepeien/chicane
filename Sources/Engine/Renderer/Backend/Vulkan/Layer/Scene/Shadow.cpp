@@ -182,7 +182,7 @@ namespace Chicane
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Shadow.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Shadow.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             // Depth

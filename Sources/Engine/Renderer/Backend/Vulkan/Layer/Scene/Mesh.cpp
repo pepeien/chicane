@@ -219,11 +219,11 @@ namespace Chicane
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Mesh.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Mesh.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Depth

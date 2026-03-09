@@ -83,7 +83,7 @@ namespace Chicane
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.overt");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Mesh.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -104,7 +104,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(

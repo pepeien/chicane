@@ -14,7 +14,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Chicane::Grid::Popup";
+            static constexpr inline const char* TAG_ID = "Popup";
 
             // Attributes
             static constexpr inline const char* IS_OPEN_ATTRIBUTE_NAME        = "isOpen";

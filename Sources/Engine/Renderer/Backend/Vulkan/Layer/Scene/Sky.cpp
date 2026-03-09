@@ -176,11 +176,11 @@ namespace Chicane
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Sky.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Attachments

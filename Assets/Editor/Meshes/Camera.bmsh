@@ -1,0 +1,10 @@
+<Asset version="1" id="Camera">
+    <Group id="Lense">
+        <Model source="Assets/Editor/Models/Camera.bmdl">Camera_Lense</Model>
+        <Texture source="Assets/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
+    </Group>
+    <Group id="Body">
+        <Model source="Assets/Editor/Models/Camera.bmdl">Camera_Body</Model>
+        <Texture source="Assets/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
+    </Group>
+</Asset>

@@ -1,5 +1,14 @@
 ##################### Directories #######################
 add_subdirectory(Engine)
-add_subdirectory(Editor)
-add_subdirectory(Programs)
-add_subdirectory(Sample)
+
+if (CHICANE_PROGRAMS)
+    add_subdirectory(Programs)
+endif()
+
+if (CHICANE_EDITOR)
+    add_subdirectory(Editor)
+endif()
+
+if(CHICANE_SAMPLE)
+    add_subdirectory(Sample)
+endif()

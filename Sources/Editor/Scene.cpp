@@ -25,9 +25,7 @@ namespace Editor
 
     void Scene::spawnSky()
     {
-        createActor<Chicane::ASky>()->setSky(
-            Chicane::Box::load<Chicane::Box::Sky>("Contents/Editor/Skies/Default.bsky")
-        );
+        createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Editor/Skies/Default.bsky"));
     }
 
     void Scene::spawnLights()
@@ -42,6 +40,6 @@ namespace Editor
 
     void Scene::spawnDefaultItem()
     {
-        createActor<Item>("Contents/Engine/Meshes/Shape/Cube.bmsh");
+        createActor<Item>("Assets/Engine/Meshes/Shape/Cube.bmsh");
     }
 }

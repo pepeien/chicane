@@ -14,7 +14,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Chicane::Grid::TextInput";
+            static constexpr inline const char* TAG_ID = "TextInput";
 
             // Attributes
             static constexpr inline const char* LABEL_ATTRIBUTE_NAME    = "label";
