@@ -84,6 +84,18 @@
 
                 allReflectedTypes.TryAdd(t.Name, qualified);
                 allReflectedTypes.TryAdd(qualified, qualified);
+
+                if (!string.IsNullOrWhiteSpace(t.Namespace))
+                {
+                    var nsParts = t.Namespace.Split("::");
+                    for (int j = nsParts.Length - 1; j >= 0; j--)
+                    {
+                        var partial = string.Join("::", nsParts[j..]) + "::" + t.Name;
+
+                        allReflectedTypes.TryAdd(partial, qualified);
+                    }
+                }
+
                 allTypeModels.Add((file, t));
             }
         }
@@ -95,34 +107,60 @@
                 ? t.Name
                 : $"{t.Namespace}::{t.Name}";
 
-            typeMap.TryAdd(t.Name, t);
-            typeMap.TryAdd(qualified, t);
+            typeMap[qualified] = t;
         }
 
         void ResolveInheritance(Reflector.TypeModel t, HashSet<string> visited)
         {
-            var qualified = string.IsNullOrWhiteSpace(t.Namespace)
+            string qualified = string.IsNullOrWhiteSpace(t.Namespace)
                 ? t.Name
                 : $"{t.Namespace}::{t.Name}";
 
-            if (!visited.Add(qualified) || t.Resolved || string.IsNullOrEmpty(t.BaseType) || !typeMap.TryGetValue(t.BaseType, out var baseModel))
+            if (!visited.Add(qualified) || t.Resolved)
             {
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(t.BaseType))
+            {
+                return;
+            }
+
+            Reflector.TypeModel? baseModel = null;
+
+            if (typeMap.TryGetValue(t.BaseType, out var found))
+            {
+                baseModel = found;
+            }
+            else
+            {
+                var nsParts = t.Namespace?.Split("::") ?? Array.Empty<string>();
+
+                for (int i = nsParts.Length; i >= 0; i--)
+                {
+                    var prefix = string.Join("::", nsParts.Take(i));
+                    var candidate = string.IsNullOrEmpty(prefix)
+                        ? t.BaseType
+                        : $"{prefix}::{t.BaseType}";
+
+                    if (typeMap.TryGetValue(candidate, out found))
+                    {
+                        baseModel = found;
+                        break;
+                    }
+                }
+            }
+
+            if (baseModel == null)
+                return;
+
             ResolveInheritance(baseModel, visited);
 
-            var baseQualified = string.IsNullOrWhiteSpace(baseModel.Namespace)
-                ? baseModel.Name
-                : $"{baseModel.Namespace}::{baseModel.Name}";
+            var inherited = baseModel.Fields
+                .Select(f => f with { Names = new List<string>(f.Names) })
+                .ToList();
 
-            bool baseIsReflected = allReflectedTypes.ContainsKey(baseModel.Name) ||
-                                   allReflectedTypes.ContainsKey(baseQualified);
-
-            if (!baseIsReflected)
-            {
-                t.Fields.InsertRange(0, baseModel.Fields);
-            }
+            t.Fields.InsertRange(0, inherited);
 
             t.Resolved = true;
         }
