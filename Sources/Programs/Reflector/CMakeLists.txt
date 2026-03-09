@@ -10,17 +10,19 @@ file(
 ) 
 
 ######################### Setup #########################
+if(WIN32)
+    set(REFLECTOR_RID "win-x64")
+else()
+    set(REFLECTOR_RID "linux-x64")
+endif()
+
 add_custom_command(
     OUTPUT
         "${CHICANE_PROGRAMS_REFLECTOR_BINARY}"
     COMMAND
-        "${DOTNET_EXECUTABLE}" restore "${CHICANE_PROGRAMS_REFLECTOR_SOURCES_DIR}/Reflector.csproj"
-        --nologo
-        --verbosity detailed
-    COMMAND
         "${DOTNET_EXECUTABLE}" publish "${CHICANE_PROGRAMS_REFLECTOR_SOURCES_DIR}/Reflector.csproj"
+        -r ${REFLECTOR_RID}
         --output "${CHICANE_PROGRAMS_REFLECTOR_BINARY_DIR}"
-        --no-restore
         --nologo
         --verbosity detailed
         -c Release
