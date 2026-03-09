@@ -16,7 +16,7 @@ namespace Chicane
 
         void save(const pugi::xml_document& inDocument, const FileSystem::Path& inFilepath)
         {
-            if (inFilepath.empty())
+            if (inFilepath.isEmpty())
             {
                 throw std::runtime_error("The XML document path is empty");
             }
@@ -24,18 +24,18 @@ namespace Chicane
             const FileSystem::Path path = std::filesystem::absolute(inFilepath);
 
             if (!inDocument.save_file(
-                    path.c_str(),
+                    path.toChar(),
                     "    ",
                     pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
                 ))
             {
-                throw std::runtime_error("Failed to save the XML [ " + path.string() + " ]");
+                throw std::runtime_error("Failed to save the XML [ " + path.toString() + " ]");
             }
         }
 
         pugi::xml_document load(const FileSystem::Path& inFilepath)
         {
-            if (inFilepath.empty())
+            if (inFilepath.isEmpty())
             {
                 throw std::runtime_error("The XML document path is empty");
             }
@@ -43,9 +43,9 @@ namespace Chicane
             const FileSystem::Path path = std::filesystem::absolute(inFilepath);
 
             pugi::xml_document result;
-            if (!result.load_file(path.c_str(), pugi::parse_default | pugi::parse_fragment))
+            if (!result.load_file(path.toChar(), pugi::parse_default | pugi::parse_fragment))
             {
-                throw std::runtime_error("Failed to read the XML document [" + path.string() + "]");
+                throw std::runtime_error("Failed to read the XML document [" + path.toString() + "]");
             }
 
             return result;

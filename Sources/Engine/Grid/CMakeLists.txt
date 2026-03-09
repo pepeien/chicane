@@ -13,7 +13,6 @@ file(
     CONFIGURE_DEPENDS
     ${GRID_SOURCE_DIR}/*.cpp
 )
-list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Grid.cpp)
 
 ##################### Setup #######################
 if (CHICANE_SHARED)

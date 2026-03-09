@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Object.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME Component : public Object
     {
     public:

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Chicane/Core/Math/Bounds/3D.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Object.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME Actor : public Object
     {
     public:

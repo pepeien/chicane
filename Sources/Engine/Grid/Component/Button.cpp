@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Button.hpp"
+#include "Chicane/Grid/Component/Button.reflected.hpp"
 
 namespace Chicane
 {

@@ -50,7 +50,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sound)
             {
-                throw std::runtime_error(inFilePath.string() + " is not a audio");
+                throw std::runtime_error(inFilePath.toString() + " is not a audio");
             }
 
             if (!hasAsset(inFilePath))
@@ -65,7 +65,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Font)
             {
-                throw std::runtime_error(inFilePath.string() + " is not a font");
+                throw std::runtime_error(inFilePath.toString() + " is not a font");
             }
 
             if (!hasAsset(inFilePath))
@@ -80,7 +80,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Model)
             {
-                throw std::runtime_error(inFilePath.string() + " is not a model");
+                throw std::runtime_error(inFilePath.toString() + " is not a model");
             }
 
             if (!hasAsset(inFilePath))
@@ -95,7 +95,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Texture)
             {
-                throw std::runtime_error(inFilePath.string() + "is not a texture");
+                throw std::runtime_error(inFilePath.toString() + "is not a texture");
             }
 
             if (!hasAsset(inFilePath))
@@ -110,7 +110,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Mesh)
             {
-                throw std::runtime_error(inFilePath.string() + "is not a mesh");
+                throw std::runtime_error(inFilePath.toString() + "is not a mesh");
             }
 
             if (!hasAsset(inFilePath))
@@ -133,7 +133,7 @@ namespace Chicane
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sky)
             {
-                throw std::runtime_error(inFilePath.string() + " is not a skybox");
+                throw std::runtime_error(inFilePath.toString() + " is not a skybox");
             }
 
             if (!hasAsset(inFilePath))
@@ -174,7 +174,7 @@ namespace Chicane
         {
             if (!AssetHeader::isFileAsset(inFilePath))
             {
-                Log::warning("File [%s] is not a valid asset", inFilePath.string().c_str());
+                Log::warning("File [%s] is not a valid asset", inFilePath.toChar());
 
                 return nullptr;
             }

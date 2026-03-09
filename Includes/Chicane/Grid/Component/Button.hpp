@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -9,13 +10,15 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID Button : public Container
         {
         public:
             // Header
-            static constexpr inline const char* TAG_ID = "Button";
+            static constexpr inline const char* TAG_ID = "Chicane::Grid::Button";
 
         public:
+            CH_CONSTRUCTOR()
             Button(const pugi::xml_node& inNode);
         };
     }

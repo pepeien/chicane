@@ -35,7 +35,7 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                throw std::runtime_error("Texture reference file [" + inFilepath.string() + "] was not found");
+                throw std::runtime_error("Texture reference file [" + inFilepath.toString() + "] was not found");
             }
 
             Box::Texture asset(inFilepath);
@@ -50,7 +50,7 @@ namespace Chicane
                     m_textures.end(),
                     [&inSource, &inReference](const AssetReference& inAsset)
                     {
-                        return inSource.equals(inAsset.getSource().string()) &&
+                        return inSource.equals(inAsset.getSource().toString()) &&
                                inReference.equals(inAsset.getReference());
                     }
                 ) != m_textures.end())
@@ -68,7 +68,7 @@ namespace Chicane
             pugi::xml_node node = textures.append_child(Texture::TAG);
 
             AssetReference texture;
-            texture.setSource(inSource.toStandard());
+            texture.setSource(inSource);
             texture.setReference(inReference);
             texture.saveTo(node);
 
@@ -84,7 +84,7 @@ namespace Chicane
         {
             if (!FileSystem::exists(inFilepath))
             {
-                throw std::runtime_error("Model reference file [" + inFilepath.string() + "] was not found");
+                throw std::runtime_error("Model reference file [" + inFilepath.toString() + "] was not found");
             }
 
             Box::Model asset(inFilepath);
@@ -101,7 +101,7 @@ namespace Chicane
                 model = getXML().append_child(Model::TAG);
             }
 
-            m_model.setSource(inSource.toStandard());
+            m_model.setSource(inSource);
             m_model.setReference(inReference);
             m_model.saveTo(model);
         }

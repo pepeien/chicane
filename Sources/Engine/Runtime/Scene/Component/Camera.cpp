@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Camera.reflected.hpp"
 
 namespace Chicane
 {

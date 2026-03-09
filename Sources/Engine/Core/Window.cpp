@@ -276,14 +276,14 @@ namespace Chicane
 
     void Window::setIcon(const FileSystem::Path& inPath)
     {
-        if (inPath.empty())
+        if (inPath.isEmpty())
         {
             return;
         }
 
         if (!FileSystem::exists(inPath))
         {
-            emmitError("The window icon [ " + inPath.string() + " ] doesn't exists");
+            emmitError("The window icon [ " + inPath.toString() + " ] doesn't exists");
         }
 
         const Image image(inPath);

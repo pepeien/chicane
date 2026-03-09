@@ -6,30 +6,37 @@ namespace Chicane
 {
 
     ReflectionTypeInfo::ReflectionTypeInfo(
-        const String& inName, std::size_t inSize, TypeIdex inTypeIndex, const Fields& inFields, const Methods& inMethods
+        const String&       inName,
+        std::size_t         inSize,
+        TypeIdex            inTypeIndex,
+        const Constructors& inConstructors,
+        const Methods&      inMethods,
+        const Fields&       inFields
     )
         : name(std::move(inName)),
           size(inSize),
           typeIndex(inTypeIndex),
-          fields(std::move(inFields)),
-          methods(std::move(inMethods))
+          constructors(std::move(inConstructors)),
+          methods(std::move(inMethods)),
+          fields(std::move(inFields))
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
         : name(""),
           size(0),
           typeIndex(std::nullopt),
-          fields({}),
-          methods({})
+          constructors({}),
+          methods({}),
+          fields({})
     {}
 
     const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
     {
-        for (const auto& f : fields)
+        for (const ReflectionFieldInfo& field : fields)
         {
-            if (f.name.equals(inName))
+            if (field.containsName(inName))
             {
-                return &f;
+                return &field;
             }
         }
 
@@ -38,11 +45,11 @@ namespace Chicane
 
     const ReflectionMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
     {
-        for (const auto& m : methods)
+        for (const ReflectionMethodInfo& method : methods)
         {
-            if (m.name.equals(inName))
+            if (method.name.equals(inName))
             {
-                return &m;
+                return &method;
             }
         }
 
@@ -119,6 +126,6 @@ namespace Chicane
             }
         }
 
-        return {offset, ptrOffset, field->size, field->name, field->typeName, field->typeIndex, crossedPointer};
+        return {offset, ptrOffset, field->size, field->names, field->typeName, field->typeIndex, crossedPointer};
     }
 }

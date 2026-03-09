@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
 
@@ -7,11 +9,12 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID ProgressBar : public Component
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "ProgressBar";
+            static constexpr inline const char* TAG_ID = "Chicane::Grid::ProgressBar";
 
             // Attributes
             static constexpr inline const char* PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`

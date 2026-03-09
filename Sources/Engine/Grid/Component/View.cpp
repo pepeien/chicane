@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/View.hpp"
+#include "Chicane/Grid/Component/View.reflected.hpp"
 
 #include <algorithm>
 
@@ -14,21 +14,21 @@ namespace Chicane
               m_path(""),
               m_styles({})
         {
-            if (inSource.empty())
+            if (inSource.isEmpty())
             {
                 return;
             }
 
             pugi::xml_document document;
 
-            if (!document.load_file(inSource.c_str()))
+            if (!document.load_file(inSource.toChar()))
             {
-                throw std::runtime_error("Failed to read " + inSource.string());
+                throw std::runtime_error("Failed to read " + inSource.toString());
             }
 
             if (document.empty() || document.children().empty())
             {
-                throw std::runtime_error("UI document " + inSource.string() + " does not have any components");
+                throw std::runtime_error("UI document " + inSource.toString() + " does not have any components");
             }
 
             const pugi::xml_node& node = document.first_child();

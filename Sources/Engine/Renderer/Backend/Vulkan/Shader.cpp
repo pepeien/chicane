@@ -12,7 +12,7 @@ namespace Chicane
                 const vk::Device& inLogicalDevice, const VulkanShaderStageCreateInfo& inCreateInfo
             )
             {
-                const std::vector<char> shaderCode = FileSystem::read(inCreateInfo.path.toStandard());
+                const std::vector<char> shaderCode = FileSystem::read(inCreateInfo.path);
 
                 vk::ShaderModuleCreateInfo moduleInfo;
                 moduleInfo.flags    = vk::ShaderModuleCreateFlags();

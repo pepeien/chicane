@@ -31,7 +31,7 @@ namespace Chicane
 
         void MeshGroup::setModel(const String& inSource, const String& inReference)
         {
-            m_model.setSource(inSource.toStandard());
+            m_model.setSource(inSource);
             m_model.setReference(inReference);
         }
 
@@ -47,7 +47,7 @@ namespace Chicane
 
         void MeshGroup::setTexture(const String& inSource, const String& inReference)
         {
-            m_texture.setSource(inSource.toStandard());
+            m_texture.setSource(inSource);
             m_texture.setReference(inReference);
         }
     }

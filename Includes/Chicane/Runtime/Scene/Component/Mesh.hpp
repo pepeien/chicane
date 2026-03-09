@@ -2,11 +2,14 @@
 
 #include "Chicane/Box/Mesh.hpp"
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME CMesh : public Component
     {
     public:

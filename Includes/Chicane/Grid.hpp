@@ -17,8 +17,6 @@
     #define CHICANE_GRID
 #endif
 
-#include "Chicane/Core/Xml.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -41,7 +39,5 @@ namespace Chicane
         // List
         static constexpr inline const char* ITEMS_ATTRIBUTE_NAME       = "items";
         static constexpr inline const char* ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
-
-        CHICANE_GRID class Component* createComponent(const pugi::xml_node& inNode);
     }
 }

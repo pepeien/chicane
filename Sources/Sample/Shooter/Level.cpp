@@ -20,8 +20,7 @@ Level::Level()
     : Chicane::Scene(),
       m_leftCamera(nullptr),
       m_centerCamera(nullptr),
-      m_rightCamera(nullptr),
-      m_cameraObservable({})
+      m_rightCamera(nullptr)
 {}
 
 void Level::onLoad()
@@ -40,8 +39,6 @@ void Level::activateLeftCamera()
 
     m_centerCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(m_leftCamera);
 }
 
 void Level::activateCenterCamera()
@@ -50,8 +47,6 @@ void Level::activateCenterCamera()
 
     m_leftCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(m_centerCamera);
 }
 
 void Level::activateRightCamera()
@@ -60,8 +55,6 @@ void Level::activateRightCamera()
 
     m_leftCamera->deactivate();
     m_centerCamera->deactivate();
-
-    m_cameraObservable.next(m_rightCamera);
 }
 
 void Level::disableCameras()
@@ -69,17 +62,6 @@ void Level::disableCameras()
     m_leftCamera->deactivate();
     m_centerCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(nullptr);
-}
-
-Level::CameraSubscription Level::watchActiveCamera(
-    CameraSubscription::NextCallback     inNext,
-    CameraSubscription::ErrorCallback    inError,
-    CameraSubscription::CompleteCallback inComplete
-)
-{
-    return m_cameraObservable.subscribe(inNext, inError, inComplete).next(nullptr);
 }
 
 void Level::spawnSky()

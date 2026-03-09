@@ -19,10 +19,6 @@ public:
     CH_FIELD()
     bool bDidPlayerWin;
 
-    // Camera
-    CH_FIELD()
-    Chicane::String currentCamera;
-
     // Crosshair
     CH_FIELD()
     Chicane::String crosshairDotVisibility;

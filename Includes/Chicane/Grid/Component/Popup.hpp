@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
 
@@ -7,11 +9,12 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID Popup : public Component
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Popup";
+            static constexpr inline const char* TAG_ID = "Chicane::Grid::Popup";
 
             // Attributes
             static constexpr inline const char* IS_OPEN_ATTRIBUTE_NAME        = "isOpen";

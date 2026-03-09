@@ -54,11 +54,11 @@ namespace Chicane
     Image::Image(const FileSystem::Path& inLocation)
         : Image()
     {
-        m_vendor = parseVendor(inLocation.extension().string());
+        m_vendor = parseVendor(inLocation.extension().toString());
 
         m_format = STBI_rgb_alpha;
 
-        m_pixels = stbi_load(inLocation.string().c_str(), &m_width, &m_height, &m_channel, m_format);
+        m_pixels = stbi_load(inLocation.toChar(), &m_width, &m_height, &m_channel, m_format);
 
         if (!m_pixels)
         {

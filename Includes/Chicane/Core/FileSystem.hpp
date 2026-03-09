@@ -4,16 +4,13 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/FileSystem/Path.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
-        using Path = std::filesystem::path;
-
-        static constexpr inline const auto SEPARATOR = Path::preferred_separator;
-
         CHICANE_CORE bool exists(const Path& inPath);
         CHICANE_CORE std::vector<class Item> ls(const Path& inDir = ".", std::uint32_t inDepth = 0);
 

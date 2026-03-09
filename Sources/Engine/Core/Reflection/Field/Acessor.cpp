@@ -1,20 +1,24 @@
 #include "Chicane/Core/Reflection/Field/Acessor.hpp"
 
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
+
 namespace Chicane
 {
     ReflectionFieldAccessor::ReflectionFieldAccessor(
-        std::size_t   inOffset,
-        std::size_t   inPtrOffset,
-        std::size_t   inSize,
-        const String& inName,
-        const String& inTypeName,
-        TypeIndex     inTypeIndex,
-        bool          bInNeedsDeref
+        std::size_t                       inOffset,
+        std::size_t                       inPtrOffset,
+        std::size_t                       inSize,
+        const ReflectionFieldInfo::Names& inNames,
+        const String&                     inTypeName,
+        ReflectionFieldInfo::TypeIndex    inTypeIndex,
+        bool                              bInNeedsDeref
     )
         : offset(inOffset),
           ptrOffset(inPtrOffset),
           size(inSize),
-          name(std::move(inName)),
+          names(std::move(inNames)),
           typeName(std::move(inTypeName)),
           typeIndex(inTypeIndex),
           bNeedsDeref(bInNeedsDeref)
@@ -24,7 +28,7 @@ namespace Chicane
         : offset(0),
           ptrOffset(0),
           size(0),
-          name(""),
+          names({}),
           typeName(""),
           typeIndex(std::nullopt),
           bNeedsDeref(false)
@@ -59,6 +63,7 @@ namespace Chicane
             {
                 return nullptr;
             }
+
             return static_cast<char*>(pointee) + ptrOffset;
         }
 
@@ -77,6 +82,27 @@ namespace Chicane
 
     String ReflectionFieldAccessor::toString(const void* inInstance) const
     {
+        if (isType<Vec2>())
+        {
+            const Vec2* v = getValue<Vec2>(inInstance);
+
+            return v ? v->toString() : "";
+        }
+
+        if (isType<Vec3>())
+        {
+            const Vec3* v = getValue<Vec3>(inInstance);
+
+            return v ? v->toString() : "";
+        }
+
+        if (isType<Vec4>())
+        {
+            const Vec4* v = getValue<Vec4>(inInstance);
+
+            return v ? v->toString() : "";
+        }
+
         if (isType<String>())
         {
             const String* v = getValue<String>(inInstance);
@@ -162,5 +188,10 @@ namespace Chicane
         }
 
         return "<" + typeName + ">";
+    }
+
+    const String& ReflectionFieldAccessor::getName() const
+    {
+        return names.empty() ? String::empty() : names.at(0);
     }
 }

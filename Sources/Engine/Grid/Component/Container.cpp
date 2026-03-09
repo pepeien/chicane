@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component/Container.reflected.hpp"
 
 namespace Chicane
 {

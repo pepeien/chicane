@@ -1,4 +1,7 @@
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component.reflected.hpp"
+
+#include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
 {
@@ -472,6 +475,26 @@ namespace Chicane
             return m_parent->hasField(inId, false);
         }
 
+        const ReflectionFieldInfo* Component::getField(const String& inId) const
+        {
+            if (inId.isEmpty())
+            {
+                return nullptr;
+            }
+
+            if (!hasParent())
+            {
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    return type->findField(inId);
+                }
+
+                return nullptr;
+            }
+
+            return m_parent->getField(inId);
+        }
+
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
             if (inId.isEmpty())
@@ -639,7 +662,10 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
-                addChild(createComponent(child));
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(child.name()))
+                {
+                    addChild(type->create<Component>({child}));
+                }
             }
         }
 

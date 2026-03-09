@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Actor/Pawn/Character.hpp"
+#include "Chicane/Runtime/Scene/Actor/Pawn/Character.reflected.hpp"
 
 namespace Chicane
 {

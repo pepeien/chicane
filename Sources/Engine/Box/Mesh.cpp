@@ -104,7 +104,7 @@ namespace Chicane
 
         void Mesh::fetchGroups()
         {
-            if (getFilepath().empty() || isXMLEmpty())
+            if (getFilepath().isEmpty() || isXMLEmpty())
             {
                 return;
             }

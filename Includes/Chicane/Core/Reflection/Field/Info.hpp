@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <optional>
 #include <typeindex>
+#include <vector>
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
@@ -13,11 +14,12 @@ namespace Chicane
     {
     public:
         using TypeIndex = std::optional<std::type_index>;
+        using Names     = std::vector<String>;
 
     public:
         ReflectionFieldInfo(
-            String      inName,
-            String      typeName,
+            Names       inNames,
+            String      inTypeName,
             std::size_t inOffset,
             std::size_t inSize,
             TypeIndex   inTypeIndex,
@@ -27,7 +29,10 @@ namespace Chicane
         ReflectionFieldInfo();
 
     public:
-        String      name;
+        bool containsName(const String& inValue) const;
+
+    public:
+        Names       names;
         String      typeName;
         std::size_t offset;
         std::size_t size;

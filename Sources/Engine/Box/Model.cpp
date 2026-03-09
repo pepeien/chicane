@@ -89,7 +89,7 @@ namespace Chicane
                 throw std::runtime_error("Model source file was not found");
             }
 
-            setVendor(inFilepath.extension().string());
+            setVendor(inFilepath.extension().toString());
             setData(FileSystem::readUnsigned(inFilepath));
         }
 
@@ -97,7 +97,7 @@ namespace Chicane
         {
             if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
-                throw std::runtime_error("Failed to save the model [" + m_header.filepath.string() + "] data");
+                throw std::runtime_error("Failed to save the model [" + m_header.filepath.toString() + "] data");
             }
 
             m_data = parseData(inData);

@@ -9,17 +9,17 @@ namespace Chicane
         {
             type = inType;
             path = inPath;
-            name = path.filename().string();
+            name = path.filename().toString();
 
             switch (type)
             {
             case ItemType::File:
-                extension = path.extension().string();
+                extension = path.extension().toString();
 
                 break;
 
             case ItemType::Folder:
-                childCount = static_cast<std::uint32_t>(ls(path.lexically_normal().string(), 1).size());
+                childCount = static_cast<std::uint32_t>(ls(path.lexicallyNormal(), 1).size());
 
                 break;
 

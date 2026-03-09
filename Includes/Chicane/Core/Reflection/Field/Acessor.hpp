@@ -5,6 +5,7 @@
 #include <typeindex>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection/Field/Info.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -12,17 +13,14 @@ namespace Chicane
     struct CHICANE_CORE ReflectionFieldAccessor
     {
     public:
-        using TypeIndex = std::optional<std::type_index>;
-
-    public:
         ReflectionFieldAccessor(
-            std::size_t   inOffset,
-            std::size_t   inPtrOffset,
-            std::size_t   inSize,
-            const String& inName,
-            const String& inTypeName,
-            TypeIndex     inTypeIndex,
-            bool          bInNeedsDeref
+            std::size_t                       inOffset,
+            std::size_t                       inPtrOffset,
+            std::size_t                       inSize,
+            const ReflectionFieldInfo::Names& inNames,
+            const String&                     inTypeName,
+            ReflectionFieldInfo::TypeIndex    inTypeIndex,
+            bool                              bInNeedsDeref
         );
         ReflectionFieldAccessor();
 
@@ -72,7 +70,7 @@ namespace Chicane
             const char* addr = address(inInstance);
             if (!addr)
             {
-                throw std::runtime_error("ReflectionFieldAccessor::get — null pointer on field [" + name + "]");
+                throw std::runtime_error("ReflectionFieldAccessor::get — null pointer on field [" + getName() + "]");
             }
 
             return *reinterpret_cast<const T*>(addr);
@@ -86,7 +84,7 @@ namespace Chicane
             char* addr = address(inInstance);
             if (!addr)
             {
-                throw std::runtime_error("ReflectionFieldAccessor::set — null pointer on field [" + name + "]");
+                throw std::runtime_error("ReflectionFieldAccessor::set — null pointer on field [" + getName() + "]");
             }
 
             *reinterpret_cast<T*>(addr) = inValue;
@@ -100,6 +98,8 @@ namespace Chicane
 
         String toString(const void* inInstance) const;
 
+        const String& getName() const;
+
     private:
         template <typename T>
         void assertSize() const
@@ -107,19 +107,19 @@ namespace Chicane
             if (sizeof(T) != size)
             {
                 throw std::runtime_error(
-                    "FieldAccessor — size mismatch on field [" + name + "]: field is [" + size +
+                    "FieldAccessor — size mismatch on field [" + getName() + "]: field is [" + size +
                     "] bytes, requested type is [" + sizeof(T) + "] bytes"
                 );
             }
         }
 
     public:
-        std::size_t offset;
-        std::size_t ptrOffset;
-        std::size_t size;
-        String      name;
-        String      typeName;
-        TypeIndex   typeIndex;
-        bool        bNeedsDeref;
+        std::size_t                    offset;
+        std::size_t                    ptrOffset;
+        std::size_t                    size;
+        ReflectionFieldInfo::Names     names;
+        String                         typeName;
+        ReflectionFieldInfo::TypeIndex typeIndex;
+        bool                           bNeedsDeref;
     };
 }

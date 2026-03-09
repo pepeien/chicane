@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Actor/Light.hpp"
+#include "Chicane/Runtime/Scene/Actor/Light.reflected.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
 

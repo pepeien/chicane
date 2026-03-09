@@ -3,7 +3,7 @@
 namespace Chicane
 {
     ReflectionFieldInfo::ReflectionFieldInfo(
-        String      inName,
+        Names       inNames,
         String      inTypeName,
         std::size_t inOffset,
         std::size_t inSize,
@@ -11,7 +11,7 @@ namespace Chicane
         bool        bInIsReflected,
         bool        bInIsPointer
     )
-        : name(std::move(inName)),
+        : names(std::move(inNames)),
           typeName(std::move(inTypeName)),
           offset(std::move(inOffset)),
           size(std::move(inSize)),
@@ -21,7 +21,7 @@ namespace Chicane
     {}
 
     ReflectionFieldInfo::ReflectionFieldInfo()
-        : name(""),
+        : names({}),
           typeName(""),
           offset(0),
           size(0),
@@ -29,4 +29,13 @@ namespace Chicane
           bIsReflected(false),
           bIsPointer(false)
     {}
+
+    bool ReflectionFieldInfo::containsName(const String& inValue) const
+    {
+        return std::find_if(
+                   names.begin(),
+                   names.end(),
+                   [&inValue](const String& inName) { return inName.equals(inValue); }
+               ) != names.end();
+    }
 }

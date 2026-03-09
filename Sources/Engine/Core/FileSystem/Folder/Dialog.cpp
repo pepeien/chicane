@@ -109,7 +109,7 @@ namespace Chicane
                 filepath.popBack();
             }
 
-            inCallback(ls(filepath.toStandard()));
+            inCallback(ls(filepath));
         }
     }
 }

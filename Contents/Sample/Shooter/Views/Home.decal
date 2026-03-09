@@ -23,7 +23,7 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
     alignment: center;
     z-index: 2;
 
-    Text {
+    Chicane::Grid::Text {
         font-size: 8vw;
     }
 }
@@ -32,7 +32,7 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
     display: flex;
     flex-direction: row;
 
-    Text {
+    Chicane::Grid::Text {
         color: green;
     }
 

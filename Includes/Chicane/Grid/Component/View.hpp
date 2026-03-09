@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -10,14 +11,16 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID View : public Component
         {
         public:
-            static constexpr inline const char* TAG_ID = "View";
+            static constexpr inline const char* TAG_ID = "Chicane::Grid::View";
 
             static constexpr inline const char* PATH_ATTRIBUTE_NAME = "path";
 
         public:
+            CH_CONSTRUCTOR()
             View(const FileSystem::Path& inSource);
 
         public:

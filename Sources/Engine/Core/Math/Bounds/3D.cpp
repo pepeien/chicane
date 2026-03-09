@@ -175,7 +175,7 @@ namespace Chicane
 
         for (const Vertex& corner : m_baseCorners)
         {
-            Vec3 position = inModel * Vec4(corner.position, 1.0f);
+            Vec3 position = inModel * static_cast<glm::vec4>(Vec4(corner.position, 1.0f));
 
             min = min.min(position);
             max = max.max(position);

@@ -387,7 +387,7 @@ namespace Chicane
                 }
             }
 
-            const Mat4& matrix = mesh->getTransform().getMatrix();
+            const Mat4& matrix = mesh->getMatrix();
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
@@ -466,13 +466,13 @@ namespace Chicane
                     switch (import.type)
                     {
                     case Grid::StyleImportType::Style:
-                        inView->importStyleFile(FileSystem::Path(import.location.value.toStandard()));
+                        inView->importStyleFile(FileSystem::Path(import.location.value));
 
                         break;
 
                     case Grid::StyleImportType::Font:
                     case Grid::StyleImportType::Texture:
-                        Box::load(FileSystem::Path(import.location.value.toStandard()));
+                        Box::load(FileSystem::Path(import.location.value));
 
                         break;
 

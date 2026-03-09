@@ -32,7 +32,7 @@ namespace Chicane
         {
             if (!getXML().text().set(Base64::encode(inData).toChar()))
             {
-                throw std::runtime_error("Failed to save the sound [" + m_header.filepath.string() + "] data");
+                throw std::runtime_error("Failed to save the sound [" + m_header.filepath.toString() + "] data");
             }
 
             m_data = inData;

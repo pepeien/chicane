@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
+#include "Chicane/Runtime/Scene/Actor/Pawn.reflected.hpp"
 
 #include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Scene.hpp"

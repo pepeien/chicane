@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component/Physics.hpp"
@@ -8,6 +10,7 @@ namespace Chicane
 {
     class Controller;
 
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME APawn : public Actor
     {
         friend Controller;

@@ -1,12 +1,12 @@
-<View path="home" style="Contents/Editor/Views/Home.decal">
-    <Container>
-        <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
-        <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
-    </Container>
-    <Container class="menu --side">
-        <Button onClick="{{ onAssetImport() }}" class="button">
-            <Text>Import File</Text>
-        </Button>
-    </Container>
-    <Container class="menu --bottom"></Container>
-</View>
+<Chicane::Grid::View path="home" style="Contents/Editor/Views/Home.decal">
+    <Chicane::Grid::Container>
+        <Chicane::Grid::Text>{{ telemetry.renderer.frame.rate }} FPS</Chicane::Grid::Text>
+        <Chicane::Grid::Text>{{ telemetry.renderer.frame.delta }} ms</Chicane::Grid::Text>
+    </Chicane::Grid::Container>
+    <Chicane::Grid::Container class="menu --side">
+        <Chicane::Grid::Button onClick="{{ onAssetImport() }}" class="button">
+            <Chicane::Grid::Text>Import File</Chicane::Grid::Text>
+        </Chicane::Grid::Button>
+    </Chicane::Grid::Container>
+    <Chicane::Grid::Container class="menu --bottom"></Chicane::Grid::Container>
+</Chicane::Grid::View>

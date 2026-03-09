@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Transformable.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -9,6 +10,7 @@ namespace Chicane
 {
     class Scene;
 
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME Object : public Transformable
     {
         friend Scene;

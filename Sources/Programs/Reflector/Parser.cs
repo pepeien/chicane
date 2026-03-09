@@ -82,25 +82,6 @@ namespace Reflector
                     continue;
                 }
 
-                if (next == Annotation.Type)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var t = ParseType(lines, ref i, CurrentNamespace(), nextInclusion);
-
-                    if (t != null)
-                    {
-                        types.Add(t);
-                    }
-
-                    next = Annotation.Undefined;
-
-                    continue;
-                }
-
                 if (next == Annotation.Enum)
                 {
                     if (string.IsNullOrWhiteSpace(line))
@@ -119,9 +100,85 @@ namespace Reflector
 
                     continue;
                 }
+
+                if (next == Annotation.Type)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+
+                    var t = ParseType(lines, ref i, CurrentNamespace(), nextInclusion);
+                    if (t != null)
+                    {
+                        types.Add(t);
+                    }
+
+                    next = Annotation.Undefined;
+
+                    continue;
+                }
             }
 
             return (types, enums);
+        }
+
+
+        static EnumModel? ParseEnum(string[] lines, ref int i, string currentNamespace)
+        {
+            var m = Regex.Match(lines[i].Trim(), @"^enum\s+class\s+(\w+)");
+
+            if (!m.Success)
+            {
+                return null;
+            }
+
+            string name = m.Groups[1].Value;
+            var list = new List<EnumeratorModel>();
+            int next = 0;
+
+            i++;
+
+            for (; i < lines.Length; i++)
+            {
+                var line = lines[i].Trim();
+                var clean = line.TrimEnd(',').Trim();
+
+                if (clean == "{" || clean == "}" || string.IsNullOrWhiteSpace(clean))
+                {
+                    if (line.Contains('}'))
+                    {
+                        break;
+                    }
+
+                    continue;
+                }
+
+                var me = Regex.Match(clean, @"(\w+)\s*=\s*(-?\d+)");
+
+                if (me.Success)
+                {
+                    next = int.Parse(me.Groups[2].Value);
+
+                    list.Add(new(me.Groups[1].Value, next++));
+                }
+                else
+                {
+                    var s = Regex.Match(clean, @"^(\w+)");
+
+                    if (s.Success && !s_keywords.Contains(s.Groups[1].Value))
+                    {
+                        list.Add(new(s.Groups[1].Value, next++));
+                    }
+                }
+
+                if (line.Contains('}'))
+                {
+                    break;
+                }
+            }
+
+            return new(name, currentNamespace, list);
         }
 
         static TypeModel? ParseType(string[] lines, ref int i, string currentNamespace, AnnotationInclusion inclusion)
@@ -139,15 +196,16 @@ namespace Reflector
             string kind = m.Groups[1].Value;
             string name = m.Groups[2].Value;
 
-            // Extract first base class
             var baseMatch = Regex.Match(lines[i].Trim(), @":\s*(?:public|private|protected)\s+([\w:]+)");
             string baseType = baseMatch.Success ? baseMatch.Groups[1].Value.Trim() : "";
 
-            List<FieldModel> fields = [];
+            List<ConstructorModel> constructors = [];
             List<MethodModel> methods = [];
+            List<FieldModel> fields = [];
 
-            bool takeField = false;
+            bool takeConstructor = false;
             bool takeMethod = false;
+            bool takeField = false;
 
             bool isPublic = kind == "struct";
 
@@ -221,9 +279,9 @@ namespace Reflector
                     continue;
                 }
 
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Field)))
+                if (line.StartsWith(Enum.GetStringValue(Annotation.Constructor)))
                 {
-                    takeField = true;
+                    takeConstructor = true;
 
                     continue;
                 }
@@ -235,20 +293,27 @@ namespace Reflector
                     continue;
                 }
 
-                if (takeField)
+                if (line.StartsWith(Enum.GetStringValue(Annotation.Field)))
+                {
+                    takeField = true;
+
+                    continue;
+                }
+
+                if (takeConstructor)
                 {
                     if (string.IsNullOrWhiteSpace(line))
                     {
                         continue;
                     }
 
-                    var f = ParseField(line);
-                    if (f != null)
+                    var c = ParseConstructor(line);
+                    if (c != null)
                     {
-                        fields.Add(f);
+                        constructors.Add(c);
                     }
 
-                    takeField = false;
+                    takeConstructor = false;
                 }
                 else if (takeMethod)
                 {
@@ -264,6 +329,21 @@ namespace Reflector
                     }
 
                     takeMethod = false;
+                }
+                else if (takeField)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+
+                    var f = ParseField(line);
+                    if (f != null)
+                    {
+                        fields.Add(f);
+                    }
+
+                    takeField = false;
                 }
                 else if (inclusion == AnnotationInclusion.Automatic && isPublic && depth > 0)
                 {
@@ -285,7 +365,75 @@ namespace Reflector
                 }
             }
 
-            return new(kind, name, currentNamespace, fields, methods, baseType);
+            return new(kind, name, currentNamespace, constructors, methods, fields, baseType);
+        }
+
+        static ConstructorModel? ParseConstructor(string line)
+        {
+            var m = Regex.Match(line, @"^\w+\s*\(([^)]*)\)");
+            if (!m.Success)
+            {
+                return null;
+            }
+
+            var raw = m.Groups[1].Value.Trim();
+            var pts = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(raw))
+            {
+                foreach (var p in raw.Split(','))
+                {
+                    var param = p.Trim();
+                    if (string.IsNullOrWhiteSpace(param))
+                    {
+                        continue;
+                    }
+
+                    var lastSpace = param.LastIndexOf(' ');
+                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
+
+                    typePart = typePart
+                        .Replace("&", "")
+                        .Replace("const", "")
+                        .Trim();
+
+                    pts.Add(typePart);
+                }
+            }
+
+            return new(pts);
+        }
+        static MethodModel? ParseMethod(string line)
+        {
+            var m = Regex.Match(line, @"^([\w:<>]+)\s+(\w+)\s*\(([^)]*)\)");
+            if (!m.Success)
+            {
+                return null;
+            }
+
+            var pts = new List<string>();
+            var raw = m.Groups[3].Value.Trim();
+
+            if (!string.IsNullOrWhiteSpace(raw))
+            {
+                foreach (var p in raw.Split(','))
+                {
+                    var param = p.Trim();
+                    if (string.IsNullOrWhiteSpace(param)) continue;
+
+                    var lastSpace = param.LastIndexOf(' ');
+                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
+
+                    typePart = typePart
+                        .Replace("&", "")
+                        .Replace("const", "")
+                        .Trim();
+
+                    pts.Add(typePart);
+                }
+            }
+
+            return new(m.Groups[1].Value, m.Groups[2].Value, pts);
         }
 
         static FieldModel? ParseField(string line)
@@ -333,97 +481,6 @@ namespace Reflector
             }
 
             return new(typeName, propertyNames, line.Contains('*'));
-        }
-
-        static EnumModel? ParseEnum(string[] lines, ref int i, string currentNamespace)
-        {
-            var m = Regex.Match(lines[i].Trim(), @"^enum\s+class\s+(\w+)");
-
-            if (!m.Success)
-            {
-                return null;
-            }
-
-            string name = m.Groups[1].Value;
-            var list = new List<EnumeratorModel>();
-            int next = 0;
-
-            i++;
-
-            for (; i < lines.Length; i++)
-            {
-                var line = lines[i].Trim();
-                var clean = line.TrimEnd(',').Trim();
-
-                if (clean == "{" || clean == "}" || string.IsNullOrWhiteSpace(clean))
-                {
-                    if (line.Contains('}'))
-                    {
-                        break;
-                    }
-
-                    continue;
-                }
-
-                var me = Regex.Match(clean, @"(\w+)\s*=\s*(-?\d+)");
-
-                if (me.Success)
-                {
-                    next = int.Parse(me.Groups[2].Value);
-
-                    list.Add(new(me.Groups[1].Value, next++));
-                }
-                else
-                {
-                    var s = Regex.Match(clean, @"^(\w+)");
-
-                    if (s.Success && !s_keywords.Contains(s.Groups[1].Value))
-                    {
-                        list.Add(new(s.Groups[1].Value, next++));
-                    }
-                }
-
-                if (line.Contains('}'))
-                {
-                    break;
-                }
-            }
-
-            return new(name, currentNamespace, list);
-        }
-
-        static MethodModel? ParseMethod(string line)
-        {
-            var m = Regex.Match(line, @"^([\w:<>]+)\s+(\w+)\s*\(([^)]*)\)");
-
-            if (!m.Success)
-            {
-                return null;
-            }
-
-            var pts = new List<string>();
-            var raw = m.Groups[3].Value.Trim();
-
-            if (!string.IsNullOrWhiteSpace(raw))
-            {
-                foreach (var p in raw.Split(','))
-                {
-                    var param = p.Trim();
-                    if (string.IsNullOrWhiteSpace(param)) continue;
-
-                    var lastSpace = param.LastIndexOf(' ');
-                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
-
-                    typePart = typePart
-                        .Replace("&", "")
-                        .Replace("const", "")
-                        .Trim();
-
-                    pts.Add(typePart);
-                }
-            }
-
-            return new(m.Groups[1].Value, m.Groups[2].Value, pts);
         }
 
         static int Count(string s, char c)

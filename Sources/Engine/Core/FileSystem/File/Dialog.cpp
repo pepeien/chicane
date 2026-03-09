@@ -249,7 +249,7 @@ namespace Chicane
             Item::List result;
             for (const String& filepath : filepaths.split(','))
             {
-                result.push_back(Item(ItemType::File, FileSystem::Path(filepath.toStandard())));
+                result.push_back(Item(ItemType::File, FileSystem::Path(filepath)));
             }
 
             inCallback(result);
@@ -266,7 +266,7 @@ namespace Chicane
 
             for (const FileSystem::Path& extension : inFilter.extensions)
             {
-                const String value = extension.string();
+                const String value = extension.toString();
 
                 if (value.isEmpty())
                 {

@@ -1,22 +1,5 @@
 ﻿class Program
 {
-    void ResolveInheritance(Reflector.TypeModel t, HashSet<string> visited)
-    {
-        var qualified = string.IsNullOrWhiteSpace(t.Namespace)
-            ? t.Name
-            : $"{t.Namespace}::{t.Name}";
-
-        if (!visited.Add(qualified)) return;
-        if (t.Resolved) return;
-        if (string.IsNullOrEmpty(t.BaseType)) return;
-        if (!typeMap.TryGetValue(t.BaseType, out var baseModel)) return;
-
-        ResolveInheritance(baseModel, visited);
-
-        t.Fields.InsertRange(0, baseModel.Fields);
-        t.Resolved = true;
-    }
-
     static int Main(string[] args)
     {
         List<string> inputFiles = [];
@@ -88,6 +71,11 @@
         {
             var (types, enums) = Reflector.Parser.Parse(File.ReadAllText(file));
 
+            foreach (var e in enums)
+            {
+                allEnumModels.Add((file, e));
+            }
+
             foreach (var t in types)
             {
                 var qualified = string.IsNullOrWhiteSpace(t.Namespace)
@@ -97,11 +85,6 @@
                 allReflectedTypes.TryAdd(t.Name, qualified);
                 allReflectedTypes.TryAdd(qualified, qualified);
                 allTypeModels.Add((file, t));
-            }
-
-            foreach (var e in enums)
-            {
-                allEnumModels.Add((file, e));
             }
         }
 
@@ -116,20 +99,52 @@
             typeMap.TryAdd(qualified, t);
         }
 
+        void ResolveInheritance(Reflector.TypeModel t, HashSet<string> visited)
+        {
+            var qualified = string.IsNullOrWhiteSpace(t.Namespace)
+                ? t.Name
+                : $"{t.Namespace}::{t.Name}";
+
+            if (!visited.Add(qualified) || t.Resolved || string.IsNullOrEmpty(t.BaseType) || !typeMap.TryGetValue(t.BaseType, out var baseModel))
+            {
+                return;
+            }
+
+            ResolveInheritance(baseModel, visited);
+
+            var baseQualified = string.IsNullOrWhiteSpace(baseModel.Namespace)
+                ? baseModel.Name
+                : $"{baseModel.Namespace}::{baseModel.Name}";
+
+            bool baseIsReflected = allReflectedTypes.ContainsKey(baseModel.Name) ||
+                                   allReflectedTypes.ContainsKey(baseQualified);
+
+            if (!baseIsReflected)
+            {
+                t.Fields.InsertRange(0, baseModel.Fields);
+            }
+
+            t.Resolved = true;
+        }
+
         foreach (var (_, t) in allTypeModels)
         {
             ResolveInheritance(t, new HashSet<string>());
         }
 
         var emittedFiles = new HashSet<string>();
-
         foreach (var (file, _) in allTypeModels.Concat(allEnumModels.Select(e => (e.File, (Reflector.TypeModel)null!))))
         {
-            if (!emittedFiles.Add(file)) continue;
+            if (!emittedFiles.Add(file))
+            {
+                continue;
+            }
 
             var fullFile = Path.GetFullPath(file);
             if (!fullFile.StartsWith(Path.GetFullPath(sourceDir)))
+            {
                 continue;
+            }
 
             var types = allTypeModels.Where(x => x.File == file).Select(x => x.Type).ToList();
             var enums = allEnumModels.Where(x => x.File == file).Select(x => x.Enum).ToList();

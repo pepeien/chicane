@@ -11,9 +11,11 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     struct CHICANE_CORE String
     {
     public:
@@ -360,6 +362,6 @@ namespace std
     template <>
     struct hash<Chicane::String>
     {
-        size_t operator()(const Chicane::String& s) const { return hash<string>()(s.toStandard()); }
+        size_t operator()(const Chicane::String& inValue) const { return hash<string>()(inValue.toStandard()); }
     };
 }

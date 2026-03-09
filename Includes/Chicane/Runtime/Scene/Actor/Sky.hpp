@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Box/Sky.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -7,6 +9,7 @@
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME ASky : public Actor
     {
     public:

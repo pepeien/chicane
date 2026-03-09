@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
+#include "Chicane/Runtime/Scene/Actor/Sky.reflected.hpp"
 
 namespace Chicane
 {

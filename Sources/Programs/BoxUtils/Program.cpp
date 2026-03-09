@@ -36,7 +36,7 @@ Program::Program()
 void Program::onExec(const Chicane::ProgramParam& inParam)
 {
     const Chicane::String&                    id = inParam.getOption(ID_OPTION_NAME)->getValue();
-    const Chicane::FileSystem::Path&          output(inParam.getOption(OUTPUT_OPTION_NAME)->getValue().toStandard());
+    const Chicane::FileSystem::Path&          output(inParam.getOption(OUTPUT_OPTION_NAME)->getValue());
     const Chicane::ProgramParam::Positionals& sources = inParam.getPositionals();
 
     switch (Chicane::Box::AssetHeader::getTypeFromTag(inParam.getOption(TYPE_OPTION_NAME)->getValue()))
@@ -89,7 +89,7 @@ void Program::createFont(
         throw std::runtime_error("The font source file is missing");
     }
 
-    const Chicane::FileSystem::Path source = inSources.at(0).toStandard();
+    const Chicane::FileSystem::Path source = inSources.at(0);
 
     if (!Chicane::FileSystem::exists(source))
     {
@@ -98,12 +98,12 @@ void Program::createFont(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Font));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Font asset(output);
@@ -125,7 +125,7 @@ void Program::createMesh(
 
     for (const Chicane::String& source : inSources)
     {
-        const Chicane::FileSystem::Path path(source.toStandard());
+        const Chicane::FileSystem::Path path(source);
         const Chicane::Box::AssetType   type = Chicane::Box::AssetHeader::getTypeFromExtension(path);
 
         if (sources.find(type) == sources.end())
@@ -163,12 +163,12 @@ void Program::createMesh(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Mesh));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Mesh asset(output);
@@ -211,7 +211,7 @@ void Program::createModel(
         throw std::runtime_error("The model source file is missing");
     }
 
-    const Chicane::FileSystem::Path source = inSources.at(0).toStandard();
+    const Chicane::FileSystem::Path source = inSources.at(0);
 
     if (!Chicane::FileSystem::exists(source))
     {
@@ -220,12 +220,12 @@ void Program::createModel(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Model));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Model asset(output);
@@ -247,7 +247,7 @@ void Program::createSky(
 
     for (const Chicane::String& source : inSources)
     {
-        const Chicane::FileSystem::Path path(source.toStandard());
+        const Chicane::FileSystem::Path path(source);
         const Chicane::Box::AssetType   type = Chicane::Box::AssetHeader::getTypeFromExtension(path);
 
         if (sources.find(type) == sources.end())
@@ -285,12 +285,12 @@ void Program::createSky(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Sky));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Sky asset(output);
@@ -322,7 +322,7 @@ void Program::createTexture(
         throw std::runtime_error("The texture source file is missing");
     }
 
-    const Chicane::FileSystem::Path source = inSources.at(0).toStandard();
+    const Chicane::FileSystem::Path source = inSources.at(0);
 
     if (!Chicane::FileSystem::exists(source))
     {
@@ -331,12 +331,12 @@ void Program::createTexture(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Texture asset(output);
@@ -356,7 +356,7 @@ void Program::createSound(
         throw std::runtime_error("The sound source file is missing");
     }
 
-    const Chicane::FileSystem::Path source = inSources.at(0).toStandard();
+    const Chicane::FileSystem::Path source = inSources.at(0);
 
     if (!Chicane::FileSystem::exists(source))
     {
@@ -365,12 +365,12 @@ void Program::createSound(
 
     Chicane::FileSystem::Path output = inOutput;
 
-    if (output.empty())
+    if (output.isEmpty())
     {
         Chicane::String location = inId;
         location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Sound));
 
-        output = location.toStandard();
+        output = location;
     }
 
     Chicane::Box::Sound asset(output);

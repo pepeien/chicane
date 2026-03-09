@@ -9,6 +9,8 @@
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Reflection/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Method/Info.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
@@ -21,10 +23,10 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID Component
         {
         public:
-            using Compiler   = std::function<Component*(const pugi::xml_node& inNode)>;
             using ClassList  = std::set<String>;
             using Directive  = std::function<void(const String&)>;
             using Directives = std::unordered_map<String, Directive>;
@@ -39,7 +41,10 @@ namespace Chicane
             static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
 
         public:
+            CH_CONSTRUCTOR()
             Component(const pugi::xml_node& inNode);
+
+            CH_CONSTRUCTOR()
             Component(const String& inTag);
 
             virtual ~Component();
@@ -127,6 +132,7 @@ namespace Chicane
 
             // Reference
             bool hasField(const String& inId, bool isLocalOnly = false) const;
+            const ReflectionFieldInfo* getField(const String& inId) const;
 
             bool hasFunction(const String& inId, bool isLocalOnly = false) const;
             const ReflectionMethodInfo* getFunction(const String& inId) const;

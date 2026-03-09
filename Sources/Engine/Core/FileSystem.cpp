@@ -11,7 +11,7 @@ namespace Chicane
     {
         bool exists(const Path& inPath)
         {
-            if (inPath.empty())
+            if (inPath.isEmpty())
             {
                 return false;
             }
@@ -21,7 +21,7 @@ namespace Chicane
 
         std::vector<Item> ls(const Path& inDir, std::uint32_t inDepth)
         {
-            if (inDir.empty())
+            if (inDir.isEmpty())
             {
                 return {};
             }
@@ -59,7 +59,7 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error("Failed to open the file [" + inFilepath.toString() + "]");
             }
 
             std::streamsize size = file.tellg();
@@ -69,7 +69,7 @@ namespace Chicane
 
             if (!file.read(reinterpret_cast<char*>(result.data()), size))
             {
-                throw std::runtime_error(String::sprint("Failed to read the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error("Failed to read the file [" + inFilepath.toString() + "]");
             }
 
             return result;
@@ -91,11 +91,11 @@ namespace Chicane
         {
             const Path path = std::filesystem::absolute(inFilepath);
 
-            std::basic_ifstream<char> file(path.string(), std::ios::ate | std::ios::binary);
+            std::basic_ifstream<char> file(path.toString(), std::ios::ate | std::ios::binary);
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", path.c_str()).toChar());
+                throw std::runtime_error("Failed to open the file [" + inFilepath.toString() + "]");
             }
 
             size_t            fileSize = (size_t)file.tellg();
@@ -123,11 +123,11 @@ namespace Chicane
                 return;
             }
 
-            std::ofstream file(inFilepath.string(), std::ios::binary);
+            std::ofstream file(inFilepath.toString(), std::ios::binary);
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error("Failed to write the file [" + inFilepath.toString() + "]");
             }
 
             file.write((const char*)inData.data(), sizeof(unsigned char) * inData.size());
@@ -142,11 +142,11 @@ namespace Chicane
                 return;
             }
 
-            std::ofstream file(inFilepath.string(), std::ios::binary);
+            std::ofstream file(inFilepath.toString(), std::ios::binary);
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error("Failed to write the file [" + inFilepath.toString() + "]");
             }
 
             file.write(inData.data(), sizeof(char) * inData.size());
