@@ -68,7 +68,7 @@ namespace Chicane
 
             // Conversion
             String toString() const { return String(m_path.string()); }
-            const char* toChar() const { return m_path.string().c_str(); }
+            const char* toChar() const { return m_path.c_str(); }
             const std::filesystem::path& toStandard() const { return m_path; }
 
             // Mutation
