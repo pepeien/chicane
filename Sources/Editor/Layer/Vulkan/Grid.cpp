@@ -168,8 +168,8 @@ namespace Editor
         colorAttachment.samples       = vk::SampleCountFlagBits::e1;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-        colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-        colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+        colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
+        colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
         vk::AttachmentReference colorReference;
         colorReference.attachment = 0;
@@ -231,6 +231,7 @@ namespace Editor
             .addDynamicState(vk::DynamicState::eViewport)
             .addScissor(backend->getVkScissor(this))
             .addDynamicState(vk::DynamicState::eScissor)
+            .addDynamicState(vk::DynamicState::eLineWidth)
             .addShaderStage(vertexShader, backend->logicalDevice)
             .addShaderStage(fragmentShader, backend->logicalDevice)
             .addColorBlendingAttachment(Chicane::Renderer::VulkanGraphicsPipeline::createBlendAttachmentState(true))

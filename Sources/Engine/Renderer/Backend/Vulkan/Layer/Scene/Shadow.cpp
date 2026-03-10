@@ -240,6 +240,7 @@ namespace Chicane
                 .addDynamicState(vk::DynamicState::eViewport)
                 .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
+                .addDynamicState(vk::DynamicState::eLineWidth)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .setDepthStencil(depth)
                 .addAttachment(depthAttachment)

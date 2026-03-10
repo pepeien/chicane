@@ -29,10 +29,10 @@ namespace Chicane
                     }
 
                     bool bIsTilingOptimal = inTiling == vk::ImageTiling::eOptimal;
-                    bool bDoesFeatureSupportOptimapTiling =
+                    bool bDoesFeatureSupportOptimalTiling =
                         (properties.optimalTilingFeatures & inFeatures) == inFeatures;
 
-                    if (bIsTilingOptimal && bDoesFeatureSupportOptimapTiling)
+                    if (bIsTilingOptimal && bDoesFeatureSupportOptimalTiling)
                     {
                         return format;
                     }
@@ -157,7 +157,7 @@ namespace Chicane
                     barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                     barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
 
-                    sourceStage      = vk::PipelineStageFlagBits::eTopOfPipe;
+                    sourceStage      = vk::PipelineStageFlagBits::eBottomOfPipe;
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
 

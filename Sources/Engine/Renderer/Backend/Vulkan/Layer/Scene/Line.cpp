@@ -186,8 +186,8 @@ namespace Chicane
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;

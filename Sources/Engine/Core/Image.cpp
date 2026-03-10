@@ -1,5 +1,5 @@
 #include "Chicane/Core/Image.hpp"
-
+#include <fstream>
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <unordered_map>
@@ -7,6 +7,9 @@
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -62,7 +65,9 @@ namespace Chicane
 
         if (!m_pixels)
         {
-            throw std::runtime_error(stbi_failure_reason());
+            throw std::runtime_error(
+                "Failed to open [" + inLocation.toString() + "] image (" + String(stbi_failure_reason()) + ")"
+            );
         }
     }
 
@@ -84,7 +89,7 @@ namespace Chicane
 
         if (!m_pixels)
         {
-            throw std::runtime_error(stbi_failure_reason());
+            throw std::runtime_error("Failed to parse image data (" + String(stbi_failure_reason()) + ")");
         }
     }
 
