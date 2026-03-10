@@ -17,8 +17,8 @@ namespace Chicane
 
         public:
             std::uint32_t state            = 0U;
-            Vec2          location         = Vec2::Zero;
-            Vec2          relativeLocation = Vec2::Zero;
+            Vec2          location         = Vec2::Zero();
+            Vec2          relativeLocation = Vec2::Zero();
         };
 
         using MouseMotionEventCallback = std::function<void(const MouseMotionEvent&)>;

@@ -57,11 +57,11 @@ namespace Chicane
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
-              m_size(Vec2::Zero),
-              m_scale(Vec2::Zero),
-              m_offset(Vec2::Zero),
-              m_position(Vec2::Zero),
-              m_cursor(Vec2::Zero),
+              m_size(Vec2::Zero()),
+              m_scale(Vec2::Zero()),
+              m_offset(Vec2::Zero()),
+              m_position(Vec2::Zero()),
+              m_cursor(Vec2::Zero()),
               m_bounds({}),
               m_primitive({}),
               m_attributes({})
@@ -711,7 +711,7 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeBlock() const
         {
-            Vec2 result = Vec2::Zero;
+            Vec2 result = Vec2::Zero();
 
             for (const Component* child : m_children)
             {
@@ -741,7 +741,7 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeFlex() const
         {
-            Vec2 result = Vec2::Zero;
+            Vec2 result = Vec2::Zero();
 
             for (const Component* child : m_children)
             {

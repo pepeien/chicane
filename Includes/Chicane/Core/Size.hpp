@@ -74,8 +74,8 @@ namespace Chicane
 
         float      m_fontSize = 0.0f;
 
-        Vec2       m_root   = Vec2::Zero;
-        Vec2       m_parent = Vec2::Zero;
+        Vec2       m_root   = Vec2::Zero();
+        Vec2       m_parent = Vec2::Zero();
 
         TextParser m_textParser = nullptr;
     };

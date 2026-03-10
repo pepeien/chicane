@@ -4,14 +4,7 @@
 
 namespace Chicane
 {
-    const Vec3 Vec3::Zero = Vec3(0.0f);
-    const Vec3 Vec3::One  = Vec3(1.0f);
-
-    const Vec3 Vec3::Right   = Vec3(1.0f, 0.0f, 0.0f);
-    const Vec3 Vec3::Forward = Vec3(0.0f, 1.0f, 0.0f);
-    const Vec3 Vec3::Up      = Vec3(0.0f, 0.0f, 1.0f);
-
-    Vec3::Vec3(const Vec4& inValue)
+    constexpr Vec3::Vec3(const Vec4& inValue)
         : x(inValue.x),
           y(inValue.y),
           z(inValue.z)

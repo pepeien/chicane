@@ -24,11 +24,11 @@ namespace Chicane
         Mat4 projection = Mat4::One;
 
         // Orientantion
-        Vec4 up      = Vec4::Up;
-        Vec4 right   = Vec4::Right;
-        Vec4 forward = Vec4::Forward;
+        Vec4 up      = Vec4::Up();
+        Vec4 right   = Vec4::Right();
+        Vec4 forward = Vec4::Forward();
 
         // Transform
-        Vec4 translation = Vec4::Zero;
+        Vec4 translation = Vec4::Zero();
     };
 }

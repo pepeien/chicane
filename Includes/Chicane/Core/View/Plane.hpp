@@ -18,6 +18,6 @@ namespace Chicane
 
     private:
         float m_distance = 0.0f;
-        Vec3  m_normal   = Vec3::Zero;
+        Vec3  m_normal   = Vec3::Zero();
     };
 }

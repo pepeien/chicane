@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    static const QuatFloat CORRECTION = glm::angleAxis(glm::radians(-90.0f), static_cast<glm::vec3>(Vec3::Right));
+    static const QuatFloat CORRECTION = glm::angleAxis(glm::radians(-90.0f), static_cast<glm::vec3>(Vec3::Right()));
 
     Rotator::Rotator(float inAngle)
         : Rotator(inAngle, inAngle, inAngle)
@@ -26,10 +26,10 @@ namespace Chicane
 
     Rotator::Rotator()
         : m_orientation(QuatFloat(1, 0, 0, 0)),
-          angles(Vec3::Zero),
-          right(Vec3::Right),
-          forward(Vec3::Forward),
-          up(Vec3::Up)
+          angles(Vec3::Zero()),
+          right(Vec3::Right()),
+          forward(Vec3::Forward()),
+          up(Vec3::Up())
     {}
 
     const QuatFloat& Rotator::get() const
@@ -123,7 +123,7 @@ namespace Chicane
         const Vec3 direction = glm::normalize(static_cast<glm::vec3>(inTarget) - static_cast<glm::vec3>(inOrigin));
 
         m_orientation = glm::normalize(
-            glm::quatLookAt(static_cast<glm::vec3>(direction), static_cast<glm::vec3>(Vec3::Up)) * CORRECTION
+            glm::quatLookAt(static_cast<glm::vec3>(direction), static_cast<glm::vec3>(Vec3::Up())) * CORRECTION
         );
 
         refresh();
@@ -160,8 +160,8 @@ namespace Chicane
     {
         angles = glm::degrees(glm::eulerAngles(m_orientation));
 
-        right   = m_orientation * static_cast<glm::vec3>(Vec3::Right);
-        forward = m_orientation * static_cast<glm::vec3>(Vec3::Forward);
-        up      = m_orientation * static_cast<glm::vec3>(Vec3::Up);
+        right   = m_orientation * static_cast<glm::vec3>(Vec3::Right());
+        forward = m_orientation * static_cast<glm::vec3>(Vec3::Forward());
+        up      = m_orientation * static_cast<glm::vec3>(Vec3::Up());
     }
 }

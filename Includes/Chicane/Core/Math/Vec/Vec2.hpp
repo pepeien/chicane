@@ -11,21 +11,23 @@ namespace Chicane
     struct CHICANE_CORE Vec2
     {
     public:
-        static const Vec2 Zero;
-        static const Vec2 One;
-
-        static const Vec2 Up;
-        static const Vec2 Right;
-
-    public:
         template <typename... A>
-        constexpr Vec2(A... args)
+        inline constexpr Vec2(A... args)
         {
             glm::vec2 value(std::forward<A>(args)...);
 
             x = value.x;
             y = value.y;
         }
+
+    public:
+        inline static constexpr Vec2 Zero() { return Vec2(0.0f); }
+
+        inline static constexpr Vec2 One() { return Vec2(1.0f); }
+
+        inline static constexpr Vec2 Right() { return Vec2(1.0f, 0.0f); }
+
+        inline static constexpr Vec2 Up() { return Vec2(0.0f, 1.0f); }
 
     public:
         // Conversion

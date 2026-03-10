@@ -4,9 +4,9 @@ namespace Chicane
 {
     Transform::Transform()
         : Changeable(),
-          translation(Vec3::Zero),
+          translation(Vec3::Zero()),
           rotation({}),
-          scale(Vec3::One),
+          scale(Vec3::One()),
           m_matrix(Mat4::One)
     {}
 

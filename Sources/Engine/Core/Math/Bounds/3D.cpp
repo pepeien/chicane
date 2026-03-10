@@ -9,12 +9,12 @@ namespace Chicane
     }
 
     Bounds3D::Bounds3D()
-        : m_min(Vec3(FLT_MAX), Vec3::Zero),
-          m_max(Vec3(-FLT_MAX), Vec3::Zero),
-          m_top(Vec3::Zero),
-          m_center(Vec3::Zero),
-          m_bottom(Vec3::Zero),
-          m_size(Vec3::One),
+        : m_min(Vec3(FLT_MAX), Vec3::Zero()),
+          m_max(Vec3(-FLT_MAX), Vec3::Zero()),
+          m_top(Vec3::Zero()),
+          m_center(Vec3::Zero()),
+          m_bottom(Vec3::Zero()),
+          m_size(Vec3::One()),
           m_corners({}),
           m_indices({})
     {

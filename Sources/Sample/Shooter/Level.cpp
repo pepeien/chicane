@@ -81,17 +81,17 @@ void Level::spawnCameras()
     m_leftCamera = createActor<Chicane::ACamera>();
     m_leftCamera->setId("Left");
     m_leftCamera->setAbsoluteTranslation(-position.x, -position.y, position.z);
-    m_leftCamera->lookAt(Chicane::Vec3::Zero);
+    m_leftCamera->lookAt(Chicane::Vec3::Zero());
 
     m_centerCamera = createActor<Chicane::ACamera>();
     m_centerCamera->setId("Center");
     m_centerCamera->setAbsoluteTranslation(0.0f, -position.y, position.z);
-    m_centerCamera->lookAt(Chicane::Vec3::Zero);
+    m_centerCamera->lookAt(Chicane::Vec3::Zero());
 
     m_rightCamera = createActor<Chicane::ACamera>();
     m_rightCamera->setId("Right");
     m_rightCamera->setAbsoluteTranslation(position.x, -position.y, position.z);
-    m_rightCamera->lookAt(Chicane::Vec3::Zero);
+    m_rightCamera->lookAt(Chicane::Vec3::Zero());
 }
 
 void Level::spawnStructures()

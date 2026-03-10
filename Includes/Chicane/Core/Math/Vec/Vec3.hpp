@@ -14,16 +14,19 @@ namespace Chicane
     struct CHICANE_CORE Vec3
     {
     public:
-        static const Vec3 Zero;
-        static const Vec3 One;
+        inline static constexpr Vec3 Zero() { return Vec3(0.0f); }
 
-        static const Vec3 Right;
-        static const Vec3 Forward;
-        static const Vec3 Up;
+        inline static constexpr Vec3 One() { return Vec3(1.0f); }
+
+        inline static constexpr Vec3 Right() { return Vec3(1.0f, 0.0f, 0.0f); }
+
+        inline static constexpr Vec3 Forward() { return Vec3(0.0f, 2.0f, 0.0f); }
+
+        inline static constexpr Vec3 Up() { return Vec3(0.0f, 0.0f, 1.0f); }
 
     public:
         template <typename... A>
-        constexpr Vec3(A... args)
+        inline constexpr Vec3(A... args)
             : x(0.0f),
               y(0.0f),
               z(0.0f)
@@ -35,14 +38,13 @@ namespace Chicane
             z = value.z;
         }
 
-        constexpr Vec3(const Vec2& inValue)
+        inline constexpr Vec3(const Vec2& inValue)
             : x(inValue.x),
               y(inValue.y),
               z(0.0f)
         {}
 
-    public:
-        Vec3(const Vec4& inValue);
+        constexpr Vec3(const Vec4& inValue);
 
     public:
         // Conversion

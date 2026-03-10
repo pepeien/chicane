@@ -23,7 +23,7 @@ namespace Chicane
             : button(MouseButton::Left),
               status(Status::Pressed),
               clicks(0U),
-              location(Vec2::Zero)
+              location(Vec2::Zero())
         {}
     }
 }

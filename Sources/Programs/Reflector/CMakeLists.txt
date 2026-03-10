@@ -22,13 +22,14 @@ add_custom_command(
     COMMAND
         "${DOTNET_EXECUTABLE}" publish "${CHICANE_PROGRAMS_REFLECTOR_SOURCES_DIR}/Reflector.csproj"
         -r ${REFLECTOR_RID}
+        -c Release
         --output "${CHICANE_PROGRAMS_REFLECTOR_BINARY_DIR}"
         --nologo
-        --verbosity detailed
-        -c Release
+        --verbosity quiet
     DEPENDS
         ${SOURCES}
-    COMMENT ""
+    COMMENT
+        ""
     VERBATIM
 )
 
@@ -108,6 +109,8 @@ function(CH_GENERATE_REFLECTION)
         endif()
 
         set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
+        file(MAKE_DIRECTORY "${OUTPUT_DIR}")
+
         set(GENERATED_FILES)
 
         set(VISITED)
@@ -145,6 +148,8 @@ function(CH_GENERATE_REFLECTION)
                 -b "${BASE_DIR}"
                 -s "${SOURCES_DIR}"
                 -o "${OUTPUT_DIR}"
+            BYPRODUCTS
+                ${TARGET_GENERATED_FILES}
             DEPENDS
                 ${ALL_INPUT_FILES} ${CHICANE_PROGRAMS_REFLECTOR_TARGET_NAME}
             COMMENT
@@ -156,7 +161,7 @@ function(CH_GENERATE_REFLECTION)
             set_source_files_properties(
                 "${GEN_FILE}"
                 DIRECTORY
-                    "${CMAKE_SOURCES_DIR}"
+                    "${CMAKE_SOURCE_DIR}"
                 PROPERTIES
                     GENERATED
                         TRUE

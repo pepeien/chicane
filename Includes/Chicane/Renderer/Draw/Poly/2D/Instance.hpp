@@ -21,13 +21,13 @@ namespace Chicane
             using Map  = std::map<Draw::Id, List>;
 
         public:
-            Vec2     view     = Vec2::Zero;
-            Vec2     scale    = Vec2::Zero;
-            Vec2     size     = Vec2::Zero;
-            Vec2     offset   = Vec2::Zero;
-            Vec3     position = Vec3::Zero;
+            Vec2     view     = Vec2::Zero();
+            Vec2     scale    = Vec2::Zero();
+            Vec2     size     = Vec2::Zero();
+            Vec2     offset   = Vec2::Zero();
+            Vec3     position = Vec3::Zero();
             float    _padding1; // Shader alignment
-            Vec4     color   = Vec4::Zero;
+            Vec4     color   = Vec4::Zero();
             Draw::Id texture = -1;
             float    _padding2[3]; // Shader alignment
         };

@@ -7,7 +7,7 @@ namespace Chicane
           m_settings({}),
           m_frustum({}),
           m_data({}),
-          m_focusPoint(Vec3::Zero)
+          m_focusPoint(Vec3::Zero())
     {}
 
     void CView::onTransform()

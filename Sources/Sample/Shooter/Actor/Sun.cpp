@@ -11,7 +11,7 @@ void Sun::onLoad()
     Chicane::ALight::onLoad();
 
     setAbsoluteTranslation(0.0f, 0.0f, m_distance);
-    lookAt(Chicane::Vec3::Zero);
+    lookAt(Chicane::Vec3::Zero());
 
     m_light->setFarClip(m_distance);
     m_light->setViewport(100.0f, 100.0f);

@@ -27,9 +27,9 @@ namespace Chicane
         }
 
     public:
-        Vec3 position = Vec3::Zero;
-        Vec4 color    = Vec4::Zero;
-        Vec2 uv       = Vec2::Zero;
-        Vec3 normal   = Vec3::Zero;
+        Vec3 position = Vec3::Zero();
+        Vec4 color    = Vec4::Zero();
+        Vec2 uv       = Vec2::Zero();
+        Vec3 normal   = Vec3::Zero();
     };
 }
