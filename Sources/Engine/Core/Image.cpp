@@ -6,6 +6,9 @@
 
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
+#if IS_WINDOWS
+    #define STBI_WINDOWS_UTF8
+#endif
 #include <stb_image.h>
 
 #include "Chicane/Core/FileSystem/Item.hpp"
@@ -61,7 +64,8 @@ namespace Chicane
 
         m_format = STBI_rgb_alpha;
 
-        m_pixels = stbi_load(inLocation.toChar(), &m_width, &m_height, &m_channel, m_format);
+        const String path = inLocation.toString();
+        m_pixels          = stbi_load(path.toChar(), &m_width, &m_height, &m_channel, m_format);
 
         if (!m_pixels)
         {
