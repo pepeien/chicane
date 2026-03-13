@@ -16,7 +16,7 @@
                 case "-i":
                     while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
                     {
-                        inputFiles.Add(args[++i]);
+                        inputFiles.Add(Path.GetFullPath(args[++i]));
                     }
 
                     break;
@@ -24,7 +24,7 @@
                 case "-b":
                     if (i + 1 < args.Length)
                     {
-                        baseDir = args[++i];
+                        baseDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -38,7 +38,7 @@
                 case "-s":
                     if (i + 1 < args.Length)
                     {
-                        sourceDir = args[++i];
+                        sourceDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -52,7 +52,7 @@
                 case "-l":
                     while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
                     {
-                        lookUpFolders.Add(args[++i]);
+                        lookUpFolders.Add(Path.GetFullPath(args[++i]));
                     }
 
                     break;
@@ -60,7 +60,7 @@
                 case "-o":
                     if (i + 1 < args.Length)
                     {
-                        outputDir = args[++i];
+                        outputDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -83,24 +83,28 @@
             return 1;
         }
 
-        List<Reflector.TypeModel> allTypes = [];
+        Dictionary<string, List<Reflector.EnumModel>> allEnums = [];
+        Dictionary<string, List<Reflector.TypeModel>> allTypes = [];
         foreach (string file in inputFiles)
         {
             var (types, enums) = Reflector.Parser.Parse(file, lookUpFolders);
 
-            allTypes.AddRange(types);
+            allEnums[file] = enums;
+            allTypes[file] = types;
         }
 
+        List<Reflector.TypeModel> flatTypes = [.. allTypes.Values.SelectMany(t => t)];
         foreach (string file in inputFiles)
         {
-            if (!file.StartsWith(Path.GetFullPath(sourceDir)))
+            if (!file.StartsWith(sourceDir, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            var (types, enums) = Reflector.Parser.Parse(file, lookUpFolders);
+            List<Reflector.EnumModel> enums = allEnums.GetValueOrDefault(file, []);
+            List<Reflector.TypeModel> types = allTypes.GetValueOrDefault(file, []);
 
-            if (types.Count <= 0 && enums.Count <= 0)
+            if (enums.Count <= 0 && types.Count <= 0)
             {
                 continue;
             }
@@ -113,7 +117,7 @@
 
             Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
-            File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, allTypes, baseDir));
+            File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, flatTypes, baseDir));
         }
 
         return 0;
