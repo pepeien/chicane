@@ -267,9 +267,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "VulkanImageData",
+                    "name": "VulkanImageInfo",
                     "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Image/Data",
+                    "path": "Renderer/Backend/Vulkan/Image/Info",
                     "templates": []
                 },
                 "name": "shadowImage",

@@ -281,9 +281,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Telemetry",
+                    "name": "ApplicationTelemetry",
                     "suffix": "&",
-                    "path": "Core/Telemetry",
+                    "path": "Runtime/Application/Telemetry",
                     "templates": []
                 },
                 "name": "getTelemetry",
@@ -910,10 +910,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "initView",
+                "name": "initUI",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_INITVIEW_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_INITUI_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -925,10 +925,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "shutdownView",
+                "name": "shutdownUI",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_SHUTDOWNVIEW_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SHUTDOWNUI_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -940,10 +940,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "tickView",
+                "name": "tickUI",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_TICKVIEW_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_TICKUI_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -955,7 +955,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildViewCommands",
+                "name": "buildUICommands",
                 "parameters": [
                     {
                         "type": {
@@ -977,7 +977,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_BUILDVIEWCOMMANDS_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_BUILDUICOMMANDS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -989,10 +989,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "renderView",
+                "name": "renderUI",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_RENDERVIEW_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_RENDERUI_DESCRIPTION"
             }
         ],
         "members": [
@@ -1001,9 +1001,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Telemetry",
+                    "name": "ApplicationTelemetry",
                     "suffix": "",
-                    "path": "Core/Telemetry",
+                    "path": "Runtime/Application/Telemetry",
                     "templates": []
                 },
                 "name": "m_telemetry",

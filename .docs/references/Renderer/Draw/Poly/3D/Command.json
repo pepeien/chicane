@@ -67,13 +67,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View",
+                    "name": "View::List",
                     "suffix": "",
                     "path": "Core/View",
                     "templates": []
                 },
-                "name": "light",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LIGHT_DESCRIPTION"
+                "name": "lights",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LIGHTS_DESCRIPTION"
             },
             {
                 "accessor": "public",

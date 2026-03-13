@@ -7,77 +7,25 @@
         "namespace": "Chicane::SpatialTransform",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SpatialTransform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM_SPATIALTRANSFORM_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Mat4",
-                    "suffix": "&",
-                    "path": "Core/Math/Mat/Mat4",
-                    "templates": []
-                },
-                "name": "getMatrix",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_SPATIALTRANSFORM_GETMATRIX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vec3",
-                    "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "getTranslation",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_SPATIALTRANSFORM_GETTRANSLATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Rotator",
-                    "suffix": "&",
-                    "path": "Core/Math/Rotator",
-                    "templates": []
-                },
-                "name": "getRotation",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_SPATIALTRANSFORM_GETROTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vec3",
-                    "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "getScale",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_SPATIALTRANSFORM_GETSCALE_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -109,16 +57,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVETRANSLATION_DESCRIPTION"
             },
             {
@@ -135,16 +85,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVETRANSLATION_DESCRIPTION"
             },
             {
@@ -178,16 +130,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVEROTATION_DESCRIPTION"
             },
             {
@@ -204,16 +158,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVEROTATION_DESCRIPTION"
             },
             {
@@ -247,16 +203,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVESCALE_DESCRIPTION"
             },
             {
@@ -273,16 +231,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVESCALE_DESCRIPTION"
             },
             {
@@ -316,16 +276,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTETRANSLATION_DESCRIPTION"
             },
             {
@@ -342,16 +304,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTETRANSLATION_DESCRIPTION"
             },
             {
@@ -385,16 +349,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTEROTATION_DESCRIPTION"
             },
             {
@@ -411,16 +377,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTEROTATION_DESCRIPTION"
             },
             {
@@ -454,16 +422,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTESCALE_DESCRIPTION"
             },
             {
@@ -480,17 +450,62 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lookAt",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inTarget"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_LOOKAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "private",

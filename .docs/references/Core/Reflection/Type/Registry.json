@@ -1,0 +1,302 @@
+{
+    "title": "ReflectionTypeRegistry",
+    "filename": "Registry",
+    "path": "Core/Reflection/Type/Registry",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Type/Registry.hpp",
+        "namespace": "Chicane::ReflectionTypeRegistry",
+        "types": [
+            {
+                "name": "Indices",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "ReflectionTypeInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_INDICES_DESCRIPTION"
+            },
+            {
+                "name": "Names",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "ReflectionTypeInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_NAMES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_REFLECTIONTYPEREGISTRY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_REFLECTIONTYPEREGISTRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ReflectionTypeRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_~REFLECTIONTYPEREGISTRY_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionTypeRegistry",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Type/Registry",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionTypeRegistry",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Type/Registry",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Names",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Type/Registry",
+                    "templates": []
+                },
+                "name": "getAll",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_GETALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::type_info",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionTypeInfo",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_ADD_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Indices",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Registry",
+                    "templates": []
+                },
+                "name": "m_indices",
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_M_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Names",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Registry",
+                    "templates": []
+                },
+                "name": "m_names",
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_M_NAMES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONTYPEREGISTRY_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,414 @@
+{
+    "title": "ReflectionTypeInfo",
+    "filename": "Info",
+    "path": "Core/Reflection/Type/Info",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Type/Info.hpp",
+        "namespace": "Chicane::ReflectionTypeInfo",
+        "types": [
+            {
+                "name": "TypeIdex",
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_TYPEIDEX_DESCRIPTION"
+            },
+            {
+                "name": "Fields",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ReflectionFieldInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Field/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_FIELDS_DESCRIPTION"
+            },
+            {
+                "name": "Methods",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ReflectionMethodInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Method/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_METHODS_DESCRIPTION"
+            },
+            {
+                "name": "Constructor",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void *(std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::any",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_CONSTRUCTOR_DESCRIPTION"
+            },
+            {
+                "name": "Constructors",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Constructor",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_CONSTRUCTORS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeIdex",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inTypeIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Constructors",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inConstructors"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Methods",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inMethods"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Fields",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inFields"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEINFO_REFLECTIONTYPEINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeInfo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEINFO_REFLECTIONTYPEINFO_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionFieldInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Field/Info",
+                    "templates": []
+                },
+                "name": "findField",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_FINDFIELD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionMethodInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Method/Info",
+                    "templates": []
+                },
+                "name": "findMethod",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_FINDMETHOD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionFieldAccessor",
+                    "suffix": "",
+                    "path": "Core/Reflection/Field/Acessor",
+                    "templates": []
+                },
+                "name": "resolve",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inAccessor"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_RESOLVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "T",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "create",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::any",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_CREATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_REFLECTIONTYPEINFO_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_REFLECTIONTYPEINFO_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TypeIdex",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "typeIndex",
+                "description": "CHICANE_REFLECTIONTYPEINFO_TYPEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Constructors",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "constructors",
+                "description": "CHICANE_REFLECTIONTYPEINFO_CONSTRUCTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Methods",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "methods",
+                "description": "CHICANE_REFLECTIONTYPEINFO_METHODS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Fields",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "fields",
+                "description": "CHICANE_REFLECTIONTYPEINFO_FIELDS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONTYPEINFO_DESCRIPTION"
+    },
+    "children": []
+}

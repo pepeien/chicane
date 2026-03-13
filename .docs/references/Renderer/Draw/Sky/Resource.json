@@ -1,0 +1,135 @@
+{
+    "title": "DrawSkyResource",
+    "filename": "Resource",
+    "path": "Renderer/Draw/Sky/Resource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Sky/Resource.hpp",
+        "namespace": "Chicane::Renderer::DrawSkyResource",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "findId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_FINDID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawSky",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Sky",
+                    "templates": []
+                },
+                "name": "getDraw",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_GETDRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawSky",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Sky",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_RESET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawSky",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Sky",
+                    "templates": []
+                },
+                "name": "m_draw",
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_M_DRAW_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

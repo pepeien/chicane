@@ -298,7 +298,7 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "s"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [
@@ -577,44 +577,17 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_STRING_EQUALS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "equals",
-                "parameters": [
-                    {
-                        "type": {
                             "prefix": "",
-                            "name": "char",
+                            "name": "Args...",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inValue"
+                        "name": "inDelimeters"
                     }
                 ],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_STRING_EQUALS_DESCRIPTION"
@@ -674,6 +647,34 @@
                     "const"
                 ],
                 "description": "CHICANE_STRING_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "startsWithChars",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValues"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STARTSWITHCHARS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -990,6 +991,34 @@
                     "const"
                 ],
                 "description": "CHICANE_STRING_SUBSTR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "firstOfChars",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValues"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_FIRSTOFCHARS_DESCRIPTION"
             },
             {
                 "accessor": "public",

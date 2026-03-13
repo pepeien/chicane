@@ -59,6 +59,28 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "SceneCamera",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENECAMERA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneLights",
+                "description": "CHICANE_RENDERER_RESOURCE_SCENELIGHTS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Texture",
                 "description": "CHICANE_RENDERER_RESOURCE_TEXTURE_DESCRIPTION"
             },
@@ -105,17 +127,6 @@
                 },
                 "name": "UIInstances",
                 "description": "CHICANE_RENDERER_RESOURCE_UIINSTANCES_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Misc",
-                "description": "CHICANE_RENDERER_RESOURCE_MISC_DESCRIPTION"
             }
         ],
         "constructors": [],

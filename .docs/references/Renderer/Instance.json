@@ -739,6 +739,36 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncDirtyResources",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SYNCDIRTYRESOURCES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markResourcesAsDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_MARKRESOURCESASDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "DrawPolyResource",
                     "suffix": "&",
                     "path": "Renderer/Draw/Poly/Resource",
@@ -866,9 +896,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawSky",
+                    "name": "DrawSkyResource",
                     "suffix": "",
-                    "path": "Renderer/Draw/Sky",
+                    "path": "Renderer/Draw/Sky/Resource",
                     "templates": []
                 },
                 "name": "m_skyResource",

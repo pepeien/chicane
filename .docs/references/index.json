@@ -598,6 +598,22 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Path",
+                        "filename": "Path",
+                        "path": "Core/FileSystem/Path",
+                        "source": {
+                            "header": "Includes/Chicane/Core/FileSystem/Path.hpp",
+                            "namespace": "Chicane::FileSystem::Path",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
                     }
                 ]
             },
@@ -649,6 +665,22 @@
                     "members": []
                 },
                 "children": [
+                    {
+                        "title": "ImageInfo",
+                        "filename": "Info",
+                        "path": "Core/Image/Info",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Image/Info.hpp",
+                            "namespace": "Chicane::ImageInfo",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
                     {
                         "title": "ImageVendor",
                         "filename": "Vendor",
@@ -1523,12 +1555,12 @@
                 ]
             },
             {
-                "title": "Reference",
-                "filename": "Reference",
-                "path": "Core/Reference",
+                "title": "Reflection",
+                "filename": "Reflection",
+                "path": "Core/Reflection",
                 "source": {
-                    "header": "Includes/Chicane/Core/Reference.hpp",
-                    "namespace": "Chicane::Reference",
+                    "header": null,
+                    "namespace": null,
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -1536,7 +1568,253 @@
                     "functions": [],
                     "members": []
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Enum",
+                        "filename": "Enum",
+                        "path": "Core/Reflection/Enum",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "ReflectionEnumAutoRegister",
+                                "filename": "AutoRegister",
+                                "path": "Core/Reflection/Enum/AutoRegister",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Enum/AutoRegister.hpp",
+                                    "namespace": "Chicane::ReflectionEnumAutoRegister",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ReflectionEnumInfo",
+                                "filename": "Info",
+                                "path": "Core/Reflection/Enum/Info",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Enum/Info.hpp",
+                                    "namespace": "Chicane::ReflectionEnumInfo",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ReflectionEnumRegistry",
+                                "filename": "Registry",
+                                "path": "Core/Reflection/Enum/Registry",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Enum/Registry.hpp",
+                                    "namespace": "Chicane::ReflectionEnumRegistry",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Enumerator",
+                        "filename": "Enumerator",
+                        "path": "Core/Reflection/Enumerator",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "ReflectionEnumeratorInfo",
+                                "filename": "Info",
+                                "path": "Core/Reflection/Enumerator/Info",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Enumerator/Info.hpp",
+                                    "namespace": "Chicane::ReflectionEnumeratorInfo",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Field",
+                        "filename": "Field",
+                        "path": "Core/Reflection/Field",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "ReflectionFieldAccessor",
+                                "filename": "Acessor",
+                                "path": "Core/Reflection/Field/Acessor",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Field/Acessor.hpp",
+                                    "namespace": "Chicane::ReflectionFieldAccessor",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ReflectionFieldInfo",
+                                "filename": "Info",
+                                "path": "Core/Reflection/Field/Info",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Field/Info.hpp",
+                                    "namespace": "Chicane::ReflectionFieldInfo",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Method",
+                        "filename": "Method",
+                        "path": "Core/Reflection/Method",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "ReflectionMethodInfo",
+                                "filename": "Info",
+                                "path": "Core/Reflection/Method/Info",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Method/Info.hpp",
+                                    "namespace": "Chicane::ReflectionMethodInfo",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Type",
+                        "filename": "Type",
+                        "path": "Core/Reflection/Type",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "ReflectionTypeAutoRegister",
+                                "filename": "AutoRegister",
+                                "path": "Core/Reflection/Type/AutoRegister",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Type/AutoRegister.hpp",
+                                    "namespace": "Chicane::ReflectionTypeAutoRegister",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ReflectionTypeInfo",
+                                "filename": "Info",
+                                "path": "Core/Reflection/Type/Info",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Type/Info.hpp",
+                                    "namespace": "Chicane::ReflectionTypeInfo",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ReflectionTypeRegistry",
+                                "filename": "Registry",
+                                "path": "Core/Reflection/Type/Registry",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Reflection/Type/Registry.hpp",
+                                    "namespace": "Chicane::ReflectionTypeRegistry",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "title": "Size",
@@ -1578,22 +1856,6 @@
                 "source": {
                     "header": "Includes/Chicane/Core/String.hpp",
                     "namespace": "Chicane::String",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": []
-            },
-            {
-                "title": "Telemetry",
-                "filename": "Telemetry",
-                "path": "Core/Telemetry",
-                "source": {
-                    "header": "Includes/Chicane/Core/Telemetry.hpp",
-                    "namespace": "Chicane::Telemetry",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2027,12 +2289,12 @@
                 ]
             },
             {
-                "title": "Event",
-                "filename": "Event",
-                "path": "Grid/Event",
+                "title": "Method",
+                "filename": "Method",
+                "path": "Grid/Method",
                 "source": {
-                    "header": "Includes/Chicane/Grid/Event.hpp",
-                    "namespace": "Chicane::Grid::Event",
+                    "header": "Includes/Chicane/Grid/Method.hpp",
+                    "namespace": "Chicane::Grid::Method",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2041,39 +2303,6 @@
                     "members": []
                 },
                 "children": []
-            },
-            {
-                "title": "Function",
-                "filename": "Function",
-                "path": "Grid/Function",
-                "source": {
-                    "header": null,
-                    "namespace": null,
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": []
-                },
-                "children": [
-                    {
-                        "title": "FunctionData",
-                        "filename": "Data",
-                        "path": "Grid/Function/Data",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Function/Data.hpp",
-                            "namespace": "Chicane::Grid::FunctionData",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    }
-                ]
             },
             {
                 "title": "Primitive",
@@ -2498,6 +2727,22 @@
                     "members": []
                 },
                 "children": [
+                    {
+                        "title": "BackendStatus",
+                        "filename": "Status",
+                        "path": "Renderer/Backend/Status",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Backend/Status.hpp",
+                            "namespace": "Chicane::Renderer::BackendStatus",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
                     {
                         "title": "OpenGLBackend",
                         "filename": "OpenGL",
@@ -3266,12 +3511,12 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "VulkanImageData",
-                                        "filename": "Data",
-                                        "path": "Renderer/Backend/Vulkan/Image/Data",
+                                        "title": "VulkanImageInfo",
+                                        "filename": "Info",
+                                        "path": "Renderer/Backend/Vulkan/Image/Info",
                                         "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Data.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanImageData",
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Info.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanImageInfo",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4001,6 +4246,22 @@
                                     "members": []
                                 },
                                 "children": []
+                            },
+                            {
+                                "title": "DrawSkyResource",
+                                "filename": "Resource",
+                                "path": "Renderer/Draw/Sky/Resource",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Resource.hpp",
+                                    "namespace": "Chicane::Renderer::DrawSkyResource",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
                             }
                         ]
                     },
@@ -4240,6 +4501,22 @@
                         "source": {
                             "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
                             "namespace": "Chicane::ApplicationCreateInfo",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "ApplicationTelemetry",
+                        "filename": "Telemetry",
+                        "path": "Runtime/Application/Telemetry",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Application/Telemetry.hpp",
+                            "namespace": "Chicane::ApplicationTelemetry",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4516,6 +4793,39 @@
                         "source": {
                             "header": "Includes/Chicane/Runtime/Scene/Object.hpp",
                             "namespace": "Chicane::Object",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Telemetry",
+                "filename": "Telemetry",
+                "path": "Runtime/Telemetry",
+                "source": {
+                    "header": "Includes/Chicane/Runtime/Telemetry.hpp",
+                    "namespace": "Chicane::Telemetry",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": [
+                    {
+                        "title": "FrameTelemetry",
+                        "filename": "Frame",
+                        "path": "Runtime/Telemetry/Frame",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Telemetry/Frame.hpp",
+                            "namespace": "Chicane::FrameTelemetry",
                             "types": [],
                             "enums": [],
                             "constructors": [],

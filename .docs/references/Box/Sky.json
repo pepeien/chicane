@@ -25,7 +25,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -93,7 +93,7 @@
                                     "prefix": "",
                                     "name": "FileSystem::Path",
                                     "suffix": "",
-                                    "path": "Core/FileSystem",
+                                    "path": "Core/FileSystem/Path",
                                     "templates": []
                                 }
                             ]
@@ -121,7 +121,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -200,7 +200,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"

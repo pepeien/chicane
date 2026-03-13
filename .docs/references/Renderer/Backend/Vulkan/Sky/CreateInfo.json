@@ -16,7 +16,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Image::List",
+                    "name": "Image::References",
                     "suffix": "",
                     "path": "Core/Image",
                     "templates": []

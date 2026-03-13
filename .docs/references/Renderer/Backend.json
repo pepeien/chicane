@@ -52,7 +52,23 @@
                 "description": "CHICANE_RENDERER_BACKEND_BACKEND_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Backend",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_~BACKEND_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -176,9 +192,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawSky",
+                            "name": "DrawSkyResource",
                             "suffix": "&",
-                            "path": "Renderer/Draw/Sky",
+                            "path": "Renderer/Draw/Sky/Resource",
                             "templates": []
                         },
                         "name": "inResource"
@@ -458,6 +474,34 @@
                 "description": "CHICANE_RENDERER_BACKEND_GETRESOURCEBUDGETCOUNT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isStatus",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BackendStatus",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Status",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_ISSTATUS_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -632,6 +676,19 @@
                 },
                 "name": "Instance",
                 "description": "CHICANE_RENDERER_BACKEND_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BackendStatus",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Status",
+                    "templates": []
+                },
+                "name": "m_status",
+                "description": "CHICANE_RENDERER_BACKEND_M_STATUS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

@@ -5,83 +5,11 @@
     "source": {
         "header": "Includes/Chicane/Grid.hpp",
         "namespace": "Chicane::Grid",
-        "types": [
-            {
-                "name": "Function",
-                "type": {
-                    "prefix": "",
-                    "name": "std::function",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Reference(const Event &)",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_FUNCTION_DESCRIPTION"
-            },
-            {
-                "name": "Functions",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "Function",
-                            "suffix": "",
-                            "path": "Grid",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_FUNCTIONS_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "class Component",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createComponent",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_CREATECOMPONENT_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -189,8 +117,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "FUNCTION_PARAMS_OPENING",
-                "description": "CHICANE_GRID_FUNCTION_PARAMS_OPENING_DESCRIPTION"
+                "name": "METHOD_PARAMS_OPENING",
+                "description": "CHICANE_GRID_METHOD_PARAMS_OPENING_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -205,8 +133,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "FUNCTION_PARAMS_SEPARATOR",
-                "description": "CHICANE_GRID_FUNCTION_PARAMS_SEPARATOR_DESCRIPTION"
+                "name": "METHOD_PARAMS_SEPARATOR",
+                "description": "CHICANE_GRID_METHOD_PARAMS_SEPARATOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -221,8 +149,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "FUNCTION_PARAMS_CLOSING",
-                "description": "CHICANE_GRID_FUNCTION_PARAMS_CLOSING_DESCRIPTION"
+                "name": "METHOD_PARAMS_CLOSING",
+                "description": "CHICANE_GRID_METHOD_PARAMS_CLOSING_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -124,7 +124,7 @@
                     "prefix": "const ",
                     "name": "FileSystem::Path",
                     "suffix": "&",
-                    "path": "Core/FileSystem",
+                    "path": "Core/FileSystem/Path",
                     "templates": []
                 },
                 "name": "getSource",
@@ -151,7 +151,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inValue"
@@ -228,7 +228,7 @@
                     "prefix": "",
                     "name": "FileSystem::Path",
                     "suffix": "",
-                    "path": "Core/FileSystem",
+                    "path": "Core/FileSystem/Path",
                     "templates": []
                 },
                 "name": "m_source",

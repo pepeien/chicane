@@ -230,7 +230,7 @@
                 "name": "SkyParsedSide",
                 "type": {
                     "prefix": "",
-                    "name": "Image",
+                    "name": "Image::Reference",
                     "suffix": "",
                     "path": "Core/Image",
                     "templates": []
@@ -373,7 +373,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilePath"
@@ -399,7 +399,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilePath"

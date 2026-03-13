@@ -1,0 +1,73 @@
+{
+    "title": "ApplicationTelemetry",
+    "filename": "Telemetry",
+    "path": "Runtime/Application/Telemetry",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Application/Telemetry.hpp",
+        "namespace": "Chicane::ApplicationTelemetry",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ApplicationTelemetry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATIONTELEMETRY_APPLICATIONTELEMETRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
+                "name": "scene",
+                "description": "CHICANE_APPLICATIONTELEMETRY_SCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
+                "name": "ui",
+                "description": "CHICANE_APPLICATIONTELEMETRY_UI_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
+                "name": "renderer",
+                "description": "CHICANE_APPLICATIONTELEMETRY_RENDERER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_APPLICATIONTELEMETRY_DESCRIPTION"
+    },
+    "children": []
+}

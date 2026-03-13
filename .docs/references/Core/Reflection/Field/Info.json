@@ -1,0 +1,279 @@
+{
+    "title": "ReflectionFieldInfo",
+    "filename": "Info",
+    "path": "Core/Reflection/Field/Info",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Field/Info.hpp",
+        "namespace": "Chicane::ReflectionFieldInfo",
+        "types": [
+            {
+                "name": "TypeIndex",
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDINFO_TYPEINDEX_DESCRIPTION"
+            },
+            {
+                "name": "Names",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDINFO_NAMES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionFieldInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Names",
+                            "suffix": "",
+                            "path": "Core/Reflection/Field/Info",
+                            "templates": []
+                        },
+                        "name": "inNames"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inTypeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeIndex",
+                            "suffix": "",
+                            "path": "Core/Reflection/Field/Info",
+                            "templates": []
+                        },
+                        "name": "inTypeIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsReflected"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsPointer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONFIELDINFO_REFLECTIONFIELDINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionFieldInfo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONFIELDINFO_REFLECTIONFIELDINFO_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "containsName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_CONTAINSNAME_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Names",
+                    "suffix": "",
+                    "path": "Core/Reflection/Field/Info",
+                    "templates": []
+                },
+                "name": "names",
+                "description": "CHICANE_REFLECTIONFIELDINFO_NAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "typeName",
+                "description": "CHICANE_REFLECTIONFIELDINFO_TYPENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "description": "CHICANE_REFLECTIONFIELDINFO_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_REFLECTIONFIELDINFO_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TypeIndex",
+                    "suffix": "",
+                    "path": "Core/Reflection/Field/Info",
+                    "templates": []
+                },
+                "name": "typeIndex",
+                "description": "CHICANE_REFLECTIONFIELDINFO_TYPEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsReflected",
+                "description": "CHICANE_REFLECTIONFIELDINFO_BISREFLECTED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsPointer",
+                "description": "CHICANE_REFLECTIONFIELDINFO_BISPOINTER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION"
+    },
+    "children": []
+}

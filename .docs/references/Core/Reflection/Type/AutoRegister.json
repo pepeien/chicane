@@ -1,0 +1,46 @@
+{
+    "title": "ReflectionTypeAutoRegister",
+    "filename": "AutoRegister",
+    "path": "Core/Reflection/Type/AutoRegister",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Type/AutoRegister.hpp",
+        "namespace": "Chicane::ReflectionTypeAutoRegister",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeAutoRegister",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionTypeInfo",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEAUTOREGISTER_REFLECTIONTYPEAUTOREGISTER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_REFLECTIONTYPEAUTOREGISTER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,116 @@
+{
+    "title": "ReflectionEnumInfo",
+    "filename": "Info",
+    "path": "Core/Reflection/Enum/Info",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Enum/Info.hpp",
+        "namespace": "Chicane::ReflectionEnumInfo",
+        "types": [
+            {
+                "name": "Enumerators",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ReflectionEnumeratorInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Enumerator/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONENUMINFO_ENUMERATORS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionEnumInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Enumerators",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Enum/Info",
+                            "templates": []
+                        },
+                        "name": "inEnumerators"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMINFO_REFLECTIONENUMINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionEnumInfo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMINFO_REFLECTIONENUMINFO_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_REFLECTIONENUMINFO_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Enumerators",
+                    "suffix": "",
+                    "path": "Core/Reflection/Enum/Info",
+                    "templates": []
+                },
+                "name": "enumerators",
+                "description": "CHICANE_REFLECTIONENUMINFO_ENUMERATORS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONENUMINFO_DESCRIPTION"
+    },
+    "children": []
+}

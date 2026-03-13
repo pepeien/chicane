@@ -7,7 +7,23 @@
         "namespace": "Chicane::Transform",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Transform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_TRANSFORM_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [
             {
@@ -84,17 +100,161 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_ADDTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_ADDTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTranslation",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_TRANSFORM_ADDTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_SETTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_SETTRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -116,11 +276,62 @@
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inTranslation"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_TRANSFORM_SETTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getForward",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_GETFORWARD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_GETRIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getUp",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_GETUP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -153,16 +364,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_TRANSFORM_ADDLOCALROTATION_DESCRIPTION"
             },
             {
@@ -179,16 +392,18 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_TRANSFORM_ADDWORLDROTATION_DESCRIPTION"
             },
             {
@@ -205,17 +420,45 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Rotator",
-                            "suffix": "&",
-                            "path": "Core/Math/Rotator",
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TRANSFORM_SETROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lookAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTarget"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORM_SETROTATION_DESCRIPTION"
+                "description": "CHICANE_TRANSFORM_LOOKAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -248,17 +491,161 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_ADDSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_ADDSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addScale",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_TRANSFORM_ADDSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_SETSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_SETSCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -280,7 +667,7 @@
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inScale"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
@@ -304,7 +691,7 @@
         ],
         "members": [
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -313,11 +700,11 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "m_translation",
-                "description": "CHICANE_TRANSFORM_M_TRANSLATION_DESCRIPTION"
+                "name": "translation",
+                "description": "CHICANE_TRANSFORM_TRANSLATION_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -326,11 +713,11 @@
                     "path": "Core/Math/Rotator",
                     "templates": []
                 },
-                "name": "m_rotation",
-                "description": "CHICANE_TRANSFORM_M_ROTATION_DESCRIPTION"
+                "name": "rotation",
+                "description": "CHICANE_TRANSFORM_ROTATION_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -339,8 +726,8 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "m_scale",
-                "description": "CHICANE_TRANSFORM_M_SCALE_DESCRIPTION"
+                "name": "scale",
+                "description": "CHICANE_TRANSFORM_SCALE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

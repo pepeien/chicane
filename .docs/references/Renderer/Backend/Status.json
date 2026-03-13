@@ -1,0 +1,40 @@
+{
+    "title": "BackendStatus",
+    "filename": "Status",
+    "path": "Renderer/Backend/Status",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Status.hpp",
+        "namespace": "Chicane::Renderer::BackendStatus",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Running",
+                "description": "CHICANE_RENDERER_BACKENDSTATUS_RUNNING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Shutdown",
+                "description": "CHICANE_RENDERER_BACKENDSTATUS_SHUTDOWN_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_BACKENDSTATUS_DESCRIPTION"
+    },
+    "children": []
+}

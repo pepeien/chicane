@@ -1,0 +1,78 @@
+{
+    "title": "Telemetry",
+    "filename": "Telemetry",
+    "path": "Runtime/Telemetry",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Telemetry.hpp",
+        "namespace": "Chicane::Telemetry",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Telemetry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TELEMETRY_TELEMETRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "start",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TELEMETRY_START_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "end",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TELEMETRY_END_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FrameTelemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry/Frame",
+                    "templates": []
+                },
+                "name": "frame",
+                "description": "CHICANE_TELEMETRY_FRAME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TELEMETRY_DESCRIPTION"
+    },
+    "children": []
+}

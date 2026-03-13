@@ -99,10 +99,103 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "initImage",
+                "name": "initExtent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image::References",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inImages"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSKY_INITEXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initInstance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSKY_INITINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initSampler",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANSKY_INITIMAGE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANSKY_INITSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initMemory",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSKY_INITMEMORY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSKY_INITVIEW_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -115,7 +208,18 @@
                     "templates": []
                 },
                 "name": "copyPixels",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image::References",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inImages"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANSKY_COPYPIXELS_DESCRIPTION"
             },
@@ -136,45 +240,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "VulkanImageData",
-                    "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Image/Data",
-                    "templates": []
-                },
-                "name": "m_image",
-                "description": "CHICANE_RENDERER_VULKANSKY_M_IMAGE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Image::List",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "m_images",
-                "description": "CHICANE_RENDERER_VULKANSKY_M_IMAGES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "VulkanDescriptorBundle",
-                    "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
-                    "templates": []
-                },
-                "name": "m_descriptor",
-                "description": "CHICANE_RENDERER_VULKANSKY_M_DESCRIPTOR_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -226,6 +291,19 @@
                 },
                 "name": "m_queue",
                 "description": "CHICANE_RENDERER_VULKANSKY_M_QUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorBundle",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_descriptor",
+                "description": "CHICANE_RENDERER_VULKANSKY_M_DESCRIPTOR_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANSKY_DESCRIPTION"

@@ -66,9 +66,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "DrawSky",
+                            "name": "DrawSkyResource",
                             "suffix": "&",
-                            "path": "Renderer/Draw/Sky",
+                            "path": "Renderer/Draw/Sky/Resource",
                             "templates": []
                         },
                         "name": "inResource"

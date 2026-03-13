@@ -1,0 +1,44 @@
+{
+    "title": "ReflectionEnumeratorInfo",
+    "filename": "Info",
+    "path": "Core/Reflection/Enumerator/Info",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Enumerator/Info.hpp",
+        "namespace": "Chicane::ReflectionEnumeratorInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_REFLECTIONENUMERATORINFO_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "value",
+                "description": "CHICANE_REFLECTIONENUMERATORINFO_VALUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONENUMERATORINFO_DESCRIPTION"
+    },
+    "children": []
+}

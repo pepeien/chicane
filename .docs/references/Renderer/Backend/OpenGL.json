@@ -24,7 +24,23 @@
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_OPENGLBACKEND_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~OpenGLBackend",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_~OPENGLBACKEND_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",

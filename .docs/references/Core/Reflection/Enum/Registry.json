@@ -1,0 +1,209 @@
+{
+    "title": "ReflectionEnumRegistry",
+    "filename": "Registry",
+    "path": "Core/Reflection/Enum/Registry",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Enum/Registry.hpp",
+        "namespace": "Chicane::ReflectionEnumRegistry",
+        "types": [
+            {
+                "name": "Names",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "ReflectionEnumInfo",
+                            "suffix": "",
+                            "path": "Core/Reflection/Enum/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_NAMES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionEnumRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_REFLECTIONENUMREGISTRY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionEnumRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_REFLECTIONENUMREGISTRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ReflectionEnumRegistry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_~REFLECTIONENUMREGISTRY_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionEnumRegistry",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Enum/Registry",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionEnumRegistry",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Enum/Registry",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Names",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Enum/Registry",
+                    "templates": []
+                },
+                "name": "getAll",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_GETALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionEnumInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Enum/Info",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionEnumInfo",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Enum/Info",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_ADD_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Names",
+                    "suffix": "",
+                    "path": "Core/Reflection/Enum/Registry",
+                    "templates": []
+                },
+                "name": "m_names",
+                "description": "CHICANE_REFLECTIONENUMREGISTRY_M_NAMES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONENUMREGISTRY_DESCRIPTION"
+    },
+    "children": []
+}

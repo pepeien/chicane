@@ -48,7 +48,45 @@
                 "description": "CHICANE_IMAGE_PIXELS_DESCRIPTION"
             },
             {
-                "name": "List",
+                "name": "Instance",
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_IMAGE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "name": "Reference",
+                "type": {
+                    "prefix": "",
+                    "name": "std::weak_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_IMAGE_REFERENCE_DESCRIPTION"
+            },
+            {
+                "name": "References",
                 "type": {
                     "prefix": "",
                     "name": "std::vector",
@@ -57,14 +95,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Image",
+                            "name": "Reference",
                             "suffix": "",
                             "path": "Core/Image",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_IMAGE_LIST_DESCRIPTION"
+                "description": "CHICANE_IMAGE_REFERENCES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -86,7 +124,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inLocation"
@@ -143,32 +181,6 @@
                 },
                 "name": "Image",
                 "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_IMAGE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Image",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Image",
-                            "suffix": "&",
-                            "path": "Core/Image",
-                            "templates": []
-                        },
-                        "name": "inInstance"
-                    }
-                ],
                 "modifiers": [],
                 "description": "CHICANE_IMAGE_IMAGE_DESCRIPTION"
             }
@@ -268,74 +280,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getWidth",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_GETWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getHeight",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_GETHEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getChannel",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_GETCHANNEL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getFormat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_GETFORMAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "const ",
                     "name": "Pixels",
                     "suffix": "",
@@ -354,34 +298,17 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "int",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "getPitch",
+                "name": "getMemorySize",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_IMAGE_GETPITCH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getSize",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_GETSIZE_DESCRIPTION"
+                "description": "CHICANE_IMAGE_GETMEMORYSIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -453,58 +380,6 @@
                 },
                 "name": "m_vendor",
                 "description": "CHICANE_IMAGE_M_VENDOR_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_width",
-                "description": "CHICANE_IMAGE_M_WIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_height",
-                "description": "CHICANE_IMAGE_M_HEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_channel",
-                "description": "CHICANE_IMAGE_M_CHANNEL_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_format",
-                "description": "CHICANE_IMAGE_M_FORMAT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

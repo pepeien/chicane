@@ -5,19 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Core/FileSystem.hpp",
         "namespace": "Chicane::FileSystem",
-        "types": [
-            {
-                "name": "Path",
-                "type": {
-                    "prefix": "",
-                    "name": "std::filesystem::path",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "description": "CHICANE_FILESYSTEM_PATH_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -39,7 +27,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inPath"
@@ -59,9 +47,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "class Item",
+                            "name": "Item",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/FileSystem/Item",
                             "templates": []
                         }
                     ]
@@ -73,7 +61,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inDir"
@@ -109,7 +97,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -143,7 +131,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -169,7 +157,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -203,7 +191,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -239,7 +227,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -283,7 +271,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -327,7 +315,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -337,24 +325,7 @@
                 "description": "CHICANE_FILESYSTEM_WRITE_DESCRIPTION"
             }
         ],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "auto",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "SEPARATOR",
-                "description": "CHICANE_FILESYSTEM_SEPARATOR_DESCRIPTION"
-            }
-        ],
+        "members": [],
         "description": "CHICANE_FILESYSTEM_DESCRIPTION"
     },
     "children": []

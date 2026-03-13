@@ -55,7 +55,7 @@
                             "prefix": "const ",
                             "name": "Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inPath"
@@ -116,7 +116,7 @@
                     "prefix": "",
                     "name": "Path",
                     "suffix": "",
-                    "path": "Core/FileSystem",
+                    "path": "Core/FileSystem/Path",
                     "templates": []
                 },
                 "name": "path",
@@ -140,13 +140,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Item",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "childCount",
-                "description": "CHICANE_FILESYSTEM_ITEM_CHILDCOUNT_DESCRIPTION"
+                "name": "children",
+                "description": "CHICANE_FILESYSTEM_ITEM_CHILDREN_DESCRIPTION"
             }
         ],
         "description": "CHICANE_FILESYSTEM_ITEM_DESCRIPTION"

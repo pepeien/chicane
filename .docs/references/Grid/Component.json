@@ -7,25 +7,6 @@
         "namespace": "Chicane::Grid::Component",
         "types": [
             {
-                "name": "Compiler",
-                "type": {
-                    "prefix": "",
-                    "name": "std::function",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component *(const pugi::xml_node &inNode)",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_COMPONENT_COMPILER_DESCRIPTION"
-            },
-            {
                 "name": "ClassList",
                 "type": {
                     "prefix": "",
@@ -43,6 +24,51 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_CLASSLIST_DESCRIPTION"
+            },
+            {
+                "name": "Directive",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const String &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_COMPONENT_DIRECTIVE_DESCRIPTION"
+            },
+            {
+                "name": "Directives",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Directive",
+                            "suffix": "",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_COMPONENT_DIRECTIVES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -454,6 +480,93 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshDirectives",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHDIRECTIVES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "runDirective",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_RUNDIRECTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setDirective",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Directive",
+                            "suffix": "&",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETDIRECTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "String",
                     "suffix": "&",
@@ -673,7 +786,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasReference",
+                "name": "hasField",
                 "parameters": [
                     {
                         "type": {
@@ -699,19 +812,19 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_HASREFERENCE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_HASFIELD_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "Reference",
+                    "prefix": "const ",
+                    "name": "ReflectionFieldInfo",
                     "suffix": "*",
-                    "path": "Core/Reference",
+                    "path": "Core/Reflection/Field/Info",
                     "templates": []
                 },
-                "name": "getReference",
+                "name": "getField",
                 "parameters": [
                     {
                         "type": {
@@ -727,95 +840,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_GETREFERENCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addReference",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Reference::Map",
-                            "suffix": "&",
-                            "path": "Core/Reference",
-                            "templates": []
-                        },
-                        "name": "inReference"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDREFERENCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addReference",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Reference",
-                            "suffix": "*",
-                            "path": "Core/Reference",
-                            "templates": []
-                        },
-                        "name": "inReference"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDREFERENCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "removeReference",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REMOVEREFERENCE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_GETFIELD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -827,7 +852,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasFunction",
+                "name": "hasMethod",
                 "parameters": [
                     {
                         "type": {
@@ -853,19 +878,19 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_HASFUNCTION_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_HASMETHOD_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "Function",
+                    "prefix": "",
+                    "name": "Method",
                     "suffix": "",
-                    "path": "Grid",
+                    "path": "Grid/Method",
                     "templates": []
                 },
-                "name": "getFunction",
+                "name": "getMethod",
                 "parameters": [
                     {
                         "type": {
@@ -876,110 +901,12 @@
                             "templates": []
                         },
                         "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "isLocalOnly"
                     }
                 ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_GETFUNCTION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addFunction",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Functions",
-                            "suffix": "&",
-                            "path": "Grid",
-                            "templates": []
-                        },
-                        "name": "inFunctions"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDFUNCTION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addFunction",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Function",
-                            "suffix": "",
-                            "path": "Grid",
-                            "templates": []
-                        },
-                        "name": "inFunction"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDFUNCTION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "removeFunction",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REMOVEFUNCTION_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_GETMETHOD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2322,9 +2249,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Reference",
+                    "name": "String",
                     "suffix": "",
-                    "path": "Core/Reference",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "parseReference",
@@ -2355,7 +2282,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isFunction",
+                "name": "isMethod",
                 "parameters": [
                     {
                         "type": {
@@ -2371,38 +2298,42 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_ISFUNCTION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "FunctionData",
-                    "suffix": "",
-                    "path": "Grid/Function/Data",
-                    "templates": []
-                },
-                "name": "parseFunction",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inRefValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_PARSEFUNCTION_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_ISMETHOD_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "IF_DIRECTIVE_KEYWORD",
+                "description": "CHICANE_GRID_COMPONENT_IF_DIRECTIVE_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FOR_DIRECTIVE_KEYWORD",
+                "description": "CHICANE_GRID_COMPONENT_FOR_DIRECTIVE_KEYWORD_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "modifiers": [
@@ -2495,6 +2426,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Directives",
+                    "suffix": "",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "m_directives",
+                "description": "CHICANE_GRID_COMPONENT_M_DIRECTIVES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Style",
                     "suffix": "",
                     "path": "Grid/Style",
@@ -2515,32 +2459,6 @@
                 },
                 "name": "m_styleFile",
                 "description": "CHICANE_GRID_COMPONENT_M_STYLEFILE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Reference::Map",
-                    "suffix": "",
-                    "path": "Core/Reference",
-                    "templates": []
-                },
-                "name": "m_references",
-                "description": "CHICANE_GRID_COMPONENT_M_REFERENCES_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Functions",
-                    "suffix": "",
-                    "path": "Grid",
-                    "templates": []
-                },
-                "name": "m_functions",
-                "description": "CHICANE_GRID_COMPONENT_M_FUNCTIONS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

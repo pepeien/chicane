@@ -77,7 +77,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilePath"

@@ -1,0 +1,189 @@
+{
+    "title": "Method",
+    "filename": "Method",
+    "path": "Grid/Method",
+    "source": {
+        "header": "Includes/Chicane/Grid/Method.hpp",
+        "namespace": "Chicane::Grid::Method",
+        "types": [
+            {
+                "name": "Param",
+                "type": {
+                    "prefix": "",
+                    "name": "std::any",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_GRID_METHOD_PARAM_DESCRIPTION"
+            },
+            {
+                "name": "Params",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Param",
+                            "suffix": "",
+                            "path": "Grid/Method",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_METHOD_PARAMS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Method",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_METHOD_METHOD_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_METHOD_ISVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invoke",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_METHOD_INVOKE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setInstance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionMethodInfo",
+                            "suffix": "*",
+                            "path": "Core/Reflection/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_METHOD_SETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addParam",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Param",
+                            "suffix": "",
+                            "path": "Grid/Method",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_METHOD_ADDPARAM_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "ReflectionMethodInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Method/Info",
+                    "templates": []
+                },
+                "name": "m_instance",
+                "description": "CHICANE_GRID_METHOD_M_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Params",
+                    "suffix": "",
+                    "path": "Grid/Method",
+                    "templates": []
+                },
+                "name": "m_params",
+                "description": "CHICANE_GRID_METHOD_M_PARAMS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_METHOD_DESCRIPTION"
+    },
+    "children": []
+}

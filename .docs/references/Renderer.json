@@ -250,8 +250,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "UI_LAYER_ID",
-                "description": "CHICANE_RENDERER_UI_LAYER_ID_DESCRIPTION"
+                "name": "u_LAYER_ID",
+                "description": "CHICANE_RENDERER_U_LAYER_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -266,8 +266,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURE_COUNT",
-                "description": "CHICANE_RENDERER_TEXTURE_COUNT_DESCRIPTION"
+                "name": "TEXTURE_WIDTH",
+                "description": "CHICANE_RENDERER_TEXTURE_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_HEIGHT",
+                "description": "CHICANE_RENDERER_TEXTURE_HEIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",

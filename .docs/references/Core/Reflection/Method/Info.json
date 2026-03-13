@@ -1,0 +1,243 @@
+{
+    "title": "ReflectionMethodInfo",
+    "filename": "Info",
+    "path": "Core/Reflection/Method/Info",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Method/Info.hpp",
+        "namespace": "Chicane::ReflectionMethodInfo",
+        "types": [
+            {
+                "name": "Params",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::any",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONMETHODINFO_PARAMS_DESCRIPTION"
+            },
+            {
+                "name": "Invoker",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Params)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONMETHODINFO_INVOKER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionMethodInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inReturnType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "Core/String",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inParamTypes"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Invoker",
+                            "suffix": "",
+                            "path": "Core/Reflection/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inInvoker"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONMETHODINFO_REFLECTIONMETHODINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionMethodInfo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONMETHODINFO_REFLECTIONMETHODINFO_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invoke",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params",
+                            "suffix": "",
+                            "path": "Core/Reflection/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONMETHODINFO_INVOKE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_REFLECTIONMETHODINFO_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "returnType",
+                "description": "CHICANE_REFLECTIONMETHODINFO_RETURNTYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "paramTypes",
+                "description": "CHICANE_REFLECTIONMETHODINFO_PARAMTYPES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Invoker",
+                    "suffix": "",
+                    "path": "Core/Reflection/Method/Info",
+                    "templates": []
+                },
+                "name": "m_invoker",
+                "description": "CHICANE_REFLECTIONMETHODINFO_M_INVOKER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONMETHODINFO_DESCRIPTION"
+    },
+    "children": []
+}

@@ -25,7 +25,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -126,9 +126,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "Image",
-                    "suffix": "&",
+                    "prefix": "",
+                    "name": "Image::Reference",
+                    "suffix": "",
                     "path": "Core/Image",
                     "templates": []
                 },
@@ -156,7 +156,7 @@
                             "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
-                            "path": "Core/FileSystem",
+                            "path": "Core/FileSystem/Path",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -220,32 +220,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_TEXTURE_FETCHDATAFROMXML_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Image",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "parseData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Image::Raw",
-                            "suffix": "&",
-                            "path": "Core/Image",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_PARSEDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -315,7 +289,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Image",
+                    "name": "Image::Instance",
                     "suffix": "",
                     "path": "Core/Image",
                     "templates": []

@@ -65,19 +65,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "bCanSelectMany",
-                "description": "CHICANE_FILESYSTEM_DIALOG_BCANSELECTMANY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",

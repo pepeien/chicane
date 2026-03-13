@@ -1,0 +1,76 @@
+{
+    "title": "FrameTelemetry",
+    "filename": "Frame",
+    "path": "Runtime/Telemetry/Frame",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Telemetry/Frame.hpp",
+        "namespace": "Chicane::FrameTelemetry",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrameTelemetry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FRAMETELEMETRY_FRAMETELEMETRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTime",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FRAMETELEMETRY_ONTIME_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "delta",
+                "description": "CHICANE_FRAMETELEMETRY_DELTA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rate",
+                "description": "CHICANE_FRAMETELEMETRY_RATE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FRAMETELEMETRY_DESCRIPTION"
+    },
+    "children": []
+}
