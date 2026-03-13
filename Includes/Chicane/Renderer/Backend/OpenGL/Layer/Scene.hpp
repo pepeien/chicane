@@ -22,13 +22,6 @@ namespace Chicane
             void onRender(const Frame& inFrame, void* inData) override;
 
         private:
-            // View
-            void buildCameraData();
-            void destroyCameraData();
-
-            void buildLightData();
-            void destroyLightData();
-
             // Model
             void buildModelVertexArray();
             void buildModelVertexBuffer();
@@ -43,10 +36,6 @@ namespace Chicane
             void buildLayers();
 
         private:
-            // View
-            std::uint32_t m_cameraBuffer;
-            std::uint32_t m_lightBuffer;
-
             // Model
             std::uint32_t m_modelVertexArray;
             std::uint32_t m_modelVertexBuffer;

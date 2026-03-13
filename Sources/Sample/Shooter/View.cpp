@@ -1,87 +1,37 @@
-#include "View.hpp"
+#include "Sample/Shooter/View.reflected.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
-#include "Game.hpp"
-#include "Level.hpp"
-
-static int switcher = 1;
+#include "Sample/Shooter/Game.hpp"
+#include "Sample/Shooter/Level.hpp"
 
 View::View()
-    : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
-      m_bDidPlayerWin(true),
-      m_telemetry(Chicane::Application::getInstance().getTelemetry()),
-      m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
-      m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate)),
-      m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
-      m_uiVictoryVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_victoryVisibility)),
-      m_currentCamera("None"),
-      m_uiCurrentCamera(Chicane::Reference::fromValue<Chicane::String>(&m_currentCamera)),
-      m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
-      m_uiCrosshairDotVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_crosshairDotVisibility)),
-      m_crosshairSize(2.0f),
-      m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
-      m_crosshairThickness(1.0f),
-      m_uiCrosshairThickness(Chicane::Reference::fromValue<float>(&m_crosshairThickness)),
-      m_crosshairGap(1.0f),
-      m_uiCrosshairGap(Chicane::Reference::fromValue<float>(&m_crosshairGap)),
-      m_crosshairColorR(255),
-      m_uiCrosshairColorR(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorR)),
-      m_crosshairColorG(255),
-      m_uiCrosshairColorG(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorG)),
-      m_crosshairColorB(255),
-      m_uiCrosshairColorB(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorB)),
-      m_crosshairColorA(1.0f),
-      m_uiCrosshairColorA(Chicane::Reference::fromValue<float>(&m_crosshairColorA)),
-      m_playerScore(0U),
-      m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore)),
-      m_maxScore(0U),
-      m_uiMaxScore(Chicane::Reference::fromValue<std::uint32_t>(&m_maxScore))
+    : Chicane::Grid::View("Assets/Sample/Shooter/Views/Home.grid"),
+      telemetry(&Chicane::Application::getInstance().getTelemetry()),
+      bDidPlayerWin(false),
+      crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
+      crosshairSize(2.0f),
+      crosshairThickness(1.0f),
+      crosshairGap(1.0f),
+      crosshairColorR(255),
+      crosshairColorG(255),
+      crosshairColorB(255),
+      crosshairColorA(1.0f),
+      playerScore(0U),
+      maxScore(0U)
 {
-    m_maxScore = Game::getMaxScore();
+    maxScore = Game::getMaxScore();
 
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
-            m_playerScore++;
+            playerScore++;
 
             if (Game::didReachMaxScore())
             {
-                m_bDidPlayerWin = true;
-
-                m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
+                bDidPlayerWin = true;
             }
         }
     );
-
-    Chicane::Application::getInstance().getScene<Level>()->watchActiveCamera(
-        [this](Chicane::ACamera* inCamera)
-        {
-            if (inCamera == nullptr)
-            {
-                m_currentCamera = "First Person";
-
-                return;
-            }
-
-            m_currentCamera = inCamera->getId();
-        },
-        [this](const Chicane::String& inError) { m_currentCamera = "None"; }
-    );
-
-    addReference("frameTime", &m_uiFrameTime);
-    addReference("framesPerSecond", &m_uiFramesPerSecond);
-    addReference("victoryDisplay", &m_uiVictoryVisibility);
-    addReference("currentCamera", &m_uiCurrentCamera);
-    addReference("crosshairDotDisplay", &m_uiCrosshairDotVisibility);
-    addReference("crosshairSize", &m_uiCrosshairSize);
-    addReference("crosshairThickness", &m_uiCrosshairThickness);
-    addReference("crosshairGap", &m_uiCrosshairGap);
-    addReference("crosshairColorR", &m_uiCrosshairColorR);
-    addReference("crosshairColorG", &m_uiCrosshairColorG);
-    addReference("crosshairColorB", &m_uiCrosshairColorB);
-    addReference("crosshairColorA", &m_uiCrosshairColorA);
-    addReference("playerScore", &m_uiPlayerScore);
-    addReference("maxScore", &m_uiMaxScore);
 }

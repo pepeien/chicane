@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Text.hpp"
+#include "Chicane/Grid/Component/Text.reflected.hpp"
 
 #include "Chicane/Grid/Component/Text/Character.hpp"
 

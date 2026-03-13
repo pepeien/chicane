@@ -33,6 +33,13 @@ namespace Chicane
 
         void VulkanBackend::onInit()
         {
+            if (isStatus(BackendStatus::Running))
+            {
+                return;
+            }
+
+            Backend::onInit();
+
             buildInstance();
             buildDebugMessenger();
             buildSurface();
@@ -49,6 +56,13 @@ namespace Chicane
 
         void VulkanBackend::onShutdown()
         {
+            if (isStatus(BackendStatus::Shutdown))
+            {
+                return;
+            }
+
+            Backend::onShutdown();
+
             logicalDevice.waitIdle();
 
             // Vulkan
@@ -354,14 +368,16 @@ namespace Chicane
 
             layoutBidings.indices.push_back(0);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            layoutBidings.counts.push_back(TEXTURE_COUNT);
+            layoutBidings.counts.push_back(getResourceBudgetCount(Resource::Texture));
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
-            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, TEXTURE_COUNT});
+            descriptorPoolCreateInfo.sizes.push_back(
+                {vk::DescriptorType::eCombinedImageSampler, getResourceBudgetCount(Resource::Texture)}
+            );
 
             VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
 
@@ -386,7 +402,7 @@ namespace Chicane
             createInfo.commandBuffer  = mainCommandBuffer;
             createInfo.queue          = graphicsQueue;
 
-            std::vector<vk::DescriptorImageInfo> infos = {};
+            std::vector<vk::DescriptorImageInfo> infos;
             for (const DrawTexture& texture : inTextures)
             {
                 createInfo.image = texture.image;
@@ -394,8 +410,8 @@ namespace Chicane
 
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                info.imageView   = textures.back()->getImage().view;
-                info.sampler     = textures.back()->getImage().sampler;
+                info.imageView   = textures.back()->view;
+                info.sampler     = textures.back()->sampler;
                 infos.push_back(info);
             }
 

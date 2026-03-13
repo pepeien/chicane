@@ -9,10 +9,10 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawTextureData : DrawData
+        struct CHICANE_RENDERER DrawTextureData : public DrawData
         {
         public:
-            Image image = {};
+            Image::Reference image;
         };
     }
 }

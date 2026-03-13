@@ -100,14 +100,14 @@ namespace Chicane
 
                 std::uint32_t imageCount = supportDetails.capabilities.minImageCount;
 
-                vk::SwapchainCreateInfoKHR createInfo = {};
-                createInfo.surface                    = inSurface;
-                createInfo.minImageCount              = imageCount;
-                createInfo.imageFormat                = surfaceFormat.format;
-                createInfo.imageColorSpace            = surfaceFormat.colorSpace;
-                createInfo.imageExtent                = extent;
-                createInfo.imageArrayLayers           = 1;
-                createInfo.imageUsage                 = vk::ImageUsageFlagBits::eColorAttachment;
+                vk::SwapchainCreateInfoKHR createInfo;
+                createInfo.surface          = inSurface;
+                createInfo.minImageCount    = imageCount;
+                createInfo.imageFormat      = surfaceFormat.format;
+                createInfo.imageColorSpace  = surfaceFormat.colorSpace;
+                createInfo.imageExtent      = extent;
+                createInfo.imageArrayLayers = 1;
+                createInfo.imageUsage       = vk::ImageUsageFlagBits::eColorAttachment;
 
                 VulkanQueueFamilyIndices familyIndices(inPhysicalDevice, inSurface);
 

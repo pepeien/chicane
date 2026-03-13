@@ -27,21 +27,15 @@ namespace Chicane
                 {
                     draws.push_back(draw);
                 }
-
-                //std::sort(
-                //    draws.begin(),
-                //    draws.end(),
-                //    [](const Draw& inA, const Draw& inB) { return inA.id <= inB.id; }
-                //);
             }
 
             refresh2DDraws();
             refresh3DDraws();
         }
 
-        void Frame::setup(const DrawSky& inResource)
+        void Frame::setup(const DrawSkyResource& inResource)
         {
-            m_skyInstance.model = inResource.model;
+            m_skyInstance.model = inResource.getDraw().model;
         }
 
         const View& Frame::getCamera() const

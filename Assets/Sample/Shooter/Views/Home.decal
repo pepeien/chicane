@@ -1,0 +1,90 @@
+@import(Font, Assets/Engine/Fonts/Poppins.bfon);
+
+// Color
+$grayColor: rgb(51, 51, 51);
+
+// Crosshair
+$xhairPixel:     calc(100vh / 480px);
+$xhairSize:      calc(ref(crosshairSize) * $xhairPixel);
+$xhairThickness: calc(ref(crosshairThickness) * $xhairPixel);
+$xhairGap:       calc(ref(crosshairGap) * $xhairPixel);
+
+$xhairThicknessOffset: calc($xhairThickness * 0.5);
+$xhairPositiveOffset:  calc(50% + calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 0.5)));
+$xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize * 1.5));
+
+.victory {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 10vw;
+    margin: calc(50% - 5vw) 0 0 0;
+    background-color: $grayColor;
+    alignment: center;
+    z-index: 2;
+
+    Text {
+        font-size: 8vw;
+    }
+}
+
+.telemetry {
+    display: flex;
+    flex-direction: row;
+
+    Text {
+        color: green;
+    }
+
+    &__system {
+        width: 5em;
+    }
+}
+
+.score {
+    position: absolute;
+    margin: calc(100% - 3em) 0 0 0;
+    background-color: rgba($grayColor, 0.3);
+    font-size: 2em;
+    padding: 1em;
+}
+
+.crosshair {
+    &__dot, &__top, &__bottom, &__left, &__right {
+        position: absolute;
+        background-color: rgba(ref(crosshairColorR), ref(crosshairColorG), ref(crosshairColorB), ref(crosshairColorA));
+    }
+
+    &__top, &__bottom {
+        height: $xhairSize;
+        width: $xhairThickness;
+    }
+
+    &__left, &__right {
+        height: $xhairThickness;
+        width: $xhairSize;
+    }
+
+    &__dot {
+        display: ref(crosshairDotDisplay);
+        margin: calc(50% - $xhairThicknessOffset) 0 0 calc(50% - $xhairThicknessOffset);
+        height: $xhairThickness;
+        width: $xhairThickness;
+    }
+
+    &__top {
+        margin: calc(50% - $xhairNegativeOffset) 0 0 calc(50% - $xhairThicknessOffset);
+    }
+
+    &__bottom {
+        margin: $xhairPositiveOffset 0 0 calc(50% - $xhairThicknessOffset);
+    }
+
+    &__left {
+        margin: calc(50% - $xhairThicknessOffset) 0 0 calc(50% - $xhairNegativeOffset);
+    }
+
+    &__right {
+        margin: calc(50% - $xhairThicknessOffset) 0 0 $xhairPositiveOffset;
+    }
+}

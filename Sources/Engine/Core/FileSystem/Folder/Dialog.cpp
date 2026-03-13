@@ -1,5 +1,7 @@
 #include "Chicane/Core/FileSystem/Folder/Dialog.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
+
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -25,39 +27,47 @@ namespace Chicane
             String filepath = "";
 
 #if IS_WINDOWS
-            std::wstring wTitle = std::wstring(title.begin(), title.end());
+            std::wstring wTitle    = std::wstring(title.begin(), title.end());
+            std::wstring wLocation = std::wstring(location.begin(), location.end());
 
-            IFileOpenDialog* pDialog = nullptr;
-            HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pDialog));
-
-            if (SUCCEEDED(hr))
+            IFileOpenDialog* dialog = nullptr;
+            if (SUCCEEDED(CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&dialog))))
             {
                 DWORD options = 0;
-                pDialog->GetOptions(&options);
-                pDialog->SetOptions(options | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR);
+                dialog->GetOptions(&options);
+                dialog->SetOptions(options | FOS_PICKFOLDERS | FOS_PATHMUSTEXIST | FOS_NOCHANGEDIR);
 
-                pDialog->SetTitle(wTitle.c_str());
+                dialog->SetTitle(wTitle.c_str());
 
-                hr = pDialog->Show(nullptr);
-                if (SUCCEEDED(hr))
+                IShellItem* locationFolder = NULL;
+                if (SUCCEEDED(SHCreateItemFromParsingName(wLocation.c_str(), NULL, IID_PPV_ARGS(&locationFolder))))
                 {
-                    IShellItem* pItem = nullptr;
-                    hr                = pDialog->GetResult(&pItem);
-                    if (SUCCEEDED(hr))
+                    dialog->SetFolder(locationFolder);
+
+                    locationFolder->Release();
+                }
+
+                if (SUCCEEDED(dialog->Show(nullptr)))
+                {
+                    IShellItem* item = nullptr;
+                    if (SUCCEEDED(dialog->GetResult(&item)))
                     {
-                        PWSTR pszPath = nullptr;
-                        if (SUCCEEDED(pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)))
+                        PWSTR path = nullptr;
+                        if (SUCCEEDED(item->GetDisplayName(SIGDN_FILESYSPATH, &path)))
                         {
-                            std::wstring wPath(pszPath);
+                            std::wstring wPath(path);
+
                             filepath = String(wPath.begin(), wPath.end());
-                            CoTaskMemFree(pszPath);
+
+                            CoTaskMemFree(path);
                         }
-                        pItem->Release();
+
+                        item->Release();
                     }
                 }
-                pDialog->Release();
-            }
 
+                dialog->Release();
+            }
 #elif IS_LINUX
             String command = "zenity";
 
@@ -66,8 +76,13 @@ namespace Chicane
                 command.append(" --title='" + title.trim() + "'");
             }
 
+            if (!location.isEmpty())
+            {
+                command.append(" --filename='" + location.trim() + "'");
+            }
+
             command.append(" --file-selection");
-            command.append(" -directory");
+            command.append(" --directory");
 
             char buffer[256];
 
@@ -75,12 +90,12 @@ namespace Chicane
 
             if (!pipe)
             {
-                throw std::runtime_error("Failed to open file dialog [" + title.trim() + "]");
+                throw std::runtime_error("Failed to open folder dialog [" + title.trim() + "]");
             }
 
             while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
             {
-                filepaths += buffer;
+                filepath += buffer;
             }
 
             pclose(pipe);
@@ -91,7 +106,12 @@ namespace Chicane
                 return;
             }
 
-            inCallback(ls(filepath.toStandard()));
+            if (!filepath.isEmpty() && filepath.back() == '\n')
+            {
+                filepath.popBack();
+            }
+
+            inCallback(ls(filepath));
         }
     }
 }

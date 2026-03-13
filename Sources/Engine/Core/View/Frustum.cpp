@@ -51,7 +51,7 @@ namespace Chicane
         const Vec3 farCenter  = translation + forward * farClip;
 
         m_near.setNormal(forward, nearCenter);
-        m_far.setNormal(-forward, farCenter);
+        m_far.setNormal(forward * -1.0f, farCenter);
 
         const Vec3 farTopRight    = farCenter + up * halfVertical + right * halfHorizontal;
         const Vec3 farTopLeft     = farCenter + up * halfVertical - right * halfHorizontal;

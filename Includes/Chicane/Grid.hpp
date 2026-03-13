@@ -17,8 +17,6 @@
     #define CHICANE_GRID
 #endif
 
-#include "Chicane/Core/Xml.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -27,9 +25,9 @@ namespace Chicane
         static constexpr inline const char* REFERENCE_VALUE_OPENING = "{{";
         static constexpr inline const char* REFERENCE_VALUE_CLOSING = "}}";
 
-        static constexpr inline const char  FUNCTION_PARAMS_OPENING   = '(';
-        static constexpr inline const char  FUNCTION_PARAMS_SEPARATOR = ',';
-        static constexpr inline const char  FUNCTION_PARAMS_CLOSING   = ')';
+        static constexpr inline const char  METHOD_PARAMS_OPENING   = '(';
+        static constexpr inline const char  METHOD_PARAMS_SEPARATOR = ',';
+        static constexpr inline const char  METHOD_PARAMS_CLOSING   = ')';
 
         // Value attributes
         static constexpr inline const char* ID_ATTRIBUTE_NAME    = "id";
@@ -41,7 +39,5 @@ namespace Chicane
         // List
         static constexpr inline const char* ITEMS_ATTRIBUTE_NAME       = "items";
         static constexpr inline const char* ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
-
-        CHICANE_GRID class Component* createComponent(const pugi::xml_node& inNode);
     }
 }

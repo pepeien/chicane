@@ -7,6 +7,7 @@
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
+#include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
@@ -40,7 +41,7 @@ namespace Chicane
             // Event
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             virtual void onLoad(const DrawTextureResource& inResources) { return; }
-            virtual void onLoad(const DrawSky& inResource) { return; }
+            virtual void onLoad(const DrawSkyResource& inResource) { return; }
 
             // Render
             virtual bool onBeginRender(const Frame& inFrame) { return true; }

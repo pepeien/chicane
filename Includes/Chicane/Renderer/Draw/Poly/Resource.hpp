@@ -14,7 +14,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawPolyResource : DrawResource<Vertex::Index, Vertex>
+        struct CHICANE_RENDERER DrawPolyResource : public DrawResource<Vertex::Index, Vertex>
         {
         public:
             using Map   = std::unordered_map<DrawPolyType, DrawPolyResource>;

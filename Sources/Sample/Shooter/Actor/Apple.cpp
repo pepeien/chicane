@@ -1,14 +1,14 @@
-#include "Actor/Apple.hpp"
+#include "Sample/Shooter/Actor/Apple.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 
-#include "Game.hpp"
+#include "Sample/Shooter/Game.hpp"
 
 Apple::Apple()
     : Chicane::Actor(),
       m_rotateRate(std::max(0.1f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f)),
       m_fallRate(std::max(0.001f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f)),
-      m_startPosition(Chicane::Vec3::Zero),
+      m_startPosition(Chicane::Vec3::Zero()),
       m_meshComponent(nullptr),
       m_hitSound(nullptr)
 {
@@ -19,12 +19,12 @@ Apple::Apple()
 void Apple::onLoad()
 {
     m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
-    m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
+    m_meshComponent->setMesh("Assets/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
     m_hitSound = getScene()->createComponent<Chicane::CSound>();
-    m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
+    m_hitSound->load("Assets/Sample/Shooter/Sounds/Hit.bsnd");
     m_hitSound->attachTo(this);
     m_hitSound->activate();
 }

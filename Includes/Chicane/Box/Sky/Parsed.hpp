@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Box
     {
-        using SkyParsedSide  = Image;
+        using SkyParsedSide  = Image::Reference;
         using SkyParsedSides = std::unordered_map<SkySide, SkyParsedSide>;
     }
 }

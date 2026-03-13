@@ -52,6 +52,9 @@ namespace Chicane
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+            glEnable(GL_POLYGON_OFFSET_FILL);
+            glPolygonOffset(2.0f, 4.0f);
+
             glClear(GL_DEPTH_BUFFER_BIT);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
@@ -79,6 +82,7 @@ namespace Chicane
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
+            glDisable(GL_POLYGON_OFFSET_FILL);
         }
 
         void OpenGLLSceneShadow::buildShader()
@@ -87,7 +91,7 @@ namespace Chicane
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Shadow.overt");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Shadow.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -140,6 +144,9 @@ namespace Chicane
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+
+            float borderColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+            glTextureParameterfv(m_depthMapBuffer, GL_TEXTURE_BORDER_COLOR, borderColor);
 
             // Attach
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);

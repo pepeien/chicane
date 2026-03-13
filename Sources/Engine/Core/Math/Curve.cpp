@@ -22,7 +22,7 @@ namespace Chicane
             const float mt = 1.0f - t;
 
             // Quadratic bezier formula: B(t) = (1-t)²P₀ + 2(1-t)tP₁ + t²P₂
-            Vec2 point = {};
+            Vec2 point;
             point += mt * mt * start;
             point += 2.0f * mt * t * inControl;
             point += t * t * inPoint;
@@ -47,7 +47,7 @@ namespace Chicane
 
             // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ +
             // t³P₃
-            Vec2 point = {};
+            Vec2 point;
             point += mt * mt * mt * start;
             point += 3.0f * mt * mt * t * inControlA;
             point += 3.0f * mt * t * t * inControlB;

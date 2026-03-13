@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "Editor/Application.hpp"
 
 #include <Chicane/Core/List/Push.hpp>
 #include <Chicane/Core/Window/Backend.hpp>
@@ -9,8 +9,8 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Scene.hpp"
-#include "View.hpp"
+#include "Editor/Scene.hpp"
+#include "Editor/View.hpp"
 
 #if CHICANE_OPENGL
     #include "Layer/OpenGL/Grid.hpp"
@@ -25,15 +25,15 @@ namespace Editor
     Application::Application()
         : m_controller(nullptr)
     {
-        Chicane::ApplicationCreateInfo createInfo = {};
+        Chicane::ApplicationCreateInfo createInfo;
 
         // Window
         createInfo.window.title   = "Chicane Editor";
-        createInfo.window.icon    = "Contents/Editor/Icon.png";
+        createInfo.window.icon    = "Assets/Editor/Icon.png";
         createInfo.window.size    = Chicane::Vec<2, std::uint32_t>(1600, 900);
-        createInfo.window.display = 1;
+        createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::Windowed;
-        createInfo.window.backend = Chicane::WindowBackend::OpenGL;
+        createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 
         // Setup
         createInfo.onSetup = [this]()

@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component/View.hpp"
+#include "Chicane/Runtime/Scene/Component/View.reflected.hpp"
 
 namespace Chicane
 {
@@ -7,7 +7,7 @@ namespace Chicane
           m_settings({}),
           m_frustum({}),
           m_data({}),
-          m_focusPoint(Vec3::Zero)
+          m_focusPoint(Vec3::Zero())
     {}
 
     void CView::onTransform()
@@ -171,7 +171,11 @@ namespace Chicane
 
     void CView::updateView()
     {
-        m_data.view = glm::lookAt(getTranslation(), m_focusPoint, getUp());
+        m_data.view = glm::lookAt(
+            static_cast<glm::vec3>(getTranslation()),
+            static_cast<glm::vec3>(m_focusPoint),
+            static_cast<glm::vec3>(getUp())
+        );
 
         m_frustum.update(this, m_settings);
     }

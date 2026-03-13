@@ -1,4 +1,4 @@
-#include "Layer/OpenGL/Grid.hpp"
+#include "Editor/Layer/OpenGL/Grid.hpp"
 
 #include <Chicane/Renderer/Backend/OpenGL.hpp>
 
@@ -65,12 +65,12 @@ namespace Editor
 
         Chicane::Renderer::Shader vertex;
         vertex.type   = Chicane::Renderer::ShaderType::Vertex;
-        vertex.source = "Contents/Editor/Shaders/OpenGL/Grid.overt";
+        vertex.source = "Assets/Editor/Shaders/OpenGL/Grid.overt";
         shaders.push_back(vertex);
 
         Chicane::Renderer::Shader fragment;
         fragment.type   = Chicane::Renderer::ShaderType::Fragment;
-        fragment.source = "Contents/Editor/Shaders/OpenGL/Grid.ofrag";
+        fragment.source = "Assets/Editor/Shaders/OpenGL/Grid.ofrag";
         shaders.push_back(fragment);
 
         m_shaderProgram = getBackend<Chicane::Renderer::OpenGLBackend>()->initShader(shaders);

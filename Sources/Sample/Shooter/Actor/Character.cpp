@@ -1,10 +1,10 @@
-#include "Actor/Character.hpp"
+#include "Sample/Shooter/Actor/Character.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 
-#include "Actor/Apple.hpp"
-#include "Game.hpp"
-#include "Level.hpp"
+#include "Sample/Shooter/Actor/Apple.hpp"
+#include "Sample/Shooter/Game.hpp"
+#include "Sample/Shooter/Level.hpp"
 
 static constexpr inline const float MOVE_COEFFICIENT = 3.0f;
 
@@ -32,7 +32,7 @@ void Character::onLoad()
 
     m_wand = getScene()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);
-    m_wand->setMesh("Contents/Sample/Shooter/Meshes/Character/Wand.bmsh");
+    m_wand->setMesh("Assets/Sample/Shooter/Meshes/Character/Wand.bmsh");
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
     m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
@@ -40,12 +40,12 @@ void Character::onLoad()
 
     m_body = getScene()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
-    m_body->setMesh("Contents/Sample/Shooter/Meshes/Character/Body.bmsh");
+    m_body->setMesh("Assets/Sample/Shooter/Meshes/Character/Body.bmsh");
     m_body->activate();
 
     m_victorySound = getScene()->createComponent<Chicane::CSound>();
     m_victorySound->attachTo(this);
-    m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
+    m_victorySound->load("Assets/Sample/Shooter/Sounds/Victory.bsnd");
     m_victorySound->activate();
 
     Game::watchScore(

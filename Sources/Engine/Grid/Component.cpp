@@ -1,4 +1,6 @@
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component.reflected.hpp"
+
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
 {
@@ -12,23 +14,64 @@ namespace Chicane
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
             addChildren(inNode);
+
+            setDirective(
+                IF_DIRECTIVE_KEYWORD,
+                [&](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        return;
+                    }
+
+                    if (parseText(inValue).equals("true", "1"))
+                    {
+                        return;
+                    }
+
+                    m_style.display.set(StyleDisplay::None);
+                }
+            );
+            setDirective(
+                FOR_DIRECTIVE_KEYWORD,
+                [&](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        return;
+                    }
+
+                    const std::vector<String> values = inValue.trim().split(':');
+
+                    if (values.size() < 2)
+                    {
+                        return;
+                    }
+
+                    const String rawVariable = values.at(0).trim();
+                    const String rawIterable = values.at(1).trim();
+                }
+            );
         }
 
         Component::Component(const String& inTag)
             : m_tag(inTag),
+              m_id(String::empty()),
+              m_className(String::empty()),
+              m_directives({}),
               m_style({}),
               m_styleFile(nullptr),
-              m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
-              m_size(Vec2::Zero),
-              m_position(Vec2::Zero),
-              m_offset(Vec2::Zero),
-              m_cursor(Vec2::Zero),
+              m_size(Vec2::Zero()),
+              m_scale(Vec2::Zero()),
+              m_offset(Vec2::Zero()),
+              m_position(Vec2::Zero()),
+              m_cursor(Vec2::Zero()),
               m_bounds({}),
-              m_attributes({}),
-              m_primitive({})
+              m_primitive({}),
+              m_attributes({})
         {
             m_style.setParent(this);
         }
@@ -72,6 +115,8 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshBounds();
+
+            refreshDirectives();
         }
 
         bool Component::isRoot() const
@@ -110,44 +155,14 @@ namespace Chicane
         {
             onHover();
 
-            String onHoverAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
-
-            if (onHoverAttribute.isEmpty())
-            {
-                return;
-            }
-
-            String functionName = parseText(onHoverAttribute);
-
-            if (!hasFunction(functionName))
-            {
-                return;
-            }
-
-            Event event;
-            getFunction(functionName)(event);
+            getMethod(getAttribute(ON_HOVER_ATTRIBUTE_NAME)).invoke(this);
         }
 
         void Component::click()
         {
             onClick();
 
-            String onClickAttribute = getAttribute(ON_CLICK_ATTRIBUTE_NAME);
-
-            if (onClickAttribute.isEmpty())
-            {
-                return;
-            }
-
-            String functionName = parseText(onClickAttribute);
-
-            if (!hasFunction(functionName))
-            {
-                return;
-            }
-
-            Event event;
-            getFunction(functionName)(event);
+            getMethod(getAttribute(ON_CLICK_ATTRIBUTE_NAME)).invoke(this);
         }
 
         const String& Component::getTag() const
@@ -169,11 +184,28 @@ namespace Chicane
 
         Component::ClassList Component::getClassList() const
         {
-            ClassList result = {};
+            if (m_className.isEmpty())
+            {
+                return {};
+            }
 
+            ClassList result;
+
+            String accumulated = "";
             for (const String& className : m_className.split(Style::SELECTOR_SEPARATOR_SPACE))
             {
-                result.insert(Style::CLASS_SELECTOR + className);
+                String part = Style::CLASS_SELECTOR + className;
+                part        = part.trim();
+
+                accumulated.append(' ');
+                accumulated.append(part);
+
+                result.emplace(std::move(part));
+            }
+
+            if (!accumulated.isEmpty())
+            {
+                result.insert(accumulated.trim());
             }
 
             return result;
@@ -189,6 +221,31 @@ namespace Chicane
             m_className = inValue;
 
             refreshStyleRuleset();
+        }
+
+        void Component::refreshDirectives()
+        {
+            for (const auto& [key, directive] : m_directives)
+            {
+                runDirective(key, getAttribute(key));
+            }
+        }
+
+        void Component::runDirective(const String& inKey, const String& inValue)
+        {
+            const auto& found = m_directives.find(inKey);
+
+            if (found == m_directives.end() || !found->second)
+            {
+                return;
+            }
+
+            found->second(inValue);
+        }
+
+        void Component::setDirective(const String& inKey, const Directive& inValue)
+        {
+            m_directives[inKey] = inValue;
         }
 
         const String& Component::getAttribute(const String& inName) const
@@ -220,39 +277,83 @@ namespace Chicane
                 return true;
             }
 
-            String remaining = inValue;
+            String              tag;
+            String              id;
+            std::vector<String> classes;
 
-            const size_t idPos = remaining.firstOf(Style::ID_SELECTOR);
-            if (idPos != String::npos)
+            String value = inValue.trim();
+
+            std::size_t cursor = value.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
+
+            if (cursor == String::npos)
             {
-                String idPart = remaining.substr(idPos);
-                remaining     = remaining.substr(0, idPos);
+                tag = value;
+            }
+            else
+            {
+                if (cursor > 0)
+                {
+                    tag = value.substr(0, cursor);
+                }
 
-                if (!(Style::ID_SELECTOR + getId()).equals(idPart))
+                value = value.substr(cursor);
+            }
+
+            while (value.startsWithChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR))
+            {
+                const char prefix = value.at(0);
+
+                std::size_t next = String::npos;
+
+                for (std::size_t i = 1; i < value.size(); ++i)
+                {
+                    const char c = value.at(i);
+
+                    if (c == Style::CLASS_SELECTOR || c == Style::ID_SELECTOR)
+                    {
+                        next = i;
+                        break;
+                    }
+                }
+
+                const std::size_t length = (next == String::npos) ? value.size() : next;
+
+                const String token = value.substr(0, length);
+
+                if (prefix == Style::CLASS_SELECTOR)
+                {
+                    classes.push_back(token);
+                }
+                else if (prefix == Style::ID_SELECTOR)
+                {
+                    id = token;
+                }
+
+                if (next == String::npos)
+                {
+                    break;
+                }
+
+                value = value.substr(next);
+            }
+
+            if (!tag.isEmpty() && !tag.equals(getTag()))
+            {
+                return false;
+            }
+
+            if (!id.isEmpty())
+            {
+                if (!id.equals(Style::ID_SELECTOR + getId()))
                 {
                     return false;
                 }
             }
 
-            const ClassList classes = getClassList();
-
-            size_t classPos = remaining.firstOf(Style::CLASS_SELECTOR);
-            while (classPos != String::npos)
+            const ClassList classList = getClassList();
+            for (const String& className : classes)
             {
-                String classPart = remaining.substr(classPos);
-                remaining        = remaining.substr(0, classPos);
-
-                if (classes.find(classPart) == classes.end())
-                {
-                    return false;
-                }
-
-                classPos = remaining.firstOf(Style::CLASS_SELECTOR);
-            }
-
-            if (!remaining.isEmpty())
-            {
-                if (!remaining.equals(getTag()))
+                if (classList.find(className) == classList.end())
                 {
                     return false;
                 }
@@ -344,120 +445,98 @@ namespace Chicane
             m_style.setProperties(inSource);
         }
 
-        bool Component::hasReference(const String& inId, bool isLocalOnly) const
-        {
-            bool bWasFoundLocally = m_references.find(inId) != m_references.end() && m_references.at(inId) &&
-                                    !m_references.at(inId)->isEmpty();
-
-            if (!hasParent() || isLocalOnly)
-            {
-                return bWasFoundLocally;
-            }
-
-            return bWasFoundLocally || m_parent->hasReference(inId);
-        }
-
-        Reference* Component::getReference(const String& inId) const
-        {
-            if (!hasParent())
-            {
-                return hasReference(inId, true) ? m_references.at(inId) : nullptr;
-            }
-
-            return hasReference(inId, true) ? m_references.at(inId) : m_parent->getReference(inId);
-        }
-
-        void Component::addReference(const Reference::Map& inReferences)
-        {
-            for (auto [id, reference] : inReferences)
-            {
-                addReference(id, reference);
-            }
-        }
-
-        void Component::addReference(const String& inId, Reference* inReference)
-        {
-            if (hasReference(inId, true))
-            {
-                return;
-            }
-
-            m_references.insert(std::make_pair(inId, inReference));
-        }
-
-        void Component::removeReference(const String& inId)
-        {
-            if (!hasReference(inId, true))
-            {
-                return;
-            }
-
-            m_references.erase(inId);
-        }
-
-        bool Component::hasFunction(const String& inId, bool isLocalOnly) const
+        bool Component::hasField(const String& inId, bool isLocalOnly) const
         {
             if (inId.isEmpty())
             {
                 return false;
             }
 
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
-
-            const bool bHasLocally =
-                m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
-
-            if (!hasParent() || isLocalOnly)
+            if (isLocalOnly || !hasParent())
             {
-                return bHasLocally;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    const std::vector<String> fields = inId.split('.');
+
+                    if (fields.empty())
+                    {
+                        return false;
+                    }
+
+                    return type->findField(fields.at(0)) != nullptr;
+                }
+
+                return false;
             }
 
-            return bHasLocally || m_parent->hasFunction(id);
+            return m_parent->hasField(inId, false);
         }
 
-        const Function Component::getFunction(const String& inId, bool isLocalOnly) const
+        const ReflectionFieldInfo* Component::getField(const String& inId) const
         {
             if (inId.isEmpty())
             {
                 return nullptr;
             }
 
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
-
-            if (!hasParent() || isLocalOnly)
+            if (!hasParent())
             {
-                return hasFunction(id, true) ? m_functions.at(id) : nullptr;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    return type->findField(inId);
+                }
+
+                return nullptr;
             }
 
-            return hasFunction(id, true) ? m_functions.at(id) : m_parent->getFunction(id);
+            return m_parent->getField(inId);
         }
 
-        void Component::addFunction(const Functions& inFunctions)
+        bool Component::hasMethod(const String& inId, bool isLocalOnly) const
         {
-            for (auto [id, function] : inFunctions)
+            if (inId.isEmpty())
             {
-                addFunction(id, function);
+                return false;
             }
+
+            if (isLocalOnly || !hasParent())
+            {
+                return getMethod(inId).isValid();
+            }
+
+            return m_parent->hasMethod(inId, false);
         }
 
-        void Component::addFunction(const String& inId, Function inFunction)
+        Method Component::getMethod(const String& inValue) const
         {
-            if (hasFunction(inId, true))
+            const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
+
+            if (!isMethod(signature))
             {
-                return;
+                return {};
             }
 
-            m_functions.insert(std::make_pair(inId, inFunction));
-        }
-
-        void Component::removeFunction(const String& inId)
-        {
-            if (!hasFunction(inId, true))
+            if (!hasParent())
             {
-                return;
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                {
+                    const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
+
+                    if (const ReflectionMethodInfo* method = type->findMethod(name))
+                    {
+                        Method result;
+                        result.setInstance(method);
+
+                        return result;
+                    }
+
+                    return {};
+                }
+
+                return {};
             }
 
-            m_functions.erase(inId);
+            return m_parent->getMethod(inValue);
         }
 
         bool Component::hasRoot() const
@@ -514,7 +593,7 @@ namespace Chicane
                 return false;
             }
 
-            std::vector<const Component*> neighbours = {};
+            std::vector<const Component*> neighbours;
 
             for (const Component* children : m_parent->getChildren())
             {
@@ -538,14 +617,20 @@ namespace Chicane
 
             const std::vector<Component*>& neighbours = m_parent->getChildren();
 
-            std::uint32_t location = std::find_if(
-                                         neighbours.begin(),
-                                         neighbours.end(),
-                                         [&](Component* children) { return children == this; }
-                                     ) -
-                                     neighbours.begin();
+            const std::size_t location = std::find_if(
+                                             neighbours.begin(),
+                                             neighbours.end(),
+                                             [&](Component* children) { return children == this; }
+                                         ) -
+                                         neighbours.begin();
 
-            return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
+            return neighbours.at(
+                std::clamp(
+                    static_cast<std::size_t>(location + inJumps),
+                    static_cast<std::size_t>(0),
+                    neighbours.size() - 1
+                )
+            );
         }
 
         bool Component::hasChildren() const
@@ -585,9 +670,36 @@ namespace Chicane
                 return;
             }
 
+            const String defaultNamespace = "Chicane::Grid::";
             for (const auto& child : inNode.children())
             {
-                addChild(createComponent(child));
+                /**
+                 * Try to find component by tag with system default namespace.
+                 * 
+                 * Even tough the `Grid` system is supposed to accept custom components,
+                 * system defaults (prefixed by `Chicane::Grid` namespace) should take priority.
+                 */
+                const String defaultedTypeName = defaultNamespace + child.name();
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName))
+                {
+                    addChild(type->create<Component>({child}));
+
+                    continue;
+                }
+
+                /**
+                 * Try to find component by tag as is.
+                 * 
+                 * Try to create custom components using <TAG></TAG> with `TAG` being the full type signature,
+                 * custom components should be referenced using the full namespace.
+                 */
+                const String customTypeName = child.name();
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(child.name()))
+                {
+                    addChild(type->create<Component>({child}));
+
+                    continue;
+                }
             }
         }
 
@@ -609,7 +721,7 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeBlock() const
         {
-            Vec2 result = Vec2::Zero;
+            Vec2 result = Vec2::Zero();
 
             for (const Component* child : m_children)
             {
@@ -639,7 +751,7 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeFlex() const
         {
-            Vec2 result = Vec2::Zero;
+            Vec2 result = Vec2::Zero();
 
             for (const Component* child : m_children)
             {
@@ -808,7 +920,7 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            m_primitive = {};
+            m_primitive;
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
@@ -920,12 +1032,7 @@ namespace Chicane
 
         String Component::parseText(const String& inValue) const
         {
-            if (inValue.isEmpty())
-            {
-                return "";
-            }
-
-            if (!isReference(inValue))
+            if (inValue.isEmpty() || !isReference(inValue))
             {
                 return inValue;
             }
@@ -955,7 +1062,7 @@ namespace Chicane
             const String value = inValue.substr(valueStart, closePosition - valueStart).trim();
             if (!value.isEmpty())
             {
-                result.append(parseReference(value).toString());
+                result.append(parseReference(value));
             }
 
             const String suffix = inValue.substr(closePosition + 2);
@@ -975,58 +1082,42 @@ namespace Chicane
             return bHasOpening && bHasClosing;
         }
 
-        Reference Component::parseReference(const String& inValue) const
+        String Component::parseReference(const String& inValue) const
         {
-            if (!isFunction(inValue))
+            if (!hasField(inValue))
             {
-                if (hasReference(inValue))
+                return inValue;
+            }
+
+            if (!hasParent())
+            {
+                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
                 {
-                    return *getReference(inValue);
+                    try
+                    {
+                        return type->resolve(inValue).toString(this);
+                    }
+                    catch (const std::exception& e)
+                    {
+                        return inValue;
+                    }
                 }
-
-                return Reference::fromValue<const String>(&inValue);
             }
 
-            if (!hasFunction(inValue))
-            {
-                return Reference::fromValue<const String>(&inValue);
-            }
-
-            FunctionData data = parseFunction(inValue);
-
-            Event event  = {};
-            event.values = data.params;
-
-            return getFunction(data.name)(event);
+            return m_parent->parseReference(inValue);
         }
 
-        bool Component::isFunction(const String& inValue) const
+        bool Component::isMethod(const String& inValue) const
         {
-            const bool bHasOpening = inValue.firstOf(FUNCTION_PARAMS_OPENING) != String::npos;
-            const bool bHasClosing = inValue.lastOf(FUNCTION_PARAMS_CLOSING) != String::npos;
+            if (inValue.isEmpty())
+            {
+                return false;
+            }
+
+            const bool bHasOpening = inValue.firstOf(METHOD_PARAMS_OPENING) != String::npos;
+            const bool bHasClosing = inValue.lastOf(METHOD_PARAMS_CLOSING) != String::npos;
 
             return bHasOpening && bHasClosing;
-        }
-
-        FunctionData Component::parseFunction(const String& inRefValue) const
-        {
-            const String trimmedValue = inRefValue.trim();
-
-            if (trimmedValue.isEmpty())
-            {
-                return {};
-            }
-
-            FunctionData data;
-            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
-
-            const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
-            for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
-            {
-                data.params.push_back(parseReference(value.trim()));
-            }
-
-            return data;
         }
     }
 }

@@ -1,38 +1,35 @@
-##################### Files #######################
+######################### Files #########################
 file(
     GLOB_RECURSE
     HEADERS
-
-    # Headers
-    ${GRID_HEADER_DIR}/*.hpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_GRID_INCLUDES_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Grid.hpp)
+list(APPEND HEADERS ${CHICANE_ENGINE_INCLUDES_DIR}/Grid.hpp)
 
 file(
     GLOB_RECURSE
     SOURCES
-
-    # Sources
-    ${GRID_SOURCE_DIR}/*.cpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_GRID_SOURCES_DIR}/*.cpp
 )
-list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Grid.cpp)
 
-##################### Setup #######################
+######################### Setup #########################
 if (CHICANE_SHARED)
-    add_library(${GRID_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_GRID_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${GRID_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_GRID_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
     "${NAME}::Grid"
 
     ALIAS
-        ${GRID_TARGET_NAME}
+        ${CHICANE_ENGINE_GRID_TARGET_NAME}
 )
 
 set_target_properties(
-    ${GRID_TARGET_NAME}
+    ${CHICANE_ENGINE_GRID_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
@@ -41,30 +38,35 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${CHICANE_INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CHICANE_ENGINE_GRID_INCLUDES_DIR}"
 )
 
 target_compile_definitions(
-    ${GRID_TARGET_NAME}
+    ${CHICANE_ENGINE_GRID_TARGET_NAME}
 
     PRIVATE
         BUILD_EXPORT
 )
 
 target_include_directories(
-    ${GRID_TARGET_NAME}
+    ${CHICANE_ENGINE_GRID_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
 )
 
 target_link_libraries(
-    ${GRID_TARGET_NAME}
+    ${CHICANE_ENGINE_GRID_TARGET_NAME}
 
     PUBLIC
         Chicane::Box
         Chicane::Core
 )
 
-CH_ADD_COMPILER(${GRID_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_ENGINE_GRID_TARGET_NAME})

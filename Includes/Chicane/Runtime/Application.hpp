@@ -4,7 +4,6 @@
 #include <mutex>
 #include <thread>
 
-#include "Chicane/Core/Telemetry.hpp"
 #include "Chicane/Core/Window.hpp"
 
 #include "Chicane/Grid/Component/View.hpp"
@@ -15,6 +14,7 @@
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
+#include "Chicane/Runtime/Application/Telemetry.hpp"
 #include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 
@@ -50,7 +50,7 @@ namespace Chicane
         void run(const ApplicationCreateInfo& inCreateInfo);
 
         // Telemetry
-        const Telemetry& getTelemetry() const;
+        const ApplicationTelemetry& getTelemetry() const;
 
         // Game
         bool hasController();
@@ -156,15 +156,15 @@ namespace Chicane
         void renderScene();
 
         // Grid
-        void initView();
-        void shutdownView();
-        void tickView();
-        void buildViewCommands(std::shared_ptr<Grid::View> inView);
-        void renderView();
+        void initUI();
+        void shutdownUI();
+        void tickUI();
+        void buildUICommands(std::shared_ptr<Grid::View> inView);
+        void renderUI();
 
     private:
         // Status
-        Telemetry                                m_telemetry;
+        ApplicationTelemetry                     m_telemetry;
         std::atomic<bool>                        m_bIsRunning;
 
         // Scene

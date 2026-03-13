@@ -1,16 +1,15 @@
 #pragma once
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sky/CreateInfo.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanSky
+        class CHICANE_RENDERER VulkanSky : public VulkanImageInfo
         {
         public:
             VulkanSky(const VulkanSkyCreateInfo& inCreateInfo);
@@ -20,20 +19,20 @@ namespace Chicane
             void bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
 
         private:
-            void initImage();
-            void copyPixels();
+            void initExtent(const Image::References& inImages);
+            void initInstance(std::uint32_t inCount);
+            void initSampler();
+            void initMemory();
+            void initView(std::uint32_t inCount);
+            void copyPixels(const Image::References& inImages);
             void initDescriptorSet();
 
         private:
-            VulkanImageData        m_image;
-            Image::List            m_images;
-
-            VulkanDescriptorBundle m_descriptor;
-
             vk::Device             m_logicalDevice;
             vk::PhysicalDevice     m_physicalDevice;
             vk::CommandBuffer      m_commandBuffer;
             vk::Queue              m_queue;
+            VulkanDescriptorBundle m_descriptor;
         };
     }
 }

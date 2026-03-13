@@ -1,4 +1,4 @@
-#include "Layer/Vulkan/Grid.hpp"
+#include "Editor/Layer/Vulkan/Grid.hpp"
 
 #include <Chicane/Renderer/Backend/Vulkan.hpp>
 #include <Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp>
@@ -52,7 +52,7 @@ namespace Editor
         vk::Rect2D scissor = backend->getVkScissor(this);
         commandBuffer.setScissor(0, 1, &scissor);
 
-        vk::RenderPassBeginInfo beginInfo  = {};
+        vk::RenderPassBeginInfo beginInfo;
         beginInfo.renderPass               = m_graphicsPipeline.renderPass;
         beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
         beginInfo.renderArea.extent.width  = viewport.width;
@@ -143,11 +143,11 @@ namespace Editor
 
         // Shader
         Chicane::Renderer::VulkanShaderStageCreateInfo vertexShader;
-        vertexShader.path = "Contents/Editor/Shaders/Vulkan/Grid.vvert";
+        vertexShader.path = "Assets/Editor/Shaders/Vulkan/Grid.vvert";
         vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
         Chicane::Renderer::VulkanShaderStageCreateInfo fragmentShader;
-        fragmentShader.path = "Contents/Editor/Shaders/Vulkan/Grid.vfrag";
+        fragmentShader.path = "Assets/Editor/Shaders/Vulkan/Grid.vfrag";
         fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
         // Depth
@@ -168,8 +168,8 @@ namespace Editor
         colorAttachment.samples       = vk::SampleCountFlagBits::e1;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-        colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-        colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+        colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
+        colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
         vk::AttachmentReference colorReference;
         colorReference.attachment = 0;
@@ -231,6 +231,7 @@ namespace Editor
             .addDynamicState(vk::DynamicState::eViewport)
             .addScissor(backend->getVkScissor(this))
             .addDynamicState(vk::DynamicState::eScissor)
+            .addDynamicState(vk::DynamicState::eLineWidth)
             .addShaderStage(vertexShader, backend->logicalDevice)
             .addShaderStage(fragmentShader, backend->logicalDevice)
             .addColorBlendingAttachment(Chicane::Renderer::VulkanGraphicsPipeline::createBlendAttachmentState(true))

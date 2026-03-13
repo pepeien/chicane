@@ -9,6 +9,7 @@
     #include <windows.h>
     #include <tchar.h>
     #include <shellapi.h>
+    #include <shobjidl.h>
 #endif
 
 namespace Chicane
@@ -24,86 +25,144 @@ namespace Chicane
             String filepaths = "";
 
 #if IS_WINDOWS
-            String command = "";
+            std::wstring wInTitle  = std::wstring(title.begin(), title.end());
+            std::wstring wLocation = std::wstring(location.begin(), location.end());
 
-            if (filters.empty())
+            IFileOpenDialog* dialog = nullptr;
+            if (SUCCEEDED(CoCreateInstance(
+                    CLSID_FileOpenDialog,
+                    nullptr,
+                    CLSCTX_ALL,
+                    IID_IFileOpenDialog,
+                    reinterpret_cast<void**>(&dialog)
+                )))
             {
-                command = "All files";
-            }
-            else
-            {
-                String extensions = "";
-                for (const FileFilter& filter : filters)
+                DWORD options;
+                dialog->GetOptions(&options);
+                dialog->SetOptions(
+                    options | FOS_NOCHANGEDIR | FOS_FILEMUSTEXIST | (bCanSelectMany ? FOS_ALLOWMULTISELECT : 0)
+                );
+
+                dialog->SetTitle(wInTitle.c_str());
+
+                IShellItem* locationFolder = NULL;
+                if (SUCCEEDED(SHCreateItemFromParsingName(wLocation.c_str(), NULL, IID_PPV_ARGS(&locationFolder))))
                 {
-                    if (filter.extensions.empty())
+                    dialog->SetFolder(locationFolder);
+
+                    locationFolder->Release();
+                }
+
+                std::vector<COMDLG_FILTERSPEC> specs;
+                std::vector<std::wstring>      specNames;
+                std::vector<std::wstring>      specPatterns;
+
+                if (!filters.empty())
+                {
+                    String allExtensions = "";
+                    for (const FileFilter& filter : filters)
                     {
-                        continue;
+                        if (filter.extensions.empty())
+                        {
+                            continue;
+                        }
+
+                        allExtensions.append(getExtensionsFilter(filter, ";"));
+                        allExtensions.append(';');
+                    }
+                    allExtensions.popBack();
+
+                    specNames.push_back(std::wstring(allExtensions.begin(), allExtensions.end()));
+                    specNames.back() = L"All Files (" + specNames.back() + L")";
+                    specPatterns.push_back(std::wstring(allExtensions.begin(), allExtensions.end()));
+
+                    std::uint32_t filterCount = 0U;
+                    for (const FileFilter& filter : filters)
+                    {
+                        if (filter.extensions.empty())
+                        {
+                            continue;
+                        }
+
+                        const String filterTitle = filter.title.isEmpty()
+                                                       ? String("File filter " + std::to_string(filterCount))
+                                                       : filter.title;
+
+                        String extensions = getExtensionsFilter(filter, ";");
+                        String fullTitle  = filterTitle.trim() + " (" + extensions + ")";
+
+                        specNames.push_back(std::wstring(fullTitle.begin(), fullTitle.end()));
+                        specPatterns.push_back(std::wstring(extensions.begin(), extensions.end()));
+
+                        filterCount++;
                     }
 
-                    extensions.append(getExtensionsFilter(filter, ";"));
-                    extensions.append(';');
+                    for (std::size_t i = 0; i < specNames.size(); ++i)
+                    {
+                        specs.push_back({specNames[i].c_str(), specPatterns[i].c_str()});
+                    }
+
+                    dialog->SetFileTypes(static_cast<UINT>(specs.size()), specs.data());
                 }
-                extensions.popBack();
 
-                command = "All Files (" + extensions + ")";
-                command.append('\0');
-                command.append(extensions);
-                command.append('\0');
-            }
-
-            std::uint32_t filterCount = 0U;
-            for (const FileFilter& filter : filters)
-            {
-                if (filter.extensions.empty())
+                if (SUCCEEDED(dialog->Show(nullptr)))
                 {
-                    continue;
+                    if (bCanSelectMany)
+                    {
+                        IShellItemArray* items = nullptr;
+                        dialog->GetResults(&items);
+
+                        DWORD count = 0;
+                        items->GetCount(&count);
+
+                        for (DWORD i = 0; i < count; ++i)
+                        {
+                            IShellItem* item = nullptr;
+                            items->GetItemAt(i, &item);
+
+                            PWSTR path = nullptr;
+                            item->GetDisplayName(SIGDN_FILESYSPATH, &path);
+
+                            std::wstring ws(path);
+                            filepaths.append(String(ws.begin(), ws.end()));
+                            filepaths.append('\0');
+
+                            CoTaskMemFree(path);
+                            item->Release();
+                        }
+
+                        items->Release();
+                    }
+                    else
+                    {
+                        IShellItem* item = nullptr;
+                        dialog->GetResult(&item);
+
+                        PWSTR path = nullptr;
+                        item->GetDisplayName(SIGDN_FILESYSPATH, &path);
+
+                        std::wstring ws(path);
+                        filepaths = String(ws.begin(), ws.end());
+
+                        CoTaskMemFree(path);
+
+                        item->Release();
+                    }
                 }
 
-                const String title =
-                    filter.title.isEmpty() ? String("File filter " + std::to_string(filterCount)) : filter.title;
-                String extensions = getExtensionsFilter(filter, ";");
-
-                command.append(title.trim() + " (" + extensions + ")");
-                command.append('\0');
-                command.append(extensions);
-                command.append('\0');
-
-                filterCount++;
+                dialog->Release();
             }
-            command.append('\0');
-
-            std::vector<wchar_t> filepath(MAX_PATH * (bCanSelectMany ? 1 : 20), L'\0');
-
-            OPENFILENAMEW ofn{};
-            ofn.lStructSize = sizeof(ofn);
-            ofn.lpstrFile   = filepath.data();
-            ofn.nMaxFile    = static_cast<DWORD>(filepath.size());
-            ofn.Flags       = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-
-            if (bCanSelectMany)
-            {
-                ofn.Flags |= OFN_ALLOWMULTISELECT;
-            }
-
-            std::wstring sFileFilter = std::wstring(command.begin(), command.end());
-            ofn.lpstrFilter          = sFileFilter.c_str();
-
-            std::wstring sInTitle = std::wstring(title.begin(), title.end());
-            ofn.lpstrTitle        = sInTitle.c_str();
-
-            if (GetOpenFileNameW(&ofn))
-            {
-                std::wstring filePathWString(filepath.data());
-
-                filepaths = String(filePathWString.begin(), filePathWString.end());
-            }
-
 #elif IS_LINUX
             String command = "zenity";
 
             if (!title.isEmpty())
             {
                 command.append(" --title='" + title.trim() + "'");
+            }
+
+            if (!location.isEmpty())
+            {
+                command.append(" --filename='" + location.trim() + "'");
             }
 
             command.append(" --file-selection");
@@ -190,7 +249,7 @@ namespace Chicane
             Item::List result;
             for (const String& filepath : filepaths.split(','))
             {
-                result.push_back(Item(ItemType::File, FileSystem::Path(filepath.toStandard())));
+                result.push_back(Item(ItemType::File, FileSystem::Path(filepath)));
             }
 
             inCallback(result);
@@ -207,7 +266,7 @@ namespace Chicane
 
             for (const FileSystem::Path& extension : inFilter.extensions)
             {
-                const String value = extension.string();
+                const String value = extension.toString();
 
                 if (value.isEmpty())
                 {

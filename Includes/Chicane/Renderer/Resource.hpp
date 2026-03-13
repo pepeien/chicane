@@ -13,15 +13,15 @@ namespace Chicane
             SceneIndices,
             SceneVertices,
             SceneInstances,
+            SceneCamera,
+            SceneLights,
 
             Texture,
 
             UI,
             UIIndices,
             UIVertices,
-            UIInstances,
-
-            Misc
+            UIInstances
         };
 
         using ResourceBudget = std::unordered_map<Resource, float>;

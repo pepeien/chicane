@@ -9,7 +9,7 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
 
-                "CHICANE_BUILD_DIR": "Bin/Debug",
+                "CHICANE_BUILD_DIR": "Binaries/Debug",
 
                 "CHICANE_OPENGL_MAJOR_VERSION": "4",
                 "CHICANE_OPENGL_MINOR_VERSION": "6",
@@ -27,7 +27,7 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
 
-                "CHICANE_BUILD_DIR": "Bin/Release",
+                "CHICANE_BUILD_DIR": "Binaries/Release",
 
                 "CHICANE_OPENGL_MAJOR_VERSION": "4",
                 "CHICANE_OPENGL_MINOR_VERSION": "6",

@@ -28,7 +28,7 @@ namespace Chicane
             float           advance   = 0.0f;
             float           ascender  = 0.0f;
             float           descender = 0.0f;
-            Vec2            bearing   = Vec2::Zero;
+            Vec2            bearing   = Vec2::Zero();
             Vertex::List    vertices  = {};
             Vertex::Indices indices   = {};
         };

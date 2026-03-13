@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Object.hpp"
+#include "Chicane/Runtime/Scene/Object.reflected.hpp"
 
 namespace Chicane
 {

@@ -63,20 +63,20 @@ namespace Chicane
 
         m_bIsRunning.store(true, std::memory_order_seq_cst);
         initScene();
-        initView();
+        initUI();
 
         while (m_window->run())
         {
-            m_telemetry.start();
+            m_telemetry.renderer.start();
 
             render();
 
-            m_telemetry.end();
+            m_telemetry.renderer.end();
         }
 
         m_bIsRunning.store(false, std::memory_order_seq_cst);
         shutdownScene();
-        shutdownView();
+        shutdownUI();
 
         shutdownRenderer();
     }
@@ -84,12 +84,12 @@ namespace Chicane
     void Application::render()
     {
         renderScene();
-        renderView();
+        renderUI();
 
         m_renderer->render();
     }
 
-    const Telemetry& Application::getTelemetry() const
+    const ApplicationTelemetry& Application::getTelemetry() const
     {
         return m_telemetry;
     }
@@ -328,11 +328,15 @@ namespace Chicane
             }
 
             {
-                Kerb::Engine::getInstance().tick(m_telemetry.delta);
+                m_telemetry.scene.start();
 
-                scene->tick(m_telemetry.delta);
+                Kerb::Engine::getInstance().tick(m_telemetry.scene.frame.delta);
+
+                scene->tick(m_telemetry.scene.frame.delta);
 
                 buildSceneCommands(scene);
+
+                m_telemetry.scene.end();
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -365,7 +369,7 @@ namespace Chicane
         {
             light->onResize(m_renderer->getResolution());
 
-            command.light = light->getData();
+            command.lights.push_back(light->getData());
         }
 
         for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
@@ -383,11 +387,11 @@ namespace Chicane
                 }
             }
 
-            const Mat4& matrix = mesh->getTransform().getMatrix();
+            const Mat4& matrix = mesh->getMatrix();
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                Renderer::DrawPoly3DCommandMesh subcommand = {};
+                Renderer::DrawPoly3DCommandMesh subcommand;
                 subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
                 subcommand.instance.model   = matrix;
                 subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
@@ -423,7 +427,7 @@ namespace Chicane
         const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
 
         m_renderer->useCamera(command.camera);
-        m_renderer->addLight(command.light);
+        m_renderer->addLight(command.lights);
         m_renderer->loadSky(command.sky);
 
         for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
@@ -442,7 +446,7 @@ namespace Chicane
         }
     }
 
-    void Application::initView()
+    void Application::initUI()
     {
         watchView(
             [&](std::shared_ptr<Grid::View> inView)
@@ -462,13 +466,13 @@ namespace Chicane
                     switch (import.type)
                     {
                     case Grid::StyleImportType::Style:
-                        inView->importStyleFile(FileSystem::Path(import.location.value.toStandard()));
+                        inView->importStyleFile(FileSystem::Path(import.location.value));
 
                         break;
 
                     case Grid::StyleImportType::Font:
                     case Grid::StyleImportType::Texture:
-                        Box::load(FileSystem::Path(import.location.value.toStandard()));
+                        Box::load(FileSystem::Path(import.location.value));
 
                         break;
 
@@ -479,10 +483,10 @@ namespace Chicane
             }
         );
 
-        m_viewThread = std::thread(&Application::tickView, this);
+        m_viewThread = std::thread(&Application::tickUI, this);
     }
 
-    void Application::shutdownView()
+    void Application::shutdownUI()
     {
         if (m_viewThread.joinable())
         {
@@ -490,7 +494,7 @@ namespace Chicane
         }
     }
 
-    void Application::tickView()
+    void Application::tickUI()
     {
         while (m_bIsRunning)
         {
@@ -504,18 +508,21 @@ namespace Chicane
             }
 
             {
+                m_telemetry.ui.start();
+
                 view->setSize(m_renderer->getResolution());
 
-                view->tick(m_telemetry.delta);
+                view->tick(m_telemetry.ui.frame.delta);
 
-                buildViewCommands(view);
+                buildUICommands(view);
+                m_telemetry.ui.end();
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
 
-    void Application::buildViewCommands(std::shared_ptr<Grid::View> inView)
+    void Application::buildUICommands(std::shared_ptr<Grid::View> inView)
     {
         if (!inView)
         {
@@ -562,7 +569,7 @@ namespace Chicane
         m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);
     }
 
-    void Application::renderView()
+    void Application::renderUI()
     {
         if (!hasRenderer())
         {

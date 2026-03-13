@@ -1,4 +1,4 @@
-#include "Actor/Structure.hpp"
+#include "Sample/Shooter/Actor/Structure.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 
@@ -14,7 +14,7 @@ void Strcuture::onLoad()
 {
     m_mesh = getScene()->createComponent<Chicane::CMesh>();
     m_mesh->attachTo(this);
-    m_mesh->setMesh("Contents/Sample/Shooter/Meshes/Structure.bmsh");
+    m_mesh->setMesh("Assets/Sample/Shooter/Meshes/Structure.bmsh");
     m_mesh->activate();
 
     m_physics = getScene()->createComponent<Chicane::CPhysics>();

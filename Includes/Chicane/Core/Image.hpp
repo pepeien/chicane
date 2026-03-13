@@ -1,20 +1,25 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Image/Info.hpp"
 #include "Chicane/Core/Image/Vendor.hpp"
 
 namespace Chicane
 {
-    struct CHICANE_CORE Image
+    struct CHICANE_CORE Image : public ImageInfo
     {
     public:
         using Raw    = std::vector<unsigned char>;
         using Pixel  = unsigned char;
         using Pixels = unsigned char*;
-        using List   = std::vector<Image>;
+
+        using Instance   = std::shared_ptr<const Image>;
+        using Reference  = std::weak_ptr<const Image>;
+        using References = std::vector<Reference>;
 
     public:
         static ImageVendor parseVendor(const String& inValue);
@@ -25,21 +30,13 @@ namespace Chicane
         Image(const Raw& inData, ImageVendor inVendor);
         Image();
 
-        Image(const Image& inInstance);
-
         virtual ~Image();
 
     public:
         ImageVendor getVendor() const;
-
-        int getWidth() const;
-        int getHeight() const;
-        int getChannel() const;
-        int getFormat() const;
         const Pixels getPixels() const;
 
-        int getPitch() const;
-        int getSize() const;
+        std::uint32_t getMemorySize() const;
 
         void flipHorizontally();
         void flipVertically();
@@ -47,11 +44,6 @@ namespace Chicane
 
     protected:
         ImageVendor m_vendor;
-
-        int         m_width;
-        int         m_height;
-        int         m_channel;
-        int         m_format;
         Pixels      m_pixels;
     };
 }

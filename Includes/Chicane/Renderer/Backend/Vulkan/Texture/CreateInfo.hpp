@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanTextureCreateInfo
         {
         public:
-            Image              image;
+            Image::Reference   image;
 
             vk::Device         logicalDevice;
             vk::PhysicalDevice physicalDevice;

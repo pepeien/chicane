@@ -11,7 +11,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLUI::OpenGLLUI()
-            : Layer(UI_LAYER_ID)
+            : Layer(u_LAYER_ID)
         {}
 
         void OpenGLLUI::onInit()
@@ -115,7 +115,7 @@ namespace Chicane
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/UI.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -135,7 +135,7 @@ namespace Chicane
             result = GL_FALSE;
 
             // Fragment
-            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/UI.ofrag");
+            const std::vector<char> fragmentShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/UI.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(

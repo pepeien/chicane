@@ -26,34 +26,16 @@ namespace Chicane
             destroyTextureData();
         }
 
-        void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
+        void OpenGLLSceneSky::onLoad(const DrawSkyResource& inResource)
         {
             glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
-            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
+            if (inResource.isEmpty())
             {
                 return;
             }
 
-            int side = 0;
-            for (const DrawTexture& texture : inResource.textures)
-            {
-                glTextureSubImage3D(
-                    m_texturesBuffer,
-                    0,
-                    0,
-                    0,
-                    side,
-                    texture.image.getWidth(),
-                    texture.image.getHeight(),
-                    1,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    texture.image.getPixels()
-                );
-
-                side++;
-            }
+            updateTextureData(inResource.getDraw());
         }
 
         bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
@@ -101,8 +83,7 @@ namespace Chicane
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Sky.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -125,7 +106,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.ofrag");
+                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Sky.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -181,6 +162,32 @@ namespace Chicane
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        }
+
+        void OpenGLLSceneSky::updateTextureData(const DrawSky& inValue)
+        {
+            int side = 0;
+            for (const DrawTexture& texture : inValue.textures)
+            {
+                if (const Image::Instance image = texture.image.lock())
+                {
+                    glTextureSubImage3D(
+                        m_texturesBuffer,
+                        0,
+                        0,
+                        0,
+                        side,
+                        image->getWidth(),
+                        image->getHeight(),
+                        1,
+                        GL_RGBA,
+                        GL_UNSIGNED_BYTE,
+                        image->getPixels()
+                    );
+                }
+
+                side++;
+            }
         }
 
         void OpenGLLSceneSky::destroyTextureData()

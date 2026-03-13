@@ -96,7 +96,7 @@ namespace Chicane
             align.parseWith(
                 [this](const String& inValue)
                 {
-                    std::vector<String> values = {};
+                    std::vector<String> values;
 
                     for (const String& block : splitOneliner(inValue))
                     {
@@ -349,8 +349,8 @@ namespace Chicane
             {
                 const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
-                const std::vector<String> params = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
-                                                       .split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params =
+                    inValue.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).split(METHOD_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
@@ -358,14 +358,14 @@ namespace Chicane
                 }
 
                 result.append(keyword);
-                result.append(FUNCTION_PARAMS_OPENING);
+                result.append(METHOD_PARAMS_OPENING);
                 for (const String& param : params)
                 {
                     result.append(parseText(param.trim()));
                     result.append(",");
                 }
                 result.popBack();
-                result.append(FUNCTION_PARAMS_CLOSING);
+                result.append(METHOD_PARAMS_CLOSING);
             }
             else
             {
@@ -393,8 +393,8 @@ namespace Chicane
 
         String Style::parseReference(const String& inValue) const
         {
-            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
+            const std::uint32_t start = inValue.firstOf(METHOD_PARAMS_OPENING) + 1;
+            const std::uint32_t end   = inValue.lastOf(METHOD_PARAMS_CLOSING);
 
             String result = "";
             result.append(REFERENCE_VALUE_OPENING);
@@ -429,7 +429,7 @@ namespace Chicane
 
         std::vector<String> splitOneliner(const String& inValue)
         {
-            std::vector<String> result = {};
+            std::vector<String> result;
 
             std::uint32_t start = 0;
             std::uint32_t end   = 0;
@@ -442,14 +442,14 @@ namespace Chicane
 
                 end++;
 
-                if (character == FUNCTION_PARAMS_OPENING)
+                if (character == METHOD_PARAMS_OPENING)
                 {
                     parathesisCount++;
 
                     continue;
                 }
 
-                if (character == FUNCTION_PARAMS_CLOSING)
+                if (character == METHOD_PARAMS_CLOSING)
                 {
                     parathesisCount--;
 

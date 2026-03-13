@@ -11,7 +11,7 @@ namespace Chicane
     {
         if (isEmpty())
         {
-            return Vec2::Zero;
+            return Vec2::Zero();
         }
 
         return m_points.front();
@@ -21,7 +21,7 @@ namespace Chicane
     {
         if (isEmpty())
         {
-            return Vec2::Zero;
+            return Vec2::Zero();
         }
 
         return m_points.back();

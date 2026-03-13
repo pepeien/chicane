@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
 
@@ -7,6 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID TextInput : public Component
         {
         public:

@@ -1,26 +1,20 @@
-#include "View.hpp"
+#include "Editor/View.reflected.hpp"
 
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 
 #include <Chicane/Runtime/Application.hpp>
 
-#include "Actor/Item.hpp"
+#include "Editor/Actor/Item.hpp"
 
 namespace Editor
 {
     View::View()
-        : Chicane::Grid::View("Contents/Editor/Views/Home.grid"),
-          m_telemetry(Chicane::Application::getInstance().getTelemetry()),
-          m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
-          m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate))
-    {
-        addReference("frameTime", &m_uiFrameTime);
-        addReference("framesPerSecond", &m_uiFramesPerSecond);
+        : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
+          telemetry(&Chicane::Application::getInstance().getTelemetry()),
+          currentFolder({})
+    {}
 
-        addFunction("onAssetImport", [this](const Chicane::Grid::Event& inEvent) { return onAssetImport(inEvent); });
-    }
-
-    Chicane::Reference View::onAssetImport(const Chicane::Grid::Event& inEvent)
+    void View::onAssetImport()
     {
         Chicane::FileSystem::FileDialog dialog;
         dialog.bCanSelectMany = false;
@@ -52,7 +46,5 @@ namespace Editor
                 }
             }
         );
-
-        return Chicane::Reference::empty();
     }
 }

@@ -1,0 +1,39 @@
+# Build Folders
+bin/
+obj/
+Debug/
+Release/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+*.vspscc
+*.vssscc
+
+# NuGet packages
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Rider / ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# OS generated files
+.DS_Store
+Thumbs.db

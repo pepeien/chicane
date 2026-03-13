@@ -104,7 +104,7 @@ namespace Chicane
 
         void Mesh::fetchGroups()
         {
-            if (getFilepath().empty() || isXMLEmpty())
+            if (getFilepath().isEmpty() || isXMLEmpty())
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace Chicane
                     continue;
                 }
 
-                MeshGroup group = {};
+                MeshGroup group;
 
                 for (const auto& assetNode : groupNode.children())
                 {

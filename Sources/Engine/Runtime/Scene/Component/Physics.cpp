@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component/Physics.hpp"
+#include "Chicane/Runtime/Scene/Component/Physics.reflected.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
@@ -71,8 +71,8 @@ namespace Chicane
         }
 
         Transform transform;
-        transform.setScale(m_parent->getTransform().getScale());
-        transform.setRotation(m_parent->getTransform().getRotation());
+        transform.setScale(m_parent->getScale());
+        transform.setRotation(m_parent->getRotation());
         transform.setTranslation(inLocation);
 
         Kerb::Engine::getInstance().setBodyTransform(m_bodyID, transform);

@@ -2,16 +2,17 @@
 file(
     GLOB_RECURSE
     HEADERS
-
-    ${CMAKE_CURRENT_LIST_DIR}/*.hpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_EDITOR_INCLUDES_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
-
-    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_EDITOR_SOURCES_DIR}/*.cpp
 )
+
 ##################### Setup #######################
 if (NOT CHICANE_VULKAN)
     list(FILTER HEADERS EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/Layer/Vulkan")
@@ -24,35 +25,42 @@ if (NOT CHICANE_OPENGL)
 endif()
 
 ##################### Directories #######################
-add_executable(${EDITOR_TARGET_NAME} ${HEADERS} ${SOURCES})
+add_executable(${CHICANE_EDITOR_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 set_target_properties(
-    ${EDITOR_TARGET_NAME}
+    ${CHICANE_EDITOR_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
-            "ChicaneEditor"
+            "${NAME}Editor"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${CHICANE_BUILD_DIR}"
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${CHICANE_SOURCES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CHICANE_EDITOR_SOURCES_DIR}"
 )
 
 target_include_directories(
-    ${EDITOR_TARGET_NAME}
+    ${CHICANE_EDITOR_TARGET_NAME}
 
     PUBLIC
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
     PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+        ${CHICANE_SOURCES_DIR}
 )
 
 target_link_libraries(
-    ${EDITOR_TARGET_NAME}
+    ${CHICANE_EDITOR_TARGET_NAME}
 
     PRIVATE
         Chicane::Runtime
 )
 
-add_dependencies(${EDITOR_TARGET_NAME} ${CONTENTS_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_EDITOR_TARGET_NAME})
 
-CH_ADD_COMPILER(${EDITOR_TARGET_NAME})
+######################### Depedencies #########################
+add_dependencies(${CHICANE_EDITOR_TARGET_NAME} ${CHICANE_EDITOR_ASSETS_TARGET_NAME})

@@ -1,40 +1,38 @@
-##################### Files #######################
+######################### Files #########################
 file(
     GLOB_RECURSE
     HEADERS
-
-    # Headers
-    ${BOX_HEADER_DIR}/*.hpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_BOX_INCLUDES_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Box.hpp)
+list(APPEND HEADERS ${CHICANE_ENGINE_INCLUDES_DIR}/Box.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
-
-    # Sources
-    ${BOX_SOURCE_DIR}/*.cpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_BOX_SOURCES_DIR}/*.cpp
 )
-list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Box.cpp)
+list(APPEND SOURCES ${CHICANE_ENGINE_SOURCES_DIR}/Box.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
-##################### Setup #######################
+######################### Setup #########################
 if (CHICANE_SHARED)
-    add_library(${BOX_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_BOX_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${BOX_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_BOX_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
     "${NAME}::Box"
 
     ALIAS
-        ${BOX_TARGET_NAME}
+        ${CHICANE_ENGINE_BOX_TARGET_NAME}
 )
 
 set_target_properties(
-    ${BOX_TARGET_NAME}
+    ${CHICANE_ENGINE_BOX_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
@@ -43,26 +41,31 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${CHICANE_INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CHICANE_ENGINE_BOX_INCLUDES_DIR}"
 )
 
 target_compile_definitions(
-    ${BOX_TARGET_NAME}
+    ${CHICANE_ENGINE_BOX_TARGET_NAME}
 
     PRIVATE
         BUILD_EXPORT
 )
 
 target_include_directories(
-    ${BOX_TARGET_NAME}
+    ${CHICANE_ENGINE_BOX_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
 )
 
 target_link_libraries(
-    ${BOX_TARGET_NAME}
+    ${CHICANE_ENGINE_BOX_TARGET_NAME}
 
     PUBLIC
         Chicane::Core
@@ -72,7 +75,7 @@ target_link_libraries(
         freetype
 )
 
-CH_ADD_COMPILER(${BOX_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_ENGINE_BOX_TARGET_NAME})
 
-##################### Directories #######################
+######################### Directories #########################
 add_subdirectory(Vendor)

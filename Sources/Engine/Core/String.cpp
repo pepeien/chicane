@@ -1,7 +1,6 @@
 #include "Chicane/Core/String.hpp"
 
 #include <algorithm>
-#include <cstring>
 
 namespace Chicane
 {
@@ -44,16 +43,6 @@ namespace Chicane
                    m_value.end(),
                    [](unsigned char c) { return !std::isdigit(c) && c != '-' && c != '.' && c != ','; }
                ) != m_value.end();
-    }
-
-    bool String::equals(const String& inValue) const
-    {
-        return std::strcmp(toChar(), inValue.toChar()) == 0;
-    }
-
-    bool String::equals(char inValue) const
-    {
-        return std::strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
     }
 
     bool String::contains(const String& inValue) const
@@ -318,10 +307,22 @@ namespace Chicane
 
     String String::getBetween(const String& inOpening, const String& inClosing) const
     {
-        const std::size_t start = firstOf(inOpening) + 1;
-        const std::size_t end   = lastOf(inClosing);
+        const std::size_t openPos = find(inOpening);
 
-        return substr(start, end - start);
+        if (openPos == std::string::npos)
+        {
+            return "";
+        }
+
+        const std::size_t start = openPos + inOpening.size();
+        const std::size_t end   = m_value.rfind(inClosing.toStandard());
+
+        if (end == std::string::npos || end <= start)
+        {
+            return "";
+        }
+
+        return substr(start, end - start).trim();
     }
 
     String String::trim() const

@@ -1,11 +1,4 @@
-##################### Includes #######################
-include(CMakePackageConfigHelpers)
-
-include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
-
-include(CMake/Functions.cmake)
-
-##################### Settings #######################
+######################### Settings #########################
 cmake_minimum_required(VERSION 3.16.0)
 
 set(CMAKE_CXX_STANDARD          17)
@@ -22,18 +15,21 @@ project(
         0.1.0
 )
 
-##################### Options #######################
-option(CHICANE_SHARED "Build a shared version of the library" ON)
-option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
-option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
+######################### Options #########################
+option(CHICANE_SHARED   "Build shared library"    ON)
+option(CHICANE_OPENGL   "Enable OpenGL"           ON)
+option(CHICANE_VULKAN   "Enable Vulkan"           ON)
+option(CHICANE_PROGRAMS "Compile engine programs" ON)
+option(CHICANE_EDITOR   "Compile engine editor"   ON)
+option(CHICANE_SAMPLE   "Compile engine sample"   ON)
 
-##################### Values #######################
+######################### Values #########################
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
 
 if (NOT CHICANE_BUILD_DIR)
-    set(CHICANE_BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}" CACHE STRING "Build directory" FORCE)
+    set(CHICANE_BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/Binaries/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}" CACHE STRING "Build directory" FORCE)
 else()
     set(CHICANE_BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/${CHICANE_BUILD_DIR}")
 endif()
@@ -89,74 +85,67 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CHICANE_BUILD_DIR}")
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
-set(CMAKE_BUILD_RPATH   "$ORIGIN")
-set(CMAKE_INSTALL_RPATH "$ORIGIN")
+set(CMAKE_BUILD_RPATH   "${ORIGIN}")
+set(CMAKE_INSTALL_RPATH "${ORIGIN}")
 
 ## Base
-set(CONTENTS_DIR "${CMAKE_CURRENT_LIST_DIR}/Contents")
-set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
-set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
+set(CHICANE_INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
+set(CHICANE_SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
 
-set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}")
-set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
+set(CHICANE_ASSETS_DIR       "${CMAKE_CURRENT_LIST_DIR}/Assets")
+set(CHICANE_ASSETS_BUILD_DIR "${CHICANE_BUILD_DIR}/Assets")
 
-## Chicane
-set(CHICANE_INCLUDES_DIR "${INCLUDES_DIR}/Chicane")
-set(CHICANE_SOURCES_DIR  "${SOURCES_DIR}/Engine")
+set(CHICANE_BUILD_INTERFACE_DIR   "${CHICANE_INCLUDES_DIR}")
+set(CHICANE_INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
 
-## Contents
-set(CONTENTS_TARGET_NAME "${NAME}-Contents")
-set(CONTENTS_SOURCE_DIR  "${CMAKE_CURRENT_LIST_DIR}/Contents")
+## Engine
+set(CHICANE_ENGINE_TARGET_NAME  "${NAME}-Engine")
+set(CHICANE_ENGINE_INCLUDES_DIR "${CHICANE_INCLUDES_DIR}/Chicane")
+set(CHICANE_ENGINE_SOURCES_DIR  "${CHICANE_SOURCES_DIR}/Engine")
 
-## Box
-set(BOX_TARGET_NAME "${NAME}-Box")
-set(BOX_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Box")
-set(BOX_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Box")
+set(CHICANE_ENGINE_ASSETS_TARGET_NAME "${CHICANE_ENGINE_TARGET_NAME}-Assets")
+set(CHICANE_ENGINE_ASSETS_SOURCES_DIR "${CHICANE_ASSETS_DIR}/Engine")
+set(CHICANE_ENGINE_ASSETS_BUILD_DIR   "${CHICANE_ASSETS_BUILD_DIR}/Engine")
 
-## Core
-set(CORE_TARGET_NAME "${NAME}-Core")
-set(CORE_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Core")
-set(CORE_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Core")
-
-## Grid
-set(GRID_TARGET_NAME "${NAME}-Grid")
-set(GRID_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Grid")
-set(GRID_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Grid")
-
-## Kerb
-set(KERB_TARGET_NAME "${NAME}-Kerb")
-set(KERB_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Kerb")
-set(KERB_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Kerb")
-
-## Renderer
-set(RENDERER_TARGET_NAME "${NAME}-Renderer")
-set(RENDERER_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Renderer")
-set(RENDERER_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Renderer")
-
-## Runtime
-set(RUNTIME_TARGET_NAME "${NAME}-Runtime")
-set(RUNTIME_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Runtime")
-set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
-
-## Screech
-set(SCREECH_TARGET_NAME "${NAME}-Screech")
-set(SCREECH_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Screech")
-set(SCREECH_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Screech")
+## Programs
+if (CHICANE_PROGRAMS)
+    set(CHICANE_PROGRAMS_TARGET_NAME  "${NAME}-Programs")
+    set(CHICANE_PROGRAMS_INCLUDES_DIR "${CHICANE_SOURCES_DIR}/Programs")
+    set(CHICANE_PROGRAMS_SOURCES_DIR  "${CHICANE_SOURCES_DIR}/Programs")
+endif()
 
 ## Editor
-set(EDITOR_TARGET_NAME "${NAME}-Editor")
-set(EDITOR_HEADER_DIR  "${SOURCES_DIR}/Editor")
-set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
+if (CHICANE_EDITOR)
+    set(CHICANE_EDITOR_TARGET_NAME  "${NAME}-Editor")
+    set(CHICANE_EDITOR_INCLUDES_DIR "${CHICANE_SOURCES_DIR}/Editor")
+    set(CHICANE_EDITOR_SOURCES_DIR  "${CHICANE_SOURCES_DIR}/Editor")
+
+    set(CHICANE_EDITOR_ASSETS_TARGET_NAME "${CHICANE_EDITOR_TARGET_NAME}-Assets")
+    set(CHICANE_EDITOR_ASSETS_SOURCES_DIR "${CHICANE_ASSETS_DIR}/Editor")
+    set(CHICANE_EDITOR_ASSETS_BUILD_DIR   "${CHICANE_ASSETS_BUILD_DIR}/Editor")
+endif()
 
 ## Sample
-set(SAMPLE_TARGET_NAME "${NAME}-Sample")
-set(SAMPLE_HEADER_DIR  "${SOURCES_DIR}/Sample")
-set(SAMPLE_SOURCE_DIR  "${SOURCES_DIR}/Sample")
+if(CHICANE_SAMPLE)
+    set(CHICANE_SAMPLE_TARGET_NAME  "${NAME}-Sample")
+    set(CHICANE_SAMPLE_INCLUDES_DIR "${CHICANE_SOURCES_DIR}/Sample")
+    set(CHICANE_SAMPLE_SOURCES_DIR  "${CHICANE_SOURCES_DIR}/Sample")
 
-set(SHOOTER_TARGET_NAME "${SAMPLE_TARGET_NAME}-Shooter")
-set(SHOOTER_HEADER_DIR  "${SAMPLE_HEADER_DIR}/Shooter")
-set(SHOOTER_SOURCE_DIR  "${SAMPLE_SOURCE_DIR}/Shooter")
+    set(CHICANE_SAMPLE_ASSETS_TARGET_NAME "${CHICANE_SAMPLE_TARGET_NAME}-Assets")
+    set(CHICANE_SAMPLE_ASSETS_SOURCES_DIR "${CHICANE_ASSETS_DIR}/Sample")
+    set(CHICANE_SAMPLE_ASSETS_BUILD_DIR   "${CHICANE_ASSETS_BUILD_DIR}/Sample")
+endif()
 
-##################### Directories #######################
-add_subdirectory(Contents)
+######################### Includes #########################
+include(CMakePackageConfigHelpers)
+
+include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
+
+include(CMake/Functions.cmake)
+
+######################### Directories #########################
+add_subdirectory(Assets)
 add_subdirectory(Sources)
+
+######################### Reflection #########################
+CH_GENERATE_REFLECTION()

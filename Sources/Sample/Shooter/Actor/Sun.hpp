@@ -12,4 +12,5 @@ protected:
 
 private:
     float m_distance;
+    float m_angle;
 };

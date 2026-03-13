@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component/Container.reflected.hpp"
 
 namespace Chicane
 {
@@ -7,10 +7,10 @@ namespace Chicane
         Container::Container(const pugi::xml_node& inNode)
             : Component(inNode)
         {
-            Primitive primitive = {};
-            primitive.indices   = {0, 1, 2, 2, 3, 0};
+            Primitive primitive;
+            primitive.indices = {0, 1, 2, 2, 3, 0};
 
-            Vertex vertex = {};
+            Vertex vertex;
 
             // Top Left
             vertex.uv.x       = 0.0f;

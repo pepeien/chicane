@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawSkyData : DrawData
+        struct CHICANE_RENDERER DrawSkyData : public DrawData
         {
         public:
             Draw::Reference     model    = "";

@@ -47,14 +47,14 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
-        void VulkanLSceneSky::onLoad(const DrawSky& inResource)
+        void VulkanLSceneSky::onLoad(const DrawSkyResource& inResource)
         {
-            if (inResource.textures.empty() || inResource.model.id <= Draw::InvalidId)
+            if (inResource.isEmpty())
             {
                 return;
             }
 
-            buildTextureData(inResource);
+            buildTextureData(inResource.getDraw());
         }
 
         bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
@@ -173,26 +173,24 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Sky.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Attachments
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
             colorAttachment.format        = backend->swapchain.colorFormat;
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;
@@ -208,19 +206,15 @@ namespace Chicane
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::SubpassDescription subpass;
-            subpass.flags                = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
             subpass.colorAttachmentCount = 1;
             subpass.pColorAttachments    = &colorReference;
 
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterization;
-            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterization.depthClampEnable        = VK_FALSE;
-            rasterization.rasterizerDiscardEnable = VK_FALSE;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasEnable         = VK_TRUE;
-            rasterization.depthBiasClamp          = 0.0f;
+            rasterization.depthClampEnable        = false;
+            rasterization.rasterizerDiscardEnable = false;
+            rasterization.depthBiasEnable         = false;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
             rasterization.cullMode                = vk::CullModeFlagBits::eFront;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
@@ -234,6 +228,7 @@ namespace Chicane
                 .addDynamicState(vk::DynamicState::eViewport)
                 .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
+                .addDynamicState(vk::DynamicState::eLineWidth)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .addShaderStage(fragmentShader, backend->logicalDevice)
                 .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState())
@@ -291,7 +286,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanSkyCreateInfo createInfo;
-            createInfo.images              = {};
+            createInfo.images;
             createInfo.logicalDevice       = backend->logicalDevice;
             createInfo.physicalDevice      = backend->physicalDevice;
             createInfo.commandBuffer       = backend->mainCommandBuffer;
@@ -304,8 +299,7 @@ namespace Chicane
                 createInfo.images.push_back(texture.image);
             }
 
-            m_sky.reset();
-            m_sky = std::make_unique<VulkanSky>(createInfo);
+            m_sky.reset(new VulkanSky(createInfo));
         }
 
         void VulkanLSceneSky::destroyTextureData()

@@ -53,11 +53,11 @@ function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
     endforeach()
 
     add_custom_target(
-        "${TARGET_NAME}-copy" ALL
+        "${TARGET_NAME}-Copy" ALL
         DEPENDS ${ALL_OUTPUTS}
     )
 
-    add_dependencies(${TARGET_NAME} "${TARGET_NAME}-copy")
+    add_dependencies(${TARGET_NAME} "${TARGET_NAME}-Copy")
 endfunction()
 
 function(
@@ -143,7 +143,6 @@ function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
         set(RESULT_FILE "${RESULT_DIR}/${FILE_NAME}")
         string(REPLACE "//" "/" RESULT_FILE ${RESULT_FILE})
 
-        # Skip if already registered
         get_property(REGISTERED GLOBAL PROPERTY "CH_INSTALL_REGISTERED_${RESULT_FILE}")
         if (REGISTERED)
             continue()

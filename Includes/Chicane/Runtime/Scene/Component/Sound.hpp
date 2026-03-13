@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
@@ -7,6 +9,7 @@
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME CSound : public Component
     {
     public:

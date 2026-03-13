@@ -3,7 +3,7 @@
 .[Cc]ache/*
 
 # Build results
-[Bb]in/*
+[Bb]inaries/*
 [Bb]uild*/*
 __pycache__/*
 

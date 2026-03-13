@@ -1,52 +1,45 @@
 #pragma once
 
-#include <Chicane/Core/Telemetry.hpp>
+#include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Grid/Component/View.hpp>
+#include <Chicane/Runtime/Application/Telemetry.hpp>
 
+CH_TYPE(Manual)
 class View : public Chicane::Grid::View
 {
 public:
     View();
 
-private:
-    bool m_bDidPlayerWin;
-
-    // Status
-    const Chicane::Telemetry& m_telemetry;
-
+public:
     // Telemetry
-    Chicane::Reference m_uiFrameTime;
-    Chicane::Reference m_uiFramesPerSecond;
+    CH_FIELD()
+    const Chicane::ApplicationTelemetry* telemetry;
 
-    // Victory Banner
-    Chicane::String    m_victoryVisibility;
-    Chicane::Reference m_uiVictoryVisibility;
-
-    // Camera
-    Chicane::String    m_currentCamera;
-    Chicane::Reference m_uiCurrentCamera;
+    // Game
+    CH_FIELD()
+    bool bDidPlayerWin;
 
     // Crosshair
-    Chicane::String    m_crosshairDotVisibility;
-    Chicane::Reference m_uiCrosshairDotVisibility;
-    float              m_crosshairSize;
-    Chicane::Reference m_uiCrosshairSize;
-    float              m_crosshairThickness;
-    Chicane::Reference m_uiCrosshairThickness;
-    float              m_crosshairGap;
-    Chicane::Reference m_uiCrosshairGap;
-    std::uint8_t       m_crosshairColorR;
-    Chicane::Reference m_uiCrosshairColorR;
-    std::uint8_t       m_crosshairColorG;
-    Chicane::Reference m_uiCrosshairColorG;
-    std::uint8_t       m_crosshairColorB;
-    Chicane::Reference m_uiCrosshairColorB;
-    float              m_crosshairColorA;
-    Chicane::Reference m_uiCrosshairColorA;
+    CH_FIELD()
+    Chicane::String crosshairDotVisibility;
+    CH_FIELD()
+    float crosshairSize;
+    CH_FIELD()
+    float crosshairThickness;
+    CH_FIELD()
+    float crosshairGap;
+    CH_FIELD()
+    std::uint8_t crosshairColorR;
+    CH_FIELD()
+    std::uint8_t crosshairColorG;
+    CH_FIELD()
+    std::uint8_t crosshairColorB;
+    CH_FIELD()
+    float crosshairColorA;
 
     // Score
-    std::uint32_t      m_playerScore;
-    Chicane::Reference m_uiPlayerScore;
-    std::uint32_t      m_maxScore;
-    Chicane::Reference m_uiMaxScore;
+    CH_FIELD()
+    std::uint32_t playerScore;
+    CH_FIELD()
+    std::uint32_t maxScore;
 };

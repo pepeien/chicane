@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.reflected.hpp"
 
 namespace Chicane
 {

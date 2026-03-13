@@ -35,10 +35,11 @@ namespace Chicane
         static constexpr inline const char*         SCENE_MESH_LAYER_ID   = "Engine_Scene_Mesh";
         static constexpr inline const char*         SCENE_LINE_LAYER_ID   = "Engine_Scene_Line";
 
-        static constexpr inline const char*         UI_LAYER_ID = "Engine_UI";
+        static constexpr inline const char*         u_LAYER_ID = "Engine_UI";
 
         // Resources
-        static constexpr inline const std::size_t   TEXTURE_COUNT = 512;
+        static constexpr inline const std::size_t   TEXTURE_WIDTH  = 512;
+        static constexpr inline const std::size_t   TEXTURE_HEIGHT = 512;
 
         // Images
         static constexpr inline const std::uint32_t SHADOW_MAP_WIDTH  = 1024;

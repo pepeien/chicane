@@ -4,7 +4,6 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"

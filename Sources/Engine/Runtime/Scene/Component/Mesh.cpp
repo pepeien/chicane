@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.reflected.hpp"
 
 #include "Chicane/Box/Model.hpp"
 
@@ -32,7 +32,7 @@ namespace Chicane
 
     void CMesh::setMesh(const FileSystem::Path& inFilePath)
     {
-        if (inFilePath.empty())
+        if (inFilePath.isEmpty())
         {
             return;
         }

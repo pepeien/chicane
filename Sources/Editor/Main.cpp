@@ -2,7 +2,7 @@
 
 #include <Chicane/Core/Log.hpp>
 
-#include "Application.hpp"
+#include "Editor/Application.hpp"
 
 int main(int argc, char* argv[])
 {

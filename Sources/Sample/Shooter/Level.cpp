@@ -1,4 +1,4 @@
-#include "Level.hpp"
+#include "Sample/Shooter/Level.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
@@ -20,8 +20,7 @@ Level::Level()
     : Chicane::Scene(),
       m_leftCamera(nullptr),
       m_centerCamera(nullptr),
-      m_rightCamera(nullptr),
-      m_cameraObservable({})
+      m_rightCamera(nullptr)
 {}
 
 void Level::onLoad()
@@ -40,8 +39,6 @@ void Level::activateLeftCamera()
 
     m_centerCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(m_leftCamera);
 }
 
 void Level::activateCenterCamera()
@@ -50,8 +47,6 @@ void Level::activateCenterCamera()
 
     m_leftCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(m_centerCamera);
 }
 
 void Level::activateRightCamera()
@@ -60,8 +55,6 @@ void Level::activateRightCamera()
 
     m_leftCamera->deactivate();
     m_centerCamera->deactivate();
-
-    m_cameraObservable.next(m_rightCamera);
 }
 
 void Level::disableCameras()
@@ -69,22 +62,11 @@ void Level::disableCameras()
     m_leftCamera->deactivate();
     m_centerCamera->deactivate();
     m_rightCamera->deactivate();
-
-    m_cameraObservable.next(nullptr);
-}
-
-Level::CameraSubscription Level::watchActiveCamera(
-    CameraSubscription::NextCallback     inNext,
-    CameraSubscription::ErrorCallback    inError,
-    CameraSubscription::CompleteCallback inComplete
-)
-{
-    return m_cameraObservable.subscribe(inNext, inError, inComplete).next(nullptr);
 }
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky"));
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Engine/Skies/Debug.bsky"));
 }
 
 void Level::spawnLights()
@@ -94,20 +76,22 @@ void Level::spawnLights()
 
 void Level::spawnCameras()
 {
+    const Chicane::Vec3 position(300.0f, 300.0f, 100.0f);
+
     m_leftCamera = createActor<Chicane::ACamera>();
     m_leftCamera->setId("Left");
-    m_leftCamera->setAbsoluteTranslation(-500.0f, -500.0f, 100.0f);
-    m_leftCamera->setAbsoluteRotation(-20.0f, 0.0f, -45.0f);
+    m_leftCamera->setAbsoluteTranslation(-position.x, -position.y, position.z);
+    m_leftCamera->lookAt(Chicane::Vec3::Zero());
 
     m_centerCamera = createActor<Chicane::ACamera>();
     m_centerCamera->setId("Center");
-    m_centerCamera->setAbsoluteTranslation(0.0f, -500.0f, 100.0f);
-    m_centerCamera->setAbsoluteRotation(-20.0f, 0.0f, 0.0f);
+    m_centerCamera->setAbsoluteTranslation(0.0f, -position.y, position.z);
+    m_centerCamera->lookAt(Chicane::Vec3::Zero());
 
     m_rightCamera = createActor<Chicane::ACamera>();
     m_rightCamera->setId("Right");
-    m_rightCamera->setAbsoluteTranslation(500.0f, -500.0f, 100.0f);
-    m_rightCamera->setAbsoluteRotation(-20.0f, 0.0f, 45.0f);
+    m_rightCamera->setAbsoluteTranslation(position.x, -position.y, position.z);
+    m_rightCamera->lookAt(Chicane::Vec3::Zero());
 }
 
 void Level::spawnStructures()

@@ -32,12 +32,12 @@ namespace Chicane
 
         bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)
         {
-            if (inFilepath.empty() || !inFilepath.has_extension())
+            if (inFilepath.isEmpty() || !inFilepath.hasExtension())
             {
                 return false;
             }
 
-            const String value = inFilepath.extension().string();
+            const String value = inFilepath.extension().toString();
 
             for (const auto& [type, extension] : EXTENSIONS)
             {
@@ -59,7 +59,7 @@ namespace Chicane
                 return AssetType::Undefined;
             }
 
-            const String value = inValue.extension().string();
+            const String value = inValue.extension().toString();
 
             for (const auto& [type, extension] : EXTENSIONS)
             {
@@ -147,7 +147,7 @@ namespace Chicane
         AssetHeader::AssetHeader(const FileSystem::Path& inFilepath)
             : AssetHeader()
         {
-            if (inFilepath.empty())
+            if (inFilepath.isEmpty())
             {
                 return;
             }

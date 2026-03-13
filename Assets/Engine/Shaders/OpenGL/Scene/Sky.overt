@@ -1,0 +1,22 @@
+#version 460
+
+#extension GL_ARB_shading_language_include : require
+
+#include "../../Common/View.glsl"
+
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+} scene;
+
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec4 inColor;
+layout(location = 2) in vec2 inUV;
+layout(location = 3) in vec3 inNormal;
+
+layout(location = 0) out vec3 outUV;
+
+void main() {
+    outUV = inPosition;
+
+    gl_Position = scene.camera.projection * mat4(mat3(scene.camera.view)) * vec4(inPosition, 1.0);
+}

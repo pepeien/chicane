@@ -1,13 +1,13 @@
-#include "Scene.hpp"
+#include "Editor/Scene.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 
-#include "Actor/Character.hpp"
-#include "Actor/Item.hpp"
-#include "Actor/Sun.hpp"
+#include "Editor/Actor/Character.hpp"
+#include "Editor/Actor/Item.hpp"
+#include "Editor/Actor/Sun.hpp"
 
 namespace Editor
 {
@@ -25,9 +25,7 @@ namespace Editor
 
     void Scene::spawnSky()
     {
-        createActor<Chicane::ASky>()->setSky(
-            Chicane::Box::load<Chicane::Box::Sky>("Contents/Editor/Skies/Default.bsky")
-        );
+        createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Editor/Skies/Default.bsky"));
     }
 
     void Scene::spawnLights()
@@ -42,6 +40,6 @@ namespace Editor
 
     void Scene::spawnDefaultItem()
     {
-        createActor<Item>("Contents/Engine/Meshes/Shape/Cube.bmsh");
+        createActor<Item>("Assets/Engine/Meshes/Shape/Cube.bmsh");
     }
 }

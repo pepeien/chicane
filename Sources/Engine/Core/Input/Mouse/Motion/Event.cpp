@@ -21,8 +21,8 @@ namespace Chicane
 
         MouseMotionEvent::MouseMotionEvent()
             : state(0U),
-              location(Vec2::Zero),
-              relativeLocation(Vec2::Zero)
+              location(Vec2::Zero()),
+              relativeLocation(Vec2::Zero())
         {}
     }
 }

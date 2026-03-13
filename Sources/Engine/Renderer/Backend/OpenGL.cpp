@@ -5,6 +5,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
+#include <iostream>
+
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
@@ -20,8 +22,20 @@ namespace Chicane
             : Backend()
         {}
 
+        OpenGLBackend::~OpenGLBackend()
+        {
+            onShutdown();
+        }
+
         void OpenGLBackend::onInit()
         {
+            if (isStatus(BackendStatus::Running))
+            {
+                return;
+            }
+
+            Backend::onInit();
+
             buildContext();
             buildGlad();
             enableFeatures();
@@ -32,6 +46,13 @@ namespace Chicane
 
         void OpenGLBackend::onShutdown()
         {
+            if (isStatus(BackendStatus::Shutdown))
+            {
+                return;
+            }
+
+            Backend::onShutdown();
+
             // Layers
             destroyLayers();
 
@@ -49,19 +70,22 @@ namespace Chicane
 
             for (const DrawTexture& texture : inResources.getDraws())
             {
-                glTextureSubImage3D(
-                    m_texturesBuffer,
-                    0,
-                    0,
-                    0,
-                    texture.id,
-                    512,
-                    512,
-                    1,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    texture.image.getPixels()
-                );
+                if (const Image::Instance image = texture.image.lock())
+                {
+                    glTextureSubImage3D(
+                        m_texturesBuffer,
+                        0,
+                        0,
+                        0,
+                        texture.id,
+                        TEXTURE_WIDTH,
+                        TEXTURE_HEIGHT,
+                        1,
+                        GL_RGBA,
+                        GL_UNSIGNED_BYTE,
+                        image->getPixels()
+                    );
+                }
             }
 
             Backend::onLoad(inResources);
@@ -318,7 +342,7 @@ namespace Chicane
             // AMD
             if (GLAD_GL_ATI_meminfo)
             {
-                GLint mem[4] = {};
+                GLint mem[4];
                 glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem);
 
                 VRAM = static_cast<size_t>(mem[0]) * 1024;
@@ -329,8 +353,16 @@ namespace Chicane
 
         void OpenGLBackend::buildTextureData()
         {
+            GLint hwMaxLayers = 0;
+            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &hwMaxLayers);
+
+            const std::size_t maxAccepted = std::min(
+                static_cast<std::size_t>(hwMaxLayers / 4),
+                static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture))
+            );
+
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, TEXTURE_COUNT);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, maxAccepted);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

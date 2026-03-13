@@ -63,7 +63,7 @@ namespace Chicane
             vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
 
-            vk::RenderPassBeginInfo beginInfo  = {};
+            vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass               = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
             beginInfo.renderArea.extent.width  = viewport.width;
@@ -219,33 +219,31 @@ namespace Chicane
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Mesh.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Mesh.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Depth
             vk::PipelineDepthStencilStateCreateInfo depth;
-            depth.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-            depth.depthBoundsTestEnable = VK_FALSE;
-            depth.stencilTestEnable     = VK_FALSE;
-            depth.depthWriteEnable      = VK_TRUE;
-            depth.depthTestEnable       = VK_TRUE;
-            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depth.depthBoundsTestEnable = false;
+            depth.stencilTestEnable     = false;
+            depth.depthWriteEnable      = true;
+            depth.depthTestEnable       = true;
+            depth.depthCompareOp        = vk::CompareOp::eLess;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
             // Render pass
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
             colorAttachment.format        = backend->swapchain.colorFormat;
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;
@@ -261,7 +259,6 @@ namespace Chicane
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::AttachmentDescription depthAttachment;
-            depthAttachment.flags         = vk::AttachmentDescriptionFlags();
             depthAttachment.format        = backend->swapchain.depthFormat;
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
@@ -282,7 +279,6 @@ namespace Chicane
             depthSubpassDepedency.dstAccessMask = vk::AccessFlagBits::eShaderRead;
 
             vk::SubpassDescription subpass;
-            subpass.flags                   = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
             subpass.colorAttachmentCount    = 1;
             subpass.pColorAttachments       = &colorReference;
@@ -290,12 +286,9 @@ namespace Chicane
 
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterization;
-            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterization.depthClampEnable        = VK_FALSE;
-            rasterization.rasterizerDiscardEnable = VK_FALSE;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasEnable         = VK_TRUE;
-            rasterization.depthBiasClamp          = 0.0f;
+            rasterization.depthClampEnable        = true;
+            rasterization.rasterizerDiscardEnable = false;
+            rasterization.depthBiasEnable         = false;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
             rasterization.cullMode                = vk::CullModeFlagBits::eBack;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
@@ -309,6 +302,7 @@ namespace Chicane
                 .addDynamicState(vk::DynamicState::eViewport)
                 .addScissor(backend->getVkScissor(this))
                 .addDynamicState(vk::DynamicState::eScissor)
+                .addDynamicState(vk::DynamicState::eLineWidth)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .addShaderStage(fragmentShader, backend->logicalDevice)
                 .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))

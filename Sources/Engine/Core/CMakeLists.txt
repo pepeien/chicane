@@ -1,43 +1,40 @@
-##################### Values #######################
-
-# Dirs
+######################### Values #########################
+## Dirs
 set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
 
-##################### Files #######################
+######################### Files #########################
 file(
     GLOB_RECURSE
     HEADERS
-
-    # Headers
-    ${CORE_HEADER_DIR}/*.hpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_CORE_INCLUDES_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Core.hpp)
+list(APPEND HEADERS ${CHICANE_ENGINE_INCLUDES_DIR}/Core.hpp)
 
 file(
     GLOB_RECURSE
     SOURCES
-
-    # Sources
-    ${CORE_SOURCE_DIR}/*.cpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_CORE_SOURCES_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
-##################### Setup #######################
+######################### Setup #########################
 if (CHICANE_SHARED)
-    add_library(${CORE_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_CORE_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${CORE_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_CORE_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
     "${NAME}::Core"
 
     ALIAS
-        ${CORE_TARGET_NAME}
+        ${CHICANE_ENGINE_CORE_TARGET_NAME}
 )
 
 set_target_properties(
-    ${CORE_TARGET_NAME}
+    ${CHICANE_ENGINE_CORE_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
@@ -46,31 +43,35 @@ set_target_properties(
             "${CHICANE_BUILD_DIR}"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${CHICANE_INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CHICANE_ENGINE_CORE_INCLUDES_DIR}"
 )
 
 target_compile_definitions(
-    ${CORE_TARGET_NAME}
+    ${CHICANE_ENGINE_CORE_TARGET_NAME}
 
     PRIVATE
         BUILD_EXPORT
 )
 
 target_include_directories(
-    ${CORE_TARGET_NAME}
+    ${CHICANE_ENGINE_CORE_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
 
     PRIVATE
-        # Vendors
         ${VENDORS_DIR}/stb
         ${VENDORS_DIR}/xxHash
 )
 
 target_link_libraries(
-    ${CORE_TARGET_NAME}
+    ${CHICANE_ENGINE_CORE_TARGET_NAME}
  
     PUBLIC
         glm::glm
@@ -82,7 +83,7 @@ target_link_libraries(
         libtess2::libtess2
 )
 
-CH_ADD_COMPILER(${CORE_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_ENGINE_CORE_TARGET_NAME})
 
-##################### Directories #######################
+######################### Directories #########################
 add_subdirectory(Vendor)

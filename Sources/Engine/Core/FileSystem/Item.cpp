@@ -1,4 +1,6 @@
-#include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/FileSystem/Item.reflected.hpp"
+
+#include "Chicane/Core/FileSystem.hpp"
 
 namespace Chicane
 {
@@ -9,17 +11,17 @@ namespace Chicane
         {
             type = inType;
             path = inPath;
-            name = path.filename().string();
+            name = path.filename().toString();
 
             switch (type)
             {
             case ItemType::File:
-                extension = path.extension().string();
+                extension = path.extension().toString();
 
                 break;
 
             case ItemType::Folder:
-                childCount = static_cast<std::uint32_t>(ls(path.lexically_normal().string(), 1).size());
+                children = ls(path.lexicallyNormal(), 1);
 
                 break;
 
@@ -33,7 +35,7 @@ namespace Chicane
               name(""),
               path(""),
               extension(""),
-              childCount(0U)
+              children({})
         {}
     }
 }

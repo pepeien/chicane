@@ -23,7 +23,7 @@ services:
       -DCMAKE_EXE_LINKER_FLAGS='-static-libgcc -static-libstdc++' \
       -DCMAKE_SHARED_LINKER_FLAGS='-static-libgcc -static-libstdc++' \
       -DCMAKE_MODULE_LINKER_FLAGS='-static-libgcc -static-libstdc++' \
-      -DCHICANE_BUILD_DIR='Bin/Docker-Windows' \
+      -DCHICANE_BUILD_DIR='Binaries/Docker-Windows' \
       -DCHICANE_SHARED=ON \
       -DCHICANE_OPENGL=ON \
       -DCHICANE_OPENGL_MAJOR_VERSION=$$OPENGL_MAJOR_VERSION \

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid.hpp"
+#include <cstdint>
 
 namespace Chicane
 {

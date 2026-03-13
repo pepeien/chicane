@@ -1,18 +1,22 @@
 #pragma once
 
+#include <functional>
 #include <set>
+#include <unordered_map>
 
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Reflection/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Method/Info.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Function.hpp"
-#include "Chicane/Grid/Function/Data.hpp"
 #include "Chicane/Grid/Primitive.hpp"
+#include "Chicane/Grid/Method.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
 
@@ -20,20 +24,28 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID Component
         {
         public:
-            using Compiler  = std::function<Component*(const pugi::xml_node& inNode)>;
-            using ClassList = std::set<String>;
+            using ClassList  = std::set<String>;
+            using Directive  = std::function<void(const String&)>;
+            using Directives = std::unordered_map<String, Directive>;
 
         public:
+            static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
+            static constexpr inline const char* FOR_DIRECTIVE_KEYWORD = "dir:for";
+
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
             static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
             static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
 
         public:
+            CH_CONSTRUCTOR()
             Component(const pugi::xml_node& inNode);
+
+            CH_CONSTRUCTOR()
             Component(const String& inTag);
 
             virtual ~Component();
@@ -99,6 +111,12 @@ namespace Chicane
                 setClassName(className.trim());
             }
 
+            // Directive
+            void refreshDirectives();
+            void runDirective(const String& inKey, const String& inValue);
+            void setDirective(const String& inKey, const Directive& inValue);
+
+            // Attribute
             const String& getAttribute(const String& inName) const;
 
             // Style
@@ -114,17 +132,11 @@ namespace Chicane
             bool hasSelector(const String& inValue) const;
 
             // Reference
-            bool hasReference(const String& inId, bool isLocalOnly = false) const;
-            Reference* getReference(const String& inId) const;
-            void addReference(const Reference::Map& inReference);
-            void addReference(const String& inId, Reference* inReference);
-            void removeReference(const String& inId);
+            bool hasField(const String& inId, bool isLocalOnly = false) const;
+            const ReflectionFieldInfo* getField(const String& inId) const;
 
-            bool hasFunction(const String& inId, bool isLocalOnly = false) const;
-            const Function getFunction(const String& inId, bool isLocalOnly = false) const;
-            void addFunction(const Functions& inFunctions);
-            void addFunction(const String& inId, Function inFunction);
-            void removeFunction(const String& inId);
+            bool hasMethod(const String& inId, bool isLocalOnly = false) const;
+            Method getMethod(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;
@@ -197,24 +209,22 @@ namespace Chicane
             void refreshBounds();
 
             bool isReference(const String& inValue) const;
-            Reference parseReference(const String& inValue) const;
+            String parseReference(const String& inValue) const;
 
-            bool isFunction(const String& inValue) const;
-            FunctionData parseFunction(const String& inRefValue) const;
+            bool isMethod(const String& inValue) const;
 
         protected:
-            // Identification
+            // Properties
             String                  m_tag;
             String                  m_id;
             String                  m_className;
 
+            // Modifier
+            Directives              m_directives;
+
             // Style
             Style                   m_style;
             StyleFile*              m_styleFile;
-
-            // References
-            Reference::Map          m_references;
-            Functions               m_functions;
 
             // Hierarchy
             Component*              m_root;

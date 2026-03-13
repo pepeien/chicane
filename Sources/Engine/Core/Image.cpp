@@ -1,12 +1,18 @@
 #include "Chicane/Core/Image.hpp"
-
+#include <fstream>
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <unordered_map>
 
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
+#if IS_WINDOWS
+    #define STBI_WINDOWS_UTF8
+#endif
 #include <stb_image.h>
+
+#include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -54,15 +60,18 @@ namespace Chicane
     Image::Image(const FileSystem::Path& inLocation)
         : Image()
     {
-        m_vendor = parseVendor(inLocation.extension().string());
+        m_vendor = parseVendor(inLocation.extension().toString());
 
         m_format = STBI_rgb_alpha;
 
-        m_pixels = stbi_load(inLocation.string().c_str(), &m_width, &m_height, &m_channel, m_format);
+        const String path = inLocation.toString();
+        m_pixels          = stbi_load(path.toChar(), &m_width, &m_height, &m_channel, m_format);
 
         if (!m_pixels)
         {
-            throw std::runtime_error(stbi_failure_reason());
+            throw std::runtime_error(
+                "Failed to open [" + inLocation.toString() + "] image (" + String(stbi_failure_reason()) + ")"
+            );
         }
     }
 
@@ -84,30 +93,19 @@ namespace Chicane
 
         if (!m_pixels)
         {
-            throw std::runtime_error(stbi_failure_reason());
+            throw std::runtime_error("Failed to parse image data (" + String(stbi_failure_reason()) + ")");
         }
     }
 
     Image::Image()
-        : m_vendor(ImageVendor::Undefined),
-          m_width(0),
-          m_height(0),
-          m_channel(0),
-          m_format(0),
+        : ImageInfo(),
+          m_vendor(ImageVendor::Undefined),
           m_pixels(nullptr)
-    {}
-
-    Image::Image(const Image& inImage)
-        : m_width(inImage.m_width),
-          m_height(inImage.m_height),
-          m_channel(inImage.m_channel),
-          m_format(inImage.m_format),
-          m_pixels(inImage.m_pixels)
     {}
 
     Image::~Image()
     {
-        if (m_pixels != nullptr)
+        if (m_pixels == nullptr)
         {
             return;
         }
@@ -122,39 +120,14 @@ namespace Chicane
         return m_vendor;
     }
 
-    int Image::getWidth() const
-    {
-        return m_width;
-    }
-
-    int Image::getHeight() const
-    {
-        return m_height;
-    }
-
-    int Image::getChannel() const
-    {
-        return m_channel;
-    }
-
-    int Image::getFormat() const
-    {
-        return m_format;
-    }
-
     const Image::Pixels Image::getPixels() const
     {
         return m_pixels;
     }
 
-    int Image::getPitch() const
+    std::uint32_t Image::getMemorySize() const
     {
-        return m_format * m_width;
-    }
-
-    int Image::getSize() const
-    {
-        return m_width * m_height;
+        return sizeof(float) * getSize();
     }
 
     void Image::flipHorizontally()

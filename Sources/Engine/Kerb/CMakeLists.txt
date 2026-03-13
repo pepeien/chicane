@@ -1,62 +1,72 @@
-##################### Files #######################
+######################### Files #########################
 file(
     GLOB_RECURSE
     HEADERS
-
-    ${CHICANE_INCLUDES_DIR}/Kerb.hpp
-    ${KERB_HEADER_DIR}/*.hpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_KERB_INCLUDES_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Kerb.hpp)
+list(APPEND HEADERS ${CHICANE_ENGINE_INCLUDES_DIR}/Kerb.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
-
-    ${CHICANE_SOURCES_DIR}/Kerb.cpp
-    ${KERB_SOURCE_DIR}/*.cpp
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_KERB_SOURCES_DIR}/*.cpp
 )
+list(APPEND SOURCES ${CHICANE_ENGINE_SOURCES_DIR}/Kerb.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
-##################### Setup #######################
+######################### Setup #########################
 if (CHICANE_SHARED)
-    add_library(${KERB_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_KERB_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${KERB_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_KERB_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
     "${NAME}::Kerb"
 
     ALIAS
-        ${KERB_TARGET_NAME}
+        ${CHICANE_ENGINE_KERB_TARGET_NAME}
 )
 
 set_target_properties(
-    ${KERB_TARGET_NAME}
+    ${CHICANE_ENGINE_KERB_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
             "${NAME}Kerb"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${CHICANE_BUILD_DIR}"
-        DEFINE_SYMBOL
-            "BUILD_EXPORT"
         POSITION_INDEPENDENT_CODE
             TRUE
+        CH_REFLECT_HEADERS
+            "${HEADERS}"
+        CH_BASE_HEADER_DIR
+            "${CHICANE_INCLUDES_DIR}"
+        CH_SOURCE_HEADER_DIR
+            "${CHICANE_ENGINE_KERB_INCLUDES_DIR}"
+)
+
+target_compile_definitions(
+    ${CHICANE_ENGINE_KERB_TARGET_NAME}
+
+    PRIVATE
+        BUILD_EXPORT
 )
 
 target_include_directories(
-    ${KERB_TARGET_NAME}
+    ${CHICANE_ENGINE_KERB_TARGET_NAME}
 
     PUBLIC
         # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
 )
 
 target_link_libraries(
-    ${KERB_TARGET_NAME}
+    ${CHICANE_ENGINE_KERB_TARGET_NAME}
 
     PUBLIC
         Chicane::Core
@@ -64,7 +74,7 @@ target_link_libraries(
         Jolt::Jolt
 )
 
-CH_ADD_COMPILER(${KERB_TARGET_NAME})
+CH_ADD_COMPILER(${CHICANE_ENGINE_KERB_TARGET_NAME})
 
-##################### Directories #######################
+######################### Directories #########################
 add_subdirectory(Vendor)

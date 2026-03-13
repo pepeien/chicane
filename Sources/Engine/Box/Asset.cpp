@@ -6,7 +6,7 @@ namespace Chicane
     {
         Asset::Asset(const FileSystem::Path& inSource)
         {
-            if (inSource.empty())
+            if (inSource.isEmpty())
             {
                 return;
             }
@@ -143,7 +143,7 @@ namespace Chicane
 
         void Asset::createXML(const FileSystem::Path& inFilepath)
         {
-            if (inFilepath.empty() || !m_xml.children().empty())
+            if (inFilepath.isEmpty() || !m_xml.children().empty())
             {
                 return;
             }

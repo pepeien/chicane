@@ -19,8 +19,6 @@ namespace Chicane
             virtual void open(const Callback& inCallback) const = 0;
 
         public:
-            bool   bCanSelectMany = false;
-
             String title    = "";
             String location = "";
         };

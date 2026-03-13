@@ -124,12 +124,12 @@ namespace Chicane
             return true;
         }
 
-        if (!isConnectedTo(inType))
+        if (inType == Input::DeviceType::Keyboard || inType == Input::DeviceType::Mouse)
         {
-            return false;
+            return true;
         }
 
-        return m_devices.at(inType) == inId;
+        return isConnectedTo(inType) ? m_devices.at(inType) == inId : false;
     }
 
     bool Controller::isConnectedTo(Input::DeviceType inType) const

@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Font.hpp"
 
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -11,6 +12,7 @@ namespace Chicane
 {
     namespace Grid
     {
+        CH_TYPE(Manual)
         class CHICANE_GRID Text : public Container
         {
         public:
@@ -18,6 +20,7 @@ namespace Chicane
             static constexpr inline const char* TAG_ID = "Text";
 
         public:
+            CH_CONSTRUCTOR()
             Text(const pugi::xml_node& inNode);
 
         protected:

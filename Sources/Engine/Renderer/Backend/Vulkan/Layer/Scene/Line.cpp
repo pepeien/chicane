@@ -63,7 +63,7 @@ namespace Chicane
             vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
 
-            vk::RenderPassBeginInfo beginInfo  = {};
+            vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass               = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
             beginInfo.renderArea.extent.width  = viewport.width;
@@ -161,11 +161,11 @@ namespace Chicane
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Line.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Line.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             // Depth
@@ -186,8 +186,8 @@ namespace Chicane
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;

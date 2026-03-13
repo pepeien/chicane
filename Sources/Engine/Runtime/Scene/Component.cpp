@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Component.hpp"
+#include "Chicane/Runtime/Scene/Component.reflected.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
 

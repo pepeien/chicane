@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Scene/Actor/Sound.hpp"
+#include "Chicane/Runtime/Scene/Actor/Sound.reflected.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
 

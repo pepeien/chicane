@@ -55,7 +55,7 @@ namespace Chicane
                 throw std::runtime_error("Failed to fetch audio devices");
             }
 
-            std::vector<Device> result = {};
+            std::vector<Device> result;
 
             for (ma_uint32 i = 0; i < outputCount; i += 1)
             {

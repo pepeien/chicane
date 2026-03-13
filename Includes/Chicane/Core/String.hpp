@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <regex>
 #include <stdexcept>
@@ -10,9 +11,11 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     struct CHICANE_CORE String
     {
     public:
@@ -149,11 +152,61 @@ namespace Chicane
         bool isEmpty() const;
         bool isNaN() const;
 
-        bool equals(const String& inValue) const;
-        bool equals(char inValue) const;
+        template <typename... Args>
+        inline bool equals(Args... inDelimeters) const
+        {
+            std::vector<String> delimeters;
+            (delimeters.emplace_back(std::forward<Args>(inDelimeters)), ...);
+
+            if (size() == 0 || delimeters.empty())
+            {
+                return false;
+            }
+
+            for (const String& delimeter : delimeters)
+            {
+                if (delimeter.size() == 0)
+                {
+                    continue;
+                }
+
+                if (std::strcmp(toChar(), delimeter.toChar()) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         bool contains(const String& inValue) const;
         bool contains(char inValue) const;
+
+        template <typename... Args>
+        bool startsWithChars(Args... inValues)
+        {
+            static_assert((std::is_same_v<Args, char> && ...), "startsWithChars only accepts char arguments");
+
+            std::vector<char> values;
+            (values.emplace_back(std::forward<Args>(inValues)), ...);
+
+            if (size() == 0 || values.empty())
+            {
+                return npos;
+            }
+
+            for (char value : values)
+            {
+                if (!startsWith(value))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         bool startsWith(const String& inValue) const;
         bool startsWith(char inValue) const;
@@ -174,6 +227,29 @@ namespace Chicane
         char at(std::size_t inIndex) const;
 
         String substr(std::size_t inStart, std::size_t inEnd = npos) const;
+
+        template <typename... Args>
+        std::size_t firstOfChars(Args... inValues)
+        {
+            static_assert((std::is_same_v<Args, char> && ...), "firstOfChars only accepts char arguments");
+
+            std::vector<char> values;
+            (values.emplace_back(std::forward<Args>(inValues)), ...);
+
+            if (size() == 0 || values.empty())
+            {
+                return npos;
+            }
+
+            std::size_t result = npos;
+
+            for (char value : values)
+            {
+                result = std::min(firstOf(value), result);
+            }
+
+            return result;
+        }
 
         std::size_t firstOf(char inValue, std::size_t inLocation = 0L) const;
         std::size_t firstOf(const String& inValue, std::size_t inLocation = 0L) const;
@@ -286,6 +362,6 @@ namespace std
     template <>
     struct hash<Chicane::String>
     {
-        size_t operator()(const Chicane::String& s) const { return hash<string>()(s.toStandard()); }
+        size_t operator()(const Chicane::String& inValue) const { return hash<string>()(inValue.toStandard()); }
     };
 }

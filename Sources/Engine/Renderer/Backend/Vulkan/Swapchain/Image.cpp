@@ -70,19 +70,19 @@ namespace Chicane
             depthImage.format = inFormat;
             depthImage.extent = inExtent;
 
-            VulkanImageCreateInfo instanceCreateInfo = {};
-            instanceCreateInfo.flags                 = vk::ImageCreateFlagBits();
-            instanceCreateInfo.width                 = depthImage.extent.width;
-            instanceCreateInfo.height                = depthImage.extent.height;
-            instanceCreateInfo.count                 = 1;
-            instanceCreateInfo.tiling                = vk::ImageTiling::eOptimal;
+            VulkanImageCreateInfo instanceCreateInfo;
+            instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
+            instanceCreateInfo.width  = depthImage.extent.width;
+            instanceCreateInfo.height = depthImage.extent.height;
+            instanceCreateInfo.count  = 1;
+            instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
             instanceCreateInfo.usage =
                 vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
             instanceCreateInfo.format        = inFormat;
             instanceCreateInfo.logicalDevice = logicalDevice;
             VulkanImage::initInstance(depthImage.instance, instanceCreateInfo);
 
-            vk::SamplerCreateInfo samplerCreateInfo   = {};
+            vk::SamplerCreateInfo samplerCreateInfo;
             samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
             samplerCreateInfo.minFilter               = vk::Filter::eLinear;
             samplerCreateInfo.magFilter               = vk::Filter::eLinear;
@@ -101,18 +101,18 @@ namespace Chicane
             samplerCreateInfo.unnormalizedCoordinates = false;
             depthImage.sampler                        = logicalDevice.createSampler(samplerCreateInfo);
 
-            VulkanImageMemoryCreateInfo memoryCreateInfo = {};
-            memoryCreateInfo.properties                  = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            memoryCreateInfo.logicalDevice               = logicalDevice;
-            memoryCreateInfo.physicalDevice              = physicalDevice;
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = logicalDevice;
+            memoryCreateInfo.physicalDevice = physicalDevice;
             VulkanImage::initMemory(depthImage.memory, depthImage.instance, memoryCreateInfo);
 
-            VulkanImageViewCreateInfo viewCreateInfo = {};
-            viewCreateInfo.count                     = instanceCreateInfo.count;
-            viewCreateInfo.type                      = vk::ImageViewType::e2D;
-            viewCreateInfo.aspect                    = vk::ImageAspectFlagBits::eDepth;
-            viewCreateInfo.format                    = instanceCreateInfo.format;
-            viewCreateInfo.logicalDevice             = logicalDevice;
+            VulkanImageViewCreateInfo viewCreateInfo;
+            viewCreateInfo.count         = instanceCreateInfo.count;
+            viewCreateInfo.type          = vk::ImageViewType::e2D;
+            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+            viewCreateInfo.format        = instanceCreateInfo.format;
+            viewCreateInfo.logicalDevice = logicalDevice;
             VulkanImage::initView(depthImage.view, depthImage.instance, viewCreateInfo);
         }
 

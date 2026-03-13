@@ -8,7 +8,7 @@ namespace Chicane
     {}
 
     Bounds3DCorner::Bounds3DCorner()
-        : base(Vec3::Zero),
-          transformed(Vec3::Zero)
+        : base(Vec3::Zero()),
+          transformed(Vec3::Zero())
     {}
 }

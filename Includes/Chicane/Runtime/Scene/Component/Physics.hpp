@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Reflection.hpp"
+
 #include "Chicane/Kerb/Body/Shape.hpp"
 #include "Chicane/Kerb/Engine.hpp"
 #include "Chicane/Kerb/Motion/Type.hpp"
@@ -11,6 +13,7 @@ namespace Chicane
 {
     class Actor;
 
+    CH_TYPE(Manual)
     class CHICANE_RUNTIME CPhysics : public Component
     {
     public:

@@ -7,7 +7,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Buffer/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
 #include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
@@ -47,8 +47,8 @@ namespace Chicane
             vk::PhysicalDevice                          physicalDevice;
 
             // Image
-            VulkanImageData                             colorImage;
-            VulkanImageData                             depthImage;
+            VulkanImageInfo                             colorImage;
+            VulkanImageInfo                             depthImage;
 
             // Buffer
             std::unordered_map<String, vk::Framebuffer> framebuffers;

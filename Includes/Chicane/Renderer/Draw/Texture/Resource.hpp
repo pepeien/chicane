@@ -12,7 +12,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawTextureResource : DrawResource<int, int>
+        struct CHICANE_RENDERER DrawTextureResource : public DrawResource<int, int>
         {
         public:
             bool isEmpty() const;

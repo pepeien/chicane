@@ -1,24 +1,27 @@
 #pragma once
 
-#include <Chicane/Core/Telemetry.hpp>
+#include <Chicane/Core/FileSystem.hpp>
+#include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Grid/Component/View.hpp>
+#include <Chicane/Runtime/Application/Telemetry.hpp>
 
 namespace Editor
 {
+    CH_TYPE(Manual)
     class View : public Chicane::Grid::View
     {
     public:
         View();
 
-    private:
-        Chicane::Reference onAssetImport(const Chicane::Grid::Event& inEvent);
+    public:
+        CH_FUNCTION()
+        void onAssetImport();
 
-    private:
-        // Status
-        const Chicane::Telemetry& m_telemetry;
+    public:
+        CH_FIELD()
+        const Chicane::ApplicationTelemetry* telemetry;
 
-        // Telemetry
-        Chicane::Reference m_uiFrameTime;
-        Chicane::Reference m_uiFramesPerSecond;
+        CH_FIELD()
+        Chicane::FileSystem::Item currentFolder;
     };
 }
