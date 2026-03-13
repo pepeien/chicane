@@ -22,7 +22,7 @@ namespace Chicane
             }
 
             type  = StyleLocationType::URL;
-            value = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
+            value = inValue.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING);
         }
     }
 }

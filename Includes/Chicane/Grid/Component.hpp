@@ -16,6 +16,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Primitive.hpp"
+#include "Chicane/Grid/Method.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
 
@@ -134,8 +135,8 @@ namespace Chicane
             bool hasField(const String& inId, bool isLocalOnly = false) const;
             const ReflectionFieldInfo* getField(const String& inId) const;
 
-            bool hasFunction(const String& inId, bool isLocalOnly = false) const;
-            const ReflectionMethodInfo* getFunction(const String& inId) const;
+            bool hasMethod(const String& inId, bool isLocalOnly = false) const;
+            Method getMethod(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;
@@ -210,8 +211,7 @@ namespace Chicane
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
 
-            bool isFunction(const String& inValue) const;
-            String parseFunction(const String& inValue) const;
+            bool isMethod(const String& inValue) const;
 
         protected:
             // Properties

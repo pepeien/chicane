@@ -1,5 +1,7 @@
 #include "Chicane/Core/FileSystem/Folder/Dialog.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
+
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>

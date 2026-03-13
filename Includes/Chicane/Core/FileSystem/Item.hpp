@@ -4,14 +4,16 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/FileSystem/Item/Type.hpp"
+#include "Chicane/Core/FileSystem/Path.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
+        CH_TYPE(Manual)
         struct CHICANE_CORE Item
         {
         public:
@@ -22,15 +24,20 @@ namespace Chicane
             Item();
 
         public:
-            ItemType      type;
-            String        name;
-            Path          path;
+            CH_FIELD()
+            ItemType type;
 
-            // File only
-            String        extension;
+            CH_FIELD()
+            String name;
 
-            // Folder only
-            std::uint32_t childCount;
+            CH_FIELD()
+            Path path;
+
+            CH_FIELD()
+            String extension; // Only populated valid type is `ItemType::File`
+
+            CH_FIELD()
+            std::vector<Item> children; // Only populated valid type is `ItemType::Folder`
         };
     }
 }

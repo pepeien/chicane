@@ -2,8 +2,7 @@
 
 #include <fstream>
 
-#include "Chicane/Core/FileSystem/Item.hpp"
-#include "Chicane/Core/FileSystem/Item/Type.hpp"
+#include "Chicane/Core/FileSystem/Item/Type.reflected.hpp"
 
 namespace Chicane
 {

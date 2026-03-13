@@ -33,7 +33,7 @@ namespace Chicane
             }
 
             const std::vector<String> params =
-                inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING).split(FUNCTION_PARAMS_SEPARATOR);
+                inValue.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).split(METHOD_PARAMS_SEPARATOR);
 
             if (params.size() < 2)
             {

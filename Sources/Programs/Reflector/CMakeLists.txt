@@ -87,14 +87,27 @@ function(_CH_GET_ALL_TARGETS OUT DIR)
 endfunction()
 
 function(CH_GENERATE_REFLECTION)
+    set(LOOK_UP_DIRS "")
+
     set(ALL_TARGETS)
 
     _CH_GET_ALL_TARGETS(ALL_TARGETS "${CMAKE_CURRENT_LIST_DIR}")
 
     foreach(T ${ALL_TARGETS})
-        get_target_property(HEADERS    ${T} CH_REFLECT_HEADERS)
-        get_target_property(BASE_DIR   ${T} CH_BASE_HEADER_DIR)
-        get_target_property(SOURCES_DIR ${T} CH_SOURCE_HEADER_DIR)
+        get_target_property(HEADERS      ${T} CH_REFLECT_HEADERS)
+        get_target_property(BASE_DIR     ${T} CH_BASE_HEADER_DIR)
+        get_target_property(SOURCES_DIR  ${T} CH_SOURCE_HEADER_DIR)
+        get_target_property(INCLUDE_DIRS ${T} INTERFACE_INCLUDE_DIRECTORIES)
+
+        if(INCLUDE_DIRS AND NOT INCLUDE_DIRS STREQUAL "INCLUDE_DIRS-NOTFOUND")
+            foreach(DIR ${INCLUDE_DIRS})
+                if(DIR MATCHES "^\\$<BUILD_INTERFACE:(.*)>$")
+                    list(APPEND LOOK_UP_DIRS "${CMAKE_MATCH_1}")
+                elseif(NOT DIR MATCHES "^\\$<")
+                    list(APPEND LOOK_UP_DIRS "${DIR}")
+                endif()
+            endforeach()
+        endif()
 
         if(NOT HEADERS OR HEADERS STREQUAL "HEADERS-NOTFOUND")
             continue()
@@ -108,6 +121,8 @@ function(CH_GENERATE_REFLECTION)
             continue()
         endif()
 
+        list(REMOVE_DUPLICATES LOOK_UP_DIRS)
+
         set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
         file(MAKE_DIRECTORY "${OUTPUT_DIR}")
 
@@ -119,6 +134,13 @@ function(CH_GENERATE_REFLECTION)
         _CH_COLLECT_REFLECT_HEADERS(${T} ALL_INPUT_FILES VISITED)
 
         list(REMOVE_DUPLICATES ALL_INPUT_FILES)
+
+        set(_ABS_INPUT_FILES)
+        foreach(FILE ${ALL_INPUT_FILES})
+            get_filename_component(_ABS_FILE "${FILE}" ABSOLUTE)
+            list(APPEND _ABS_INPUT_FILES "${_ABS_FILE}")
+        endforeach()
+        set(ALL_INPUT_FILES ${_ABS_INPUT_FILES})
 
         set(TARGET_GENERATED_FILES)
 
@@ -147,6 +169,7 @@ function(CH_GENERATE_REFLECTION)
                 -i ${ALL_INPUT_FILES}
                 -b "${BASE_DIR}"
                 -s "${SOURCES_DIR}"
+                -l ${LOOK_UP_DIRS}
                 -o "${OUTPUT_DIR}"
             BYPRODUCTS
                 ${TARGET_GENERATED_FILES}

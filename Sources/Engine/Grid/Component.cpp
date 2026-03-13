@@ -1,6 +1,5 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
-#include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
@@ -42,7 +41,15 @@ namespace Chicane
                         return;
                     }
 
-                    // In order for this to work I a reflection system is needed
+                    const std::vector<String> values = inValue.trim().split(':');
+
+                    if (values.size() < 2)
+                    {
+                        return;
+                    }
+
+                    const String rawVariable = values.at(0).trim();
+                    const String rawIterable = values.at(1).trim();
                 }
             );
         }
@@ -148,24 +155,14 @@ namespace Chicane
         {
             onHover();
 
-            const String onHoverAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
-
-            if (const ReflectionMethodInfo* method = getFunction(parseFunction(onHoverAttribute)))
-            {
-                method->invoke(this);
-            }
+            getMethod(getAttribute(ON_HOVER_ATTRIBUTE_NAME)).invoke(this);
         }
 
         void Component::click()
         {
             onClick();
 
-            const String onClickAttribute = getAttribute(ON_CLICK_ATTRIBUTE_NAME);
-
-            if (const ReflectionMethodInfo* method = getFunction(parseFunction(onClickAttribute)))
-            {
-                method->invoke(this);
-            }
+            getMethod(getAttribute(ON_CLICK_ATTRIBUTE_NAME)).invoke(this);
         }
 
         const String& Component::getTag() const
@@ -495,7 +492,7 @@ namespace Chicane
             return m_parent->getField(inId);
         }
 
-        bool Component::hasFunction(const String& inId, bool isLocalOnly) const
+        bool Component::hasMethod(const String& inId, bool isLocalOnly) const
         {
             if (inId.isEmpty())
             {
@@ -504,35 +501,42 @@ namespace Chicane
 
             if (isLocalOnly || !hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    return type->findMethod(inId) != nullptr;
-                }
-
-                return false;
+                return getMethod(inId).isValid();
             }
 
-            return m_parent->hasFunction(inId, false);
+            return m_parent->hasMethod(inId, false);
         }
 
-        const ReflectionMethodInfo* Component::getFunction(const String& inId) const
+        Method Component::getMethod(const String& inValue) const
         {
-            if (inId.isEmpty())
+            const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
+
+            if (!isMethod(signature))
             {
-                return nullptr;
+                return {};
             }
 
             if (!hasParent())
             {
                 if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
                 {
-                    return type->findMethod(inId);
+                    const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
+
+                    if (const ReflectionMethodInfo* method = type->findMethod(name))
+                    {
+                        Method result;
+                        result.setInstance(method);
+
+                        return result;
+                    }
+
+                    return {};
                 }
 
-                return nullptr;
+                return {};
             }
 
-            return m_parent->getFunction(inId);
+            return m_parent->getMethod(inValue);
         }
 
         bool Component::hasRoot() const
@@ -613,14 +617,20 @@ namespace Chicane
 
             const std::vector<Component*>& neighbours = m_parent->getChildren();
 
-            std::uint32_t location = std::find_if(
-                                         neighbours.begin(),
-                                         neighbours.end(),
-                                         [&](Component* children) { return children == this; }
-                                     ) -
-                                     neighbours.begin();
+            const std::size_t location = std::find_if(
+                                             neighbours.begin(),
+                                             neighbours.end(),
+                                             [&](Component* children) { return children == this; }
+                                         ) -
+                                         neighbours.begin();
 
-            return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
+            return neighbours.at(
+                std::clamp(
+                    static_cast<std::size_t>(location + inJumps),
+                    static_cast<std::size_t>(0),
+                    neighbours.size() - 1
+                )
+            );
         }
 
         bool Component::hasChildren() const
@@ -1097,24 +1107,17 @@ namespace Chicane
             return m_parent->parseReference(inValue);
         }
 
-        bool Component::isFunction(const String& inValue) const
+        bool Component::isMethod(const String& inValue) const
         {
-            const bool bHasOpening = inValue.firstOf(FUNCTION_PARAMS_OPENING) != String::npos;
-            const bool bHasClosing = inValue.lastOf(FUNCTION_PARAMS_CLOSING) != String::npos;
-
-            return bHasOpening && bHasClosing;
-        }
-
-        String Component::parseFunction(const String& inValue) const
-        {
-            if (inValue.isEmpty() || !isFunction(inValue))
+            if (inValue.isEmpty())
             {
-                return inValue;
+                return false;
             }
 
-            const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
+            const bool bHasOpening = inValue.firstOf(METHOD_PARAMS_OPENING) != String::npos;
+            const bool bHasClosing = inValue.lastOf(METHOD_PARAMS_CLOSING) != String::npos;
 
-            return signature.substr(0, signature.firstOf(FUNCTION_PARAMS_OPENING));
+            return bHasOpening && bHasClosing;
         }
     }
 }

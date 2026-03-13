@@ -6,7 +6,11 @@
         <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="ClangSharp" Version="21.1.8.2" />
+    </ItemGroup>
 </Project>

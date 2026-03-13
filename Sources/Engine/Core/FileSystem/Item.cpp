@@ -1,4 +1,6 @@
-#include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/FileSystem/Item.reflected.hpp"
+
+#include "Chicane/Core/FileSystem.hpp"
 
 namespace Chicane
 {
@@ -19,7 +21,7 @@ namespace Chicane
                 break;
 
             case ItemType::Folder:
-                childCount = static_cast<std::uint32_t>(ls(path.lexicallyNormal(), 1).size());
+                children = ls(path.lexicallyNormal(), 1);
 
                 break;
 
@@ -33,7 +35,7 @@ namespace Chicane
               name(""),
               path(""),
               extension(""),
-              childCount(0U)
+              children({})
         {}
     }
 }

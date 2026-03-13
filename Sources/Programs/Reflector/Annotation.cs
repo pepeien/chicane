@@ -11,7 +11,7 @@ namespace Reflector
         [StringValue("CH_CONSTRUCTOR")]
         Constructor,
         [StringValue("CH_FUNCTION")]
-        Method,
+        Function,
         [StringValue("CH_FIELD")]
         Field,
         [StringValue("Undefined")]

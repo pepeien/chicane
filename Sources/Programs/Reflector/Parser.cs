@@ -1,501 +1,499 @@
-using System.Text;
-using System.Text.RegularExpressions;
+using ClangSharp.Interop;
 
 namespace Reflector
 {
     static class Parser
     {
-        static readonly HashSet<string> s_keywords = new() {
-            "enum", "class", "struct", "public", "private", "protected"
-        };
-
-        static readonly HashSet<string> s_fieldSkip = new()
+        static unsafe string FindAnnotation(CXCursor cursor, Annotation annotation)
         {
-            "public", "private", "protected", "virtual", "override",
-            "explicit", "static", "inline", "friend", "mutable", "constexpr"
-        };
+            string found = "";
+            string prefix = Enum.GetStringValue(annotation);
 
-        public static string StripComments(string src)
-        {
-            src = Regex.Replace(src, @"//[^\n]*", "");
-            src = Regex.Replace(src, @"/\*.*?\*/", "", RegexOptions.Singleline);
+            cursor.VisitChildren(
+                (child, _, _) =>
+                {
+                    if (child.Kind == CXCursorKind.CXCursor_AnnotateAttr && child.Spelling.CString.StartsWith(prefix))
+                    {
+                        found = child.Spelling.CString;
 
-            return src;
+                        return CXChildVisitResult.CXChildVisit_Break;
+                    }
+
+                    return CXChildVisitResult.CXChildVisit_Continue;
+                },
+                default
+            );
+
+            return found;
         }
 
-        public static (List<TypeModel>, List<EnumModel>) Parse(string src)
+        static unsafe bool HasAnnotation(CXCursor cursor, Annotation annotation)
         {
-            src = StripComments(src);
+            return !string.IsNullOrWhiteSpace(FindAnnotation(cursor, annotation));
+        }
 
-            var lines = src.Split('\n');
+        static string GetAnnotationParam(string annotationValue)
+        {
+            if (string.IsNullOrWhiteSpace(annotationValue))
+            {
+                return "";
+            }
+
+            var idx = annotationValue.IndexOf(':');
+
+            return idx >= 0 ? annotationValue[(idx + 1)..].Trim() : "";
+        }
+
+        static string GetTypeName(CXType type)
+        {
+            return type.CanonicalType.Spelling.CString.Replace("const ", "")
+                  .Replace("&", "")
+                  .Trim();
+        }
+
+        public static (List<TypeModel>, List<EnumModel>) Parse(string filePath, List<string> lookUpFolders)
+        {
             var types = new List<TypeModel>();
             var enums = new List<EnumModel>();
 
-            Annotation next = Annotation.Undefined;
-            AnnotationInclusion nextInclusion = AnnotationInclusion.Manual;
-
-            var namespaceStack = new Stack<string>();
-            string CurrentNamespace() => namespaceStack.Count > 0
-                ? string.Join("::", namespaceStack.Reverse())
-                : string.Empty;
-
-            var namespaceBraceDepth = new Stack<int>();
-            int braceDepth = 0;
-
-            for (int i = 0; i < lines.Length; i++)
+            var argList = new List<string>
             {
-                var line = lines[i].Trim();
+                "-std=c++17",
+                "-xc++",
+                "-fms-extensions",
+                "-fparse-all-comments",
+                "-DCH_TYPE(...)=__attribute__((annotate(\"CH_TYPE:\" #__VA_ARGS__)))",
+                "-DCH_ENUM(...)=__attribute__((annotate(\"CH_ENUM:\" #__VA_ARGS__)))",
+                "-DCH_FIELD(...)=__attribute__((annotate(\"CH_FIELD:\" #__VA_ARGS__)))",
+                "-DCH_FUNCTION(...)=__attribute__((annotate(\"CH_FUNCTION:\" #__VA_ARGS__)))",
+                "-DCH_CONSTRUCTOR(...)=__attribute__((annotate(\"CH_CONSTRUCTOR:\" #__VA_ARGS__)))"
+            };
 
-                int opened = Count(line, '{');
-                int closed = Count(line, '}');
+            foreach (var dir in lookUpFolders)
+            {
+                argList.Add($"-I{dir}");
+            }
 
-                var nsMatch = Regex.Match(line, @"^namespace\s+(\w+)\s*\{?");
+            var resourceDir = GetClangResourceDir();
+            if (resourceDir is not null)
+            {
+                argList.Add("-resource-dir");
+                argList.Add(resourceDir);
+            }
 
-                if (nsMatch.Success && !line.StartsWith("//"))
-                {
-                    namespaceStack.Push(nsMatch.Groups[1].Value);
-                    namespaceBraceDepth.Push(braceDepth + (opened > 0 ? 1 : 0));
-                }
+            using var index = CXIndex.Create(false, false);
 
-                braceDepth += opened - closed;
+            CXTranslationUnit.TryParse(
+                index,
+                filePath,
+                argList.ToArray(),
+                [],
+                CXTranslationUnit_Flags.CXTranslationUnit_DetailedPreprocessingRecord |
+                CXTranslationUnit_Flags.CXTranslationUnit_SkipFunctionBodies |
+                CXTranslationUnit_Flags.CXTranslationUnit_KeepGoing,
+                out var tu
+            );
 
-                while (namespaceBraceDepth.Count > 0 && braceDepth < namespaceBraceDepth.Peek())
-                {
-                    namespaceBraceDepth.Pop();
-                    namespaceStack.Pop();
-                }
-
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Type)))
-                {
-                    next = Annotation.Type;
-                    nextInclusion = line.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic)) ?
-                        AnnotationInclusion.Automatic :
-                        AnnotationInclusion.Manual;
-
-                    continue;
-                }
-
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Enum)))
-                {
-                    next = Annotation.Enum;
-
-                    continue;
-                }
-
-                if (next == Annotation.Enum)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var e = ParseEnum(lines, ref i, CurrentNamespace());
-
-                    if (e != null)
-                    {
-                        enums.Add(e);
-                    }
-
-                    next = Annotation.Undefined;
-
-                    continue;
-                }
-
-                if (next == Annotation.Type)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var t = ParseType(lines, ref i, CurrentNamespace(), nextInclusion);
-                    if (t != null)
-                    {
-                        types.Add(t);
-                    }
-
-                    next = Annotation.Undefined;
-
-                    continue;
-                }
+            using (tu)
+            {
+                VisitChildren(tu.Cursor, types, enums, filePath, Annotation.Undefined, []);
             }
 
             return (types, enums);
         }
 
-
-        static EnumModel? ParseEnum(string[] lines, ref int i, string currentNamespace)
+        static string? GetClangResourceDir()
         {
-            var m = Regex.Match(lines[i].Trim(), @"^enum\s+class\s+(\w+)");
+            try
+            {
+                var psi = new System.Diagnostics.ProcessStartInfo("clang", "-print-resource-dir")
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
+                };
 
-            if (!m.Success)
+                using var proc = System.Diagnostics.Process.Start(psi)!;
+                var dir = proc.StandardOutput.ReadToEnd().Trim();
+                proc.WaitForExit();
+                return string.IsNullOrEmpty(dir) ? null : dir;
+            }
+            catch
             {
                 return null;
             }
+        }
 
-            string name = m.Groups[1].Value;
-            var list = new List<EnumeratorModel>();
-            int next = 0;
+        static unsafe List<string> GetMacroArgs(CXCursor cursor)
+        {
+            var tu = cursor.TranslationUnit;
+            var extent = cursor.Extent;
+            var tokens = tu.Tokenize(extent);
 
-            i++;
-
-            for (; i < lines.Length; i++)
+            bool open = false;
+            foreach (var token in tokens)
             {
-                var line = lines[i].Trim();
-                var clean = line.TrimEnd(',').Trim();
+                var text = clang.getTokenSpelling(tu, token).CString;
 
-                if (clean == "{" || clean == "}" || string.IsNullOrWhiteSpace(clean))
+                if (text == "(")
                 {
-                    if (line.Contains('}'))
-                    {
-                        break;
-                    }
+                    open = true;
 
                     continue;
                 }
 
-                var me = Regex.Match(clean, @"(\w+)\s*=\s*(-?\d+)");
-
-                if (me.Success)
-                {
-                    next = int.Parse(me.Groups[2].Value);
-
-                    list.Add(new(me.Groups[1].Value, next++));
-                }
-                else
-                {
-                    var s = Regex.Match(clean, @"^(\w+)");
-
-                    if (s.Success && !s_keywords.Contains(s.Groups[1].Value))
-                    {
-                        list.Add(new(s.Groups[1].Value, next++));
-                    }
-                }
-
-                if (line.Contains('}'))
+                if (text == ")")
                 {
                     break;
                 }
+
+                if (open)
+                {
+                    return new List<string>(text.Trim().Split(','));
+                }
             }
 
-            return new(name, currentNamespace, list);
+            return [];
         }
 
-        static TypeModel? ParseType(string[] lines, ref int i, string currentNamespace, AnnotationInclusion inclusion)
+        static unsafe void CollectMembers(
+            CXCursor cursor,
+            List<string> args,
+            List<FunctionModel> methods,
+            List<FieldModel> fields
+        )
         {
-            var m = Regex.Match(
-                lines[i].Trim(),
-                @"^(struct|class)\s+(?:[A-Z_][A-Z0-9_]*\s+)?(\w+)(?:\s*[:{].*)?$"
+            bool isAutomatic = args.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic));
+            bool isPublic = cursor.Kind == CXCursorKind.CXCursor_StructDecl ||
+                            cursor.Kind == CXCursorKind.CXCursor_UnionDecl;
+
+            cursor.VisitChildren(
+                (child, _, _) =>
+                {
+                    switch (child.Kind)
+                    {
+                        case CXCursorKind.CXCursor_CXXBaseSpecifier:
+                            var baseDecl = clang.getTypeDeclaration(child.Type);
+
+                            if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
+                            {
+                                CollectMembers(baseDecl, args, methods, fields);
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_CXXAccessSpecifier:
+                            isPublic = child.CXXAccessSpecifier == CX_CXXAccessSpecifier.CX_CXXPublic;
+
+                            break;
+
+                        case CXCursorKind.CXCursor_CXXMethod:
+                            if (HasAnnotation(child, Annotation.Function))
+                            {
+                                methods.Add(ParseMethod(child));
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_FieldDecl:
+                            if (HasAnnotation(child, Annotation.Field) || (isAutomatic && isPublic))
+                            {
+                                fields.Add(ParseField(child));
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_UnionDecl:
+                            if (isAutomatic && isPublic)
+                            {
+                                fields.Add(ParseField(child));
+                            }
+
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    return CXChildVisitResult.CXChildVisit_Continue;
+                },
+                default
+            );
+        }
+
+        static unsafe void VisitChildren(
+            CXCursor parent,
+            List<TypeModel> types,
+            List<EnumModel> enums,
+            string fullPath,
+            Annotation pending,
+            List<string> pendingParams
+        )
+        {
+            Annotation next = pending;
+            List<string> nextParams = pendingParams;
+
+            parent.VisitChildren((cursor, _, _) =>
+            {
+                if (!IsDefinedInFile(cursor, fullPath))
+                {
+                    return CXChildVisitResult.CXChildVisit_Continue;
+                }
+
+                switch (cursor.Kind)
+                {
+                    case CXCursorKind.CXCursor_Namespace:
+                        VisitChildren(cursor, types, enums, fullPath, next, nextParams);
+
+                        next = Annotation.Undefined;
+                        nextParams = [];
+
+                        break;
+
+                    case CXCursorKind.CXCursor_MacroExpansion:
+                        var spelling = cursor.Spelling.CString;
+
+                        if (spelling.StartsWith(Enum.GetStringValue(Annotation.Type)))
+                        {
+                            next = Annotation.Type;
+                            nextParams = GetMacroArgs(cursor);
+                        }
+                        else if (spelling.StartsWith(Enum.GetStringValue(Annotation.Enum)))
+                        {
+                            next = Annotation.Enum;
+                            nextParams = GetMacroArgs(cursor);
+                        }
+
+                        break;
+
+                    case CXCursorKind.CXCursor_StructDecl:
+                    case CXCursorKind.CXCursor_ClassDecl:
+                    case CXCursorKind.CXCursor_UnionDecl:
+                        if (!cursor.IsDefinition)
+                        {
+                            break;
+                        }
+
+                        if (next == Annotation.Type)
+                        {
+                            types.Add(ParseType(cursor, nextParams));
+                        }
+
+                        next = Annotation.Undefined;
+                        nextParams = [];
+
+                        break;
+
+                    case CXCursorKind.CXCursor_EnumDecl:
+                        if (!cursor.IsDefinition)
+                        {
+                            break;
+                        }
+
+                        if (next == Annotation.Enum)
+                        {
+                            enums.Add(ParseEnum(cursor, nextParams));
+                        }
+
+                        next = Annotation.Undefined;
+                        nextParams = [];
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return CXChildVisitResult.CXChildVisit_Continue;
+            }, default);
+        }
+
+        static unsafe EnumModel ParseEnum(CXCursor cursor, List<string> args)
+        {
+            var enumerators = new List<EnumeratorModel>();
+
+            cursor.VisitChildren((child, _, _) =>
+            {
+                if (child.Kind == CXCursorKind.CXCursor_EnumConstantDecl)
+                    enumerators.Add(
+                        new(
+                            child.Spelling.CString,
+                            (int)child.EnumConstantDeclValue
+                        )
+                    );
+
+                return CXChildVisitResult.CXChildVisit_Continue;
+            }, default);
+
+            string ns = GetNamespace(cursor);
+            return new((string.IsNullOrWhiteSpace(ns) ? "" : $"{ns}::") + cursor.Spelling.CString, enumerators);
+        }
+
+        static unsafe TypeModel ParseType(CXCursor cursor, List<string> args)
+        {
+            var name = cursor.Spelling.CString;
+            var ns = GetNamespace(cursor);
+            var kind = cursor.Kind == CXCursorKind.CXCursor_StructDecl ? "struct" : "class";
+
+            var constructors = new List<ConstructorModel>();
+            var methods = new List<FunctionModel>();
+            var fields = new List<FieldModel>();
+
+            bool isAutomatic = args.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic));
+            bool isPublic = kind == "struct" || kind == "union";
+
+            cursor.VisitChildren(
+                (child, _, _) =>
+                {
+                    switch (child.Kind)
+                    {
+                        case CXCursorKind.CXCursor_Constructor:
+                            if (HasAnnotation(child, Annotation.Constructor))
+                            {
+                                constructors.Add(ParseConstructor(child));
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_CXXMethod:
+                            if (HasAnnotation(child, Annotation.Function))
+                            {
+                                methods.Add(ParseMethod(child));
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_UnionDecl:
+                        case CXCursorKind.CXCursor_FieldDecl:
+                            if (HasAnnotation(child, Annotation.Field) || (isAutomatic && isPublic))
+                            {
+                                fields.Add(ParseField(child));
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_CXXBaseSpecifier:
+                            var baseDecl = clang.getTypeDeclaration(child.Type);
+
+                            if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
+                            {
+                                CollectMembers(baseDecl, args, methods, fields);
+                            }
+
+                            break;
+
+                        case CXCursorKind.CXCursor_CXXAccessSpecifier:
+                            isPublic = child.CXXAccessSpecifier == CX_CXXAccessSpecifier.CX_CXXPublic;
+
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    return CXChildVisitResult.CXChildVisit_Continue;
+                },
+                default
             );
 
-            if (!m.Success)
-            {
-                return null;
-            }
-
-            string kind = m.Groups[1].Value;
-            string name = m.Groups[2].Value;
-
-            var baseMatch = Regex.Match(lines[i].Trim(), @":\s*(?:public|private|protected)\s+([\w:]+)");
-            string baseType = baseMatch.Success ? baseMatch.Groups[1].Value.Trim() : "";
-
-            List<ConstructorModel> constructors = [];
-            List<MethodModel> methods = [];
-            List<FieldModel> fields = [];
-
-            bool takeConstructor = false;
-            bool takeMethod = false;
-            bool takeField = false;
-
-            bool isPublic = kind == "struct";
-
-            bool inUnion = false;
-            bool tookUnionField = false;
-
-            int depth = 0;
-
-            for (; i < lines.Length; i++)
-            {
-                var line = lines[i].Trim();
-
-                depth += Count(line, '{') - Count(line, '}');
-
-                if (line == "public:")
-                {
-                    isPublic = true;
-
-                    continue;
-                }
-
-                if (line == "private:")
-                {
-                    isPublic = false;
-
-                    continue;
-                }
-
-                if (line == "protected:")
-                {
-                    isPublic = false;
-
-                    continue;
-                }
-
-                if (!inUnion && (line == "union" || line == "union{" || line.StartsWith("union ")))
-                {
-                    inUnion = true;
-
-                    tookUnionField = false;
-
-                    continue;
-                }
-
-                if (inUnion)
-                {
-                    if (line.Contains('}'))
-                    {
-                        inUnion = false;
-                        tookUnionField = false;
-
-                        continue;
-                    }
-
-                    if (!tookUnionField && inclusion == AnnotationInclusion.Automatic && isPublic)
-                    {
-                        if (string.IsNullOrWhiteSpace(line))
-                        {
-                            continue;
-                        }
-
-                        var uf = ParseField(line);
-                        if (uf != null)
-                        {
-                            fields.Add(uf);
-
-                            tookUnionField = true;
-                        }
-                    }
-
-                    continue;
-                }
-
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Constructor)))
-                {
-                    takeConstructor = true;
-
-                    continue;
-                }
-
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Method)))
-                {
-                    takeMethod = true;
-
-                    continue;
-                }
-
-                if (line.StartsWith(Enum.GetStringValue(Annotation.Field)))
-                {
-                    takeField = true;
-
-                    continue;
-                }
-
-                if (takeConstructor)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var c = ParseConstructor(line);
-                    if (c != null)
-                    {
-                        constructors.Add(c);
-                    }
-
-                    takeConstructor = false;
-                }
-                else if (takeMethod)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var me = ParseMethod(line);
-                    if (me != null)
-                    {
-                        methods.Add(me);
-                    }
-
-                    takeMethod = false;
-                }
-                else if (takeField)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var f = ParseField(line);
-                    if (f != null)
-                    {
-                        fields.Add(f);
-                    }
-
-                    takeField = false;
-                }
-                else if (inclusion == AnnotationInclusion.Automatic && isPublic && depth > 0)
-                {
-                    if (string.IsNullOrWhiteSpace(line))
-                    {
-                        continue;
-                    }
-
-                    var f = ParseField(line);
-                    if (f != null)
-                    {
-                        fields.Add(f);
-                    }
-                }
-
-                if (depth == 0 && i > 0 && line.Contains('}'))
-                {
-                    break;
-                }
-            }
-
-            return new(kind, name, currentNamespace, constructors, methods, fields, baseType);
+            return new(kind, (string.IsNullOrWhiteSpace(ns) ? "" : $"{ns}::") + name, constructors, methods, fields);
         }
 
-        static ConstructorModel? ParseConstructor(string line)
+        static unsafe ConstructorModel ParseConstructor(CXCursor cursor)
         {
-            var m = Regex.Match(line, @"^\w+\s*\(([^)]*)\)");
-            if (!m.Success)
-            {
-                return null;
-            }
+            List<string> paramTypes = [];
 
-            var raw = m.Groups[1].Value.Trim();
-            var pts = new List<string>();
-
-            if (!string.IsNullOrWhiteSpace(raw))
+            cursor.VisitChildren((child, _, _) =>
             {
-                foreach (var p in raw.Split(','))
+                if (child.Kind == CXCursorKind.CXCursor_ParmDecl)
                 {
-                    var param = p.Trim();
-                    if (string.IsNullOrWhiteSpace(param))
+                    paramTypes.Add(GetTypeName(child.Type));
+                }
+
+                return CXChildVisitResult.CXChildVisit_Continue;
+            }, default);
+
+            return new(paramTypes);
+        }
+
+        static unsafe FunctionModel ParseMethod(CXCursor cursor)
+        {
+            List<string> paramTypes = [];
+
+            cursor.VisitChildren((child, _, _) =>
+            {
+                if (child.Kind == CXCursorKind.CXCursor_ParmDecl)
+                {
+                    paramTypes.Add(GetTypeName(child.Type));
+                }
+
+                return CXChildVisitResult.CXChildVisit_Continue;
+            }, default);
+
+            return new(
+                GetTypeName(cursor.ResultType),
+                cursor.Spelling.CString,
+                paramTypes
+            );
+        }
+
+        static unsafe FieldModel ParseField(CXCursor cursor)
+        {
+            List<string> names = [];
+            var type = cursor.Type.CanonicalType;
+
+            if (cursor.Kind == CXCursorKind.CXCursor_UnionDecl)
+            {
+                cursor.VisitChildren((child, _, _) =>
+                {
+                    if (child.Kind == CXCursorKind.CXCursor_FieldDecl)
                     {
-                        continue;
+                        type = child.Type.CanonicalType;
+
+                        names.Add(child.Spelling.CString);
                     }
 
-                    var lastSpace = param.LastIndexOf(' ');
-                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
-
-                    typePart = typePart
-                        .Replace("&", "")
-                        .Replace("const", "")
-                        .Trim();
-
-                    pts.Add(typePart);
-                }
+                    return CXChildVisitResult.CXChildVisit_Continue;
+                }, default);
             }
-
-            return new(pts);
-        }
-        static MethodModel? ParseMethod(string line)
-        {
-            var m = Regex.Match(line, @"^([\w:<>]+)\s+(\w+)\s*\(([^)]*)\)");
-            if (!m.Success)
+            else
             {
-                return null;
+                names.Add(cursor.Spelling.CString);
             }
 
-            var pts = new List<string>();
-            var raw = m.Groups[3].Value.Trim();
+            bool isPointer = type.kind == CXTypeKind.CXType_Pointer;
 
-            if (!string.IsNullOrWhiteSpace(raw))
-            {
-                foreach (var p in raw.Split(','))
-                {
-                    var param = p.Trim();
-                    if (string.IsNullOrWhiteSpace(param)) continue;
-
-                    var lastSpace = param.LastIndexOf(' ');
-                    var typePart = lastSpace >= 0 ? param[..lastSpace].Trim() : param;
-
-                    typePart = typePart
-                        .Replace("&", "")
-                        .Replace("const", "")
-                        .Trim();
-
-                    pts.Add(typePart);
-                }
-            }
-
-            return new(m.Groups[1].Value, m.Groups[2].Value, pts);
+            return new(
+                GetTypeName(isPointer ? type.PointeeType : type),
+                names,
+                isPointer
+            );
         }
 
-        static FieldModel? ParseField(string line)
+        static string GetNamespace(CXCursor cursor)
         {
-            line = line.TrimEnd(';').Trim();
+            var parts = new List<string>();
+            var parent = cursor.SemanticParent;
 
-            if (
-                string.IsNullOrWhiteSpace(line) ||
-                line.StartsWith("//") ||
-                line.Contains('(') ||
-                line.Contains('{') ||
-                line.Contains('}')
-            )
+            while (parent.Kind == CXCursorKind.CXCursor_Namespace)
             {
-                return null;
+                parts.Insert(0, parent.Spelling.CString);
+
+                parent = parent.SemanticParent;
             }
 
-            if (Regex.IsMatch(line, @"(?<!:):(?!:)"))
-            {
-                return null;
-            }
-
-            var firstWord = line.Split(' ')[0].TrimStart('~');
-            if (s_fieldSkip.Contains(firstWord))
-            {
-                return null;
-            }
-
-            var member = Regex.Match(line, @"^(?:const\s+)?([\w:<>]+)\s*[*&]?\s+([\w\s,]+)$");
-            if (!member.Success)
-            {
-                return null;
-            }
-
-            string typeName = member.Groups[1].Value.Trim();
-            var propertyNames = member.Groups[2].Value
-                .Split(',')
-                .Select(n => n.Trim())
-                .Where(n => !string.IsNullOrWhiteSpace(n))
-                .ToList();
-
-            if (propertyNames.Count == 0)
-            {
-                return null;
-            }
-
-            return new(typeName, propertyNames, line.Contains('*'));
+            return string.Join("::", parts);
         }
 
-        static int Count(string s, char c)
+        static bool IsDefinedInFile(CXCursor cursor, string fullPath)
         {
-            int n = 0;
-
-            foreach (var ch in s)
-            {
-                if (ch == c)
-                {
-                    n++;
-                }
-            }
-
-            return n;
+            cursor.Location.GetFileLocation(out var cxFile, out _, out _, out _);
+            var name = cxFile.Name.CString;
+            return !string.IsNullOrEmpty(name) &&
+                    string.Equals(
+                       Path.GetFullPath(name),
+                       fullPath,
+                       StringComparison.OrdinalIgnoreCase
+                    );
         }
     }
 }

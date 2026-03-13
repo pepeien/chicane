@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Runtime/Application/Telemetry.hpp>
@@ -19,5 +20,8 @@ namespace Editor
     public:
         CH_FIELD()
         const Chicane::ApplicationTelemetry* telemetry;
+
+        CH_FIELD()
+        Chicane::FileSystem::Item currentFolder;
     };
 }

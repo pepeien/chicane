@@ -55,14 +55,10 @@ namespace Chicane
         // Comparassion
         friend inline bool operator==(Vec3 inLeft, Vec3 inRight)
         {
-            return glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.x,
-                       inRight.x
-                   ) &&
-                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.y,
-                       inRight.y
-                   ) &&
+            return glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(inLeft.x,
+                                                                                                  inRight.x) &&
+                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(inLeft.y,
+                                                                                                  inRight.y) &&
                    glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(inLeft.z, inRight.z);
         }
 
