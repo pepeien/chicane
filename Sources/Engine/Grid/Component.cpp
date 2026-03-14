@@ -32,6 +32,7 @@ namespace Chicane
                     m_style.display.set(StyleDisplay::None);
                 }
             );
+
             setDirective(
                 FOR_DIRECTIVE_KEYWORD,
                 [&](const String& inValue)
@@ -42,14 +43,23 @@ namespace Chicane
                     }
 
                     const std::vector<String> values = inValue.trim().split(':');
-
                     if (values.size() < 2)
                     {
                         return;
                     }
 
-                    const String rawVariable = values.at(0).trim();
-                    const String rawIterable = values.at(1).trim();
+                    const String variableId = values.at(0).trim();
+                    const String accessorId = values.at(1).trim();
+
+                    ReflectionFieldAccessor accessor = getField(accessorId);
+                    if (accessor.isValid())
+                    {
+                        m_variables[variableId] = accessor;
+                    }
+                    else
+                    {
+                        m_variables.erase(variableId);
+                    }
                 }
             );
         }
@@ -59,6 +69,7 @@ namespace Chicane
               m_id(String::empty()),
               m_className(String::empty()),
               m_directives({}),
+              m_variables({}),
               m_style({}),
               m_styleFile(nullptr),
               m_root(nullptr),
@@ -445,66 +456,33 @@ namespace Chicane
             m_style.setProperties(inSource);
         }
 
-        bool Component::hasField(const String& inId, bool isLocalOnly) const
+        ReflectionFieldAccessor Component::getField(const String& inId) const
         {
             if (inId.isEmpty())
             {
-                return false;
+                return {};
             }
 
-            if (isLocalOnly || !hasParent())
+            const auto& local = m_variables.find(inId);
+
+            if (local != m_variables.end())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                return local->second;
+            }
+
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+            {
+                try
                 {
-                    const std::vector<String> fields = inId.split('.');
-
-                    if (fields.empty())
-                    {
-                        return false;
-                    }
-
-                    return type->findField(fields.at(0)) != nullptr;
+                    return type->resolve(inId);
                 }
-
-                return false;
-            }
-
-            return m_parent->hasField(inId, false);
-        }
-
-        const ReflectionFieldInfo* Component::getField(const String& inId) const
-        {
-            if (inId.isEmpty())
-            {
-                return nullptr;
-            }
-
-            if (!hasParent())
-            {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                catch (const std::exception& e)
                 {
-                    return type->findField(inId);
+                    return {};
                 }
-
-                return nullptr;
             }
 
-            return m_parent->getField(inId);
-        }
-
-        bool Component::hasMethod(const String& inId, bool isLocalOnly) const
-        {
-            if (inId.isEmpty())
-            {
-                return false;
-            }
-
-            if (isLocalOnly || !hasParent())
-            {
-                return getMethod(inId).isValid();
-            }
-
-            return m_parent->hasMethod(inId, false);
+            return {};
         }
 
         Method Component::getMethod(const String& inValue) const
@@ -1084,27 +1062,14 @@ namespace Chicane
 
         String Component::parseReference(const String& inValue) const
         {
-            if (!hasField(inValue))
+            ReflectionFieldAccessor accessor = getField(inValue);
+
+            if (accessor.isValid())
             {
-                return inValue;
+                return accessor.toString(this);
             }
 
-            if (!hasParent())
-            {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    try
-                    {
-                        return type->resolve(inValue).toString(this);
-                    }
-                    catch (const std::exception& e)
-                    {
-                        return inValue;
-                    }
-                }
-            }
-
-            return m_parent->parseReference(inValue);
+            return hasParent() ? m_parent->parseReference(inValue) : inValue;
         }
 
         bool Component::isMethod(const String& inValue) const

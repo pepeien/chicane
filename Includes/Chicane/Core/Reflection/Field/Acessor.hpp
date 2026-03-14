@@ -25,6 +25,8 @@ namespace Chicane
         ReflectionFieldAccessor();
 
     public:
+        bool isValid() const;
+
         template <typename T>
         bool isType() const
         {

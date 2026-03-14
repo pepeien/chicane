@@ -22,6 +22,6 @@ namespace Editor
         const Chicane::ApplicationTelemetry* telemetry;
 
         CH_FIELD()
-        Chicane::FileSystem::Item currentFolder;
+        std::vector<Chicane::FileSystem::Item> folderItems;
     };
 }

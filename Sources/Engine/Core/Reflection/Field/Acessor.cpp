@@ -34,6 +34,11 @@ namespace Chicane
           bNeedsDeref(false)
     {}
 
+    bool ReflectionFieldAccessor::isValid() const
+    {
+        return size > 0 && !typeName.isEmpty() && typeIndex != std::nullopt;
+    }
+
     const char* ReflectionFieldAccessor::address(const void* inInstance) const
     {
         const char* base = static_cast<const char*>(inInstance) + offset;
@@ -82,6 +87,11 @@ namespace Chicane
 
     String ReflectionFieldAccessor::toString(const void* inInstance) const
     {
+        if (!isValid())
+        {
+            return "";
+        }
+
         if (isType<Vec2>())
         {
             const Vec2* v = getValue<Vec2>(inInstance);

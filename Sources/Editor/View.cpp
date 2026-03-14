@@ -11,7 +11,7 @@ namespace Editor
     View::View()
         : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
           telemetry(&Chicane::Application::getInstance().getTelemetry()),
-          currentFolder({})
+          folderItems({})
     {}
 
     void View::onAssetImport()

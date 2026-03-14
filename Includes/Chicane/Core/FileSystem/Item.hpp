@@ -37,7 +37,10 @@ namespace Chicane
             String extension; // Only populated valid type is `ItemType::File`
 
             CH_FIELD()
-            std::vector<Item> children; // Only populated valid type is `ItemType::Folder`
+            List children; // Only populated valid type is `ItemType::Folder`
+
+            CH_FIELD()
+            std::vector<int> mtest;
         };
     }
 }

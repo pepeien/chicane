@@ -9,6 +9,7 @@
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Reflection/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Field/Info.hpp"
 #include "Chicane/Core/Reflection/Method/Info.hpp"
 #include "Chicane/Core/String.hpp"
@@ -31,6 +32,7 @@ namespace Chicane
             using ClassList  = std::set<String>;
             using Directive  = std::function<void(const String&)>;
             using Directives = std::unordered_map<String, Directive>;
+            using Variables  = std::unordered_map<String, ReflectionFieldAccessor>;
 
         public:
             static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
@@ -132,10 +134,7 @@ namespace Chicane
             bool hasSelector(const String& inValue) const;
 
             // Reference
-            bool hasField(const String& inId, bool isLocalOnly = false) const;
-            const ReflectionFieldInfo* getField(const String& inId) const;
-
-            bool hasMethod(const String& inId, bool isLocalOnly = false) const;
+            ReflectionFieldAccessor getField(const String& inId) const;
             Method getMethod(const String& inId) const;
 
             // Hierarchy
@@ -221,6 +220,9 @@ namespace Chicane
 
             // Modifier
             Directives              m_directives;
+
+            // Runtime
+            Variables               m_variables;
 
             // Style
             Style                   m_style;

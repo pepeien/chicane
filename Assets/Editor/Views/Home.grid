@@ -9,6 +9,6 @@
         </Button>
     </Container>
     <Container class="menu --bottom">
-        <Text dir:for="item : currentFolder"></Text>
+        <Text dir:for="item : folderItems"></Text>
     </Container>
 </View>

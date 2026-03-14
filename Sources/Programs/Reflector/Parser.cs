@@ -44,11 +44,28 @@ namespace Reflector
             return idx >= 0 ? annotationValue[(idx + 1)..].Trim() : "";
         }
 
+        static string CleanSpelling(string s)
+        {
+            return s.Replace("const ", "").Replace("&", "").Trim();
+        }
+
         static string GetTypeName(CXType type)
         {
-            return type.CanonicalType.Spelling.CString.Replace("const ", "")
-                  .Replace("&", "")
-                  .Trim();
+            if (
+                type.kind == CXTypeKind.CXType_Pointer ||
+                type.kind == CXTypeKind.CXType_LValueReference ||
+                type.kind == CXTypeKind.CXType_RValueReference
+            )
+            {
+                return GetTypeName(type.PointeeType);
+            }
+
+            if (type.kind == CXTypeKind.CXType_Elaborated)
+            {
+                return GetTypeName(type.NamedType);
+            }
+
+            return CleanSpelling(type.CanonicalType.Spelling.CString);
         }
 
         public static (List<TypeModel>, List<EnumModel>) Parse(string filePath, List<string> lookUpFolders)
@@ -114,7 +131,9 @@ namespace Reflector
 
                 using var proc = System.Diagnostics.Process.Start(psi)!;
                 var dir = proc.StandardOutput.ReadToEnd().Trim();
+
                 proc.WaitForExit();
+
                 return string.IsNullOrEmpty(dir) ? null : dir;
             }
             catch
@@ -172,7 +191,7 @@ namespace Reflector
                     switch (child.Kind)
                     {
                         case CXCursorKind.CXCursor_CXXBaseSpecifier:
-                            var baseDecl = clang.getTypeDeclaration(child.Type);
+                            var baseDecl = clang.getTypeDeclaration(child.Type.CanonicalType);
 
                             if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
                             {
@@ -268,6 +287,7 @@ namespace Reflector
                     case CXCursorKind.CXCursor_StructDecl:
                     case CXCursorKind.CXCursor_ClassDecl:
                     case CXCursorKind.CXCursor_UnionDecl:
+                    case CXCursorKind.CXCursor_ClassTemplate:
                         if (!cursor.IsDefinition)
                         {
                             break;
@@ -314,12 +334,14 @@ namespace Reflector
             cursor.VisitChildren((child, _, _) =>
             {
                 if (child.Kind == CXCursorKind.CXCursor_EnumConstantDecl)
+                {
                     enumerators.Add(
                         new(
                             child.Spelling.CString,
                             (int)child.EnumConstantDeclValue
                         )
                     );
+                }
 
                 return CXChildVisitResult.CXChildVisit_Continue;
             }, default);
@@ -331,6 +353,12 @@ namespace Reflector
         static unsafe TypeModel ParseType(CXCursor cursor, List<string> args)
         {
             var name = cursor.Spelling.CString;
+
+            if (cursor.Kind == CXCursorKind.CXCursor_ClassTemplate)
+            {
+                name = cursor.Spelling.CString;
+            }
+
             var ns = GetNamespace(cursor);
             var kind = cursor.Kind == CXCursorKind.CXCursor_StructDecl ? "struct" : "class";
 
@@ -351,7 +379,6 @@ namespace Reflector
                             {
                                 constructors.Add(ParseConstructor(child));
                             }
-
                             break;
 
                         case CXCursorKind.CXCursor_CXXMethod:
@@ -372,8 +399,7 @@ namespace Reflector
                             break;
 
                         case CXCursorKind.CXCursor_CXXBaseSpecifier:
-                            var baseDecl = clang.getTypeDeclaration(child.Type);
-
+                            var baseDecl = clang.getTypeDeclaration(child.Type.CanonicalType);
                             if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
                             {
                                 CollectMembers(baseDecl, args, methods, fields);
@@ -389,7 +415,6 @@ namespace Reflector
                         default:
                             break;
                     }
-
                     return CXChildVisitResult.CXChildVisit_Continue;
                 },
                 default
@@ -439,7 +464,7 @@ namespace Reflector
         static unsafe FieldModel ParseField(CXCursor cursor)
         {
             List<string> names = [];
-            var type = cursor.Type.CanonicalType;
+            var type = cursor.Type;
 
             if (cursor.Kind == CXCursorKind.CXCursor_UnionDecl)
             {
@@ -447,8 +472,7 @@ namespace Reflector
                 {
                     if (child.Kind == CXCursorKind.CXCursor_FieldDecl)
                     {
-                        type = child.Type.CanonicalType;
-
+                        type = child.Type;
                         names.Add(child.Spelling.CString);
                     }
 
@@ -460,7 +484,8 @@ namespace Reflector
                 names.Add(cursor.Spelling.CString);
             }
 
-            bool isPointer = type.kind == CXTypeKind.CXType_Pointer;
+            var canonical = type.CanonicalType;
+            bool isPointer = canonical.kind == CXTypeKind.CXType_Pointer;
 
             return new(
                 GetTypeName(isPointer ? type.PointeeType : type),
