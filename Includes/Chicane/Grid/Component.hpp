@@ -9,15 +9,14 @@
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
-#include "Chicane/Core/Reflection/Field/Acessor.hpp"
-#include "Chicane/Core/Reflection/Field/Info.hpp"
-#include "Chicane/Core/Reflection/Method/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Method.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Primitive.hpp"
-#include "Chicane/Grid/Method.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
 
@@ -107,8 +106,7 @@ namespace Chicane
                         className.append(inClasses);
                         className.append(' ');
                     }(),
-                    ...
-                );
+                    ...);
 
                 setClassName(className.trim());
             }
@@ -135,7 +133,7 @@ namespace Chicane
 
             // Reference
             ReflectionFieldAccessor getField(const String& inId) const;
-            Method getMethod(const String& inId) const;
+            ReflectionTypeMethod getMethod(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;

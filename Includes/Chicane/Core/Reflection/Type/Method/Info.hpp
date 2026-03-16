@@ -10,15 +10,18 @@
 
 namespace Chicane
 {
-    struct CHICANE_CORE ReflectionMethodInfo
+    struct CHICANE_CORE ReflectionTypeMethodInfo
     {
     public:
         using Params  = std::vector<std::any>;
         using Invoker = std::function<void(void*, Params)>;
 
     public:
-        ReflectionMethodInfo(String inName, String inReturnType, std::vector<String> inParamTypes, Invoker inInvoker);
-        ReflectionMethodInfo();
+        ReflectionTypeMethodInfo(String              inName,
+                                 String              inReturnType,
+                                 std::vector<String> inParamTypes,
+                                 Invoker             inInvoker);
+        ReflectionTypeMethodInfo();
 
     public:
         void invoke(void* inInstance, Params inParams = {}) const;

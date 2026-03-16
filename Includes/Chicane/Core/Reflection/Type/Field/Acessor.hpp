@@ -5,7 +5,7 @@
 #include <typeindex>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Reflection/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Info.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -13,15 +13,13 @@ namespace Chicane
     struct CHICANE_CORE ReflectionFieldAccessor
     {
     public:
-        ReflectionFieldAccessor(
-            std::size_t                       inOffset,
-            std::size_t                       inPtrOffset,
-            std::size_t                       inSize,
-            const ReflectionFieldInfo::Names& inNames,
-            const String&                     inTypeName,
-            ReflectionFieldInfo::TypeIndex    inTypeIndex,
-            bool                              bInNeedsDeref
-        );
+        ReflectionFieldAccessor(std::size_t                       inOffset,
+                                std::size_t                       inPtrOffset,
+                                std::size_t                       inSize,
+                                const ReflectionFieldInfo::Names& inNames,
+                                const String&                     inTypeName,
+                                ReflectionFieldInfo::TypeIndex    inTypeIndex,
+                                bool                              bInNeedsDeref);
         ReflectionFieldAccessor();
 
     public:
@@ -108,10 +106,8 @@ namespace Chicane
         {
             if (sizeof(T) != size)
             {
-                throw std::runtime_error(
-                    "FieldAccessor — size mismatch on field [" + getName() + "]: field is [" + size +
-                    "] bytes, requested type is [" + sizeof(T) + "] bytes"
-                );
+                throw std::runtime_error("FieldAccessor — size mismatch on field [" + getName() + "]: field is [" +
+                                         size + "] bytes, requested type is [" + sizeof(T) + "] bytes");
             }
         }
 

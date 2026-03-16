@@ -15,53 +15,49 @@ namespace Chicane
 
             addChildren(inNode);
 
-            setDirective(
-                IF_DIRECTIVE_KEYWORD,
-                [&](const String& inValue)
-                {
-                    if (inValue.isEmpty())
-                    {
-                        return;
-                    }
+            setDirective(IF_DIRECTIVE_KEYWORD,
+                         [&](const String& inValue)
+                         {
+                             if (inValue.isEmpty())
+                             {
+                                 return;
+                             }
 
-                    if (parseText(inValue).equals("true", "1"))
-                    {
-                        return;
-                    }
+                             if (parseText(inValue).equals("true", "1"))
+                             {
+                                 return;
+                             }
 
-                    m_style.display.set(StyleDisplay::None);
-                }
-            );
+                             m_style.display.set(StyleDisplay::None);
+                         });
 
-            setDirective(
-                FOR_DIRECTIVE_KEYWORD,
-                [&](const String& inValue)
-                {
-                    if (inValue.isEmpty())
-                    {
-                        return;
-                    }
+            setDirective(FOR_DIRECTIVE_KEYWORD,
+                         [&](const String& inValue)
+                         {
+                             if (inValue.isEmpty())
+                             {
+                                 return;
+                             }
 
-                    const std::vector<String> values = inValue.trim().split(':');
-                    if (values.size() < 2)
-                    {
-                        return;
-                    }
+                             const std::vector<String> values = inValue.trim().split(':');
+                             if (values.size() < 2)
+                             {
+                                 return;
+                             }
 
-                    const String variableId = values.at(0).trim();
-                    const String accessorId = values.at(1).trim();
+                             const String variableId = values.at(0).trim();
+                             const String accessorId = values.at(1).trim();
 
-                    ReflectionFieldAccessor accessor = getField(accessorId);
-                    if (accessor.isValid())
-                    {
-                        m_variables[variableId] = accessor;
-                    }
-                    else
-                    {
-                        m_variables.erase(variableId);
-                    }
-                }
-            );
+                             ReflectionFieldAccessor accessor = getField(accessorId);
+                             if (accessor.isValid())
+                             {
+                                 m_variables[variableId] = accessor;
+                             }
+                             else
+                             {
+                                 m_variables.erase(variableId);
+                             }
+                         });
         }
 
         Component::Component(const String& inTag)
@@ -485,7 +481,7 @@ namespace Chicane
             return {};
         }
 
-        Method Component::getMethod(const String& inValue) const
+        ReflectionTypeMethod Component::getMethod(const String& inValue) const
         {
             const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
 
@@ -500,10 +496,9 @@ namespace Chicane
                 {
                     const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
 
-                    if (const ReflectionMethodInfo* method = type->findMethod(name))
+                    if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
                     {
-                        Method result;
-                        result.setInstance(method);
+                        ReflectionTypeMethod result(method);
 
                         return result;
                     }
@@ -595,20 +590,14 @@ namespace Chicane
 
             const std::vector<Component*>& neighbours = m_parent->getChildren();
 
-            const std::size_t location = std::find_if(
-                                             neighbours.begin(),
-                                             neighbours.end(),
-                                             [&](Component* children) { return children == this; }
-                                         ) -
+            const std::size_t location = std::find_if(neighbours.begin(),
+                                                      neighbours.end(),
+                                                      [&](Component* children) { return children == this; }) -
                                          neighbours.begin();
 
-            return neighbours.at(
-                std::clamp(
-                    static_cast<std::size_t>(location + inJumps),
-                    static_cast<std::size_t>(0),
-                    neighbours.size() - 1
-                )
-            );
+            return neighbours.at(std::clamp(static_cast<std::size_t>(location + inJumps),
+                                            static_cast<std::size_t>(0),
+                                            neighbours.size() - 1));
         }
 
         bool Component::hasChildren() const
@@ -710,15 +699,11 @@ namespace Chicane
 
                 const Style& style = child->getStyle();
 
-                const Vec2 margin = {
-                    style.margin.left.get() + style.margin.right.get(),
-                    style.margin.top.get() + style.margin.bottom.get()
-                };
+                const Vec2 margin = {style.margin.left.get() + style.margin.right.get(),
+                                     style.margin.top.get() + style.margin.bottom.get()};
 
-                const Vec2 occupied = {
-                    (child->getPosition().x - m_position.x) + child->getSize().x + margin.x,
-                    (child->getPosition().y - m_position.y) + child->getSize().y + margin.y
-                };
+                const Vec2 occupied = {(child->getPosition().x - m_position.x) + child->getSize().x + margin.x,
+                                       (child->getPosition().y - m_position.y) + child->getSize().y + margin.y};
 
                 result.x = std::max(result.x, occupied.x);
                 result.y = std::max(result.y, occupied.y);

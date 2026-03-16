@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Reflection/Field/Acessor.hpp"
-#include "Chicane/Core/Reflection/Field/Info.hpp"
-#include "Chicane/Core/Reflection/Method/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -18,25 +18,23 @@ namespace Chicane
     public:
         using TypeIdex     = std::optional<std::type_index>;
         using Fields       = std::vector<ReflectionFieldInfo>;
-        using Methods      = std::vector<ReflectionMethodInfo>;
+        using Methods      = std::vector<ReflectionTypeMethodInfo>;
         using Constructor  = std::function<void*(std::vector<std::any>)>;
         using Constructors = std::vector<Constructor>;
 
     public:
-        ReflectionTypeInfo(
-            const String&       inName,
-            std::size_t         inSize,
-            TypeIdex            inTypeIndex,
-            const Constructors& inConstructors,
-            const Methods&      inMethods,
-            const Fields&       inFields
-        );
+        ReflectionTypeInfo(const String&       inName,
+                           std::size_t         inSize,
+                           TypeIdex            inTypeIndex,
+                           const Constructors& inConstructors,
+                           const Methods&      inMethods,
+                           const Fields&       inFields);
         ReflectionTypeInfo();
 
     public:
         const ReflectionFieldInfo* findField(const String& inName) const;
 
-        const ReflectionMethodInfo* findMethod(const String& inName) const;
+        const ReflectionTypeMethodInfo* findMethod(const String& inName) const;
 
         ReflectionFieldAccessor resolve(const String& inAccessor) const;
 

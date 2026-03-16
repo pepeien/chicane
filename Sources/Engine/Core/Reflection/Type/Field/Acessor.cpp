@@ -1,4 +1,4 @@
-#include "Chicane/Core/Reflection/Field/Acessor.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
@@ -6,15 +6,13 @@
 
 namespace Chicane
 {
-    ReflectionFieldAccessor::ReflectionFieldAccessor(
-        std::size_t                       inOffset,
-        std::size_t                       inPtrOffset,
-        std::size_t                       inSize,
-        const ReflectionFieldInfo::Names& inNames,
-        const String&                     inTypeName,
-        ReflectionFieldInfo::TypeIndex    inTypeIndex,
-        bool                              bInNeedsDeref
-    )
+    ReflectionFieldAccessor::ReflectionFieldAccessor(std::size_t                       inOffset,
+                                                     std::size_t                       inPtrOffset,
+                                                     std::size_t                       inSize,
+                                                     const ReflectionFieldInfo::Names& inNames,
+                                                     const String&                     inTypeName,
+                                                     ReflectionFieldInfo::TypeIndex    inTypeIndex,
+                                                     bool                              bInNeedsDeref)
         : offset(inOffset),
           ptrOffset(inPtrOffset),
           size(inSize),

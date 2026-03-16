@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Reflection/Enumerator/Info.hpp"
+#include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane

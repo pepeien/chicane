@@ -5,14 +5,12 @@
 namespace Chicane
 {
 
-    ReflectionTypeInfo::ReflectionTypeInfo(
-        const String&       inName,
-        std::size_t         inSize,
-        TypeIdex            inTypeIndex,
-        const Constructors& inConstructors,
-        const Methods&      inMethods,
-        const Fields&       inFields
-    )
+    ReflectionTypeInfo::ReflectionTypeInfo(const String&       inName,
+                                           std::size_t         inSize,
+                                           TypeIdex            inTypeIndex,
+                                           const Constructors& inConstructors,
+                                           const Methods&      inMethods,
+                                           const Fields&       inFields)
         : name(std::move(inName)),
           size(inSize),
           typeIndex(inTypeIndex),
@@ -43,9 +41,9 @@ namespace Chicane
         return nullptr;
     }
 
-    const ReflectionMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
+    const ReflectionTypeMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
     {
-        for (const ReflectionMethodInfo& method : methods)
+        for (const ReflectionTypeMethodInfo& method : methods)
         {
             if (method.name.equals(inName))
             {
@@ -78,10 +76,8 @@ namespace Chicane
 
             if (!currentField)
             {
-                throw std::runtime_error(
-                    "TypeInfo::resolve — field [" + part + "] not found on type [" + currentType->name + "] (path: [" +
-                    inAccessor + "])"
-                );
+                throw std::runtime_error("TypeInfo::resolve — field [" + part + "] not found on type [" +
+                                         currentType->name + "] (path: [" + inAccessor + "])");
             }
 
             if (crossedPointer)
@@ -99,12 +95,10 @@ namespace Chicane
             {
                 if (!currentField->bIsReflected || !currentField->typeIndex.has_value())
                 {
-                    throw std::runtime_error(
-                        "TypeInfo::resolve — field [" + part + "] on type [" + currentType->name +
-                        "] is not a reflected type, cannot dot-chain further"
-                        " (path: [" +
-                        inAccessor + "])"
-                    );
+                    throw std::runtime_error("TypeInfo::resolve — field [" + part + "] on type [" + currentType->name +
+                                             "] is not a reflected type, cannot dot-chain further"
+                                             " (path: [" +
+                                             inAccessor + "])");
                 }
 
                 if (currentField->bIsPointer && !crossedPointer)
@@ -116,12 +110,10 @@ namespace Chicane
 
                 if (!currentType)
                 {
-                    throw std::runtime_error(
-                        "TypeInfo::resolve — type [" + currentField->typeName +
-                        "] is marked reflected but is not registered"
-                        " (path: [" +
-                        inAccessor + "])"
-                    );
+                    throw std::runtime_error("TypeInfo::resolve — type [" + currentField->typeName +
+                                             "] is marked reflected but is not registered"
+                                             " (path: [" +
+                                             inAccessor + "])");
                 }
             }
         }
