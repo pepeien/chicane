@@ -38,9 +38,6 @@ namespace Chicane
 
             CH_FIELD()
             List children; // Only populated valid type is `ItemType::Folder`
-
-            CH_FIELD()
-            std::vector<int> mtest;
         };
     }
 }

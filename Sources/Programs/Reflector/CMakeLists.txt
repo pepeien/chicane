@@ -161,9 +161,11 @@ function(CH_GENERATE_REFLECTION)
             continue()
         endif()
 
+        set(STAMP_FILE "${CMAKE_CURRENT_BINARY_DIR}/${T}.reflect.stamp")
+
         add_custom_command(
-            OUTPUT 
-                ${TARGET_GENERATED_FILES}
+            OUTPUT
+                ${STAMP_FILE}
             COMMAND
                 "${CHICANE_PROGRAMS_REFLECTOR_BINARY}"
                 -i ${ALL_INPUT_FILES}
@@ -171,6 +173,8 @@ function(CH_GENERATE_REFLECTION)
                 -s "${SOURCES_DIR}"
                 -l ${LOOK_UP_DIRS}
                 -o "${OUTPUT_DIR}"
+            COMMAND
+                ${CMAKE_COMMAND} -E touch ${STAMP_FILE}
             BYPRODUCTS
                 ${TARGET_GENERATED_FILES}
             DEPENDS
@@ -197,10 +201,10 @@ function(CH_GENERATE_REFLECTION)
             ${REFLECT_TARGET}
             ALL
             DEPENDS
-                ${TARGET_GENERATED_FILES}
+                ${STAMP_FILE}
         )
 
-        add_dependencies(${REFLECT_TARGET} ${CHICANE_PROGRAMS_REFLECTOR_TARGET_NAME}) 
+        add_dependencies(${REFLECT_TARGET} ${CHICANE_PROGRAMS_REFLECTOR_TARGET_NAME})
         add_dependencies(${T} ${REFLECT_TARGET})
 
         target_include_directories(${T} PRIVATE "${OUTPUT_DIR}")
