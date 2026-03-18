@@ -146,6 +146,3 @@ include(CMake/Functions.cmake)
 ######################### Directories #########################
 add_subdirectory(Assets)
 add_subdirectory(Sources)
-
-######################### Reflection #########################
-CH_GENERATE_REFLECTION()

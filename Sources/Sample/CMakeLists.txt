@@ -50,6 +50,7 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${CHICANE_SAMPLE_TARGET_NAME})
+CH_GENERATE_REFLECTION(${CHICANE_SAMPLE_TARGET_NAME})
 
 ######################### Depedencies #########################
 add_dependencies(${CHICANE_SAMPLE_TARGET_NAME} ${CHICANE_SAMPLE_ASSETS_TARGET_NAME})

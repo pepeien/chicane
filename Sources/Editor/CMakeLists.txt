@@ -61,6 +61,7 @@ target_link_libraries(
 )
 
 CH_ADD_COMPILER(${CHICANE_EDITOR_TARGET_NAME})
+CH_GENERATE_REFLECTION(${CHICANE_EDITOR_TARGET_NAME})
 
 ######################### Depedencies #########################
 add_dependencies(${CHICANE_EDITOR_TARGET_NAME} ${CHICANE_EDITOR_ASSETS_TARGET_NAME})
