@@ -77,7 +77,7 @@ namespace Reflector
             {
                 "-std=c++17",
                 "-xc++",
-                "-fms-extensions",
+                "-fdelayed-template-parsing",
                 "-fparse-all-comments",
                 "-DCH_TYPE(...)=__attribute__((annotate(\"CH_TYPE:\" #__VA_ARGS__)))",
                 "-DCH_ENUM(...)=__attribute__((annotate(\"CH_ENUM:\" #__VA_ARGS__)))",
@@ -85,6 +85,13 @@ namespace Reflector
                 "-DCH_FUNCTION(...)=__attribute__((annotate(\"CH_FUNCTION:\" #__VA_ARGS__)))",
                 "-DCH_CONSTRUCTOR(...)=__attribute__((annotate(\"CH_CONSTRUCTOR:\" #__VA_ARGS__)))"
             };
+
+            if (OperatingSystem.IsWindows())
+            {
+                argList.Add("-fms-compatibility");
+                argList.Add("-fms-extensions");
+                argList.Add("--target=x86_64-pc-windows-msvc");
+            }
 
             foreach (var dir in lookUpFolders)
             {
