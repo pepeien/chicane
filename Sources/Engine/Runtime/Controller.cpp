@@ -351,7 +351,7 @@ namespace Chicane
                 bool bIsDefault = false;
                 for (const String& defaultName : DEFAULT_KEYBOARDS)
                 {
-                    if (defaultName.equals(SDL_GetKeyboardNameForID(*keyboards)))
+                    if (defaultName.equals(SDL_GetKeyboardNameForID(keyboards[i])))
                     {
                         bIsDefault = true;
 
@@ -359,15 +359,13 @@ namespace Chicane
                     }
                 }
 
-                if (!bIsDefault)
+                if (bIsDefault)
                 {
+                    connectTo(Input::DeviceType::Keyboard, keyboards[i]);
+
                     break;
                 }
-
-                keyboards++;
             }
-
-            connectTo(Input::DeviceType::Keyboard, *keyboards);
         }
 
         SDL_free(keyboards);

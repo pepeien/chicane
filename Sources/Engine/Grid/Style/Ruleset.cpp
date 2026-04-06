@@ -9,13 +9,14 @@ namespace Chicane
         String StyleRuleset::normalizeData(const String& inValue)
         {
             String result = inValue;
-            result.erase('\t');
-            result.erase('\n');
-            result.erase('\r');
             // Remove online comments
             result.regexReplace(std::regex(R"(/\*[\s\S]*?\*/)"), "");
             // Remove multiline comments
-            result.regexReplace(std::regex(R"(//.*?$)", std::regex_constants::multiline), "");
+            result.regexReplace(std::regex(R"(//[^\n]*)"), "");
+            // Remove white space
+            result.erase('\t');
+            result.erase('\n');
+            result.erase('\r');
 
             return result;
         }
