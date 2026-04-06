@@ -23,12 +23,14 @@ namespace Chicane
         using Constructors = std::vector<Constructor>;
 
     public:
-        ReflectionTypeInfo(const String&       inName,
-                           std::size_t         inSize,
-                           TypeIdex            inTypeIndex,
-                           const Constructors& inConstructors,
-                           const Methods&      inMethods,
-                           const Fields&       inFields);
+        ReflectionTypeInfo(
+            const String&       inName,
+            std::size_t         inSize,
+            TypeIdex            inTypeIndex,
+            const Constructors& inConstructors,
+            const Methods&      inMethods,
+            const Fields&       inFields
+        );
         ReflectionTypeInfo();
 
     public:

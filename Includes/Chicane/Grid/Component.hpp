@@ -106,7 +106,8 @@ namespace Chicane
                         className.append(inClasses);
                         className.append(' ');
                     }(),
-                    ...);
+                    ...
+                );
 
                 setClassName(className.trim());
             }

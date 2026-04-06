@@ -17,10 +17,9 @@ namespace Chicane
         using Invoker = std::function<void(void*, Params)>;
 
     public:
-        ReflectionTypeMethodInfo(String              inName,
-                                 String              inReturnType,
-                                 std::vector<String> inParamTypes,
-                                 Invoker             inInvoker);
+        ReflectionTypeMethodInfo(
+            String inName, String inReturnType, std::vector<String> inParamTypes, Invoker inInvoker
+        );
         ReflectionTypeMethodInfo();
 
     public:
