@@ -120,9 +120,9 @@ namespace Chicane
 
             onTick(inDeltaTime);
 
-            for (Component* child : m_children)
+            for (std::size_t i = 0; i < m_children.size(); i++)
             {
-                child->tick(inDeltaTime);
+                m_children.at(i)->tick(inDeltaTime);
             }
 
             addSize(m_style.padding.right.get(), m_style.padding.bottom.get());

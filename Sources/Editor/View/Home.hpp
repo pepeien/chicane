@@ -4,14 +4,15 @@
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Runtime/Application/Telemetry.hpp>
+#include <Chicane/Runtime/Scene/Actor.hpp>
 
 namespace Editor
 {
     CH_TYPE(Manual)
-    class View : public Chicane::Grid::View
+    class HomeView : public Chicane::Grid::View
     {
     public:
-        View();
+        HomeView();
 
     public:
         CH_FUNCTION()
@@ -20,6 +21,9 @@ namespace Editor
     public:
         CH_FIELD()
         const Chicane::ApplicationTelemetry* telemetry;
+
+        CH_FIELD()
+        std::vector<Chicane::Actor*> actors;
 
         CH_FIELD()
         std::vector<Chicane::FileSystem::Item> folderItems;

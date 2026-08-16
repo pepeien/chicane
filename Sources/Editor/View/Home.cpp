@@ -1,4 +1,4 @@
-#include "Editor/View.reflected.hpp"
+#include "Editor/View/Home.reflected.hpp"
 
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 
@@ -8,13 +8,28 @@
 
 namespace Editor
 {
-    View::View()
+    HomeView::HomeView()
         : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
           telemetry(&Chicane::Application::getInstance().getTelemetry()),
+          actors({}),
           folderItems(Chicane::FileSystem::ls())
-    {}
+    {
+        Chicane::Application::getInstance().watchScene(
+            [&](std::shared_ptr<Chicane::Scene> inScene)
+            {
+                if (!inScene)
+                {
+                    actors.clear();
 
-    void View::onAssetImport()
+                    return;
+                }
+
+                actors = inScene->getActors();
+            }
+        );
+    }
+
+    void HomeView::onAssetImport()
     {
         Chicane::FileSystem::FileDialog dialog;
         dialog.bCanSelectMany = false;

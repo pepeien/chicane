@@ -71,11 +71,8 @@ namespace Chicane
         {
             glUseProgram(m_shaderProgram);
 
-            glClear(GL_DEPTH_BUFFER_BIT);
-
-            glEnable(GL_DEPTH_TEST);
-            glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LEQUAL);
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -114,7 +111,8 @@ namespace Chicane
 
         void OpenGLLUI::onEndRender()
         {
-            glDisable(GL_DEPTH_TEST);
+            // Handed back writable so the next frame's scene pass can fill the depth buffer again
+            glDepthMask(GL_TRUE);
             glDisable(GL_BLEND);
         }
 

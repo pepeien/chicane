@@ -207,9 +207,9 @@ namespace Chicane
             vk::PipelineDepthStencilStateCreateInfo depth;
             depth.depthBoundsTestEnable = false;
             depth.stencilTestEnable     = false;
-            depth.depthWriteEnable      = true;
-            depth.depthTestEnable       = true;
-            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depth.depthWriteEnable      = false;
+            depth.depthTestEnable       = false;
+            depth.depthCompareOp        = vk::CompareOp::eAlways;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 

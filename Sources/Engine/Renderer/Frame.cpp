@@ -70,6 +70,22 @@ namespace Chicane
 
         DrawPoly::List Frame::getDraws(DrawPolyType inType, DrawPolyMode inMode) const
         {
+            if (inType == DrawPolyType::e2D)
+            {
+                DrawPoly::List result;
+                for (const DrawPoly& draw : m_2DBatches)
+                {
+                    if (draw.mode != inMode || draw.instanceCount <= 0)
+                    {
+                        continue;
+                    }
+
+                    result.push_back(draw);
+                }
+
+                return result;
+            }
+
             if (m_polys.find(inType) == m_polys.end())
             {
                 return {};
@@ -89,16 +105,9 @@ namespace Chicane
             return result;
         }
 
-        const DrawPoly2DInstance::List Frame::getInstances2D() const
+        const DrawPoly2DInstance::List& Frame::getInstances2D() const
         {
-            DrawPoly2DInstance::List result;
-
-            for (const auto& [id, instances] : m_2DInstances)
-            {
-                result.insert(result.end(), instances.begin(), instances.end());
-            }
-
-            return result;
+            return m_2DInstances;
         }
 
         void Frame::draw(Draw::Id inId, const DrawPoly2DInstance& inInstance)
@@ -108,12 +117,21 @@ namespace Chicane
                 return;
             }
 
-            m_2DInstances[inId].push_back(inInstance);
+            if (m_2DBatches.empty() || m_2DBatches.back().id != inId)
+            {
+                DrawPoly batch;
+                batch.id            = inId;
+                batch.instanceStart = static_cast<std::uint32_t>(m_2DInstances.size());
+                batch.instanceCount = 0U;
 
-            refresh2DDraws();
+                m_2DBatches.push_back(batch);
+            }
+
+            m_2DInstances.push_back(inInstance);
+            m_2DBatches.back().instanceCount++;
         }
 
-        const DrawPoly3DInstance::List Frame::getInstances3D() const
+        DrawPoly3DInstance::List Frame::getInstances3D() const
         {
             DrawPoly3DInstance::List result;
 
@@ -154,32 +172,31 @@ namespace Chicane
 
         void Frame::refresh2DDraws()
         {
-            std::uint32_t start = 0U;
-            for (const auto& [id, instances] : m_2DInstances)
+            for (DrawPoly& batch : m_2DBatches)
             {
-                if (instances.empty())
+                for (const DrawPoly& poly : m_polys[DrawPolyType::e2D])
                 {
-                    continue;
-                }
-
-                for (DrawPoly& draw : m_polys[DrawPolyType::e2D])
-                {
-                    if (draw.id != id)
+                    if (poly.id != batch.id)
                     {
                         continue;
                     }
 
-                    draw.instanceStart = start;
-                    draw.instanceCount = instances.size();
-                }
+                    const std::uint32_t instanceStart = batch.instanceStart;
+                    const std::uint32_t instanceCount = batch.instanceCount;
 
-                start += instances.size();
+                    batch               = poly;
+                    batch.instanceStart = instanceStart;
+                    batch.instanceCount = instanceCount;
+
+                    break;
+                }
             }
         }
 
         void Frame::reset2DDraws()
         {
             m_polys[DrawPolyType::e2D].clear();
+            m_2DBatches.clear();
             m_2DInstances.clear();
         }
 

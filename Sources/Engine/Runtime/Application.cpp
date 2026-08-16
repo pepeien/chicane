@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
@@ -578,6 +580,14 @@ namespace Chicane
 
             command.fills.emplace_back(std::move(subcommand));
         }
+
+        // Sort draw order by z-index
+        std::stable_sort(
+            command.fills.begin(),
+            command.fills.end(),
+            [](const Renderer::DrawPoly2DCommandFill& inLeft, const Renderer::DrawPoly2DCommandFill& inRight)
+            { return inLeft.instance.position.z < inRight.instance.position.z; }
+        );
 
         m_viewReadIndex.store(index, std::memory_order_release);
         m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);

@@ -10,7 +10,7 @@
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
 #include "Editor/Scene.hpp"
-#include "Editor/View.hpp"
+#include "Editor/View/Home.hpp"
 
 #if CHICANE_OPENGL
     #include "Layer/OpenGL/Grid.hpp"
@@ -61,7 +61,7 @@ namespace Editor
 
     void Application::initView()
     {
-        Chicane::Application::getInstance().setView<View>();
+        Chicane::Application::getInstance().setView<HomeView>();
     }
 
     void Application::initLayers()
