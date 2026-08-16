@@ -15,29 +15,29 @@ namespace Chicane
             // Top Left
             vertex.uv.x       = 0.0f;
             vertex.uv.y       = 0.0f;
-            vertex.position.x = -1.0f;
-            vertex.position.y = -1.0f;
+            vertex.position.x = -0.5f;
+            vertex.position.y = -0.5f;
             primitive.vertices.push_back(vertex);
 
             // Top right
             vertex.uv.x       = 1.0f;
             vertex.uv.y       = 0.0f;
-            vertex.position.x = 1.0f;
-            vertex.position.y = -1.0f;
+            vertex.position.x = 0.5f;
+            vertex.position.y = -0.5f;
             primitive.vertices.push_back(vertex);
 
             // Bottom Right
             vertex.uv.x       = 1.0f;
             vertex.uv.y       = 1.0f;
-            vertex.position.x = 1.0f;
-            vertex.position.y = 1.0f;
+            vertex.position.x = 0.5f;
+            vertex.position.y = 0.5f;
             primitive.vertices.push_back(vertex);
 
             // Bottom Left
             vertex.uv.x       = 0.0f;
             vertex.uv.y       = 1.0f;
-            vertex.position.x = -1.0f;
-            vertex.position.y = 1.0f;
+            vertex.position.x = -0.5f;
+            vertex.position.y = 0.5f;
             primitive.vertices.push_back(vertex);
 
             setPrimitive(primitive);

@@ -85,7 +85,7 @@ namespace Chicane
 
             // Lifecycle Events
             void tick(float inDelta);
-            void refresh();
+            virtual void refresh();
 
             // Properties
             const String& getTag() const;
@@ -151,7 +151,7 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
-            std::vector<Component*> getChildrenFlat() const;
+            virtual std::vector<Component*> getChildrenFlat() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
 
@@ -203,7 +203,7 @@ namespace Chicane
         protected:
             void refreshStyle();
             void refreshStyleRuleset();
-            void refreshSize();
+            virtual void refreshSize();
             void refreshPosition();
             void refreshBounds();
 

@@ -4,6 +4,8 @@
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
 
+#include <unordered_map>
+
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font.hpp"
 
@@ -154,10 +156,18 @@ namespace Chicane
                 FontFamily result;
                 result.setName(inFamily);
 
+                const float units = 1.0f / face->units_per_EM;
+
+                result.setMetrics(face->ascender * units, face->descender * units);
+
+                std::unordered_map<FT_UInt, char32_t> indexToCode;
+
                 FT_UInt  glyphIndex;
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
                 while (glyphIndex != 0)
                 {
+                    indexToCode[glyphIndex] = static_cast<char32_t>(code);
+
                     if (FT_Load_Glyph(
                             face,
                             glyphIndex,
@@ -169,6 +179,39 @@ namespace Chicane
                     }
 
                     code = FT_Get_Next_Char(face, code, &glyphIndex);
+                }
+
+                if (FT_HAS_KERNING(face))
+                {
+                    for (FT_UInt leftIndex = 0; leftIndex < face->num_glyphs; ++leftIndex)
+                    {
+                        const auto leftIt = indexToCode.find(leftIndex);
+
+                        if (leftIt == indexToCode.end())
+                        {
+                            continue;
+                        }
+
+                        for (FT_UInt rightIndex = 0; rightIndex < face->num_glyphs; ++rightIndex)
+                        {
+                            const auto rightIt = indexToCode.find(rightIndex);
+
+                            if (rightIt == indexToCode.end())
+                            {
+                                continue;
+                            }
+
+                            FT_Vector delta;
+
+                            if (FT_Get_Kerning(face, leftIndex, rightIndex, FT_KERNING_UNSCALED, &delta) != 0 ||
+                                delta.x == 0)
+                            {
+                                continue;
+                            }
+
+                            result.addKerning(leftIt->second, rightIt->second, delta.x * units);
+                        }
+                    }
                 }
 
                 FT_Done_Face(face);

@@ -21,6 +21,7 @@ vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMult
     position *= inInstance.scale;  // Apply vertex scale
     position += inInstance.offset; // Apply vertex offset
     position /= inInstance.view;   // Normalize to view size
+    position *= 2.0;               // Normalize to NDC
     position *= inMultipliers;
 
     return position;

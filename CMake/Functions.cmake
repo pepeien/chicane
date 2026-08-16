@@ -108,6 +108,7 @@ function(
                 ${GLSL_VALIDATOR} -S ${SHADER_STAGE} -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
             DEPENDS
                 "${GLSL}"
+                ${SHADER_INCLUDES}
             COMMENT
                 "Compiling shader ${FILE_NAME}"
             VERBATIM

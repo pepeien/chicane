@@ -948,7 +948,7 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            m_primitive;
+            m_primitive.clear();
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
