@@ -522,12 +522,21 @@ namespace Reflector
             bool isPointer = canonical.kind == CXTypeKind.CXType_Pointer;
             string typeName = GetTypeName(isPointer ? type.PointeeType : type);
 
+            string elementName = isIterable ? GetTemplateParam(type) : "";
+            bool isElementPointer = elementName.EndsWith('*');
+
+            if (isElementPointer)
+            {
+                elementName = elementName.TrimEnd('*').Trim();
+            }
+
             return new(
                 typeName,
                 names,
                 isPointer,
                 isIterable,
-                isIterable ? GetTemplateParam(type) : ""
+                elementName,
+                isElementPointer
             );
         }
 

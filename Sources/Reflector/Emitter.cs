@@ -65,6 +65,10 @@ namespace Reflector
                 return "\t\t\t\tChicane::ReflectionFieldIterable()\n";
             }
 
+            string element = f.IsElementPointer
+                ? $"\t\t\t\t\t\treturn static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n"
+                : $"\t\t\t\t\t\treturn &static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n";
+
             return (
                 $"\t\t\t\tChicane::ReflectionFieldIterable(\n" +
                 $"\t\t\t\t\t\"{f.ElementName}\",\n" +
@@ -74,9 +78,9 @@ namespace Reflector
                 $"\t\t\t\t\t{{\n" +
                 $"\t\t\t\t\t\treturn static_cast<const {f.TypeName}*>(inContainer)->size();\n" +
                 $"\t\t\t\t\t}},\n" +
-                $"\t\t\t\t\t[](const void* inContainer, std::size_t inIndex)\n" +
+                $"\t\t\t\t\t[](const void* inContainer, std::size_t inIndex) -> const void*\n" +
                 $"\t\t\t\t\t{{\n" +
-                $"\t\t\t\t\t\treturn &static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n" +
+                element +
                 $"\t\t\t\t\t}}\n" +
                 $"\t\t\t\t)\n"
             );
