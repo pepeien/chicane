@@ -14,6 +14,7 @@
 #include "Chicane/Core/Reflection/Type/Method.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Primitive.hpp"
@@ -209,6 +210,11 @@ namespace Chicane
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
 
+            void addVariable(const String& inId, const ReflectionFieldAccessor& inValue);
+
+            Component* cloneTemplate() const;
+            void syncForLoop(const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance);
+
             bool isMethod(const String& inValue) const;
 
         protected:
@@ -247,6 +253,13 @@ namespace Chicane
 
             // XML
             Xml::Attributes         m_attributes;
+            pugi::xml_document      m_sourceDocument;
+            pugi::xml_node          m_sourceNode;
+
+            // For-loop
+            std::vector<Component*> m_forInstances;
+            String                  m_forVariable;
+            bool                    m_bSkipForDirective;
         };
     }
 }

@@ -4,7 +4,7 @@ namespace Reflector
     record EnumModel(string Name, List<EnumeratorModel> Enumerators);
     record ConstructorModel(List<string> ParamTypes);
     record FunctionModel(string ReturnType, string Name, List<string> ParamTypes);
-    record FieldModel(string TypeName, List<string> Names, bool IsPointer = false)
+    record FieldModel(string TypeName, List<string> Names, bool IsPointer, bool IsIterable, string ElementName)
     {
         public string Name => Names.FirstOrDefault() ?? "";
     }

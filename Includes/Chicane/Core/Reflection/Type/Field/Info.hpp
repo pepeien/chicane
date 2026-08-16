@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Iterable.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -18,13 +19,16 @@ namespace Chicane
 
     public:
         ReflectionFieldInfo(
-            Names       inNames,
-            String      inTypeName,
-            std::size_t inOffset,
-            std::size_t inSize,
-            TypeIndex   inTypeIndex,
-            bool        bInIsReflected,
-            bool        bInIsPointer
+            Names                   inNames,
+            String                  inTypeName,
+            std::size_t             inOffset,
+            std::size_t             inSize,
+            TypeIndex               inTypeIndex,
+            bool                    bInIsReflected,
+            bool                    bInIsPointer,
+            bool                    bInIsIterable,
+            TypeIndex               inElementIndex,
+            ReflectionFieldIterable inIterable
         );
         ReflectionFieldInfo();
 
@@ -32,12 +36,15 @@ namespace Chicane
         bool containsName(const String& inValue) const;
 
     public:
-        Names       names;
-        String      typeName;
-        std::size_t offset;
-        std::size_t size;
-        TypeIndex   typeIndex;
-        bool        bIsReflected;
-        bool        bIsPointer;
+        Names                   names;
+        String                  typeName;
+        std::size_t             offset;
+        std::size_t             size;
+        TypeIndex               typeIndex;
+        bool                    bIsReflected;
+        bool                    bIsPointer;
+        bool                    bIsIterable;
+        TypeIndex               elementIndex;
+        ReflectionFieldIterable iterable;
     };
 }

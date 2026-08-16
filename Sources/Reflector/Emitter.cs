@@ -58,6 +58,30 @@ namespace Reflector
             sb.AppendLine();
         }
 
+        static string EmitIterable(FieldModel f)
+        {
+            if (!f.IsIterable || string.IsNullOrEmpty(f.ElementName))
+            {
+                return "\t\t\t\tChicane::ReflectionFieldIterable()\n";
+            }
+
+            return (
+                $"\t\t\t\tChicane::ReflectionFieldIterable(\n" +
+                $"\t\t\t\t\t\"{f.ElementName}\",\n" +
+                $"\t\t\t\t\tstd::type_index(typeid({f.ElementName})),\n" +
+                $"\t\t\t\t\tsizeof({f.ElementName}),\n" +
+                $"\t\t\t\t\t[](const void* inContainer)\n" +
+                $"\t\t\t\t\t{{\n" +
+                $"\t\t\t\t\t\treturn static_cast<const {f.TypeName}*>(inContainer)->size();\n" +
+                $"\t\t\t\t\t}},\n" +
+                $"\t\t\t\t\t[](const void* inContainer, std::size_t inIndex)\n" +
+                $"\t\t\t\t\t{{\n" +
+                $"\t\t\t\t\t\treturn &static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n" +
+                $"\t\t\t\t\t}}\n" +
+                $"\t\t\t\t)\n"
+            );
+        }
+
         static void EmitType(StringBuilder sb, TypeModel t, List<TypeModel> allTypes)
         {
             var safeId = SafeIdentifier(t.Name);
@@ -104,10 +128,19 @@ namespace Reflector
             foreach (FunctionModel f in t.Functions)
             {
                 var paramUnpack = string.Join(",", f.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\tstd::any_cast<{p}>(inParams.at({i}))"));
+                var paramChecker = "";
 
                 if (f.ParamTypes.Count() > 0)
                 {
                     paramUnpack += "\n\t\t\t\t\t";
+
+                    paramChecker = (
+                        $"\t\t\t\t\tif (inParams.size() < {f.ParamTypes.Count()})\n" +
+                        $"\t\t\t\t\t{{\n" +
+                        $"\t\t\t\t\t\tthrow std::runtime_error(\"Missing reflected method [{f.Name}] parameters [{string.Join(",", paramUnpack.Select((p, i) => $"{p}"))}]\");\n" +
+                        $"\t\t\t\t\t}}\n" +
+                        $"\t\n"
+                    );
                 }
 
                 sb.AppendLine(
@@ -117,11 +150,7 @@ namespace Reflector
                     $"\t\t\t\t{{{string.Join(" ,", f.ParamTypes.Select(p => $"\"{p}\""))}}},\n" +
                     $"\t\t\t\t[](void* inInstance, std::vector<std::any> inParams)\n" +
                     $"\t\t\t\t{{\n" +
-                    $"\t\t\t\t\tif (inParams.size() < {f.ParamTypes.Count()})\n" +
-                    $"\t\t\t\t\t{{\n" +
-                    $"\t\t\t\t\t\tthrow std::runtime_error(\"Missing reflected method [{f.Name}] parameters [{string.Join(",", paramUnpack.Select((p, i) => $"{p}"))}]\");\n" +
-                    $"\t\t\t\t\t}}\n" +
-                    $"\t\n" +
+                    paramChecker +
                     $"\t\t\t\t\tstatic_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n" +
                     $"\t\t\t\t}}\n" +
                     $"\t\t\t}},"
@@ -147,7 +176,10 @@ namespace Reflector
                     $"\t\t\t\tsizeof({(f.IsPointer ? "void*" : f.TypeName)}),\n" +
                     $"\t\t\t\tstd::type_index(typeid({f.TypeName})),\n" +
                     $"\t\t\t\t{(isReflected ? "true" : "false")},\n" +
-                    $"\t\t\t\t{(f.IsPointer ? "true" : "false")}\n" +
+                    $"\t\t\t\t{(f.IsPointer ? "true" : "false")},\n" +
+                    $"\t\t\t\t{(f.IsIterable ? "true" : "false")},\n" +
+                    $"\t\t\t\t{(string.IsNullOrEmpty(f.ElementName) ? "std::nullopt" : $"std::type_index(typeid({f.ElementName}))")},\n" +
+                    EmitIterable(f) +
                     $"\t\t\t}},"
                 );
             }

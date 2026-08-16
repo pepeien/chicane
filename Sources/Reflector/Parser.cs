@@ -44,6 +44,32 @@ namespace Reflector
             return idx >= 0 ? annotationValue[(idx + 1)..].Trim() : "";
         }
 
+        static string GetTemplateParam(CXType type)
+        {
+            var canonical = type.CanonicalType;
+            string typeName = GetTypeName(canonical);
+
+            int start = typeName.IndexOf('<');
+            int end = typeName.LastIndexOf('>');
+
+            if (start >= 0 && end > start)
+            {
+                return typeName[(start + 1)..end].Trim();
+            }
+
+            return "";
+        }
+
+        static bool IsIterableType(CXType type)
+        {
+            string typeName = GetTypeName(type.CanonicalType);
+
+            return typeName.StartsWith("std::vector<") ||
+                   typeName.StartsWith("std::array<") ||
+                   typeName.StartsWith("std::list<") ||
+                   typeName.StartsWith("std::deque<");
+        }
+
         static string CleanSpelling(string s)
         {
             return s.Replace("const ", "").Replace("&", "").Trim();
@@ -492,12 +518,16 @@ namespace Reflector
             }
 
             var canonical = type.CanonicalType;
+            bool isIterable = IsIterableType(type);
             bool isPointer = canonical.kind == CXTypeKind.CXType_Pointer;
+            string typeName = GetTypeName(isPointer ? type.PointeeType : type);
 
             return new(
-                GetTypeName(isPointer ? type.PointeeType : type),
+                typeName,
                 names,
-                isPointer
+                isPointer,
+                isIterable,
+                isIterable ? GetTemplateParam(type) : ""
             );
         }
 

@@ -9,7 +9,8 @@ namespace Chicane
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
-            m_attributes = Xml::getAttributes(inNode);
+            m_sourceNode = m_sourceDocument.append_copy(inNode);
+            m_attributes = Xml::getAttributes(m_sourceNode);
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
@@ -37,7 +38,7 @@ namespace Chicane
                 FOR_DIRECTIVE_KEYWORD,
                 [&](const String& inValue)
                 {
-                    if (inValue.isEmpty())
+                    if (m_bSkipForDirective || inValue.isEmpty())
                     {
                         return;
                     }
@@ -51,15 +52,21 @@ namespace Chicane
                     const String variableId = values.at(0).trim();
                     const String accessorId = values.at(1).trim();
 
-                    ReflectionFieldAccessor accessor = getField(accessorId);
-                    if (accessor.isValid())
+                    Component* root = getRoot();
+                    if (!root)
                     {
-                        m_variables[variableId] = accessor;
+                        return;
                     }
-                    else
+
+                    ReflectionFieldAccessor accessor = root->getField(accessorId);
+
+                    if (!accessor.isValid() || !accessor.bIsIterable)
                     {
-                        m_variables.erase(variableId);
+                        return;
                     }
+
+                    m_forVariable = variableId;
+                    syncForLoop(variableId, accessor, root);
                 }
             );
         }
@@ -82,7 +89,11 @@ namespace Chicane
               m_cursor(Vec2::Zero()),
               m_bounds({}),
               m_primitive({}),
-              m_attributes({})
+              m_attributes({}),
+              m_sourceNode(),
+              m_forInstances({}),
+              m_forVariable(String::empty()),
+              m_bSkipForDirective(false)
         {
             m_style.setParent(this);
         }
@@ -236,6 +247,11 @@ namespace Chicane
 
         void Component::refreshDirectives()
         {
+            if (m_bSkipForDirective)
+            {
+                return;
+            }
+
             for (const auto& [key, directive] : m_directives)
             {
                 runDirective(key, getAttribute(key));
@@ -470,15 +486,52 @@ namespace Chicane
                 return local->second;
             }
 
+            const std::vector<String> parts = inId.split('.');
+            if (parts.size() > 1)
+            {
+                const auto& variable = m_variables.find(parts.at(0));
+
+                if (variable != m_variables.end())
+                {
+                    const ReflectionFieldAccessor& base = variable->second;
+
+                    if (!base.isValid() || !base.typeIndex.has_value())
+                    {
+                        return {};
+                    }
+
+                    const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(base.typeIndex.value());
+
+                    if (!type)
+                    {
+                        return {};
+                    }
+
+                    const String            subPath = inId.substr(parts.at(0).size() + 1);
+                    ReflectionFieldAccessor result  = type->resolve(subPath);
+
+                    if (!result.isValid())
+                    {
+                        return {};
+                    }
+
+                    if (base.boundInstance != nullptr)
+                    {
+                        result.boundInstance = base.boundInstance;
+                        result.bNeedsDeref   = false;
+                    }
+
+                    return result;
+                }
+            }
+
             if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
             {
-                try
+                const ReflectionFieldAccessor result = type->resolve(inId);
+
+                if (result.isValid())
                 {
-                    return type->resolve(inId);
-                }
-                catch (const std::exception& e)
-                {
-                    return {};
+                    return result;
                 }
             }
 
@@ -494,22 +547,20 @@ namespace Chicane
                 return {};
             }
 
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+            {
+                const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
+
+                if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
+                {
+                    ReflectionTypeMethod result(method);
+
+                    return result;
+                }
+            }
+
             if (!hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
-
-                    if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
-                    {
-                        ReflectionTypeMethod result(method);
-
-                        return result;
-                    }
-
-                    return {};
-                }
-
                 return {};
             }
 
@@ -1065,10 +1116,113 @@ namespace Chicane
 
             if (accessor.isValid())
             {
-                return accessor.toString(this);
+                const void* instance =
+                    accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+
+                return accessor.toString(instance);
             }
 
             return hasParent() ? m_parent->parseReference(inValue) : inValue;
+        }
+
+        void Component::addVariable(const String& inId, const ReflectionFieldAccessor& inValue)
+        {
+            if (!inValue.isValid())
+            {
+                m_variables.erase(inId);
+
+                return;
+            }
+
+            m_variables[inId] = std::move(inValue);
+        }
+
+        Component* Component::cloneTemplate() const
+        {
+            if (m_sourceNode.empty())
+            {
+                return nullptr;
+            }
+
+            const String defaultNamespace  = "Chicane::Grid::";
+            const String defaultedTypeName = defaultNamespace + m_tag;
+
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName);
+            if (!type)
+            {
+                type = ReflectionTypeRegistry::getInstance().find(m_tag);
+            }
+
+            if (!type)
+            {
+                return nullptr;
+            }
+
+            Component* clone = type->create<Component>({m_sourceNode});
+            if (!clone)
+            {
+                return nullptr;
+            }
+
+            clone->m_bSkipForDirective = true;
+            clone->m_attributes.erase(FOR_DIRECTIVE_KEYWORD);
+
+            return clone;
+        }
+
+        void Component::syncForLoop(
+            const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance
+        )
+        {
+            if (!hasParent())
+            {
+                return;
+            }
+
+            Component*        parent = getParent();
+            const std::size_t count  = inAccessor.getSize(inInstance);
+
+            if (m_forInstances.empty())
+            {
+                m_forInstances.push_back(this);
+            }
+
+            while (m_forInstances.size() < count)
+            {
+                Component* instance = cloneTemplate();
+                if (!instance)
+                {
+                    break;
+                }
+
+                parent->addChild(instance);
+                m_forInstances.push_back(instance);
+            }
+
+            for (std::size_t i = 0; i < m_forInstances.size(); ++i)
+            {
+                Component* instance = m_forInstances.at(i);
+
+                if (i >= count)
+                {
+                    instance->m_style.display.set(StyleDisplay::None);
+                    instance->m_variables.erase(inVariableId);
+
+                    continue;
+                }
+
+                ReflectionFieldAccessor element = inAccessor.getElement(inInstance, i);
+
+                if (!element.isValid())
+                {
+                    instance->m_style.display.set(StyleDisplay::None);
+
+                    continue;
+                }
+
+                instance->addVariable(inVariableId, element);
+                instance->m_style.display.set(StyleDisplay::Flex);
+            }
         }
 
         bool Component::isMethod(const String& inValue) const
