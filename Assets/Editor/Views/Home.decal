@@ -8,15 +8,18 @@ $bottomBarSize: 20vh;
     background-color: #242424;
 
     &.--side {
+        display: flex;
+        flex-direction: column;
         width: $sideBarSize;
         height: 100%;
-        margin-left: calc(100% - $sideBarSize);
+        margin-left: auto;
     }
 
     &.--bottom {
-        width: calc(100% - $sideBarSize);
+        width: auto;
         height: $bottomBarSize;
-        margin-top: calc(100% - $bottomBarSize);
+        margin-top: auto;
+        margin-right: $sideBarSize;
     }
 }
 
@@ -24,6 +27,6 @@ $bottomBarSize: 20vh;
     width: calc(100% - 2em);
     height: 2em;
     background-color: gray;
-    margin: calc(100% - 3em) 0 0 1em;
+    margin: auto auto 1em auto;
     alignment: center;
 }

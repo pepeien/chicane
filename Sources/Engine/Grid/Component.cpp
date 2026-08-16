@@ -767,7 +767,7 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isDisplayable())
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
                 {
                     continue;
                 }
@@ -775,8 +775,10 @@ namespace Chicane
                 const Style& style = child->getStyle();
 
                 const Vec2 margin = {
-                    style.margin.left.get() + style.margin.right.get(),
-                    style.margin.top.get() + style.margin.bottom.get()
+                    (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get()) +
+                        (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get()),
+                    (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get()) +
+                        (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get())
                 };
 
                 const Vec2 occupied = {
@@ -797,14 +799,17 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isDisplayable())
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
                 {
                     continue;
                 }
 
                 const Style& style = child->getStyle();
 
-                const Vec2 margin = {style.margin.right.get(), style.margin.bottom.get()};
+                const Vec2 margin = {
+                    style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get(),
+                    style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get()
+                };
 
                 result.x = std::max(result.x, (child->getPosition().x - m_position.x) + child->getSize().x + margin.x);
                 result.y = std::max(result.y, (child->getPosition().y - m_position.y) + child->getSize().y + margin.y);
@@ -1006,31 +1011,126 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsWidthAuto  = m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
-            if (!bIsWidthAuto && !bIsHeightAuto)
+            float width  = m_style.width.get();
+            float height = m_style.height.get();
+
+            if (bIsWidthAuto || bIsHeightAuto)
             {
-                setSize(m_style.width.get(), m_style.height.get());
+                const Vec2 content = getChildrenContentSize();
 
-                return;
+                if (bIsWidthAuto)
+                {
+                    const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
+                                                m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
+                                                !m_style.isPosition(StylePosition::Absolute);
+
+                    if (bIsFlexRowItem || !hasParent())
+                    {
+                        width = content.x;
+                    }
+                    else
+                    {
+                        const Style& parentStyle = m_parent->getStyle();
+                        const float  available =
+                            m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get();
+                        const float horizontalMargin =
+                            (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
+                            (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
+
+                        width = std::max(0.0f, available - horizontalMargin);
+                    }
+                }
+
+                if (bIsHeightAuto)
+                {
+                    height = content.y;
+                }
             }
 
-            const Vec2 content = getChildrenContentSize();
-
-            setSize(bIsWidthAuto ? content.x : m_style.width.get(), bIsHeightAuto ? content.y : m_style.height.get());
+            setSize(width, height);
         }
 
         void Component::refreshPosition()
         {
             setPosition(0.0f, 0.0f);
 
-            const Vec2 startMargin(m_style.margin.left.get(), m_style.margin.top.get());
+            float marginLeft   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get();
+            float marginRight  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get();
+            float marginTop    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.top.get();
+            float marginBottom = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.bottom.get();
+
             const Vec2 startPadding(m_style.padding.left.get(), m_style.padding.top.get());
+
+            if (hasParent() && !isRoot())
+            {
+                const Style& parentStyle = m_parent->getStyle();
+                const Vec2   available   = {
+                    std::max(0.0f, m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()),
+                    std::max(0.0f, m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get())
+                };
+
+                const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
+                const bool bRightAuto  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+                const bool bTopAuto    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
+                const bool bBottomAuto = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
+
+                const float leftoverW = available.x - m_size.x - marginLeft - marginRight;
+                if (leftoverW > 0.0f)
+                {
+                    if (bLeftAuto && bRightAuto)
+                    {
+                        marginLeft  = leftoverW * 0.5f;
+                        marginRight = leftoverW * 0.5f;
+                    }
+                    else if (bLeftAuto)
+                    {
+                        marginLeft = leftoverW;
+                    }
+                    else if (bRightAuto)
+                    {
+                        marginRight = leftoverW;
+                    }
+                }
+
+                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
+                                              parentStyle.isDisplay(StyleDisplay::Flex);
+
+                if (bCanAutoVertical && (bTopAuto || bBottomAuto))
+                {
+                    float leftoverH = available.y - m_size.y - marginTop - marginBottom;
+
+                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
+                        parentStyle.flex.direction.get() == StyleFlexDirection::Column)
+                    {
+                        leftoverH = (m_parent->getPosition().y + parentStyle.padding.top.get() + available.y) -
+                                    m_parent->getCursor().y - m_size.y - marginBottom;
+                    }
+
+                    if (leftoverH > 0.0f)
+                    {
+                        if (bTopAuto && bBottomAuto)
+                        {
+                            marginTop    = leftoverH * 0.5f;
+                            marginBottom = leftoverH * 0.5f;
+                        }
+                        else if (bTopAuto)
+                        {
+                            marginTop = leftoverH;
+                        }
+                        else if (bBottomAuto)
+                        {
+                            marginBottom = leftoverH;
+                        }
+                    }
+                }
+            }
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(startMargin);
+                setPosition(marginLeft, marginTop);
                 addCursor(startPadding);
 
                 return;
@@ -1038,27 +1138,25 @@ namespace Chicane
 
             const Style& parentStyle = m_parent->getStyle();
 
-            setPosition(m_parent->getCursor() + startMargin);
+            setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
             addCursor(startPadding);
-
-            const Vec2 endMargin(m_style.margin.right.get(), m_style.margin.bottom.get());
 
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
                 if (parentStyle.flex.direction.get() == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(m_size.x + endMargin.x + m_style.gap.left.get(), 0.0f);
+                    m_parent->addCursor(m_size.x + marginRight + m_style.gap.left.get(), 0.0f);
                 }
                 else
                 {
-                    m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
+                    m_parent->addCursor(0.0f, m_size.y + marginBottom + m_style.gap.top.get());
                 }
 
                 break;
 
             default:
-                m_parent->addCursor(0.0f, m_size.y + endMargin.y);
+                m_parent->addCursor(0.0f, m_size.y + marginBottom);
 
                 break;
             }
