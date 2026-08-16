@@ -17,14 +17,14 @@ namespace Chicane
         return m_instance != nullptr;
     }
 
-    void ReflectionTypeMethod::invoke(void* inInstance) const
+    std::any ReflectionTypeMethod::invoke(void* inInstance) const
     {
         if (!isValid())
         {
-            return;
+            return {};
         }
 
-        m_instance->invoke(inInstance, m_params);
+        return m_instance->invoke(inInstance, m_params);
     }
 
     void ReflectionTypeMethod::addParam(Param inValue)

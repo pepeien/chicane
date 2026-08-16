@@ -147,15 +147,21 @@ namespace Reflector
                     );
                 }
 
+                bool isVoid = f.ReturnType == "void";
+                string call = isVoid
+                    ? $"\t\t\t\t\tstatic_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n" +
+                      $"\t\t\t\t\treturn {{}};\n"
+                    : $"\t\t\t\t\treturn static_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n";
+
                 sb.AppendLine(
                     $"\t\t\t{{\n" +
                     $"\t\t\t\t\"{f.Name}\",\n" +
                     $"\t\t\t\t\"{f.ReturnType}\",\n" +
                     $"\t\t\t\t{{{string.Join(" ,", f.ParamTypes.Select(p => $"\"{p}\""))}}},\n" +
-                    $"\t\t\t\t[](void* inInstance, std::vector<std::any> inParams)\n" +
+                    $"\t\t\t\t[](void* inInstance, std::vector<std::any> inParams) -> std::any\n" +
                     $"\t\t\t\t{{\n" +
                     paramChecker +
-                    $"\t\t\t\t\tstatic_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n" +
+                    call +
                     $"\t\t\t\t}}\n" +
                     $"\t\t\t}},"
                 );

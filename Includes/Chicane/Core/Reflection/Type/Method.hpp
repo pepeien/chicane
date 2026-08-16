@@ -20,7 +20,7 @@ namespace Chicane
 
         void addParam(Param inValue);
 
-        void invoke(void* inInstance) const;
+        std::any invoke(void* inInstance) const;
 
     private:
         const ReflectionTypeMethodInfo* m_instance;

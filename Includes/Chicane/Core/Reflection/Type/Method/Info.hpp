@@ -14,7 +14,7 @@ namespace Chicane
     {
     public:
         using Params  = std::vector<std::any>;
-        using Invoker = std::function<void(void*, Params)>;
+        using Invoker = std::function<std::any(void*, Params)>;
 
     public:
         ReflectionTypeMethodInfo(
@@ -23,7 +23,8 @@ namespace Chicane
         ReflectionTypeMethodInfo();
 
     public:
-        void invoke(void* inInstance, Params inParams = {}) const;
+        std::any invoke(void* inInstance, Params inParams = {}) const;
+        String toString(const std::any& inValue) const;
 
     public:
         String              name;

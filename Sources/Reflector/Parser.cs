@@ -44,6 +44,17 @@ namespace Reflector
             return idx >= 0 ? annotationValue[(idx + 1)..].Trim() : "";
         }
 
+        static List<string> AnnotationArgs(string annotationValue)
+        {
+            string param = GetAnnotationParam(annotationValue);
+            if (string.IsNullOrWhiteSpace(param))
+            {
+                return [];
+            }
+
+            return [.. param.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0)];
+        }
+
         static string GetTemplateParam(CXType type)
         {
             var canonical = type.CanonicalType;
@@ -326,9 +337,14 @@ namespace Reflector
                             break;
                         }
 
-                        if (next == Annotation.Type)
+                        string typeAnnotation = FindAnnotation(cursor, Annotation.Type);
+                        if (!string.IsNullOrWhiteSpace(typeAnnotation) || next == Annotation.Type)
                         {
-                            types.Add(ParseType(cursor, nextParams));
+                            List<string> typeParams = !string.IsNullOrWhiteSpace(typeAnnotation)
+                                ? AnnotationArgs(typeAnnotation)
+                                : nextParams;
+
+                            types.Add(ParseType(cursor, typeParams));
                         }
 
                         next = Annotation.Undefined;
@@ -342,9 +358,14 @@ namespace Reflector
                             break;
                         }
 
-                        if (next == Annotation.Enum)
+                        string enumAnnotation = FindAnnotation(cursor, Annotation.Enum);
+                        if (!string.IsNullOrWhiteSpace(enumAnnotation) || next == Annotation.Enum)
                         {
-                            enums.Add(ParseEnum(cursor, nextParams));
+                            List<string> enumParams = !string.IsNullOrWhiteSpace(enumAnnotation)
+                                ? AnnotationArgs(enumAnnotation)
+                                : nextParams;
+
+                            enums.Add(ParseEnum(cursor, enumParams));
                         }
 
                         next = Annotation.Undefined;
