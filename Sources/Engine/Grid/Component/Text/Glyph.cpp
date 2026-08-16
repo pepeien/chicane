@@ -8,13 +8,14 @@ namespace Chicane
             : Component(TAG_ID),
               m_glyph(nullptr),
               m_advance(0.0f),
+              m_dilation(0.0f),
               m_relativeX(0.0f),
               m_relativeY(0.0f)
         {}
 
         bool TextGlyph::isDrawable() const
         {
-            if (!hasParent() || !m_parent->isDisplayable() || m_glyph == nullptr)
+            if (!hasParent() || !m_parent->isDisplayable() || m_glyph == nullptr || m_glyph->curves.empty())
             {
                 return false;
             }
@@ -24,7 +25,7 @@ namespace Chicane
 
         void TextGlyph::refreshPrimitive()
         {
-            if (m_glyph == nullptr)
+            if (m_glyph == nullptr || m_glyph->curves.empty())
             {
                 clearPrimitive();
 
@@ -32,7 +33,40 @@ namespace Chicane
             }
 
             Primitive primitive;
-            primitive.reference = m_glyph->name;
+            primitive.reference = QUAD_ID;
+            primitive.glyph     = m_glyph->name;
+            primitive.dilation  = m_dilation;
+            primitive.indices   = {0, 1, 2, 2, 3, 0};
+
+            Vertex vertex;
+
+            // Bottom Left
+            vertex.uv.x       = 0.0f;
+            vertex.uv.y       = 0.0f;
+            vertex.position.x = -0.5f;
+            vertex.position.y = -0.5f;
+            primitive.vertices.push_back(vertex);
+
+            // Bottom Right
+            vertex.uv.x       = 1.0f;
+            vertex.uv.y       = 0.0f;
+            vertex.position.x = 0.5f;
+            vertex.position.y = -0.5f;
+            primitive.vertices.push_back(vertex);
+
+            // Top Right
+            vertex.uv.x       = 1.0f;
+            vertex.uv.y       = 1.0f;
+            vertex.position.x = 0.5f;
+            vertex.position.y = 0.5f;
+            primitive.vertices.push_back(vertex);
+
+            // Top Left
+            vertex.uv.x       = 0.0f;
+            vertex.uv.y       = 1.0f;
+            vertex.position.x = -0.5f;
+            vertex.position.y = 0.5f;
+            primitive.vertices.push_back(vertex);
 
             setPrimitive(primitive);
         }
@@ -49,7 +83,7 @@ namespace Chicane
         {
             m_glyph = inGlyph;
 
-            if (m_glyph == nullptr)
+            if (m_glyph == nullptr || inFontSize <= 0.0f)
             {
                 clear();
 
@@ -63,9 +97,17 @@ namespace Chicane
             const float advance  = (m_glyph->advance + inLetterSpacing) * scale;
             const float ascender = inAscender * scale;
 
-            setScale(scale, scale);
+            m_dilation = QUAD_DILATION / scale;
+
+            const Vec2 min(m_glyph->boundsMin.x - m_dilation, m_glyph->boundsMin.y - m_dilation);
+            const Vec2 max(m_glyph->boundsMax.x + m_dilation, m_glyph->boundsMax.y + m_dilation);
+
+            setScale((max.x - min.x) * scale, (max.y - min.y) * scale);
             setSize(advance, height);
-            setOffset(advance * -0.5f, (height * 0.5f) - ascender);
+            setOffset(
+                ((min.x + max.x) * 0.5f * scale) - (advance * 0.5f),
+                (height * 0.5f) - ascender + ((min.y + max.y) * 0.5f * scale)
+            );
 
             m_style.width.set(advance);
             m_style.height.set(height);
@@ -86,6 +128,7 @@ namespace Chicane
         {
             m_glyph     = nullptr;
             m_advance   = 0.0f;
+            m_dilation  = 0.0f;
             m_relativeX = 0.0f;
             m_relativeY = 0.0f;
 

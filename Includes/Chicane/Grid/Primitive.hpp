@@ -23,6 +23,8 @@ namespace Chicane
             inline void clear()
             {
                 reference = "";
+                glyph     = "";
+                dilation  = 0.0f;
 
                 vertices.clear();
                 indices.clear();
@@ -32,6 +34,8 @@ namespace Chicane
             String          reference = "";
             Vertex::List    vertices  = {};
             Vertex::Indices indices   = {};
+            String          glyph     = "";
+            float           dilation  = 0.0f;
         };
     }
 }

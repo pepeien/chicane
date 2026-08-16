@@ -11,6 +11,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
@@ -67,6 +68,9 @@ namespace Chicane
             {
                 getCurrentFrame().draw(inId, inInstance);
             }
+
+            Draw::Id findGlyph(const Draw::Reference& inReference);
+            Draw::Id loadGlyph(const DrawGlyphData& inData);
 
             Draw::Id findTexture(const Draw::Reference& inReference);
             Draw::Id loadTexture(const DrawTextureData& inData);

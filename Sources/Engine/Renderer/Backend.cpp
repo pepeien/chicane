@@ -157,9 +157,12 @@ namespace Chicane
             case Resource::UIInstances:
                 return sizeof(DrawPoly2DInstance);
 
+            case Resource::UIGlyphs:
+                return sizeof(float);
+
             case Resource::UI:
                 return getResourceSize(Resource::UIIndices) + getResourceSize(Resource::UIVertices) +
-                       getResourceSize(Resource::UIInstances);
+                       getResourceSize(Resource::UIInstances) + getResourceSize(Resource::UIGlyphs);
 
             default:
                 return 0U;

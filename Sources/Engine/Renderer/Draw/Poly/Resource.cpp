@@ -24,6 +24,11 @@ namespace Chicane
             return m_indices;
         }
 
+        const DrawPolyResource::GlyphOutlines& DrawPolyResource::getGlyphOutlines() const
+        {
+            return m_glyphOutlines;
+        }
+
         Draw::Id DrawPolyResource::findId(const DrawPolyData& inData)
         {
             if (!inData.reference.isEmpty())
@@ -114,11 +119,64 @@ namespace Chicane
             return draw.id;
         }
 
+        Draw::Id DrawPolyResource::findGlyph(const Draw::Reference& inReference) const
+        {
+            const auto& found = m_glyphs.find(inReference);
+
+            if (found == m_glyphs.end())
+            {
+                return Draw::InvalidId;
+            }
+
+            return found->second;
+        }
+
+        Draw::Id DrawPolyResource::addGlyph(const DrawGlyphData& inData)
+        {
+            if (inData.reference.isEmpty())
+            {
+                return Draw::InvalidId;
+            }
+
+            const Draw::Id id = findGlyph(inData.reference);
+
+            if (id > Draw::InvalidId)
+            {
+                return id;
+            }
+
+            const Draw::Id offset = static_cast<Draw::Id>(m_glyphOutlines.size());
+            const Draw::Id count  = static_cast<Draw::Id>(inData.points.size() / 3);
+
+            m_glyphOutlines.reserve(m_glyphOutlines.size() + GlyphHeaderSize + (count * GlyphCurveSize));
+
+            m_glyphOutlines.push_back(inData.boundsMin.x);
+            m_glyphOutlines.push_back(inData.boundsMin.y);
+            m_glyphOutlines.push_back(inData.boundsMax.x);
+            m_glyphOutlines.push_back(inData.boundsMax.y);
+            m_glyphOutlines.push_back(static_cast<float>(count));
+            m_glyphOutlines.push_back(0.0f);
+
+            for (Draw::Id i = 0; i < count * 3; ++i)
+            {
+                m_glyphOutlines.push_back(inData.points[i].x);
+                m_glyphOutlines.push_back(inData.points[i].y);
+            }
+
+            m_glyphs.emplace(inData.reference, offset);
+
+            markAsDirty();
+
+            return offset;
+        }
+
         void DrawPolyResource::reset()
         {
             m_draws.clear();
             m_vertices.clear();
             m_indices.clear();
+            m_glyphs.clear();
+            m_glyphOutlines.clear();
             clearHashes();
         }
 

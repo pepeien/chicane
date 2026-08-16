@@ -276,13 +276,25 @@ namespace Chicane
                 {
                     for (const auto& [code, glyph] : static_cast<const Box::Font*>(inAsset)->getData().getGlyphs())
                     {
-                        Renderer::DrawPolyData data;
-                        data.reference = glyph.name;
-                        data.mode      = Renderer::DrawPolyMode::Fill;
-                        data.vertices  = glyph.vertices;
-                        data.indices   = glyph.indices;
+                        if (glyph.curves.empty())
+                        {
+                            continue;
+                        }
 
-                        m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+                        Renderer::DrawGlyphData data;
+                        data.reference = glyph.name;
+                        data.boundsMin = glyph.boundsMin;
+                        data.boundsMax = glyph.boundsMax;
+
+                        data.points.reserve(glyph.curves.size() * 3);
+                        for (const Box::FontGlyphCurve& curve : glyph.curves)
+                        {
+                            data.points.push_back(curve.start);
+                            data.points.push_back(curve.control);
+                            data.points.push_back(curve.end);
+                        }
+
+                        m_renderer->loadGlyph(data);
                     }
 
                     return;
@@ -556,8 +568,10 @@ namespace Chicane
             subcommand.instance.offset   = component->getOffset();
             subcommand.instance
                 .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
-            subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());
-            subcommand.instance.color   = style.background.color.get();
+            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
+            subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
+            subcommand.instance.dilation = primitive.dilation;
+            subcommand.instance.color    = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();

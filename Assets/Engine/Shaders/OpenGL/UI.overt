@@ -7,6 +7,8 @@
 
 layout(location = 0) out Data {
     flat int textureIndex;
+    flat int glyphIndex;
+    flat float glyphDilation;
     vec2 UV;
     vec3 normal;
     vec4 color;
@@ -27,10 +29,12 @@ void main() {
     vec2 vertexPosition = get2DVertexPosition(component, inPosition.xy, vec2(1.0));
     vec3 screenPosition = get2DScreenPosition(component, vec2(1.0, -1.0));
 
-    outData.textureIndex = component.textureIndex;
-    outData.UV           = inUV;
-    outData.normal       = inNormal;
-    outData.color        = normalize2DColor(component.color);
+    outData.textureIndex  = component.textureIndex;
+    outData.glyphIndex    = component.glyphIndex;
+    outData.glyphDilation = component.glyphDilation;
+    outData.UV            = inUV;
+    outData.normal        = inNormal;
+    outData.color         = normalize2DColor(component.color);
 
     gl_Position  = vec4(vertexPosition + screenPosition.xy, screenPosition.z, 1.0);
 }

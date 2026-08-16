@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box.hpp"
+#include "Chicane/Box/Font/Glyph/Curve.hpp"
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
@@ -21,16 +22,20 @@ namespace Chicane
             }
 
         public:
-            char32_t        code      = 0U;
-            String          name      = "";
-            float           width     = 0.0f;
-            float           height    = 0.0f;
-            float           advance   = 0.0f;
-            float           ascender  = 0.0f;
-            float           descender = 0.0f;
-            Vec2            bearing   = Vec2::Zero();
-            Vertex::List    vertices  = {};
-            Vertex::Indices indices   = {};
+            char32_t             code      = 0U;
+            String               name      = "";
+            float                width     = 0.0f;
+            float                height    = 0.0f;
+            float                advance   = 0.0f;
+            float                ascender  = 0.0f;
+            float                descender = 0.0f;
+            Vec2                 bearing   = Vec2::Zero();
+            Vertex::List         vertices  = {};
+            Vertex::Indices      indices   = {};
+
+            FontGlyphCurve::List curves    = {};
+            Vec2                 boundsMin = Vec2::Zero();
+            Vec2                 boundsMax = Vec2::Zero();
         };
     }
 }

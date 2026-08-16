@@ -24,10 +24,11 @@ namespace Chicane
 
                 {Resource::Texture,        0.4f        }, // VRAM 40%
 
-                {Resource::UI,             0.15f       }, // VRAM 15%
-                {Resource::UIIndices,      0.15f * 0.2f}, // UI 20%
-                {Resource::UIVertices,     0.15f * 0.6f}, // UI 60%
-                {Resource::UIInstances,    0.15f * 0.2f}, // UI 20%
+                {Resource::UI,             0.15f        }, // VRAM 15%
+                {Resource::UIIndices,      0.15f * 0.15f}, // UI 15%
+                {Resource::UIVertices,     0.15f * 0.5f }, // UI 50%
+                {Resource::UIInstances,    0.15f * 0.15f}, // UI 15%
+                {Resource::UIGlyphs,       0.15f * 0.2f }, // UI 20%
             };
         };
     }

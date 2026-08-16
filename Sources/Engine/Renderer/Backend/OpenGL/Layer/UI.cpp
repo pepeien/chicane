@@ -21,6 +21,7 @@ namespace Chicane
             buildPrimitiveVertexBuffer();
             buildPrimitiveIndexBuffer();
             buildInstanceData();
+            buildGlyphBuffer();
         }
 
         void OpenGLLUI::onDestruction()
@@ -28,6 +29,7 @@ namespace Chicane
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();
+            destroyGlyphData();
         }
 
         void OpenGLLUI::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -45,6 +47,12 @@ namespace Chicane
                     0,
                     sizeof(Vertex::Index) * inResource.getIndices().size(),
                     inResource.getIndices().data()
+                );
+                glNamedBufferSubData(
+                    m_glyphBuffer,
+                    0,
+                    sizeof(float) * inResource.getGlyphOutlines().size(),
+                    inResource.getGlyphOutlines().data()
                 );
             }
         }
@@ -245,6 +253,19 @@ namespace Chicane
         void OpenGLLUI::destroyInstanceData()
         {
             glDeleteBuffers(1, &m_instanceBuffer);
+        }
+
+        void OpenGLLUI::buildGlyphBuffer()
+        {
+            glCreateBuffers(1, &m_glyphBuffer);
+            glNamedBufferData(m_glyphBuffer, m_backend->getResourceBudget(Resource::UIGlyphs), nullptr, GL_STATIC_DRAW);
+
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, m_glyphBuffer);
+        }
+
+        void OpenGLLUI::destroyGlyphData()
+        {
+            glDeleteBuffers(1, &m_glyphBuffer);
         }
     }
 }

@@ -6,6 +6,8 @@ struct PolyInstance2D {
     vec3 position;
     vec4 color;
     int textureIndex;
+    int glyphIndex;
+    float glyphDilation;
 };
 
 float normalize2DDepth(float inValue) {

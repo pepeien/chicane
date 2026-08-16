@@ -20,6 +20,9 @@ namespace Chicane
 
         void VulkanLUI::onInit()
         {
+            // The frame descriptors point at the glyph buffer, so it has to exist first
+            buildGlyphBuffer();
+
             initFrameResources();
 
             initGraphicsPipeline();
@@ -38,6 +41,7 @@ namespace Chicane
         {
             destroyFrameResources();
             destroyPrimitiveData();
+            destroyGlyphData();
 
             m_graphicsPipeline.destroy();
         }
@@ -48,6 +52,7 @@ namespace Chicane
             {
                 buildPrimitiveVertexData(inResource.getVertices());
                 buildPrimitiveIndexData(inResource.getIndices());
+                buildGlyphData(inResource.getGlyphOutlines());
             }
         }
 
@@ -120,7 +125,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
-            bidings.count = 1;
+            bidings.count = 2;
 
             // Primtive
             bidings.indices.push_back(0);
@@ -128,12 +133,18 @@ namespace Chicane
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
+            // Glyph
+            bidings.indices.push_back(1);
+            bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
             VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, backend->logicalDevice, bidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(backend->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
-                {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets}
+                {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets * 2}
             );
 
             VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
@@ -158,6 +169,15 @@ namespace Chicane
                 primitiveInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
                 primitiveInfo.pBufferInfo     = &frame.poly2DResource.bufferInfo;
                 frame.addWriteDescriptorSet(primitiveInfo);
+
+                vk::WriteDescriptorSet glyphInfo;
+                glyphInfo.dstSet          = descriptorSet;
+                glyphInfo.dstBinding      = 1;
+                glyphInfo.dstArrayElement = 0;
+                glyphInfo.descriptorCount = 1;
+                glyphInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                glyphInfo.pBufferInfo     = &m_glyphBufferInfo;
+                frame.addWriteDescriptorSet(glyphInfo);
             }
         }
 
@@ -388,6 +408,57 @@ namespace Chicane
 
             m_primitiveVertexBuffer.destroy(backend->logicalDevice);
             m_primitiveIndexBuffer.destroy(backend->logicalDevice);
+        }
+
+        void VulkanLUI::buildGlyphBuffer()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            VulkanBufferCreateInfo createInfo;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
+            createInfo.size           = m_backend->getResourceBudget(Resource::UIGlyphs);
+            createInfo.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eStorageBuffer;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+            m_glyphBuffer.init(createInfo);
+
+            m_glyphBufferInfo.buffer = m_glyphBuffer.instance;
+            m_glyphBufferInfo.offset = 0;
+            m_glyphBufferInfo.range  = createInfo.size;
+        }
+
+        void VulkanLUI::buildGlyphData(const Outlines& inOutlines)
+        {
+            if (inOutlines.empty())
+            {
+                return;
+            }
+
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            VulkanBufferCreateInfo createInfo;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
+            createInfo.size           = sizeof(float) * inOutlines.size();
+            createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            VulkanBuffer stagingBuffer;
+            stagingBuffer.init(createInfo);
+
+            void* writeLocation = backend->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            memcpy(writeLocation, inOutlines.data(), createInfo.size);
+            backend->logicalDevice.unmapMemory(stagingBuffer.memory);
+
+            stagingBuffer.copy(m_glyphBuffer, createInfo.size, backend->graphicsQueue, backend->mainCommandBuffer);
+            stagingBuffer.destroy(backend->logicalDevice);
+        }
+
+        void VulkanLUI::destroyGlyphData()
+        {
+            m_glyphBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
         }
     }
 }
