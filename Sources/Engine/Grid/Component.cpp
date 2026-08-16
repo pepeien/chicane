@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
@@ -52,21 +54,26 @@ namespace Chicane
                     const String variableId = values.at(0).trim();
                     const String accessorId = values.at(1).trim();
 
-                    Component* root = getRoot();
-                    if (!root)
+                    Component* owner = this;
+                    while (owner)
                     {
-                        return;
+                        ReflectionFieldAccessor accessor = owner->getField(accessorId);
+
+                        if (accessor.isValid() && accessor.bIsIterable)
+                        {
+                            m_forVariable = variableId;
+                            syncForLoop(variableId, accessor, owner);
+
+                            return;
+                        }
+
+                        if (!owner->hasParent())
+                        {
+                            break;
+                        }
+
+                        owner = owner->getParent();
                     }
-
-                    ReflectionFieldAccessor accessor = root->getField(accessorId);
-
-                    if (!accessor.isValid() || !accessor.bIsIterable)
-                    {
-                        return;
-                    }
-
-                    m_forVariable = variableId;
-                    syncForLoop(variableId, accessor, root);
                 }
             );
         }
@@ -731,7 +738,7 @@ namespace Chicane
             }
         }
 
-        void Component::addChild(Component* inComponent)
+        void Component::addChild(Component* inComponent, std::size_t inIndex)
         {
             if (!canAdopt(inComponent))
             {
@@ -742,7 +749,14 @@ namespace Chicane
             inComponent->setParent(this);
             inComponent->setStyleFile(m_styleFile);
 
-            m_children.push_back(inComponent);
+            if (inIndex >= m_children.size())
+            {
+                m_children.push_back(inComponent);
+            }
+            else
+            {
+                m_children.insert(m_children.begin() + static_cast<std::ptrdiff_t>(inIndex), inComponent);
+            }
 
             onAdopted(inComponent);
         }
@@ -1112,6 +1126,18 @@ namespace Chicane
 
         String Component::parseReference(const String& inValue) const
         {
+            if (isMethod(inValue))
+            {
+                String result = parseMethod(inValue);
+
+                if (result.isEmpty())
+                {
+                    return result;
+                }
+
+                return hasParent() ? m_parent->parseReference(inValue) : inValue;
+            }
+
             ReflectionFieldAccessor accessor = getField(inValue);
 
             if (accessor.isValid())
@@ -1123,6 +1149,58 @@ namespace Chicane
             }
 
             return hasParent() ? m_parent->parseReference(inValue) : inValue;
+        }
+
+        String Component::parseMethod(const String& inValue) const
+        {
+            const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
+            if (open == String::npos)
+            {
+                return String::empty();
+            }
+
+            const String qualified = inValue.substr(0, open).trim();
+            if (qualified.isEmpty())
+            {
+                return String::empty();
+            }
+
+            const std::size_t         dot      = qualified.lastOf('.');
+            const String              receiver = dot == String::npos ? String::empty() : qualified.substr(0, dot);
+            const String              name     = dot == String::npos ? qualified : qualified.substr(dot + 1);
+            const ReflectionTypeInfo* type     = nullptr;
+            void*                     instance = nullptr;
+
+            if (receiver.isEmpty())
+            {
+                type     = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+                instance = const_cast<Component*>(this);
+            }
+            else
+            {
+                const ReflectionFieldAccessor accessor = getField(receiver);
+
+                if (!accessor.isValid() || !accessor.typeIndex.has_value())
+                {
+                    return String::empty();
+                }
+
+                type     = ReflectionTypeRegistry::getInstance().find(accessor.typeIndex.value());
+                instance = const_cast<char*>(accessor.address(this));
+            }
+
+            if (!type || !instance || name.isEmpty())
+            {
+                return String::empty();
+            }
+
+            const ReflectionTypeMethodInfo* method = type->findMethod(name);
+            if (!method)
+            {
+                return String::empty();
+            }
+
+            return method->toString(method->invoke(instance));
         }
 
         void Component::addVariable(const String& inId, const ReflectionFieldAccessor& inValue)
@@ -1195,7 +1273,13 @@ namespace Chicane
                     break;
                 }
 
-                parent->addChild(instance);
+                const std::vector<Component*>& siblings = parent->getChildren();
+                const auto        found = std::find(siblings.begin(), siblings.end(), m_forInstances.back());
+                const std::size_t index = found == siblings.end()
+                                              ? siblings.size()
+                                              : static_cast<std::size_t>(std::distance(siblings.begin(), found) + 1);
+
+                parent->addChild(instance, index);
                 m_forInstances.push_back(instance);
             }
 

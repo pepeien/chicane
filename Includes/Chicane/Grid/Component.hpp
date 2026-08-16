@@ -153,7 +153,7 @@ namespace Chicane
             const std::vector<Component*>& getChildren() const;
             virtual std::vector<Component*> getChildrenFlat() const;
             void addChildren(const pugi::xml_node& inNode);
-            void addChild(Component* inComponent);
+            void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
 
             Vec2 getChildrenContentSizeBlock() const;
             Vec2 getChildrenContentSizeFlex() const;
@@ -209,11 +209,14 @@ namespace Chicane
 
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
+            String parseMethod(const String& inValue) const;
 
             void addVariable(const String& inId, const ReflectionFieldAccessor& inValue);
 
             Component* cloneTemplate() const;
-            void syncForLoop(const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance);
+            void syncForLoop(
+                const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance
+            );
 
             bool isMethod(const String& inValue) const;
 
