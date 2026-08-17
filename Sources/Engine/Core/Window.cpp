@@ -9,6 +9,7 @@
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -73,6 +74,7 @@ namespace Chicane
             // Mouse
             Input::MouseMotionEvent mouseMotionEvent;
             Input::MouseButtonEvent mouseButtonEvent;
+            Input::MouseWheelEvent  mouseWheelEvent;
 
             // Event
             WindowEvent event;
@@ -167,6 +169,12 @@ namespace Chicane
             case WindowEventType::MouseButtonUp:
                 mouseButtonEvent = Input::MouseButtonEvent(&data.button);
                 event.data       = &mouseButtonEvent;
+
+                break;
+
+            case WindowEventType::MouseWheel:
+                mouseWheelEvent = Input::MouseWheelEvent(&data.wheel);
+                event.data      = &mouseWheelEvent;
 
                 break;
 
