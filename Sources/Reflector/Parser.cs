@@ -44,11 +44,65 @@ namespace Reflector
             return idx >= 0 ? annotationValue[(idx + 1)..].Trim() : "";
         }
 
+        static List<string> AnnotationArgs(string annotationValue)
+        {
+            string param = GetAnnotationParam(annotationValue);
+            if (string.IsNullOrWhiteSpace(param))
+            {
+                return [];
+            }
+
+            return [.. param.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0)];
+        }
+
+        static string GetTemplateParam(CXType type)
+        {
+            var canonical = type.CanonicalType;
+            string typeName = GetTypeName(canonical);
+
+            int start = typeName.IndexOf('<');
+            int end = typeName.LastIndexOf('>');
+
+            if (start >= 0 && end > start)
+            {
+                return typeName[(start + 1)..end].Trim();
+            }
+
+            return "";
+        }
+
+        static bool IsIterableType(CXType type)
+        {
+            string typeName = GetTypeName(type.CanonicalType);
+
+            return typeName.StartsWith("std::vector<") ||
+                   typeName.StartsWith("std::array<") ||
+                   typeName.StartsWith("std::list<") ||
+                   typeName.StartsWith("std::deque<");
+        }
+
+        static string CleanSpelling(string s)
+        {
+            return s.Replace("const ", "").Replace("&", "").Trim();
+        }
+
         static string GetTypeName(CXType type)
         {
-            return type.CanonicalType.Spelling.CString.Replace("const ", "")
-                  .Replace("&", "")
-                  .Trim();
+            if (
+                type.kind == CXTypeKind.CXType_Pointer ||
+                type.kind == CXTypeKind.CXType_LValueReference ||
+                type.kind == CXTypeKind.CXType_RValueReference
+            )
+            {
+                return GetTypeName(type.PointeeType);
+            }
+
+            if (type.kind == CXTypeKind.CXType_Elaborated)
+            {
+                return GetTypeName(type.NamedType);
+            }
+
+            return CleanSpelling(type.CanonicalType.Spelling.CString);
         }
 
         public static (List<TypeModel>, List<EnumModel>) Parse(string filePath, List<string> lookUpFolders)
@@ -60,7 +114,7 @@ namespace Reflector
             {
                 "-std=c++17",
                 "-xc++",
-                "-fms-extensions",
+                "-fdelayed-template-parsing",
                 "-fparse-all-comments",
                 "-DCH_TYPE(...)=__attribute__((annotate(\"CH_TYPE:\" #__VA_ARGS__)))",
                 "-DCH_ENUM(...)=__attribute__((annotate(\"CH_ENUM:\" #__VA_ARGS__)))",
@@ -68,6 +122,13 @@ namespace Reflector
                 "-DCH_FUNCTION(...)=__attribute__((annotate(\"CH_FUNCTION:\" #__VA_ARGS__)))",
                 "-DCH_CONSTRUCTOR(...)=__attribute__((annotate(\"CH_CONSTRUCTOR:\" #__VA_ARGS__)))"
             };
+
+            if (OperatingSystem.IsWindows())
+            {
+                argList.Add("-fms-compatibility");
+                argList.Add("-fms-extensions");
+                argList.Add("--target=x86_64-pc-windows-msvc");
+            }
 
             foreach (var dir in lookUpFolders)
             {
@@ -114,7 +175,9 @@ namespace Reflector
 
                 using var proc = System.Diagnostics.Process.Start(psi)!;
                 var dir = proc.StandardOutput.ReadToEnd().Trim();
+
                 proc.WaitForExit();
+
                 return string.IsNullOrEmpty(dir) ? null : dir;
             }
             catch
@@ -172,7 +235,7 @@ namespace Reflector
                     switch (child.Kind)
                     {
                         case CXCursorKind.CXCursor_CXXBaseSpecifier:
-                            var baseDecl = clang.getTypeDeclaration(child.Type);
+                            var baseDecl = clang.getTypeDeclaration(child.Type.CanonicalType);
 
                             if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
                             {
@@ -268,14 +331,20 @@ namespace Reflector
                     case CXCursorKind.CXCursor_StructDecl:
                     case CXCursorKind.CXCursor_ClassDecl:
                     case CXCursorKind.CXCursor_UnionDecl:
+                    case CXCursorKind.CXCursor_ClassTemplate:
                         if (!cursor.IsDefinition)
                         {
                             break;
                         }
 
-                        if (next == Annotation.Type)
+                        string typeAnnotation = FindAnnotation(cursor, Annotation.Type);
+                        if (!string.IsNullOrWhiteSpace(typeAnnotation) || next == Annotation.Type)
                         {
-                            types.Add(ParseType(cursor, nextParams));
+                            List<string> typeParams = !string.IsNullOrWhiteSpace(typeAnnotation)
+                                ? AnnotationArgs(typeAnnotation)
+                                : nextParams;
+
+                            types.Add(ParseType(cursor, typeParams));
                         }
 
                         next = Annotation.Undefined;
@@ -289,9 +358,14 @@ namespace Reflector
                             break;
                         }
 
-                        if (next == Annotation.Enum)
+                        string enumAnnotation = FindAnnotation(cursor, Annotation.Enum);
+                        if (!string.IsNullOrWhiteSpace(enumAnnotation) || next == Annotation.Enum)
                         {
-                            enums.Add(ParseEnum(cursor, nextParams));
+                            List<string> enumParams = !string.IsNullOrWhiteSpace(enumAnnotation)
+                                ? AnnotationArgs(enumAnnotation)
+                                : nextParams;
+
+                            enums.Add(ParseEnum(cursor, enumParams));
                         }
 
                         next = Annotation.Undefined;
@@ -314,12 +388,14 @@ namespace Reflector
             cursor.VisitChildren((child, _, _) =>
             {
                 if (child.Kind == CXCursorKind.CXCursor_EnumConstantDecl)
+                {
                     enumerators.Add(
                         new(
                             child.Spelling.CString,
                             (int)child.EnumConstantDeclValue
                         )
                     );
+                }
 
                 return CXChildVisitResult.CXChildVisit_Continue;
             }, default);
@@ -331,6 +407,12 @@ namespace Reflector
         static unsafe TypeModel ParseType(CXCursor cursor, List<string> args)
         {
             var name = cursor.Spelling.CString;
+
+            if (cursor.Kind == CXCursorKind.CXCursor_ClassTemplate)
+            {
+                name = cursor.Spelling.CString;
+            }
+
             var ns = GetNamespace(cursor);
             var kind = cursor.Kind == CXCursorKind.CXCursor_StructDecl ? "struct" : "class";
 
@@ -351,7 +433,6 @@ namespace Reflector
                             {
                                 constructors.Add(ParseConstructor(child));
                             }
-
                             break;
 
                         case CXCursorKind.CXCursor_CXXMethod:
@@ -372,8 +453,7 @@ namespace Reflector
                             break;
 
                         case CXCursorKind.CXCursor_CXXBaseSpecifier:
-                            var baseDecl = clang.getTypeDeclaration(child.Type);
-
+                            var baseDecl = clang.getTypeDeclaration(child.Type.CanonicalType);
                             if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
                             {
                                 CollectMembers(baseDecl, args, methods, fields);
@@ -389,7 +469,6 @@ namespace Reflector
                         default:
                             break;
                     }
-
                     return CXChildVisitResult.CXChildVisit_Continue;
                 },
                 default
@@ -439,7 +518,7 @@ namespace Reflector
         static unsafe FieldModel ParseField(CXCursor cursor)
         {
             List<string> names = [];
-            var type = cursor.Type.CanonicalType;
+            var type = cursor.Type;
 
             if (cursor.Kind == CXCursorKind.CXCursor_UnionDecl)
             {
@@ -447,8 +526,7 @@ namespace Reflector
                 {
                     if (child.Kind == CXCursorKind.CXCursor_FieldDecl)
                     {
-                        type = child.Type.CanonicalType;
-
+                        type = child.Type;
                         names.Add(child.Spelling.CString);
                     }
 
@@ -460,12 +538,26 @@ namespace Reflector
                 names.Add(cursor.Spelling.CString);
             }
 
-            bool isPointer = type.kind == CXTypeKind.CXType_Pointer;
+            var canonical = type.CanonicalType;
+            bool isIterable = IsIterableType(type);
+            bool isPointer = canonical.kind == CXTypeKind.CXType_Pointer;
+            string typeName = GetTypeName(isPointer ? type.PointeeType : type);
+
+            string elementName = isIterable ? GetTemplateParam(type) : "";
+            bool isElementPointer = elementName.EndsWith('*');
+
+            if (isElementPointer)
+            {
+                elementName = elementName.TrimEnd('*').Trim();
+            }
 
             return new(
-                GetTypeName(isPointer ? type.PointeeType : type),
+                typeName,
                 names,
-                isPointer
+                isPointer,
+                isIterable,
+                elementName,
+                isElementPointer
             );
         }
 

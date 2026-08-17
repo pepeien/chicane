@@ -15,8 +15,10 @@ namespace Chicane
         class CHICANE_GRID View : public Component
         {
         public:
+            // Tag
             static constexpr inline const char* TAG_ID = "View";
 
+            // Attribute
             static constexpr inline const char* PATH_ATTRIBUTE_NAME = "path";
 
         public:
@@ -36,10 +38,10 @@ namespace Chicane
 
         protected:
             // Routing
-            String    m_path;
+            String      m_path;
 
             // Styling
-            StyleFile m_styles;
+            StyleFile   m_styles;
         };
     }
 }

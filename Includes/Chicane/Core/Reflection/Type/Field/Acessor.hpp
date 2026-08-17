@@ -5,7 +5,8 @@
 #include <typeindex>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Reflection/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Iterable.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -20,11 +21,17 @@ namespace Chicane
             const ReflectionFieldInfo::Names& inNames,
             const String&                     inTypeName,
             ReflectionFieldInfo::TypeIndex    inTypeIndex,
-            bool                              bInNeedsDeref
+            bool                              bInNeedsDeref,
+            bool                              bInIsIterable,
+            ReflectionFieldInfo::TypeIndex    inElementIndex,
+            ReflectionFieldIterable           inIterable,
+            const void*                       inBoundInstance
         );
         ReflectionFieldAccessor();
 
     public:
+        bool isValid() const;
+
         template <typename T>
         bool isType() const
         {
@@ -100,6 +107,10 @@ namespace Chicane
 
         const String& getName() const;
 
+        std::size_t getSize(const void* inInstance) const;
+        ReflectionFieldAccessor getElement(const void* inInstance, std::size_t inIndex) const;
+        ReflectionFieldAccessor bind(const void* inInstance) const;
+
     private:
         template <typename T>
         void assertSize() const
@@ -113,6 +124,8 @@ namespace Chicane
             }
         }
 
+        const void* containerPtr(const void* inInstance) const;
+
     public:
         std::size_t                    offset;
         std::size_t                    ptrOffset;
@@ -120,6 +133,10 @@ namespace Chicane
         ReflectionFieldInfo::Names     names;
         String                         typeName;
         ReflectionFieldInfo::TypeIndex typeIndex;
+        ReflectionFieldInfo::TypeIndex elementIndex;
         bool                           bNeedsDeref;
+        bool                           bIsIterable;
+        ReflectionFieldIterable        iterable;
+        const void*                    boundInstance;
     };
 }

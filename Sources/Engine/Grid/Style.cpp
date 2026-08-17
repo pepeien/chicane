@@ -28,6 +28,8 @@ namespace Chicane
               margin({}),
               padding({}),
               gap({}),
+              overflowX(StyleOverflow::Visible),
+              overflowY(StyleOverflow::Visible),
               background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
               opacity(OPACITY_DEFAULT_VALUE),
@@ -121,6 +123,10 @@ namespace Chicane
             gap.parseWith([this](const String& inValue, SizeDirection inDirection)
                           { return parseSize(inValue, inDirection); });
 
+            overflowX.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
+
+            overflowY.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
+
             background.parseWith(
                 [this](const String& inValue) { return parseColor(inValue); },
                 [this](const String& inValue) { return parseText(inValue); }
@@ -147,6 +153,11 @@ namespace Chicane
         bool Style::isPosition(StylePosition inValue) const
         {
             return position.get() == inValue;
+        }
+
+        bool Style::clipsOverflow() const
+        {
+            return overflowX.get() != StyleOverflow::Visible || overflowY.get() != StyleOverflow::Visible;
         }
 
         void Style::setProperties(const StyleRuleset::Properties& inProperties)
@@ -232,6 +243,32 @@ namespace Chicane
                 Style::GAP_RIGHT_ATTRIBUTE_NAME
             );
 
+            if (inProperties.find(OVERFLOW_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                const std::vector<String> values = splitOneliner(inProperties.at(OVERFLOW_ATTRIBUTE_NAME));
+
+                if (values.size() == 1)
+                {
+                    overflowX.setRaw(values.at(0));
+                    overflowY.setRaw(values.at(0));
+                }
+                else if (values.size() >= 2)
+                {
+                    overflowX.setRaw(values.at(0));
+                    overflowY.setRaw(values.at(1));
+                }
+            }
+
+            if (inProperties.find(OVERFLOW_X_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                overflowX.setRaw(inProperties.at(OVERFLOW_X_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(OVERFLOW_Y_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                overflowY.setRaw(inProperties.at(OVERFLOW_Y_ATTRIBUTE_NAME));
+            }
+
             refresh();
         }
 
@@ -262,6 +299,7 @@ namespace Chicane
             refreshMargin();
             refreshPadding();
             refreshGap();
+            refreshOverflow();
             refreshAlignment();
             refreshBackground();
             refreshForegroundColor();
@@ -314,6 +352,44 @@ namespace Chicane
         void Style::refreshGap()
         {
             gap.refresh();
+        }
+
+        void Style::refreshOverflow()
+        {
+            overflowX.refresh();
+            overflowY.refresh();
+
+            if (overflowX.get() == StyleOverflow::Visible && overflowY.get() != StyleOverflow::Visible)
+            {
+                overflowX.set(StyleOverflow::Auto);
+            }
+
+            if (overflowY.get() == StyleOverflow::Visible && overflowX.get() != StyleOverflow::Visible)
+            {
+                overflowY.set(StyleOverflow::Auto);
+            }
+        }
+
+        StyleOverflow Style::parseOverflow(const String& inValue) const
+        {
+            const String value = parseText(inValue);
+
+            if (value.equals(OVERFLOW_TYPE_HIDDEN))
+            {
+                return StyleOverflow::Hidden;
+            }
+
+            if (value.equals(OVERFLOW_TYPE_SCROLL))
+            {
+                return StyleOverflow::Scroll;
+            }
+
+            if (value.equals(OVERFLOW_TYPE_AUTO))
+            {
+                return StyleOverflow::Auto;
+            }
+
+            return StyleOverflow::Visible;
         }
 
         void Style::refreshBackground()

@@ -6,8 +6,59 @@ namespace Chicane
     {
         FontFamily::FontFamily()
             : m_name(String::empty()),
-              m_glyphs()
+              m_glyphs(),
+              m_ascender(0.0f),
+              m_descender(0.0f),
+              m_kernings({})
         {}
+
+        std::uint64_t FontFamily::kerningKey(char32_t inLeft, char32_t inRight)
+        {
+            return (static_cast<std::uint64_t>(inLeft) << 32) | static_cast<std::uint64_t>(inRight);
+        }
+
+        float FontFamily::getAscender() const
+        {
+            return m_ascender;
+        }
+
+        float FontFamily::getDescender() const
+        {
+            return m_descender;
+        }
+
+        float FontFamily::getLineHeight() const
+        {
+            return m_ascender - m_descender;
+        }
+
+        void FontFamily::setMetrics(float inAscender, float inDescender)
+        {
+            m_ascender  = inAscender;
+            m_descender = inDescender;
+        }
+
+        float FontFamily::getKerning(char32_t inLeft, char32_t inRight) const
+        {
+            const auto it = m_kernings.find(kerningKey(inLeft, inRight));
+
+            if (it == m_kernings.end())
+            {
+                return 0.0f;
+            }
+
+            return it->second;
+        }
+
+        void FontFamily::addKerning(char32_t inLeft, char32_t inRight, float inValue)
+        {
+            if (inValue == 0.0f)
+            {
+                return;
+            }
+
+            m_kernings[kerningKey(inLeft, inRight)] = inValue;
+        }
 
         bool FontFamily::hasGlyph(char inCharacter) const
         {

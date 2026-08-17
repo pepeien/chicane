@@ -1,4 +1,6 @@
 ##################### Directories #######################
+add_subdirectory(Reflector)
+
 add_subdirectory(Engine)
 
 if (CHICANE_PROGRAMS)

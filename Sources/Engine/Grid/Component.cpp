@@ -1,6 +1,10 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+
+#include "Chicane/Grid/Component/Scrollable.hpp"
 
 namespace Chicane
 {
@@ -9,7 +13,8 @@ namespace Chicane
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
-            m_attributes = Xml::getAttributes(inNode);
+            m_sourceNode = m_sourceDocument.append_copy(inNode);
+            m_attributes = Xml::getAttributes(m_sourceNode);
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
@@ -32,24 +37,45 @@ namespace Chicane
                     m_style.display.set(StyleDisplay::None);
                 }
             );
+
             setDirective(
                 FOR_DIRECTIVE_KEYWORD,
                 [&](const String& inValue)
                 {
-                    if (inValue.isEmpty())
+                    if (m_bSkipForDirective || inValue.isEmpty())
                     {
                         return;
                     }
 
                     const std::vector<String> values = inValue.trim().split(':');
-
                     if (values.size() < 2)
                     {
                         return;
                     }
 
-                    const String rawVariable = values.at(0).trim();
-                    const String rawIterable = values.at(1).trim();
+                    const String variableId = values.at(0).trim();
+                    const String accessorId = values.at(1).trim();
+
+                    Component* owner = this;
+                    while (owner)
+                    {
+                        ReflectionFieldAccessor accessor = owner->getField(accessorId);
+
+                        if (accessor.isValid() && accessor.bIsIterable)
+                        {
+                            m_forVariable = variableId;
+                            syncForLoop(variableId, accessor, owner);
+
+                            return;
+                        }
+
+                        if (!owner->hasParent())
+                        {
+                            break;
+                        }
+
+                        owner = owner->getParent();
+                    }
                 }
             );
         }
@@ -59,6 +85,7 @@ namespace Chicane
               m_id(String::empty()),
               m_className(String::empty()),
               m_directives({}),
+              m_variables({}),
               m_style({}),
               m_styleFile(nullptr),
               m_root(nullptr),
@@ -71,7 +98,11 @@ namespace Chicane
               m_cursor(Vec2::Zero()),
               m_bounds({}),
               m_primitive({}),
-              m_attributes({})
+              m_attributes({}),
+              m_sourceNode(),
+              m_forInstances({}),
+              m_forVariable(String::empty()),
+              m_bSkipForDirective(false)
         {
             m_style.setParent(this);
         }
@@ -98,9 +129,9 @@ namespace Chicane
 
             onTick(inDeltaTime);
 
-            for (Component* child : m_children)
+            for (std::size_t i = 0; i < m_children.size(); i++)
             {
-                child->tick(inDeltaTime);
+                m_children.at(i)->tick(inDeltaTime);
             }
 
             addSize(m_style.padding.right.get(), m_style.padding.bottom.get());
@@ -225,6 +256,11 @@ namespace Chicane
 
         void Component::refreshDirectives()
         {
+            if (m_bSkipForDirective)
+            {
+                return;
+            }
+
             for (const auto& [key, directive] : m_directives)
             {
                 runDirective(key, getAttribute(key));
@@ -445,69 +481,73 @@ namespace Chicane
             m_style.setProperties(inSource);
         }
 
-        bool Component::hasField(const String& inId, bool isLocalOnly) const
+        ReflectionFieldAccessor Component::getField(const String& inId) const
         {
             if (inId.isEmpty())
             {
-                return false;
+                return {};
             }
 
-            if (isLocalOnly || !hasParent())
-            {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    const std::vector<String> fields = inId.split('.');
+            const auto& local = m_variables.find(inId);
 
-                    if (fields.empty())
+            if (local != m_variables.end())
+            {
+                return local->second;
+            }
+
+            const std::vector<String> parts = inId.split('.');
+            if (parts.size() > 1)
+            {
+                const auto& variable = m_variables.find(parts.at(0));
+
+                if (variable != m_variables.end())
+                {
+                    const ReflectionFieldAccessor& base = variable->second;
+
+                    if (!base.isValid() || !base.typeIndex.has_value())
                     {
-                        return false;
+                        return {};
                     }
 
-                    return type->findField(fields.at(0)) != nullptr;
+                    const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(base.typeIndex.value());
+
+                    if (!type)
+                    {
+                        return {};
+                    }
+
+                    const String            subPath = inId.substr(parts.at(0).size() + 1);
+                    ReflectionFieldAccessor result  = type->resolve(subPath);
+
+                    if (!result.isValid())
+                    {
+                        return {};
+                    }
+
+                    if (base.boundInstance != nullptr)
+                    {
+                        result.boundInstance = base.boundInstance;
+                        result.bNeedsDeref   = false;
+                    }
+
+                    return result;
                 }
-
-                return false;
             }
 
-            return m_parent->hasField(inId, false);
-        }
-
-        const ReflectionFieldInfo* Component::getField(const String& inId) const
-        {
-            if (inId.isEmpty())
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
             {
-                return nullptr;
-            }
+                const ReflectionFieldAccessor result = type->resolve(inId);
 
-            if (!hasParent())
-            {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+                if (result.isValid())
                 {
-                    return type->findField(inId);
+                    return result;
                 }
-
-                return nullptr;
             }
 
-            return m_parent->getField(inId);
+            return {};
         }
 
-        bool Component::hasMethod(const String& inId, bool isLocalOnly) const
-        {
-            if (inId.isEmpty())
-            {
-                return false;
-            }
-
-            if (isLocalOnly || !hasParent())
-            {
-                return getMethod(inId).isValid();
-            }
-
-            return m_parent->hasMethod(inId, false);
-        }
-
-        Method Component::getMethod(const String& inValue) const
+        ReflectionTypeMethod Component::getMethod(const String& inValue) const
         {
             const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
 
@@ -516,23 +556,20 @@ namespace Chicane
                 return {};
             }
 
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+            {
+                const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
+
+                if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
+                {
+                    ReflectionTypeMethod result(method);
+
+                    return result;
+                }
+            }
+
             if (!hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
-
-                    if (const ReflectionMethodInfo* method = type->findMethod(name))
-                    {
-                        Method result;
-                        result.setInstance(method);
-
-                        return result;
-                    }
-
-                    return {};
-                }
-
                 return {};
             }
 
@@ -663,6 +700,70 @@ namespace Chicane
             return result;
         }
 
+        Component* Component::getHitAt(const Vec2& inLocation) const
+        {
+            Component* hit = nullptr;
+
+            for (Component* child : getChildrenFlat())
+            {
+                if (!child->getDrawBounds().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!child->getOverflowClip().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!hit || child->getDepth() >= hit->getDepth())
+                {
+                    hit = child;
+                }
+            }
+
+            return hit;
+        }
+
+        bool Component::broadcastEvent(const WindowEvent& inEvent)
+        {
+            for (Component* child : getChildrenFlat())
+            {
+                if (child->onEvent(inEvent))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        bool Component::bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation)
+        {
+            Component* node = getHitAt(inLocation);
+            while (node && node != this)
+            {
+                if (node->onEvent(inEvent))
+                {
+                    return true;
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            return false;
+        }
+
+        bool Component::onEvent(const WindowEvent&)
+        {
+            return false;
+        }
+
         void Component::addChildren(const pugi::xml_node& inNode)
         {
             if (inNode.empty())
@@ -703,7 +804,7 @@ namespace Chicane
             }
         }
 
-        void Component::addChild(Component* inComponent)
+        void Component::addChild(Component* inComponent, std::size_t inIndex)
         {
             if (!canAdopt(inComponent))
             {
@@ -714,7 +815,14 @@ namespace Chicane
             inComponent->setParent(this);
             inComponent->setStyleFile(m_styleFile);
 
-            m_children.push_back(inComponent);
+            if (inIndex >= m_children.size())
+            {
+                m_children.push_back(inComponent);
+            }
+            else
+            {
+                m_children.insert(m_children.begin() + static_cast<std::ptrdiff_t>(inIndex), inComponent);
+            }
 
             onAdopted(inComponent);
         }
@@ -725,7 +833,7 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isDisplayable())
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
                 {
                     continue;
                 }
@@ -733,8 +841,10 @@ namespace Chicane
                 const Style& style = child->getStyle();
 
                 const Vec2 margin = {
-                    style.margin.left.get() + style.margin.right.get(),
-                    style.margin.top.get() + style.margin.bottom.get()
+                    (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get()) +
+                        (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get()),
+                    (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get()) +
+                        (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get())
                 };
 
                 const Vec2 occupied = {
@@ -755,14 +865,17 @@ namespace Chicane
 
             for (const Component* child : m_children)
             {
-                if (!child || !child->isDisplayable())
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
                 {
                     continue;
                 }
 
                 const Style& style = child->getStyle();
 
-                const Vec2 margin = {style.margin.right.get(), style.margin.bottom.get()};
+                const Vec2 margin = {
+                    style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get(),
+                    style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get()
+                };
 
                 result.x = std::max(result.x, (child->getPosition().x - m_position.x) + child->getSize().x + margin.x);
                 result.y = std::max(result.y, (child->getPosition().y - m_position.y) + child->getSize().y + margin.y);
@@ -877,6 +990,30 @@ namespace Chicane
             setCursor(m_position);
         }
 
+        Vec2 Component::getDrawPosition() const
+        {
+            Vec2 result = m_position;
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    result.x -= scrollable->getScroll().x;
+                    result.y -= scrollable->getScroll().y;
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return result;
+        }
+
         const Vec2& Component::getCursor() const
         {
             return m_cursor;
@@ -908,6 +1045,46 @@ namespace Chicane
             return m_bounds;
         }
 
+        Bounds2D Component::getDrawBounds() const
+        {
+            Bounds2D result;
+
+            const Vec2 position = getDrawPosition();
+
+            result.left   = position.x;
+            result.top    = position.y;
+            result.right  = position.x + m_size.x;
+            result.bottom = position.y + m_size.y;
+
+            return result;
+        }
+
+        Bounds2D Component::getOverflowClip() const
+        {
+            Bounds2D clip = Bounds2D::unconstrained();
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    if (scrollable->clipsOverflow())
+                    {
+                        clip = clip.intersect(ancestor->getDrawBounds());
+                    }
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return clip;
+        }
+
         bool Component::hasPrimitive() const
         {
             return !m_primitive.isEmpty();
@@ -920,7 +1097,7 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            m_primitive;
+            m_primitive.clear();
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
@@ -964,31 +1141,132 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsWidthAuto  = m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
-            if (!bIsWidthAuto && !bIsHeightAuto)
+            float width  = m_style.width.get();
+            float height = m_style.height.get();
+
+            if (bIsWidthAuto || bIsHeightAuto)
             {
-                setSize(m_style.width.get(), m_style.height.get());
+                const Vec2 content = getChildrenContentSize();
 
-                return;
+                if (bIsWidthAuto)
+                {
+                    const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
+                                                m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
+                                                !m_style.isPosition(StylePosition::Absolute);
+
+                    if (bIsFlexRowItem || !hasParent())
+                    {
+                        width = content.x;
+                    }
+                    else
+                    {
+                        const Style& parentStyle = m_parent->getStyle();
+                        const float  available =
+                            m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get();
+                        const float horizontalMargin =
+                            (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
+                            (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
+
+                        width = std::max(0.0f, available - horizontalMargin);
+                    }
+                }
+
+                if (bIsHeightAuto)
+                {
+                    height = content.y;
+                }
             }
 
-            const Vec2 content = getChildrenContentSize();
-
-            setSize(bIsWidthAuto ? content.x : m_style.width.get(), bIsHeightAuto ? content.y : m_style.height.get());
+            setSize(width, height);
         }
 
         void Component::refreshPosition()
         {
             setPosition(0.0f, 0.0f);
 
-            const Vec2 startMargin(m_style.margin.left.get(), m_style.margin.top.get());
+            float marginLeft   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get();
+            float marginRight  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get();
+            float marginTop    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.top.get();
+            float marginBottom = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.bottom.get();
+
             const Vec2 startPadding(m_style.padding.left.get(), m_style.padding.top.get());
+
+            if (hasParent() && !isRoot())
+            {
+                const Style& parentStyle = m_parent->getStyle();
+                const Vec2   available   = {
+                    std::max(
+                        0.0f,
+                        m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()
+                    ),
+                    std::max(
+                        0.0f,
+                        m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get()
+                    )
+                };
+
+                const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
+                const bool bRightAuto  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+                const bool bTopAuto    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
+                const bool bBottomAuto = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
+
+                const float leftoverW = available.x - m_size.x - marginLeft - marginRight;
+                if (leftoverW > 0.0f)
+                {
+                    if (bLeftAuto && bRightAuto)
+                    {
+                        marginLeft  = leftoverW * 0.5f;
+                        marginRight = leftoverW * 0.5f;
+                    }
+                    else if (bLeftAuto)
+                    {
+                        marginLeft = leftoverW;
+                    }
+                    else if (bRightAuto)
+                    {
+                        marginRight = leftoverW;
+                    }
+                }
+
+                const bool bCanAutoVertical =
+                    m_style.isPosition(StylePosition::Absolute) || parentStyle.isDisplay(StyleDisplay::Flex);
+
+                if (bCanAutoVertical && (bTopAuto || bBottomAuto))
+                {
+                    float leftoverH = available.y - m_size.y - marginTop - marginBottom;
+
+                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
+                        parentStyle.flex.direction.get() == StyleFlexDirection::Column)
+                    {
+                        leftoverH = (m_parent->getPosition().y + parentStyle.padding.top.get() + available.y) -
+                                    m_parent->getCursor().y - m_size.y - marginBottom;
+                    }
+
+                    if (leftoverH > 0.0f)
+                    {
+                        if (bTopAuto && bBottomAuto)
+                        {
+                            marginTop    = leftoverH * 0.5f;
+                            marginBottom = leftoverH * 0.5f;
+                        }
+                        else if (bTopAuto)
+                        {
+                            marginTop = leftoverH;
+                        }
+                        else if (bBottomAuto)
+                        {
+                            marginBottom = leftoverH;
+                        }
+                    }
+                }
+            }
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(startMargin);
+                setPosition(marginLeft, marginTop);
                 addCursor(startPadding);
 
                 return;
@@ -996,27 +1274,25 @@ namespace Chicane
 
             const Style& parentStyle = m_parent->getStyle();
 
-            setPosition(m_parent->getCursor() + startMargin);
+            setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
             addCursor(startPadding);
-
-            const Vec2 endMargin(m_style.margin.right.get(), m_style.margin.bottom.get());
 
             switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
                 if (parentStyle.flex.direction.get() == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(m_size.x + endMargin.x + m_style.gap.left.get(), 0.0f);
+                    m_parent->addCursor(m_size.x + marginRight + m_style.gap.left.get(), 0.0f);
                 }
                 else
                 {
-                    m_parent->addCursor(0.0f, m_size.y + endMargin.y + m_style.gap.top.get());
+                    m_parent->addCursor(0.0f, m_size.y + marginBottom + m_style.gap.top.get());
                 }
 
                 break;
 
             default:
-                m_parent->addCursor(0.0f, m_size.y + endMargin.y);
+                m_parent->addCursor(0.0f, m_size.y + marginBottom);
 
                 break;
             }
@@ -1084,27 +1360,187 @@ namespace Chicane
 
         String Component::parseReference(const String& inValue) const
         {
-            if (!hasField(inValue))
+            if (isMethod(inValue))
             {
-                return inValue;
+                String result = parseMethod(inValue);
+
+                if (result.isEmpty())
+                {
+                    return result;
+                }
+
+                return hasParent() ? m_parent->parseReference(inValue) : inValue;
             }
 
+            ReflectionFieldAccessor accessor = getField(inValue);
+
+            if (accessor.isValid())
+            {
+                const void* instance =
+                    accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+
+                return accessor.toString(instance);
+            }
+
+            return hasParent() ? m_parent->parseReference(inValue) : inValue;
+        }
+
+        String Component::parseMethod(const String& inValue) const
+        {
+            const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
+            if (open == String::npos)
+            {
+                return String::empty();
+            }
+
+            const String qualified = inValue.substr(0, open).trim();
+            if (qualified.isEmpty())
+            {
+                return String::empty();
+            }
+
+            const std::size_t         dot      = qualified.lastOf('.');
+            const String              receiver = dot == String::npos ? String::empty() : qualified.substr(0, dot);
+            const String              name     = dot == String::npos ? qualified : qualified.substr(dot + 1);
+            const ReflectionTypeInfo* type     = nullptr;
+            void*                     instance = nullptr;
+
+            if (receiver.isEmpty())
+            {
+                type     = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+                instance = const_cast<Component*>(this);
+            }
+            else
+            {
+                const ReflectionFieldAccessor accessor = getField(receiver);
+
+                if (!accessor.isValid() || !accessor.typeIndex.has_value())
+                {
+                    return String::empty();
+                }
+
+                type     = ReflectionTypeRegistry::getInstance().find(accessor.typeIndex.value());
+                instance = const_cast<char*>(accessor.address(this));
+            }
+
+            if (!type || !instance || name.isEmpty())
+            {
+                return String::empty();
+            }
+
+            const ReflectionTypeMethodInfo* method = type->findMethod(name);
+            if (!method)
+            {
+                return String::empty();
+            }
+
+            return method->toString(method->invoke(instance));
+        }
+
+        void Component::addVariable(const String& inId, const ReflectionFieldAccessor& inValue)
+        {
+            if (!inValue.isValid())
+            {
+                m_variables.erase(inId);
+
+                return;
+            }
+
+            m_variables[inId] = std::move(inValue);
+        }
+
+        Component* Component::cloneTemplate() const
+        {
+            if (m_sourceNode.empty())
+            {
+                return nullptr;
+            }
+
+            const String defaultNamespace  = "Chicane::Grid::";
+            const String defaultedTypeName = defaultNamespace + m_tag;
+
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName);
+            if (!type)
+            {
+                type = ReflectionTypeRegistry::getInstance().find(m_tag);
+            }
+
+            if (!type)
+            {
+                return nullptr;
+            }
+
+            Component* clone = type->create<Component>({m_sourceNode});
+            if (!clone)
+            {
+                return nullptr;
+            }
+
+            clone->m_bSkipForDirective = true;
+            clone->m_attributes.erase(FOR_DIRECTIVE_KEYWORD);
+
+            return clone;
+        }
+
+        void Component::syncForLoop(
+            const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance
+        )
+        {
             if (!hasParent())
             {
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-                {
-                    try
-                    {
-                        return type->resolve(inValue).toString(this);
-                    }
-                    catch (const std::exception& e)
-                    {
-                        return inValue;
-                    }
-                }
+                return;
             }
 
-            return m_parent->parseReference(inValue);
+            Component*        parent = getParent();
+            const std::size_t count  = inAccessor.getSize(inInstance);
+
+            if (m_forInstances.empty())
+            {
+                m_forInstances.push_back(this);
+            }
+
+            while (m_forInstances.size() < count)
+            {
+                Component* instance = cloneTemplate();
+                if (!instance)
+                {
+                    break;
+                }
+
+                const std::vector<Component*>& siblings = parent->getChildren();
+                const auto        found = std::find(siblings.begin(), siblings.end(), m_forInstances.back());
+                const std::size_t index = found == siblings.end()
+                                              ? siblings.size()
+                                              : static_cast<std::size_t>(std::distance(siblings.begin(), found) + 1);
+
+                parent->addChild(instance, index);
+                m_forInstances.push_back(instance);
+            }
+
+            for (std::size_t i = 0; i < m_forInstances.size(); ++i)
+            {
+                Component* instance = m_forInstances.at(i);
+
+                if (i >= count)
+                {
+                    instance->m_style.display.set(StyleDisplay::None);
+                    instance->m_variables.erase(inVariableId);
+
+                    continue;
+                }
+
+                ReflectionFieldAccessor element = inAccessor.getElement(inInstance, i);
+
+                if (!element.isValid())
+                {
+                    instance->m_style.display.set(StyleDisplay::None);
+
+                    continue;
+                }
+
+                instance->addVariable(inVariableId, element);
+                instance->m_style.display.set(StyleDisplay::Flex);
+            }
         }
 
         bool Component::isMethod(const String& inValue) const

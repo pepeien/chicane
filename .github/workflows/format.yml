@@ -1,0 +1,39 @@
+name: Format
+on:
+    push:
+        branches: [master]
+        paths:
+            - 'Includes/**.hpp'
+            - 'Sources/**.cpp'
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-22.04
+        permissions:
+            contents: write
+        defaults:
+            run:
+                working-directory: ./Scripts
+        steps:
+            - name: Setup Checkout
+              uses: actions/checkout@v6
+
+            - name: Fix permissions
+              run: |
+                sudo chown -R $USER:$USER .
+                chmod -R 755 .
+
+            - name: Run script
+              run: bash Format.sh
+
+            - name: Commit
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                branch: master
+                commit_message: 'Updated code format'
+                file_pattern: |
+                  Includes/**.hpp
+                  Sources/**.cpp
+                skip_dirty_check: false
+                skip_fetch: false
+                skip_checkout: false

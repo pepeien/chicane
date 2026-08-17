@@ -80,16 +80,18 @@ namespace Chicane
         inline T* createActor(Params... inParams)
         {
             m_actors.push_back(new T(inParams...));
-            m_actors.back()->setScene(this);
+
+            Actor* added = m_actors.back();
+            added->setScene(this);
 
             if (isLoaded())
             {
-                m_actors.back()->onLoad();
+                added->onLoad();
             }
 
             m_actorsObservable.next(m_actors);
 
-            return static_cast<T*>(m_actors.back());
+            return static_cast<T*>(added);
         }
 
         void removeActor(Actor* inActor);
@@ -163,16 +165,18 @@ namespace Chicane
         inline T* createComponent(Params... inParams)
         {
             m_components.push_back(new T(inParams...));
-            m_components.back()->setScene(this);
+
+            Component* added = m_components.back();
+            added->setScene(this);
 
             if (isLoaded())
             {
-                m_components.back()->onLoad();
+                added->onLoad();
             }
 
             m_componentsObservable.next(m_components);
 
-            return static_cast<T*>(m_components.back());
+            return static_cast<T*>(added);
         }
 
         void removeComponent(Component* inComponent);
@@ -238,6 +242,52 @@ namespace Chicane
 
                 point += direction * LINE_TRACE_STEP_SIZE;
                 traveled += LINE_TRACE_STEP_SIZE;
+            }
+
+            return result;
+        }
+
+        template <typename T = Actor>
+        inline std::size_t getActorCount() const
+        {
+            if (typeid(T) == typeid(Actor))
+            {
+                return m_actors.size();
+            }
+
+            std::size_t result = 0;
+
+            for (const Actor* actor : m_actors)
+            {
+                if (typeid(*actor) != typeid(T))
+                {
+                    continue;
+                }
+
+                result++;
+            }
+
+            return result;
+        }
+
+        template <typename T = Component>
+        inline std::size_t getComponentCount() const
+        {
+            if (typeid(T) == typeid(Component))
+            {
+                return m_components.size();
+            }
+
+            std::size_t result = 0;
+
+            for (const Component* component : m_components)
+            {
+                if (typeid(*component) != typeid(T))
+                {
+                    continue;
+                }
+
+                result++;
             }
 
             return result;

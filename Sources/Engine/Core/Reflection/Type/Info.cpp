@@ -43,9 +43,9 @@ namespace Chicane
         return nullptr;
     }
 
-    const ReflectionMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
+    const ReflectionTypeMethodInfo* ReflectionTypeInfo::findMethod(const String& inName) const
     {
-        for (const ReflectionMethodInfo& method : methods)
+        for (const ReflectionTypeMethodInfo& method : methods)
         {
             if (method.name.equals(inName))
             {
@@ -62,7 +62,7 @@ namespace Chicane
 
         if (parts.empty())
         {
-            throw std::runtime_error("TypeInfo::resolve — empty path on type [" + name + "]");
+            return {};
         }
 
         const ReflectionTypeInfo*  currentType    = this;
@@ -78,10 +78,7 @@ namespace Chicane
 
             if (!currentField)
             {
-                throw std::runtime_error(
-                    "TypeInfo::resolve — field [" + part + "] not found on type [" + currentType->name + "] (path: [" +
-                    inAccessor + "])"
-                );
+                return {};
             }
 
             if (crossedPointer)
@@ -99,12 +96,7 @@ namespace Chicane
             {
                 if (!currentField->bIsReflected || !currentField->typeIndex.has_value())
                 {
-                    throw std::runtime_error(
-                        "TypeInfo::resolve — field [" + part + "] on type [" + currentType->name +
-                        "] is not a reflected type, cannot dot-chain further"
-                        " (path: [" +
-                        inAccessor + "])"
-                    );
+                    return {};
                 }
 
                 if (currentField->bIsPointer && !crossedPointer)
@@ -116,16 +108,23 @@ namespace Chicane
 
                 if (!currentType)
                 {
-                    throw std::runtime_error(
-                        "TypeInfo::resolve — type [" + currentField->typeName +
-                        "] is marked reflected but is not registered"
-                        " (path: [" +
-                        inAccessor + "])"
-                    );
+                    return {};
                 }
             }
         }
 
-        return {offset, ptrOffset, field->size, field->names, field->typeName, field->typeIndex, crossedPointer};
+        return {
+            offset,
+            ptrOffset,
+            field->size,
+            field->names,
+            field->typeName,
+            field->typeIndex,
+            crossedPointer,
+            field->bIsIterable,
+            field->elementIndex,
+            field->iterable,
+            nullptr
+        };
     }
 }

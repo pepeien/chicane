@@ -9,14 +9,15 @@
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
-#include "Chicane/Core/Reflection/Field/Info.hpp"
-#include "Chicane/Core/Reflection/Method/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Info.hpp"
+#include "Chicane/Core/Reflection/Type/Method.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Primitive.hpp"
-#include "Chicane/Grid/Method.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
 
@@ -31,6 +32,7 @@ namespace Chicane
             using ClassList  = std::set<String>;
             using Directive  = std::function<void(const String&)>;
             using Directives = std::unordered_map<String, Directive>;
+            using Variables  = std::unordered_map<String, ReflectionFieldAccessor>;
 
         public:
             static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
@@ -54,9 +56,10 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
 
+            virtual bool onEvent(const WindowEvent& inEvent);
+
         protected:
             // Lifescycle Events
-            virtual void onEvent(const WindowEvent& inEvent) { return; }
             virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
@@ -82,8 +85,8 @@ namespace Chicane
             void click();
 
             // Lifecycle Events
-            void tick(float inDelta);
-            void refresh();
+            virtual void tick(float inDelta);
+            virtual void refresh();
 
             // Properties
             const String& getTag() const;
@@ -132,11 +135,8 @@ namespace Chicane
             bool hasSelector(const String& inValue) const;
 
             // Reference
-            bool hasField(const String& inId, bool isLocalOnly = false) const;
-            const ReflectionFieldInfo* getField(const String& inId) const;
-
-            bool hasMethod(const String& inId, bool isLocalOnly = false) const;
-            Method getMethod(const String& inId) const;
+            ReflectionFieldAccessor getField(const String& inId) const;
+            ReflectionTypeMethod getMethod(const String& inId) const;
 
             // Hierarchy
             bool hasRoot() const;
@@ -152,16 +152,19 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
-            std::vector<Component*> getChildrenFlat() const;
+            virtual std::vector<Component*> getChildrenFlat() const;
+            Component* getHitAt(const Vec2& inLocation) const;
+            bool broadcastEvent(const WindowEvent& inEvent);
+            bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const pugi::xml_node& inNode);
-            void addChild(Component* inComponent);
+            void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
 
             Vec2 getChildrenContentSizeBlock() const;
             Vec2 getChildrenContentSizeFlex() const;
             Vec2 getChildrenContentSize() const;
 
             // Positioning
-            float getDepth() const;
+            virtual float getDepth() const;
 
             const Vec2& getSize() const;
             void addSize(const Vec2& inValue);
@@ -183,6 +186,8 @@ namespace Chicane
             void setPosition(const Vec2& inValue);
             void setPosition(float inX, float inY);
 
+            virtual Vec2 getDrawPosition() const;
+
             const Vec2& getCursor() const;
             void addCursor(const Vec2& inValue);
             void addCursor(float inX, float inY);
@@ -191,6 +196,8 @@ namespace Chicane
 
             // Collision
             const Bounds2D& getBounds() const;
+            Bounds2D getDrawBounds() const;
+            Bounds2D getOverflowClip() const;
 
             // Draw
             bool hasPrimitive() const;
@@ -204,12 +211,20 @@ namespace Chicane
         protected:
             void refreshStyle();
             void refreshStyleRuleset();
-            void refreshSize();
+            virtual void refreshSize();
             void refreshPosition();
             void refreshBounds();
 
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
+            String parseMethod(const String& inValue) const;
+
+            void addVariable(const String& inId, const ReflectionFieldAccessor& inValue);
+
+            Component* cloneTemplate() const;
+            void syncForLoop(
+                const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance
+            );
 
             bool isMethod(const String& inValue) const;
 
@@ -221,6 +236,9 @@ namespace Chicane
 
             // Modifier
             Directives              m_directives;
+
+            // Runtime
+            Variables               m_variables;
 
             // Style
             Style                   m_style;
@@ -246,6 +264,13 @@ namespace Chicane
 
             // XML
             Xml::Attributes         m_attributes;
+            pugi::xml_document      m_sourceDocument;
+            pugi::xml_node          m_sourceNode;
+
+            // For-loop
+            std::vector<Component*> m_forInstances;
+            String                  m_forVariable;
+            bool                    m_bSkipForDirective;
         };
     }
 }

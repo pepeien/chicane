@@ -5,7 +5,10 @@ struct PolyInstance2D {
     vec2 offset;
     vec3 position;
     vec4 color;
+    vec4 clip;
     int textureIndex;
+    int glyphIndex;
+    float glyphDilation;
 };
 
 float normalize2DDepth(float inValue) {
@@ -21,6 +24,7 @@ vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMult
     position *= inInstance.scale;  // Apply vertex scale
     position += inInstance.offset; // Apply vertex offset
     position /= inInstance.view;   // Normalize to view size
+    position *= 2.0;               // Normalize to NDC
     position *= inMultipliers;
 
     return position;

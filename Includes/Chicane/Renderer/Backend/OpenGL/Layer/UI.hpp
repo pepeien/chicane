@@ -37,6 +37,10 @@ namespace Chicane
             void buildInstanceData();
             void destroyInstanceData();
 
+            // Glyph
+            void buildGlyphBuffer();
+            void destroyGlyphData();
+
         private:
             // Shader
             std::uint32_t m_shaderProgram;
@@ -48,6 +52,9 @@ namespace Chicane
 
             // Instance
             std::uint32_t m_instanceBuffer;
+
+            // Glyph
+            std::uint32_t m_glyphBuffer;
         };
     }
 }

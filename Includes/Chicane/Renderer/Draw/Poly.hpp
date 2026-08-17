@@ -17,7 +17,7 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPoly : Draw
         {
         public:
-            static const DrawPoly& empty()
+            static inline const DrawPoly& empty()
             {
                 static const DrawPoly result;
 

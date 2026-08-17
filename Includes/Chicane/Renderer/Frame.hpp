@@ -34,10 +34,10 @@ namespace Chicane
             bool hasDraws(DrawPolyType inType, DrawPolyMode inMode) const;
             DrawPoly::List getDraws(DrawPolyType inType, DrawPolyMode inMode) const;
 
-            const DrawPoly2DInstance::List getInstances2D() const;
+            const DrawPoly2DInstance::List& getInstances2D() const;
             void draw(Draw::Id inId, const DrawPoly2DInstance& inInstance);
 
-            const DrawPoly3DInstance::List getInstances3D() const;
+            DrawPoly3DInstance::List getInstances3D() const;
             void draw(Draw::Id inId, const DrawPoly3DInstance& inInstance);
 
             const DrawSkyInstance& getSkyInstance() const;
@@ -54,16 +54,19 @@ namespace Chicane
 
         protected:
             // View
-            View                    m_camera = {};
-            View::List              m_lights = {};
+            View                     m_camera = {};
+            View::List               m_lights = {};
 
             // Poly
-            DrawPoly::Map           m_polys = {};
+            DrawPoly::Map            m_polys = {};
+
+            // Batches
+            DrawPoly::List           m_2DBatches = {};
 
             // Instances
-            DrawPoly2DInstance::Map m_2DInstances = {};
-            DrawPoly3DInstance::Map m_3DInstances = {};
-            DrawSkyInstance         m_skyInstance = {};
+            DrawPoly3DInstance::Map  m_3DInstances = {};
+            DrawPoly2DInstance::List m_2DInstances = {};
+            DrawSkyInstance          m_skyInstance = {};
         };
     }
 }

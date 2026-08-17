@@ -21,6 +21,7 @@ namespace Chicane
             buildPrimitiveVertexBuffer();
             buildPrimitiveIndexBuffer();
             buildInstanceData();
+            buildGlyphBuffer();
         }
 
         void OpenGLLUI::onDestruction()
@@ -28,6 +29,7 @@ namespace Chicane
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();
+            destroyGlyphData();
         }
 
         void OpenGLLUI::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -46,6 +48,12 @@ namespace Chicane
                     sizeof(Vertex::Index) * inResource.getIndices().size(),
                     inResource.getIndices().data()
                 );
+                glNamedBufferSubData(
+                    m_glyphBuffer,
+                    0,
+                    sizeof(float) * inResource.getGlyphOutlines().size(),
+                    inResource.getGlyphOutlines().data()
+                );
             }
         }
 
@@ -63,11 +71,8 @@ namespace Chicane
         {
             glUseProgram(m_shaderProgram);
 
-            glClear(GL_DEPTH_BUFFER_BIT);
-
-            glEnable(GL_DEPTH_TEST);
-            glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LEQUAL);
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -106,7 +111,8 @@ namespace Chicane
 
         void OpenGLLUI::onEndRender()
         {
-            glDisable(GL_DEPTH_TEST);
+            // Handed back writable so the next frame's scene pass can fill the depth buffer again
+            glDepthMask(GL_TRUE);
             glDisable(GL_BLEND);
         }
 
@@ -245,6 +251,19 @@ namespace Chicane
         void OpenGLLUI::destroyInstanceData()
         {
             glDeleteBuffers(1, &m_instanceBuffer);
+        }
+
+        void OpenGLLUI::buildGlyphBuffer()
+        {
+            glCreateBuffers(1, &m_glyphBuffer);
+            glNamedBufferData(m_glyphBuffer, m_backend->getResourceBudget(Resource::UIGlyphs), nullptr, GL_STATIC_DRAW);
+
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, m_glyphBuffer);
+        }
+
+        void OpenGLLUI::destroyGlyphData()
+        {
+            glDeleteBuffers(1, &m_glyphBuffer);
         }
     }
 }

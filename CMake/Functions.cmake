@@ -71,11 +71,12 @@ function(
 )
     file(
         GLOB_RECURSE
-
         VULKAN_SOURCES
             "${SOURCE_PATH}/*.${FRAG_SHADER_EXTENSION}"
             "${SOURCE_PATH}/*.${VERT_SHADER_EXTENSION}"
     )
+
+    set(ALL_SPIRV "")
 
     foreach(GLSL ${VULKAN_SOURCES})
         get_filename_component(FILE_DIR       ${GLSL} DIRECTORY)
@@ -84,34 +85,45 @@ function(
 
         set(SPIRV_DIR "${FILE_DIR}")
         string(REPLACE "${SOURCE_PATH}" "" SPIRV_DIR ${SPIRV_DIR})
-
         set(SPIRV_DIR "${OUTPUT_PATH}/${SPIRV_DIR}")
         string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
-
-        file(MAKE_DIRECTORY "${SPIRV_DIR}")
 
         set(SPIRV "${SPIRV_DIR}/${FILE_NAME}")
         string(REPLACE "//" "/" SPIRV ${SPIRV})
 
         if(FILE_EXTENSION STREQUAL ".${FRAG_SHADER_EXTENSION}")
-            message("${GLSL_VALIDATOR} -S frag -${SHADER_VERSION} ${GLSL} -o ${SPIRV}")
-            add_custom_command(
-                TARGET
-                    ${TARGET_NAME}
-                POST_BUILD
-                COMMAND
-                    ${GLSL_VALIDATOR} -S frag -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
-            )
-        elseif (FILE_EXTENSION STREQUAL ".${VERT_SHADER_EXTENSION}")
-            add_custom_command(
-                TARGET
-                    ${TARGET_NAME}
-                POST_BUILD
-                COMMAND
-                    ${GLSL_VALIDATOR} -S vert -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
-            )
+            set(SHADER_STAGE "frag")
+        elseif(FILE_EXTENSION STREQUAL ".${VERT_SHADER_EXTENSION}")
+            set(SHADER_STAGE "vert")
+        else()
+            continue()
         endif()
-    endforeach(GLSL)
+
+        add_custom_command(
+            OUTPUT
+                "${SPIRV}"
+            COMMAND
+                ${CMAKE_COMMAND} -E make_directory "${SPIRV_DIR}"
+            COMMAND
+                ${GLSL_VALIDATOR} -S ${SHADER_STAGE} -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
+            DEPENDS
+                "${GLSL}"
+            COMMENT
+                "Compiling shader ${FILE_NAME}"
+            VERBATIM
+        )
+
+        list(APPEND ALL_SPIRV "${SPIRV}")
+    endforeach()
+
+    if(ALL_SPIRV)
+        string(MD5 SHADER_HASH "${SOURCE_PATH}${SHADER_VERSION}")
+        add_custom_target(
+            "CH_SHADERS_${SHADER_HASH}" ALL
+            DEPENDS ${ALL_SPIRV}
+        )
+        add_dependencies(${TARGET_NAME} "CH_SHADERS_${SHADER_HASH}")
+    endif()
 endfunction()
 
 function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)

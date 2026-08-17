@@ -24,10 +24,12 @@ namespace Chicane
         inline virtual void onTick(float inDeltaTime) { return; }
 
     public:
+        CH_FUNCTION()
         bool canTick() const;
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
 
+        CH_FUNCTION()
         const String& getId() const;
         void setId(const String& inId);
 

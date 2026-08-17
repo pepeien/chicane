@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
@@ -276,13 +278,25 @@ namespace Chicane
                 {
                     for (const auto& [code, glyph] : static_cast<const Box::Font*>(inAsset)->getData().getGlyphs())
                     {
-                        Renderer::DrawPolyData data;
-                        data.reference = glyph.name;
-                        data.mode      = Renderer::DrawPolyMode::Fill;
-                        data.vertices  = glyph.vertices;
-                        data.indices   = glyph.indices;
+                        if (glyph.curves.empty())
+                        {
+                            continue;
+                        }
 
-                        m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+                        Renderer::DrawGlyphData data;
+                        data.reference = glyph.name;
+                        data.boundsMin = glyph.boundsMin;
+                        data.boundsMax = glyph.boundsMax;
+
+                        data.points.reserve(glyph.curves.size() * 3);
+                        for (const Box::FontGlyphCurve& curve : glyph.curves)
+                        {
+                            data.points.push_back(curve.start);
+                            data.points.push_back(curve.control);
+                            data.points.push_back(curve.end);
+                        }
+
+                        m_renderer->loadGlyph(data);
                     }
 
                     return;
@@ -543,8 +557,15 @@ namespace Chicane
                 continue;
             }
 
+            const Bounds2D clip = component->getOverflowClip();
+            if (clip.isEmpty() || !component->getDrawBounds().overlaps(clip))
+            {
+                continue;
+            }
+
             const Grid::Primitive& primitive = component->getPrimitive();
             const Grid::Style&     style     = component->getStyle();
+            const Vec2             position  = component->getDrawPosition();
 
             Renderer::DrawPoly2DCommandFill subcommand;
             subcommand.polygon.reference = primitive.reference;
@@ -554,16 +575,26 @@ namespace Chicane
             subcommand.instance.scale    = component->getScale();
             subcommand.instance.size     = component->getSize();
             subcommand.instance.offset   = component->getOffset();
-            subcommand.instance
-                .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
-            subcommand.instance.texture = m_renderer->findTexture(style.background.image.get());
-            subcommand.instance.color   = style.background.color.get();
+            subcommand.instance.position = {position.x, position.y, component->getDepth()};
+            subcommand.instance.clip     = {clip.left, clip.top, clip.right, clip.bottom};
+            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
+            subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
+            subcommand.instance.dilation = primitive.dilation;
+            subcommand.instance.color    = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();
 
             command.fills.emplace_back(std::move(subcommand));
         }
+
+        // Sort draw order by z-index
+        std::stable_sort(
+            command.fills.begin(),
+            command.fills.end(),
+            [](const Renderer::DrawPoly2DCommandFill& inLeft, const Renderer::DrawPoly2DCommandFill& inRight)
+            { return inLeft.instance.position.z < inRight.instance.position.z; }
+        );
 
         m_viewReadIndex.store(index, std::memory_order_release);
         m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);

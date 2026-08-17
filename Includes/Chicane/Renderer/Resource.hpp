@@ -21,7 +21,8 @@ namespace Chicane
             UI,
             UIIndices,
             UIVertices,
-            UIInstances
+            UIInstances,
+            UIGlyphs
         };
 
         using ResourceBudget = std::unordered_map<Resource, float>;

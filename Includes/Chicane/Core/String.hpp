@@ -11,11 +11,9 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Reflection.hpp"
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
     struct CHICANE_CORE String
     {
     public:

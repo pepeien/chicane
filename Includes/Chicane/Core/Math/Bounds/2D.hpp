@@ -11,9 +11,25 @@ namespace Chicane
         Bounds2D();
 
     public:
+        static inline const Bounds2D& unconstrained()
+        {
+            static Bounds2D result = {};
+            result.top             = -1.0e9f;
+            result.bottom          = 1.0e9f;
+            result.left            = -1.0e9f;
+            result.right           = 1.0e9f;
+
+            return result;
+        }
+
+    public:
         bool contains(const Vec2& inPoint) const;
 
         bool overlaps(const Bounds2D& inOther) const;
+
+        bool isEmpty() const;
+
+        Bounds2D intersect(const Bounds2D& inOther) const;
 
     public:
         float top;

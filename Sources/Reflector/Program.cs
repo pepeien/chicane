@@ -1,4 +1,6 @@
-﻿class Program
+﻿using System.Collections.Concurrent;
+
+class Program
 {
     static int Main(string[] args)
     {
@@ -16,7 +18,7 @@
                 case "-i":
                     while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
                     {
-                        inputFiles.Add(args[++i]);
+                        inputFiles.Add(Path.GetFullPath(args[++i]));
                     }
 
                     break;
@@ -24,7 +26,7 @@
                 case "-b":
                     if (i + 1 < args.Length)
                     {
-                        baseDir = args[++i];
+                        baseDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -38,7 +40,7 @@
                 case "-s":
                     if (i + 1 < args.Length)
                     {
-                        sourceDir = args[++i];
+                        sourceDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -52,7 +54,7 @@
                 case "-l":
                     while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
                     {
-                        lookUpFolders.Add(args[++i]);
+                        lookUpFolders.Add(Path.GetFullPath(args[++i]));
                     }
 
                     break;
@@ -60,7 +62,7 @@
                 case "-o":
                     if (i + 1 < args.Length)
                     {
-                        outputDir = args[++i];
+                        outputDir = Path.GetFullPath(args[++i]);
                     }
                     else
                     {
@@ -83,38 +85,48 @@
             return 1;
         }
 
-        List<Reflector.TypeModel> allTypes = [];
-        foreach (string file in inputFiles)
-        {
-            var (types, enums) = Reflector.Parser.Parse(file, lookUpFolders);
-
-            allTypes.AddRange(types);
-        }
-
-        foreach (string file in inputFiles)
-        {
-            if (!file.StartsWith(Path.GetFullPath(sourceDir)))
+        ConcurrentDictionary<string, List<Reflector.EnumModel>> allEnums = new();
+        ConcurrentDictionary<string, List<Reflector.TypeModel>> allTypes = new();
+        Parallel.ForEach(
+            inputFiles,
+            file =>
             {
-                continue;
+                var (types, enums) = Reflector.Parser.Parse(file, lookUpFolders);
+
+                allEnums[file] = enums;
+                allTypes[file] = types;
             }
+        );
 
-            var (types, enums) = Reflector.Parser.Parse(file, lookUpFolders);
-
-            if (types.Count <= 0 && enums.Count <= 0)
+        List<Reflector.TypeModel> flatTypes = [.. allTypes.Values.SelectMany(t => t)];
+        Parallel.ForEach(
+            inputFiles,
+            file =>
             {
-                continue;
+                if (!file.StartsWith(sourceDir, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                List<Reflector.EnumModel> enums = allEnums.GetValueOrDefault(file, []);
+                List<Reflector.TypeModel> types = allTypes.GetValueOrDefault(file, []);
+
+                if (enums.Count <= 0 && types.Count <= 0)
+                {
+                    return;
+                }
+
+                string relativePath = Path.GetRelativePath(baseDir, file);
+                string directory = Path.GetDirectoryName(relativePath) ?? "";
+                string baseName = Path.GetFileNameWithoutExtension(relativePath);
+                string extension = Path.GetExtension(relativePath);
+                string outputPath = Path.Combine(outputDir, directory, $"{baseName}.reflected{extension}");
+
+                Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+
+                File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, flatTypes, baseDir));
             }
-
-            string relativePath = Path.GetRelativePath(baseDir, file);
-            string directory = Path.GetDirectoryName(relativePath) ?? "";
-            string baseName = Path.GetFileNameWithoutExtension(relativePath);
-            string extension = Path.GetExtension(relativePath);
-            string outputPath = Path.Combine(outputDir, directory, $"{baseName}.reflected{extension}");
-
-            Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-
-            File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, allTypes, baseDir));
-        }
+        );
 
         return 0;
     }

@@ -89,6 +89,16 @@ namespace Chicane
             return getPolyResource(inType).add(inData);
         }
 
+        Draw::Id Instance::findGlyph(const Draw::Reference& inReference)
+        {
+            return getPolyResource(DrawPolyType::e2D).findGlyph(inReference);
+        }
+
+        Draw::Id Instance::loadGlyph(const DrawGlyphData& inData)
+        {
+            return getPolyResource(DrawPolyType::e2D).addGlyph(inData);
+        }
+
         Draw::Id Instance::findTexture(const Draw::Reference& inReference)
         {
             return m_textureResources.findId(inReference);

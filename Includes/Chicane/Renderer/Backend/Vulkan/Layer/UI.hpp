@@ -15,6 +15,9 @@ namespace Chicane
         class CHICANE_RENDERER VulkanLUI : public Layer
         {
         public:
+            using Outlines = std::vector<float>;
+
+        public:
             VulkanLUI();
 
         protected:
@@ -43,6 +46,11 @@ namespace Chicane
             void buildPrimitiveIndexData(const Vertex::Indices& inIndices);
             void destroyPrimitiveData();
 
+            // Glyph
+            void buildGlyphBuffer();
+            void buildGlyphData(const Outlines& inOutlines);
+            void destroyGlyphData();
+
         private:
             VulkanGraphicsPipeline      m_graphicsPipeline;
 
@@ -50,6 +58,9 @@ namespace Chicane
 
             VulkanBuffer                m_primitiveVertexBuffer;
             VulkanBuffer                m_primitiveIndexBuffer;
+
+            VulkanBuffer                m_glyphBuffer;
+            vk::DescriptorBufferInfo    m_glyphBufferInfo;
 
             std::vector<vk::ClearValue> m_clear;
         };
