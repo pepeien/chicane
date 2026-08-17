@@ -17,7 +17,7 @@ namespace Chicane
             using Map = std::unordered_map<String, ModelParsed>;
 
         public:
-            static const ModelParsed& empty()
+            static inline const ModelParsed& empty()
             {
                 static ModelParsed result;
 

@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         Container::Container(const pugi::xml_node& inNode)
-            : Component(inNode)
+            : Scrollable(inNode)
         {
             Primitive primitive;
             primitive.indices = {0, 1, 2, 2, 3, 0};

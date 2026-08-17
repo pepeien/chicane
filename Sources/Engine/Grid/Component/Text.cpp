@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
 
 namespace Chicane
@@ -57,7 +58,7 @@ namespace Chicane
         }
 
         Text::Text(const pugi::xml_node& inNode)
-            : Container(inNode),
+            : Scrollable(inNode),
               m_text(""),
               m_parsedText(""),
               m_layoutSignature(""),
@@ -66,6 +67,31 @@ namespace Chicane
               m_glyphs({})
         {
             setText(inNode.text().as_string());
+
+            Primitive primitive;
+            primitive.indices = {0, 1, 2, 2, 3, 0};
+
+            Vertex vertex = {};
+
+            vertex.uv.x       = 0.0f;
+            vertex.uv.y       = 0.0f;
+            vertex.position.x = -0.5f;
+            vertex.position.y = -0.5f;
+            primitive.vertices.push_back(vertex);
+
+            vertex.uv.x       = 1.0f;
+            vertex.position.x = 0.5f;
+            primitive.vertices.push_back(vertex);
+
+            vertex.uv.y       = 1.0f;
+            vertex.position.y = 0.5f;
+            primitive.vertices.push_back(vertex);
+
+            vertex.uv.x       = 0.0f;
+            vertex.position.x = -0.5f;
+            primitive.vertices.push_back(vertex);
+
+            setPrimitive(primitive);
 
             addStyleProperties({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
@@ -86,7 +112,7 @@ namespace Chicane
 
         void Text::refresh()
         {
-            Container::refresh();
+            Component::refresh();
             syncGlyphs();
         }
 
@@ -99,13 +125,11 @@ namespace Chicane
 
             refreshFont();
             refreshText();
-
-            Container::onRefresh();
         }
 
         std::vector<Component*> Text::getChildrenFlat() const
         {
-            std::vector<Component*> result = Container::getChildrenFlat();
+            std::vector<Component*> result = Scrollable::getChildrenFlat();
 
             for (TextGlyph* glyph : m_glyphs)
             {

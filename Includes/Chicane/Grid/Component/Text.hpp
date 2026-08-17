@@ -6,7 +6,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
 
 namespace Chicane
@@ -14,7 +14,7 @@ namespace Chicane
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID Text : public Container
+        class CHICANE_GRID Text : public Scrollable
         {
         public:
             // Tag
@@ -31,6 +31,7 @@ namespace Chicane
 
         protected:
             void onRefresh() override;
+
             void refreshSize() override;
 
         public:
@@ -49,13 +50,12 @@ namespace Chicane
             TextGlyph* acquireGlyph(std::size_t inIndex);
 
         private:
-            String                      m_text;
-            String                      m_parsedText;
-            String                      m_layoutSignature;
-
-            const Box::Font*            m_font;
-            Vec2                        m_contentSize;
-            std::vector<TextGlyph*>     m_glyphs;
+            String                  m_text;
+            String                  m_parsedText;
+            String                  m_layoutSignature;
+            const Box::Font*        m_font;
+            Vec2                    m_contentSize;
+            std::vector<TextGlyph*> m_glyphs;
         };
     }
 }

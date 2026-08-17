@@ -4,6 +4,9 @@
         <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
     </Container>
     <Container class="menu --side">
+        <Container dir:for="actor : actors" class="menu__actors">
+            <Text>{{ actor.translation }}</Text>
+        </Container>
         <Button onClick="{{ onAssetImport() }}" class="button">
             <Text>Import File</Text>
         </Button>

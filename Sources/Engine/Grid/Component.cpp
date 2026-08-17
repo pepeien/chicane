@@ -4,6 +4,8 @@
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
+#include "Chicane/Grid/Component/Scrollable.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -698,6 +700,70 @@ namespace Chicane
             return result;
         }
 
+        Component* Component::getHitAt(const Vec2& inLocation) const
+        {
+            Component* hit = nullptr;
+
+            for (Component* child : getChildrenFlat())
+            {
+                if (!child->getDrawBounds().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!child->getOverflowClip().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!hit || child->getDepth() >= hit->getDepth())
+                {
+                    hit = child;
+                }
+            }
+
+            return hit;
+        }
+
+        bool Component::broadcastEvent(const WindowEvent& inEvent)
+        {
+            for (Component* child : getChildrenFlat())
+            {
+                if (child->onEvent(inEvent))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        bool Component::bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation)
+        {
+            Component* node = getHitAt(inLocation);
+            while (node && node != this)
+            {
+                if (node->onEvent(inEvent))
+                {
+                    return true;
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            return false;
+        }
+
+        bool Component::onEvent(const WindowEvent&)
+        {
+            return false;
+        }
+
         void Component::addChildren(const pugi::xml_node& inNode)
         {
             if (inNode.empty())
@@ -924,6 +990,30 @@ namespace Chicane
             setCursor(m_position);
         }
 
+        Vec2 Component::getDrawPosition() const
+        {
+            Vec2 result = m_position;
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    result.x -= scrollable->getScroll().x;
+                    result.y -= scrollable->getScroll().y;
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return result;
+        }
+
         const Vec2& Component::getCursor() const
         {
             return m_cursor;
@@ -953,6 +1043,46 @@ namespace Chicane
         const Bounds2D& Component::getBounds() const
         {
             return m_bounds;
+        }
+
+        Bounds2D Component::getDrawBounds() const
+        {
+            Bounds2D result;
+
+            const Vec2 position = getDrawPosition();
+
+            result.left   = position.x;
+            result.top    = position.y;
+            result.right  = position.x + m_size.x;
+            result.bottom = position.y + m_size.y;
+
+            return result;
+        }
+
+        Bounds2D Component::getOverflowClip() const
+        {
+            Bounds2D clip = Bounds2D::unconstrained();
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    if (scrollable->clipsOverflow())
+                    {
+                        clip = clip.intersect(ancestor->getDrawBounds());
+                    }
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return clip;
         }
 
         bool Component::hasPrimitive() const
@@ -1068,8 +1198,14 @@ namespace Chicane
             {
                 const Style& parentStyle = m_parent->getStyle();
                 const Vec2   available   = {
-                    std::max(0.0f, m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()),
-                    std::max(0.0f, m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get())
+                    std::max(
+                        0.0f,
+                        m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()
+                    ),
+                    std::max(
+                        0.0f,
+                        m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get()
+                    )
                 };
 
                 const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
@@ -1095,8 +1231,8 @@ namespace Chicane
                     }
                 }
 
-                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
-                                              parentStyle.isDisplay(StyleDisplay::Flex);
+                const bool bCanAutoVertical =
+                    m_style.isPosition(StylePosition::Absolute) || parentStyle.isDisplay(StyleDisplay::Flex);
 
                 if (bCanAutoVertical && (bTopAuto || bBottomAuto))
                 {

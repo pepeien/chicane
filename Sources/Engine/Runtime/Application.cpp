@@ -557,8 +557,15 @@ namespace Chicane
                 continue;
             }
 
+            const Bounds2D clip = component->getOverflowClip();
+            if (clip.isEmpty() || !component->getDrawBounds().overlaps(clip))
+            {
+                continue;
+            }
+
             const Grid::Primitive& primitive = component->getPrimitive();
             const Grid::Style&     style     = component->getStyle();
+            const Vec2             position  = component->getDrawPosition();
 
             Renderer::DrawPoly2DCommandFill subcommand;
             subcommand.polygon.reference = primitive.reference;
@@ -568,8 +575,8 @@ namespace Chicane
             subcommand.instance.scale    = component->getScale();
             subcommand.instance.size     = component->getSize();
             subcommand.instance.offset   = component->getOffset();
-            subcommand.instance
-                .position = {component->getPosition().x, component->getPosition().y, component->getDepth()};
+            subcommand.instance.position = {position.x, position.y, component->getDepth()};
+            subcommand.instance.clip     = {clip.left, clip.top, clip.right, clip.bottom};
             subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
             subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
             subcommand.instance.dilation = primitive.dilation;

@@ -15,11 +15,18 @@ $bottomBarSize: 20vh;
         margin-left: auto;
     }
 
+    &__actors {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em 0;
+    }
+
     &.--bottom {
         width: auto;
         height: $bottomBarSize;
         margin-top: auto;
         margin-right: $sideBarSize;
+        overflow: auto;
     }
 }
 

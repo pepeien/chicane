@@ -24,7 +24,7 @@ namespace Editor
                     return;
                 }
 
-                actors = inScene->getActors();
+                inScene->watchActors([&](std::vector<Chicane::Actor*> inActors) { actors = std::move(inActors); });
             }
         );
     }

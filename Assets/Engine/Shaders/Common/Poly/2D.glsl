@@ -5,6 +5,7 @@ struct PolyInstance2D {
     vec2 offset;
     vec3 position;
     vec4 color;
+    vec4 clip;
     int textureIndex;
     int glyphIndex;
     float glyphDilation;

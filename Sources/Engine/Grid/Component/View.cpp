@@ -4,6 +4,7 @@
 
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 
 namespace Chicane
 {
@@ -67,7 +68,12 @@ namespace Chicane
                     continue;
                 }
 
-                if (!child->getBounds().contains(inLocation))
+                if (!child->getDrawBounds().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!child->getOverflowClip().contains(inLocation))
                 {
                     continue;
                 }
@@ -99,9 +105,21 @@ namespace Chicane
 
         void View::handle(const WindowEvent& inEvent)
         {
+            if (inEvent.type == WindowEventType::MouseButtonUp || inEvent.type == WindowEventType::MouseMotion)
+            {
+                if (broadcastEvent(inEvent))
+                {
+                    return;
+                }
+            }
+
             if (inEvent.type == WindowEventType::MouseButtonDown)
             {
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                if (bubbleEvent(inEvent, event.location))
+                {
+                    return;
+                }
 
                 for (Component* contender : getChildrenAt(event.location))
                 {
@@ -112,11 +130,16 @@ namespace Chicane
             if (inEvent.type == WindowEventType::MouseMotion)
             {
                 Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
-
                 for (Component* contender : getChildrenAt(event.location))
                 {
                     contender->hover();
                 }
+            }
+
+            if (inEvent.type == WindowEventType::MouseWheel)
+            {
+                Input::MouseWheelEvent event = *static_cast<Input::MouseWheelEvent*>(inEvent.data);
+                bubbleEvent(inEvent, event.location);
             }
         }
     }

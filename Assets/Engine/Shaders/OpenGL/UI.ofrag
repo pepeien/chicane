@@ -8,6 +8,8 @@ layout(location = 0) in Data {
     flat int textureIndex;
     flat int glyphIndex;
     flat float glyphDilation;
+    flat vec4 clip;
+    flat vec2 view;
     vec2 UV;
     vec3 normal;
     vec4 color;
@@ -36,6 +38,12 @@ void main() {
         color.a *= getGlyphCoverage(inData.glyphIndex, position, pixel);
     } else if (inData.textureIndex >= 0) {
         color.rgb = texture(textures, vec3(inData.UV, inData.textureIndex)).rgb;
+    }
+
+    vec2 frag = vec2(gl_FragCoord.x, inData.view.y - gl_FragCoord.y);
+    if (frag.x < inData.clip.x || frag.y < inData.clip.y ||
+        frag.x > inData.clip.z || frag.y > inData.clip.w) {
+        discard;
     }
 
     outColor = color;

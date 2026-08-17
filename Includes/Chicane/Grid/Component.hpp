@@ -56,9 +56,10 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
 
+            virtual bool onEvent(const WindowEvent& inEvent);
+
         protected:
             // Lifescycle Events
-            virtual void onEvent(const WindowEvent& inEvent) { return; }
             virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
@@ -84,7 +85,7 @@ namespace Chicane
             void click();
 
             // Lifecycle Events
-            void tick(float inDelta);
+            virtual void tick(float inDelta);
             virtual void refresh();
 
             // Properties
@@ -152,6 +153,9 @@ namespace Chicane
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
             virtual std::vector<Component*> getChildrenFlat() const;
+            Component* getHitAt(const Vec2& inLocation) const;
+            bool broadcastEvent(const WindowEvent& inEvent);
+            bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
 
@@ -160,7 +164,7 @@ namespace Chicane
             Vec2 getChildrenContentSize() const;
 
             // Positioning
-            float getDepth() const;
+            virtual float getDepth() const;
 
             const Vec2& getSize() const;
             void addSize(const Vec2& inValue);
@@ -182,6 +186,8 @@ namespace Chicane
             void setPosition(const Vec2& inValue);
             void setPosition(float inX, float inY);
 
+            virtual Vec2 getDrawPosition() const;
+
             const Vec2& getCursor() const;
             void addCursor(const Vec2& inValue);
             void addCursor(float inX, float inY);
@@ -190,6 +196,8 @@ namespace Chicane
 
             // Collision
             const Bounds2D& getBounds() const;
+            Bounds2D getDrawBounds() const;
+            Bounds2D getOverflowClip() const;
 
             // Draw
             bool hasPrimitive() const;

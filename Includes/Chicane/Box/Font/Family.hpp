@@ -16,7 +16,7 @@ namespace Chicane
             using Kernings = std::unordered_map<std::uint64_t, float>;
 
         public:
-            static const FontFamily& empty()
+            static inline const FontFamily& empty()
             {
                 static const FontFamily result;
 

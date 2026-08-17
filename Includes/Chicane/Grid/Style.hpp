@@ -13,6 +13,7 @@
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
 #include "Chicane/Grid/Style/Import.hpp"
+#include "Chicane/Grid/Style/Overflow.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
@@ -64,6 +65,15 @@ namespace Chicane
             static constexpr inline const char* DISPLAY_TYPE_BLOCK     = "block";
             static constexpr inline const char* DISPLAY_TYPE_HIDDEN    = "hidden";
             static constexpr inline const char* DISPLAY_TYPE_NONE      = "none";
+
+            // Overflow
+            static constexpr inline const char* OVERFLOW_ATTRIBUTE_NAME   = "overflow";
+            static constexpr inline const char* OVERFLOW_X_ATTRIBUTE_NAME = "overflow-x";
+            static constexpr inline const char* OVERFLOW_Y_ATTRIBUTE_NAME = "overflow-y";
+            static constexpr inline const char* OVERFLOW_TYPE_VISIBLE     = "visible";
+            static constexpr inline const char* OVERFLOW_TYPE_HIDDEN      = "hidden";
+            static constexpr inline const char* OVERFLOW_TYPE_SCROLL      = "scroll";
+            static constexpr inline const char* OVERFLOW_TYPE_AUTO        = "auto";
 
             // Z-Index
             static constexpr inline const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
@@ -164,6 +174,7 @@ namespace Chicane
         public:
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
+            bool clipsOverflow() const;
 
             void setProperties(const StyleRuleset::Properties& inProperties);
 
@@ -182,12 +193,14 @@ namespace Chicane
             void refreshMargin();
             void refreshPadding();
             void refreshGap();
+            void refreshOverflow();
             void refreshBackground();
             void refreshForegroundColor();
             void refreshOpacity();
             void refreshFont();
             void refreshLetterSpacing();
 
+            StyleOverflow parseOverflow(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
             float parseSize(const String& inValue, SizeDirection inDirection) const;
             String parseReference(const String& inValue) const;
@@ -214,6 +227,8 @@ namespace Chicane
             StyleCorners                  margin;
             StyleCorners                  padding;
             StyleCorners                  gap;
+            StyleProperty<StyleOverflow>  overflowX;
+            StyleProperty<StyleOverflow>  overflowY;
 
             // Background
             StyleBackground               background;

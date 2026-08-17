@@ -14,7 +14,7 @@ namespace Chicane
         struct CHICANE_BOX FontGlyph
         {
         public:
-            static const FontGlyph& empty()
+            static inline const FontGlyph& empty()
             {
                 static const FontGlyph result;
 

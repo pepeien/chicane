@@ -27,12 +27,11 @@ namespace Chicane
             Vec2     offset   = Vec2::Zero();
             Vec3     position = Vec3::Zero();
             float    _padding1; // Shader alignment
-            Vec4     color   = Vec4::Zero();
-            Draw::Id texture = -1;
-            // Offset into the glyph outline buffer, or -1 when this instance is not a glyph
-            Draw::Id glyph     = -1;
-            // Quad padding around the glyph outline, in em units, so antialiasing is not clipped by the quad
-            float    dilation  = 0.0f;
+            Vec4     color    = Vec4::Zero();
+            Vec4     clip     = Vec4(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f);
+            Draw::Id texture  = -1;
+            Draw::Id glyph    = -1;
+            float    dilation = 0.0f;
             float    _padding2; // Shader alignment
         };
     }
