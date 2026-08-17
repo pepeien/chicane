@@ -137,6 +137,25 @@
                     ]
                 },
                 "description": "CHICANE_INPUT_MOUSEMOTIONEVENTCALLBACK_DESCRIPTION"
+            },
+            {
+                "name": "MouseWheelEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MouseWheelEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_MOUSEWHEELEVENTCALLBACK_DESCRIPTION"
             }
         ],
         "enums": [],

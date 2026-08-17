@@ -5,7 +5,27 @@
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp",
         "namespace": "Chicane::Renderer::VulkanLUI",
-        "types": [],
+        "types": [
+            {
+                "name": "Outlines",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VULKANLUI_OUTLINES_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -325,6 +345,62 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLUI_DESTROYPRIMITIVEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildGlyphBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDGLYPHBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildGlyphData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Outlines",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Layer/UI",
+                            "templates": []
+                        },
+                        "name": "inOutlines"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLUI_BUILDGLYPHDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyGlyphData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLUI_DESTROYGLYPHDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -379,6 +455,32 @@
                 },
                 "name": "m_primitiveIndexBuffer",
                 "description": "CHICANE_RENDERER_VULKANLUI_M_PRIMITIVEINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "m_glyphBuffer",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_GLYPHBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorBufferInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_glyphBufferInfo",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_GLYPHBUFFERINFO_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -69,6 +69,32 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_DIRECTIVES_DESCRIPTION"
+            },
+            {
+                "name": "Variables",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "ReflectionFieldAccessor",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Acessor",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_COMPONENT_VARIABLES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -160,6 +186,32 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_ISDRAWABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ONEVENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -289,7 +341,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -315,7 +367,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -781,47 +833,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "ReflectionFieldAccessor",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasField",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "isLocalOnly"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_HASFIELD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "ReflectionFieldInfo",
-                    "suffix": "*",
-                    "path": "Core/Reflection/Field/Info",
+                    "path": "Core/Reflection/Type/Field/Acessor",
                     "templates": []
                 },
                 "name": "getField",
@@ -847,47 +861,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "ReflectionTypeMethod",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasMethod",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "isLocalOnly"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_HASMETHOD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Method",
-                    "suffix": "",
-                    "path": "Grid/Method",
+                    "path": "Core/Reflection/Type/Method",
                     "templates": []
                 },
                 "name": "getMethod",
@@ -1117,7 +1093,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "std::vector",
@@ -1139,6 +1115,96 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "getHitAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETHITAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "broadcastEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_BROADCASTEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bubbleEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_BUBBLEEVENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1187,6 +1253,16 @@
                             "templates": []
                         },
                         "name": "inComponent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
                     }
                 ],
                 "modifiers": [],
@@ -1245,7 +1321,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "float",
@@ -1702,6 +1778,23 @@
             },
             {
                 "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getDrawPosition",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETDRAWPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
@@ -1863,6 +1956,40 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getDrawBounds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETDRAWBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getOverflowClip",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETOVERFLOWCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1960,34 +2087,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_PARSETEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onEvent",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "WindowEvent",
-                            "suffix": "&",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        },
-                        "name": "inEvent"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_ONEVENT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2173,7 +2272,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -2271,6 +2370,133 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_PARSEREFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "parseMethod",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_PARSEMETHOD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addVariable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionFieldAccessor",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Field/Acessor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDVARIABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "cloneTemplate",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_CLONETEMPLATE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncForLoop",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inVariableId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionFieldAccessor",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Field/Acessor",
+                            "templates": []
+                        },
+                        "name": "inAccessor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SYNCFORLOOP_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2433,6 +2659,19 @@
                 },
                 "name": "m_directives",
                 "description": "CHICANE_GRID_COMPONENT_M_DIRECTIVES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Variables",
+                    "suffix": "",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "m_variables",
+                "description": "CHICANE_GRID_COMPONENT_M_VARIABLES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2610,6 +2849,79 @@
                 },
                 "name": "m_attributes",
                 "description": "CHICANE_GRID_COMPONENT_M_ATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "pugi::xml_document",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_sourceDocument",
+                "description": "CHICANE_GRID_COMPONENT_M_SOURCEDOCUMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "pugi::xml_node",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_sourceNode",
+                "description": "CHICANE_GRID_COMPONENT_M_SOURCENODE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_forInstances",
+                "description": "CHICANE_GRID_COMPONENT_M_FORINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_forVariable",
+                "description": "CHICANE_GRID_COMPONENT_M_FORVARIABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bSkipForDirective",
+                "description": "CHICANE_GRID_COMPONENT_M_BSKIPFORDIRECTIVE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"

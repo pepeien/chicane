@@ -35,8 +35,39 @@
                 "description": "CHICANE_GRID_TEXT_TEXT_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Text",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_~TEXT_DESCRIPTION"
+            }
+        ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESH_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -81,6 +112,31 @@
                 "description": "CHICANE_GRID_TEXT_SETTEXT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -94,6 +150,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TEXT_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESHSIZE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -141,6 +212,62 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TEXT_REFRESHTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyContentSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_APPLYCONTENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncGlyphs",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_SYNCGLYPHS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "TextGlyph",
+                    "suffix": "*",
+                    "path": "Grid/Component/Text/Glyph",
+                    "templates": []
+                },
+                "name": "acquireGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_ACQUIREGLYPH_DESCRIPTION"
             }
         ],
         "members": [
@@ -190,6 +317,19 @@
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_layoutSignature",
+                "description": "CHICANE_GRID_TEXT_M_LAYOUTSIGNATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
                     "prefix": "const ",
                     "name": "Box::Font",
                     "suffix": "*",
@@ -198,6 +338,40 @@
                 },
                 "name": "m_font",
                 "description": "CHICANE_GRID_TEXT_M_FONT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_contentSize",
+                "description": "CHICANE_GRID_TEXT_M_CONTENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "TextGlyph",
+                            "suffix": "*",
+                            "path": "Grid/Component/Text/Glyph",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_glyphs",
+                "description": "CHICANE_GRID_TEXT_M_GLYPHS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_TEXT_DESCRIPTION"

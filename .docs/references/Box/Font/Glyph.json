@@ -159,6 +159,45 @@
                 },
                 "name": "indices",
                 "description": "CHICANE_BOX_FONTGLYPH_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FontGlyphCurve::List",
+                    "suffix": "",
+                    "path": "Box/Font/Glyph/Curve",
+                    "templates": []
+                },
+                "name": "curves",
+                "description": "CHICANE_BOX_FONTGLYPH_CURVES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "boundsMin",
+                "description": "CHICANE_BOX_FONTGLYPH_BOUNDSMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "boundsMax",
+                "description": "CHICANE_BOX_FONTGLYPH_BOUNDSMAX_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_FONTGLYPH_DESCRIPTION"

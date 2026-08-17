@@ -1,0 +1,313 @@
+{
+    "title": "TextGlyph",
+    "filename": "Glyph",
+    "path": "Grid/Component/Text/Glyph",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Text/Glyph.hpp",
+        "namespace": "Chicane::Grid::TextGlyph",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TextGlyph",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_TEXTGLYPH_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDrawable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXTGLYPH_ISDRAWABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "configure",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::FontGlyph",
+                            "suffix": "*",
+                            "path": "Box/Font/Glyph",
+                            "templates": []
+                        },
+                        "name": "inGlyph"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFontSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLetterSpacing"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPenX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLineTop"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAscender"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_CONFIGURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getAdvance",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXTGLYPH_GETADVANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncPosition",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_SYNCPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPrimitive",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_REFRESHPRIMITIVE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_TEXTGLYPH_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "QUAD_ID",
+                "description": "CHICANE_GRID_TEXTGLYPH_QUAD_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "QUAD_DILATION",
+                "description": "CHICANE_GRID_TEXTGLYPH_QUAD_DILATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Box::FontGlyph",
+                    "suffix": "*",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "m_glyph",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_GLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_advance",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_ADVANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_dilation",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_DILATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_relativeX",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_RELATIVEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_relativeY",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_RELATIVEY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_TEXTGLYPH_DESCRIPTION"
+    },
+    "children": []
+}

@@ -123,6 +123,32 @@
                 },
                 "name": "indices",
                 "description": "CHICANE_GRID_PRIMITIVE_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "glyph",
+                "description": "CHICANE_GRID_PRIMITIVE_GLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "dilation",
+                "description": "CHICANE_GRID_PRIMITIVE_DILATION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_PRIMITIVE_DESCRIPTION"

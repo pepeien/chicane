@@ -1,0 +1,230 @@
+{
+    "title": "ReflectionFieldIterable",
+    "filename": "Iterable",
+    "path": "Core/Reflection/Type/Field/Iterable",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Type/Field/Iterable.hpp",
+        "namespace": "Chicane::ReflectionFieldIterable",
+        "types": [
+            {
+                "name": "TypeIndex",
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_TYPEINDEX_DESCRIPTION"
+            },
+            {
+                "name": "SizeFunction",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t(const void *)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_SIZEFUNCTION_DESCRIPTION"
+            },
+            {
+                "name": "AtFunction",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "void *(const void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::size_t)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_ATFUNCTION_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionFieldIterable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inElementTypeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeIndex",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Iterable",
+                            "templates": []
+                        },
+                        "name": "inElementIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inElementSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SizeFunction",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Iterable",
+                            "templates": []
+                        },
+                        "name": "inSizeFunction"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AtFunction",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Iterable",
+                            "templates": []
+                        },
+                        "name": "inAtFunction"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_REFLECTIONFIELDITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionFieldIterable",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_REFLECTIONFIELDITERABLE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "elementTypeName",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_ELEMENTTYPENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TypeIndex",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Iterable",
+                    "templates": []
+                },
+                "name": "elementIndex",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_ELEMENTINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "elementSize",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_ELEMENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SizeFunction",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Iterable",
+                    "templates": []
+                },
+                "name": "sizeFunction",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_SIZEFUNCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AtFunction",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Iterable",
+                    "templates": []
+                },
+                "name": "atFunction",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_ATFUNCTION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONFIELDITERABLE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -127,6 +127,17 @@
                 },
                 "name": "UIInstances",
                 "description": "CHICANE_RENDERER_RESOURCE_UIINSTANCES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UIGlyphs",
+                "description": "CHICANE_RENDERER_RESOURCE_UIGLYPHS_DESCRIPTION"
             }
         ],
         "constructors": [],

@@ -1,0 +1,189 @@
+{
+    "title": "ReflectionTypeMethod",
+    "filename": "Method",
+    "path": "Core/Reflection/Type/Method",
+    "source": {
+        "header": "Includes/Chicane/Core/Reflection/Type/Method.hpp",
+        "namespace": "Chicane::ReflectionTypeMethod",
+        "types": [
+            {
+                "name": "Param",
+                "type": {
+                    "prefix": "",
+                    "name": "std::any",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_PARAM_DESCRIPTION"
+            },
+            {
+                "name": "Params",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Param",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Method",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_PARAMS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeMethod",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionTypeMethodInfo",
+                            "suffix": "*",
+                            "path": "Core/Reflection/Type/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_REFLECTIONTYPEMETHOD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ReflectionTypeMethod",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_REFLECTIONTYPEMETHOD_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_ISVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addParam",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Param",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Method",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_ADDPARAM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::any",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invoke",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_INVOKE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeMethodInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Method/Info",
+                    "templates": []
+                },
+                "name": "m_instance",
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_M_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Params",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Method",
+                    "templates": []
+                },
+                "name": "m_params",
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_M_PARAMS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_REFLECTIONTYPEMETHOD_DESCRIPTION"
+    },
+    "children": []
+}

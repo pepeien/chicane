@@ -81,6 +81,69 @@
                     "const"
                 ],
                 "description": "CHICANE_BOUNDS2D_OVERLAPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS2D_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "intersect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS2D_INTERSECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Bounds2D",
+                    "suffix": "&",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "unconstrained",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOUNDS2D_UNCONSTRAINED_DESCRIPTION"
             }
         ],
         "members": [

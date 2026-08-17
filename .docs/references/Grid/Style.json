@@ -123,6 +123,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clipsOverflow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_CLIPSOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -347,6 +364,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshOverflow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshBackground",
                 "parameters": [],
                 "modifiers": [],
@@ -411,6 +443,34 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_STYLE_REFRESHLETTERSPACING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleOverflow",
+                    "suffix": "",
+                    "path": "Grid/Style/Overflow",
+                    "templates": []
+                },
+                "name": "parseOverflow",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEOVERFLOW_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -903,6 +963,118 @@
                 },
                 "name": "DISPLAY_TYPE_NONE",
                 "description": "CHICANE_GRID_STYLE_DISPLAY_TYPE_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_X_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_X_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_Y_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_Y_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_TYPE_VISIBLE",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_TYPE_VISIBLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_TYPE_HIDDEN",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_TYPE_HIDDEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_TYPE_SCROLL",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_TYPE_SCROLL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OVERFLOW_TYPE_AUTO",
+                "description": "CHICANE_GRID_STYLE_OVERFLOW_TYPE_AUTO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1814,6 +1986,48 @@
                 },
                 "name": "gap",
                 "description": "CHICANE_GRID_STYLE_GAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleOverflow",
+                            "suffix": "",
+                            "path": "Grid/Style/Overflow",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "overflowX",
+                "description": "CHICANE_GRID_STYLE_OVERFLOWX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleOverflow",
+                            "suffix": "",
+                            "path": "Grid/Style/Overflow",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "overflowY",
+                "description": "CHICANE_GRID_STYLE_OVERFLOWY_DESCRIPTION"
             },
             {
                 "accessor": "public",

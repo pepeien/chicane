@@ -57,6 +57,51 @@
                     ]
                 },
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_DRAWS_DESCRIPTION"
+            },
+            {
+                "name": "Glyphs",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GLYPHS_DESCRIPTION"
+            },
+            {
+                "name": "GlyphOutlines",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GLYPHOUTLINES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -130,6 +175,23 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "GlyphOutlines",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly/Resource",
+                    "templates": []
+                },
+                "name": "getGlyphOutlines",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETGLYPHOUTLINES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -266,6 +328,60 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "findGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_FINDGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "addGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawGlyphData",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Glyph/Data",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_ADDGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -317,6 +433,38 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "GlyphHeaderSize",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GLYPHHEADERSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "GlyphCurveSize",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GLYPHCURVESIZE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
@@ -354,6 +502,32 @@
                 },
                 "name": "m_indices",
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Glyphs",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Resource",
+                    "templates": []
+                },
+                "name": "m_glyphs",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_GLYPHS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "GlyphOutlines",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Resource",
+                    "templates": []
+                },
+                "name": "m_glyphOutlines",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_GLYPHOUTLINES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_DESCRIPTION"

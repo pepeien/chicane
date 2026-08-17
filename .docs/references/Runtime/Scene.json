@@ -733,6 +733,42 @@
                 "description": "CHICANE_SCENE_TRACELINE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getActorCount",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_GETACTORCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getComponentCount",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_GETCOMPONENTCOUNT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {

@@ -140,18 +140,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "List",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Item",
-                            "suffix": "",
-                            "path": "Core/FileSystem/Item",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/FileSystem/Item",
+                    "templates": []
                 },
                 "name": "children",
                 "description": "CHICANE_FILESYSTEM_ITEM_CHILDREN_DESCRIPTION"

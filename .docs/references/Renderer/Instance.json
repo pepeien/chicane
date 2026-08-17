@@ -343,6 +343,58 @@
                     "path": "Renderer/Draw",
                     "templates": []
                 },
+                "name": "findGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_FINDGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "loadGlyph",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawGlyphData",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Glyph/Data",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_LOADGLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
                 "name": "findTexture",
                 "parameters": [
                     {

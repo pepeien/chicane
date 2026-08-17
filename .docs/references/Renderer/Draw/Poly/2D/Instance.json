@@ -153,6 +153,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "clip",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_CLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Draw::Id",
                     "suffix": "",
                     "path": "Renderer/Draw",
@@ -160,6 +173,32 @@
                 },
                 "name": "texture",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "glyph",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_GLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "dilation",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DILATION_DESCRIPTION"
             },
             {
                 "accessor": "public",

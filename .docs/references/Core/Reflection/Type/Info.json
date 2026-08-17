@@ -37,7 +37,7 @@
                             "prefix": "",
                             "name": "ReflectionFieldInfo",
                             "suffix": "",
-                            "path": "Core/Reflection/Field/Info",
+                            "path": "Core/Reflection/Type/Field/Info",
                             "templates": []
                         }
                     ]
@@ -54,9 +54,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ReflectionMethodInfo",
+                            "name": "ReflectionTypeMethodInfo",
                             "suffix": "",
-                            "path": "Core/Reflection/Method/Info",
+                            "path": "Core/Reflection/Type/Method/Info",
                             "templates": []
                         }
                     ]
@@ -213,7 +213,7 @@
                     "prefix": "const ",
                     "name": "ReflectionFieldInfo",
                     "suffix": "*",
-                    "path": "Core/Reflection/Field/Info",
+                    "path": "Core/Reflection/Type/Field/Info",
                     "templates": []
                 },
                 "name": "findField",
@@ -239,9 +239,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "ReflectionMethodInfo",
+                    "name": "ReflectionTypeMethodInfo",
                     "suffix": "*",
-                    "path": "Core/Reflection/Method/Info",
+                    "path": "Core/Reflection/Type/Method/Info",
                     "templates": []
                 },
                 "name": "findMethod",
@@ -269,7 +269,7 @@
                     "prefix": "",
                     "name": "ReflectionFieldAccessor",
                     "suffix": "",
-                    "path": "Core/Reflection/Field/Acessor",
+                    "path": "Core/Reflection/Type/Field/Acessor",
                     "templates": []
                 },
                 "name": "resolve",

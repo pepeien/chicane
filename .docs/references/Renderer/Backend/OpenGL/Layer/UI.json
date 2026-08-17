@@ -288,6 +288,36 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLLUI_DESTROYINSTANCEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildGlyphBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLUI_BUILDGLYPHBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyGlyphData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLUI_DESTROYGLYPHDATA_DESCRIPTION"
             }
         ],
         "members": [
@@ -355,6 +385,19 @@
                 },
                 "name": "m_instanceBuffer",
                 "description": "CHICANE_RENDERER_OPENGLLUI_M_INSTANCEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_glyphBuffer",
+                "description": "CHICANE_RENDERER_OPENGLLUI_M_GLYPHBUFFER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_OPENGLLUI_DESCRIPTION"

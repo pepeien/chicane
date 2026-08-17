@@ -1,0 +1,77 @@
+{
+    "title": "DrawGlyphData",
+    "filename": "Data",
+    "path": "Renderer/Draw/Glyph/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Glyph/Data.hpp",
+        "namespace": "Chicane::Renderer::DrawGlyphData",
+        "types": [
+            {
+                "name": "Points",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWGLYPHDATA_POINTS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "boundsMin",
+                "description": "CHICANE_RENDERER_DRAWGLYPHDATA_BOUNDSMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "boundsMax",
+                "description": "CHICANE_RENDERER_DRAWGLYPHDATA_BOUNDSMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Points",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Glyph/Data",
+                    "templates": []
+                },
+                "name": "points",
+                "description": "CHICANE_RENDERER_DRAWGLYPHDATA_POINTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWGLYPHDATA_DESCRIPTION"
+    },
+    "children": []
+}

@@ -271,7 +271,7 @@
                 "return": {
                     "prefix": "const ",
                     "name": "DrawPoly2DInstance::List",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Renderer/Draw/Poly/2D/Instance",
                     "templates": []
                 },
@@ -322,7 +322,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "DrawPoly3DInstance::List",
                     "suffix": "",
                     "path": "Renderer/Draw/Poly/3D/Instance",
@@ -524,13 +524,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPoly2DInstance::Map",
+                    "name": "DrawPoly::List",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/2D/Instance",
+                    "path": "Renderer/Draw/Poly",
                     "templates": []
                 },
-                "name": "m_2DInstances",
-                "description": "CHICANE_RENDERER_FRAME_M_2DINSTANCES_DESCRIPTION"
+                "name": "m_2DBatches",
+                "description": "CHICANE_RENDERER_FRAME_M_2DBATCHES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -544,6 +544,19 @@
                 },
                 "name": "m_3DInstances",
                 "description": "CHICANE_RENDERER_FRAME_M_3DINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly2DInstance::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/2D/Instance",
+                    "templates": []
+                },
+                "name": "m_2DInstances",
+                "description": "CHICANE_RENDERER_FRAME_M_2DINSTANCES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
