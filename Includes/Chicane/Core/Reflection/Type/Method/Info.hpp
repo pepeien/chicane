@@ -17,10 +17,10 @@ namespace Chicane
     struct CHICANE_CORE ReflectionTypeMethodInfo
     {
     public:
-        using TypeIndex          = std::optional<std::type_index>;
-        using Params             = std::vector<std::any>;
-        using Invoker            = std::function<std::any(void*, Params)>;
-        using ContainerResolver  = std::function<const void*(const std::any&)>;
+        using TypeIndex         = std::optional<std::type_index>;
+        using Params            = std::vector<std::any>;
+        using Invoker           = std::function<std::any(void*, Params)>;
+        using ContainerResolver = std::function<const void*(const std::any&)>;
 
     public:
         ReflectionTypeMethodInfo(

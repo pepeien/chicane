@@ -46,7 +46,9 @@ namespace Chicane
 
         private:
             void setOnelinerAttribute(const String& inValue);
-            void setCornerRaw(StyleProperty<float>& outHorizontal, StyleProperty<float>& outVertical, const String& inValue);
+            void setCornerRaw(
+                StyleProperty<float>& outHorizontal, StyleProperty<float>& outVertical, const String& inValue
+            );
 
         public:
             StyleRadiusCorners x;

@@ -14,9 +14,7 @@ namespace Chicane
         struct CHICANE_GRID StyleRadiusCorners : StyleCorners
         {
         public:
-            void parseWith(
-                std::function<float(const String&, SizeDirection)> inParser, SizeDirection inDirection
-            );
+            void parseWith(std::function<float(const String&, SizeDirection)> inParser, SizeDirection inDirection);
 
             void setOnelinerAttribute(const String& inValue);
 
