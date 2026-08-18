@@ -2544,6 +2544,22 @@
                                     "members": []
                                 },
                                 "children": []
+                            },
+                            {
+                                "title": "StyleFlexWrap",
+                                "filename": "Wrap",
+                                "path": "Grid/Style/Flex/Wrap",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Flex/Wrap.hpp",
+                                    "namespace": "Chicane::Grid::StyleFlexWrap",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
                             }
                         ]
                     },

@@ -110,6 +110,49 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "bind",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_BIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getBoundInstance",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_GETBOUNDINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "addParam",
                 "parameters": [
                     {
@@ -125,6 +168,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_REFLECTIONTYPEMETHOD_ADDPARAM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::any",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invoke",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_INVOKE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -168,6 +228,19 @@
                 },
                 "name": "m_instance",
                 "description": "CHICANE_REFLECTIONTYPEMETHOD_M_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_boundInstance",
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_M_BOUNDINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "private",

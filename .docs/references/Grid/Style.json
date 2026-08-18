@@ -1153,6 +1153,54 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "FLEX_WRAP_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_FLEX_WRAP_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FLEX_WRAP_TYPE_NOWRAP",
+                "description": "CHICANE_GRID_STYLE_FLEX_WRAP_TYPE_NOWRAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FLEX_WRAP_TYPE_WRAP",
+                "description": "CHICANE_GRID_STYLE_FLEX_WRAP_TYPE_WRAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "WIDTH_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
             },

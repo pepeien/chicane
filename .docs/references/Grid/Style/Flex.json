@@ -24,6 +24,25 @@
                     ]
                 },
                 "description": "CHICANE_GRID_STYLEFLEX_DIRECTIONPARSER_DESCRIPTION"
+            },
+            {
+                "name": "WrapParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleFlexWrap",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex/Wrap",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEFLEX_WRAPPARSER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -108,6 +127,16 @@
                             "templates": []
                         },
                         "name": "directionParser"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WrapParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex",
+                            "templates": []
+                        },
+                        "name": "wrapParser"
                     }
                 ],
                 "modifiers": [],
@@ -135,6 +164,27 @@
                 },
                 "name": "direction",
                 "description": "CHICANE_GRID_STYLEFLEX_DIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleFlexWrap",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex/Wrap",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "wrap",
+                "description": "CHICANE_GRID_STYLEFLEX_WRAP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLEFLEX_DESCRIPTION"

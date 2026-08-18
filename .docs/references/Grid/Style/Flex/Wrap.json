@@ -1,0 +1,40 @@
+{
+    "title": "StyleFlexWrap",
+    "filename": "Wrap",
+    "path": "Grid/Style/Flex/Wrap",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Flex/Wrap.hpp",
+        "namespace": "Chicane::Grid::StyleFlexWrap",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NoWrap",
+                "description": "CHICANE_GRID_STYLEFLEXWRAP_NOWRAP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Wrap",
+                "description": "CHICANE_GRID_STYLEFLEXWRAP_WRAP_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEFLEXWRAP_DESCRIPTION"
+    },
+    "children": []
+}

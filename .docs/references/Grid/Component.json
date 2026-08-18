@@ -2525,6 +2525,118 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_ISMETHOD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionTypeMethod",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Method",
+                    "templates": []
+                },
+                "name": "getMethod",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inParamContext"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETMETHOD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "populateMethodParams",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ReflectionTypeMethod",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Method",
+                            "templates": []
+                        },
+                        "name": "outMethod"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inSignature"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_POPULATEMETHODPARAMS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "splitMethodParams",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_SPLITMETHODPARAMS_DESCRIPTION"
             }
         ],
         "members": [
@@ -2810,6 +2922,19 @@
                 },
                 "name": "m_cursor",
                 "description": "CHICANE_GRID_COMPONENT_M_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_scratch",
+                "description": "CHICANE_GRID_COMPONENT_M_SCRATCH_DESCRIPTION"
             },
             {
                 "accessor": "protected",

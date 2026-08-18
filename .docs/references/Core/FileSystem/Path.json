@@ -20,7 +20,9 @@
                 },
                 "name": "Path",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_FILESYSTEM_PATH_PATH_DESCRIPTION"
             },
             {
@@ -307,6 +309,42 @@
                     "inline"
                 ],
                 "description": "CHICANE_FILESYSTEM_PATH_OPERATOR/=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::filesystem::path::iterator",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "begin",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_PATH_BEGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::filesystem::path::iterator",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "end",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_PATH_END_DESCRIPTION"
             },
             {
                 "accessor": "public",
