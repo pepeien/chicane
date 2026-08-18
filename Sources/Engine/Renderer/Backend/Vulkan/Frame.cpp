@@ -57,12 +57,14 @@ namespace Chicane
             presentBarrier.subresourceRange.baseArrayLayer = 0;
             presentBarrier.subresourceRange.layerCount     = 1;
 
-            commandBuffer.pipelineBarrier(vk::PipelineStageFlagBits::eColorAttachmentOutput,
-                                          vk::PipelineStageFlagBits::eBottomOfPipe,
-                                          vk::DependencyFlags(),
-                                          nullptr,
-                                          nullptr,
-                                          presentBarrier);
+            commandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                presentBarrier
+            );
 
             commandBuffer.end();
         }
