@@ -5,26 +5,29 @@ on:
         paths:
             - 'Includes/**.hpp'
             - 'Sources/**.cpp'
+            - '.clang-format'
+            - 'Scripts/Format.sh'
+            - '.github/workflows/format.yml'
     workflow_dispatch:
 jobs:
     build:
         runs-on: ubuntu-22.04
         permissions:
             contents: write
-        defaults:
-            run:
-                working-directory: ./Scripts
         steps:
             - name: Setup Checkout
               uses: actions/checkout@v6
 
-            - name: Fix permissions
-              run: |
-                sudo chown -R $USER:$USER .
-                chmod -R 755 .
+            - name: Setup Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: '3.13'
+
+            - name: Install clang-format
+              run: pip install clang-format==21.1.8
 
             - name: Run script
-              run: bash Format.sh
+              run: bash Scripts/Format.sh
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
@@ -32,8 +35,8 @@ jobs:
                 branch: master
                 commit_message: 'Updated code format'
                 file_pattern: |
-                  Includes/**.hpp
-                  Sources/**.cpp
+                  Includes/
+                  Sources/
                 skip_dirty_check: false
                 skip_fetch: false
                 skip_checkout: false
