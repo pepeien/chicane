@@ -7,6 +7,25 @@
         "namespace": "Chicane::ReflectionTypeMethodInfo",
         "types": [
             {
+                "name": "TypeIndex",
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_TYPEINDEX_DESCRIPTION"
+            },
+            {
                 "name": "Params",
                 "type": {
                     "prefix": "",
@@ -50,6 +69,25 @@
                     ]
                 },
                 "description": "CHICANE_REFLECTIONTYPEMETHODINFO_INVOKER_DESCRIPTION"
+            },
+            {
+                "name": "ContainerResolver",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "void *(const std::any &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_CONTAINERRESOLVER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -113,6 +151,66 @@
                             "templates": []
                         },
                         "name": "inInvoker"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsIterable"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeIndex",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inReturnTypeIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeIndex",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inElementIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inReturnSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ReflectionFieldIterable",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Iterable",
+                            "templates": []
+                        },
+                        "name": "inIterable"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ContainerResolver",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Method/Info",
+                            "templates": []
+                        },
+                        "name": "inContainerResolver"
                     }
                 ],
                 "modifiers": [],
@@ -201,6 +299,51 @@
                     "const"
                 ],
                 "description": "CHICANE_REFLECTIONTYPEMETHODINFO_TOSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isIterable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_ISITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ReflectionFieldAccessor",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Acessor",
+                    "templates": []
+                },
+                "name": "makeAccessor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_MAKEACCESSOR_DESCRIPTION"
             }
         ],
         "members": [
@@ -250,6 +393,84 @@
                 },
                 "name": "paramTypes",
                 "description": "CHICANE_REFLECTIONTYPEMETHODINFO_PARAMTYPES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsIterable",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_BISITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TypeIndex",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Method/Info",
+                    "templates": []
+                },
+                "name": "returnTypeIndex",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_RETURNTYPEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TypeIndex",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Method/Info",
+                    "templates": []
+                },
+                "name": "elementIndex",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_ELEMENTINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "returnSize",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_RETURNSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ReflectionFieldIterable",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Iterable",
+                    "templates": []
+                },
+                "name": "iterable",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_ITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ContainerResolver",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Method/Info",
+                    "templates": []
+                },
+                "name": "containerResolver",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_CONTAINERRESOLVER_DESCRIPTION"
             },
             {
                 "accessor": "private",

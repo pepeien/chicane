@@ -147,6 +147,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeMethodInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Method/Info",
+                    "templates": []
+                },
+                "name": "getInfo",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHOD_GETINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",

@@ -3040,6 +3040,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::any",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_forSource",
+                "description": "CHICANE_GRID_COMPONENT_M_FORSOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
