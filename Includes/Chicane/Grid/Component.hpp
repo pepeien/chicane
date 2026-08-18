@@ -227,6 +227,9 @@ namespace Chicane
             );
 
             bool isMethod(const String& inValue) const;
+            ReflectionTypeMethod getMethod(const String& inId, const Component* inParamContext) const;
+            void populateMethodParams(ReflectionTypeMethod& outMethod, const String& inSignature) const;
+            std::vector<String> splitMethodParams(const String& inValue) const;
 
         protected:
             // Properties
@@ -255,6 +258,7 @@ namespace Chicane
             Vec2                    m_offset;
             Vec2                    m_position;
             Vec2                    m_cursor;
+            float                   m_scratch;
 
             // Collision
             Bounds2D                m_bounds;

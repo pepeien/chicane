@@ -96,6 +96,7 @@ namespace Chicane
               m_offset(Vec2::Zero()),
               m_position(Vec2::Zero()),
               m_cursor(Vec2::Zero()),
+              m_scratch(0.0f),
               m_bounds({}),
               m_primitive({}),
               m_attributes({}),
@@ -134,7 +135,12 @@ namespace Chicane
                 m_children.at(i)->tick(inDeltaTime);
             }
 
-            addSize(m_style.padding.right.get(), m_style.padding.bottom.get());
+            // Right padding always completes the content-box width (reserved in refreshSize when
+            // filling available space). Bottom padding only grows auto-height boxes; fixed-height
+            // boxes keep padding inside so overflow/scroll can reveal it.
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            addSize(m_style.padding.right.get(), bIsHeightAuto ? m_style.padding.bottom.get() : 0.0f);
         }
 
         void Component::refresh()
@@ -186,14 +192,14 @@ namespace Chicane
         {
             onHover();
 
-            getMethod(getAttribute(ON_HOVER_ATTRIBUTE_NAME)).invoke(this);
+            getMethod(getAttribute(ON_HOVER_ATTRIBUTE_NAME)).invoke();
         }
 
         void Component::click()
         {
             onClick();
 
-            getMethod(getAttribute(ON_CLICK_ATTRIBUTE_NAME)).invoke(this);
+            getMethod(getAttribute(ON_CLICK_ATTRIBUTE_NAME)).invoke();
         }
 
         const String& Component::getTag() const
@@ -549,6 +555,11 @@ namespace Chicane
 
         ReflectionTypeMethod Component::getMethod(const String& inValue) const
         {
+            return getMethod(inValue, this);
+        }
+
+        ReflectionTypeMethod Component::getMethod(const String& inValue, const Component* inParamContext) const
+        {
             const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
 
             if (!isMethod(signature))
@@ -563,6 +574,12 @@ namespace Chicane
                 if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
                 {
                     ReflectionTypeMethod result(method);
+                    result.bind(const_cast<Component*>(this));
+
+                    if (inParamContext)
+                    {
+                        inParamContext->populateMethodParams(result, signature);
+                    }
 
                     return result;
                 }
@@ -573,7 +590,103 @@ namespace Chicane
                 return {};
             }
 
-            return m_parent->getMethod(inValue);
+            return m_parent->getMethod(inValue, inParamContext);
+        }
+
+        void Component::populateMethodParams(ReflectionTypeMethod& outMethod, const String& inSignature) const
+        {
+            const std::size_t open  = inSignature.firstOf(METHOD_PARAMS_OPENING);
+            const std::size_t close = inSignature.lastOf(METHOD_PARAMS_CLOSING);
+
+            if (open == String::npos || close == String::npos || close <= open)
+            {
+                return;
+            }
+
+            const String paramsRaw = inSignature.substr(open + 1, close - open - 1).trim();
+            if (paramsRaw.isEmpty())
+            {
+                return;
+            }
+
+            for (const String& rawParam : splitMethodParams(paramsRaw))
+            {
+                const String param = rawParam.trim();
+                if (param.isEmpty())
+                {
+                    continue;
+                }
+
+                if ((param.startsWith("\"") && param.endsWith("\"")) || (param.startsWith("'") && param.endsWith("'")))
+                {
+                    outMethod.addParam(param.substr(1, param.size() - 2));
+
+                    continue;
+                }
+
+                ReflectionFieldAccessor accessor = getField(param);
+                if (!accessor.isValid() && hasParent())
+                {
+                    accessor = m_parent->getField(param);
+                }
+
+                if (accessor.isValid())
+                {
+                    const void* instance =
+                        accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+
+                    outMethod.addParam(accessor.toString(instance));
+
+                    continue;
+                }
+
+                outMethod.addParam(param);
+            }
+        }
+
+        std::vector<String> Component::splitMethodParams(const String& inValue) const
+        {
+            std::vector<String> result;
+
+            std::size_t   start            = 0;
+            std::uint32_t parenthesisCount = 0;
+
+            for (std::size_t i = 0; i < inValue.size(); i++)
+            {
+                const char character = inValue.at(i);
+
+                if (character == METHOD_PARAMS_OPENING)
+                {
+                    parenthesisCount++;
+
+                    continue;
+                }
+
+                if (character == METHOD_PARAMS_CLOSING)
+                {
+                    if (parenthesisCount > 0)
+                    {
+                        parenthesisCount--;
+                    }
+
+                    continue;
+                }
+
+                if (character != METHOD_PARAMS_SEPARATOR || parenthesisCount > 0)
+                {
+                    continue;
+                }
+
+                result.push_back(inValue.substr(start, i - start));
+                start = i + 1;
+            }
+
+            if (start <= inValue.size())
+            {
+                result.push_back(inValue.substr(start));
+            }
+
+            return result;
         }
 
         bool Component::hasRoot() const
@@ -988,6 +1101,7 @@ namespace Chicane
             m_position.y = inY;
 
             setCursor(m_position);
+            m_scratch = 0.0f;
         }
 
         Vec2 Component::getDrawPosition() const
@@ -1170,7 +1284,9 @@ namespace Chicane
                             (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
                             (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
 
-                        width = std::max(0.0f, available - horizontalMargin);
+                        // End padding is applied later via addSize; reserve it so the final
+                        // border box stays within the allocated slot (e.g. margin-right gutters).
+                        width = std::max(0.0f, available - horizontalMargin - m_style.padding.right.get());
                     }
                 }
 
@@ -1273,25 +1389,86 @@ namespace Chicane
             }
 
             const Style& parentStyle = m_parent->getStyle();
-
-            setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
-            addCursor(startPadding);
+            const Vec2   available   = {
+                std::max(
+                    0.0f,
+                    m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()
+                ),
+                std::max(0.0f, m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get())
+            };
 
             switch (parentStyle.display.get())
             {
-            case StyleDisplay::Flex:
-                if (parentStyle.flex.direction.get() == StyleFlexDirection::Row)
+            case StyleDisplay::Flex: {
+                const bool bIsRow   = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
+                const bool bCanWrap = parentStyle.flex.wrap.get() == StyleFlexWrap::Wrap;
+
+                const bool bIsHeightAuto =
+                    m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+                const float outerWidth  = m_size.x + m_style.padding.right.get();
+                const float outerHeight = m_size.y + (bIsHeightAuto ? m_style.padding.bottom.get() : 0.0f);
+
+                const float mainGap  = bIsRow ? parentStyle.gap.left.get() : parentStyle.gap.top.get();
+                const float crossGap = bIsRow ? parentStyle.gap.top.get() : parentStyle.gap.left.get();
+
+                const float itemMain =
+                    bIsRow ? (outerWidth + marginLeft + marginRight) : (outerHeight + marginTop + marginBottom);
+                const float itemCross =
+                    bIsRow ? (outerHeight + marginTop + marginBottom) : (outerWidth + marginLeft + marginRight);
+
+                const float lineStart    = bIsRow ? (m_parent->getPosition().x + parentStyle.padding.left.get())
+                                                  : (m_parent->getPosition().y + parentStyle.padding.top.get());
+                const float lineLimit    = bIsRow ? (lineStart + available.x) : (lineStart + available.y);
+                float       cursorMain   = bIsRow ? m_parent->getCursor().x : m_parent->getCursor().y;
+                const bool  bLineStarted = cursorMain > lineStart;
+
+                if (bLineStarted)
                 {
-                    m_parent->addCursor(m_size.x + marginRight + m_style.gap.left.get(), 0.0f);
+                    if (bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit)
+                    {
+                        if (bIsRow)
+                        {
+                            m_parent->setCursor(lineStart, m_parent->getCursor().y + m_parent->m_scratch + crossGap);
+                        }
+                        else
+                        {
+                            m_parent->setCursor(m_parent->getCursor().x + m_parent->m_scratch + crossGap, lineStart);
+                        }
+
+                        m_parent->m_scratch = 0.0f;
+                    }
+                    else if (bIsRow)
+                    {
+                        m_parent->addCursor(mainGap, 0.0f);
+                    }
+                    else
+                    {
+                        m_parent->addCursor(0.0f, mainGap);
+                    }
+                }
+
+                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
+                addCursor(startPadding);
+
+                m_parent->m_scratch = std::max(m_parent->m_scratch, itemCross);
+
+                if (bIsRow)
+                {
+                    m_parent->addCursor(marginLeft + outerWidth + marginRight, 0.0f);
                 }
                 else
                 {
-                    m_parent->addCursor(0.0f, m_size.y + marginBottom + m_style.gap.top.get());
+                    m_parent->addCursor(0.0f, marginTop + outerHeight + marginBottom);
                 }
 
                 break;
+            }
 
             default:
+                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
+                addCursor(startPadding);
+
                 m_parent->addCursor(0.0f, m_size.y + marginBottom);
 
                 break;

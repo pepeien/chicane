@@ -141,7 +141,7 @@ namespace Reflector
                     paramChecker = (
                         $"\t\t\t\t\tif (inParams.size() < {f.ParamTypes.Count()})\n" +
                         $"\t\t\t\t\t{{\n" +
-                        $"\t\t\t\t\t\tthrow std::runtime_error(\"Missing reflected method [{f.Name}] parameters [{string.Join(",", paramUnpack.Select((p, i) => $"{p}"))}]\");\n" +
+                        $"\t\t\t\t\t\tthrow std::runtime_error(\"Missing reflected method [{f.Name}] parameters [{string.Join(", ", f.ParamTypes)}]\");\n" +
                         $"\t\t\t\t\t}}\n" +
                         $"\t\n"
                     );

@@ -18,12 +18,17 @@ namespace Chicane
     public:
         bool isValid() const;
 
+        void bind(void* inInstance);
+        void* getBoundInstance() const;
+
         void addParam(Param inValue);
 
+        std::any invoke() const;
         std::any invoke(void* inInstance) const;
 
     private:
         const ReflectionTypeMethodInfo* m_instance;
+        void*                           m_boundInstance;
         Params                          m_params;
     };
 }
