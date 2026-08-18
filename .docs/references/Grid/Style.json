@@ -379,6 +379,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshRadius",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHRADIUS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshBackground",
                 "parameters": [],
                 "modifiers": [],
@@ -531,6 +546,16 @@
                             "templates": []
                         },
                         "name": "inDirection"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "*",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inBox"
                     }
                 ],
                 "modifiers": [
@@ -1846,6 +1871,102 @@
             },
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RADIUS_SEPARATOR",
+                "description": "CHICANE_GRID_STYLE_RADIUS_SEPARATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_LEFT_RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_LEFT_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_RIGHT_RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_RIGHT_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_RIGHT_RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_RIGHT_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -2076,6 +2197,19 @@
                 },
                 "name": "overflowY",
                 "description": "CHICANE_GRID_STYLE_OVERFLOWY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleRadius",
+                    "suffix": "",
+                    "path": "Grid/Style/Radius",
+                    "templates": []
+                },
+                "name": "radius",
+                "description": "CHICANE_GRID_STYLE_RADIUS_DESCRIPTION"
             },
             {
                 "accessor": "public",

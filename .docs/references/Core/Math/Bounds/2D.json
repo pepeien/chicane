@@ -64,6 +64,54 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "containsRounded",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inPoint"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inHorizontalRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inVerticalRadius"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS2D_CONTAINSROUNDED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "overlaps",
                 "parameters": [
                     {

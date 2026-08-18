@@ -212,6 +212,110 @@
                 },
                 "name": "_padding2",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "radiusX",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_RADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "radiusY",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_RADIUSY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClip",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_INNERCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClipRadiusX",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_INNERCLIPRADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClipRadiusY",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_INNERCLIPRADIUSY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClip",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_OUTERCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClipRadiusX",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_OUTERCLIPRADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClipRadiusY",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_OUTERCLIPRADIUSY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DESCRIPTION"

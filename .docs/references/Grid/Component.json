@@ -1154,6 +1154,34 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "containsPoint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_CONTAINSPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "broadcastEvent",
                 "parameters": [
                     {
@@ -1984,6 +2012,84 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETOVERFLOWCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getOverflowRoundClips",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outFirst"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outFirstRadiusX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outFirstRadiusY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outSecond"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outSecondRadiusX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outSecondRadiusY"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETOVERFLOWROUNDCLIPS_DESCRIPTION"
             },
             {
                 "accessor": "public",

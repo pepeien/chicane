@@ -1,10 +1,10 @@
 {
-    "title": "StyleCorners",
-    "filename": "Corners",
-    "path": "Grid/Style/Corners",
+    "title": "StyleRadius",
+    "filename": "Radius",
+    "path": "Grid/Style/Radius",
     "source": {
-        "header": "Includes/Chicane/Grid/Style/Corners.hpp",
-        "namespace": "Chicane::Grid::StyleCorners",
+        "header": "Includes/Chicane/Grid/Style/Radius.hpp",
+        "namespace": "Chicane::Grid::StyleRadius",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "StyleCorners",
+                "name": "StyleRadius",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_STYLECORNERS_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_STYLERADIUS_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -39,7 +39,43 @@
                 "name": "refresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_REFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "constrain",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLERADIUS_CONSTRAIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -81,7 +117,7 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inTopAttributeName"
+                        "name": "inTopLeftAttributeName"
                     },
                     {
                         "type": {
@@ -91,7 +127,7 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inBottomAttributeName"
+                        "name": "inTopRightAttributeName"
                     },
                     {
                         "type": {
@@ -101,7 +137,7 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inLeftAttributeName"
+                        "name": "inBottomRightAttributeName"
                     },
                     {
                         "type": {
@@ -111,11 +147,11 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inRightAttributeName"
+                        "name": "inBottomLeftAttributeName"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_SETPROPERTIES_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_SETPROPERTIES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -156,33 +192,58 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_PARSEWITH_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_PARSEWITH_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "horizontal",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLERADIUS_HORIZONTAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "vertical",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLERADIUS_VERTICAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "setAll",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
+                "name": "isZero",
+                "parameters": [],
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_SETALL_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_ISZERO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -199,9 +260,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleCorners",
+                            "name": "StyleRadius",
                             "suffix": "&",
-                            "path": "Grid/Style/Corners",
+                            "path": "Grid/Style/Radius",
                             "templates": []
                         },
                         "name": "inLeft"
@@ -209,9 +270,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleCorners",
+                            "name": "StyleRadius",
                             "suffix": "&",
-                            "path": "Grid/Style/Corners",
+                            "path": "Grid/Style/Radius",
                             "templates": []
                         },
                         "name": "inRight"
@@ -220,10 +281,10 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_STYLECORNERS_OPERATOR==_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_OPERATOR==_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -246,7 +307,69 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_SETONELINERATTRIBUTE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERADIUS_SETONELINERATTRIBUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCornerRaw",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outHorizontal"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outVertical"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLERADIUS_SETCORNERRAW_DESCRIPTION"
             }
         ],
         "members": [
@@ -255,87 +378,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleProperty",
+                    "name": "StyleRadiusCorners",
                     "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Grid/Style/Radius/Corners",
+                    "templates": []
                 },
-                "name": "top",
-                "description": "CHICANE_GRID_STYLECORNERS_TOP_DESCRIPTION"
+                "name": "x",
+                "description": "CHICANE_GRID_STYLERADIUS_X_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleProperty",
+                    "name": "StyleRadiusCorners",
                     "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Grid/Style/Radius/Corners",
+                    "templates": []
                 },
-                "name": "bottom",
-                "description": "CHICANE_GRID_STYLECORNERS_BOTTOM_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleProperty",
-                    "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "left",
-                "description": "CHICANE_GRID_STYLECORNERS_LEFT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleProperty",
-                    "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "right",
-                "description": "CHICANE_GRID_STYLECORNERS_RIGHT_DESCRIPTION"
+                "name": "y",
+                "description": "CHICANE_GRID_STYLERADIUS_Y_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLECORNERS_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLERADIUS_DESCRIPTION"
     },
     "children": []
 }

@@ -208,6 +208,25 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "Sentinel",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC4_SENTINEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "",
                     "suffix": "",
                     "path": "",
