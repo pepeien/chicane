@@ -102,9 +102,10 @@ namespace Chicane
             VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
             nextFrame.wait();
 
-            const auto [result, imageIndex] =
-                logicalDevice
-                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, nextFrame.imageAvailableSemaphore, nullptr);
+            const auto [result, imageIndex] = logicalDevice.acquireNextImageKHR(swapchain.instance,
+                                                                                UINT64_MAX,
+                                                                                nextFrame.imageAvailableSemaphore,
+                                                                                nullptr);
             if (result == vk::Result::eErrorOutOfDateKHR)
             {
                 rebuildSwapchain();
@@ -115,6 +116,8 @@ namespace Chicane
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
+
+            nextFrame.reset();
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
 
@@ -376,17 +379,14 @@ namespace Chicane
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
             descriptorPoolCreateInfo.sizes.push_back(
-                {vk::DescriptorType::eCombinedImageSampler, getResourceBudgetCount(Resource::Texture)}
-            );
+                {vk::DescriptorType::eCombinedImageSampler, getResourceBudgetCount(Resource::Texture)});
 
             VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
 
-            VulkanDescriptorSetLayout::allocate(
-                textureDescriptor.set,
-                logicalDevice,
-                textureDescriptor.setLayout,
-                textureDescriptor.pool
-            );
+            VulkanDescriptorSetLayout::allocate(textureDescriptor.set,
+                                                logicalDevice,
+                                                textureDescriptor.setLayout,
+                                                textureDescriptor.pool);
         }
 
         void VulkanBackend::buildTextureData(const DrawTexture::List& inTextures)

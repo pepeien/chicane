@@ -14,8 +14,11 @@ namespace Chicane
             {
                 throw std::runtime_error("Error while waiting the fences");
             }
+        }
 
-            result = logicalDevice.resetFences(1, &fence);
+        void VulkanFrame::reset()
+        {
+            vk::Result result = logicalDevice.resetFences(1, &fence);
             if (result != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Error while resetting the fences");
@@ -40,6 +43,27 @@ namespace Chicane
 
         void VulkanFrame::end()
         {
+            vk::ImageMemoryBarrier presentBarrier;
+            presentBarrier.oldLayout                       = vk::ImageLayout::eColorAttachmentOptimal;
+            presentBarrier.newLayout                       = vk::ImageLayout::ePresentSrcKHR;
+            presentBarrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            presentBarrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            presentBarrier.image                           = image.colorImage.instance;
+            presentBarrier.srcAccessMask                   = vk::AccessFlagBits::eColorAttachmentWrite;
+            presentBarrier.dstAccessMask                   = vk::AccessFlagBits::eNone;
+            presentBarrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            presentBarrier.subresourceRange.baseMipLevel   = 0;
+            presentBarrier.subresourceRange.levelCount     = 1;
+            presentBarrier.subresourceRange.baseArrayLayer = 0;
+            presentBarrier.subresourceRange.layerCount     = 1;
+
+            commandBuffer.pipelineBarrier(vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                                          vk::PipelineStageFlagBits::eBottomOfPipe,
+                                          vk::DependencyFlags(),
+                                          nullptr,
+                                          nullptr,
+                                          presentBarrier);
+
             commandBuffer.end();
         }
 

@@ -28,6 +28,7 @@ namespace Chicane
         public:
             // Lifecycle
             void wait();
+            void reset();
             void begin(const Frame& inFrame, const VulkanSwapchainImage& inImage);
             void end();
             void destroy();

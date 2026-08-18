@@ -8,20 +8,17 @@ namespace Chicane
     {
         namespace VulkanSwapchain
         {
-            void querySupport(
-                VulkanSwapchainSupportDetails& outSupportDetails,
-                const vk::PhysicalDevice&      inPhysicalDevice,
-                const vk::SurfaceKHR&          inSurface
-            )
+            void querySupport(VulkanSwapchainSupportDetails& outSupportDetails,
+                              const vk::PhysicalDevice&      inPhysicalDevice,
+                              const vk::SurfaceKHR&          inSurface)
             {
                 outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
                 outSupportDetails.formats      = inPhysicalDevice.getSurfaceFormatsKHR(inSurface);
                 outSupportDetails.presentModes = inPhysicalDevice.getSurfacePresentModesKHR(inSurface);
             }
 
-            void pickSurfaceFormat(
-                vk::SurfaceFormatKHR& outSurfaceFormat, const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
-            )
+            void pickSurfaceFormat(vk::SurfaceFormatKHR&                    outSurfaceFormat,
+                                   const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats)
             {
                 if (inSurfaceFormats.empty())
                 {
@@ -42,9 +39,8 @@ namespace Chicane
                 outSurfaceFormat = inSurfaceFormats[0];
             }
 
-            void pickPresentMode(
-                vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes
-            )
+            void pickPresentMode(vk::PresentModeKHR&                    outPresentMode,
+                                 const std::vector<vk::PresentModeKHR>& inPresentModes)
             {
                 bool bDoesSupportMailBox =
                     std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) !=
@@ -70,15 +66,24 @@ namespace Chicane
                     return;
                 }
 
+                bool bDoesSupportMailBox =
+                    std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) !=
+                    inPresentModes.end();
+
+                if (bDoesSupportMailBox)
+                {
+                    outPresentMode = vk::PresentModeKHR::eMailbox;
+
+                    return;
+                }
+
                 outPresentMode = vk::PresentModeKHR::eFifo;
             }
 
-            void init(
-                VulkanSwapchainBundle&    outSwapChain,
-                const vk::PhysicalDevice& inPhysicalDevice,
-                const vk::Device&         inLogicalDevice,
-                const vk::SurfaceKHR&     inSurface
-            )
+            void init(VulkanSwapchainBundle&    outSwapChain,
+                      const vk::PhysicalDevice& inPhysicalDevice,
+                      const vk::Device&         inLogicalDevice,
+                      const vk::SurfaceKHR&     inSurface)
             {
                 VulkanSwapchainSupportDetails supportDetails;
                 querySupport(supportDetails, inPhysicalDevice, inSurface);
@@ -86,19 +91,22 @@ namespace Chicane
                 vk::SurfaceFormatKHR surfaceFormat;
                 pickSurfaceFormat(surfaceFormat, supportDetails.formats);
 
-                vk::Format depthFormat = VulkanImage::findSupportedFormat(
-                    inPhysicalDevice,
-                    {vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint},
-                    vk::ImageTiling::eOptimal,
-                    vk::FormatFeatureFlagBits::eDepthStencilAttachment
-                );
+                vk::Format depthFormat =
+                    VulkanImage::findSupportedFormat(inPhysicalDevice,
+                                                     {vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint},
+                                                     vk::ImageTiling::eOptimal,
+                                                     vk::FormatFeatureFlagBits::eDepthStencilAttachment);
 
                 vk::PresentModeKHR presentMode;
                 pickPresentMode(presentMode, supportDetails.presentModes);
 
                 vk::Extent2D extent = supportDetails.capabilities.currentExtent;
 
-                std::uint32_t imageCount = supportDetails.capabilities.minImageCount;
+                std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
+                if (supportDetails.capabilities.maxImageCount > 0)
+                {
+                    imageCount = std::min(imageCount, supportDetails.capabilities.maxImageCount);
+                }
 
                 vk::SwapchainCreateInfoKHR createInfo;
                 createInfo.surface          = inSurface;
@@ -115,10 +123,8 @@ namespace Chicane
 
                 if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
                 {
-                    std::uint32_t queueFamilyIndices[] = {
-                        familyIndices.graphicsFamily.value(),
-                        familyIndices.presentFamily.value()
-                    };
+                    std::uint32_t queueFamilyIndices[] = {familyIndices.graphicsFamily.value(),
+                                                          familyIndices.presentFamily.value()};
 
                     createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
                     createInfo.queueFamilyIndexCount = 2;
