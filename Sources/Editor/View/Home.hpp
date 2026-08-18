@@ -16,6 +16,12 @@ namespace Editor
 
     public:
         CH_FUNCTION()
+        std::vector<Chicane::String> getFolderLocations() const;
+
+        CH_FUNCTION()
+        void onOutlinerSwitch(Chicane::String inFolderName);
+
+        CH_FUNCTION()
         void onAssetImport();
 
     public:
@@ -23,9 +29,9 @@ namespace Editor
         const Chicane::ApplicationTelemetry* telemetry;
 
         CH_FIELD()
-        std::vector<Chicane::Actor*> actors;
+        std::vector<Chicane::Actor*> outlinerActors;
 
         CH_FIELD()
-        std::vector<Chicane::FileSystem::Item> folderItems;
+        Chicane::FileSystem::Item explorerFolder;
     };
 }

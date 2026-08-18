@@ -7,11 +7,26 @@
 namespace Chicane
 {
     ReflectionTypeMethodInfo::ReflectionTypeMethodInfo(
-        String inName, String inReturnType, std::vector<String> inParamTypes, Invoker inInvoker
+        String                  inName,
+        String                  inReturnType,
+        std::vector<String>     inParamTypes,
+        Invoker                 inInvoker,
+        bool                    bInIsIterable,
+        TypeIndex               inReturnTypeIndex,
+        TypeIndex               inElementIndex,
+        std::size_t             inReturnSize,
+        ReflectionFieldIterable inIterable,
+        ContainerResolver       inContainerResolver
     )
         : name(std::move(inName)),
           returnType(std::move(inReturnType)),
           paramTypes(std::move(inParamTypes)),
+          bIsIterable(bInIsIterable),
+          returnTypeIndex(std::move(inReturnTypeIndex)),
+          elementIndex(std::move(inElementIndex)),
+          returnSize(inReturnSize),
+          iterable(std::move(inIterable)),
+          containerResolver(std::move(inContainerResolver)),
           m_invoker(std::move(inInvoker))
     {}
 
@@ -19,6 +34,12 @@ namespace Chicane
         : name(""),
           returnType(""),
           paramTypes({}),
+          bIsIterable(false),
+          returnTypeIndex(std::nullopt),
+          elementIndex(std::nullopt),
+          returnSize(0),
+          iterable({}),
+          containerResolver({}),
           m_invoker({})
     {}
 
@@ -37,6 +58,15 @@ namespace Chicane
         if (!inValue.has_value())
         {
             return "";
+        }
+
+        if (bIsIterable)
+        {
+            const ReflectionFieldAccessor accessor = makeAccessor(inValue);
+            if (accessor.isValid())
+            {
+                return accessor.toString(nullptr);
+            }
         }
 
         if (const String* value = std::any_cast<String>(&inValue))
@@ -115,5 +145,38 @@ namespace Chicane
         }
 
         return "<" + returnType + ">";
+    }
+
+    bool ReflectionTypeMethodInfo::isIterable() const
+    {
+        return bIsIterable && static_cast<bool>(containerResolver) && iterable.sizeFunction && iterable.atFunction;
+    }
+
+    ReflectionFieldAccessor ReflectionTypeMethodInfo::makeAccessor(const std::any& inValue) const
+    {
+        if (!isIterable() || !inValue.has_value())
+        {
+            return {};
+        }
+
+        const void* container = containerResolver(inValue);
+        if (!container)
+        {
+            return {};
+        }
+
+        return {
+            0,
+            0,
+            returnSize > 0 ? returnSize : 1,
+            {},
+            returnType,
+            returnTypeIndex,
+            false,
+            true,
+            elementIndex,
+            iterable,
+            container
+        };
     }
 }

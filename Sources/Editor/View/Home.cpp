@@ -1,6 +1,9 @@
 #include "Editor/View/Home.reflected.hpp"
 
+#include <algorithm>
+
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
+#include <Chicane/Core/FileSystem/Item/Type.hpp>
 
 #include <Chicane/Runtime/Application.hpp>
 
@@ -11,22 +14,50 @@ namespace Editor
     HomeView::HomeView()
         : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
           telemetry(&Chicane::Application::getInstance().getTelemetry()),
-          actors({}),
-          folderItems(Chicane::FileSystem::ls())
+          outlinerActors({}),
+          explorerFolder({})
     {
+        explorerFolder.children = Chicane::FileSystem::ls();
+
         Chicane::Application::getInstance().watchScene(
             [&](std::shared_ptr<Chicane::Scene> inScene)
             {
                 if (!inScene)
                 {
-                    actors.clear();
+                    outlinerActors.clear();
 
                     return;
                 }
 
-                inScene->watchActors([&](std::vector<Chicane::Actor*> inActors) { actors = std::move(inActors); });
-            }
-        );
+                inScene->watchActors([&](std::vector<Chicane::Actor*> inActors)
+                                     { outlinerActors = std::move(inActors); });
+            });
+    }
+
+    std::vector<Chicane::String> HomeView::getFolderLocations() const
+    {
+        return std::vector<Chicane::String>(explorerFolder.path.begin(), explorerFolder.path.end());
+    }
+
+    void HomeView::onOutlinerSwitch(Chicane::String inFolderName)
+    {
+        if (inFolderName.isEmpty())
+        {
+            return;
+        }
+
+        const auto found =
+            std::find_if(explorerFolder.children.begin(),
+                         explorerFolder.children.end(),
+                         [&](const Chicane::FileSystem::Item& inItem) { return inItem.name == inFolderName; });
+
+        if (found == explorerFolder.children.end() || found->type != Chicane::FileSystem::ItemType::Folder)
+        {
+            return;
+        }
+
+        explorerFolder.path /= inFolderName;
+        explorerFolder.children = Chicane::FileSystem::ls(explorerFolder.path);
     }
 
     void HomeView::onAssetImport()
@@ -59,7 +90,6 @@ namespace Editor
                         continue;
                     }
                 }
-            }
-        );
+            });
     }
 }

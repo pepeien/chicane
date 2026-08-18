@@ -63,6 +63,7 @@ namespace Chicane
 
                         if (accessor.isValid() && accessor.bIsIterable)
                         {
+                            m_forSource = {};
                             m_forVariable = variableId;
                             syncForLoop(variableId, accessor, owner);
 
@@ -76,6 +77,32 @@ namespace Chicane
 
                         owner = owner->getParent();
                     }
+
+                    if (!isMethod(accessorId) && !isReference(accessorId))
+                    {
+                        return;
+                    }
+
+                    ReflectionTypeMethod method = getMethod(accessorId);
+                    const ReflectionTypeMethodInfo* methodInfo = method.getInfo();
+
+                    if (!method.isValid() || !methodInfo || !methodInfo->isIterable())
+                    {
+                        return;
+                    }
+
+                    m_forSource = method.invoke();
+                    ReflectionFieldAccessor accessor = methodInfo->makeAccessor(m_forSource);
+
+                    if (!accessor.isValid())
+                    {
+                        m_forSource = {};
+
+                        return;
+                    }
+
+                    m_forVariable = variableId;
+                    syncForLoop(variableId, accessor, nullptr);
                 }
             );
         }
@@ -103,6 +130,7 @@ namespace Chicane
               m_sourceNode(),
               m_forInstances({}),
               m_forVariable(String::empty()),
+              m_forSource({}),
               m_bSkipForDirective(false)
         {
             m_style.setParent(this);
@@ -560,7 +588,12 @@ namespace Chicane
 
         ReflectionTypeMethod Component::getMethod(const String& inValue, const Component* inParamContext) const
         {
-            const String signature = inValue.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
+            String signature = inValue.trim();
+
+            if (isReference(signature))
+            {
+                signature = signature.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
+            }
 
             if (!isMethod(signature))
             {

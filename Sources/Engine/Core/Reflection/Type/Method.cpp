@@ -29,6 +29,11 @@ namespace Chicane
         return m_boundInstance;
     }
 
+    const ReflectionTypeMethodInfo* ReflectionTypeMethod::getInfo() const
+    {
+        return m_instance;
+    }
+
     std::any ReflectionTypeMethod::invoke() const
     {
         return invoke(m_boundInstance);

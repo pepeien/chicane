@@ -3,30 +3,64 @@
 $sideBarSize:   15vw;
 $bottomBarSize: 20vh;
 
-.menu {
+$explorerHeaderHeight: 2em;
+
+.telemetry {
+    padding: 0.2em;
+}
+
+.--menu {
     position: absolute;
     background-color: #242424;
+}
 
-    &.--side {
+.outliner {
+    display: flex;
+    flex-direction: column;
+    width: $sideBarSize;
+    height: 100%;
+    margin-left: auto;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.explorer {
+    width: calc(100% - $sideBarSize);
+    height: $bottomBarSize;
+    margin-top: auto;
+    margin-right: $sideBarSize;
+
+    &__header {
+        width: 100%;
+        height: $explorerHeaderHeight;
         display: flex;
-        flex-direction: column;
-        width: $sideBarSize;
-        height: 100%;
-        margin-left: auto;
+        flex-direction: row;
+        gap: 0 0.25em;
+        background-color: black;
+
+        &__location {
+            display: flex;
+            flex-direction: row;
+            gap: 0 0.25em;
+        }
     }
 
-    &__actors {
+    &__items {
+        height: calc(100% - $explorerHeaderHeight);
         display: flex;
-        flex-direction: column;
-        gap: 0.5em 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        overflow: hidden;
+        overflow-y: auto;
     }
 
-    &.--bottom {
-        width: auto;
-        height: $bottomBarSize;
-        margin-top: auto;
-        margin-right: $sideBarSize;
+    &__item {
+        height: 5.5em;
+        width: 10em;
+        background-color: gray;
         overflow: auto;
+        alignment: center;
     }
 }
 

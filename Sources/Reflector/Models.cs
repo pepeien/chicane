@@ -3,7 +3,14 @@ namespace Reflector
     record EnumeratorModel(string Name, int Value);
     record EnumModel(string Name, List<EnumeratorModel> Enumerators);
     record ConstructorModel(List<string> ParamTypes);
-    record FunctionModel(string ReturnType, string Name, List<string> ParamTypes);
+    record FunctionModel(
+        string ReturnType,
+        string Name,
+        List<string> ParamTypes,
+        bool IsIterable,
+        string ElementName,
+        bool IsElementPointer
+    );
     record FieldModel(
         string TypeName,
         List<string> Names,

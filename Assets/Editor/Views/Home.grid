@@ -1,17 +1,34 @@
 <View path="home" style="Assets/Editor/Views/Home.decal">
-    <Container>
+    <Container class="telemetry">
         <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
         <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
     </Container>
-    <Container class="menu --side">
-        <Container dir:for="actor : actors" class="menu__actors">
-            <Text>{{ actor.translation }}</Text>
+    <Container class="outliner --menu">
+        <Container class="outliner__items">
+            <Button dir:for="actor : outlinerActors" class="outliner__item">
+                <Text>{{ actor.translation }}</Text>
+            </Button>
         </Container>
-        <Button onClick="{{ onAssetImport() }}" class="button">
+        <Button onClick="{{ onAssetImport() }}" class="outliner__import-button">
             <Text>Import File</Text>
         </Button>
     </Container>
-    <Container class="menu --bottom">
-        <Text dir:for="item : folderItems">{{ item.name }}</Text>
+    <Container class="explorer --menu">
+        <Container class="explorer__header">
+            <Text>/</Text>
+            <Button dir:for="folder : getFolderLocations()" class="explorer__header__location">
+                <Text>{{ folder }}</Text>
+                <Text>/</Text>
+            </Button>
+        </Container>
+        <Container class="explorer__items">
+            <Button
+                dir:for="child : explorerFolder.children"
+                class="explorer__item"
+                onClick="{{ onOutlinerSwitch(child.name) }}"
+            >
+                <Text>{{ child.name }}</Text>
+            </Button>
+        </Container>
     </Container>
 </View>

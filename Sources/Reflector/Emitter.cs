@@ -58,31 +58,46 @@ namespace Reflector
             sb.AppendLine();
         }
 
-        static string EmitIterable(FieldModel f)
+        static string EmitIterable(string containerType, bool isIterable, string elementName, bool isElementPointer)
         {
-            if (!f.IsIterable || string.IsNullOrEmpty(f.ElementName))
+            if (!isIterable || string.IsNullOrEmpty(elementName))
             {
                 return "\t\t\t\tChicane::ReflectionFieldIterable()\n";
             }
 
-            string element = f.IsElementPointer
-                ? $"\t\t\t\t\t\treturn static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n"
-                : $"\t\t\t\t\t\treturn &static_cast<const {f.TypeName}*>(inContainer)->at(inIndex);\n";
+            string element = isElementPointer
+                ? $"\t\t\t\t\t\treturn static_cast<const {containerType}*>(inContainer)->at(inIndex);\n"
+                : $"\t\t\t\t\t\treturn &static_cast<const {containerType}*>(inContainer)->at(inIndex);\n";
 
             return (
                 $"\t\t\t\tChicane::ReflectionFieldIterable(\n" +
-                $"\t\t\t\t\t\"{f.ElementName}\",\n" +
-                $"\t\t\t\t\tstd::type_index(typeid({f.ElementName})),\n" +
-                $"\t\t\t\t\tsizeof({f.ElementName}),\n" +
+                $"\t\t\t\t\t\"{elementName}\",\n" +
+                $"\t\t\t\t\tstd::type_index(typeid({elementName})),\n" +
+                $"\t\t\t\t\tsizeof({elementName}),\n" +
                 $"\t\t\t\t\t[](const void* inContainer)\n" +
                 $"\t\t\t\t\t{{\n" +
-                $"\t\t\t\t\t\treturn static_cast<const {f.TypeName}*>(inContainer)->size();\n" +
+                $"\t\t\t\t\t\treturn static_cast<const {containerType}*>(inContainer)->size();\n" +
                 $"\t\t\t\t\t}},\n" +
                 $"\t\t\t\t\t[](const void* inContainer, std::size_t inIndex) -> const void*\n" +
                 $"\t\t\t\t\t{{\n" +
                 element +
                 $"\t\t\t\t\t}}\n" +
                 $"\t\t\t\t)\n"
+            );
+        }
+
+        static string EmitMethodContainerResolver(FunctionModel f)
+        {
+            if (!f.IsIterable)
+            {
+                return "\t\t\t\t{}";
+            }
+
+            return (
+                $"\t\t\t\t[](const std::any& inValue) -> const void*\n" +
+                $"\t\t\t\t{{\n" +
+                $"\t\t\t\t\treturn std::any_cast<{f.ReturnType}>(&inValue);\n" +
+                $"\t\t\t\t}}"
             );
         }
 
@@ -117,7 +132,7 @@ namespace Reflector
                     $"\t\t\t{{\n" +
                     $"\t\t\t\tif (inParams.size() < {c.ParamTypes.Count()})\n" +
                     $"\t\t\t\t{{\n" +
-                    $"\t\t\t\t\tthrow std::runtime_error(\"Missing reflected constructor [{t.Name}] parameters [{string.Join(",", c.ParamTypes.Select((p, i) => $"{p}"))}]\");\n" +
+                    $"\t\t\t\t\tthrow std::runtime_error(\"Missing reflected constructor [{t.Name}] parameters [{string.Join(", ", c.ParamTypes)}]\");\n" +
                     $"\t\t\t\t}}\n" +
                     $"\t\n" +
                     $"\t\t\t\treturn static_cast<void*>(\n" +
@@ -153,6 +168,14 @@ namespace Reflector
                       $"\t\t\t\t\treturn {{}};\n"
                     : $"\t\t\t\t\treturn static_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n";
 
+                string returnTypeIndex = isVoid
+                    ? "std::nullopt"
+                    : $"std::type_index(typeid({f.ReturnType}))";
+                string elementIndex = string.IsNullOrEmpty(f.ElementName)
+                    ? "std::nullopt"
+                    : $"std::type_index(typeid({f.ElementName}))";
+                string returnSize = isVoid ? "0" : $"sizeof({f.ReturnType})";
+
                 sb.AppendLine(
                     $"\t\t\t{{\n" +
                     $"\t\t\t\t\"{f.Name}\",\n" +
@@ -162,7 +185,14 @@ namespace Reflector
                     $"\t\t\t\t{{\n" +
                     paramChecker +
                     call +
-                    $"\t\t\t\t}}\n" +
+                    $"\t\t\t\t}},\n" +
+                    $"\t\t\t\t{(f.IsIterable ? "true" : "false")},\n" +
+                    $"\t\t\t\t{returnTypeIndex},\n" +
+                    $"\t\t\t\t{elementIndex},\n" +
+                    $"\t\t\t\t{returnSize},\n" +
+                    EmitIterable(f.ReturnType, f.IsIterable, f.ElementName, f.IsElementPointer) +
+                    $",\n" +
+                    EmitMethodContainerResolver(f) + "\n" +
                     $"\t\t\t}},"
                 );
             }
@@ -189,7 +219,7 @@ namespace Reflector
                     $"\t\t\t\t{(f.IsPointer ? "true" : "false")},\n" +
                     $"\t\t\t\t{(f.IsIterable ? "true" : "false")},\n" +
                     $"\t\t\t\t{(string.IsNullOrEmpty(f.ElementName) ? "std::nullopt" : $"std::type_index(typeid({f.ElementName}))")},\n" +
-                    EmitIterable(f) +
+                    EmitIterable(f.TypeName, f.IsIterable, f.ElementName, f.IsElementPointer) +
                     $"\t\t\t}},"
                 );
             }

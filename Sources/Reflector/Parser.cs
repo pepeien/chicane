@@ -63,12 +63,33 @@ namespace Reflector
             int start = typeName.IndexOf('<');
             int end = typeName.LastIndexOf('>');
 
-            if (start >= 0 && end > start)
+            if (start < 0 || end <= start)
             {
-                return typeName[(start + 1)..end].Trim();
+                return "";
             }
 
-            return "";
+            string inner = typeName[(start + 1)..end].Trim();
+            int depth = 0;
+
+            for (int i = 0; i < inner.Length; i++)
+            {
+                char character = inner[i];
+
+                if (character == '<')
+                {
+                    depth++;
+                }
+                else if (character == '>')
+                {
+                    depth--;
+                }
+                else if (character == ',' && depth == 0)
+                {
+                    return inner[..i].Trim();
+                }
+            }
+
+            return inner;
         }
 
         static bool IsIterableType(CXType type)
@@ -508,10 +529,24 @@ namespace Reflector
                 return CXChildVisitResult.CXChildVisit_Continue;
             }, default);
 
+            var resultType = cursor.ResultType;
+            string returnType = GetTypeName(resultType);
+            bool isIterable = IsIterableType(resultType);
+            string elementName = isIterable ? GetTemplateParam(resultType) : "";
+            bool isElementPointer = elementName.EndsWith('*');
+
+            if (isElementPointer)
+            {
+                elementName = elementName.TrimEnd('*').Trim();
+            }
+
             return new(
-                GetTypeName(cursor.ResultType),
+                returnType,
                 cursor.Spelling.CString,
-                paramTypes
+                paramTypes,
+                isIterable,
+                elementName,
+                isElementPointer
             );
         }
 

@@ -21,6 +21,8 @@ namespace Chicane
         void bind(void* inInstance);
         void* getBoundInstance() const;
 
+        const ReflectionTypeMethodInfo* getInfo() const;
+
         void addParam(Param inValue);
 
         std::any invoke() const;

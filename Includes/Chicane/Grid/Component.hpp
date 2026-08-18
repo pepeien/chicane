@@ -1,5 +1,6 @@
 #pragma once
 
+#include <any>
 #include <functional>
 #include <set>
 #include <unordered_map>
@@ -274,6 +275,7 @@ namespace Chicane
             // For-loop
             std::vector<Component*> m_forInstances;
             String                  m_forVariable;
+            std::any                m_forSource;
             bool                    m_bSkipForDirective;
         };
     }
