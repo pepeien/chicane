@@ -81,6 +81,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "reset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANFRAME_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "begin",
                 "parameters": [
                     {
