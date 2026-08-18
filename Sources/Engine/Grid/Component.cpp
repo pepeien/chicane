@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
 #include <algorithm>
+#include <cstdint>
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
@@ -63,7 +64,7 @@ namespace Chicane
 
                         if (accessor.isValid() && accessor.bIsIterable)
                         {
-                            m_forSource = {};
+                            m_forSource   = {};
                             m_forVariable = variableId;
                             syncForLoop(variableId, accessor, owner);
 
@@ -83,7 +84,7 @@ namespace Chicane
                         return;
                     }
 
-                    ReflectionTypeMethod method = getMethod(accessorId);
+                    ReflectionTypeMethod            method     = getMethod(accessorId);
                     const ReflectionTypeMethodInfo* methodInfo = method.getInfo();
 
                     if (!method.isValid() || !methodInfo || !methodInfo->isIterable())
@@ -91,7 +92,7 @@ namespace Chicane
                         return;
                     }
 
-                    m_forSource = method.invoke();
+                    m_forSource                      = method.invoke();
                     ReflectionFieldAccessor accessor = methodInfo->makeAccessor(m_forSource);
 
                     if (!accessor.isValid())
@@ -163,9 +164,6 @@ namespace Chicane
                 m_children.at(i)->tick(inDeltaTime);
             }
 
-            // Right padding always completes the content-box width (reserved in refreshSize when
-            // filling available space). Bottom padding only grows auto-height boxes; fixed-height
-            // boxes keep padding inside so overflow/scroll can reveal it.
             const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
             addSize(m_style.padding.right.get(), bIsHeightAuto ? m_style.padding.bottom.get() : 0.0f);
@@ -852,12 +850,7 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
-                if (!child->getDrawBounds().contains(inLocation))
-                {
-                    continue;
-                }
-
-                if (!child->getOverflowClip().contains(inLocation))
+                if (!child->containsPoint(inLocation))
                 {
                     continue;
                 }
@@ -869,6 +862,45 @@ namespace Chicane
             }
 
             return hit;
+        }
+
+        bool Component::containsPoint(const Vec2& inLocation) const
+        {
+            const Bounds2D box = getDrawBounds();
+            if (!box.containsRounded(inLocation, m_style.radius.horizontal(), m_style.radius.vertical()))
+            {
+                return false;
+            }
+
+            if (!getOverflowClip().contains(inLocation))
+            {
+                return false;
+            }
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    if (scrollable->clipsOverflow() && !ancestor->getDrawBounds().containsRounded(
+                                                           inLocation,
+                                                           ancestor->getStyle().radius.horizontal(),
+                                                           ancestor->getStyle().radius.vertical()
+                                                       ))
+                    {
+                        return false;
+                    }
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return true;
         }
 
         bool Component::broadcastEvent(const WindowEvent& inEvent)
@@ -1230,6 +1262,66 @@ namespace Chicane
             }
 
             return clip;
+        }
+
+        void Component::getOverflowRoundClips(
+            Vec4& outFirst,
+            Vec4& outFirstRadiusX,
+            Vec4& outFirstRadiusY,
+            Vec4& outSecond,
+            Vec4& outSecondRadiusX,
+            Vec4& outSecondRadiusY
+        ) const
+        {
+            const Vec4 unconstrained(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f);
+
+            outFirst         = unconstrained;
+            outFirstRadiusX  = Vec4::Zero();
+            outFirstRadiusY  = Vec4::Zero();
+            outSecond        = unconstrained;
+            outSecondRadiusX = Vec4::Zero();
+            outSecondRadiusY = Vec4::Zero();
+
+            std::uint32_t filled = 0;
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                {
+                    if (scrollable->clipsOverflow() && !ancestor->getStyle().radius.isZero())
+                    {
+                        const Bounds2D box     = ancestor->getDrawBounds();
+                        const Vec4     radiusX = ancestor->getStyle().radius.horizontal();
+                        const Vec4     radiusY = ancestor->getStyle().radius.vertical();
+                        const Vec4     clip    = Vec4(box.left, box.top, box.right, box.bottom);
+
+                        if (filled == 0)
+                        {
+                            outFirst        = clip;
+                            outFirstRadiusX = radiusX;
+                            outFirstRadiusY = radiusY;
+                        }
+                        else
+                        {
+                            outSecond        = clip;
+                            outSecondRadiusX = radiusX;
+                            outSecondRadiusY = radiusY;
+
+                            break;
+                        }
+
+                        filled++;
+                    }
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
         }
 
         bool Component::hasPrimitive() const

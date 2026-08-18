@@ -90,8 +90,7 @@ namespace Chicane
             if (inEvent.type == WindowEventType::MouseWheel)
             {
                 Input::MouseWheelEvent event = *static_cast<Input::MouseWheelEvent*>(inEvent.data);
-                if (!canScroll() || !getDrawBounds().contains(event.location) ||
-                    !getOverflowClip().contains(event.location))
+                if (!canScroll() || !containsPoint(event.location))
                 {
                     return false;
                 }

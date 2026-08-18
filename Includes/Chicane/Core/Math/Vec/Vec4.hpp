@@ -23,6 +23,8 @@ namespace Chicane
 
         inline static constexpr Vec4 Up() { return Vec4(Vec3::Up(), 0.0f); }
 
+        inline static constexpr Vec4 Sentinel() { return Vec4(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f); }
+
     public:
         constexpr Vec4(const Vec2& inValue)
             : x(inValue.x),

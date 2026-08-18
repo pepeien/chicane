@@ -4,11 +4,21 @@ struct PolyInstance2D {
     vec2 size;
     vec2 offset;
     vec3 position;
+    float _padding1;
     vec4 color;
     vec4 clip;
     int textureIndex;
     int glyphIndex;
     float glyphDilation;
+    float _padding2;
+    vec4 radiusX;
+    vec4 radiusY;
+    vec4 innerClip;
+    vec4 innerClipRadiusX;
+    vec4 innerClipRadiusY;
+    vec4 outerClip;
+    vec4 outerClipRadiusX;
+    vec4 outerClipRadiusY;
 };
 
 float normalize2DDepth(float inValue) {

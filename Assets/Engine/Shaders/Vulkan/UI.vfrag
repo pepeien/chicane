@@ -11,6 +11,15 @@ layout(location = 0) in Data {
     flat float glyphDilation;
     flat vec4 clip;
     flat vec2 view;
+    flat vec4 box;
+    flat vec4 radiusX;
+    flat vec4 radiusY;
+    flat vec4 innerClip;
+    flat vec4 innerClipRadiusX;
+    flat vec4 innerClipRadiusY;
+    flat vec4 outerClip;
+    flat vec4 outerClipRadiusX;
+    flat vec4 outerClipRadiusY;
     vec2 UV;
     vec3 normal;
     vec4 color;
@@ -23,12 +32,11 @@ layout(std430, set = 0, binding = 1) readonly buffer Glyph {
 layout(set = 1, binding = 0) uniform sampler2D textures[];
 
 #include "../Common/Glyph.glsl"
+#include "../Common/Rounded.glsl"
 
 void main() {
     vec4 color = inData.color.rgba;
 
-    // Resolved outside the branch so the derivatives below stay in uniform control flow.
-    // The quad is grown by the dilation so the outline never reaches its own edge, where coverage would be clipped.
     int  offset    = max(inData.glyphIndex, 0);
     vec2 minBounds = getGlyphBoundsMin(offset) - inData.glyphDilation;
     vec2 maxBounds = getGlyphBoundsMax(offset) + inData.glyphDilation;
@@ -41,13 +49,35 @@ void main() {
         color.rgb = texture(textures[inData.textureIndex], inData.UV).rgb;
     }
 
+    vec2 frag = gl_FragCoord.xy;
     if (
-        gl_FragCoord.x < inData.clip.x ||
-        gl_FragCoord.y < inData.clip.y ||
-        gl_FragCoord.x > inData.clip.z ||
-        gl_FragCoord.y > inData.clip.w
+        frag.x < inData.clip.x ||
+        frag.y < inData.clip.y ||
+        frag.x > inData.clip.z ||
+        frag.y > inData.clip.w
     ) {
         discard;
+    }
+
+    if (
+        hasRoundedCorners(inData.innerClipRadiusX, inData.innerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.innerClip, inData.innerClipRadiusX, inData.innerClipRadiusY)
+    ) {
+        discard;
+    }
+
+    if (
+        hasRoundedCorners(inData.outerClipRadiusX, inData.outerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.outerClip, inData.outerClipRadiusX, inData.outerClipRadiusY)
+    ) {
+        discard;
+    }
+
+    if (
+        inData.glyphIndex < 0 &&
+        hasRoundedCorners(inData.radiusX, inData.radiusY)
+    ) {
+        color.a *= roundedRectCoverage(frag, inData.box, inData.radiusX, inData.radiusY);
     }
 
     outColor = color;

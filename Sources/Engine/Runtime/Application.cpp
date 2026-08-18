@@ -577,6 +577,16 @@ namespace Chicane
             subcommand.instance.offset   = component->getOffset();
             subcommand.instance.position = {position.x, position.y, component->getDepth()};
             subcommand.instance.clip     = {clip.left, clip.top, clip.right, clip.bottom};
+            subcommand.instance.radiusX  = style.radius.horizontal();
+            subcommand.instance.radiusY  = style.radius.vertical();
+            component->getOverflowRoundClips(
+                subcommand.instance.innerClip,
+                subcommand.instance.innerClipRadiusX,
+                subcommand.instance.innerClipRadiusY,
+                subcommand.instance.outerClip,
+                subcommand.instance.outerClipRadiusX,
+                subcommand.instance.outerClipRadiusY
+            );
             subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
             subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
             subcommand.instance.dilation = primitive.dilation;

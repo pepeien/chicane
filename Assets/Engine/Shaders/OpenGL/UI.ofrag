@@ -10,6 +10,15 @@ layout(location = 0) in Data {
     flat float glyphDilation;
     flat vec4 clip;
     flat vec2 view;
+    flat vec4 box;
+    flat vec4 radiusX;
+    flat vec4 radiusY;
+    flat vec4 innerClip;
+    flat vec4 innerClipRadiusX;
+    flat vec4 innerClipRadiusY;
+    flat vec4 outerClip;
+    flat vec4 outerClipRadiusX;
+    flat vec4 outerClipRadiusY;
     vec2 UV;
     vec3 normal;
     vec4 color;
@@ -22,6 +31,7 @@ layout(std430, binding = 4) readonly buffer Glyph {
 layout(location = 0) uniform sampler2DArray textures;
 
 #include "../Common/Glyph.glsl"
+#include "../Common/Rounded.glsl"
 
 void main() {
     vec4 color = inData.color.rgba;
@@ -44,6 +54,20 @@ void main() {
     if (frag.x < inData.clip.x || frag.y < inData.clip.y ||
         frag.x > inData.clip.z || frag.y > inData.clip.w) {
         discard;
+    }
+
+    if (hasRoundedCorners(inData.innerClipRadiusX, inData.innerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.innerClip, inData.innerClipRadiusX, inData.innerClipRadiusY)) {
+        discard;
+    }
+
+    if (hasRoundedCorners(inData.outerClipRadiusX, inData.outerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.outerClip, inData.outerClipRadiusX, inData.outerClipRadiusY)) {
+        discard;
+    }
+
+    if (inData.glyphIndex < 0 && hasRoundedCorners(inData.radiusX, inData.radiusY)) {
+        color.a *= roundedRectCoverage(frag, inData.box, inData.radiusX, inData.radiusY);
     }
 
     outColor = color;

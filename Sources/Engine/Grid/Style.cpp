@@ -30,6 +30,7 @@ namespace Chicane
               gap({}),
               overflowX(StyleOverflow::Visible),
               overflowY(StyleOverflow::Visible),
+              radius({}),
               background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
               opacity(OPACITY_DEFAULT_VALUE),
@@ -137,6 +138,15 @@ namespace Chicane
             overflowX.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
 
             overflowY.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
+
+            radius.parseWith(
+                [this](const String& inValue, SizeDirection inDirection)
+                {
+                    Vec2 box = hasParent() ? m_parent->getSize() : Vec2::Zero();
+
+                    return parseSize(inValue, inDirection, &box);
+                }
+            );
 
             background.parseWith(
                 [this](const String& inValue) { return parseColor(inValue); },
@@ -254,6 +264,15 @@ namespace Chicane
                 Style::GAP_RIGHT_ATTRIBUTE_NAME
             );
 
+            radius.setProperties(
+                inProperties,
+                Style::BORDER_RADIUS_ATTRIBUTE_NAME,
+                Style::BORDER_TOP_LEFT_RADIUS_ATTRIBUTE_NAME,
+                Style::BORDER_TOP_RIGHT_RADIUS_ATTRIBUTE_NAME,
+                Style::BORDER_BOTTOM_RIGHT_RADIUS_ATTRIBUTE_NAME,
+                Style::BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME
+            );
+
             if (inProperties.find(OVERFLOW_ATTRIBUTE_NAME) != inProperties.end())
             {
                 const std::vector<String> values = splitOneliner(inProperties.at(OVERFLOW_ATTRIBUTE_NAME));
@@ -311,6 +330,7 @@ namespace Chicane
             refreshPadding();
             refreshGap();
             refreshOverflow();
+            refreshRadius();
             refreshAlignment();
             refreshBackground();
             refreshForegroundColor();
@@ -378,6 +398,17 @@ namespace Chicane
             if (overflowY.get() == StyleOverflow::Visible && overflowX.get() != StyleOverflow::Visible)
             {
                 overflowY.set(StyleOverflow::Auto);
+            }
+        }
+
+        void Style::refreshRadius()
+        {
+            radius.refresh();
+
+            if (hasParent())
+            {
+                const Vec2& size = m_parent->getSize();
+                radius.constrain(size.x, size.y);
             }
         }
 
@@ -462,16 +493,24 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
-        float Style::parseSize(const String& inValue, SizeDirection inDirection) const
+        float Style::parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox) const
         {
             Size result;
             result.setIsAsobute(isPosition(StylePosition::Absolute));
             result.setFontSize(Box::Font::BASE_SIZE);
             result.setTextParser([this](const String& inValue) { return parseText(inValue); });
 
-            if (hasParent() && m_parent->hasParent())
+            if (hasParent() && m_parent->hasRoot())
             {
                 result.setRoot(m_parent->getRoot()->getSize());
+            }
+
+            if (inBox)
+            {
+                result.setParent(*inBox);
+            }
+            else if (hasParent() && m_parent->hasParent())
+            {
                 result.setParent(m_parent->getParent()->getSize());
             }
 

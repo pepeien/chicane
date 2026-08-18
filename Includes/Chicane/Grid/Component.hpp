@@ -9,6 +9,7 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Info.hpp"
@@ -155,6 +156,7 @@ namespace Chicane
             const std::vector<Component*>& getChildren() const;
             virtual std::vector<Component*> getChildrenFlat() const;
             Component* getHitAt(const Vec2& inLocation) const;
+            bool containsPoint(const Vec2& inLocation) const;
             bool broadcastEvent(const WindowEvent& inEvent);
             bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const pugi::xml_node& inNode);
@@ -199,6 +201,14 @@ namespace Chicane
             const Bounds2D& getBounds() const;
             Bounds2D getDrawBounds() const;
             Bounds2D getOverflowClip() const;
+            void getOverflowRoundClips(
+                Vec4& outFirst,
+                Vec4& outFirstRadiusX,
+                Vec4& outFirstRadiusY,
+                Vec4& outSecond,
+                Vec4& outSecondRadiusX,
+                Vec4& outSecondRadiusY
+            ) const;
 
             // Draw
             bool hasPrimitive() const;

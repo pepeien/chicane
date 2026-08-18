@@ -63,11 +63,3 @@ $explorerHeaderHeight: 2em;
         alignment: center;
     }
 }
-
-.button {
-    width: calc(100% - 2em);
-    height: 2em;
-    background-color: gray;
-    margin: auto auto 1em auto;
-    alignment: center;
-}

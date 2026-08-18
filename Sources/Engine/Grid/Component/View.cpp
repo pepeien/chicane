@@ -68,12 +68,7 @@ namespace Chicane
                     continue;
                 }
 
-                if (!child->getDrawBounds().contains(inLocation))
-                {
-                    continue;
-                }
-
-                if (!child->getOverflowClip().contains(inLocation))
+                if (!child->containsPoint(inLocation))
                 {
                     continue;
                 }

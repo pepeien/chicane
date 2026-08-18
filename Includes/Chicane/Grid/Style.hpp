@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
@@ -16,6 +17,7 @@
 #include "Chicane/Grid/Style/Overflow.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
+#include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
@@ -171,6 +173,21 @@ namespace Chicane
             static constexpr inline const char* ALIGNMENT_TYPE_CENTER    = "center";
             static constexpr inline const char* ALIGNMENT_TYPE_END       = "end";
 
+            /*
+             * Template 1: "`SINGLE_RADIUS`"
+             * Template 2: "`TOP_LEFT_AND_BOTTOM_RIGHT` `TOP_RIGHT_AND_BOTTOM_LEFT`"
+             * Template 3: "`TOP_LEFT` `TOP_RIGHT_AND_BOTTOM_LEFT` `BOTTOM_RIGHT`"
+             * Template 4: "`TOP_LEFT` `TOP_RIGHT` `BOTTOM_RIGHT` `BOTTOM_LEFT`"
+             * Elliptical: "`HORIZONTAL_RADII` / `VERTICAL_RADII`"
+             */
+            static constexpr inline const char  RADIUS_SEPARATOR                       = '/';
+            static constexpr inline const char* BORDER_RADIUS_ATTRIBUTE_NAME           = "border-radius";
+            static constexpr inline const char* BORDER_TOP_LEFT_RADIUS_ATTRIBUTE_NAME  = "border-top-left-radius";
+            static constexpr inline const char* BORDER_TOP_RIGHT_RADIUS_ATTRIBUTE_NAME = "border-top-right-radius";
+            static constexpr inline const char* BORDER_BOTTOM_RIGHT_RADIUS_ATTRIBUTE_NAME =
+                "border-bottom-right-radius";
+            static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
+
         public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
@@ -198,6 +215,7 @@ namespace Chicane
             void refreshPadding();
             void refreshGap();
             void refreshOverflow();
+            void refreshRadius();
             void refreshBackground();
             void refreshForegroundColor();
             void refreshOpacity();
@@ -206,7 +224,7 @@ namespace Chicane
 
             StyleOverflow parseOverflow(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
-            float parseSize(const String& inValue, SizeDirection inDirection) const;
+            float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
             String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
 
@@ -233,6 +251,7 @@ namespace Chicane
             StyleCorners                  gap;
             StyleProperty<StyleOverflow>  overflowX;
             StyleProperty<StyleOverflow>  overflowY;
+            StyleRadius                   radius;
 
             // Background
             StyleBackground               background;

@@ -2,6 +2,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
 
 namespace Chicane
 {
@@ -24,6 +25,7 @@ namespace Chicane
 
     public:
         bool contains(const Vec2& inPoint) const;
+        bool containsRounded(const Vec2& inPoint, const Vec4& inHorizontalRadius, const Vec4& inVerticalRadius) const;
 
         bool overlaps(const Bounds2D& inOther) const;
 

@@ -47,7 +47,7 @@ namespace Chicane
 
             void setAll(float inValue);
 
-        private:
+        protected:
             void setOnelinerAttribute(const String& inValue);
 
         public:
