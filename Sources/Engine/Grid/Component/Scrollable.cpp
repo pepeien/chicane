@@ -152,7 +152,10 @@ namespace Chicane
         {
             const Vec2 content = getChildrenContentSize();
 
-            return Vec2(std::max(0.0f, content.x - m_size.x), std::max(0.0f, content.y - m_size.y));
+            return Vec2(
+                std::max(0.0f, content.x + m_style.padding.right.get() - m_size.x),
+                std::max(0.0f, content.y + m_style.padding.bottom.get() - m_size.y)
+            );
         }
 
         void Scrollable::addScroll(const Vec2& inValue)

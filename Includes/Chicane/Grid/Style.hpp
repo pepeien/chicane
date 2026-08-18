@@ -83,6 +83,10 @@ namespace Chicane
             static constexpr inline const char* FLEX_DIRECTION_TYPE_ROW       = "row";
             static constexpr inline const char* FLEX_DIRECTION_TYPE_COLUMN    = "column";
 
+            static constexpr inline const char* FLEX_WRAP_ATTRIBUTE_NAME = "flex-wrap";
+            static constexpr inline const char* FLEX_WRAP_TYPE_NOWRAP    = "nowrap";
+            static constexpr inline const char* FLEX_WRAP_TYPE_WRAP      = "wrap";
+
             // Size
             static constexpr inline const char* WIDTH_ATTRIBUTE_NAME  = "width";
             static constexpr inline const char* HEIGHT_ATTRIBUTE_NAME = "height";

@@ -7,12 +7,14 @@ namespace Chicane
     namespace Grid
     {
         StyleFlex::StyleFlex()
-            : direction(StyleFlexDirection::Row)
+            : direction(StyleFlexDirection::Row),
+              wrap(StyleFlexWrap::NoWrap)
         {}
 
         void StyleFlex::refresh()
         {
             direction.refresh();
+            wrap.refresh();
         }
 
         void StyleFlex::setProperties(const StyleRuleset::Properties& inProperties)
@@ -21,11 +23,17 @@ namespace Chicane
             {
                 direction.setRaw(inProperties.at(Style::FLEX_DIRECTION_ATTRIBUTE_NAME));
             }
+
+            if (inProperties.find(Style::FLEX_WRAP_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                wrap.setRaw(inProperties.at(Style::FLEX_WRAP_ATTRIBUTE_NAME));
+            }
         }
 
-        void StyleFlex::parseWith(DirectionParser inDirectionParser)
+        void StyleFlex::parseWith(DirectionParser inDirectionParser, WrapParser inWrapParser)
         {
             direction.parseWith(inDirectionParser);
+            wrap.parseWith(inWrapParser);
         }
     }
 }

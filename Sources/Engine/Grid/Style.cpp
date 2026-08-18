@@ -78,6 +78,17 @@ namespace Chicane
                     }
 
                     return StyleFlexDirection::Row;
+                },
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    if (value.equals(FLEX_WRAP_TYPE_WRAP))
+                    {
+                        return StyleFlexWrap::Wrap;
+                    }
+
+                    return StyleFlexWrap::NoWrap;
                 }
             );
 
