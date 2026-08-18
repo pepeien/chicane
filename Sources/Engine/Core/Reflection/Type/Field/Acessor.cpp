@@ -57,10 +57,10 @@ namespace Chicane
         return size > 0 && !typeName.isEmpty() && typeIndex.has_value();
     }
 
-        const void* ReflectionFieldAccessor::containerPtr(const void* inInstance) const
-        {
-            return address(inInstance);
-        }
+    const void* ReflectionFieldAccessor::containerPtr(const void* inInstance) const
+    {
+        return address(inInstance);
+    }
 
     const char* ReflectionFieldAccessor::address(const void* inInstance) const
     {

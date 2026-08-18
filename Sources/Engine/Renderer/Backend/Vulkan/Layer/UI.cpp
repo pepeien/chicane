@@ -70,7 +70,7 @@ namespace Chicane
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
-            VulkanFrame       frame         = *((VulkanFrame*)inData);
+            VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
             vk::Viewport viewport = backend->getVkViewport(this);
@@ -220,7 +220,7 @@ namespace Chicane
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;

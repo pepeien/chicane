@@ -15,14 +15,14 @@ namespace Chicane
         {
         public:
             Vec<2, std::uint32_t> resolution     = Vec<2, std::uint32_t>(0U);
-            std::uint32_t         framesInFlight = 2;
+            std::uint32_t         framesInFlight = 3;
             ResourceBudget        resourceBudget = {
-                {Resource::Scene,          0.4f        }, // VRAM 40%
-                {Resource::SceneIndices,   0.4f * 0.2f }, // Scene 20%
-                {Resource::SceneVertices,  0.4f * 0.6f }, // Scene 60%
-                {Resource::SceneInstances, 0.4f * 0.15f}, // Scene 20%
+                {Resource::Scene,          0.4f         }, // VRAM 40%
+                {Resource::SceneIndices,   0.4f * 0.2f  }, // Scene 20%
+                {Resource::SceneVertices,  0.4f * 0.6f  }, // Scene 60%
+                {Resource::SceneInstances, 0.4f * 0.15f }, // Scene 20%
 
-                {Resource::Texture,        0.4f        }, // VRAM 40%
+                {Resource::Texture,        0.4f         }, // VRAM 40%
 
                 {Resource::UI,             0.15f        }, // VRAM 15%
                 {Resource::UIIndices,      0.15f * 0.15f}, // UI 15%

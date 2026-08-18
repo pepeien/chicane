@@ -43,7 +43,7 @@ namespace Editor
     {
         Chicane::Renderer::VulkanBackend* backend = getBackend<Chicane::Renderer::VulkanBackend>();
 
-        Chicane::Renderer::VulkanFrame frame         = *((Chicane::Renderer::VulkanFrame*)inData);
+        Chicane::Renderer::VulkanFrame& frame        = *((Chicane::Renderer::VulkanFrame*)inData);
         vk::CommandBuffer              commandBuffer = frame.commandBuffer;
 
         vk::Viewport viewport = backend->getVkViewport(this);

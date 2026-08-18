@@ -18,9 +18,9 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPolyResource : public DrawResource<Vertex::Index, Vertex>
         {
         public:
-            using Map      = std::unordered_map<DrawPolyType, DrawPolyResource>;
-            using Draws    = std::unordered_map<String, DrawPoly>;
-            using Glyphs   = std::unordered_map<String, Draw::Id>;
+            using Map           = std::unordered_map<DrawPolyType, DrawPolyResource>;
+            using Draws         = std::unordered_map<String, DrawPoly>;
+            using Glyphs        = std::unordered_map<String, Draw::Id>;
             using GlyphOutlines = std::vector<float>;
 
         public:
@@ -56,9 +56,9 @@ namespace Chicane
             String generateInternalReference(DrawPolyMode inMode, Draw::Id inId) const;
 
         private:
-            Draws           m_draws         = {};
-            Vertex::List    m_vertices      = {};
-            Vertex::Indices m_indices       = {};
+            Draws           m_draws    = {};
+            Vertex::List    m_vertices = {};
+            Vertex::Indices m_indices  = {};
 
             Glyphs          m_glyphs        = {};
             GlyphOutlines   m_glyphOutlines = {};

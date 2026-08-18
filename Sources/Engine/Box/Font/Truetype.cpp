@@ -261,12 +261,12 @@ namespace Chicane
                 bool bHasBounds = false;
                 for (FontGlyphCurve& curve : result.curves)
                 {
-                    curve.start.x   *= units;
-                    curve.start.y   *= units;
+                    curve.start.x *= units;
+                    curve.start.y *= units;
                     curve.control.x *= units;
                     curve.control.y *= units;
-                    curve.end.x     *= units;
-                    curve.end.y     *= units;
+                    curve.end.x *= units;
+                    curve.end.y *= units;
 
                     // The control point is included on purpose, a curve never leaves its own control hull
                     for (const Vec2& point : {curve.start, curve.control, curve.end})

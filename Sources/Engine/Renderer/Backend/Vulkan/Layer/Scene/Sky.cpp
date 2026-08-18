@@ -73,7 +73,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
             VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
-            VulkanFrame       frame         = *((VulkanFrame*)inData);
+            VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
             vk::Viewport viewport = backend->getVkViewport(this);
