@@ -2515,6 +2515,22 @@
                         "children": []
                     },
                     {
+                        "title": "StyleFilter",
+                        "filename": "Filter",
+                        "path": "Grid/Style/Filter",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Filter.hpp",
+                            "namespace": "Chicane::Grid::StyleFilter",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "StyleFlex",
                         "filename": "Flex",
                         "path": "Grid/Style/Flex",

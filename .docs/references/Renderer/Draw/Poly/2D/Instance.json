@@ -132,8 +132,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_padding1",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING1_DESCRIPTION"
+                "name": "backdropBlur",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BACKDROPBLUR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -210,8 +210,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_padding2",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING2_DESCRIPTION"
+                "name": "filterBlur",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_FILTERBLUR_DESCRIPTION"
             },
             {
                 "accessor": "public",

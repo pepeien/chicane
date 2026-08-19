@@ -1,0 +1,153 @@
+{
+    "title": "StyleFilter",
+    "filename": "Filter",
+    "path": "Grid/Style/Filter",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Filter.hpp",
+        "namespace": "Chicane::Grid::StyleFilter",
+        "types": [
+            {
+                "name": "BlurParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEFILTER_BLURPARSER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleFilter",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFILTER_STYLEFILTER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFILTER_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inAttributeName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFILTER_SETPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BlurParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Filter",
+                            "templates": []
+                        },
+                        "name": "inBlurParser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFILTER_PARSEWITH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "blur",
+                "description": "CHICANE_GRID_STYLEFILTER_BLUR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEFILTER_DESCRIPTION"
+    },
+    "children": []
+}
