@@ -132,6 +132,7 @@ namespace Chicane
             void addStyleProperties(const StyleRuleset::Properties& inSource);
 
             const Style& getStyle() const;
+            float getFilterBlur() const;
 
             bool hasLocalSelector(const String& inValue) const;
             bool hasSelector(const String& inValue) const;

@@ -5,10 +5,10 @@
 #include <Chicane/Runtime/Application/Telemetry.hpp>
 
 CH_TYPE(Manual)
-class View : public Chicane::Grid::View
+class HomeView : public Chicane::Grid::View
 {
 public:
-    View();
+    HomeView();
 
 public:
     // Telemetry

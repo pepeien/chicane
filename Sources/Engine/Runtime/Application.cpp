@@ -558,7 +558,19 @@ namespace Chicane
             }
 
             const Bounds2D clip = component->getOverflowClip();
-            if (clip.isEmpty() || !component->getDrawBounds().overlaps(clip))
+            Bounds2D       draw = component->getDrawBounds();
+            const float    blur = component->getFilterBlur();
+            if (blur > 0.0f)
+            {
+                const float halo = blur * 3.0f;
+
+                draw.left -= halo;
+                draw.top -= halo;
+                draw.right += halo;
+                draw.bottom += halo;
+            }
+
+            if (clip.isEmpty() || !draw.overlaps(clip))
             {
                 continue;
             }
@@ -589,8 +601,10 @@ namespace Chicane
             );
             subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
             subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
-            subcommand.instance.dilation = primitive.dilation;
-            subcommand.instance.color    = style.background.color.get();
+            subcommand.instance.dilation      = primitive.dilation;
+            subcommand.instance.filterBlur    = blur;
+            subcommand.instance.backdropBlur  = style.backdrop.blur.get();
+            subcommand.instance.color         = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 style.opacity.get();

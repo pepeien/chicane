@@ -4,7 +4,7 @@
 
 #include "Sample/Shooter/Actor/Apple.hpp"
 #include "Sample/Shooter/Game.hpp"
-#include "Sample/Shooter/Level.hpp"
+#include "Sample/Shooter/Scene.hpp"
 
 static constexpr inline const float MOVE_COEFFICIENT = 3.0f;
 
@@ -111,7 +111,7 @@ void Character::onControlAttachment()
         {
             m_camera->activate();
 
-            getScene<Level>()->disableCameras();
+            getScene<Scene>()->disableCameras();
         }
     );
     m_controller->bindEvent(
@@ -119,7 +119,7 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Released,
         [this]()
         {
-            getScene<Level>()->activateLeftCamera();
+            getScene<Scene>()->activateLeftCamera();
 
             m_camera->deactivate();
         }
@@ -129,7 +129,7 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Released,
         [this]()
         {
-            getScene<Level>()->activateCenterCamera();
+            getScene<Scene>()->activateCenterCamera();
 
             m_camera->deactivate();
         }
@@ -137,7 +137,7 @@ void Character::onControlAttachment()
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F4,
         Chicane::Input::Status::Released,
-        [this]() { getScene<Level>()->activateRightCamera(); }
+        [this]() { getScene<Scene>()->activateRightCamera(); }
     );
 
     // Gamepad

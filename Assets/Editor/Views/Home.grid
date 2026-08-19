@@ -9,9 +9,6 @@
                 <Text>{{ actor.translation }}</Text>
             </Button>
         </Container>
-        <Button onClick="{{ onAssetImport() }}" class="outliner__import-button">
-            <Text>Import File</Text>
-        </Button>
     </Container>
     <Container class="explorer --menu">
         <Container class="explorer__header">

@@ -1,4 +1,4 @@
-#include "Sample/Shooter/Level.hpp"
+#include "Sample/Shooter/Scene.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
@@ -16,14 +16,14 @@ static constexpr inline const std::uint32_t APPLE_COLUMN_COUNT = 5;
 static constexpr inline const std::uint32_t APPLE_ROW_COUNT    = 2;
 static constexpr inline const float         APPLE_STEP         = 20.0f;
 
-Level::Level()
+Scene::Scene()
     : Chicane::Scene(),
       m_leftCamera(nullptr),
       m_centerCamera(nullptr),
       m_rightCamera(nullptr)
 {}
 
-void Level::onLoad()
+void Scene::onLoad()
 {
     spawnSky();
     spawnLights();
@@ -33,7 +33,7 @@ void Level::onLoad()
     spawnApples();
 }
 
-void Level::activateLeftCamera()
+void Scene::activateLeftCamera()
 {
     m_leftCamera->activate();
 
@@ -41,7 +41,7 @@ void Level::activateLeftCamera()
     m_rightCamera->deactivate();
 }
 
-void Level::activateCenterCamera()
+void Scene::activateCenterCamera()
 {
     m_centerCamera->activate();
 
@@ -49,7 +49,7 @@ void Level::activateCenterCamera()
     m_rightCamera->deactivate();
 }
 
-void Level::activateRightCamera()
+void Scene::activateRightCamera()
 {
     m_rightCamera->activate();
 
@@ -57,24 +57,24 @@ void Level::activateRightCamera()
     m_centerCamera->deactivate();
 }
 
-void Level::disableCameras()
+void Scene::disableCameras()
 {
     m_leftCamera->deactivate();
     m_centerCamera->deactivate();
     m_rightCamera->deactivate();
 }
 
-void Level::spawnSky()
+void Scene::spawnSky()
 {
     createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Engine/Skies/Debug.bsky"));
 }
 
-void Level::spawnLights()
+void Scene::spawnLights()
 {
     createActor<Sun>();
 }
 
-void Level::spawnCameras()
+void Scene::spawnCameras()
 {
     const Chicane::Vec3 position(300.0f, 300.0f, 100.0f);
 
@@ -94,17 +94,17 @@ void Level::spawnCameras()
     m_rightCamera->lookAt(Chicane::Vec3::Zero());
 }
 
-void Level::spawnStructures()
+void Scene::spawnStructures()
 {
     createActor<Strcuture>()->setAbsoluteScale(500.0f, 500.0f, 0.5);
 }
 
-void Level::spawnCharacter()
+void Scene::spawnCharacter()
 {
     Chicane::Application::getInstance().getController()->attachTo(createActor<Character>());
 }
 
-void Level::spawnApples()
+void Scene::spawnApples()
 {
     const Chicane::Vec3 startPosition(
         -(APPLE_COLUMN_COUNT * APPLE_STEP) * 0.5f,

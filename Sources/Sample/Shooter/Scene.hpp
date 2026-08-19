@@ -3,10 +3,10 @@
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 
-class Level : public Chicane::Scene
+class Scene : public Chicane::Scene
 {
 public:
-    Level();
+    Scene();
 
 public:
     void onLoad() override;

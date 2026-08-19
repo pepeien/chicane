@@ -11,7 +11,17 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLUI::OpenGLLUI()
-            : Layer(u_LAYER_ID)
+            : Layer(u_LAYER_ID),
+              m_shaderProgram(0),
+              m_primitiveVertexArray(0),
+              m_primitiveVertexBuffer(0),
+              m_primitiveIndexBuffer(0),
+              m_instanceBuffer(0),
+              m_glyphBuffer(0),
+              m_backdropTexture(0),
+              m_backdropFramebuffer(0),
+              m_backdropWidth(0),
+              m_backdropHeight(0)
         {}
 
         void OpenGLLUI::onInit()
@@ -30,6 +40,7 @@ namespace Chicane
             destroyPrimitiveData();
             destroyInstanceData();
             destroyGlyphData();
+            destroyBackdrop();
         }
 
         void OpenGLLUI::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -95,8 +106,34 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
+            const std::uint32_t width  = std::max(1u, static_cast<std::uint32_t>(viewport.size.x));
+            const std::uint32_t height = std::max(1u, static_cast<std::uint32_t>(viewport.size.y));
+
+            ensureBackdrop(width, height);
+            glBindTextureUnit(1, m_backdropTexture);
+
+            const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
+
             for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
+                bool                bNeedsBackdrop = false;
+                const std::uint32_t instanceEnd    = draw.instanceStart + draw.instanceCount;
+                for (std::uint32_t i = draw.instanceStart; i < instanceEnd && i < instances.size(); i++)
+                {
+                    if (instances.at(i).backdropBlur > 0.0f)
+                    {
+                        bNeedsBackdrop = true;
+
+                        break;
+                    }
+                }
+
+                if (bNeedsBackdrop)
+                {
+                    copyBackdrop(viewport);
+                    glBindTextureUnit(1, m_backdropTexture);
+                }
+
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
@@ -264,6 +301,85 @@ namespace Chicane
         void OpenGLLUI::destroyGlyphData()
         {
             glDeleteBuffers(1, &m_glyphBuffer);
+        }
+
+        void OpenGLLUI::ensureBackdrop(std::uint32_t inWidth, std::uint32_t inHeight)
+        {
+            if (inWidth == 0 || inHeight == 0)
+            {
+                return;
+            }
+
+            if (m_backdropTexture != 0 && m_backdropWidth == inWidth && m_backdropHeight == inHeight)
+            {
+                return;
+            }
+
+            destroyBackdrop();
+
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_backdropTexture);
+            glTextureStorage2D(m_backdropTexture, 1, GL_RGBA8, inWidth, inHeight);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+            glCreateFramebuffers(1, &m_backdropFramebuffer);
+            glNamedFramebufferTexture(m_backdropFramebuffer, GL_COLOR_ATTACHMENT0, m_backdropTexture, 0);
+
+            m_backdropWidth  = inWidth;
+            m_backdropHeight = inHeight;
+        }
+
+        void OpenGLLUI::copyBackdrop(const Viewport& inViewport)
+        {
+            if (m_backdropTexture == 0 || m_backdropFramebuffer == 0)
+            {
+                return;
+            }
+
+            const std::int32_t x      = static_cast<std::int32_t>(inViewport.position.x);
+            const std::int32_t y      = static_cast<std::int32_t>(inViewport.position.y);
+            const std::int32_t width  = static_cast<std::int32_t>(inViewport.size.x);
+            const std::int32_t height = static_cast<std::int32_t>(inViewport.size.y);
+
+            GLint source = 0;
+            glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &source);
+
+            glBindTextureUnit(1, 0);
+
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, source);
+            glReadBuffer(source == 0 ? GL_BACK : GL_COLOR_ATTACHMENT0);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, static_cast<GLuint>(m_backdropFramebuffer));
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
+            glBlitFramebuffer(x, y, x + width, y + height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, source);
+            if (source == 0)
+            {
+                glReadBuffer(GL_BACK);
+                glDrawBuffer(GL_BACK);
+            }
+        }
+
+        void OpenGLLUI::destroyBackdrop()
+        {
+            if (m_backdropFramebuffer != 0)
+            {
+                glDeleteFramebuffers(1, &m_backdropFramebuffer);
+                m_backdropFramebuffer = 0;
+            }
+
+            if (m_backdropTexture == 0)
+            {
+                return;
+            }
+
+            glDeleteTextures(1, &m_backdropTexture);
+
+            m_backdropTexture = 0;
+            m_backdropWidth   = 0;
+            m_backdropHeight  = 0;
         }
     }
 }

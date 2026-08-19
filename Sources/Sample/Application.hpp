@@ -9,6 +9,8 @@ public:
 
 private:
     void initController();
+    void initScene();
+    void initView();
 
 private:
     std::unique_ptr<Chicane::Controller> m_controller;

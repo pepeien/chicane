@@ -26,13 +26,13 @@ namespace Chicane
             Vec2     size             = Vec2::Zero();
             Vec2     offset           = Vec2::Zero();
             Vec3     position         = Vec3::Zero();
-            float    _padding1        = 0.0f; // Shader alignment
+            float    backdropBlur     = 0.0f;
             Vec4     color            = Vec4::Zero();
             Vec4     clip             = Vec4::Sentinel();
             Draw::Id texture          = -1;
             Draw::Id glyph            = -1;
             float    dilation         = 0.0f;
-            float    _padding2        = 0.0f; // Shader alignment
+            float    filterBlur       = 0.0f;
             Vec4     radiusX          = Vec4::Zero();
             Vec4     radiusY          = Vec4::Zero();
             Vec4     innerClip        = Vec4::Sentinel();

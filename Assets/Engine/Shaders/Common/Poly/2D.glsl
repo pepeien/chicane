@@ -4,13 +4,13 @@ struct PolyInstance2D {
     vec2 size;
     vec2 offset;
     vec3 position;
-    float _padding1;
+    float backdropBlur;
     vec4 color;
     vec4 clip;
     int textureIndex;
     int glyphIndex;
     float glyphDilation;
-    float _padding2;
+    float filterBlur;
     vec4 radiusX;
     vec4 radiusY;
     vec4 innerClip;
@@ -53,4 +53,24 @@ vec3 get2DScreenPosition(PolyInstance2D inInstance, vec2 inMultipliers) {
 
 vec4 normalize2DColor(vec4 inColor) {
     return inColor / 255.0;
+}
+
+const float FILTER_BLUR_SUPPORT = 3.0;
+
+vec2 get2DBlurredScale(PolyInstance2D inInstance) {
+    return inInstance.scale + vec2(inInstance.filterBlur * FILTER_BLUR_SUPPORT * 2.0);
+}
+
+vec2 get2DFilterUV(vec2 inUV, vec2 inOriginalScale, vec2 inBlurredScale) {
+    vec2 uv = inUV;
+
+    if (inOriginalScale.x > 1e-4) {
+        uv.x = ((inUV.x - 0.5) * (inBlurredScale.x / inOriginalScale.x)) + 0.5;
+    }
+
+    if (inOriginalScale.y > 1e-4) {
+        uv.y = ((inUV.y - 0.5) * (inBlurredScale.y / inOriginalScale.y)) + 0.5;
+    }
+
+    return uv;
 }

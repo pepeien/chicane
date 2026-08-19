@@ -1,12 +1,12 @@
-#include "Sample/Shooter/View.reflected.hpp"
+#include "Sample/Shooter/View/Home.reflected.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
 #include "Sample/Shooter/Game.hpp"
-#include "Sample/Shooter/Level.hpp"
+#include "Sample/Shooter/Scene.hpp"
 
-View::View()
+HomeView::HomeView()
     : Chicane::Grid::View("Assets/Sample/Shooter/Views/Home.grid"),
       telemetry(&Chicane::Application::getInstance().getTelemetry()),
       bDidPlayerWin(false),

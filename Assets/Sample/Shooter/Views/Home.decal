@@ -30,7 +30,7 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 
 .telemetry {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
     Text {
         color: green;
@@ -43,10 +43,10 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 
 .score {
     position: absolute;
-    margin: calc(100% - 3em) 0 0 0;
+    margin: auto 0 0 0;
     background-color: rgba($grayColor, 0.3);
-    font-size: 2em;
-    padding: 1em;
+    font-size: 1.5em;
+    padding: 0.5em;
 }
 
 .crosshair {

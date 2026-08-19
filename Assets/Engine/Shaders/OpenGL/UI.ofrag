@@ -9,7 +9,7 @@ layout(location = 0) in Data {
     flat int glyphIndex;
     flat float glyphDilation;
     flat vec4 clip;
-    flat vec2 view;
+    flat vec4 view;
     flat vec4 box;
     flat vec4 radiusX;
     flat vec4 radiusY;
@@ -29,9 +29,11 @@ layout(std430, binding = 4) readonly buffer Glyph {
 } glyph;
 
 layout(location = 0) uniform sampler2DArray textures;
+layout(binding = 1, location = 1) uniform sampler2D backdrop;
 
 #include "../Common/Glyph.glsl"
 #include "../Common/Rounded.glsl"
+#include "../Common/Filter.glsl"
 
 void main() {
     vec4 color = inData.color.rgba;
@@ -42,12 +44,32 @@ void main() {
     vec2 minBounds = getGlyphBoundsMin(offset) - inData.glyphDilation;
     vec2 maxBounds = getGlyphBoundsMax(offset) + inData.glyphDilation;
     vec2 position  = mix(minBounds, maxBounds, inData.UV);
-    vec2 pixel     = fwidth(position);
+    vec2 pixel     = fwidth(position) * (1.0 + max(inData.view.z, 0.0));
 
     if (inData.glyphIndex >= 0) {
         color.a *= getGlyphCoverage(inData.glyphIndex, position, pixel);
     } else if (inData.textureIndex >= 0) {
-        color.rgb = texture(textures, vec3(inData.UV, inData.textureIndex)).rgb;
+        vec3 rgb = texture(textures, vec3(clamp(inData.UV, 0.0, 1.0), inData.textureIndex)).rgb;
+
+        if (inData.view.z >= 0.5) {
+            vec2  texel = vec2(inData.view.z) / max(inData.box.zw - inData.box.xy, vec2(1.0));
+            vec3  acc   = vec3(0.0);
+            float wsum  = 0.0;
+
+            for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    vec2  tap = clamp(inData.UV + (vec2(float(x), float(y)) * texel), 0.0, 1.0);
+                    float w   = exp(-0.5 * float((x * x) + (y * y)) / 2.0);
+
+                    acc  += texture(textures, vec3(tap, inData.textureIndex)).rgb * w;
+                    wsum += w;
+                }
+            }
+
+            rgb = acc / max(wsum, 1e-4);
+        }
+
+        color.rgb = rgb;
     }
 
     vec2 frag = vec2(gl_FragCoord.x, inData.view.y - gl_FragCoord.y);
@@ -66,8 +88,26 @@ void main() {
         discard;
     }
 
-    if (inData.glyphIndex < 0 && hasRoundedCorners(inData.radiusX, inData.radiusY)) {
-        color.a *= roundedRectCoverage(frag, inData.box, inData.radiusX, inData.radiusY);
+    if (inData.glyphIndex < 0) {
+        float coverage = 1.0;
+
+        if (inData.view.z > 0.0) {
+            coverage = filterGaussianCoverage(
+                roundedRectSDF(frag, inData.box, inData.radiusX, inData.radiusY),
+                inData.view.z
+            );
+        } else if (hasRoundedCorners(inData.radiusX, inData.radiusY)) {
+            coverage = roundedRectCoverage(frag, inData.box, inData.radiusX, inData.radiusY);
+        }
+
+        if (inData.view.w > 0.0) {
+            vec3 backdropColor = sampleBackdropBlur(backdrop, gl_FragCoord.xy, inData.view.xy, inData.view.w);
+
+            color.rgb = (color.rgb * color.a) + (backdropColor * (1.0 - color.a));
+            color.a   = coverage;
+        } else {
+            color.a *= coverage;
+        }
     }
 
     outColor = color;

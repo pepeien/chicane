@@ -11,6 +11,7 @@
 #include "Chicane/Grid/Style/Background.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Display.hpp"
+#include "Chicane/Grid/Style/Filter.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
 #include "Chicane/Grid/Style/Import.hpp"
@@ -116,6 +117,13 @@ namespace Chicane
             static constexpr inline const char* OPACITY_ATTRIBUTE_NAME = "opacity";
             static constexpr inline const float OPACITY_DEFAULT_VALUE  = 1.0f;
 
+            // Filter
+            static constexpr inline const char* FILTER_ATTRIBUTE_NAME = "filter";
+            static constexpr inline const char* FILTER_TYPE_NONE      = "none";
+            static constexpr inline const char* FILTER_BLUR_KEYWORD   = "blur";
+
+            static constexpr inline const char* BACKDROP_FILTER_ATTRIBUTE_NAME = "backdrop-filter";
+
             // Corner
             static constexpr inline const char* CORNER_DEFAULT_VALUE = "0px";
 
@@ -219,11 +227,13 @@ namespace Chicane
             void refreshBackground();
             void refreshForegroundColor();
             void refreshOpacity();
+            void refreshFilter();
             void refreshFont();
             void refreshLetterSpacing();
 
             StyleOverflow parseOverflow(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
+            float parseFilter(const String& inValue) const;
             float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
             String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
@@ -259,6 +269,8 @@ namespace Chicane
             // Color
             StyleProperty<Color::Rgba>    foregroundColor;
             StyleProperty<float>          opacity;
+            StyleFilter                   filter;
+            StyleFilter                   backdrop;
 
             // Text
             StyleFont                     font;

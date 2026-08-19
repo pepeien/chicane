@@ -41,6 +41,11 @@ namespace Chicane
             void buildGlyphBuffer();
             void destroyGlyphData();
 
+            // Backdrop
+            void ensureBackdrop(std::uint32_t inWidth, std::uint32_t inHeight);
+            void copyBackdrop(const Viewport& inViewport);
+            void destroyBackdrop();
+
         private:
             // Shader
             std::uint32_t m_shaderProgram;
@@ -55,6 +60,12 @@ namespace Chicane
 
             // Glyph
             std::uint32_t m_glyphBuffer;
+
+            // Backdrop
+            std::uint32_t m_backdropTexture;
+            std::uint32_t m_backdropFramebuffer;
+            std::uint32_t m_backdropWidth;
+            std::uint32_t m_backdropHeight;
         };
     }
 }

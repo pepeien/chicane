@@ -9,7 +9,7 @@ layout(location = 0) out Data {
     flat int glyphIndex;
     flat float glyphDilation;
     flat vec4 clip;
-    flat vec2 view;
+    flat vec4 view;
     flat vec4 box;
     flat vec4 radiusX;
     flat vec4 radiusY;
@@ -36,26 +36,30 @@ layout(std140, set = 0, binding = 0) readonly buffer Grid {
 void main() {
     PolyInstance2D component = instance.components[gl_InstanceIndex];
 
+    vec2 originalScale = component.scale;
+    vec2 blurredScale  = get2DBlurredScale(component);
+    component.scale    = blurredScale;
+
     vec2 vertexPosition = get2DVertexPosition(component, inPosition.xy, vec2(1.0, -1.0));
     vec3 screenPosition = get2DScreenPosition(component, vec2(1.0));
 
-    outData.textureIndex  = component.textureIndex;
-    outData.glyphIndex    = component.glyphIndex;
-    outData.glyphDilation = component.glyphDilation;
-    outData.clip          = component.clip;
-    outData.view          = component.view;
-    outData.box           = vec4(component.position.xy, component.position.xy + component.size);
-    outData.radiusX       = component.radiusX;
-    outData.radiusY       = component.radiusY;
-    outData.innerClip         = component.innerClip;
-    outData.innerClipRadiusX  = component.innerClipRadiusX;
-    outData.innerClipRadiusY  = component.innerClipRadiusY;
-    outData.outerClip         = component.outerClip;
-    outData.outerClipRadiusX  = component.outerClipRadiusX;
-    outData.outerClipRadiusY  = component.outerClipRadiusY;
-    outData.UV            = inUV;
-    outData.normal        = inNormal;
-    outData.color         = normalize2DColor(component.color);
+    outData.textureIndex     = component.textureIndex;
+    outData.glyphIndex       = component.glyphIndex;
+    outData.glyphDilation    = component.glyphDilation;
+    outData.clip             = component.clip;
+    outData.view             = vec4(component.view, component.filterBlur, component.backdropBlur);
+    outData.box              = vec4(component.position.xy, component.position.xy + component.size);
+    outData.radiusX          = component.radiusX;
+    outData.radiusY          = component.radiusY;
+    outData.innerClip        = component.innerClip;
+    outData.innerClipRadiusX = component.innerClipRadiusX;
+    outData.innerClipRadiusY = component.innerClipRadiusY;
+    outData.outerClip        = component.outerClip;
+    outData.outerClipRadiusX = component.outerClipRadiusX;
+    outData.outerClipRadiusY = component.outerClipRadiusY;
+    outData.UV               = get2DFilterUV(inUV, originalScale, blurredScale);
+    outData.normal           = inNormal;
+    outData.color            = normalize2DColor(component.color);
 
     gl_Position = vec4(vertexPosition + screenPosition.xy, screenPosition.z, 1.0);
 }

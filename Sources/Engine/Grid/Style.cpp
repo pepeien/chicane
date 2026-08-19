@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Style.hpp"
 
-#include <algorithm>
-
 #include "Chicane/Box/Font.hpp"
 
 #include "Chicane/Grid/Component.hpp"
@@ -34,6 +32,8 @@ namespace Chicane
               background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
               opacity(OPACITY_DEFAULT_VALUE),
+              filter({}),
+              backdrop({}),
               font({}),
               letterSpacing(0.0f),
               m_parent(nullptr)
@@ -157,6 +157,10 @@ namespace Chicane
 
             opacity.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
 
+            filter.parseWith([this](const String& inValue) { return parseFilter(inValue); });
+
+            backdrop.parseWith([this](const String& inValue) { return parseFilter(inValue); });
+
             font.parseWith(
                 [this](const String& inValue) { return parseText(inValue); },
                 [this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); }
@@ -226,6 +230,11 @@ namespace Chicane
                 foregroundColor.setRaw(inProperties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
             }
 
+            if (inProperties.find(OPACITY_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                opacity.setRaw(inProperties.at(OPACITY_ATTRIBUTE_NAME));
+            }
+
             if (inProperties.find(LETTER_SPACING_ATTRIBUTE_NAME) != inProperties.end())
             {
                 letterSpacing.setRaw(inProperties.at(LETTER_SPACING_ATTRIBUTE_NAME));
@@ -236,6 +245,10 @@ namespace Chicane
             background.setProperties(inProperties);
 
             font.setProperties(inProperties);
+
+            filter.setProperties(inProperties, FILTER_ATTRIBUTE_NAME);
+
+            backdrop.setProperties(inProperties, BACKDROP_FILTER_ATTRIBUTE_NAME);
 
             margin.setProperties(
                 inProperties,
@@ -335,6 +348,7 @@ namespace Chicane
             refreshBackground();
             refreshForegroundColor();
             refreshOpacity();
+            refreshFilter();
             refreshFont();
             refreshLetterSpacing();
         }
@@ -447,6 +461,47 @@ namespace Chicane
         void Style::refreshOpacity()
         {
             opacity.refresh();
+        }
+
+        void Style::refreshFilter()
+        {
+            filter.refresh();
+            backdrop.refresh();
+        }
+
+        float Style::parseFilter(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim();
+
+            if (value.isEmpty() || value.equals(FILTER_TYPE_NONE))
+            {
+                return 0.0f;
+            }
+
+            float blur = 0.0f;
+
+            for (const String& block : splitOneliner(value))
+            {
+                const String token = block.trim();
+
+                if (!token.startsWith(FILTER_BLUR_KEYWORD) || !token.contains(METHOD_PARAMS_OPENING))
+                {
+                    continue;
+                }
+
+                const String argument = token.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).trim();
+
+                if (argument.isEmpty() || argument.contains(Size::PERCENTAGE_UNIT))
+                {
+                    continue;
+                }
+
+                const float radius = std::max(0.0f, parseSize(argument, SizeDirection::Horizontal));
+
+                blur = std::sqrt((blur * blur) + (radius * radius));
+            }
+
+            return blur;
         }
 
         void Style::refreshFont()

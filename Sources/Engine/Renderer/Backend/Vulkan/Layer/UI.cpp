@@ -7,6 +7,11 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
 
 namespace Chicane
@@ -22,6 +27,7 @@ namespace Chicane
         {
             // The frame descriptors point at the glyph buffer, so it has to exist first
             buildGlyphBuffer();
+            buildBackdrop();
 
             initFrameResources();
 
@@ -34,6 +40,23 @@ namespace Chicane
 
         void VulkanLUI::onRestart()
         {
+            destroyBackdrop();
+            buildBackdrop();
+
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            for (std::size_t i = 0; i < backend->frames.size(); i++)
+            {
+                vk::WriteDescriptorSet backdropInfo;
+                backdropInfo.dstSet          = backend->frames.at(i).getDescriptorSet(m_id);
+                backdropInfo.dstBinding      = 2;
+                backdropInfo.dstArrayElement = 0;
+                backdropInfo.descriptorCount = 1;
+                backdropInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                backdropInfo.pImageInfo      = &m_backdropInfos.at(i);
+
+                backend->logicalDevice.updateDescriptorSets(backdropInfo, nullptr);
+            }
+
             initFramebuffers();
         }
 
@@ -42,6 +65,7 @@ namespace Chicane
             destroyFrameResources();
             destroyPrimitiveData();
             destroyGlyphData();
+            destroyBackdrop();
 
             m_graphicsPipeline.destroy();
         }
@@ -72,6 +96,31 @@ namespace Chicane
 
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
+
+            bool bNeedsBackdrop = false;
+            for (const DrawPoly2DInstance& instance : inFrame.getInstances2D())
+            {
+                if (instance.backdropBlur > 0.0f)
+                {
+                    bNeedsBackdrop = true;
+
+                    break;
+                }
+            }
+
+            if (bNeedsBackdrop)
+            {
+                std::size_t frameIndex = 0;
+                for (; frameIndex < backend->frames.size(); frameIndex++)
+                {
+                    if (&backend->frames.at(frameIndex) == &frame)
+                    {
+                        break;
+                    }
+                }
+
+                copyBackdrop(frame, frameIndex);
+            }
 
             vk::Viewport viewport = backend->getVkViewport(this);
             commandBuffer.setViewport(0, 1, &viewport);
@@ -125,7 +174,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
-            bidings.count = 2;
+            bidings.count = 3;
 
             // Primtive
             bidings.indices.push_back(0);
@@ -139,6 +188,12 @@ namespace Chicane
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
+            // Backdrop
+            bidings.indices.push_back(2);
+            bidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
             VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, backend->logicalDevice, bidings);
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
@@ -146,11 +201,15 @@ namespace Chicane
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets * 2}
             );
+            descriptorPoolCreateInfo.sizes.push_back(
+                {vk::DescriptorType::eCombinedImageSampler, descriptorPoolCreateInfo.maxSets}
+            );
 
             VulkanDescriptorPool::init(m_frameDescriptor.pool, backend->logicalDevice, descriptorPoolCreateInfo);
 
-            for (VulkanFrame& frame : backend->frames)
+            for (std::size_t i = 0; i < backend->frames.size(); i++)
             {
+                VulkanFrame&      frame = backend->frames.at(i);
                 vk::DescriptorSet descriptorSet;
 
                 VulkanDescriptorSetLayout::allocate(
@@ -178,6 +237,15 @@ namespace Chicane
                 glyphInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
                 glyphInfo.pBufferInfo     = &m_glyphBufferInfo;
                 frame.addWriteDescriptorSet(glyphInfo);
+
+                vk::WriteDescriptorSet backdropInfo;
+                backdropInfo.dstSet          = descriptorSet;
+                backdropInfo.dstBinding      = 2;
+                backdropInfo.dstArrayElement = 0;
+                backdropInfo.descriptorCount = 1;
+                backdropInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                backdropInfo.pImageInfo      = &m_backdropInfos.at(i);
+                frame.addWriteDescriptorSet(backdropInfo);
             }
         }
 
@@ -459,6 +527,197 @@ namespace Chicane
         void VulkanLUI::destroyGlyphData()
         {
             m_glyphBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+        }
+
+        void VulkanLUI::buildBackdrop()
+        {
+            VulkanBackend*     backend = getBackend<VulkanBackend>();
+            const vk::Extent2D extent  = backend->swapchain.extent;
+
+            m_backdrops.resize(backend->frames.size());
+            m_backdropInfos.resize(backend->frames.size());
+
+            for (std::size_t i = 0; i < m_backdrops.size(); i++)
+            {
+                VulkanImageInfo& image = m_backdrops.at(i);
+                image.format           = backend->swapchain.colorFormat;
+                image.extent           = extent;
+
+                VulkanImageCreateInfo instanceCreateInfo{};
+                instanceCreateInfo.flags  = vk::ImageCreateFlags();
+                instanceCreateInfo.width  = extent.width;
+                instanceCreateInfo.height = extent.height;
+                instanceCreateInfo.count  = 1;
+                instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.usage  = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format = image.format;
+                instanceCreateInfo.logicalDevice = backend->logicalDevice;
+                VulkanImage::initInstance(image.instance, instanceCreateInfo);
+
+                vk::SamplerCreateInfo samplerCreateInfo;
+                samplerCreateInfo.minFilter               = vk::Filter::eLinear;
+                samplerCreateInfo.magFilter               = vk::Filter::eLinear;
+                samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+                samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.anisotropyEnable        = false;
+                samplerCreateInfo.maxAnisotropy           = 1.0f;
+                samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueBlack;
+                samplerCreateInfo.unnormalizedCoordinates = false;
+                samplerCreateInfo.compareEnable           = false;
+                samplerCreateInfo.minLod                  = 0.0f;
+                samplerCreateInfo.maxLod                  = 1.0f;
+                image.sampler                             = backend->logicalDevice.createSampler(samplerCreateInfo);
+
+                VulkanImageMemoryCreateInfo memoryCreateInfo;
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = backend->logicalDevice;
+                memoryCreateInfo.physicalDevice = backend->physicalDevice;
+                VulkanImage::initMemory(image.memory, image.instance, memoryCreateInfo);
+
+                VulkanImageViewCreateInfo viewCreateInfo;
+                viewCreateInfo.count         = 1;
+                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+                viewCreateInfo.format        = image.format;
+                viewCreateInfo.logicalDevice = backend->logicalDevice;
+                VulkanImage::initView(image.view, image.instance, viewCreateInfo);
+
+                VulkanImage::transitionLayout(
+                    backend->mainCommandBuffer,
+                    backend->graphicsQueue,
+                    image.instance,
+                    vk::ImageLayout::eUndefined,
+                    vk::ImageLayout::eShaderReadOnlyOptimal,
+                    1
+                );
+
+                vk::DescriptorImageInfo& info = m_backdropInfos.at(i);
+                info.sampler                  = image.sampler;
+                info.imageView                = image.view;
+                info.imageLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
+            }
+        }
+
+        void VulkanLUI::destroyBackdrop()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            for (VulkanImageInfo& image : m_backdrops)
+            {
+                if (image.sampler)
+                {
+                    backend->logicalDevice.destroySampler(image.sampler);
+                }
+
+                if (image.view)
+                {
+                    backend->logicalDevice.destroyImageView(image.view);
+                }
+
+                if (image.instance)
+                {
+                    backend->logicalDevice.destroyImage(image.instance);
+                }
+
+                if (image.memory)
+                {
+                    backend->logicalDevice.freeMemory(image.memory);
+                }
+            }
+
+            m_backdrops.clear();
+            m_backdropInfos.clear();
+        }
+
+        void VulkanLUI::copyBackdrop(VulkanFrame& inFrame, std::size_t inIndex)
+        {
+            if (inIndex >= m_backdrops.size())
+            {
+                return;
+            }
+
+            const VulkanImageInfo& backdrop = m_backdrops.at(inIndex);
+            const vk::Image        source   = inFrame.image.colorImage.instance;
+            vk::CommandBuffer      commands = inFrame.commandBuffer;
+            const vk::Extent2D     extent   = backdrop.extent;
+
+            vk::ImageSubresourceRange range;
+            range.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            range.baseMipLevel   = 0;
+            range.levelCount     = 1;
+            range.baseArrayLayer = 0;
+            range.layerCount     = 1;
+
+            vk::ImageMemoryBarrier sourceToTransfer;
+            sourceToTransfer.oldLayout           = vk::ImageLayout::eColorAttachmentOptimal;
+            sourceToTransfer.newLayout           = vk::ImageLayout::eTransferSrcOptimal;
+            sourceToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            sourceToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            sourceToTransfer.image               = source;
+            sourceToTransfer.srcAccessMask       = vk::AccessFlagBits::eColorAttachmentWrite;
+            sourceToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferRead;
+            sourceToTransfer.subresourceRange    = range;
+
+            vk::ImageMemoryBarrier backdropToTransfer;
+            backdropToTransfer.oldLayout           = vk::ImageLayout::eShaderReadOnlyOptimal;
+            backdropToTransfer.newLayout           = vk::ImageLayout::eTransferDstOptimal;
+            backdropToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            backdropToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            backdropToTransfer.image               = backdrop.instance;
+            backdropToTransfer.srcAccessMask       = vk::AccessFlagBits::eShaderRead;
+            backdropToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferWrite;
+            backdropToTransfer.subresourceRange    = range;
+
+            std::array<vk::ImageMemoryBarrier, 2> before = {sourceToTransfer, backdropToTransfer};
+            commands.pipelineBarrier(
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                before
+            );
+
+            vk::ImageCopy region;
+            region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            region.srcSubresource.mipLevel       = 0;
+            region.srcSubresource.baseArrayLayer = 0;
+            region.srcSubresource.layerCount     = 1;
+            region.dstSubresource                = region.srcSubresource;
+            region.extent                        = vk::Extent3D(extent.width, extent.height, 1);
+
+            commands.copyImage(
+                source,
+                vk::ImageLayout::eTransferSrcOptimal,
+                backdrop.instance,
+                vk::ImageLayout::eTransferDstOptimal,
+                region
+            );
+
+            vk::ImageMemoryBarrier sourceToColor = sourceToTransfer;
+            sourceToColor.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
+            sourceToColor.newLayout              = vk::ImageLayout::eColorAttachmentOptimal;
+            sourceToColor.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
+            sourceToColor.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
+
+            vk::ImageMemoryBarrier backdropToShader = backdropToTransfer;
+            backdropToShader.oldLayout              = vk::ImageLayout::eTransferDstOptimal;
+            backdropToShader.newLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
+            backdropToShader.srcAccessMask          = vk::AccessFlagBits::eTransferWrite;
+            backdropToShader.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
+
+            std::array<vk::ImageMemoryBarrier, 2> after = {sourceToColor, backdropToShader};
+            commands.pipelineBarrier(
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                after
+            );
         }
     }
 }

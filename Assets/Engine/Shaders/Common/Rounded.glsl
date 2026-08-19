@@ -87,3 +87,32 @@ float roundedRectCoverage(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiu
 
     return 1.0 - smoothstep(-0.75, 0.75, dist);
 }
+
+float roundedRectSDF(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
+    vec2 size     = max(inBox.zw - inBox.xy, vec2(1e-4));
+    vec2 p        = inPoint - mix(inBox.xy, inBox.zw, 0.5);
+    vec2 halfSize = size * 0.5;
+    vec2 radius   = vec2(0.0);
+
+    if (p.x < 0.0) {
+        radius = (p.y < 0.0) ? vec2(inRadiusX.x, inRadiusY.x) : vec2(inRadiusX.w, inRadiusY.w);
+    } else {
+        radius = (p.y < 0.0) ? vec2(inRadiusX.y, inRadiusY.y) : vec2(inRadiusX.z, inRadiusY.z);
+    }
+
+    radius = min(max(radius, vec2(0.0)), halfSize);
+
+    vec2 q      = abs(p);
+    vec2 inner  = halfSize - radius;
+    vec2 corner = q - inner;
+
+    if (radius.x > 0.0 && radius.y > 0.0 && corner.x > 0.0 && corner.y > 0.0) {
+        vec2 n = corner / radius;
+
+        return (length(n) - 1.0) * min(radius.x, radius.y);
+    }
+
+    vec2 d = q - halfSize;
+
+    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+}

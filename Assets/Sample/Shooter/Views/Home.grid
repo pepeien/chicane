@@ -3,16 +3,8 @@
         <Text>YOU WIN</Text>
     </Container>
     <Container class="telemetry">
-        <Text class="telemetry__system">Scene</Text>
-        <Text>{{ telemetry.scene.frame.rate }} FPS | {{ telemetry.scene.frame.delta }} ms</Text>
-    </Container>
-    <Container class="telemetry">
-        <Text class="telemetry__system">UI</Text>
-        <Text>{{ telemetry.ui.frame.rate }} FPS | {{ telemetry.ui.frame.delta }} ms</Text>
-    </Container>
-    <Container class="telemetry">
-        <Text class="telemetry__system">Renderer</Text>
-        <Text>{{ telemetry.renderer.frame.rate }} FPS | {{ telemetry.renderer.frame.delta }} ms</Text>
+        <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
+        <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
     </Container>
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>
     <Container class="crosshair">

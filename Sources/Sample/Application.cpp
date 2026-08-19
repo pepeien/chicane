@@ -3,6 +3,9 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
+#include "Sample/Shooter/Scene.hpp"
+#include "Sample/Shooter/View/Home.hpp"
+
 Application::Application()
 {
     Chicane::ApplicationCreateInfo createInfo;
@@ -15,7 +18,12 @@ Application::Application()
     createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
     // Setup
-    createInfo.onSetup = [this]() { initController(); };
+    createInfo.onSetup = [this]()
+    {
+        initController();
+        initScene();
+        initView();
+    };
 
     Chicane::Application::getInstance().run(createInfo);
 }
@@ -25,4 +33,14 @@ void Application::initController()
     m_controller = std::make_unique<Chicane::Controller>();
 
     Chicane::Application::getInstance().setController(m_controller.get());
+}
+
+void Application::initScene()
+{
+    Chicane::Application::getInstance().setScene<Scene>();
+}
+
+void Application::initView()
+{
+    Chicane::Application::getInstance().setView<HomeView>();
 }
