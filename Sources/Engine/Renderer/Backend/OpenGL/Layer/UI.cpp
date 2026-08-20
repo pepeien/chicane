@@ -1,5 +1,8 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
 
+#include <algorithm>
+#include <cmath>
+
 #include <glad/gl.h>
 
 #include "Chicane/Core/FileSystem.hpp"
@@ -114,24 +117,11 @@ namespace Chicane
 
             const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
+            auto drawRange = [&](const DrawPoly& draw, std::uint32_t first, std::uint32_t count)
             {
-                bool                bNeedsBackdrop = false;
-                const std::uint32_t instanceEnd    = draw.instanceStart + draw.instanceCount;
-                for (std::uint32_t i = draw.instanceStart; i < instanceEnd && i < instances.size(); i++)
+                if (count == 0)
                 {
-                    if (instances.at(i).backdropBlur > 0.0f)
-                    {
-                        bNeedsBackdrop = true;
-
-                        break;
-                    }
-                }
-
-                if (bNeedsBackdrop)
-                {
-                    copyBackdrop(viewport);
-                    glBindTextureUnit(1, m_backdropTexture);
+                    return;
                 }
 
                 glDrawElementsInstancedBaseVertexBaseInstance(
@@ -139,10 +129,70 @@ namespace Chicane
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(Vertex::Index) * draw.indexStart),
-                    draw.instanceCount,
+                    count,
                     draw.vertexStart,
-                    draw.instanceStart
+                    first
                 );
+            };
+
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
+            {
+                std::uint32_t       runStart    = draw.instanceStart;
+                std::uint32_t       runCount    = 0;
+                bool                runBackdrop = false;
+                const std::uint32_t instanceEnd = draw.instanceStart + draw.instanceCount;
+
+                auto flush = [&]()
+                {
+                    if (runCount == 0)
+                    {
+                        return;
+                    }
+
+                    if (runBackdrop)
+                    {
+                        glMemoryBarrier(GL_FRAMEBUFFER_BARRIER_BIT);
+                        copyBackdrop(viewport);
+                        glBindTextureUnit(1, m_backdropTexture);
+                        glViewport(
+                            viewport.position.x,
+                            viewport.position.y,
+                            viewport.size.x,
+                            viewport.size.y
+                        );
+                    }
+
+                    drawRange(draw, runStart, runCount);
+                    runCount = 0;
+                };
+
+                for (std::uint32_t i = draw.instanceStart; i < instanceEnd; i++)
+                {
+                    const bool backdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
+
+                    if (runCount == 0)
+                    {
+                        runStart    = i;
+                        runBackdrop = backdrop;
+                        runCount    = 1;
+
+                        continue;
+                    }
+
+                    if (backdrop != runBackdrop || backdrop)
+                    {
+                        flush();
+                        runStart    = i;
+                        runBackdrop = backdrop;
+                        runCount    = 1;
+
+                        continue;
+                    }
+
+                    runCount++;
+                }
+
+                flush();
             }
         }
 
@@ -317,12 +367,17 @@ namespace Chicane
 
             destroyBackdrop();
 
+            const std::int32_t levels = 1 + static_cast<std::int32_t>(
+                std::floor(std::log2(static_cast<float>(std::max(inWidth, inHeight))))
+            );
+
             glCreateTextures(GL_TEXTURE_2D, 1, &m_backdropTexture);
-            glTextureStorage2D(m_backdropTexture, 1, GL_RGBA8, inWidth, inHeight);
-            glTextureParameteri(m_backdropTexture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureStorage2D(m_backdropTexture, levels, GL_RGBA8, inWidth, inHeight);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTextureParameteri(m_backdropTexture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_backdropTexture, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_backdropTexture, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTextureParameteri(m_backdropTexture, GL_TEXTURE_MAX_LEVEL, levels - 1);
 
             glCreateFramebuffers(1, &m_backdropFramebuffer);
             glNamedFramebufferTexture(m_backdropFramebuffer, GL_COLOR_ATTACHMENT0, m_backdropTexture, 0);
@@ -355,6 +410,7 @@ namespace Chicane
             glBlitFramebuffer(x, y, x + width, y + height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
             glBindFramebuffer(GL_FRAMEBUFFER, source);
+            glGenerateTextureMipmap(m_backdropTexture);
             if (source == 0)
             {
                 glReadBuffer(GL_BACK);

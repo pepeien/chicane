@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
@@ -97,36 +99,17 @@ namespace Chicane
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
-            bool bNeedsBackdrop = false;
-            for (const DrawPoly2DInstance& instance : inFrame.getInstances2D())
+            std::size_t frameIndex = 0;
+            for (; frameIndex < backend->frames.size(); frameIndex++)
             {
-                if (instance.backdropBlur > 0.0f)
+                if (&backend->frames.at(frameIndex) == &frame)
                 {
-                    bNeedsBackdrop = true;
-
                     break;
                 }
             }
 
-            if (bNeedsBackdrop)
-            {
-                std::size_t frameIndex = 0;
-                for (; frameIndex < backend->frames.size(); frameIndex++)
-                {
-                    if (&backend->frames.at(frameIndex) == &frame)
-                    {
-                        break;
-                    }
-                }
-
-                copyBackdrop(frame, frameIndex);
-            }
-
             vk::Viewport viewport = backend->getVkViewport(this);
-            commandBuffer.setViewport(0, 1, &viewport);
-
-            vk::Rect2D scissor = backend->getVkScissor(this);
-            commandBuffer.setScissor(0, 1, &scissor);
+            vk::Rect2D   scissor  = backend->getVkScissor(this);
 
             vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass               = m_graphicsPipeline.renderPass;
@@ -136,37 +119,104 @@ namespace Chicane
             beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
             beginInfo.pClearValues             = m_clear.data();
 
-            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+            bool inPass = false;
 
-            // Pipeline
-            m_graphicsPipeline.bind(commandBuffer);
+            auto endPass = [&]()
+            {
+                if (!inPass)
+                {
+                    return;
+                }
 
-            // Frame
-            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                commandBuffer.endRenderPass();
+                inPass = false;
+            };
 
-            // Texture
-            m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
+            auto beginPass = [&]()
+            {
+                if (inPass)
+                {
+                    return;
+                }
 
-            // Draw
-            vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
-            vk::DeviceSize offsets[]       = {0};
+                commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+                m_graphicsPipeline.bind(commandBuffer);
+                m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
 
-            commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(m_primitiveIndexBuffer.instance, 0, vk::IndexType::eUint32);
+                commandBuffer.setViewport(0, 1, &viewport);
+                commandBuffer.setScissor(0, 1, &scissor);
 
-            commandBuffer.bindIndexBuffer(m_primitiveIndexBuffer.instance, 0, vk::IndexType::eUint32);
+                inPass = true;
+            };
+
+            const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
 
             for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
-                commandBuffer.drawIndexed(
-                    draw.indexCount,
-                    draw.instanceCount,
-                    draw.indexStart,
-                    draw.vertexStart,
-                    draw.instanceStart
-                );
+                std::uint32_t       runStart    = draw.instanceStart;
+                std::uint32_t       runCount    = 0;
+                bool                runBackdrop = false;
+                const std::uint32_t instanceEnd = draw.instanceStart + draw.instanceCount;
+
+                auto flush = [&]()
+                {
+                    if (runCount == 0)
+                    {
+                        return;
+                    }
+
+                    if (runBackdrop)
+                    {
+                        endPass();
+                        copyBackdrop(frame, frameIndex);
+                    }
+
+                    beginPass();
+                    commandBuffer.drawIndexed(
+                        draw.indexCount,
+                        runCount,
+                        draw.indexStart,
+                        draw.vertexStart,
+                        runStart
+                    );
+                    runCount = 0;
+                };
+
+                for (std::uint32_t i = draw.instanceStart; i < instanceEnd; i++)
+                {
+                    const bool backdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
+
+                    if (runCount == 0)
+                    {
+                        runStart    = i;
+                        runBackdrop = backdrop;
+                        runCount    = 1;
+
+                        continue;
+                    }
+
+                    if (backdrop != runBackdrop || backdrop)
+                    {
+                        flush();
+                        runStart    = i;
+                        runBackdrop = backdrop;
+                        runCount    = 1;
+
+                        continue;
+                    }
+
+                    runCount++;
+                }
+
+                flush();
             }
 
-            commandBuffer.endRenderPass();
+            endPass();
         }
 
         void VulkanLUI::initFrameResources()
@@ -533,6 +583,15 @@ namespace Chicane
         {
             VulkanBackend*     backend = getBackend<VulkanBackend>();
             const vk::Extent2D extent  = backend->swapchain.extent;
+            m_backdropMipLevels        = 1;
+            {
+                std::uint32_t size = std::max(extent.width, extent.height);
+                while (size > 1)
+                {
+                    size >>= 1;
+                    m_backdropMipLevels++;
+                }
+            }
 
             m_backdrops.resize(backend->frames.size());
             m_backdropInfos.resize(backend->frames.size());
@@ -544,13 +603,15 @@ namespace Chicane
                 image.extent           = extent;
 
                 VulkanImageCreateInfo instanceCreateInfo{};
-                instanceCreateInfo.flags  = vk::ImageCreateFlags();
-                instanceCreateInfo.width  = extent.width;
-                instanceCreateInfo.height = extent.height;
-                instanceCreateInfo.count  = 1;
-                instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
-                instanceCreateInfo.usage  = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
-                instanceCreateInfo.format = image.format;
+                instanceCreateInfo.flags     = vk::ImageCreateFlags();
+                instanceCreateInfo.width     = extent.width;
+                instanceCreateInfo.height    = extent.height;
+                instanceCreateInfo.count     = 1;
+                instanceCreateInfo.mipLevels = m_backdropMipLevels;
+                instanceCreateInfo.tiling    = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.usage     = vk::ImageUsageFlagBits::eTransferSrc |
+                                           vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format        = image.format;
                 instanceCreateInfo.logicalDevice = backend->logicalDevice;
                 VulkanImage::initInstance(image.instance, instanceCreateInfo);
 
@@ -567,8 +628,8 @@ namespace Chicane
                 samplerCreateInfo.unnormalizedCoordinates = false;
                 samplerCreateInfo.compareEnable           = false;
                 samplerCreateInfo.minLod                  = 0.0f;
-                samplerCreateInfo.maxLod                  = 1.0f;
-                image.sampler                             = backend->logicalDevice.createSampler(samplerCreateInfo);
+                samplerCreateInfo.maxLod = static_cast<float>(std::max(1u, m_backdropMipLevels) - 1u);
+                image.sampler            = backend->logicalDevice.createSampler(samplerCreateInfo);
 
                 VulkanImageMemoryCreateInfo memoryCreateInfo;
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -578,6 +639,7 @@ namespace Chicane
 
                 VulkanImageViewCreateInfo viewCreateInfo;
                 viewCreateInfo.count         = 1;
+                viewCreateInfo.mipLevels     = m_backdropMipLevels;
                 viewCreateInfo.type          = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
                 viewCreateInfo.format        = image.format;
@@ -696,6 +758,8 @@ namespace Chicane
                 region
             );
 
+            generateBackdropMips(commands, inIndex);
+
             vk::ImageMemoryBarrier sourceToColor = sourceToTransfer;
             sourceToColor.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
             sourceToColor.newLayout              = vk::ImageLayout::eColorAttachmentOptimal;
@@ -703,21 +767,152 @@ namespace Chicane
             sourceToColor.dstAccessMask =
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
-            vk::ImageMemoryBarrier backdropToShader = backdropToTransfer;
-            backdropToShader.oldLayout              = vk::ImageLayout::eTransferDstOptimal;
-            backdropToShader.newLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
-            backdropToShader.srcAccessMask          = vk::AccessFlagBits::eTransferWrite;
-            backdropToShader.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
-
-            std::array<vk::ImageMemoryBarrier, 2> after = {sourceToColor, backdropToShader};
             commands.pipelineBarrier(
                 vk::PipelineStageFlagBits::eTransfer,
-                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
-                after
+                sourceToColor
             );
+        }
+
+        void VulkanLUI::generateBackdropMips(vk::CommandBuffer inCommands, std::size_t inIndex)
+        {
+            const VulkanImageInfo& backdrop = m_backdrops.at(inIndex);
+            const std::uint32_t    levels   = std::max(1u, m_backdropMipLevels);
+
+            vk::ImageSubresourceRange range;
+            range.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            range.baseMipLevel   = 0;
+            range.levelCount     = 1;
+            range.baseArrayLayer = 0;
+            range.layerCount     = 1;
+
+            auto barrier = [&](std::uint32_t             inLevel,
+                               vk::ImageLayout           inOldLayout,
+                               vk::ImageLayout           inNewLayout,
+                               vk::AccessFlags           inSrcAccess,
+                               vk::AccessFlags           inDstAccess,
+                               vk::PipelineStageFlags    inSrcStage,
+                               vk::PipelineStageFlags    inDstStage)
+            {
+                vk::ImageMemoryBarrier imageBarrier;
+                imageBarrier.oldLayout           = inOldLayout;
+                imageBarrier.newLayout           = inNewLayout;
+                imageBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+                imageBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+                imageBarrier.image               = backdrop.instance;
+                imageBarrier.srcAccessMask       = inSrcAccess;
+                imageBarrier.dstAccessMask       = inDstAccess;
+                imageBarrier.subresourceRange    = range;
+                imageBarrier.subresourceRange.baseMipLevel = inLevel;
+
+                inCommands.pipelineBarrier(inSrcStage, inDstStage, vk::DependencyFlags(), nullptr, nullptr, imageBarrier);
+            };
+
+            if (levels == 1)
+            {
+                barrier(
+                    0,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    vk::ImageLayout::eShaderReadOnlyOptimal,
+                    vk::AccessFlagBits::eTransferWrite,
+                    vk::AccessFlagBits::eShaderRead,
+                    vk::PipelineStageFlagBits::eTransfer,
+                    vk::PipelineStageFlagBits::eFragmentShader
+                );
+
+                return;
+            }
+
+            barrier(
+                0,
+                vk::ImageLayout::eTransferDstOptimal,
+                vk::ImageLayout::eTransferSrcOptimal,
+                vk::AccessFlagBits::eTransferWrite,
+                vk::AccessFlagBits::eTransferRead,
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::PipelineStageFlagBits::eTransfer
+            );
+
+            std::int32_t srcWidth  = static_cast<std::int32_t>(backdrop.extent.width);
+            std::int32_t srcHeight = static_cast<std::int32_t>(backdrop.extent.height);
+
+            for (std::uint32_t level = 1; level < levels; level++)
+            {
+                const std::int32_t dstWidth  = std::max(1, srcWidth / 2);
+                const std::int32_t dstHeight = std::max(1, srcHeight / 2);
+
+                barrier(
+                    level,
+                    vk::ImageLayout::eUndefined,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    vk::AccessFlagBits::eNone,
+                    vk::AccessFlagBits::eTransferWrite,
+                    vk::PipelineStageFlagBits::eTransfer,
+                    vk::PipelineStageFlagBits::eTransfer
+                );
+
+                vk::ImageBlit blit{};
+                blit.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                blit.srcSubresource.mipLevel       = level - 1;
+                blit.srcSubresource.baseArrayLayer = 0;
+                blit.srcSubresource.layerCount     = 1;
+                blit.srcOffsets[1]                 = vk::Offset3D(srcWidth, srcHeight, 1);
+                blit.dstSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                blit.dstSubresource.mipLevel       = level;
+                blit.dstSubresource.baseArrayLayer = 0;
+                blit.dstSubresource.layerCount     = 1;
+                blit.dstOffsets[1]                 = vk::Offset3D(dstWidth, dstHeight, 1);
+
+                inCommands.blitImage(
+                    backdrop.instance,
+                    vk::ImageLayout::eTransferSrcOptimal,
+                    backdrop.instance,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    blit,
+                    vk::Filter::eLinear
+                );
+
+                barrier(
+                    level - 1,
+                    vk::ImageLayout::eTransferSrcOptimal,
+                    vk::ImageLayout::eShaderReadOnlyOptimal,
+                    vk::AccessFlagBits::eTransferRead,
+                    vk::AccessFlagBits::eShaderRead,
+                    vk::PipelineStageFlagBits::eTransfer,
+                    vk::PipelineStageFlagBits::eFragmentShader
+                );
+
+                if (level + 1 < levels)
+                {
+                    barrier(
+                        level,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        vk::ImageLayout::eTransferSrcOptimal,
+                        vk::AccessFlagBits::eTransferWrite,
+                        vk::AccessFlagBits::eTransferRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eTransfer
+                    );
+                }
+                else
+                {
+                    barrier(
+                        level,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::AccessFlagBits::eTransferWrite,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader
+                    );
+                }
+
+                srcWidth  = dstWidth;
+                srcHeight = dstHeight;
+            }
         }
     }
 }

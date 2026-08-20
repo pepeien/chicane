@@ -71,6 +71,11 @@ namespace Chicane
             setPrimitive(primitive);
         }
 
+        void TextGlyph::refreshStyleRuleset()
+        {
+            return;
+        }
+
         void TextGlyph::configure(
             const Box::FontGlyph* inGlyph,
             float                 inFontSize,

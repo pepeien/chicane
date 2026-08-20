@@ -36,6 +36,7 @@ namespace Chicane
               backdrop({}),
               font({}),
               letterSpacing(0.0f),
+              cursor(WindowCursor::Default),
               m_parent(nullptr)
         {
             display.parseWith(
@@ -168,6 +169,8 @@ namespace Chicane
 
             letterSpacing.parseWith([this](const String& inValue)
                                     { return parseSize(inValue, SizeDirection::Horizontal); });
+
+            cursor.parseWith([this](const String& inValue) { return parseCursor(inValue); });
         }
 
         bool Style::isDisplay(StyleDisplay inValue) const
@@ -312,7 +315,71 @@ namespace Chicane
                 overflowY.setRaw(inProperties.at(OVERFLOW_Y_ATTRIBUTE_NAME));
             }
 
+            if (inProperties.find(CURSOR_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                cursor.setRaw(inProperties.at(CURSOR_ATTRIBUTE_NAME));
+            }
+            else
+            {
+                cursor.setRaw("");
+            }
+
             refresh();
+        }
+
+        void Style::copyValuesFrom(const Style& inStyle)
+        {
+            display.copyValue(inStyle.display);
+            zIndex.copyValue(inStyle.zIndex);
+            width.copyValue(inStyle.width);
+            height.copyValue(inStyle.height);
+
+            flex.direction.copyValue(inStyle.flex.direction);
+            flex.wrap.copyValue(inStyle.flex.wrap);
+
+            position.copyValue(inStyle.position);
+            align.copyValue(inStyle.align);
+
+            margin.top.copyValue(inStyle.margin.top);
+            margin.bottom.copyValue(inStyle.margin.bottom);
+            margin.left.copyValue(inStyle.margin.left);
+            margin.right.copyValue(inStyle.margin.right);
+
+            padding.top.copyValue(inStyle.padding.top);
+            padding.bottom.copyValue(inStyle.padding.bottom);
+            padding.left.copyValue(inStyle.padding.left);
+            padding.right.copyValue(inStyle.padding.right);
+
+            gap.top.copyValue(inStyle.gap.top);
+            gap.bottom.copyValue(inStyle.gap.bottom);
+            gap.left.copyValue(inStyle.gap.left);
+            gap.right.copyValue(inStyle.gap.right);
+
+            overflowX.copyValue(inStyle.overflowX);
+            overflowY.copyValue(inStyle.overflowY);
+
+            radius.x.top.copyValue(inStyle.radius.x.top);
+            radius.x.bottom.copyValue(inStyle.radius.x.bottom);
+            radius.x.left.copyValue(inStyle.radius.x.left);
+            radius.x.right.copyValue(inStyle.radius.x.right);
+
+            radius.y.top.copyValue(inStyle.radius.y.top);
+            radius.y.bottom.copyValue(inStyle.radius.y.bottom);
+            radius.y.left.copyValue(inStyle.radius.y.left);
+            radius.y.right.copyValue(inStyle.radius.y.right);
+
+            background.color.copyValue(inStyle.background.color);
+            background.image.copyValue(inStyle.background.image);
+
+            foregroundColor.copyValue(inStyle.foregroundColor);
+            opacity.copyValue(inStyle.opacity);
+            filter.blur.copyValue(inStyle.filter.blur);
+            backdrop.blur.copyValue(inStyle.backdrop.blur);
+
+            font.family.copyValue(inStyle.font.family);
+            font.size.copyValue(inStyle.font.size);
+            letterSpacing.copyValue(inStyle.letterSpacing);
+            cursor.copyValue(inStyle.cursor);
         }
 
         bool Style::hasParent() const
@@ -351,6 +418,7 @@ namespace Chicane
             refreshFilter();
             refreshFont();
             refreshLetterSpacing();
+            refreshCursor();
         }
 
         void Style::refreshDisplay()
@@ -514,6 +582,95 @@ namespace Chicane
             letterSpacing.refresh();
         }
 
+        void Style::refreshCursor()
+        {
+            if (cursor.getRaw().isEmpty())
+            {
+                cursor.set(hasParent() ? m_parent->getStyle().cursor.get() : WindowCursor::Default);
+
+                return;
+            }
+
+            cursor.refresh();
+        }
+
+        WindowCursor Style::parseCursor(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim().toLower();
+
+            if (value.equals(CURSOR_TYPE_POINTER))
+            {
+                return WindowCursor::Pointer;
+            }
+
+            if (value.equals(CURSOR_TYPE_TEXT))
+            {
+                return WindowCursor::Text;
+            }
+
+            if (value.equals(CURSOR_TYPE_CROSSHAIR))
+            {
+                return WindowCursor::Crosshair;
+            }
+
+            if (value.equals(CURSOR_TYPE_MOVE))
+            {
+                return WindowCursor::Move;
+            }
+
+            if (value.equals(CURSOR_TYPE_NOT_ALLOWED))
+            {
+                return WindowCursor::NotAllowed;
+            }
+
+            if (value.equals(CURSOR_TYPE_WAIT))
+            {
+                return WindowCursor::Wait;
+            }
+
+            if (value.equals(CURSOR_TYPE_PROGRESS))
+            {
+                return WindowCursor::Progress;
+            }
+
+            if (value.equals(CURSOR_TYPE_GRAB))
+            {
+                return WindowCursor::Grab;
+            }
+
+            if (value.equals(CURSOR_TYPE_GRABBING))
+            {
+                return WindowCursor::Grabbing;
+            }
+
+            if (value.equals(CURSOR_TYPE_NS_RESIZE))
+            {
+                return WindowCursor::NsResize;
+            }
+
+            if (value.equals(CURSOR_TYPE_EW_RESIZE))
+            {
+                return WindowCursor::EwResize;
+            }
+
+            if (value.equals(CURSOR_TYPE_NESW_RESIZE))
+            {
+                return WindowCursor::NeswResize;
+            }
+
+            if (value.equals(CURSOR_TYPE_NWSE_RESIZE))
+            {
+                return WindowCursor::NwseResize;
+            }
+
+            if (value.equals(CURSOR_TYPE_NONE))
+            {
+                return WindowCursor::None;
+            }
+
+            return WindowCursor::Default;
+        }
+
         Color::Rgba Style::parseColor(const String& inValue) const
         {
             String result = "";
@@ -595,9 +752,9 @@ namespace Chicane
 
             String value = inValue.trim();
 
-            if (value.startsWith(VARIABLE_KEYWORD) && m_parent->hasStyleFile())
+            if (value.startsWith(VARIABLE_KEYWORD))
             {
-                value = parseText(m_parent->getStyleFile()->getVariable(value.substr(1)));
+                value = parseText(m_parent->getStyleVariable(value.substr(1)));
             }
 
             if (value.startsWith(REFERENCE_KEYWORD))

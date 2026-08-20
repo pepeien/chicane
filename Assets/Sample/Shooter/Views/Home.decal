@@ -42,8 +42,8 @@ $xhairNegativeOffset:  calc(calc($xhairGap + $xhairThickness) + calc($xhairSize 
 }
 
 .score {
+    margin-top: auto;
     position: absolute;
-    margin: auto 0 0 0;
     background-color: rgba($grayColor, 0.3);
     font-size: 1.5em;
     padding: 0.5em;

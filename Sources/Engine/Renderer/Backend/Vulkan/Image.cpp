@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 
@@ -47,7 +49,7 @@ namespace Chicane
                 createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
                 createInfo.imageType     = vk::ImageType::e2D;
                 createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
-                createInfo.mipLevels     = 1;
+                createInfo.mipLevels     = std::max(1u, inCreateInfo.mipLevels);
                 createInfo.arrayLayers   = inCreateInfo.count;
                 createInfo.format        = inCreateInfo.format;
                 createInfo.samples       = vk::SampleCountFlagBits::e1;
@@ -117,7 +119,7 @@ namespace Chicane
                 createInfo.components.a                    = vk::ComponentSwizzle::eA;
                 createInfo.subresourceRange.aspectMask     = inCreateInfo.aspect;
                 createInfo.subresourceRange.baseMipLevel   = 0;
-                createInfo.subresourceRange.levelCount     = 1;
+                createInfo.subresourceRange.levelCount     = std::max(1u, inCreateInfo.mipLevels);
                 createInfo.subresourceRange.baseArrayLayer = 0;
                 createInfo.subresourceRange.layerCount     = inCreateInfo.count;
 

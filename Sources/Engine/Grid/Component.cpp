@@ -1,8 +1,11 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
+#include <cstring>
+
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 #include "Chicane/Grid/Component/Scrollable.hpp"
+#include "Chicane/Grid/Component/View.hpp"
 
 namespace Chicane
 {
@@ -112,6 +115,9 @@ namespace Chicane
               m_directives({}),
               m_variables({}),
               m_style({}),
+              m_styleBase({}),
+              m_bHasStyleBase(false),
+              m_styleVariables({}),
               m_styleFile(nullptr),
               m_root(nullptr),
               m_parent(nullptr),
@@ -129,13 +135,21 @@ namespace Chicane
               m_forInstances({}),
               m_forVariable(String::empty()),
               m_forSource({}),
-              m_bSkipForDirective(false)
+              m_bSkipForDirective(false),
+              m_bHovered(false),
+              m_bFocused(false)
         {
             m_style.setParent(this);
+            m_styleBase.setParent(this);
         }
 
         Component::~Component()
         {
+            if (View* view = dynamic_cast<View*>(m_root))
+            {
+                view->clearInteraction(this);
+            }
+
             for (Component* child : m_children)
             {
                 delete child;
@@ -171,6 +185,7 @@ namespace Chicane
 
         void Component::refresh()
         {
+            refreshClassName();
             refreshStyle();
 
             onRefresh();
@@ -211,6 +226,16 @@ namespace Chicane
             return m_size.x > 0.0f && m_size.y > 0.0f;
         }
 
+        bool Component::isHovered() const
+        {
+            return m_bHovered;
+        }
+
+        bool Component::isFocused() const
+        {
+            return m_bFocused;
+        }
+
         bool Component::canAdopt(Component* inComponent) const
         {
             return inComponent != nullptr && inComponent != this;
@@ -223,11 +248,74 @@ namespace Chicane
             getMethod(getAttribute(ON_HOVER_ATTRIBUTE_NAME)).invoke();
         }
 
+        void Component::leave()
+        {
+            onLeave();
+
+            getMethod(getAttribute(ON_LEAVE_ATTRIBUTE_NAME)).invoke();
+        }
+
         void Component::click()
         {
             onClick();
 
             getMethod(getAttribute(ON_CLICK_ATTRIBUTE_NAME)).invoke();
+        }
+
+        void Component::focus()
+        {
+            onFocus();
+
+            getMethod(getAttribute(ON_FOCUS_ATTRIBUTE_NAME)).invoke();
+        }
+
+        void Component::blur()
+        {
+            onBlur();
+
+            getMethod(getAttribute(ON_BLUR_ATTRIBUTE_NAME)).invoke();
+        }
+
+        void Component::setHovered(bool inValue)
+        {
+            if (m_bHovered == inValue)
+            {
+                return;
+            }
+
+            m_bHovered = inValue;
+
+            refreshStyleRuleset();
+
+            if (inValue)
+            {
+                hover();
+
+                return;
+            }
+
+            leave();
+        }
+
+        void Component::setFocused(bool inValue)
+        {
+            if (m_bFocused == inValue)
+            {
+                return;
+            }
+
+            m_bFocused = inValue;
+
+            refreshStyleRuleset();
+
+            if (inValue)
+            {
+                focus();
+
+                return;
+            }
+
+            blur();
         }
 
         const String& Component::getTag() const
@@ -366,7 +454,47 @@ namespace Chicane
                 return false;
             }
 
-            if (inValue.equals(Style::INCLUSIVE_SELECTOR))
+            String value  = inValue.trim();
+            bool   bHover = false;
+            bool   bFocus = false;
+
+            while (true)
+            {
+                const std::size_t hoverAt = value.find(Style::PSEUDO_CLASS_HOVER);
+                const std::size_t focusAt = value.find(Style::PSEUDO_CLASS_FOCUS);
+
+                if (hoverAt == String::npos && focusAt == String::npos)
+                {
+                    break;
+                }
+
+                if (hoverAt != String::npos && (focusAt == String::npos || hoverAt <= focusAt))
+                {
+                    bHover = true;
+                    value  = value.substr(0, hoverAt) +
+                            value.substr(hoverAt + std::strlen(Style::PSEUDO_CLASS_HOVER));
+
+                    continue;
+                }
+
+                bFocus = true;
+                value  = value.substr(0, focusAt) +
+                        value.substr(focusAt + std::strlen(Style::PSEUDO_CLASS_FOCUS));
+            }
+
+            if (bHover && !m_bHovered)
+            {
+                return false;
+            }
+
+            if (bFocus && !m_bFocused)
+            {
+                return false;
+            }
+
+            value = value.trim();
+
+            if (value.isEmpty() || value.equals(Style::INCLUSIVE_SELECTOR))
             {
                 return true;
             }
@@ -374,8 +502,6 @@ namespace Chicane
             String              tag;
             String              id;
             std::vector<String> classes;
-
-            String value = inValue.trim();
 
             std::size_t cursor = value.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
 
@@ -1370,18 +1496,58 @@ namespace Chicane
             m_primitive = inPrimitive;
         }
 
+        void Component::refreshClassName()
+        {
+            const String className = parseText(getAttribute(CLASS_ATTRIBUTE_NAME));
+            if (className.equals(m_className))
+            {
+                return;
+            }
+
+            setClassName(className);
+        }
+
         void Component::refreshStyle()
         {
             m_style.refresh();
         }
 
+        const String& Component::getStyleVariable(const String& inName) const
+        {
+            const auto found = m_styleVariables.find(inName);
+            if (found != m_styleVariables.end())
+            {
+                return found->second;
+            }
+
+            if (hasParent() && !isRoot())
+            {
+                return m_parent->getStyleVariable(inName);
+            }
+
+            if (hasStyleFile())
+            {
+                return m_styleFile->getVariable(inName);
+            }
+
+            return String::empty();
+        }
+
         void Component::refreshStyleRuleset()
         {
+            m_styleVariables.clear();
+
             if (!m_styleFile)
             {
                 return;
             }
 
+            if (m_bHasStyleBase)
+            {
+                m_style.copyValuesFrom(m_styleBase);
+            }
+
+            StyleRuleset::Properties properties;
             for (const StyleRuleset& source : m_styleFile->getRulesets())
             {
                 if (source.isEmpty())
@@ -1391,11 +1557,36 @@ namespace Chicane
 
                 for (const String& selector : source.selectors)
                 {
-                    if (hasSelector(selector.trim()))
+                    if (!hasSelector(selector.trim()))
                     {
-                        addStyleProperties(source.properties);
+                        continue;
                     }
+
+                    for (const auto& [key, value] : source.properties)
+                    {
+                        if (key.startsWith(Style::VARIABLE_KEYWORD))
+                        {
+                            m_styleVariables[key.substr(1)] = value;
+
+                            continue;
+                        }
+
+                        properties[key] = value;
+                    }
+
+                    break;
                 }
+            }
+
+            if (!properties.empty())
+            {
+                addStyleProperties(properties);
+            }
+
+            if (!m_bHovered && !m_bFocused)
+            {
+                m_styleBase.copyValuesFrom(m_style);
+                m_bHasStyleBase = true;
             }
         }
 

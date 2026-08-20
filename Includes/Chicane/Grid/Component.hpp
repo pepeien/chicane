@@ -43,7 +43,10 @@ namespace Chicane
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
             static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
+            static constexpr inline const char* ON_LEAVE_ATTRIBUTE_NAME = "onLeave";
             static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
+            static constexpr inline const char* ON_FOCUS_ATTRIBUTE_NAME = "onFocus";
+            static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME  = "onBlur";
 
         public:
             CH_CONSTRUCTOR()
@@ -58,6 +61,7 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
 
+            // Events
             virtual bool onEvent(const WindowEvent& inEvent);
 
         protected:
@@ -69,8 +73,12 @@ namespace Chicane
 
             // Mouse Events
             virtual void onHover() { return; }
+            virtual void onLeave() { return; }
             virtual void onClick() { return; }
+            virtual void onFocus() { return; }
+            virtual void onBlur() { return; }
 
+            // Refresh Events
             virtual void refreshPrimitive() { return; }
 
         public:
@@ -79,12 +87,20 @@ namespace Chicane
             bool isDisplayable() const;
             bool isVisible() const;
             bool isSolid() const;
+            bool isHovered() const;
+            bool isFocused() const;
 
             bool canAdopt(Component* inComponent) const;
 
             // Mouse Events
             void hover();
+            void leave();
             void click();
+            void focus();
+            void blur();
+
+            void setHovered(bool inValue);
+            void setFocused(bool inValue);
 
             // Lifecycle Events
             virtual void tick(float inDelta);
@@ -133,6 +149,7 @@ namespace Chicane
 
             const Style& getStyle() const;
             float getFilterBlur() const;
+            const String& getStyleVariable(const String& inName) const;
 
             bool hasLocalSelector(const String& inValue) const;
             bool hasSelector(const String& inValue) const;
@@ -221,8 +238,9 @@ namespace Chicane
             String parseText(const String& inValue) const;
 
         protected:
+            void refreshClassName();
             void refreshStyle();
-            void refreshStyleRuleset();
+            virtual void refreshStyleRuleset();
             virtual void refreshSize();
             void refreshPosition();
             void refreshBounds();
@@ -257,6 +275,9 @@ namespace Chicane
 
             // Style
             Style                   m_style;
+            Style                   m_styleBase;
+            bool                    m_bHasStyleBase;
+            StyleFile::Variables    m_styleVariables;
             StyleFile*              m_styleFile;
 
             // Hierarchy
@@ -288,6 +309,8 @@ namespace Chicane
             String                  m_forVariable;
             std::any                m_forSource;
             bool                    m_bSkipForDirective;
+            bool                    m_bHovered;
+            bool                    m_bFocused;
         };
     }
 }

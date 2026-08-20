@@ -24,6 +24,9 @@ namespace Editor
         CH_FUNCTION()
         void onAssetImport();
 
+        CH_FUNCTION()
+        void onThemeSwitch();
+
     public:
         CH_FIELD()
         const Chicane::ApplicationTelemetry* telemetry;
@@ -33,5 +36,8 @@ namespace Editor
 
         CH_FIELD()
         Chicane::FileSystem::Item explorerFolder;
+
+        CH_FIELD()
+        Chicane::String theme;
     };
 }

@@ -40,6 +40,12 @@ namespace Chicane
             inline void set(const StyleProperty<T>& inProperty) { m_parsed = inProperty.get(); }
             inline void set(T inValue) { m_parsed = inValue; }
 
+            inline void copyValue(const StyleProperty& inOther)
+            {
+                m_raw    = inOther.m_raw;
+                m_parsed = inOther.m_parsed;
+            }
+
             inline void refresh()
             {
                 if (m_raw.isEmpty() || !m_parser)

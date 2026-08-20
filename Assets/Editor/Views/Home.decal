@@ -5,13 +5,51 @@ $bottomBarSize: 20vh;
 
 $explorerHeaderHeight: 2em;
 
+.--light {
+    $--green: #0b997d;
+
+    $--grey: #aaaaaa;
+    $--light-grey: #7575757b;
+    $--dark-grey: #323232;
+
+    $--black: #252525;
+    $--white: #f7f7f7;
+}
+
+.--dark {
+    $--green: #0b997d;
+
+    $--grey: #aaaaaa;
+    $--light-grey: #7575757b;
+    $--dark-grey: #323232;
+
+    $--black: #f7f7f7;
+    $--white: #252525;
+}
+
+Button:hover {
+    cursor: pointer;
+}
+
 .telemetry {
     padding: 0.2em;
 }
 
+.theme-button {
+    width: 10em;
+    height: 2em;
+    position: absolute;
+    margin-left: calc(100% - calc($sideBarSize + 10em));
+    background-color: $--dark-grey;
+
+    Text {
+        margin: auto;
+    }
+}
+
 .--menu {
     position: absolute;
-    background-color: #242424;
+    background-color: $--dark-grey;
 }
 
 .outliner {
@@ -36,7 +74,7 @@ $explorerHeaderHeight: 2em;
         display: flex;
         flex-direction: row;
         gap: 0 0.25em;
-        background-color: black;
+        background-color: $--white;
 
         &__location {
             display: flex;
@@ -58,8 +96,12 @@ $explorerHeaderHeight: 2em;
     &__item {
         height: 5.5em;
         width: 10em;
-        background-color: gray;
+        background-color: $--green;
         overflow: auto;
-        alignment: center;
+
+        Text {
+            color: $--white;
+            margin: auto;
+        }
     }
 }

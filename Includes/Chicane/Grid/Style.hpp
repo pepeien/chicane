@@ -4,6 +4,7 @@
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window/Cursor.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -61,6 +62,9 @@ namespace Chicane
             static constexpr inline const char  SELECTOR_INHERITANCE     = '&';
             static constexpr inline const char  SELECTOR_SEPARATOR_COMMA = ',';
             static constexpr inline const char  SELECTOR_SEPARATOR_SPACE = ' ';
+            static constexpr inline const char  PSEUDO_CLASS_SELECTOR    = ':';
+            static constexpr inline const char* PSEUDO_CLASS_HOVER       = ":hover";
+            static constexpr inline const char* PSEUDO_CLASS_FOCUS       = ":focus";
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
@@ -80,6 +84,25 @@ namespace Chicane
 
             // Z-Index
             static constexpr inline const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
+
+            // Cursor
+            static constexpr inline const char* CURSOR_ATTRIBUTE_NAME     = "cursor";
+            static constexpr inline const char* CURSOR_TYPE_AUTO          = "auto";
+            static constexpr inline const char* CURSOR_TYPE_DEFAULT       = "default";
+            static constexpr inline const char* CURSOR_TYPE_POINTER       = "pointer";
+            static constexpr inline const char* CURSOR_TYPE_TEXT          = "text";
+            static constexpr inline const char* CURSOR_TYPE_CROSSHAIR     = "crosshair";
+            static constexpr inline const char* CURSOR_TYPE_MOVE          = "move";
+            static constexpr inline const char* CURSOR_TYPE_NOT_ALLOWED   = "not-allowed";
+            static constexpr inline const char* CURSOR_TYPE_WAIT          = "wait";
+            static constexpr inline const char* CURSOR_TYPE_PROGRESS      = "progress";
+            static constexpr inline const char* CURSOR_TYPE_GRAB          = "grab";
+            static constexpr inline const char* CURSOR_TYPE_GRABBING      = "grabbing";
+            static constexpr inline const char* CURSOR_TYPE_NS_RESIZE     = "ns-resize";
+            static constexpr inline const char* CURSOR_TYPE_EW_RESIZE     = "ew-resize";
+            static constexpr inline const char* CURSOR_TYPE_NESW_RESIZE   = "nesw-resize";
+            static constexpr inline const char* CURSOR_TYPE_NWSE_RESIZE   = "nwse-resize";
+            static constexpr inline const char* CURSOR_TYPE_NONE          = "none";
 
             // Flex
             static constexpr inline const char* FLEX_DIRECTION_ATTRIBUTE_NAME = "flex-direction";
@@ -207,6 +230,8 @@ namespace Chicane
 
             void setProperties(const StyleRuleset::Properties& inProperties);
 
+            void copyValuesFrom(const Style& inStyle);
+
             bool hasParent() const;
             void setParent(const Component* inComponent);
 
@@ -230,8 +255,10 @@ namespace Chicane
             void refreshFilter();
             void refreshFont();
             void refreshLetterSpacing();
+            void refreshCursor();
 
             StyleOverflow parseOverflow(const String& inValue) const;
+            WindowCursor parseCursor(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
             float parseFilter(const String& inValue) const;
             float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
@@ -275,6 +302,9 @@ namespace Chicane
             // Text
             StyleFont                     font;
             StyleProperty<float>          letterSpacing;
+
+            // Pointer
+            StyleProperty<WindowCursor>   cursor;
 
         private:
             const Component* m_parent;

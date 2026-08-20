@@ -25,6 +25,7 @@ namespace Chicane
 
         protected:
             void refreshPrimitive() override;
+            void refreshStyleRuleset() override;
 
         public:
             void configure(

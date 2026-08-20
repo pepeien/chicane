@@ -23,6 +23,8 @@ namespace Chicane
           m_bIsFocused(false),
           m_bIsResizable(true),
           m_bIsMinimized(false),
+          m_cursor(WindowCursor::Default),
+          m_cursors({}),
           m_eventObservable({}),
           m_sizeObservable({}),
           m_backendObservable({})
@@ -41,6 +43,17 @@ namespace Chicane
     Window::~Window()
     {
         destroyInstance();
+
+        for (void*& cursor : m_cursors)
+        {
+            if (!cursor)
+            {
+                continue;
+            }
+
+            SDL_DestroyCursor(static_cast<SDL_Cursor*>(cursor));
+            cursor = nullptr;
+        }
 
         SDL_Quit();
     }
@@ -538,6 +551,121 @@ namespace Chicane
         }
 
         m_bIsFocused = false;
+    }
+
+    WindowCursor Window::getCursor() const
+    {
+        return m_cursor;
+    }
+
+    void Window::setCursor(WindowCursor inValue)
+    {
+        if (m_cursor == inValue)
+        {
+            return;
+        }
+
+        m_cursor = inValue;
+
+        if (inValue == WindowCursor::None)
+        {
+            SDL_HideCursor();
+
+            return;
+        }
+
+        SDL_ShowCursor();
+
+        const std::size_t index = static_cast<std::size_t>(inValue);
+        if (index >= m_cursors.size())
+        {
+            return;
+        }
+
+        if (!m_cursors.at(index))
+        {
+            SDL_SystemCursor systemCursor = SDL_SYSTEM_CURSOR_DEFAULT;
+
+            switch (inValue)
+            {
+            case WindowCursor::Pointer:
+                systemCursor = SDL_SYSTEM_CURSOR_POINTER;
+
+                break;
+
+            case WindowCursor::Text:
+                systemCursor = SDL_SYSTEM_CURSOR_TEXT;
+
+                break;
+
+            case WindowCursor::Crosshair:
+                systemCursor = SDL_SYSTEM_CURSOR_CROSSHAIR;
+
+                break;
+
+            case WindowCursor::Move:
+                systemCursor = SDL_SYSTEM_CURSOR_MOVE;
+
+                break;
+
+            case WindowCursor::NotAllowed:
+                systemCursor = SDL_SYSTEM_CURSOR_NOT_ALLOWED;
+
+                break;
+
+            case WindowCursor::Wait:
+                systemCursor = SDL_SYSTEM_CURSOR_WAIT;
+
+                break;
+
+            case WindowCursor::Progress:
+                systemCursor = SDL_SYSTEM_CURSOR_PROGRESS;
+
+                break;
+
+            case WindowCursor::Grab:
+                systemCursor = SDL_SYSTEM_CURSOR_GRAB;
+
+                break;
+
+            case WindowCursor::Grabbing:
+                systemCursor = SDL_SYSTEM_CURSOR_GRABBING;
+
+                break;
+
+            case WindowCursor::NsResize:
+                systemCursor = SDL_SYSTEM_CURSOR_NS_RESIZE;
+
+                break;
+
+            case WindowCursor::EwResize:
+                systemCursor = SDL_SYSTEM_CURSOR_EW_RESIZE;
+
+                break;
+
+            case WindowCursor::NeswResize:
+                systemCursor = SDL_SYSTEM_CURSOR_NESW_RESIZE;
+
+                break;
+
+            case WindowCursor::NwseResize:
+                systemCursor = SDL_SYSTEM_CURSOR_NWSE_RESIZE;
+
+                break;
+
+            default:
+                systemCursor = SDL_SYSTEM_CURSOR_DEFAULT;
+
+                break;
+            }
+
+            m_cursors.at(index) = SDL_CreateSystemCursor(systemCursor);
+        }
+
+        if (m_cursors.at(index))
+        {
+            SDL_SetCursor(static_cast<SDL_Cursor*>(m_cursors.at(index)));
+        }
     }
 
     bool Window::isResizable() const

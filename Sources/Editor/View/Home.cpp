@@ -15,7 +15,8 @@ namespace Editor
         : Chicane::Grid::View("Assets/Editor/Views/Home.grid"),
           telemetry(&Chicane::Application::getInstance().getTelemetry()),
           outlinerActors({}),
-          explorerFolder({})
+          explorerFolder({}),
+          theme("dark")
     {
         explorerFolder.children = Chicane::FileSystem::ls();
 
@@ -31,7 +32,8 @@ namespace Editor
 
                 inScene->watchActors([&](std::vector<Chicane::Actor*> inActors)
                                      { outlinerActors = std::move(inActors); });
-            });
+            }
+        );
     }
 
     std::vector<Chicane::String> HomeView::getFolderLocations() const
@@ -46,10 +48,11 @@ namespace Editor
             return;
         }
 
-        const auto found =
-            std::find_if(explorerFolder.children.begin(),
-                         explorerFolder.children.end(),
-                         [&](const Chicane::FileSystem::Item& inItem) { return inItem.name == inFolderName; });
+        const auto found = std::find_if(
+            explorerFolder.children.begin(),
+            explorerFolder.children.end(),
+            [&](const Chicane::FileSystem::Item& inItem) { return inItem.name == inFolderName; }
+        );
 
         if (found == explorerFolder.children.end() || found->type != Chicane::FileSystem::ItemType::Folder)
         {
@@ -90,6 +93,12 @@ namespace Editor
                         continue;
                     }
                 }
-            });
+            }
+        );
+    }
+
+    void HomeView::onThemeSwitch()
+    {
+        theme = theme.equals("dark") ? "light" : "dark";
     }
 }

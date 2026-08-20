@@ -58,6 +58,7 @@ namespace Chicane
             void buildBackdrop();
             void destroyBackdrop();
             void copyBackdrop(VulkanFrame& inFrame, std::size_t inIndex);
+            void generateBackdropMips(vk::CommandBuffer inCommands, std::size_t inIndex);
 
         private:
             VulkanGraphicsPipeline               m_graphicsPipeline;
@@ -72,6 +73,7 @@ namespace Chicane
 
             std::vector<VulkanImageInfo>         m_backdrops;
             std::vector<vk::DescriptorImageInfo> m_backdropInfos;
+            std::uint32_t                        m_backdropMipLevels = 1;
 
             std::vector<vk::ClearValue>          m_clear;
         };

@@ -147,35 +147,42 @@ namespace Chicane
         StyleFile::Variables StyleFile::extractVariables(const String& inValue)
         {
             Variables result;
+            int       depth = 0;
 
             for (const String& statement : inValue.split('\n', '\r'))
             {
                 const String trimmedStatement = statement.trim();
 
-                if (!trimmedStatement.startsWith(Style::VARIABLE_KEYWORD))
+                if (depth == 0 && trimmedStatement.startsWith(Style::VARIABLE_KEYWORD))
                 {
-                    continue;
+                    std::vector<String> splittedStatement = trimmedStatement.split(':');
+
+                    if (splittedStatement.size() >= 2)
+                    {
+                        String name  = splittedStatement.at(0).trim();
+                        String value = splittedStatement.at(1).trim();
+
+                        if (value.endsWith(';'))
+                        {
+                            name.popFront();
+                            value.popBack();
+
+                            result[name] = value;
+                        }
+                    }
                 }
 
-                std::vector<String> splittedStatement = trimmedStatement.split(':');
-
-                if (splittedStatement.size() < 2)
+                for (char character : statement)
                 {
-                    continue;
+                    if (character == Style::RULESET_OPENING)
+                    {
+                        depth++;
+                    }
+                    else if (character == Style::RULESET_CLOSING && depth > 0)
+                    {
+                        depth--;
+                    }
                 }
-
-                String name  = splittedStatement.at(0).trim();
-                String value = splittedStatement.at(1).trim();
-
-                if (!value.endsWith(';'))
-                {
-                    continue;
-                }
-
-                name.popFront();
-                value.popBack();
-
-                result[name] = value;
             }
 
             return result;

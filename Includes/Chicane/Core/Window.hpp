@@ -5,9 +5,12 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Window/Cursor.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 #include "Chicane/Core/Window/Settings.hpp"
 #include "Chicane/Core/Window/Type.hpp"
+
+#include <array>
 
 namespace Chicane
 {
@@ -67,6 +70,9 @@ namespace Chicane
         void focus();
         void blur();
 
+        WindowCursor getCursor() const;
+        void setCursor(WindowCursor inValue);
+
         bool isResizable() const;
         void enableResizing();  // Only takes effect when the type is `Type::Windowed`
         void disableResizing(); // Only takes effect when the type is `Type::Windowed`
@@ -110,6 +116,9 @@ namespace Chicane
         bool                    m_bIsFocused;
         bool                    m_bIsResizable;
         bool                    m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
+
+        WindowCursor            m_cursor;
+        std::array<void*, static_cast<std::size_t>(WindowCursor::Count)> m_cursors;
 
         WindowEventObservable   m_eventObservable;
         WindowSizeObservable    m_sizeObservable;

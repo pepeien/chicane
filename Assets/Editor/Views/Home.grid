@@ -1,8 +1,11 @@
-<View path="home" style="Assets/Editor/Views/Home.decal">
+<View path="home" class="--{{ theme }}" style="Assets/Editor/Views/Home.decal">
     <Container class="telemetry">
         <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
         <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
     </Container>
+    <Button class="theme-button" onClick="{{ onThemeSwitch() }}">
+        <Text>Switch Theme</Text>
+    </Button>
     <Container class="outliner --menu">
         <Container class="outliner__items">
             <Button dir:for="actor : outlinerActors" class="outliner__item">

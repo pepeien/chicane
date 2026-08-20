@@ -16,6 +16,7 @@ namespace Chicane
             std::uint32_t        width;
             std::uint32_t        height;
             std::uint32_t        count;
+            std::uint32_t        mipLevels = 1;
 
             vk::ImageTiling      tiling;
             vk::ImageCreateFlags flags;

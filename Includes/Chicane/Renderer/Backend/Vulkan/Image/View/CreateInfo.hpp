@@ -15,6 +15,7 @@ namespace Chicane
         {
         public:
             std::uint32_t        count;
+            std::uint32_t        mipLevels = 1;
             vk::ImageViewType    type;
             vk::ImageAspectFlags aspect;
             vk::Format           format;
