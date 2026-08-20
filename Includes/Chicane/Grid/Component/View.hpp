@@ -46,10 +46,10 @@ namespace Chicane
 
         protected:
             // Routing
-            String    m_path;
+            String     m_path;
 
             // Styling
-            StyleFile m_styles;
+            StyleFile  m_styles;
 
             // Interaction
             Component* m_hovered;

@@ -109,19 +109,19 @@ namespace Chicane
         void emmitError(const String& inMessage);
 
     private:
-        void*                   m_instance;
+        void*          m_instance;
 
-        WindowSettings          m_settings;
+        WindowSettings m_settings;
 
-        bool                    m_bIsFocused;
-        bool                    m_bIsResizable;
-        bool                    m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
+        bool           m_bIsFocused;
+        bool           m_bIsResizable;
+        bool           m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
-        WindowCursor            m_cursor;
+        WindowCursor   m_cursor;
         std::array<void*, static_cast<std::size_t>(WindowCursor::Count)> m_cursors;
 
-        WindowEventObservable   m_eventObservable;
-        WindowSizeObservable    m_sizeObservable;
-        WindowBackendObservable m_backendObservable;
+        WindowEventObservable                                            m_eventObservable;
+        WindowSizeObservable                                             m_sizeObservable;
+        WindowBackendObservable                                          m_backendObservable;
     };
 }

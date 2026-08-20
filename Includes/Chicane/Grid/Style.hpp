@@ -86,23 +86,23 @@ namespace Chicane
             static constexpr inline const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
 
             // Cursor
-            static constexpr inline const char* CURSOR_ATTRIBUTE_NAME     = "cursor";
-            static constexpr inline const char* CURSOR_TYPE_AUTO          = "auto";
-            static constexpr inline const char* CURSOR_TYPE_DEFAULT       = "default";
-            static constexpr inline const char* CURSOR_TYPE_POINTER       = "pointer";
-            static constexpr inline const char* CURSOR_TYPE_TEXT          = "text";
-            static constexpr inline const char* CURSOR_TYPE_CROSSHAIR     = "crosshair";
-            static constexpr inline const char* CURSOR_TYPE_MOVE          = "move";
-            static constexpr inline const char* CURSOR_TYPE_NOT_ALLOWED   = "not-allowed";
-            static constexpr inline const char* CURSOR_TYPE_WAIT          = "wait";
-            static constexpr inline const char* CURSOR_TYPE_PROGRESS      = "progress";
-            static constexpr inline const char* CURSOR_TYPE_GRAB          = "grab";
-            static constexpr inline const char* CURSOR_TYPE_GRABBING      = "grabbing";
-            static constexpr inline const char* CURSOR_TYPE_NS_RESIZE     = "ns-resize";
-            static constexpr inline const char* CURSOR_TYPE_EW_RESIZE     = "ew-resize";
-            static constexpr inline const char* CURSOR_TYPE_NESW_RESIZE   = "nesw-resize";
-            static constexpr inline const char* CURSOR_TYPE_NWSE_RESIZE   = "nwse-resize";
-            static constexpr inline const char* CURSOR_TYPE_NONE          = "none";
+            static constexpr inline const char* CURSOR_ATTRIBUTE_NAME   = "cursor";
+            static constexpr inline const char* CURSOR_TYPE_AUTO        = "auto";
+            static constexpr inline const char* CURSOR_TYPE_DEFAULT     = "default";
+            static constexpr inline const char* CURSOR_TYPE_POINTER     = "pointer";
+            static constexpr inline const char* CURSOR_TYPE_TEXT        = "text";
+            static constexpr inline const char* CURSOR_TYPE_CROSSHAIR   = "crosshair";
+            static constexpr inline const char* CURSOR_TYPE_MOVE        = "move";
+            static constexpr inline const char* CURSOR_TYPE_NOT_ALLOWED = "not-allowed";
+            static constexpr inline const char* CURSOR_TYPE_WAIT        = "wait";
+            static constexpr inline const char* CURSOR_TYPE_PROGRESS    = "progress";
+            static constexpr inline const char* CURSOR_TYPE_GRAB        = "grab";
+            static constexpr inline const char* CURSOR_TYPE_GRABBING    = "grabbing";
+            static constexpr inline const char* CURSOR_TYPE_NS_RESIZE   = "ns-resize";
+            static constexpr inline const char* CURSOR_TYPE_EW_RESIZE   = "ew-resize";
+            static constexpr inline const char* CURSOR_TYPE_NESW_RESIZE = "nesw-resize";
+            static constexpr inline const char* CURSOR_TYPE_NWSE_RESIZE = "nwse-resize";
+            static constexpr inline const char* CURSOR_TYPE_NONE        = "none";
 
             // Flex
             static constexpr inline const char* FLEX_DIRECTION_ATTRIBUTE_NAME = "flex-direction";
