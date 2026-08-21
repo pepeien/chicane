@@ -190,6 +190,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TEXTGLYPH_REFRESHPRIMITIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshStyleRuleset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXTGLYPH_REFRESHSTYLERULESET_DESCRIPTION"
             }
         ],
         "members": [

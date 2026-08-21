@@ -602,6 +602,49 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "WindowCursor",
+                    "suffix": "",
+                    "path": "Core/Window/Cursor",
+                    "templates": []
+                },
+                "name": "getCursor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WINDOW_GETCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowCursor",
+                            "suffix": "",
+                            "path": "Core/Window/Cursor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_SETCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -986,6 +1029,55 @@
                 },
                 "name": "m_bIsMinimized",
                 "description": "CHICANE_WINDOW_M_BISMINIMIZED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "WindowCursor",
+                    "suffix": "",
+                    "path": "Core/Window/Cursor",
+                    "templates": []
+                },
+                "name": "m_cursor",
+                "description": "CHICANE_WINDOW_M_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "static_cast",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::size_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_cursors",
+                "description": "CHICANE_WINDOW_M_CURSORS_DESCRIPTION"
             },
             {
                 "accessor": "private",

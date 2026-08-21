@@ -166,6 +166,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copyValuesFrom",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Style",
+                            "suffix": "&",
+                            "path": "Grid/Style",
+                            "templates": []
+                        },
+                        "name": "inStyle"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_COPYVALUESFROM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -479,6 +505,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshCursor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "StyleOverflow",
                     "suffix": "",
                     "path": "Grid/Style/Overflow",
@@ -501,6 +542,34 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLE_PARSEOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "WindowCursor",
+                    "suffix": "",
+                    "path": "Core/Window/Cursor",
+                    "templates": []
+                },
+                "name": "parseCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSECURSOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -961,6 +1030,54 @@
                 "type": {
                     "prefix": "const ",
                     "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PSEUDO_CLASS_SELECTOR",
+                "description": "CHICANE_GRID_STYLE_PSEUDO_CLASS_SELECTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PSEUDO_CLASS_HOVER",
+                "description": "CHICANE_GRID_STYLE_PSEUDO_CLASS_HOVER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PSEUDO_CLASS_FOCUS",
+                "description": "CHICANE_GRID_STYLE_PSEUDO_CLASS_FOCUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
                     "suffix": "*",
                     "path": "",
                     "templates": []
@@ -1159,6 +1276,278 @@
                 },
                 "name": "Z_INDEX_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_Z_INDEX_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_CURSOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_AUTO",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_AUTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_DEFAULT",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_DEFAULT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_POINTER",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_POINTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_TEXT",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_TEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_CROSSHAIR",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_CROSSHAIR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_MOVE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_MOVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_NOT_ALLOWED",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_NOT_ALLOWED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_WAIT",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_WAIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_PROGRESS",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_PROGRESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_GRAB",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_GRAB_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_GRABBING",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_GRABBING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_NS_RESIZE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_NS_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_EW_RESIZE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_EW_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_NESW_RESIZE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_NESW_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_NWSE_RESIZE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_NWSE_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURSOR_TYPE_NONE",
+                "description": "CHICANE_GRID_STYLE_CURSOR_TYPE_NONE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2432,6 +2821,27 @@
                 },
                 "name": "letterSpacing",
                 "description": "CHICANE_GRID_STYLE_LETTERSPACING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowCursor",
+                            "suffix": "",
+                            "path": "Core/Window/Cursor",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "cursor",
+                "description": "CHICANE_GRID_STYLE_CURSOR_DESCRIPTION"
             },
             {
                 "accessor": "private",

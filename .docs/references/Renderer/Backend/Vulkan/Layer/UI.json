@@ -467,6 +467,42 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLUI_COPYBACKDROP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "generateBackdropMips",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommands"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLUI_GENERATEBACKDROPMIPS_DESCRIPTION"
             }
         ],
         "members": [
@@ -589,6 +625,19 @@
                 },
                 "name": "m_backdropInfos",
                 "description": "CHICANE_RENDERER_VULKANLUI_M_BACKDROPINFOS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_backdropMipLevels",
+                "description": "CHICANE_RENDERER_VULKANLUI_M_BACKDROPMIPLEVELS_DESCRIPTION"
             },
             {
                 "accessor": "private",

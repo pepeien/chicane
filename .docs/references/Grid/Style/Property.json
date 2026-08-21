@@ -226,6 +226,34 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "copyValue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_STYLEPROPERTY_COPYVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refresh",
                 "parameters": [],
                 "modifiers": [

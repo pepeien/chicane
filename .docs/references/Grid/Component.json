@@ -291,6 +291,40 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isHovered",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISHOVERED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isFocused",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISFOCUSED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "canAdopt",
                 "parameters": [
                     {
@@ -334,10 +368,107 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "leave",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_LEAVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "click",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_CLICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "focus",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_FOCUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "blur",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_BLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setHovered",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETHOVERED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFocused",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETFOCUSED_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -788,6 +919,34 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETFILTERBLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getStyleVariable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETSTYLEVARIABLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2339,12 +2498,63 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onLeave",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ONLEAVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onClick",
                 "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_ONCLICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onFocus",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ONFOCUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onBlur",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ONBLUR_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2373,6 +2583,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshClassName",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHCLASSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshStyle",
                 "parameters": [],
                 "modifiers": [],
@@ -2380,7 +2605,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -2840,8 +3065,56 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "ON_LEAVE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_ON_LEAVE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "ON_CLICK_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_COMPONENT_ON_CLICK_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_FOCUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_ON_FOCUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_BLUR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_ON_BLUR_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2920,6 +3193,45 @@
                 },
                 "name": "m_style",
                 "description": "CHICANE_GRID_COMPONENT_M_STYLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Style",
+                    "suffix": "",
+                    "path": "Grid/Style",
+                    "templates": []
+                },
+                "name": "m_styleBase",
+                "description": "CHICANE_GRID_COMPONENT_M_STYLEBASE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasStyleBase",
+                "description": "CHICANE_GRID_COMPONENT_M_BHASSTYLEBASE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleFile::Variables",
+                    "suffix": "",
+                    "path": "Grid/Style/File",
+                    "templates": []
+                },
+                "name": "m_styleVariables",
+                "description": "CHICANE_GRID_COMPONENT_M_STYLEVARIABLES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -3183,6 +3495,32 @@
                 },
                 "name": "m_bSkipForDirective",
                 "description": "CHICANE_GRID_COMPONENT_M_BSKIPFORDIRECTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHovered",
+                "description": "CHICANE_GRID_COMPONENT_M_BHOVERED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bFocused",
+                "description": "CHICANE_GRID_COMPONENT_M_BFOCUSED_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"
