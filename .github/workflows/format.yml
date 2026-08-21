@@ -9,6 +9,9 @@ on:
             - 'Scripts/Format.sh'
             - '.github/workflows/format.yml'
     workflow_dispatch:
+concurrency:
+    group: master-bots
+    cancel-in-progress: false
 jobs:
     build:
         runs-on: ubuntu-22.04
@@ -29,14 +32,17 @@ jobs:
             - name: Run script
               run: bash Scripts/Format.sh
 
+            - name: Rebase onto master
+              run: |
+                git fetch origin master
+                git pull --rebase --autostash origin master
+
             - name: Commit
-              uses: stefanzweifel/git-auto-commit-action@v5
+              uses: stefanzweifel/git-auto-commit-action@v7
               with:
-                branch: master
                 commit_message: 'Updated code format'
                 file_pattern: |
                   Includes/
                   Sources/
-                skip_dirty_check: false
-                skip_fetch: false
-                skip_checkout: false
+                skip_fetch: true
+                skip_checkout: true

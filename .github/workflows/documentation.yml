@@ -7,6 +7,9 @@ on:
             - 'Scripts/Documentation/Helper.py'
             - 'Doxyfile'
     workflow_dispatch:
+concurrency:
+    group: master-bots
+    cancel-in-progress: false
 jobs:
     build:
         runs-on: ubuntu-22.04
@@ -33,17 +36,22 @@ jobs:
                 chmod -R 755 .
 
             - name: Cleanup References
+              working-directory: .
               run: rm -rf .docs/references
 
             - name: Build References
               run: bash Documentation.sh
 
+            - name: Rebase onto master
+              working-directory: .
+              run: |
+                git fetch origin master
+                git pull --rebase --autostash origin master
+
             - name: Commit
-              uses: stefanzweifel/git-auto-commit-action@v5
+              uses: stefanzweifel/git-auto-commit-action@v7
               with:
-                branch: master
                 commit_message: 'Updated documentation'
-                file_pattern: '.docs/*.json'
-                skip_dirty_check: false
-                skip_fetch: false
-                skip_checkout: false
+                file_pattern: '.docs/**/*.json'
+                skip_fetch: true
+                skip_checkout: true
