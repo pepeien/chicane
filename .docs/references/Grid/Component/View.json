@@ -19,6 +19,21 @@
                     "templates": []
                 },
                 "name": "View",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "View",
                 "parameters": [
                     {
                         "type": {
@@ -28,7 +43,17 @@
                             "path": "Core/FileSystem/Path",
                             "templates": []
                         },
-                        "name": "inSource"
+                        "name": "inTemplate"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inStyle"
                     }
                 ],
                 "modifiers": [],
@@ -160,7 +185,7 @@
                 "description": "CHICANE_GRID_VIEW_GETSTYLEFILE_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -169,7 +194,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "importStyleFile",
+                "name": "load",
                 "parameters": [
                     {
                         "type": {
@@ -179,11 +204,21 @@
                             "path": "Core/FileSystem/Path",
                             "templates": []
                         },
-                        "name": "inValue"
+                        "name": "inTemplate"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inStyle"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_IMPORTSTYLEFILE_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -311,19 +346,6 @@
                 },
                 "name": "m_path",
                 "description": "CHICANE_GRID_VIEW_M_PATH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleFile",
-                    "suffix": "",
-                    "path": "Grid/Style/File",
-                    "templates": []
-                },
-                "name": "m_styles",
-                "description": "CHICANE_GRID_VIEW_M_STYLES_DESCRIPTION"
             },
             {
                 "accessor": "protected",

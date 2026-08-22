@@ -57,6 +57,24 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "StyleFile",
+                    "suffix": "&",
+                    "path": "Grid/Style/File",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_STYLEFILE_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
