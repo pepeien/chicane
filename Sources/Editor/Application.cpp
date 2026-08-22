@@ -10,7 +10,7 @@
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
 #include "Editor/Scene.hpp"
-#include "Editor/View/Home.hpp"
+#include "Editor/UI/View/Home.hpp"
 
 #if CHICANE_OPENGL
     #include "Layer/OpenGL/Grid.hpp"

@@ -154,12 +154,7 @@ namespace Chicane
                         glMemoryBarrier(GL_FRAMEBUFFER_BARRIER_BIT);
                         copyBackdrop(viewport);
                         glBindTextureUnit(1, m_backdropTexture);
-                        glViewport(
-                            viewport.position.x,
-                            viewport.position.y,
-                            viewport.size.x,
-                            viewport.size.y
-                        );
+                        glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
                     }
 
                     drawRange(draw, runStart, runCount);
@@ -198,7 +193,6 @@ namespace Chicane
 
         void OpenGLLUI::onEndRender()
         {
-            // Handed back writable so the next frame's scene pass can fill the depth buffer again
             glDepthMask(GL_TRUE);
             glDisable(GL_BLEND);
         }
@@ -367,9 +361,8 @@ namespace Chicane
 
             destroyBackdrop();
 
-            const std::int32_t levels = 1 + static_cast<std::int32_t>(
-                std::floor(std::log2(static_cast<float>(std::max(inWidth, inHeight))))
-            );
+            const std::int32_t levels =
+                1 + static_cast<std::int32_t>(std::floor(std::log2(static_cast<float>(std::max(inWidth, inHeight)))));
 
             glCreateTextures(GL_TEXTURE_2D, 1, &m_backdropTexture);
             glTextureStorage2D(m_backdropTexture, levels, GL_RGBA8, inWidth, inHeight);

@@ -1,0 +1,42 @@
+$explorerHeaderHeight: 2em;
+
+.--menu {
+    position: absolute;
+    background-color: $--dark-grey;
+}
+
+.explorer {
+    width: calc(100% - $sideBarSize);
+    height: $bottomBarSize;
+    margin-top: auto;
+    margin-right: $sideBarSize;
+
+    &__header {
+        width: 100%;
+        height: $explorerHeaderHeight;
+        display: flex;
+        flex-direction: row;
+        gap: 0 0.25em;
+        background-color: $--white;
+
+        &__location {
+            display: flex;
+            flex-direction: row;
+            gap: 0 0.25em;
+        }
+    }
+
+    &__items {
+        height: calc(100% - $explorerHeaderHeight);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+}
+
+Button:hover {
+    cursor: pointer;
+}

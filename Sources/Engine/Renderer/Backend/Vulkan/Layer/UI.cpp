@@ -27,7 +27,6 @@ namespace Chicane
 
         void VulkanLUI::onInit()
         {
-            // The frame descriptors point at the glyph buffer, so it has to exist first
             buildGlyphBuffer();
             buildBackdrop();
 
@@ -177,13 +176,7 @@ namespace Chicane
                     }
 
                     beginPass();
-                    commandBuffer.drawIndexed(
-                        draw.indexCount,
-                        runCount,
-                        draw.indexStart,
-                        draw.vertexStart,
-                        runStart
-                    );
+                    commandBuffer.drawIndexed(draw.indexCount, runCount, draw.indexStart, draw.vertexStart, runStart);
                     runCount = 0;
                 };
 
@@ -609,8 +602,8 @@ namespace Chicane
                 instanceCreateInfo.count     = 1;
                 instanceCreateInfo.mipLevels = m_backdropMipLevels;
                 instanceCreateInfo.tiling    = vk::ImageTiling::eOptimal;
-                instanceCreateInfo.usage     = vk::ImageUsageFlagBits::eTransferSrc |
-                                           vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.usage = vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst |
+                                           vk::ImageUsageFlagBits::eSampled;
                 instanceCreateInfo.format        = image.format;
                 instanceCreateInfo.logicalDevice = backend->logicalDevice;
                 VulkanImage::initInstance(image.instance, instanceCreateInfo);
@@ -628,8 +621,8 @@ namespace Chicane
                 samplerCreateInfo.unnormalizedCoordinates = false;
                 samplerCreateInfo.compareEnable           = false;
                 samplerCreateInfo.minLod                  = 0.0f;
-                samplerCreateInfo.maxLod = static_cast<float>(std::max(1u, m_backdropMipLevels) - 1u);
-                image.sampler            = backend->logicalDevice.createSampler(samplerCreateInfo);
+                samplerCreateInfo.maxLod                  = static_cast<float>(std::max(1u, m_backdropMipLevels) - 1u);
+                image.sampler                             = backend->logicalDevice.createSampler(samplerCreateInfo);
 
                 VulkanImageMemoryCreateInfo memoryCreateInfo;
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -789,26 +782,27 @@ namespace Chicane
             range.baseArrayLayer = 0;
             range.layerCount     = 1;
 
-            auto barrier = [&](std::uint32_t             inLevel,
-                               vk::ImageLayout           inOldLayout,
-                               vk::ImageLayout           inNewLayout,
-                               vk::AccessFlags           inSrcAccess,
-                               vk::AccessFlags           inDstAccess,
-                               vk::PipelineStageFlags    inSrcStage,
-                               vk::PipelineStageFlags    inDstStage)
+            auto barrier = [&](std::uint32_t          inLevel,
+                               vk::ImageLayout        inOldLayout,
+                               vk::ImageLayout        inNewLayout,
+                               vk::AccessFlags        inSrcAccess,
+                               vk::AccessFlags        inDstAccess,
+                               vk::PipelineStageFlags inSrcStage,
+                               vk::PipelineStageFlags inDstStage)
             {
                 vk::ImageMemoryBarrier imageBarrier;
-                imageBarrier.oldLayout           = inOldLayout;
-                imageBarrier.newLayout           = inNewLayout;
-                imageBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-                imageBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-                imageBarrier.image               = backdrop.instance;
-                imageBarrier.srcAccessMask       = inSrcAccess;
-                imageBarrier.dstAccessMask       = inDstAccess;
-                imageBarrier.subresourceRange    = range;
+                imageBarrier.oldLayout                     = inOldLayout;
+                imageBarrier.newLayout                     = inNewLayout;
+                imageBarrier.srcQueueFamilyIndex           = VK_QUEUE_FAMILY_IGNORED;
+                imageBarrier.dstQueueFamilyIndex           = VK_QUEUE_FAMILY_IGNORED;
+                imageBarrier.image                         = backdrop.instance;
+                imageBarrier.srcAccessMask                 = inSrcAccess;
+                imageBarrier.dstAccessMask                 = inDstAccess;
+                imageBarrier.subresourceRange              = range;
                 imageBarrier.subresourceRange.baseMipLevel = inLevel;
 
-                inCommands.pipelineBarrier(inSrcStage, inDstStage, vk::DependencyFlags(), nullptr, nullptr, imageBarrier);
+                inCommands
+                    .pipelineBarrier(inSrcStage, inDstStage, vk::DependencyFlags(), nullptr, nullptr, imageBarrier);
             };
 
             if (levels == 1)

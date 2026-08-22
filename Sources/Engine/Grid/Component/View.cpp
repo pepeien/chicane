@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Component/View.reflected.hpp"
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
@@ -12,59 +13,32 @@ namespace Chicane
 {
     namespace Grid
     {
-        View::View(const FileSystem::Path& inSource)
+        View::View()
             : Component(TAG_ID),
               m_path(""),
-              m_styles({}),
               m_hovered(nullptr),
               m_focused(nullptr)
         {
-            if (inSource.isEmpty())
-            {
-                return;
-            }
+            m_root   = this;
+            m_parent = this;
+        }
 
-            pugi::xml_document document;
+        View::View(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)
+            : View()
+        {
+            load(inTemplate, inStyle);
+        }
 
-            if (!document.load_file(inSource.toChar()))
-            {
-                throw std::runtime_error("Failed to read " + inSource.toString());
-            }
+        void View::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)
+        {
+            Component::load(inTemplate, inStyle);
 
-            if (document.empty() || document.children().empty())
-            {
-                throw std::runtime_error("UI document " + inSource.toString() + " does not have any components");
-            }
-
-            const pugi::xml_node& node = document.first_child();
-
-            const bool bIsRoot = node.parent() == node.root() && !node.next_sibling();
-
-            if (!bIsRoot)
-            {
-                throw std::runtime_error("UI document root element must not have any siblings");
-            }
-
-            const String name = node.name();
-
-            if (!name.equals(TAG_ID))
+            if (!inTemplate.isEmpty() && !String(m_sourceNode.name()).equals(TAG_ID))
             {
                 throw std::runtime_error("UI document root element must be a " + String(TAG_ID));
             }
 
-            m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
-
-            m_sourceNode = m_sourceDocument.append_copy(node);
-            m_attributes = Xml::getAttributes(m_sourceNode);
-
-            m_root   = this;
-            m_parent = this;
-
-            importStyleFile(Xml::getAttribute(Style::ATTRIBUTE_NAME, node).as_string());
-            setId(getAttribute(ID_ATTRIBUTE_NAME));
-            setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
-
-            addChildren(node);
+            m_path = getAttribute(PATH_ATTRIBUTE_NAME);
         }
 
         std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const
@@ -97,14 +71,12 @@ namespace Chicane
 
         const StyleFile& View::getStyleFile() const
         {
-            return m_styles;
-        }
+            if (m_styles)
+            {
+                return *m_styles;
+            }
 
-        void View::importStyleFile(const FileSystem::Path& inValue)
-        {
-            m_styles.parse(inValue);
-
-            setStyleFile(&m_styles);
+            return StyleFile::empty();
         }
 
         Component* View::resolveHit(Component* inHit) const
@@ -125,8 +97,7 @@ namespace Chicane
 
         void View::handle(const WindowEvent& inEvent)
         {
-            if (inEvent.type == WindowEventType::WindowMouseLeave ||
-                inEvent.type == WindowEventType::WindowFocusLost)
+            if (inEvent.type == WindowEventType::WindowMouseLeave || inEvent.type == WindowEventType::WindowFocusLost)
             {
                 if (inEvent.type == WindowEventType::WindowMouseLeave)
                 {
@@ -157,7 +128,7 @@ namespace Chicane
                     return;
                 }
 
-                Component* hit = resolveHit(getHitAt(event.location));
+                Component* hit  = resolveHit(getHitAt(event.location));
                 Component* node = hit;
                 while (node && node != this)
                 {
@@ -186,11 +157,8 @@ namespace Chicane
                 bubbleEvent(inEvent, event.location);
             }
 
-            if (
-                inEvent.type == WindowEventType::KeyDown ||
-                inEvent.type == WindowEventType::KeyUp ||
-                inEvent.type == WindowEventType::TextInput
-            )
+            if (inEvent.type == WindowEventType::KeyDown || inEvent.type == WindowEventType::KeyUp ||
+                inEvent.type == WindowEventType::TextInput)
             {
                 Component* node = m_focused;
                 while (node && node != this)

@@ -20,6 +20,14 @@ namespace Chicane
             using Variables = std::unordered_map<String, String>;
 
         public:
+            static inline const StyleFile& empty()
+            {
+                static const StyleFile result;
+
+                return result;
+            }
+
+        public:
             StyleFile();
 
         public:

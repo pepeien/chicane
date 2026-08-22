@@ -1,0 +1,15 @@
+<Container class="explorer --menu">
+    <Container class="explorer__header">
+        <Text>/</Text>
+        <Button dir:for="folder : getFolderLocations()" class="explorer__header__location">
+            <Text>{{ folder }}</Text>
+            <Text>/</Text>
+        </Button>
+    </Container>
+    <Container class="explorer__items">
+        <ExplorerItem
+            dir:for="child : explorerFolder.children"
+            onClick="{{ onOutlinerSwitch(child.name) }}"
+        />
+    </Container>
+</Container>

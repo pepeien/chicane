@@ -9,6 +9,7 @@
 
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Font/Glyph/Curve/Collector.hpp"
 
 #include "Chicane/Core/Math/Contour.hpp"
 #include "Chicane/Core/Math/Curve.hpp"
@@ -89,99 +90,6 @@ namespace Chicane
                 return result;
             }
 
-            Vec2 getMidPoint(const Vec2& inLeft, const Vec2& inRight)
-            {
-                return Vec2((inLeft.x + inRight.x) * 0.5f, (inLeft.y + inRight.y) * 0.5f);
-            }
-
-            // Collects an outline as a list of quadratic Bezier segments, keeping the control points intact so the
-            // GPU can evaluate the curves analytically instead of relying on a flattened mesh.
-            struct CurveCollector
-            {
-                FontGlyphCurve::List curves  = {};
-                Vec2                 cursor  = Vec2::Zero();
-                Vec2                 contour = Vec2::Zero();
-                bool                 bIsOpen = false;
-
-                void moveTo(const Vec2& inPoint)
-                {
-                    close();
-
-                    cursor  = inPoint;
-                    contour = inPoint;
-                    bIsOpen = true;
-                }
-
-                void lineTo(const Vec2& inPoint)
-                {
-                    // A straight edge is a quadratic whose control point sits on the midpoint
-                    addCurve(cursor, getMidPoint(cursor, inPoint), inPoint);
-                }
-
-                void quadraticTo(const Vec2& inControl, const Vec2& inPoint) { addCurve(cursor, inControl, inPoint); }
-
-                void cubicTo(const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint)
-                {
-                    subdivideCubic(cursor, inControlA, inControlB, inPoint, 3);
-                }
-
-                void close()
-                {
-                    if (!bIsOpen)
-                    {
-                        return;
-                    }
-
-                    if (cursor.x != contour.x || cursor.y != contour.y)
-                    {
-                        lineTo(contour);
-                    }
-
-                    bIsOpen = false;
-                }
-
-            private:
-                void addCurve(const Vec2& inStart, const Vec2& inControl, const Vec2& inEnd)
-                {
-                    FontGlyphCurve curve;
-                    curve.start   = inStart;
-                    curve.control = inControl;
-                    curve.end     = inEnd;
-
-                    curves.push_back(curve);
-
-                    cursor = inEnd;
-                }
-
-                void subdivideCubic(
-                    const Vec2& inA, const Vec2& inB, const Vec2& inC, const Vec2& inD, std::uint32_t inDepth
-                )
-                {
-                    if (inDepth == 0)
-                    {
-                        // Closest quadratic to the cubic, exact enough once the segment is this short
-                        const Vec2 control(
-                            ((3.0f * (inB.x + inC.x)) - (inA.x + inD.x)) * 0.25f,
-                            ((3.0f * (inB.y + inC.y)) - (inA.y + inD.y)) * 0.25f
-                        );
-
-                        addCurve(inA, control, inD);
-
-                        return;
-                    }
-
-                    const Vec2 ab   = getMidPoint(inA, inB);
-                    const Vec2 bc   = getMidPoint(inB, inC);
-                    const Vec2 cd   = getMidPoint(inC, inD);
-                    const Vec2 abc  = getMidPoint(ab, bc);
-                    const Vec2 bcd  = getMidPoint(bc, cd);
-                    const Vec2 abcd = getMidPoint(abc, bcd);
-
-                    subdivideCubic(inA, ab, abc, abcd, inDepth - 1);
-                    subdivideCubic(abcd, bcd, cd, inD, inDepth - 1);
-                }
-            };
-
             FontGlyphCurve::List parseGlyphCurves(FT_GlyphSlot inGlyph)
             {
                 FT_Outline_Funcs funcs;
@@ -189,19 +97,19 @@ namespace Chicane
                 funcs.delta   = 0;
                 funcs.move_to = [](const FT_Vector* inPoint, void* inData)
                 {
-                    static_cast<CurveCollector*>(inData)->moveTo(Vec2(inPoint->x, inPoint->y));
+                    static_cast<FontGlyphCurveCollector*>(inData)->moveTo(Vec2(inPoint->x, inPoint->y));
 
                     return 0;
                 };
                 funcs.line_to = [](const FT_Vector* inPoint, void* inData)
                 {
-                    static_cast<CurveCollector*>(inData)->lineTo(Vec2(inPoint->x, inPoint->y));
+                    static_cast<FontGlyphCurveCollector*>(inData)->lineTo(Vec2(inPoint->x, inPoint->y));
 
                     return 0;
                 };
                 funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData)
                 {
-                    static_cast<CurveCollector*>(inData)->quadraticTo(
+                    static_cast<FontGlyphCurveCollector*>(inData)->quadraticTo(
                         Vec2(inControl->x, inControl->y),
                         Vec2(inPoint->x, inPoint->y)
                     );
@@ -211,7 +119,7 @@ namespace Chicane
                 funcs.cubic_to =
                     [](const FT_Vector* inControlA, const FT_Vector* inControlB, const FT_Vector* inPoint, void* inData)
                 {
-                    static_cast<CurveCollector*>(inData)->cubicTo(
+                    static_cast<FontGlyphCurveCollector*>(inData)->cubicTo(
                         Vec2(inControlA->x, inControlA->y),
                         Vec2(inControlB->x, inControlB->y),
                         Vec2(inPoint->x, inPoint->y)
@@ -220,7 +128,7 @@ namespace Chicane
                     return 0;
                 };
 
-                CurveCollector collector;
+                FontGlyphCurveCollector collector;
 
                 FT_Outline_Decompose(&inGlyph->outline, &funcs, &collector);
 
@@ -268,7 +176,6 @@ namespace Chicane
                     curve.end.x *= units;
                     curve.end.y *= units;
 
-                    // The control point is included on purpose, a curve never leaves its own control hull
                     for (const Vec2& point : {curve.start, curve.control, curve.end})
                     {
                         if (!bHasBounds)

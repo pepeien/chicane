@@ -24,7 +24,10 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            View(const FileSystem::Path& inSource);
+            View();
+
+            CH_CONSTRUCTOR()
+            View(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
 
         public:
             // Window
@@ -37,9 +40,9 @@ namespace Chicane
 
             // Styling
             const StyleFile& getStyleFile() const;
-            void importStyleFile(const FileSystem::Path& inValue);
 
         protected:
+            void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
             Component* resolveHit(Component* inHit) const;
             void syncHovered(Component* inComponent);
             void syncFocused(Component* inComponent);
@@ -47,9 +50,6 @@ namespace Chicane
         protected:
             // Routing
             String     m_path;
-
-            // Styling
-            StyleFile  m_styles;
 
             // Interaction
             Component* m_hovered;

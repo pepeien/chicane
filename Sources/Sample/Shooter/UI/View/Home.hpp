@@ -1,8 +1,9 @@
 #pragma once
 
+#include <cstdint>
+
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Grid/Component/View.hpp>
-#include <Chicane/Runtime/Application/Telemetry.hpp>
 
 CH_TYPE(Manual)
 class HomeView : public Chicane::Grid::View
@@ -11,10 +12,6 @@ public:
     HomeView();
 
 public:
-    // Telemetry
-    CH_FIELD()
-    const Chicane::ApplicationTelemetry* telemetry;
-
     // Game
     CH_FIELD()
     bool bDidPlayerWin;

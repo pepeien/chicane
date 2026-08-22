@@ -4,7 +4,7 @@
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
 #include "Sample/Shooter/Scene.hpp"
-#include "Sample/Shooter/View/Home.hpp"
+#include "Sample/Shooter/UI/View/Home.hpp"
 
 Application::Application()
 {

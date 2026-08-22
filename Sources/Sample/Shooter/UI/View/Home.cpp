@@ -1,14 +1,14 @@
-#include "Sample/Shooter/View/Home.reflected.hpp"
+#include "Sample/Shooter/UI/View/Home.reflected.hpp"
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
 #include "Sample/Shooter/Game.hpp"
 #include "Sample/Shooter/Scene.hpp"
+#include "Sample/Shooter/UI/Component/Telemetry.hpp"
 
 HomeView::HomeView()
-    : Chicane::Grid::View("Assets/Sample/Shooter/Views/Home.grid"),
-      telemetry(&Chicane::Application::getInstance().getTelemetry()),
+    : Chicane::Grid::View(),
       bDidPlayerWin(false),
       crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
       crosshairSize(2.0f),
@@ -21,6 +21,9 @@ HomeView::HomeView()
       playerScore(0U),
       maxScore(0U)
 {
+    import <Telemetry>();
+    load("Assets/Sample/Shooter/UI/Views/Home.grid", "Assets/Sample/Shooter/UI/Views/Home.decal");
+
     maxScore = Game::getMaxScore();
 
     Game::watchScore(

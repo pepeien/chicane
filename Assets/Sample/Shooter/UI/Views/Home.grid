@@ -1,11 +1,8 @@
-<View path="home" style="Assets/Sample/Shooter/Views/Home.decal">
+<View path="home">
     <Container dir:if="{{ bDidPlayerWin }}" class="victory">
         <Text>YOU WIN</Text>
     </Container>
-    <Container class="telemetry">
-        <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
-        <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
-    </Container>
+    <Telemetry />
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>
     <Container class="crosshair">
         <Container class="crosshair__dot"></Container>

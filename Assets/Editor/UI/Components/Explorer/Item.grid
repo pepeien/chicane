@@ -1,0 +1,3 @@
+<Button class="explorer__item">
+    <Text>{{ child.name }}</Text>
+</Button>

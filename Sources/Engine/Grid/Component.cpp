@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
-#include <cstring>
-
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 #include "Chicane/Grid/Component/Scrollable.hpp"
@@ -11,6 +9,68 @@ namespace Chicane
 {
     namespace Grid
     {
+        thread_local Component* g_scope = nullptr;
+
+        struct Scope
+        {
+        public:
+            explicit Scope(Component* inComponent)
+                : previous(g_scope)
+            {
+                g_scope = inComponent;
+            }
+
+            ~Scope() { g_scope = previous; }
+
+        public:
+            Component* previous = nullptr;
+        };
+
+        struct Loading
+        {
+        public:
+            Loading(std::vector<String>& inStack, const String& inPath)
+                : stack(inStack)
+            {
+                stack.push_back(inPath);
+            }
+
+            ~Loading() { stack.pop_back(); }
+
+        public:
+            std::vector<String>& stack;
+        };
+
+        Component* Component::create(const pugi::xml_node& inNode)
+        {
+            if (inNode.empty() || inNode.type() != pugi::node_element)
+            {
+                return nullptr;
+            }
+
+            const String              tag = inNode.name();
+            const ReflectionTypeInfo* type =
+                ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + tag);
+
+            if (!type && g_scope)
+            {
+                type = g_scope->findImported(tag);
+            }
+
+            if (!type)
+            {
+                return nullptr;
+            }
+
+            Component* instance = type->create<Component>({inNode});
+            if (instance)
+            {
+                instance->m_importOwner = g_scope;
+            }
+
+            return instance;
+        }
+
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
@@ -119,6 +179,10 @@ namespace Chicane
               m_bHasStyleBase(false),
               m_styleVariables({}),
               m_styleFile(nullptr),
+              m_styles(nullptr),
+              m_bOwnsStyle(false),
+              m_imports({}),
+              m_importOwner(nullptr),
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
@@ -157,6 +221,18 @@ namespace Chicane
             }
 
             m_children.clear();
+        }
+
+        const ReflectionTypeInfo* Component::findImported(const String& inSelector) const
+        {
+            if (inSelector.isEmpty())
+            {
+                return nullptr;
+            }
+
+            const auto found = m_imports.find(inSelector);
+
+            return found != m_imports.end() ? found->second : nullptr;
         }
 
         bool Component::isDrawable() const
@@ -471,15 +547,13 @@ namespace Chicane
                 if (hoverAt != String::npos && (focusAt == String::npos || hoverAt <= focusAt))
                 {
                     bHover = true;
-                    value  = value.substr(0, hoverAt) +
-                            value.substr(hoverAt + std::strlen(Style::PSEUDO_CLASS_HOVER));
+                    value  = value.substr(0, hoverAt) + value.substr(hoverAt + std::strlen(Style::PSEUDO_CLASS_HOVER));
 
                     continue;
                 }
 
                 bFocus = true;
-                value  = value.substr(0, focusAt) +
-                        value.substr(focusAt + std::strlen(Style::PSEUDO_CLASS_FOCUS));
+                value  = value.substr(0, focusAt) + value.substr(focusAt + std::strlen(Style::PSEUDO_CLASS_FOCUS));
             }
 
             if (bHover && !m_bHovered)
@@ -644,7 +718,95 @@ namespace Chicane
 
             for (Component* child : m_children)
             {
+                if (child->m_bOwnsStyle)
+                {
+                    continue;
+                }
+
                 child->setStyleFile(inSource);
+            }
+        }
+
+        void Component::importStyleFile(const FileSystem::Path& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return;
+            }
+
+            if (!m_styles)
+            {
+                m_styles = std::make_unique<StyleFile>();
+            }
+
+            m_styles->parse(inValue);
+            m_bOwnsStyle = true;
+            setStyleFile(m_styles.get());
+        }
+
+        void Component::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)
+        {
+            if (!inStyle.isEmpty())
+            {
+                importStyleFile(inStyle);
+            }
+
+            if (inTemplate.isEmpty())
+            {
+                return;
+            }
+
+            thread_local std::vector<String> loading;
+
+            const String source = inTemplate.toString();
+            for (const String& path : loading)
+            {
+                if (path.equals(source))
+                {
+                    throw std::runtime_error("Cyclic Grid component include [" + source + "]");
+                }
+            }
+
+            Loading guard(loading, source);
+
+            pugi::xml_document document = Xml::load(inTemplate);
+            if (document.empty() || document.children().empty())
+            {
+                throw std::runtime_error("UI document " + source + " does not have any components");
+            }
+
+            const pugi::xml_node root = document.first_child();
+            if (!(root.parent() == root.root() && !root.next_sibling()))
+            {
+                throw std::runtime_error("UI document root element must not have any siblings");
+            }
+
+            Scope scope(this);
+
+            if (String(root.name()).equals(getTag()))
+            {
+                m_sourceNode = m_sourceDocument.append_copy(root);
+                m_attributes = Xml::getAttributes(m_sourceNode);
+                setId(getAttribute(ID_ATTRIBUTE_NAME));
+                setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
+                addChildren(root);
+
+                return;
+            }
+
+            const String className = Xml::getAttribute(CLASS_ATTRIBUTE_NAME, root).as_string();
+            if (!className.isEmpty())
+            {
+                addClassName(className);
+            }
+
+            std::vector<Component*> projected = m_children;
+            m_children.clear();
+            addChildren(root);
+
+            for (Component* child : projected)
+            {
+                addChild(child);
             }
         }
 
@@ -1101,36 +1263,15 @@ namespace Chicane
                 return;
             }
 
-            const String defaultNamespace = "Chicane::Grid::";
             for (const auto& child : inNode.children())
             {
-                /**
-                 * Try to find component by tag with system default namespace.
-                 * 
-                 * Even tough the `Grid` system is supposed to accept custom components,
-                 * system defaults (prefixed by `Chicane::Grid` namespace) should take priority.
-                 */
-                const String defaultedTypeName = defaultNamespace + child.name();
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName))
+                Component* component = create(child);
+                if (!component)
                 {
-                    addChild(type->create<Component>({child}));
-
                     continue;
                 }
 
-                /**
-                 * Try to find component by tag as is.
-                 * 
-                 * Try to create custom components using <TAG></TAG> with `TAG` being the full type signature,
-                 * custom components should be referenced using the full namespace.
-                 */
-                const String customTypeName = child.name();
-                if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(child.name()))
-                {
-                    addChild(type->create<Component>({child}));
-
-                    continue;
-                }
+                addChild(component);
             }
         }
 
@@ -1143,7 +1284,11 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
-            inComponent->setStyleFile(m_styleFile);
+
+            if (!inComponent->m_bOwnsStyle)
+            {
+                inComponent->setStyleFile(m_styleFile);
+            }
 
             if (inIndex >= m_children.size())
             {
@@ -1520,14 +1665,18 @@ namespace Chicane
                 return found->second;
             }
 
+            if (hasStyleFile())
+            {
+                const String& value = m_styleFile->getVariable(inName);
+                if (!value.isEmpty())
+                {
+                    return value;
+                }
+            }
+
             if (hasParent() && !isRoot())
             {
                 return m_parent->getStyleVariable(inName);
-            }
-
-            if (hasStyleFile())
-            {
-                return m_styleFile->getVariable(inName);
             }
 
             return String::empty();
@@ -1976,21 +2125,8 @@ namespace Chicane
                 return nullptr;
             }
 
-            const String defaultNamespace  = "Chicane::Grid::";
-            const String defaultedTypeName = defaultNamespace + m_tag;
-
-            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(defaultedTypeName);
-            if (!type)
-            {
-                type = ReflectionTypeRegistry::getInstance().find(m_tag);
-            }
-
-            if (!type)
-            {
-                return nullptr;
-            }
-
-            Component* clone = type->create<Component>({m_sourceNode});
+            Scope      scope(m_importOwner);
+            Component* clone = create(m_sourceNode);
             if (!clone)
             {
                 return nullptr;

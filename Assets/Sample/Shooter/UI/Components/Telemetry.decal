@@ -1,0 +1,12 @@
+.telemetry {
+    display: flex;
+    flex-direction: column;
+
+    Text {
+        color: green;
+    }
+
+    &__system {
+        width: 5em;
+    }
+}

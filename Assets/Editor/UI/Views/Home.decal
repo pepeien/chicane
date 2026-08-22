@@ -1,0 +1,57 @@
+@import(Font, Assets/Engine/Fonts/Poppins.bfon);
+
+$sideBarSize:   15vw;
+$bottomBarSize: 20vh;
+
+.--light {
+    $--green: #0b997d;
+
+    $--grey: #aaaaaa;
+    $--light-grey: #7575757b;
+    $--dark-grey: #323232;
+
+    $--black: #252525;
+    $--white: #f7f7f7;
+}
+
+.--dark {
+    $--green: #0b997d;
+
+    $--grey: #aaaaaa;
+    $--light-grey: #7575757b;
+    $--dark-grey: #323232;
+
+    $--black: #f7f7f7;
+    $--white: #252525;
+}
+
+Button:hover {
+    cursor: pointer;
+}
+
+.theme-button {
+    width: 10em;
+    height: 2em;
+    position: absolute;
+    margin-left: calc(100% - calc($sideBarSize + 10em));
+    background-color: $--dark-grey;
+
+    Text {
+        margin: auto;
+    }
+}
+
+.--menu {
+    position: absolute;
+    background-color: $--dark-grey;
+}
+
+.outliner {
+    display: flex;
+    flex-direction: column;
+    width: $sideBarSize;
+    height: 100%;
+    margin-left: auto;
+    overflow: hidden;
+    overflow-y: auto;
+}
