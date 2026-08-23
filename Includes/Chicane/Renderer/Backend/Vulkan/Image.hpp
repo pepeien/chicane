@@ -40,7 +40,8 @@ namespace Chicane
                 const vk::Image&         inImage,
                 const vk::ImageLayout&   inOldLayout,
                 const vk::ImageLayout&   inNewLayout,
-                std::uint32_t            inCount
+                std::uint32_t            inCount,
+                std::uint32_t            inLevelCount = 1
             );
             CHICANE_RENDERER void copyBufferToImage(
                 const vk::CommandBuffer& inCommandBuffer,

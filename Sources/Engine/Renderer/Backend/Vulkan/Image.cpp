@@ -132,7 +132,8 @@ namespace Chicane
                 const vk::Image&         inImage,
                 const vk::ImageLayout&   inOldLayout,
                 const vk::ImageLayout&   inNewLayout,
-                std::uint32_t            inCount
+                std::uint32_t            inCount,
+                std::uint32_t            inLevelCount
             )
             {
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
@@ -147,7 +148,7 @@ namespace Chicane
                 barrier.dstAccessMask                   = vk::AccessFlagBits::eShaderRead;
                 barrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
                 barrier.subresourceRange.baseMipLevel   = 0;
-                barrier.subresourceRange.levelCount     = 1;
+                barrier.subresourceRange.levelCount     = std::max(1u, inLevelCount);
                 barrier.subresourceRange.baseArrayLayer = 0;
                 barrier.subresourceRange.layerCount     = inCount;
 

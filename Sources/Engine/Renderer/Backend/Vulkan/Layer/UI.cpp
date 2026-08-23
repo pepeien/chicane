@@ -645,7 +645,8 @@ namespace Chicane
                     image.instance,
                     vk::ImageLayout::eUndefined,
                     vk::ImageLayout::eShaderReadOnlyOptimal,
-                    1
+                    1,
+                    m_backdropMipLevels
                 );
 
                 vk::DescriptorImageInfo& info = m_backdropInfos.at(i);
