@@ -51,7 +51,7 @@ jobs:
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v7
               with:
-                commit_message: 'Updated documentation'
+                commit_message: 'docs: Updated documentation'
                 file_pattern: '.docs/**/*.json'
                 skip_fetch: true
                 skip_checkout: true

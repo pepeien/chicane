@@ -40,7 +40,7 @@ jobs:
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v7
               with:
-                commit_message: 'Updated code format'
+                commit_message: 'style: Updated code format'
                 file_pattern: |
                   Includes/
                   Sources/
