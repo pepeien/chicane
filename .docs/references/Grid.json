@@ -155,7 +155,7 @@
                     "prefix": "",
                     "name": "Drift::EasingCurve",
                     "suffix": "",
-                    "path": "Drift/Easing",
+                    "path": "Drift/Easing/Curve",
                     "templates": []
                 },
                 "name": "parseEasing",

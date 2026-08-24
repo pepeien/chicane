@@ -2356,12 +2356,12 @@
                 "children": []
             },
             {
-                "title": "EasingCurve",
+                "title": "Easing",
                 "filename": "Easing",
                 "path": "Drift/Easing",
                 "source": {
                     "header": "Includes/Chicane/Drift/Easing.hpp",
-                    "namespace": "Chicane::Drift::EasingCurve",
+                    "namespace": "Chicane::Drift::Easing",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2371,12 +2371,12 @@
                 },
                 "children": [
                     {
-                        "title": "Easing",
-                        "filename": "Type",
-                        "path": "Drift/Easing/Type",
+                        "title": "EasingCurve",
+                        "filename": "Curve",
+                        "path": "Drift/Easing/Curve",
                         "source": {
-                            "header": "Includes/Chicane/Drift/Easing/Type.hpp",
-                            "namespace": "Chicane::Drift::Easing",
+                            "header": "Includes/Chicane/Drift/Easing/Curve.hpp",
+                            "namespace": "Chicane::Drift::EasingCurve",
                             "types": [],
                             "enums": [],
                             "constructors": [],
