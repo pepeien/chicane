@@ -6,7 +6,7 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 
 #include "Chicane/Drift.hpp"
-#include "Chicane/Drift/Easing.hpp"
+#include "Chicane/Drift/Easing/Curve.hpp"
 #include "Chicane/Drift/Loop.hpp"
 #include "Chicane/Drift/Status.hpp"
 

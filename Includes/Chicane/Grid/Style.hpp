@@ -7,6 +7,8 @@
 #include "Chicane/Core/Window/Cursor.hpp"
 #include "Chicane/Core/Xml.hpp"
 
+#include "Chicane/Drift/Easing/Curve.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Animation.hpp"
@@ -198,12 +200,12 @@ namespace Chicane
             static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED           = "paused";
 
             // Easing
-            static constexpr inline const char* EASING_TYPE_LINEAR          = "linear";
-            static constexpr inline const char* EASING_TYPE_EASE            = "ease";
-            static constexpr inline const char* EASING_TYPE_EASE_IN         = "ease-in";
-            static constexpr inline const char* EASING_TYPE_EASE_OUT        = "ease-out";
-            static constexpr inline const char* EASING_TYPE_EASE_IN_OUT     = "ease-in-out";
-            static constexpr inline const char* EASING_CUBIC_BEZIER_KEYWORD = "cubic-bezier";
+            static constexpr inline const char* EASING_TYPE_LINEAR          = Drift::EasingCurve::TYPE_LINEAR;
+            static constexpr inline const char* EASING_TYPE_EASE            = Drift::EasingCurve::TYPE_EASE;
+            static constexpr inline const char* EASING_TYPE_EASE_IN         = Drift::EasingCurve::TYPE_EASE_IN;
+            static constexpr inline const char* EASING_TYPE_EASE_OUT        = Drift::EasingCurve::TYPE_EASE_OUT;
+            static constexpr inline const char* EASING_TYPE_EASE_IN_OUT     = Drift::EasingCurve::TYPE_EASE_IN_OUT;
+            static constexpr inline const char* EASING_CUBIC_BEZIER_KEYWORD = Drift::EasingCurve::CUBIC_BEZIER_KEYWORD;
 
             static inline std::vector<String>   EASING_TYPES = {
                 Style::EASING_TYPE_LINEAR,

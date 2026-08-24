@@ -2,7 +2,7 @@
 
 #include "Chicane/Core/String.hpp"
 
-#include "Chicane/Drift/Easing.hpp"
+#include "Chicane/Drift/Easing/Curve.hpp"
 
 #include "Chicane/Grid.hpp"
 

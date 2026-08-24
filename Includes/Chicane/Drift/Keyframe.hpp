@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Chicane/Drift.hpp"
-#include "Chicane/Drift/Easing.hpp"
+#include "Chicane/Drift/Easing/Curve.hpp"
 
 namespace Chicane
 {

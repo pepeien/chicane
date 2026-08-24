@@ -5,6 +5,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Drift.hpp"
+#include "Chicane/Drift/Easing/Curve.hpp"
 #include "Chicane/Drift/Keyframe.hpp"
 
 namespace Chicane
