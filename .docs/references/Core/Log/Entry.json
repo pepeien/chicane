@@ -41,9 +41,7 @@
                         "name": "inColor"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_LOG_ENTRY_ENTRY_DESCRIPTION"
             },
             {
@@ -58,9 +56,7 @@
                 },
                 "name": "Entry",
                 "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_LOG_ENTRY_ENTRY_DESCRIPTION"
             }
         ],
@@ -79,7 +75,6 @@
                 "name": "isEmpty",
                 "parameters": [],
                 "modifiers": [
-                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_LOG_ENTRY_ISEMPTY_DESCRIPTION"

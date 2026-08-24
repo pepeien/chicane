@@ -1373,6 +1373,22 @@
                         },
                         "children": [
                             {
+                                "title": "Mat3",
+                                "filename": "Mat3",
+                                "path": "Core/Math/Mat/Mat3",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Math/Mat/Mat3.hpp",
+                                    "namespace": "Chicane::Mat3",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
                                 "title": "Mat4",
                                 "filename": "Mat4",
                                 "path": "Core/Math/Mat/Mat4",
@@ -1469,6 +1485,39 @@
                                     "members": []
                                 },
                                 "children": []
+                            },
+                            {
+                                "title": "Transform2D",
+                                "filename": "2D",
+                                "path": "Core/Math/Transform/2D",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Math/Transform/2D.hpp",
+                                    "namespace": "Chicane::Transform2D",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "SpatialTransform2D",
+                                        "filename": "Spatial",
+                                        "path": "Core/Math/Transform/2D/Spatial",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Math/Transform/2D/Spatial.hpp",
+                                            "namespace": "Chicane::SpatialTransform2D",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -1994,7 +2043,24 @@
                     "functions": [],
                     "members": []
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Transformable2D",
+                        "filename": "2D",
+                        "path": "Core/Transformable/2D",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Transformable/2D.hpp",
+                            "namespace": "Chicane::Transformable2D",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "View",
@@ -2279,6 +2345,22 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Container.hpp",
                             "namespace": "Chicane::Grid::Container",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Logger",
+                        "filename": "Logger",
+                        "path": "Grid/Component/Logger",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Logger.hpp",
+                            "namespace": "Chicane::Grid::Logger",
                             "types": [],
                             "enums": [],
                             "constructors": [],

@@ -179,6 +179,114 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS2D_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "set",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTop"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBottom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS2D_SET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "transform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat3",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat3",
+                            "templates": []
+                        },
+                        "name": "inMatrix"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS2D_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Bounds2D",
                     "suffix": "&",
@@ -246,6 +354,58 @@
                 },
                 "name": "right",
                 "description": "CHICANE_BOUNDS2D_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_baseTop",
+                "description": "CHICANE_BOUNDS2D_M_BASETOP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_baseBottom",
+                "description": "CHICANE_BOUNDS2D_M_BASEBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_baseLeft",
+                "description": "CHICANE_BOUNDS2D_M_BASELEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_baseRight",
+                "description": "CHICANE_BOUNDS2D_M_BASERIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOUNDS2D_DESCRIPTION"

@@ -1531,6 +1531,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "removeChild",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REMOVECHILD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -2629,6 +2655,36 @@
             },
             {
                 "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshStyleRuleset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHSTYLERULESET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -2709,36 +2765,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFRESHSTYLE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshStyleRuleset",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESHSTYLERULESET_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshSize",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESHSIZE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -3552,19 +3578,6 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "m_position",
-                "description": "CHICANE_GRID_COMPONENT_M_POSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
                 "name": "m_cursor",
                 "description": "CHICANE_GRID_COMPONENT_M_CURSOR_DESCRIPTION"
             },
@@ -3580,19 +3593,6 @@
                 },
                 "name": "m_scratch",
                 "description": "CHICANE_GRID_COMPONENT_M_SCRATCH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Bounds2D",
-                    "suffix": "",
-                    "path": "Core/Math/Bounds/2D",
-                    "templates": []
-                },
-                "name": "m_bounds",
-                "description": "CHICANE_GRID_COMPONENT_M_BOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

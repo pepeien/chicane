@@ -69,6 +69,32 @@
                     ]
                 },
                 "description": "CHICANE_REFLECTIONFIELDITERABLE_ATFUNCTION_DESCRIPTION"
+            },
+            {
+                "name": "SnapshotFunction",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "void *(const void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::any &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_SNAPSHOTFUNCTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -134,6 +160,16 @@
                             "templates": []
                         },
                         "name": "inAtFunction"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SnapshotFunction",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Field/Iterable",
+                            "templates": []
+                        },
+                        "name": "inSnapshotFunction"
                     }
                 ],
                 "modifiers": [],
@@ -222,6 +258,19 @@
                 },
                 "name": "atFunction",
                 "description": "CHICANE_REFLECTIONFIELDITERABLE_ATFUNCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SnapshotFunction",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Field/Iterable",
+                    "templates": []
+                },
+                "name": "snapshotFunction",
+                "description": "CHICANE_REFLECTIONFIELDITERABLE_SNAPSHOTFUNCTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONFIELDITERABLE_DESCRIPTION"

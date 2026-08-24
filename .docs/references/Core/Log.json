@@ -24,6 +24,44 @@
                     ]
                 },
                 "description": "CHICANE_LOG_LIST_DESCRIPTION"
+            },
+            {
+                "name": "LogsObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "List",
+                            "suffix": "&",
+                            "path": "Core/Log",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_LOG_LOGSOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "LogsSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "List",
+                            "suffix": "&",
+                            "path": "Core/Log",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_LOG_LOGSSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -34,9 +72,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "List",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/Log",
                     "templates": []
                 },
@@ -44,6 +82,52 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_LOG_GETLOGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "LogsSubscription",
+                    "suffix": "",
+                    "path": "Core/Log",
+                    "templates": []
+                },
+                "name": "watch",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LogsSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LogsSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LogsSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_LOG_WATCH_DESCRIPTION"
             },
             {
                 "accessor": "public",

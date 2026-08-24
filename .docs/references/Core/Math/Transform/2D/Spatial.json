@@ -1,0 +1,557 @@
+{
+    "title": "SpatialTransform2D",
+    "filename": "Spatial",
+    "path": "Core/Math/Transform/2D/Spatial",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Transform/2D/Spatial.hpp",
+        "namespace": "Chicane::SpatialTransform2D",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SpatialTransform2D",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SPATIALTRANSFORM2D_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getRelativeTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getRelativeRotation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDegrees"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDegrees"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getRelativeScale",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getAbsoluteTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getAbsoluteRotation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDegrees"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDegrees"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getAbsoluteScale",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_GETABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ADDABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_SETABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lookAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM2D_LOOKAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTransformChanged",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SPATIALTRANSFORM2D_ONTRANSFORMCHANGED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM2D_REFRESH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Transform2D",
+                    "suffix": "",
+                    "path": "Core/Math/Transform/2D",
+                    "templates": []
+                },
+                "name": "m_relative",
+                "description": "CHICANE_SPATIALTRANSFORM2D_M_RELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Transform2D",
+                    "suffix": "",
+                    "path": "Core/Math/Transform/2D",
+                    "templates": []
+                },
+                "name": "m_absolute",
+                "description": "CHICANE_SPATIALTRANSFORM2D_M_ABSOLUTE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SPATIALTRANSFORM2D_DESCRIPTION"
+    },
+    "children": []
+}
