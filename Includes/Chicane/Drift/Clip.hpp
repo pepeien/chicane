@@ -23,10 +23,10 @@ namespace Chicane
             void addTrack(const Track& inValue);
 
         public:
-            String     name;
-            float      duration;
-            Loop       loop;
-            int        iterations;
+            String      name;
+            float       duration;
+            Loop        loop;
+            int         iterations;
             Track::List tracks;
         };
     }

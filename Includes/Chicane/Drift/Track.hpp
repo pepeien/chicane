@@ -28,7 +28,7 @@ namespace Chicane
             std::vector<float> sample(float inTime) const;
 
         public:
-            String        name;
+            String         name;
             Keyframe::List keyframes;
         };
     }

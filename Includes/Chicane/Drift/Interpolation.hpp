@@ -28,11 +28,7 @@ namespace Chicane
 
         inline Vec3 mix(const Vec3& inFrom, const Vec3& inTo, float inTime)
         {
-            return Vec3(
-                mix(inFrom.x, inTo.x, inTime),
-                mix(inFrom.y, inTo.y, inTime),
-                mix(inFrom.z, inTo.z, inTime)
-            );
+            return Vec3(mix(inFrom.x, inTo.x, inTime), mix(inFrom.y, inTo.y, inTime), mix(inFrom.z, inTo.z, inTime));
         }
 
         inline Vec4 mix(const Vec4& inFrom, const Vec4& inTo, float inTime)
@@ -54,7 +50,12 @@ namespace Chicane
                 return static_cast<std::uint8_t>(std::round(std::clamp(value, 0.0f, 255.0f)));
             };
 
-            return Color::Rgba(channel(inFrom.r, inTo.r), channel(inFrom.g, inTo.g), channel(inFrom.b, inTo.b), channel(inFrom.a, inTo.a));
+            return Color::Rgba(
+                channel(inFrom.r, inTo.r),
+                channel(inFrom.g, inTo.g),
+                channel(inFrom.b, inTo.b),
+                channel(inFrom.a, inTo.a)
+            );
         }
 
         CHICANE_DRIFT std::vector<float> mix(
