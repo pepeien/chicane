@@ -2,11 +2,11 @@
 
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
-
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/Actor/Item.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
+#include "Editor/UI/Component/Outliner.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
 namespace Editor
@@ -16,8 +16,10 @@ namespace Editor
           outlinerActors({}),
           theme("dark")
     {
-        import <Telemetry>();
         import <Explorer>();
+        import <Outliner>();
+        import <Telemetry>();
+
         load("Assets/Editor/UI/Views/Home.grid", "Assets/Editor/UI/Views/Home.decal");
 
         Chicane::Application::getInstance().watchScene(

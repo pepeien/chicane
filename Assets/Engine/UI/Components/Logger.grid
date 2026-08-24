@@ -1,0 +1,3 @@
+<Container class="logger">
+    <Text dir:for="log : logs">{{ log.text }}</Text>
+</Container>

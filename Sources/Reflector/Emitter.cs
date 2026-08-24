@@ -81,6 +81,11 @@ namespace Reflector
                 $"\t\t\t\t\t[](const void* inContainer, std::size_t inIndex) -> const void*\n" +
                 $"\t\t\t\t\t{{\n" +
                 element +
+                $"\t\t\t\t\t}},\n" +
+                $"\t\t\t\t\t[](const void* inContainer, std::any& outSnapshot) -> const void*\n" +
+                $"\t\t\t\t\t{{\n" +
+                $"\t\t\t\t\t\toutSnapshot = *static_cast<const {containerType}*>(inContainer);\n" +
+                $"\t\t\t\t\t\treturn std::any_cast<{containerType}>(&outSnapshot);\n" +
                 $"\t\t\t\t\t}}\n" +
                 $"\t\t\t\t)\n"
             );

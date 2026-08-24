@@ -1,15 +1,16 @@
 .explorer__item {
+    display: flex;
     height: 5.5em;
     width: 10em;
     background-color: $--green;
     overflow: auto;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     Text {
         color: $--white;
         margin: auto;
     }
-}
-
-.explorer__item:hover {
-    cursor: pointer;
 }

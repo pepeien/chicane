@@ -3,6 +3,18 @@
 $sideBarSize:   15vw;
 $bottomBarSize: 20vh;
 
+.theme-button {
+    width: 10em;
+    height: 2em;
+    position: absolute;
+    margin-left: calc(100% - calc($sideBarSize + 10em));
+    background-color: $--dark-grey;
+
+    Text {
+        margin: auto;
+    }
+}
+
 .--light {
     $--green: #0b997d;
 
@@ -25,33 +37,35 @@ $bottomBarSize: 20vh;
     $--white: #252525;
 }
 
-Button:hover {
-    cursor: pointer;
-}
-
-.theme-button {
-    width: 10em;
-    height: 2em;
-    position: absolute;
-    margin-left: calc(100% - calc($sideBarSize + 10em));
-    background-color: $--dark-grey;
-
-    Text {
-        margin: auto;
+.home {
+    &__telemetry {
+        padding: 0.2em;
     }
-}
 
-.--menu {
-    position: absolute;
-    background-color: $--dark-grey;
-}
+    &__outliner {
+        position: absolute;
+        width: $sideBarSize;
+        height: 100%;
+        margin: 0 0 0 auto;
+        background-color: $--dark-grey;
 
-.outliner {
-    display: flex;
-    flex-direction: column;
-    width: $sideBarSize;
-    height: 100%;
-    margin-left: auto;
-    overflow: hidden;
-    overflow-y: auto;
+        .outliner {
+            background-color: $--dark-grey;
+        }
+    }
+
+    &__explorer {
+        position: absolute;
+        width: calc(100% - $sideBarSize);
+        height: $bottomBarSize;
+        margin: auto 0 0 0;
+
+        .explorer {
+            background-color: $--dark-grey;
+        }
+    }
+
+    Button:hover {
+        cursor: pointer;
+    }
 }

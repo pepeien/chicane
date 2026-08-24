@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 #include "Chicane/Grid/Component/Scrollable.hpp"
@@ -124,8 +126,29 @@ namespace Chicane
 
                         if (accessor.isValid() && accessor.bIsIterable)
                         {
-                            m_forSource   = {};
                             m_forVariable = variableId;
+
+                            if (accessor.iterable.snapshotFunction)
+                            {
+                                const void* container = accessor.address(owner);
+                                const void* frozen =
+                                    container ? accessor.iterable.snapshotFunction(container, m_forSource) : nullptr;
+
+                                if (frozen)
+                                {
+                                    ReflectionFieldAccessor frozenAccessor = accessor;
+                                    frozenAccessor.offset                  = 0;
+                                    frozenAccessor.ptrOffset               = 0;
+                                    frozenAccessor.bNeedsDeref             = false;
+                                    frozenAccessor.boundInstance           = frozen;
+
+                                    syncForLoop(variableId, frozenAccessor, nullptr);
+
+                                    return;
+                                }
+                            }
+
+                            m_forSource = {};
                             syncForLoop(variableId, accessor, owner);
 
                             return;
@@ -169,7 +192,8 @@ namespace Chicane
         }
 
         Component::Component(const String& inTag)
-            : m_tag(inTag),
+            : Transformable2D(),
+              m_tag(inTag),
               m_id(String::empty()),
               m_className(String::empty()),
               m_directives({}),
@@ -189,10 +213,8 @@ namespace Chicane
               m_size(Vec2::Zero()),
               m_scale(Vec2::Zero()),
               m_offset(Vec2::Zero()),
-              m_position(Vec2::Zero()),
               m_cursor(Vec2::Zero()),
               m_scratch(0.0f),
-              m_bounds({}),
               m_primitive({}),
               m_attributes({}),
               m_sourceNode(),
@@ -271,6 +293,103 @@ namespace Chicane
             refreshBounds();
 
             refreshDirectives();
+        }
+
+        void Component::refreshStyleRuleset()
+        {
+            m_styleVariables.clear();
+
+            if (m_bHasStyleBase)
+            {
+                m_style.copyValuesFrom(m_styleBase);
+            }
+
+            std::vector<StyleFile*> files;
+            auto                    addFile = [&](StyleFile* file)
+            {
+                if (!file)
+                {
+                    return;
+                }
+
+                if (std::find(files.begin(), files.end(), file) != files.end())
+                {
+                    return;
+                }
+
+                files.push_back(file);
+            };
+
+            std::vector<StyleFile*> ancestors;
+            for (Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
+            {
+                if (ancestor->m_styleFile)
+                {
+                    ancestors.push_back(ancestor->m_styleFile);
+                }
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+            }
+
+            for (auto it = ancestors.rbegin(); it != ancestors.rend(); ++it)
+            {
+                addFile(*it);
+            }
+
+            addFile(m_styleFile);
+
+            if (files.empty())
+            {
+                return;
+            }
+
+            StyleRuleset::Properties properties;
+            for (StyleFile* file : files)
+            {
+                for (const StyleRuleset& source : file->getRulesets())
+                {
+                    if (source.isEmpty())
+                    {
+                        continue;
+                    }
+
+                    for (const String& selector : source.selectors)
+                    {
+                        if (!hasSelector(selector.trim()))
+                        {
+                            continue;
+                        }
+
+                        for (const auto& [key, value] : source.properties)
+                        {
+                            if (key.startsWith(Style::VARIABLE_KEYWORD))
+                            {
+                                m_styleVariables[key.substr(1)] = value;
+
+                                continue;
+                            }
+
+                            properties[key] = value;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (!properties.empty())
+            {
+                addStyleProperties(properties);
+            }
+
+            if (!m_bHovered && !m_bFocused)
+            {
+                m_styleBase.copyValuesFrom(m_style);
+                m_bHasStyleBase = true;
+            }
         }
 
         bool Component::isRoot() const
@@ -718,12 +837,7 @@ namespace Chicane
 
             for (Component* child : m_children)
             {
-                if (child->m_bOwnsStyle)
-                {
-                    continue;
-                }
-
-                child->setStyleFile(inSource);
+                child->setStyleFile(child->m_bOwnsStyle ? child->m_styleFile : inSource);
             }
         }
 
@@ -794,15 +908,13 @@ namespace Chicane
                 return;
             }
 
-            const String className = Xml::getAttribute(CLASS_ATTRIBUTE_NAME, root).as_string();
-            if (!className.isEmpty())
-            {
-                addClassName(className);
-            }
-
             std::vector<Component*> projected = m_children;
             m_children.clear();
-            addChildren(root);
+
+            if (Component* wrapper = create(root))
+            {
+                addChild(wrapper);
+            }
 
             for (Component* child : projected)
             {
@@ -1140,11 +1252,12 @@ namespace Chicane
 
         std::vector<Component*> Component::getChildrenFlat() const
         {
-            std::vector<Component*> result;
+            std::vector<Component*>       result;
+            const std::vector<Component*> children = m_children;
 
-            for (Component* child : m_children)
+            for (Component* child : children)
             {
-                if (!child)
+                if (!child || child == this)
                 {
                     continue;
                 }
@@ -1284,11 +1397,7 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
-
-            if (!inComponent->m_bOwnsStyle)
-            {
-                inComponent->setStyleFile(m_styleFile);
-            }
+            inComponent->setStyleFile(inComponent->m_bOwnsStyle ? inComponent->m_styleFile : m_styleFile);
 
             if (inIndex >= m_children.size())
             {
@@ -1300,6 +1409,29 @@ namespace Chicane
             }
 
             onAdopted(inComponent);
+        }
+
+        void Component::removeChild(Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return;
+            }
+
+            const auto found = std::find(m_children.begin(), m_children.end(), inComponent);
+            if (found == m_children.end())
+            {
+                return;
+            }
+
+            m_children.erase(found);
+
+            if (inComponent->m_parent == this)
+            {
+                inComponent->m_parent = nullptr;
+            }
+
+            delete inComponent;
         }
 
         Vec2 Component::getChildrenContentSizeBlock() const
@@ -1323,8 +1455,8 @@ namespace Chicane
                 };
 
                 const Vec2 occupied = {
-                    (child->getPosition().x - m_position.x) + child->getSize().x + margin.x,
-                    (child->getPosition().y - m_position.y) + child->getSize().y + margin.y
+                    (child->getPosition().x - getPosition().x) + child->getSize().x + margin.x,
+                    (child->getPosition().y - getPosition().y) + child->getSize().y + margin.y
                 };
 
                 result.x = std::max(result.x, occupied.x);
@@ -1352,8 +1484,10 @@ namespace Chicane
                     style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get()
                 };
 
-                result.x = std::max(result.x, (child->getPosition().x - m_position.x) + child->getSize().x + margin.x);
-                result.y = std::max(result.y, (child->getPosition().y - m_position.y) + child->getSize().y + margin.y);
+                result.x =
+                    std::max(result.x, (child->getPosition().x - getPosition().x) + child->getSize().x + margin.x);
+                result.y =
+                    std::max(result.y, (child->getPosition().y - getPosition().y) + child->getSize().y + margin.y);
             }
 
             return result;
@@ -1439,7 +1573,7 @@ namespace Chicane
 
         const Vec2& Component::getPosition() const
         {
-            return m_position;
+            return getTranslation();
         }
 
         void Component::addPosition(const Vec2& inValue)
@@ -1449,7 +1583,9 @@ namespace Chicane
 
         void Component::addPosition(float inX, float inY)
         {
-            setPosition(m_position.x + inX, m_position.y + inY);
+            addAbsoluteTranslation(inX, inY);
+            setCursor(getTranslation());
+            m_scratch = 0.0f;
         }
 
         void Component::setPosition(const Vec2& inValue)
@@ -1459,16 +1595,14 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            m_position.x = inX;
-            m_position.y = inY;
-
-            setCursor(m_position);
+            setAbsoluteTranslation(inX, inY);
+            setCursor(getTranslation());
             m_scratch = 0.0f;
         }
 
         Vec2 Component::getDrawPosition() const
         {
-            Vec2 result = m_position;
+            Vec2 result = getTranslation();
 
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
@@ -1518,7 +1652,7 @@ namespace Chicane
 
         const Bounds2D& Component::getBounds() const
         {
-            return m_bounds;
+            return Transformable2D::getBounds();
         }
 
         Bounds2D Component::getDrawBounds() const
@@ -1643,7 +1777,13 @@ namespace Chicane
 
         void Component::refreshClassName()
         {
-            const String className = parseText(getAttribute(CLASS_ATTRIBUTE_NAME));
+            const auto found = m_attributes.find(CLASS_ATTRIBUTE_NAME);
+            if (found == m_attributes.end())
+            {
+                return;
+            }
+
+            const String className = parseText(found->second);
             if (className.equals(m_className))
             {
                 return;
@@ -1680,63 +1820,6 @@ namespace Chicane
             }
 
             return String::empty();
-        }
-
-        void Component::refreshStyleRuleset()
-        {
-            m_styleVariables.clear();
-
-            if (!m_styleFile)
-            {
-                return;
-            }
-
-            if (m_bHasStyleBase)
-            {
-                m_style.copyValuesFrom(m_styleBase);
-            }
-
-            StyleRuleset::Properties properties;
-            for (const StyleRuleset& source : m_styleFile->getRulesets())
-            {
-                if (source.isEmpty())
-                {
-                    continue;
-                }
-
-                for (const String& selector : source.selectors)
-                {
-                    if (!hasSelector(selector.trim()))
-                    {
-                        continue;
-                    }
-
-                    for (const auto& [key, value] : source.properties)
-                    {
-                        if (key.startsWith(Style::VARIABLE_KEYWORD))
-                        {
-                            m_styleVariables[key.substr(1)] = value;
-
-                            continue;
-                        }
-
-                        properties[key] = value;
-                    }
-
-                    break;
-                }
-            }
-
-            if (!properties.empty())
-            {
-                addStyleProperties(properties);
-            }
-
-            if (!m_bHovered && !m_bFocused)
-            {
-                m_styleBase.copyValuesFrom(m_style);
-                m_bHasStyleBase = true;
-            }
         }
 
         void Component::refreshSize()
@@ -1969,10 +2052,8 @@ namespace Chicane
 
         void Component::refreshBounds()
         {
-            m_bounds.top    = m_position.y;
-            m_bounds.bottom = m_position.y + m_size.y;
-            m_bounds.left   = m_position.x;
-            m_bounds.right  = m_position.x + m_size.x;
+            m_bounds.set(0.0f, 0.0f, m_size.y, m_size.x);
+            m_bounds.transform(getMatrix());
         }
 
         String Component::parseText(const String& inValue) const
@@ -2135,6 +2216,11 @@ namespace Chicane
             clone->m_bSkipForDirective = true;
             clone->m_attributes.erase(FOR_DIRECTIVE_KEYWORD);
 
+            if (clone->m_className.isEmpty() && !m_className.isEmpty())
+            {
+                clone->setClassName(m_className);
+            }
+
             return clone;
         }
 
@@ -2173,6 +2259,21 @@ namespace Chicane
                 m_forInstances.push_back(instance);
             }
 
+            while (m_forInstances.size() > std::max(count, static_cast<std::size_t>(1)))
+            {
+                Component* extra = m_forInstances.back();
+                m_forInstances.pop_back();
+
+                if (extra == this)
+                {
+                    m_forInstances.insert(m_forInstances.begin(), extra);
+
+                    break;
+                }
+
+                parent->removeChild(extra);
+            }
+
             for (std::size_t i = 0; i < m_forInstances.size(); ++i)
             {
                 Component* instance = m_forInstances.at(i);
@@ -2196,6 +2297,7 @@ namespace Chicane
 
                 instance->addVariable(inVariableId, element);
                 instance->m_style.display.set(StyleDisplay::Flex);
+                instance->refreshStyleRuleset();
             }
         }
 

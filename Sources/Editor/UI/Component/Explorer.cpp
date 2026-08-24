@@ -9,7 +9,7 @@
 namespace Editor
 {
     Explorer::Explorer(const pugi::xml_node& inNode)
-        : Chicane::Grid::Container(inNode),
+        : Chicane::Grid::Component(inNode),
           explorerFolder({})
     {
         import <ExplorerItem>();

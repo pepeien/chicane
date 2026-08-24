@@ -1,7 +1,6 @@
 #pragma once
 
 #include <atomic>
-#include <mutex>
 #include <thread>
 
 #include "Chicane/Core/Window.hpp"

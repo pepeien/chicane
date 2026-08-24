@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 
@@ -33,10 +34,20 @@ namespace Chicane
 
         Bounds2D intersect(const Bounds2D& inOther) const;
 
+        void add(const Bounds2D& inBounds);
+        void set(float inTop, float inLeft, float inBottom, float inRight);
+        void transform(const Mat3& inMatrix);
+
     public:
         float top;
         float bottom;
         float left;
         float right;
+
+    private:
+        float m_baseTop;
+        float m_baseBottom;
+        float m_baseLeft;
+        float m_baseRight;
     };
 }

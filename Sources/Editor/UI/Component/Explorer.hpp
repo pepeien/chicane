@@ -3,12 +3,12 @@
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/Xml.hpp>
-#include <Chicane/Grid/Component/Container.hpp>
+#include <Chicane/Grid/Component.hpp>
 
 namespace Editor
 {
     CH_TYPE(Manual)
-    class Explorer : public Chicane::Grid::Container
+    class Explorer : public Chicane::Grid::Component
     {
     public:
         CH_CONSTRUCTOR()

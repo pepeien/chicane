@@ -15,9 +15,20 @@ namespace Chicane
 
         static inline List g_history = {};
 
-        const List& getLogs()
+        static inline LogsObservable g_observable = {};
+
+        List getLogs()
         {
             return g_history;
+        }
+
+        LogsSubscription watch(
+            LogsSubscription::NextCallback     inNext,
+            LogsSubscription::ErrorCallback    inError,
+            LogsSubscription::CompleteCallback inComplete
+        )
+        {
+            return g_observable.subscribe(inNext, inError, inComplete).next(g_history);
         }
 
         void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
@@ -40,15 +51,19 @@ namespace Chicane
 
             const String& terminalColor = g_colors.at(color);
 
-            std::cout << COLOR_START << terminalColor << message << COLOR_END;
+            if (IS_DEBUGGING)
+            {
+                std::cout << COLOR_START << terminalColor << message << COLOR_END;
+            }
 
-            // History
             if (g_history.size() > MAX_HISTORY_COUNT)
             {
                 g_history.pop_front();
             }
 
             g_history.emplace_back(message, color);
+
+            g_observable.next(g_history);
         }
 
         void info(const String& inMessage)

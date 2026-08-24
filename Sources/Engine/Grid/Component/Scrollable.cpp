@@ -419,8 +419,10 @@ namespace Chicane
             {
                 const float trackSize = std::max(0.0f, m_size.y - (m_horizontalBar.bIsVisible ? thickness : 0.0f));
                 const float content   = m_size.y + maxScroll.y;
+                const float thumbHi   = trackSize;
+                const float thumbLo   = std::min(minThumb, thumbHi);
                 const float thumbSize =
-                    std::clamp(trackSize * (m_size.y / std::max(content, 1.0f)), minThumb, trackSize);
+                    std::clamp(trackSize * (m_size.y / std::max(content, 1.0f)), thumbLo, thumbHi);
                 const float travel = std::max(0.0f, trackSize - thumbSize);
                 const float ratio  = maxScroll.y > 0.0f ? (m_currentPosition.y / maxScroll.y) : 0.0f;
 
@@ -439,8 +441,10 @@ namespace Chicane
             {
                 const float trackSize = std::max(0.0f, m_size.x - (m_verticalBar.bIsVisible ? thickness : 0.0f));
                 const float content   = m_size.x + maxScroll.x;
+                const float thumbHi   = trackSize;
+                const float thumbLo   = std::min(minThumb, thumbHi);
                 const float thumbSize =
-                    std::clamp(trackSize * (m_size.x / std::max(content, 1.0f)), minThumb, trackSize);
+                    std::clamp(trackSize * (m_size.x / std::max(content, 1.0f)), thumbLo, thumbHi);
                 const float travel = std::max(0.0f, trackSize - thumbSize);
                 const float ratio  = maxScroll.x > 0.0f ? (m_currentPosition.x / maxScroll.x) : 0.0f;
 

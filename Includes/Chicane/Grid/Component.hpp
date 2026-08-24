@@ -16,6 +16,7 @@
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Transformable/2D.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Method.hpp"
@@ -34,7 +35,7 @@ namespace Chicane
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID Component
+        class CHICANE_GRID Component : public Transformable2D
         {
         public:
             using ClassList  = std::set<String>;
@@ -89,6 +90,8 @@ namespace Chicane
 
             // Refresh Events
             virtual void refreshPrimitive() { return; }
+            virtual void refreshStyleRuleset();
+            virtual void refreshSize();
 
         public:
             // Checkers
@@ -189,6 +192,7 @@ namespace Chicane
             bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
+            void removeChild(Component* inComponent);
 
             Vec2 getChildrenContentSizeBlock() const;
             Vec2 getChildrenContentSizeFlex() const;
@@ -273,8 +277,6 @@ namespace Chicane
 
             void refreshClassName();
             void refreshStyle();
-            virtual void refreshStyleRuleset();
-            virtual void refreshSize();
             void refreshPosition();
             void refreshBounds();
 
@@ -329,12 +331,8 @@ namespace Chicane
             Vec2                                                  m_size;
             Vec2                                                  m_scale;
             Vec2                                                  m_offset;
-            Vec2                                                  m_position;
             Vec2                                                  m_cursor;
             float                                                 m_scratch;
-
-            // Collision
-            Bounds2D                                              m_bounds;
 
             // Draw
             Primitive                                             m_primitive;

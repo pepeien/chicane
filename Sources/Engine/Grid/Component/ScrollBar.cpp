@@ -58,7 +58,7 @@ namespace Chicane
 
         Vec2 ScrollBar::getDrawPosition() const
         {
-            Vec2 result = m_position;
+            Vec2 result = getPosition();
 
             const Component* ancestor = hasParent() ? m_parent->getParent() : nullptr;
             while (ancestor && ancestor != this)

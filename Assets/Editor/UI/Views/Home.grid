@@ -1,14 +1,8 @@
-<View path="home" class="--{{ theme }}">
-    <Telemetry />
+<View path="home" class="home --{{ theme }}">
+    <Telemetry class="home__telemetry" />
     <Button class="theme-button" onClick="{{ onThemeSwitch() }}">
         <Text>Switch Theme</Text>
     </Button>
-    <Container class="outliner --menu">
-        <Container class="outliner__items">
-            <Button dir:for="actor : outlinerActors" class="outliner__item">
-                <Text>{{ actor.translation }}</Text>
-            </Button>
-        </Container>
-    </Container>
-    <Explorer />
+    <Outliner class="home__outliner" />
+    <Explorer class="home__explorer" />
 </View>
