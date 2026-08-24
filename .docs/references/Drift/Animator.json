@@ -1,0 +1,798 @@
+{
+    "title": "Drift",
+    "filename": "Animator",
+    "path": "Drift/Animator",
+    "source": {
+        "header": "Includes/Chicane/Drift/Animator.hpp",
+        "namespace": "Chicane::Drift",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Animator",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_ANIMATOR_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDuration"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelay"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "EasingCurve",
+                            "suffix": "&",
+                            "path": "Drift/Easing",
+                            "templates": []
+                        },
+                        "name": "inEasing"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_TWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasTween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_ANIMATOR_HASTWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getTweenValue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_ANIMATOR_GETTWEENVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopTween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_STOPTWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopTweens",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_STOPTWEENS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Clip",
+                            "suffix": "&",
+                            "path": "Drift/Clip",
+                            "templates": []
+                        },
+                        "name": "inClip"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_PLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasPlayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_ANIMATOR_HASPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Player",
+                    "suffix": "*",
+                    "path": "Drift/Player",
+                    "templates": []
+                },
+                "name": "getPlayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_GETPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Player",
+                    "suffix": "*",
+                    "path": "Drift/Player",
+                    "templates": []
+                },
+                "name": "getPlayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_ANIMATOR_GETPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopPlayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_STOPPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopPlayers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_STOPPLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_ANIMATOR_STOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "mix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Tween",
+                            "suffix": "",
+                            "path": "Drift/Tween",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_tweens",
+                "description": "CHICANE_DRIFT_ANIMATOR_M_TWEENS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Player",
+                            "suffix": "",
+                            "path": "Drift/Player",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_players",
+                "description": "CHICANE_DRIFT_ANIMATOR_M_PLAYERS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DRIFT_DESCRIPTION"
+    },
+    "children": []
+}

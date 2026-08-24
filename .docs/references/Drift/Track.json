@@ -1,0 +1,267 @@
+{
+    "title": "Track",
+    "filename": "Track",
+    "path": "Drift/Track",
+    "source": {
+        "header": "Includes/Chicane/Drift/Track.hpp",
+        "namespace": "Chicane::Drift::Track",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Track",
+                            "suffix": "",
+                            "path": "Drift/Track",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_DRIFT_TRACK_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Track",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_TRACK_TRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Track",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_TRACK_TRACK_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addKeyframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Keyframe",
+                            "suffix": "&",
+                            "path": "Drift/Keyframe",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_TRACK_ADDKEYFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addKeyframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_TRACK_ADDKEYFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addKeyframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "EasingCurve",
+                            "suffix": "&",
+                            "path": "Drift/Easing",
+                            "templates": []
+                        },
+                        "name": "inEasing"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_TRACK_ADDKEYFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "sample",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_TRACK_SAMPLE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_DRIFT_TRACK_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Keyframe::List",
+                    "suffix": "",
+                    "path": "Drift/Keyframe",
+                    "templates": []
+                },
+                "name": "keyframes",
+                "description": "CHICANE_DRIFT_TRACK_KEYFRAMES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DRIFT_TRACK_DESCRIPTION"
+    },
+    "children": []
+}

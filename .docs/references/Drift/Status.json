@@ -1,0 +1,51 @@
+{
+    "title": "Status",
+    "filename": "Status",
+    "path": "Drift/Status",
+    "source": {
+        "header": "Includes/Chicane/Drift/Status.hpp",
+        "namespace": "Chicane::Drift::Status",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Stopped",
+                "description": "CHICANE_DRIFT_STATUS_STOPPED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Playing",
+                "description": "CHICANE_DRIFT_STATUS_PLAYING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Paused",
+                "description": "CHICANE_DRIFT_STATUS_PAUSED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_DRIFT_STATUS_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,493 @@
+{
+    "title": "EasingCurve",
+    "filename": "Easing",
+    "path": "Drift/Easing",
+    "source": {
+        "header": "Includes/Chicane/Drift/Easing.hpp",
+        "namespace": "Chicane::Drift::EasingCurve",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EasingCurve",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASINGCURVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EasingCurve",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Easing",
+                            "suffix": "",
+                            "path": "Drift/Easing/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASINGCURVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EasingCurve",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX1"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY1"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX2"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY2"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASINGCURVE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "linear",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_LINEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "ease",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "easeIn",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASEIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "easeOut",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASEOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "easeInOut",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EASEINOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "cubicBezier",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX1"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY1"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX2"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY2"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_CUBICBEZIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "fromString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_FROMSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "evaluate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_EVALUATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampleX",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inT"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_SAMPLEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampleY",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inT"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_SAMPLEY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampleDerivativeX",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inT"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_SAMPLEDERIVATIVEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "solve",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_EASINGCURVE_SOLVE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Easing",
+                    "suffix": "",
+                    "path": "Drift/Easing/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_DRIFT_EASINGCURVE_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "x1",
+                "description": "CHICANE_DRIFT_EASINGCURVE_X1_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "y1",
+                "description": "CHICANE_DRIFT_EASINGCURVE_Y1_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "x2",
+                "description": "CHICANE_DRIFT_EASINGCURVE_X2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "y2",
+                "description": "CHICANE_DRIFT_EASINGCURVE_Y2_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DRIFT_EASINGCURVE_DESCRIPTION"
+    },
+    "children": []
+}

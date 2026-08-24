@@ -1,0 +1,206 @@
+{
+    "title": "Clip",
+    "filename": "Clip",
+    "path": "Drift/Clip",
+    "source": {
+        "header": "Includes/Chicane/Drift/Clip.hpp",
+        "namespace": "Chicane::Drift::Clip",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clip",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_CLIP_CLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clip",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_CLIP_CLIP_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Track",
+                    "suffix": "*",
+                    "path": "Drift/Track",
+                    "templates": []
+                },
+                "name": "getTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_CLIP_GETTRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Track",
+                    "suffix": "*",
+                    "path": "Drift/Track",
+                    "templates": []
+                },
+                "name": "getTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_DRIFT_CLIP_GETTRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Track",
+                            "suffix": "&",
+                            "path": "Drift/Track",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_DRIFT_CLIP_ADDTRACK_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_DRIFT_CLIP_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "duration",
+                "description": "CHICANE_DRIFT_CLIP_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Loop",
+                    "suffix": "",
+                    "path": "Drift/Loop",
+                    "templates": []
+                },
+                "name": "loop",
+                "description": "CHICANE_DRIFT_CLIP_LOOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "iterations",
+                "description": "CHICANE_DRIFT_CLIP_ITERATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Track::List",
+                    "suffix": "",
+                    "path": "Drift/Track",
+                    "templates": []
+                },
+                "name": "tracks",
+                "description": "CHICANE_DRIFT_CLIP_TRACKS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DRIFT_CLIP_DESCRIPTION"
+    },
+    "children": []
+}

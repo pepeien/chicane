@@ -1,0 +1,51 @@
+{
+    "title": "Loop",
+    "filename": "Loop",
+    "path": "Drift/Loop",
+    "source": {
+        "header": "Includes/Chicane/Drift/Loop.hpp",
+        "namespace": "Chicane::Drift::Loop",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Once",
+                "description": "CHICANE_DRIFT_LOOP_ONCE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Repeat",
+                "description": "CHICANE_DRIFT_LOOP_REPEAT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PingPong",
+                "description": "CHICANE_DRIFT_LOOP_PINGPONG_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_DRIFT_LOOP_DESCRIPTION"
+    },
+    "children": []
+}

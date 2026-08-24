@@ -2293,6 +2293,200 @@
         ]
     },
     {
+        "title": "Drift",
+        "filename": "Drift",
+        "path": "Drift",
+        "source": {
+            "header": null,
+            "namespace": null,
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": []
+        },
+        "children": [
+            {
+                "title": "Clip",
+                "filename": "Clip",
+                "path": "Drift/Clip",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Clip.hpp",
+                    "namespace": "Chicane::Drift::Clip",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Direction",
+                "filename": "Direction",
+                "path": "Drift/Direction",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Direction.hpp",
+                    "namespace": "Chicane::Drift::Direction",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Drift",
+                "filename": "Animator",
+                "path": "Drift/Animator",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Animator.hpp",
+                    "namespace": "Chicane::Drift",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "EasingCurve",
+                "filename": "Easing",
+                "path": "Drift/Easing",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Easing.hpp",
+                    "namespace": "Chicane::Drift::EasingCurve",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": [
+                    {
+                        "title": "Easing",
+                        "filename": "Type",
+                        "path": "Drift/Easing/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Drift/Easing/Type.hpp",
+                            "namespace": "Chicane::Drift::Easing",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Keyframe",
+                "filename": "Keyframe",
+                "path": "Drift/Keyframe",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Keyframe.hpp",
+                    "namespace": "Chicane::Drift::Keyframe",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Loop",
+                "filename": "Loop",
+                "path": "Drift/Loop",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Loop.hpp",
+                    "namespace": "Chicane::Drift::Loop",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Player",
+                "filename": "Player",
+                "path": "Drift/Player",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Player.hpp",
+                    "namespace": "Chicane::Drift::Player",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Status",
+                "filename": "Status",
+                "path": "Drift/Status",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Status.hpp",
+                    "namespace": "Chicane::Drift::Status",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Track",
+                "filename": "Track",
+                "path": "Drift/Track",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Track.hpp",
+                    "namespace": "Chicane::Drift::Track",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
+                "title": "Tween",
+                "filename": "Tween",
+                "path": "Drift/Tween",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Tween.hpp",
+                    "namespace": "Chicane::Drift::Tween",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            }
+        ]
+    },
+    {
         "title": "Grid",
         "filename": "Grid",
         "path": "Grid",
