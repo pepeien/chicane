@@ -1,8 +1,15 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
 #include <algorithm>
+#include <cmath>
+#include <unordered_map>
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Core/Size.hpp"
+
+#include "Chicane/Drift/Clip.hpp"
+#include "Chicane/Drift/Loop.hpp"
+#include "Chicane/Drift/Track.hpp"
 
 #include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Component/View.hpp"
@@ -192,7 +199,7 @@ namespace Chicane
         }
 
         Component::Component(const String& inTag)
-            : Transformable2D(),
+            : Animatable(),
               m_tag(inTag),
               m_id(String::empty()),
               m_className(String::empty()),
@@ -264,7 +271,11 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
+            m_animationDelta = inDeltaTime;
+
             refresh();
+
+            m_animationDelta = 0.0f;
 
             onTick(inDeltaTime);
 
@@ -284,7 +295,9 @@ namespace Chicane
         void Component::refresh()
         {
             refreshClassName();
+            snapshotAnimationVisual(m_style);
             refreshStyle();
+            tickAnimation(m_style, m_animationDelta);
 
             onRefresh();
 
@@ -297,6 +310,10 @@ namespace Chicane
 
         void Component::refreshStyleRuleset()
         {
+            const std::unordered_map<String, std::vector<float>> visual =
+                m_bIsAnimationReady ? extractAnimatedProperties(m_style)
+                                    : std::unordered_map<String, std::vector<float>>();
+
             m_styleVariables.clear();
 
             if (m_bHasStyleBase)
@@ -343,6 +360,8 @@ namespace Chicane
 
             if (files.empty())
             {
+                restoreAnimationVisual(m_style, visual);
+
                 return;
             }
 
@@ -390,6 +409,8 @@ namespace Chicane
                 m_styleBase.copyValuesFrom(m_style);
                 m_bHasStyleBase = true;
             }
+
+            restoreAnimationVisual(m_style, visual);
         }
 
         bool Component::isRoot() const
@@ -480,7 +501,7 @@ namespace Chicane
 
             m_bHovered = inValue;
 
-            refreshStyleRuleset();
+            refreshStyleSubtree();
 
             if (inValue)
             {
@@ -501,7 +522,7 @@ namespace Chicane
 
             m_bFocused = inValue;
 
-            refreshStyleRuleset();
+            refreshStyleSubtree();
 
             if (inValue)
             {
@@ -1822,6 +1843,16 @@ namespace Chicane
             return String::empty();
         }
 
+        void Component::refreshStyleSubtree()
+        {
+            refreshStyleRuleset();
+
+            for (Component* child : m_children)
+            {
+                child->refreshStyleSubtree();
+            }
+        }
+
         void Component::refreshSize()
         {
             if (isRoot())
@@ -2312,6 +2343,108 @@ namespace Chicane
             const bool bHasClosing = inValue.lastOf(METHOD_PARAMS_CLOSING) != String::npos;
 
             return bHasOpening && bHasClosing;
+        }
+
+        const StyleKeyframe::List* Component::findKeyframes(const String& inName) const
+        {
+            std::vector<StyleFile*> files;
+
+            auto addFile = [&](StyleFile* inFile)
+            {
+                if (!inFile)
+                {
+                    return;
+                }
+
+                if (std::find(files.begin(), files.end(), inFile) != files.end())
+                {
+                    return;
+                }
+
+                files.push_back(inFile);
+            };
+
+            std::vector<StyleFile*> ancestors;
+            for (const Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
+            {
+                addFile(ancestor->m_styleFile);
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+            }
+
+            for (auto iterator = ancestors.rbegin(); iterator != ancestors.rend(); ++iterator)
+            {
+                addFile(*iterator);
+            }
+
+            addFile(m_styleFile);
+
+            if (m_bOwnsStyle)
+            {
+                addFile(m_styles.get());
+            }
+
+            for (auto iterator = files.rbegin(); iterator != files.rend(); ++iterator)
+            {
+                if ((*iterator)->hasKeyframes(inName))
+                {
+                    return &(*iterator)->getKeyframes(inName);
+                }
+            }
+
+            return nullptr;
+        }
+
+        Drift::Clip Component::makeAnimationClip(const StyleKeyframe::List& inKeyframes) const
+        {
+            Drift::Clip clip(m_style.animation.name);
+            clip.duration   = m_style.animation.duration;
+            clip.iterations = m_style.animation.iterations;
+            clip.loop       = m_style.animation.bAlternate
+                                  ? Drift::Loop::PingPong
+                                  : (m_style.animation.iterations == 1 ? Drift::Loop::Once : Drift::Loop::Repeat);
+
+            std::unordered_map<String, Drift::Track> tracks;
+
+            for (const StyleKeyframe& frame : inKeyframes)
+            {
+                Style snapshot;
+                snapshot.setParent(this);
+                snapshot.setProperties(frame.properties);
+                snapshot.refresh();
+
+                const float time = frame.offset * clip.duration;
+
+                for (const auto& [name, value] : frame.properties)
+                {
+                    const std::vector<float> parsed = extractAnimatedProperty(snapshot, name);
+
+                    if (parsed.empty())
+                    {
+                        continue;
+                    }
+
+                    auto found = tracks.find(name);
+
+                    if (found == tracks.end())
+                    {
+                        tracks.insert({name, Drift::Track(name)});
+                        found = tracks.find(name);
+                    }
+
+                    found->second.addKeyframe(time, parsed, m_style.animation.easing);
+                }
+            }
+
+            for (const auto& [name, track] : tracks)
+            {
+                clip.addTrack(track);
+            }
+
+            return clip;
         }
     }
 }

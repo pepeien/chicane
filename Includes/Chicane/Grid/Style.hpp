@@ -9,6 +9,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
+#include "Chicane/Grid/Style/Animation.hpp"
 #include "Chicane/Grid/Style/Background.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Display.hpp"
@@ -21,6 +22,7 @@
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
+#include "Chicane/Grid/Style/Transition.hpp"
 
 namespace Chicane
 {
@@ -160,6 +162,63 @@ namespace Chicane
             static constexpr inline const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
 
             /*
+             * Template 1: "`PROPERTY` `DURATION`"
+             * Template 2: "`PROPERTY` `DURATION` `DELAY`"
+             * Template 3: "`PROPERTY` `DURATION` `TIMING_FUNCTION` `DELAY`"
+             */
+            static constexpr inline const char* TRANSITION_ATTRIBUTE_NAME          = "transition";
+            static constexpr inline const char* TRANSITION_PROPERTY_ATTRIBUTE_NAME = "transition-property";
+            static constexpr inline const char* TRANSITION_DURATION_ATTRIBUTE_NAME = "transition-duration";
+            static constexpr inline const char* TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME =
+                "transition-timing-function";
+            static constexpr inline const char* TRANSITION_DELAY_ATTRIBUTE_NAME = "transition-delay";
+            static constexpr inline const char* TRANSITION_PROPERTY_ALL         = "all";
+
+            // Animation
+            static constexpr inline const char* ANIMATION_ATTRIBUTE_NAME                 = "animation";
+            static constexpr inline const char* ANIMATION_NAME_ATTRIBUTE_NAME            = "animation-name";
+            static constexpr inline const char* ANIMATION_DURATION_ATTRIBUTE_NAME        = "animation-duration";
+            static constexpr inline const char* ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME = "animation-timing-function";
+            static constexpr inline const char* ANIMATION_DELAY_ATTRIBUTE_NAME           = "animation-delay";
+            static constexpr inline const char* ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME = "animation-iteration-count";
+            static constexpr inline const char* ANIMATION_DIRECTION_ATTRIBUTE_NAME       = "animation-direction";
+            static constexpr inline const char* ANIMATION_FILL_MODE_ATTRIBUTE_NAME       = "animation-fill-mode";
+            static constexpr inline const char* ANIMATION_PLAY_STATE_ATTRIBUTE_NAME      = "animation-play-state";
+            static constexpr inline const char* ANIMATION_NAME_NONE                      = "none";
+            static constexpr inline const char* ANIMATION_ITERATION_INFINITE             = "infinite";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_NORMAL          = "normal";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_REVERSE         = "reverse";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE       = "alternate";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE = "alternate-reverse";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_NONE                   = "none";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_FORWARDS               = "forwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BACKWARDS              = "backwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BOTH                   = "both";
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_RUNNING          = "running";
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED           = "paused";
+
+            // Easing
+            static constexpr inline const char* EASING_TYPE_LINEAR          = "linear";
+            static constexpr inline const char* EASING_TYPE_EASE            = "ease";
+            static constexpr inline const char* EASING_TYPE_EASE_IN         = "ease-in";
+            static constexpr inline const char* EASING_TYPE_EASE_OUT        = "ease-out";
+            static constexpr inline const char* EASING_TYPE_EASE_IN_OUT     = "ease-in-out";
+            static constexpr inline const char* EASING_CUBIC_BEZIER_KEYWORD = "cubic-bezier";
+
+            static inline std::vector<String>   EASING_TYPES = {
+                Style::EASING_TYPE_LINEAR,
+                Style::EASING_TYPE_EASE,
+                Style::EASING_TYPE_EASE_IN,
+                Style::EASING_TYPE_EASE_OUT,
+                Style::EASING_TYPE_EASE_IN_OUT
+            };
+
+            // Keyframes
+            static constexpr inline const char* KEYFRAMES_KEYWORD      = "@keyframes";
+            static constexpr inline const char* KEYFRAMES_FROM_KEYWORD = "from";
+            static constexpr inline const char* KEYFRAMES_TO_KEYWORD   = "to";
+
+            /*
              * Template 1: "`SINGLE_MARGIN`"
              * Template 2: "`VERTICAL_MARGIN` `HORIZONTAL_MARGIN`"
              * Template 3: "`TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`"
@@ -219,6 +278,21 @@ namespace Chicane
                 "border-bottom-right-radius";
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
+            // Lists
+            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {
+                OPACITY_ATTRIBUTE_NAME,          WIDTH_ATTRIBUTE_NAME,
+                HEIGHT_ATTRIBUTE_NAME,           Z_INDEX_ATTRIBUTE_NAME,
+                FOREGROUND_COLOR_ATTRIBUTE_NAME, BACKGROUND_COLOR_ATTRIBUTE_NAME,
+                FONT_SIZE_ATTRIBUTE_NAME,        LETTER_SPACING_ATTRIBUTE_NAME,
+                FILTER_ATTRIBUTE_NAME,           BACKDROP_FILTER_ATTRIBUTE_NAME,
+                MARGIN_TOP_ATTRIBUTE_NAME,       MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                MARGIN_LEFT_ATTRIBUTE_NAME,      MARGIN_RIGHT_ATTRIBUTE_NAME,
+                PADDING_TOP_ATTRIBUTE_NAME,      PADDING_BOTTOM_ATTRIBUTE_NAME,
+                PADDING_LEFT_ATTRIBUTE_NAME,     PADDING_RIGHT_ATTRIBUTE_NAME,
+                GAP_TOP_ATTRIBUTE_NAME,          GAP_BOTTOM_ATTRIBUTE_NAME,
+                GAP_LEFT_ATTRIBUTE_NAME,         GAP_RIGHT_ATTRIBUTE_NAME
+            };
+
         public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
@@ -256,6 +330,9 @@ namespace Chicane
             void refreshFont();
             void refreshLetterSpacing();
             void refreshCursor();
+
+            void parseTransitions(const StyleRuleset::Properties& inProperties);
+            void parseAnimation(const StyleRuleset::Properties& inProperties);
 
             StyleOverflow parseOverflow(const String& inValue) const;
             WindowCursor parseCursor(const String& inValue) const;
@@ -305,6 +382,10 @@ namespace Chicane
 
             // Pointer
             StyleProperty<WindowCursor>   cursor;
+
+            // Motion
+            StyleTransition::List         transitions;
+            StyleAnimation                animation;
 
         private:
             const Component* m_parent;

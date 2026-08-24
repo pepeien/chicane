@@ -22,6 +22,8 @@ namespace Chicane
         static constexpr inline const char*   PERCENTAGE_UNIT      = "%";
         static constexpr inline const char*   VIEWPORT_HEIGHT_UNIT = "vh";
         static constexpr inline const char*   VIEWPORT_WIDTH_UNIT  = "vw";
+        static constexpr inline const char*   MILLISECOND_UNIT     = "ms";
+        static constexpr inline const char*   SECOND_UNIT          = "s";
 
         // Function
         static constexpr inline const char    FUNCTION_PARAMS_OPENING   = '(';

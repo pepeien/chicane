@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Style/File.hpp"
 
+#include <algorithm>
+#include <cstdlib>
 #include <regex>
 
 #include "Chicane/Grid/Style.hpp"
@@ -11,7 +13,8 @@ namespace Chicane
         StyleFile::StyleFile()
             : m_imports({}),
               m_variables({}),
-              m_rulesets({})
+              m_rulesets({}),
+              m_keyframes({})
         {}
 
         void StyleFile::parse(const FileSystem::Path& inLocation)
@@ -106,6 +109,34 @@ namespace Chicane
 
         void StyleFile::addRuleset(const StyleRuleset& inValue)
         {
+            if (inValue.selectors.size() == 1)
+            {
+                String name;
+                float  offset = 0.0f;
+
+                if (parseKeyframesSelector(inValue.selectors.at(0), name, offset))
+                {
+                    if (!name.isEmpty() && !inValue.properties.empty())
+                    {
+                        StyleKeyframe keyframe;
+                        keyframe.offset     = offset;
+                        keyframe.properties = inValue.properties;
+
+                        StyleKeyframe::List& frames = m_keyframes[name];
+                        frames.push_back(keyframe);
+
+                        std::sort(
+                            frames.begin(),
+                            frames.end(),
+                            [](const StyleKeyframe& inLeft, const StyleKeyframe& inRight)
+                            { return inLeft.offset < inRight.offset; }
+                        );
+                    }
+
+                    return;
+                }
+            }
+
             bool bWasDuplicateFound = false;
             for (StyleRuleset& ruleset : m_rulesets)
             {
@@ -123,6 +154,90 @@ namespace Chicane
             }
 
             m_rulesets.push_back(inValue);
+        }
+
+        bool StyleFile::hasKeyframes(const String& inName) const
+        {
+            return m_keyframes.find(inName) != m_keyframes.end();
+        }
+
+        const StyleKeyframe::List& StyleFile::getKeyframes(const String& inName) const
+        {
+            const auto found = m_keyframes.find(inName);
+
+            if (found == m_keyframes.end())
+            {
+                static const StyleKeyframe::List empty;
+
+                return empty;
+            }
+
+            return found->second;
+        }
+
+        bool StyleFile::parseKeyframesSelector(const String& inSelector, String& outName, float& outOffset) const
+        {
+            const String selector = inSelector.trim();
+
+            if (!selector.startsWith(Style::KEYFRAMES_KEYWORD))
+            {
+                return false;
+            }
+
+            const String keyword = Style::KEYFRAMES_KEYWORD;
+            const String rest    = selector.substr(keyword.size()).trim();
+
+            if (rest.isEmpty())
+            {
+                return true;
+            }
+
+            const std::vector<String> tokens = splitOneliner(rest);
+
+            if (tokens.empty())
+            {
+                return true;
+            }
+
+            outOffset = -1.0f;
+
+            const String last = tokens.back().trim().toLower();
+
+            if (last.equals(Style::KEYFRAMES_FROM_KEYWORD))
+            {
+                outOffset = 0.0f;
+            }
+            else if (last.equals(Style::KEYFRAMES_TO_KEYWORD))
+            {
+                outOffset = 1.0f;
+            }
+            else if (last.endsWith("%"))
+            {
+                const String number = last.substr(0, last.size() - 1).trim();
+
+                if (!number.isEmpty() && !number.isNaN())
+                {
+                    outOffset = static_cast<float>(std::strtod(number.toChar(), nullptr) / 100.0);
+                }
+            }
+
+            const std::size_t nameCount = outOffset < 0.0f ? tokens.size() : tokens.size() - 1;
+
+            outName = "";
+
+            for (std::size_t i = 0; i < nameCount; i++)
+            {
+                if (!outName.isEmpty())
+                {
+                    outName.append(' ');
+                }
+
+                outName.append(tokens.at(i));
+            }
+
+            outName = outName.trim();
+
+            return true;
         }
 
         StyleImport::List StyleFile::extractImports(const String& inValue)

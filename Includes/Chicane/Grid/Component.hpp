@@ -16,7 +16,6 @@
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Reflection.hpp"
-#include "Chicane/Core/Transformable/2D.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Method.hpp"
@@ -26,16 +25,18 @@
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Animatable.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
+#include "Chicane/Grid/Style/Keyframe.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID Component : public Transformable2D
+        class CHICANE_GRID Component : public Animatable
         {
         public:
             using ClassList  = std::set<String>;
@@ -163,6 +164,7 @@ namespace Chicane
             const Style& getStyle() const;
             float getFilterBlur() const;
             const String& getStyleVariable(const String& inName) const;
+            void refreshStyleSubtree();
 
             bool hasLocalSelector(const String& inValue) const;
             bool hasSelector(const String& inValue) const;
@@ -279,6 +281,9 @@ namespace Chicane
             void refreshStyle();
             void refreshPosition();
             void refreshBounds();
+
+            const StyleKeyframe::List* findKeyframes(const String& inName) const override;
+            Drift::Clip makeAnimationClip(const StyleKeyframe::List& inKeyframes) const override;
 
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;

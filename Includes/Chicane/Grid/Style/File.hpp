@@ -8,6 +8,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Import.hpp"
+#include "Chicane/Grid/Style/Keyframe.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 
 namespace Chicane
@@ -18,6 +19,7 @@ namespace Chicane
         {
         public:
             using Variables = std::unordered_map<String, String>;
+            using Keyframes = std::unordered_map<String, StyleKeyframe::List>;
 
         public:
             static inline const StyleFile& empty()
@@ -50,6 +52,9 @@ namespace Chicane
             void addRuleset(const StyleRuleset::List& inValue);
             void addRuleset(const StyleRuleset& inValue);
 
+            bool hasKeyframes(const String& inName) const;
+            const StyleKeyframe::List& getKeyframes(const String& inName) const;
+
         private:
             StyleImport::List extractImports(const String& inValue);
 
@@ -58,10 +63,13 @@ namespace Chicane
             StyleRuleset::List extractRulesets(const String& inValue, const String& inSelector = "");
             String stripNestedRulesets(const String& inValue);
 
+            bool parseKeyframesSelector(const String& inSelector, String& outName, float& outOffset) const;
+
         private:
             StyleImport::List  m_imports;
             Variables          m_variables;
             StyleRuleset::List m_rulesets;
+            Keyframes          m_keyframes;
         };
     }
 }

@@ -1,5 +1,8 @@
 #include "Chicane/Grid/Style.hpp"
 
+#include <algorithm>
+#include <cstdlib>
+
 #include "Chicane/Box/Font.hpp"
 
 #include "Chicane/Grid/Component.hpp"
@@ -37,6 +40,8 @@ namespace Chicane
               font({}),
               letterSpacing(0.0f),
               cursor(WindowCursor::Default),
+              transitions({}),
+              animation({}),
               m_parent(nullptr)
         {
             display.parseWith(
@@ -324,6 +329,9 @@ namespace Chicane
                 cursor.setRaw("");
             }
 
+            parseTransitions(inProperties);
+            parseAnimation(inProperties);
+
             refresh();
         }
 
@@ -380,6 +388,9 @@ namespace Chicane
             font.size.copyValue(inStyle.font.size);
             letterSpacing.copyValue(inStyle.letterSpacing);
             cursor.copyValue(inStyle.cursor);
+
+            transitions = inStyle.transitions;
+            animation   = inStyle.animation;
         }
 
         bool Style::hasParent() const
@@ -763,6 +774,295 @@ namespace Chicane
             }
 
             return m_parent->parseText(value);
+        }
+
+        void Style::parseTransitions(const StyleRuleset::Properties& inProperties)
+        {
+            const bool bHasShorthand = inProperties.find(TRANSITION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasProperty  = inProperties.find(TRANSITION_PROPERTY_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDuration  = inProperties.find(TRANSITION_DURATION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasEasing =
+                inProperties.find(TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDelay = inProperties.find(TRANSITION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
+
+            if (!bHasShorthand && !bHasProperty && !bHasDuration && !bHasEasing && !bHasDelay)
+            {
+                return;
+            }
+
+            transitions.clear();
+
+            if (bHasShorthand)
+            {
+                for (const String& item : splitStyleList(inProperties.at(TRANSITION_ATTRIBUTE_NAME)))
+                {
+                    StyleTransition transition;
+                    bool            bHasDurationToken = false;
+
+                    for (const String& token : splitOneliner(item))
+                    {
+                        if (isTime(token))
+                        {
+                            if (!bHasDurationToken)
+                            {
+                                transition.duration = parseTime(token);
+                                bHasDurationToken   = true;
+
+                                continue;
+                            }
+
+                            transition.delay = parseTime(token);
+
+                            continue;
+                        }
+
+                        if (isEasing(token))
+                        {
+                            transition.easing = parseEasing(token);
+
+                            continue;
+                        }
+
+                        transition.property = token.trim();
+                    }
+
+                    if (!transition.property.isEmpty())
+                    {
+                        transitions.push_back(transition);
+                    }
+                }
+            }
+
+            auto applyList = [&](const String& inKey, auto&& inSetter)
+            {
+                if (inProperties.find(inKey) == inProperties.end())
+                {
+                    return;
+                }
+
+                const std::vector<String> values = splitStyleList(inProperties.at(inKey));
+
+                if (values.empty())
+                {
+                    return;
+                }
+
+                if (transitions.empty())
+                {
+                    transitions.push_back(StyleTransition());
+                }
+
+                for (std::size_t i = 0; i < transitions.size(); i++)
+                {
+                    inSetter(transitions.at(i), values.at(std::min(i, values.size() - 1)));
+                }
+            };
+
+            applyList(
+                TRANSITION_PROPERTY_ATTRIBUTE_NAME,
+                [](StyleTransition& outTransition, const String& inValue) { outTransition.property = inValue.trim(); }
+            );
+            applyList(
+                TRANSITION_DURATION_ATTRIBUTE_NAME,
+                [](StyleTransition& outTransition, const String& inValue)
+                { outTransition.duration = parseTime(inValue); }
+            );
+            applyList(
+                TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME,
+                [](StyleTransition& outTransition, const String& inValue)
+                { outTransition.easing = parseEasing(inValue); }
+            );
+            applyList(
+                TRANSITION_DELAY_ATTRIBUTE_NAME,
+                [](StyleTransition& outTransition, const String& inValue) { outTransition.delay = parseTime(inValue); }
+            );
+        }
+
+        void Style::parseAnimation(const StyleRuleset::Properties& inProperties)
+        {
+            const bool bHasShorthand = inProperties.find(ANIMATION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasName      = inProperties.find(ANIMATION_NAME_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDuration  = inProperties.find(ANIMATION_DURATION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasEasing =
+                inProperties.find(ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDelay      = inProperties.find(ANIMATION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasIterations = inProperties.find(ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME) !=
+                                        inProperties.end();
+            const bool bHasDirection = inProperties.find(ANIMATION_DIRECTION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasFill      = inProperties.find(ANIMATION_FILL_MODE_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasPlayState = inProperties.find(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME) != inProperties.end();
+
+            if (!bHasShorthand && !bHasName && !bHasDuration && !bHasEasing && !bHasDelay && !bHasIterations &&
+                !bHasDirection && !bHasFill && !bHasPlayState)
+            {
+                return;
+            }
+
+            auto parseDirection = [&](const String& inValue)
+            {
+                const String value = inValue.trim().toLower();
+
+                animation.bReverse   = value.equals(
+                    ANIMATION_DIRECTION_TYPE_REVERSE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE
+                );
+                animation.bAlternate = value.equals(
+                    ANIMATION_DIRECTION_TYPE_ALTERNATE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE
+                );
+            };
+
+            auto parseFill = [&](const String& inValue)
+            {
+                const String value = inValue.trim().toLower();
+
+                animation.bFillForwards  = value.equals(ANIMATION_FILL_TYPE_FORWARDS, ANIMATION_FILL_TYPE_BOTH);
+                animation.bFillBackwards = value.equals(ANIMATION_FILL_TYPE_BACKWARDS, ANIMATION_FILL_TYPE_BOTH);
+            };
+
+            auto parseIterations = [&](const String& inValue)
+            {
+                const String value = inValue.trim().toLower();
+
+                if (value.equals(ANIMATION_ITERATION_INFINITE))
+                {
+                    animation.iterations = -1;
+
+                    return;
+                }
+
+                if (value.isEmpty() || value.isNaN())
+                {
+                    animation.iterations = 1;
+
+                    return;
+                }
+
+                animation.iterations = static_cast<int>(std::strtod(value.toChar(), nullptr));
+            };
+
+            if (bHasShorthand)
+            {
+                const std::vector<String> items = splitStyleList(inProperties.at(ANIMATION_ATTRIBUTE_NAME));
+
+                if (!items.empty())
+                {
+                    bool bHasDurationToken = false;
+
+                    for (const String& token : splitOneliner(items.at(0)))
+                    {
+                        if (isTime(token))
+                        {
+                            if (!bHasDurationToken)
+                            {
+                                animation.duration = parseTime(token);
+                                bHasDurationToken  = true;
+
+                                continue;
+                            }
+
+                            animation.delay = parseTime(token);
+
+                            continue;
+                        }
+
+                        if (isEasing(token))
+                        {
+                            animation.easing = parseEasing(token);
+
+                            continue;
+                        }
+
+                        const String value = token.trim().toLower();
+
+                        if (value.equals(ANIMATION_ITERATION_INFINITE) || (!value.isEmpty() && !value.isNaN()))
+                        {
+                            parseIterations(value);
+
+                            continue;
+                        }
+
+                        if (value.equals(
+                                ANIMATION_DIRECTION_TYPE_NORMAL,
+                                ANIMATION_DIRECTION_TYPE_REVERSE,
+                                ANIMATION_DIRECTION_TYPE_ALTERNATE,
+                                ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE
+                            ))
+                        {
+                            parseDirection(value);
+
+                            continue;
+                        }
+
+                        if (value.equals(
+                                ANIMATION_FILL_TYPE_NONE,
+                                ANIMATION_FILL_TYPE_FORWARDS,
+                                ANIMATION_FILL_TYPE_BACKWARDS,
+                                ANIMATION_FILL_TYPE_BOTH
+                            ))
+                        {
+                            parseFill(value);
+
+                            continue;
+                        }
+
+                        if (value.equals(ANIMATION_PLAY_STATE_TYPE_RUNNING, ANIMATION_PLAY_STATE_TYPE_PAUSED))
+                        {
+                            animation.bPaused = value.equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
+
+                            continue;
+                        }
+
+                        if (!value.equals(ANIMATION_NAME_NONE))
+                        {
+                            animation.name = token.trim();
+                        }
+                    }
+                }
+            }
+
+            if (bHasName)
+            {
+                const String name = inProperties.at(ANIMATION_NAME_ATTRIBUTE_NAME).trim();
+
+                animation.name = name.equals(ANIMATION_NAME_NONE) ? "" : name;
+            }
+
+            if (bHasDuration)
+            {
+                animation.duration = parseTime(inProperties.at(ANIMATION_DURATION_ATTRIBUTE_NAME));
+            }
+
+            if (bHasEasing)
+            {
+                animation.easing = parseEasing(inProperties.at(ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME));
+            }
+
+            if (bHasDelay)
+            {
+                animation.delay = parseTime(inProperties.at(ANIMATION_DELAY_ATTRIBUTE_NAME));
+            }
+
+            if (bHasIterations)
+            {
+                parseIterations(inProperties.at(ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME));
+            }
+
+            if (bHasDirection)
+            {
+                parseDirection(inProperties.at(ANIMATION_DIRECTION_ATTRIBUTE_NAME));
+            }
+
+            if (bHasFill)
+            {
+                parseFill(inProperties.at(ANIMATION_FILL_MODE_ATTRIBUTE_NAME));
+            }
+
+            if (bHasPlayState)
+            {
+                animation.bPaused = inProperties.at(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME)
+                                        .trim()
+                                        .toLower()
+                                        .equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
+            }
         }
 
         std::vector<String> splitOneliner(const String& inValue)
