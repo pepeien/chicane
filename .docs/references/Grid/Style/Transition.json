@@ -1,0 +1,106 @@
+{
+    "title": "StyleTransition",
+    "filename": "Transition",
+    "path": "Grid/Style/Transition",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Transition.hpp",
+        "namespace": "Chicane::Grid::StyleTransition",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleTransition",
+                            "suffix": "",
+                            "path": "Grid/Style/Transition",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLETRANSITION_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleTransition",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLETRANSITION_STYLETRANSITION_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "property",
+                "description": "CHICANE_GRID_STYLETRANSITION_PROPERTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "duration",
+                "description": "CHICANE_GRID_STYLETRANSITION_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "delay",
+                "description": "CHICANE_GRID_STYLETRANSITION_DELAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Drift::EasingCurve",
+                    "suffix": "",
+                    "path": "Drift/Easing",
+                    "templates": []
+                },
+                "name": "easing",
+                "description": "CHICANE_GRID_STYLETRANSITION_EASING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLETRANSITION_DESCRIPTION"
+    },
+    "children": []
+}

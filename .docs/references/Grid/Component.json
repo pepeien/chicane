@@ -1007,6 +1007,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshStyleSubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHSTYLESUBTREE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -2795,6 +2810,62 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFRESHBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StyleKeyframe::List",
+                    "suffix": "*",
+                    "path": "Grid/Style/Keyframe",
+                    "templates": []
+                },
+                "name": "findKeyframes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_FINDKEYFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "Drift::Clip",
+                    "suffix": "",
+                    "path": "Drift/Clip",
+                    "templates": []
+                },
+                "name": "makeAnimationClip",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleKeyframe::List",
+                            "suffix": "&",
+                            "path": "Grid/Style/Keyframe",
+                            "templates": []
+                        },
+                        "name": "inKeyframes"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_MAKEANIMATIONCLIP_DESCRIPTION"
             },
             {
                 "accessor": "protected",

@@ -520,6 +520,58 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseTransitions",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_PARSETRANSITIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseAnimation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_PARSEANIMATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "StyleOverflow",
                     "suffix": "",
                     "path": "Grid/Style/Overflow",
@@ -2074,6 +2126,605 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "TRANSITION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSITION_PROPERTY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_PROPERTY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSITION_DURATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_DURATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSITION_DELAY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_DELAY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSITION_PROPERTY_ALL",
+                "description": "CHICANE_GRID_STYLE_TRANSITION_PROPERTY_ALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_NAME_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_NAME_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DURATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DURATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DELAY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DELAY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DIRECTION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DIRECTION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_FILL_MODE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_FILL_MODE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_PLAY_STATE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_PLAY_STATE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_NAME_NONE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_NAME_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_ITERATION_INFINITE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_ITERATION_INFINITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DIRECTION_TYPE_NORMAL",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DIRECTION_TYPE_NORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DIRECTION_TYPE_REVERSE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DIRECTION_TYPE_REVERSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DIRECTION_TYPE_ALTERNATE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DIRECTION_TYPE_ALTERNATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_FILL_TYPE_NONE",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_FILL_TYPE_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_FILL_TYPE_FORWARDS",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_FILL_TYPE_FORWARDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_FILL_TYPE_BACKWARDS",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_FILL_TYPE_BACKWARDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_FILL_TYPE_BOTH",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_FILL_TYPE_BOTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_PLAY_STATE_TYPE_RUNNING",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_PLAY_STATE_TYPE_RUNNING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANIMATION_PLAY_STATE_TYPE_PAUSED",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_PLAY_STATE_TYPE_PAUSED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_TYPE_LINEAR",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPE_LINEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_TYPE_EASE",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPE_EASE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_TYPE_EASE_IN",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPE_EASE_IN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_TYPE_EASE_OUT",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPE_EASE_OUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_TYPE_EASE_IN_OUT",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPE_EASE_IN_OUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EASING_CUBIC_BEZIER_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_EASING_CUBIC_BEZIER_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "EASING_TYPES",
+                "description": "CHICANE_GRID_STYLE_EASING_TYPES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAMES_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_KEYFRAMES_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAMES_FROM_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_KEYFRAMES_FROM_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAMES_TO_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_KEYFRAMES_TO_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "MARGIN_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_MARGIN_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -2463,6 +3114,29 @@
             },
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "ANIMATABLE_PROPERTIES",
+                "description": "CHICANE_GRID_STYLE_ANIMATABLE_PROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -2842,6 +3516,32 @@
                 },
                 "name": "cursor",
                 "description": "CHICANE_GRID_STYLE_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleTransition::List",
+                    "suffix": "",
+                    "path": "Grid/Style/Transition",
+                    "templates": []
+                },
+                "name": "transitions",
+                "description": "CHICANE_GRID_STYLE_TRANSITIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleAnimation",
+                    "suffix": "",
+                    "path": "Grid/Style/Animation",
+                    "templates": []
+                },
+                "name": "animation",
+                "description": "CHICANE_GRID_STYLE_ANIMATION_DESCRIPTION"
             },
             {
                 "accessor": "private",

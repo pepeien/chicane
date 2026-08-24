@@ -1,0 +1,80 @@
+{
+    "title": "StyleKeyframe",
+    "filename": "Keyframe",
+    "path": "Grid/Style/Keyframe",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Keyframe.hpp",
+        "namespace": "Chicane::Grid::StyleKeyframe",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleKeyframe",
+                            "suffix": "",
+                            "path": "Grid/Style/Keyframe",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEKEYFRAME_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleKeyframe",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEKEYFRAME_STYLEKEYFRAME_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "description": "CHICANE_GRID_STYLEKEYFRAME_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleRuleset::Properties",
+                    "suffix": "",
+                    "path": "Grid/Style/Ruleset",
+                    "templates": []
+                },
+                "name": "properties",
+                "description": "CHICANE_GRID_STYLEKEYFRAME_PROPERTIES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEKEYFRAME_DESCRIPTION"
+    },
+    "children": []
+}

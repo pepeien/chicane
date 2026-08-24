@@ -31,6 +31,32 @@
                     ]
                 },
                 "description": "CHICANE_GRID_STYLEFILE_VARIABLES_DESCRIPTION"
+            },
+            {
+                "name": "Keyframes",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "StyleKeyframe::List",
+                            "suffix": "",
+                            "path": "Grid/Style/Keyframe",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEFILE_KEYFRAMES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -447,6 +473,62 @@
                 "description": "CHICANE_GRID_STYLEFILE_ADDRULESET_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasKeyframes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEFILE_HASKEYFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StyleKeyframe::List",
+                    "suffix": "&",
+                    "path": "Grid/Style/Keyframe",
+                    "templates": []
+                },
+                "name": "getKeyframes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEFILE_GETKEYFRAMES_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -559,6 +641,54 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_STYLEFILE_STRIPNESTEDRULESETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseKeyframesSelector",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inSelector"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "outName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outOffset"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEFILE_PARSEKEYFRAMESSELECTOR_DESCRIPTION"
             }
         ],
         "members": [
@@ -600,6 +730,19 @@
                 },
                 "name": "m_rulesets",
                 "description": "CHICANE_GRID_STYLEFILE_M_RULESETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Keyframes",
+                    "suffix": "",
+                    "path": "Grid/Style/File",
+                    "templates": []
+                },
+                "name": "m_keyframes",
+                "description": "CHICANE_GRID_STYLEFILE_M_KEYFRAMES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLEFILE_DESCRIPTION"

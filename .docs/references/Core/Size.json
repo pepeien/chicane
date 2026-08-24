@@ -709,6 +709,38 @@
                 "type": {
                     "prefix": "const ",
                     "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MILLISECOND_UNIT",
+                "description": "CHICANE_SIZE_MILLISECOND_UNIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SECOND_UNIT",
+                "description": "CHICANE_SIZE_SECOND_UNIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
                     "suffix": "",
                     "path": "",
                     "templates": []
