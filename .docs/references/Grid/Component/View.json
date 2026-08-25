@@ -60,7 +60,23 @@
                 "description": "CHICANE_GRID_VIEW_VIEW_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~View",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_~VIEW_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -72,7 +88,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "handle",
+                "name": "post",
                 "parameters": [
                     {
                         "type": {
@@ -86,7 +102,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_POST_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -156,6 +172,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_FOCUSON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_TICK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -245,6 +287,64 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pump",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_PUMP_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "WindowCursor",
+                    "suffix": "",
+                    "path": "Core/Window/Cursor",
+                    "templates": []
+                },
+                "name": "resolvePointer",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEW_RESOLVEPOINTER_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -426,6 +526,48 @@
                 },
                 "name": "m_focused",
                 "description": "CHICANE_GRID_VIEW_M_FOCUSED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ViewInputQueue",
+                            "suffix": "",
+                            "path": "Grid/Component/View/InputQueue",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_inputs",
+                "description": "CHICANE_GRID_VIEW_M_INPUTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowCursor",
+                            "suffix": "",
+                            "path": "Core/Window/Cursor",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_pointer",
+                "description": "CHICANE_GRID_VIEW_M_POINTER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_VIEW_DESCRIPTION"

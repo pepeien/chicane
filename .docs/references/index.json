@@ -2757,7 +2757,41 @@
                             "functions": [],
                             "members": []
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "ViewInputQueue",
+                                "filename": "InputQueue",
+                                "path": "Grid/Component/View/InputQueue",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/View/InputQueue.hpp",
+                                    "namespace": "Chicane::Grid::ViewInputQueue",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": [
+                                    {
+                                        "title": "ViewInputQueueEvent",
+                                        "filename": "Event",
+                                        "path": "Grid/Component/View/InputQueue/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Component/View/InputQueue/Event.hpp",
+                                            "namespace": "Chicane::Grid::ViewInputQueueEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": []
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },

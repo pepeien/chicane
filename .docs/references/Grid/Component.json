@@ -225,6 +225,23 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isFocusable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISFOCUSABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onEvent",
                 "parameters": [
                     {
@@ -2515,23 +2532,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_CANPLAYANIMATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isFocusable",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_ISFOCUSABLE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
