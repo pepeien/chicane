@@ -43,6 +43,25 @@
                     ]
                 },
                 "description": "CHICANE_GRID_STYLEFONT_SIZEPARSER_DESCRIPTION"
+            },
+            {
+                "name": "WeightParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEFONT_WEIGHTPARSER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -137,6 +156,16 @@
                             "templates": []
                         },
                         "name": "inSizeParser"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WeightParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Font",
+                            "templates": []
+                        },
+                        "name": "inWeightParser"
                     }
                 ],
                 "modifiers": [],
@@ -185,6 +214,27 @@
                 },
                 "name": "size",
                 "description": "CHICANE_GRID_STYLEFONT_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "weight",
+                "description": "CHICANE_GRID_STYLEFONT_WEIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLEFONT_DESCRIPTION"

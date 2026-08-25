@@ -113,6 +113,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Model",
+                    "suffix": "*",
+                    "path": "Box/Model",
+                    "templates": []
+                },
+                "name": "getDefault",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETDEFAULT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "ModelVendor",
                     "suffix": "",
@@ -410,6 +427,38 @@
                 },
                 "name": "VENDOR_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_MODEL_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_SOURCE",
+                "description": "CHICANE_BOX_MODEL_DEFAULT_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_REFERENCE",
+                "description": "CHICANE_BOX_MODEL_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "private",

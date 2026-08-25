@@ -45,6 +45,52 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_FONTTRUETYPE_PARSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "FontFamily",
+                    "suffix": "",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inFamily"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FontRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTTRUETYPE_PARSE_DESCRIPTION"
             }
         ],
         "members": [],

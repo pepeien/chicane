@@ -57,6 +57,40 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Texture",
+                    "suffix": "*",
+                    "path": "Box/Texture",
+                    "templates": []
+                },
+                "name": "getDefault",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETDEFAULT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "ImageVendor",
                     "suffix": "",
@@ -270,6 +304,38 @@
                 },
                 "name": "VENDOR_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_TEXTURE_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_SOURCE",
+                "description": "CHICANE_BOX_TEXTURE_DEFAULT_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_REFERENCE",
+                "description": "CHICANE_BOX_TEXTURE_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "private",

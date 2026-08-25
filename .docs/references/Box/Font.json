@@ -199,6 +199,34 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "FontFamily",
+                    "suffix": "&",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "getData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWeight"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONT_GETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -246,6 +274,31 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_FONT_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "FontFamily",
+                            "suffix": "*",
+                            "path": "Box/Font/Family",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getInstances",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONT_GETINSTANCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -298,6 +351,44 @@
                             "templates": []
                         },
                         "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONT_PARSEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "FontFamily",
+                    "suffix": "",
+                    "path": "Box/Font/Family",
+                    "templates": []
+                },
+                "name": "parseData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FontRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWeight"
                     }
                 ],
                 "modifiers": [
@@ -363,6 +454,22 @@
                 ],
                 "type": {
                     "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_SOURCE",
+                "description": "CHICANE_BOX_FONT_DEFAULT_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -389,6 +496,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "FontRaw",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "m_raw",
+                "description": "CHICANE_BOX_FONT_M_RAW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "FontFamily",
                     "suffix": "",
                     "path": "Box/Font/Family",
@@ -396,6 +516,34 @@
                 },
                 "name": "m_data",
                 "description": "CHICANE_BOX_FONT_M_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "FontFamily",
+                            "suffix": "",
+                            "path": "Box/Font/Family",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_instances",
+                "description": "CHICANE_BOX_FONT_M_INSTANCES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_FONT_DESCRIPTION"

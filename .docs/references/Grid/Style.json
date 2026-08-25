@@ -956,6 +956,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWeight",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEWEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",
@@ -2320,6 +2348,134 @@
                 },
                 "name": "FONT_SIZE_DEFAULT_VALUE",
                 "description": "CHICANE_GRID_STYLE_FONT_SIZE_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_DEFAULT_VALUE",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_TYPE_NORMAL",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_TYPE_NORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_TYPE_BOLD",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_TYPE_BOLD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_TYPE_BOLDER",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_TYPE_BOLDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_TYPE_LIGHTER",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_TYPE_LIGHTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_NORMAL_VALUE",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_NORMAL_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_WEIGHT_BOLD_VALUE",
+                "description": "CHICANE_GRID_STYLE_FONT_WEIGHT_BOLD_VALUE_DESCRIPTION"
             },
             {
                 "accessor": "public",

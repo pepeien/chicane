@@ -200,6 +200,49 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getFamily",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETFAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFamily",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_SETFAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "float",
                     "suffix": "",
@@ -366,6 +409,136 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_FONTFAMILY_ADDKERNING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getWeight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETWEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setWeight",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_SETWEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getWeightMin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETWEIGHTMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getWeightMax",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_GETWEIGHTMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setWeightRange",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMinimum"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMaximum"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTFAMILY_SETWEIGHTRANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVariable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_ISVARIABLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -550,6 +723,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_family",
+                "description": "CHICANE_BOX_FONTFAMILY_M_FAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Glyphs",
                     "suffix": "",
                     "path": "Box/Font/Family",
@@ -583,6 +769,45 @@
                 },
                 "name": "m_descender",
                 "description": "CHICANE_BOX_FONTFAMILY_M_DESCENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_weight",
+                "description": "CHICANE_BOX_FONTFAMILY_M_WEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_weightMin",
+                "description": "CHICANE_BOX_FONTFAMILY_M_WEIGHTMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_weightMax",
+                "description": "CHICANE_BOX_FONTFAMILY_M_WEIGHTMAX_DESCRIPTION"
             },
             {
                 "accessor": "private",

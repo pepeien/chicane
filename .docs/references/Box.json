@@ -361,6 +361,68 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
+                    "name": "class Font",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findFont",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inFamily"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FINDFONT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "notify",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "class Asset",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_NOTIFY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
                     "name": "class Asset",
                     "suffix": "*",
                     "path": "",
