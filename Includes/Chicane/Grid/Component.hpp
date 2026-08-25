@@ -68,6 +68,9 @@ namespace Chicane
 
             virtual ~Component();
 
+        protected:
+            bool canPlayAnimation() const override;
+
         public:
             // Status
             virtual bool isDrawable() const;
@@ -162,6 +165,7 @@ namespace Chicane
             void addStyleProperties(const StyleRuleset::Properties& inSource);
 
             const Style& getStyle() const;
+            float getOpacity() const;
             float getFilterBlur() const;
             const String& getStyleVariable(const String& inName) const;
             void refreshStyleSubtree();

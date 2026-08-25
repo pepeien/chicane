@@ -31,7 +31,8 @@ namespace Chicane
             void setScroll(const Vec2& inValue);
             void setScroll(float inX, float inY);
 
-            bool clipsOverflow() const;
+            bool isClippingOverflow() const;
+
             bool canScroll() const;
             bool canScrollX() const;
             bool canScrollY() const;

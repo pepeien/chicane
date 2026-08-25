@@ -1,6 +1,6 @@
 <View path="home">
     <Container dir:if="{{ bDidPlayerWin }}" class="victory">
-        <Text>YOU WIN</Text>
+        <Text>Victory</Text>
     </Container>
     <Telemetry />
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>

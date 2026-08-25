@@ -252,6 +252,11 @@ namespace Chicane
             m_children.clear();
         }
 
+        bool Component::canPlayAnimation() const
+        {
+            return isDisplayable();
+        }
+
         const ReflectionTypeInfo* Component::findImported(const String& inSelector) const
         {
             if (inSelector.isEmpty())
@@ -295,8 +300,9 @@ namespace Chicane
         void Component::refresh()
         {
             refreshClassName();
-            snapshotAnimationVisual(m_style);
             refreshStyle();
+            refreshDirectives();
+
             tickAnimation(m_style, m_animationDelta);
 
             onRefresh();
@@ -304,15 +310,14 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshBounds();
-
-            refreshDirectives();
         }
 
         void Component::refreshStyleRuleset()
         {
-            const std::unordered_map<String, std::vector<float>> visual =
-                m_bIsAnimationReady ? extractAnimatedProperties(m_style)
-                                    : std::unordered_map<String, std::vector<float>>();
+            if (m_bIsAnimationReady)
+            {
+                m_style.snapshot();
+            }
 
             m_styleVariables.clear();
 
@@ -360,7 +365,7 @@ namespace Chicane
 
             if (files.empty())
             {
-                restoreAnimationVisual(m_style, visual);
+                m_style.restore();
 
                 return;
             }
@@ -410,7 +415,7 @@ namespace Chicane
                 m_bHasStyleBase = true;
             }
 
-            restoreAnimationVisual(m_style, visual);
+            m_style.restore();
         }
 
         bool Component::isRoot() const
@@ -434,7 +439,7 @@ namespace Chicane
             const bool bIsBackdropVisible        = m_style.backdrop.blur.get() > 0.0f;
 
             return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible) &&
-                   m_style.opacity.get() > 0.0f;
+                   getOpacity() > 0.0f;
         }
 
         bool Component::isSolid() const
@@ -637,6 +642,26 @@ namespace Chicane
         const Style& Component::getStyle() const
         {
             return m_style;
+        }
+
+        float Component::getOpacity() const
+        {
+            float opacity = m_style.opacity.get();
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                opacity *= ancestor->getStyle().opacity.get();
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return opacity;
         }
 
         float Component::getFilterBlur() const
@@ -1330,11 +1355,11 @@ namespace Chicane
             {
                 if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
                 {
-                    if (scrollable->clipsOverflow() && !ancestor->getDrawBounds().containsRounded(
-                                                           inLocation,
-                                                           ancestor->getStyle().radius.horizontal(),
-                                                           ancestor->getStyle().radius.vertical()
-                                                       ))
+                    if (scrollable->isClippingOverflow() && !ancestor->getDrawBounds().containsRounded(
+                                                                inLocation,
+                                                                ancestor->getStyle().radius.horizontal(),
+                                                                ancestor->getStyle().radius.vertical()
+                                                            ))
                     {
                         return false;
                     }
@@ -1699,7 +1724,7 @@ namespace Chicane
             {
                 if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
                 {
-                    if (scrollable->clipsOverflow())
+                    if (scrollable->isClippingOverflow())
                     {
                         clip = clip.intersect(ancestor->getDrawBounds());
                     }
@@ -1741,7 +1766,7 @@ namespace Chicane
             {
                 if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
                 {
-                    if (scrollable->clipsOverflow() && !ancestor->getStyle().radius.isZero())
+                    if (scrollable->isClippingOverflow() && !ancestor->getStyle().radius.isZero())
                     {
                         const Bounds2D box     = ancestor->getDrawBounds();
                         const Vec4     radiusX = ancestor->getStyle().radius.horizontal();
@@ -2420,7 +2445,7 @@ namespace Chicane
 
                 for (const auto& [name, value] : frame.properties)
                 {
-                    const std::vector<float> parsed = extractAnimatedProperty(snapshot, name);
+                    const std::vector<float> parsed = snapshot.extractAnimatedProperty(name);
 
                     if (parsed.empty())
                     {

@@ -612,7 +612,7 @@ namespace Chicane
             subcommand.instance.color         = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
-                style.opacity.get();
+                component->getOpacity();
 
             command.fills.emplace_back(std::move(subcommand));
         }

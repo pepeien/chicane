@@ -1,5 +1,8 @@
 #pragma once
 
+#include <unordered_map>
+#include <vector>
+
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Size.hpp"
@@ -34,6 +37,9 @@ namespace Chicane
 
         struct CHICANE_GRID Style
         {
+        public:
+            using Properties = std::unordered_map<String, std::vector<float>>;
+
         public:
             // Extension
             static constexpr inline const char* FILE_EXTENSION_NAME = "decal";
@@ -302,11 +308,20 @@ namespace Chicane
         public:
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
-            bool clipsOverflow() const;
+            bool isClippingOverflow() const;
 
             void setProperties(const StyleRuleset::Properties& inProperties);
 
             void copyValuesFrom(const Style& inStyle);
+
+            void snapshot();
+            void restore();
+
+            Properties extractAnimatedProperties() const;
+            std::vector<float> extractAnimatedProperty(const String& inName) const;
+            void applyAnimatedProperty(const String& inName, const std::vector<float>& inValue);
+            const StyleTransition* findTransition(const String& inName) const;
+            const Properties& getSnapshot() const;
 
             bool hasParent() const;
             void setParent(const Component* inComponent);
@@ -391,6 +406,7 @@ namespace Chicane
 
         private:
             const Component* m_parent;
+            Properties       m_snapshot;
         };
 
         CHICANE_GRID std::vector<String> splitOneliner(const String& inValue);

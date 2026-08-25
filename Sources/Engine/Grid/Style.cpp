@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Style.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 
 #include "Chicane/Box/Font.hpp"
@@ -42,7 +43,8 @@ namespace Chicane
               cursor(WindowCursor::Default),
               transitions({}),
               animation({}),
-              m_parent(nullptr)
+              m_parent(nullptr),
+              m_snapshot({})
         {
             display.parseWith(
                 [this](const String& inValue)
@@ -188,7 +190,7 @@ namespace Chicane
             return position.get() == inValue;
         }
 
-        bool Style::clipsOverflow() const
+        bool Style::isClippingOverflow() const
         {
             return overflowX.get() != StyleOverflow::Visible || overflowY.get() != StyleOverflow::Visible;
         }
@@ -391,6 +393,389 @@ namespace Chicane
 
             transitions = inStyle.transitions;
             animation   = inStyle.animation;
+        }
+
+        void Style::snapshot()
+        {
+            m_snapshot = extractAnimatedProperties();
+        }
+
+        void Style::restore()
+        {
+            for (const auto& [name, value] : m_snapshot)
+            {
+                if (value.empty())
+                {
+                    continue;
+                }
+
+                const StyleTransition* transition = findTransition(name);
+
+                if (!transition || transition->duration <= 0.0f)
+                {
+                    continue;
+                }
+
+                applyAnimatedProperty(name, value);
+            }
+        }
+
+        const Style::Properties& Style::getSnapshot() const
+        {
+            return m_snapshot;
+        }
+
+        Style::Properties Style::extractAnimatedProperties() const
+        {
+            Properties result;
+
+            for (const String& name : ANIMATABLE_PROPERTIES)
+            {
+                const std::vector<float> values = extractAnimatedProperty(name);
+
+                if (values.empty())
+                {
+                    continue;
+                }
+
+                result[name] = values;
+            }
+
+            return result;
+        }
+
+        std::vector<float> Style::extractAnimatedProperty(const String& inName) const
+        {
+            auto asColor = [](const Color::Rgba& inValue) -> std::vector<float>
+            {
+                return {
+                    static_cast<float>(inValue.r),
+                    static_cast<float>(inValue.g),
+                    static_cast<float>(inValue.b),
+                    static_cast<float>(inValue.a)
+                };
+            };
+
+            if (inName.equals(OPACITY_ATTRIBUTE_NAME))
+            {
+                return {opacity.get()};
+            }
+
+            if (inName.equals(WIDTH_ATTRIBUTE_NAME))
+            {
+                if (width.getRaw().isEmpty() || width.isRaw(Size::AUTO_KEYWORD))
+                {
+                    return {};
+                }
+
+                return {width.get()};
+            }
+
+            if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
+            {
+                if (height.getRaw().isEmpty() || height.isRaw(Size::AUTO_KEYWORD))
+                {
+                    return {};
+                }
+
+                return {height.get()};
+            }
+
+            if (inName.equals(Z_INDEX_ATTRIBUTE_NAME))
+            {
+                return {zIndex.get()};
+            }
+
+            if (inName.equals(FOREGROUND_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(foregroundColor.get());
+            }
+
+            if (inName.equals(BACKGROUND_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(background.color.get());
+            }
+
+            if (inName.equals(FONT_SIZE_ATTRIBUTE_NAME))
+            {
+                return {font.size.get()};
+            }
+
+            if (inName.equals(LETTER_SPACING_ATTRIBUTE_NAME))
+            {
+                return {letterSpacing.get()};
+            }
+
+            if (inName.equals(FILTER_ATTRIBUTE_NAME))
+            {
+                return {filter.blur.get()};
+            }
+
+            if (inName.equals(BACKDROP_FILTER_ATTRIBUTE_NAME))
+            {
+                return {backdrop.blur.get()};
+            }
+
+            if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
+            {
+                return {margin.top.get()};
+            }
+
+            if (inName.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME))
+            {
+                return {margin.bottom.get()};
+            }
+
+            if (inName.equals(MARGIN_LEFT_ATTRIBUTE_NAME))
+            {
+                return {margin.left.get()};
+            }
+
+            if (inName.equals(MARGIN_RIGHT_ATTRIBUTE_NAME))
+            {
+                return {margin.right.get()};
+            }
+
+            if (inName.equals(PADDING_TOP_ATTRIBUTE_NAME))
+            {
+                return {padding.top.get()};
+            }
+
+            if (inName.equals(PADDING_BOTTOM_ATTRIBUTE_NAME))
+            {
+                return {padding.bottom.get()};
+            }
+
+            if (inName.equals(PADDING_LEFT_ATTRIBUTE_NAME))
+            {
+                return {padding.left.get()};
+            }
+
+            if (inName.equals(PADDING_RIGHT_ATTRIBUTE_NAME))
+            {
+                return {padding.right.get()};
+            }
+
+            if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
+            {
+                return {gap.top.get()};
+            }
+
+            if (inName.equals(GAP_BOTTOM_ATTRIBUTE_NAME))
+            {
+                return {gap.bottom.get()};
+            }
+
+            if (inName.equals(GAP_LEFT_ATTRIBUTE_NAME))
+            {
+                return {gap.left.get()};
+            }
+
+            if (inName.equals(GAP_RIGHT_ATTRIBUTE_NAME))
+            {
+                return {gap.right.get()};
+            }
+
+            return {};
+        }
+
+        void Style::applyAnimatedProperty(const String& inName, const std::vector<float>& inValue)
+        {
+            if (inValue.empty())
+            {
+                return;
+            }
+
+            auto asColor = [](const std::vector<float>& inChannels) -> Color::Rgba
+            {
+                auto channel = [](float inChannel) -> std::uint8_t
+                { return static_cast<std::uint8_t>(std::round(std::clamp(inChannel, 0.0f, 255.0f))); };
+
+                if (inChannels.size() < 4)
+                {
+                    return Color::Rgba(0U, 0U, 0U, 0U);
+                }
+
+                return Color::Rgba(
+                    channel(inChannels.at(0)),
+                    channel(inChannels.at(1)),
+                    channel(inChannels.at(2)),
+                    channel(inChannels.at(3))
+                );
+            };
+
+            if (inName.equals(OPACITY_ATTRIBUTE_NAME))
+            {
+                opacity.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(WIDTH_ATTRIBUTE_NAME))
+            {
+                width.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
+            {
+                height.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(Z_INDEX_ATTRIBUTE_NAME))
+            {
+                zIndex.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(FOREGROUND_COLOR_ATTRIBUTE_NAME))
+            {
+                foregroundColor.set(asColor(inValue));
+
+                return;
+            }
+
+            if (inName.equals(BACKGROUND_COLOR_ATTRIBUTE_NAME))
+            {
+                background.color.set(asColor(inValue));
+
+                return;
+            }
+
+            if (inName.equals(FONT_SIZE_ATTRIBUTE_NAME))
+            {
+                font.size.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(LETTER_SPACING_ATTRIBUTE_NAME))
+            {
+                letterSpacing.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(FILTER_ATTRIBUTE_NAME))
+            {
+                filter.blur.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(BACKDROP_FILTER_ATTRIBUTE_NAME))
+            {
+                backdrop.blur.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
+            {
+                margin.top.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME))
+            {
+                margin.bottom.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MARGIN_LEFT_ATTRIBUTE_NAME))
+            {
+                margin.left.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MARGIN_RIGHT_ATTRIBUTE_NAME))
+            {
+                margin.right.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(PADDING_TOP_ATTRIBUTE_NAME))
+            {
+                padding.top.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(PADDING_BOTTOM_ATTRIBUTE_NAME))
+            {
+                padding.bottom.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(PADDING_LEFT_ATTRIBUTE_NAME))
+            {
+                padding.left.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(PADDING_RIGHT_ATTRIBUTE_NAME))
+            {
+                padding.right.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
+            {
+                gap.top.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(GAP_BOTTOM_ATTRIBUTE_NAME))
+            {
+                gap.bottom.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(GAP_LEFT_ATTRIBUTE_NAME))
+            {
+                gap.left.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(GAP_RIGHT_ATTRIBUTE_NAME))
+            {
+                gap.right.set(inValue.at(0));
+            }
+        }
+
+        const StyleTransition* Style::findTransition(const String& inName) const
+        {
+            const StyleTransition* all      = nullptr;
+            const StyleTransition* specific = nullptr;
+
+            for (const StyleTransition& transition : transitions)
+            {
+                if (transition.property.equals(TRANSITION_PROPERTY_ALL))
+                {
+                    all = &transition;
+                }
+
+                if (transition.property.equals(inName))
+                {
+                    specific = &transition;
+                }
+            }
+
+            return specific ? specific : all;
         }
 
         bool Style::hasParent() const
@@ -781,9 +1166,8 @@ namespace Chicane
             const bool bHasShorthand = inProperties.find(TRANSITION_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasProperty  = inProperties.find(TRANSITION_PROPERTY_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasDuration  = inProperties.find(TRANSITION_DURATION_ATTRIBUTE_NAME) != inProperties.end();
-            const bool bHasEasing =
-                inProperties.find(TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
-            const bool bHasDelay = inProperties.find(TRANSITION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasEasing = inProperties.find(TRANSITION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDelay  = inProperties.find(TRANSITION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
 
             if (!bHasShorthand && !bHasProperty && !bHasDuration && !bHasEasing && !bHasDelay)
             {
@@ -883,11 +1267,10 @@ namespace Chicane
             const bool bHasShorthand = inProperties.find(ANIMATION_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasName      = inProperties.find(ANIMATION_NAME_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasDuration  = inProperties.find(ANIMATION_DURATION_ATTRIBUTE_NAME) != inProperties.end();
-            const bool bHasEasing =
-                inProperties.find(ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
-            const bool bHasDelay      = inProperties.find(ANIMATION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
-            const bool bHasIterations = inProperties.find(ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME) !=
-                                        inProperties.end();
+            const bool bHasEasing = inProperties.find(ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasDelay  = inProperties.find(ANIMATION_DELAY_ATTRIBUTE_NAME) != inProperties.end();
+            const bool bHasIterations =
+                inProperties.find(ANIMATION_ITERATION_COUNT_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasDirection = inProperties.find(ANIMATION_DIRECTION_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasFill      = inProperties.find(ANIMATION_FILL_MODE_ATTRIBUTE_NAME) != inProperties.end();
             const bool bHasPlayState = inProperties.find(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME) != inProperties.end();
@@ -902,12 +1285,10 @@ namespace Chicane
             {
                 const String value = inValue.trim().toLower();
 
-                animation.bReverse   = value.equals(
-                    ANIMATION_DIRECTION_TYPE_REVERSE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE
-                );
-                animation.bAlternate = value.equals(
-                    ANIMATION_DIRECTION_TYPE_ALTERNATE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE
-                );
+                animation.bReverse =
+                    value.equals(ANIMATION_DIRECTION_TYPE_REVERSE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE);
+                animation.bAlternate =
+                    value.equals(ANIMATION_DIRECTION_TYPE_ALTERNATE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE);
             };
 
             auto parseFill = [&](const String& inValue)
