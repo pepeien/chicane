@@ -274,6 +274,11 @@ namespace Chicane
             return isDisplayable() && isVisible() && isSolid() && hasPrimitive();
         }
 
+        bool Component::isFocusable() const
+        {
+            return false;
+        }
+
         void Component::tick(float inDeltaTime)
         {
             m_animationDelta = inDeltaTime;
@@ -310,11 +315,6 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshBounds();
-        }
-
-        bool Component::isFocusable() const
-        {
-            return false;
         }
 
         void Component::refreshStyleRuleset()

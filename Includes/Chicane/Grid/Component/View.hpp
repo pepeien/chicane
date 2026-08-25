@@ -1,5 +1,8 @@
 #pragma once
 
+#include <atomic>
+#include <memory>
+
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
@@ -7,6 +10,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/View/InputQueue.hpp"
 
 namespace Chicane
 {
@@ -29,12 +33,17 @@ namespace Chicane
             CH_CONSTRUCTOR()
             View(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
 
+            ~View() override;
+
         public:
             // Window
-            void handle(const WindowEvent& inEvent);
+            void post(const WindowEvent& inEvent);
             WindowCursor getPointer() const;
             void clearInteraction(Component* inComponent);
             void focusOn(Component* inComponent);
+
+            // Lifecycle
+            void tick(float inDelta) override;
 
             // Children
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
@@ -44,6 +53,9 @@ namespace Chicane
 
         protected:
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
+            void handle(const WindowEvent& inEvent);
+            void pump();
+            WindowCursor resolvePointer() const;
             Component* resolveHit(Component* inHit) const;
             Component* resolveFocus(Component* inHit) const;
             void syncHovered(Component* inComponent);
@@ -51,11 +63,13 @@ namespace Chicane
 
         protected:
             // Routing
-            String     m_path;
+            String                          m_path;
 
             // Interaction
-            Component* m_hovered;
-            Component* m_focused;
+            Component*                      m_hovered;
+            Component*                      m_focused;
+            std::unique_ptr<ViewInputQueue> m_inputs;
+            std::atomic<WindowCursor>       m_pointer;
         };
     }
 }

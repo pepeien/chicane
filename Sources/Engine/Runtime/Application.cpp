@@ -201,7 +201,7 @@ namespace Chicane
             {
                 if (std::shared_ptr<Grid::View> view = getView())
                 {
-                    view->handle(inEvent);
+                    view->post(inEvent);
 
                     if (m_window && !m_window->isFocused())
                     {

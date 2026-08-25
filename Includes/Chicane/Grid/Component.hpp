@@ -74,14 +74,12 @@ namespace Chicane
         public:
             // Status
             virtual bool isDrawable() const;
+            virtual bool isFocusable() const;
 
             // Events
             virtual bool onEvent(const WindowEvent& inEvent);
 
         protected:
-            // Checkers
-            virtual bool isFocusable() const;
-
             // Lifescycle Events
             virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
