@@ -1,5 +1,8 @@
 #pragma once
 
+#include <unordered_map>
+#include <vector>
+
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font/Raw.hpp"
@@ -17,6 +20,7 @@ namespace Chicane
             static constexpr inline const char* TAG       = "Font";
 
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Fonts/Lexend.bfon";
 
             static constexpr inline const float BASE_SIZE = 16.0f;
 
@@ -34,18 +38,24 @@ namespace Chicane
             void setVendor(FontVendor inValue);
 
             const FontFamily& getData() const;
+            const FontFamily& getData(float inWeight) const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const FontRaw& inValue);
+
+            std::vector<const FontFamily*> getInstances() const;
 
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();
 
             FontFamily parseData(const FontRaw& inValue) const;
+            FontFamily parseData(const FontRaw& inValue, float inWeight) const;
 
         private:
-            FontVendor m_vendor;
-            FontFamily m_data;
+            FontVendor                                  m_vendor;
+            FontRaw                                     m_raw;
+            FontFamily                                  m_data;
+            mutable std::unordered_map<int, FontFamily> m_instances;
         };
     }
 }

@@ -11,6 +11,7 @@ namespace Chicane
         namespace FontTrueType
         {
             CHICANE_BOX FontFamily parse(const String& inFamily, const FontRaw& inData);
+            CHICANE_BOX FontFamily parse(const String& inFamily, const FontRaw& inData, float inWeight);
         }
     }
 }

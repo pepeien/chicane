@@ -162,10 +162,19 @@ namespace Chicane
 
             // Text
             static constexpr inline const char* FONT_FAMILY_ATTRIBUTE_NAME = "font-family";
-            static constexpr inline const char* FONT_FAMILY_DEFAULT_VALUE  = "Poppins";
+            static constexpr inline const char* FONT_FAMILY_DEFAULT_VALUE  = "Lexend";
 
             static constexpr inline const char* FONT_SIZE_ATTRIBUTE_NAME = "font-size";
             static constexpr inline const char* FONT_SIZE_DEFAULT_VALUE  = "1em";
+
+            static constexpr inline const char* FONT_WEIGHT_ATTRIBUTE_NAME = "font-weight";
+            static constexpr inline const char* FONT_WEIGHT_DEFAULT_VALUE  = "normal";
+            static constexpr inline const char* FONT_WEIGHT_TYPE_NORMAL    = "normal";
+            static constexpr inline const char* FONT_WEIGHT_TYPE_BOLD      = "bold";
+            static constexpr inline const char* FONT_WEIGHT_TYPE_BOLDER    = "bolder";
+            static constexpr inline const char* FONT_WEIGHT_TYPE_LIGHTER   = "lighter";
+            static constexpr inline const float FONT_WEIGHT_NORMAL_VALUE   = 400.0f;
+            static constexpr inline const float FONT_WEIGHT_BOLD_VALUE     = 700.0f;
 
             static constexpr inline const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
 
@@ -357,6 +366,7 @@ namespace Chicane
             Color::Rgba parseColor(const String& inValue) const;
             float parseFilter(const String& inValue) const;
             float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
+            float parseWeight(const String& inValue) const;
             String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
 

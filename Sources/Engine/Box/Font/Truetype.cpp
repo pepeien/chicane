@@ -3,9 +3,13 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
+#include FT_TRUETYPE_TABLES_H
+#include FT_MULTIPLE_MASTERS_H
 
 #include <algorithm>
+#include <cmath>
 #include <unordered_map>
+#include <vector>
 
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font.hpp"
@@ -199,6 +203,11 @@ namespace Chicane
 
             FontFamily parse(const String& inFamily, const FontRaw& inData)
             {
+                return parse(inFamily, inData, -1.0f);
+            }
+
+            FontFamily parse(const String& inFamily, const FontRaw& inData, float inWeight)
+            {
                 FT_Library library = nullptr;
                 if (FT_Init_FreeType(&library))
                 {
@@ -234,9 +243,64 @@ namespace Chicane
 
                 FontFamily result;
                 result.setName(inFamily);
+                result.setFamily(face->family_name ? String(face->family_name) : inFamily);
 
                 const float units = 1.0f / face->units_per_EM;
 
+                float weight    = (face->style_flags & FT_STYLE_FLAG_BOLD) ? 700.0f : 400.0f;
+                float weightMin = weight;
+                float weightMax = weight;
+
+                if (TT_OS2* os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(face, FT_SFNT_OS2)))
+                {
+                    if (os2->version != 0xFFFF && os2->usWeightClass > 0)
+                    {
+                        weight    = static_cast<float>(os2->usWeightClass);
+                        weightMin = weight;
+                        weightMax = weight;
+                    }
+                }
+
+                FT_MM_Var* variation = nullptr;
+                if (FT_Get_MM_Var(face, &variation) == 0 && variation)
+                {
+                    std::vector<FT_Fixed> coordinates(variation->num_axis);
+
+                    for (FT_UInt i = 0; i < variation->num_axis; ++i)
+                    {
+                        coordinates.at(i) = variation->axis[i].def;
+
+                        if (variation->axis[i].tag != FT_MAKE_TAG('w', 'g', 'h', 't'))
+                        {
+                            continue;
+                        }
+
+                        weightMin = variation->axis[i].minimum / 65536.0f;
+                        weightMax = variation->axis[i].maximum / 65536.0f;
+                        weight    = variation->axis[i].def / 65536.0f;
+
+                        if (inWeight >= 0.0f)
+                        {
+                            weight = std::clamp(inWeight, weightMin, weightMax);
+                        }
+
+                        coordinates.at(i) = static_cast<FT_Fixed>(weight * 65536.0f);
+                    }
+
+                    if (weightMin < weightMax)
+                    {
+                        FT_Set_Var_Design_Coordinates(face, variation->num_axis, coordinates.data());
+                    }
+
+                    FT_Done_MM_Var(library, variation);
+                }
+                else if (inWeight >= 0.0f)
+                {
+                    weight = inWeight;
+                }
+
+                result.setWeight(weight);
+                result.setWeightRange(weightMin, weightMax);
                 result.setMetrics(face->ascender * units, face->descender * units);
 
                 std::unordered_map<FT_UInt, char32_t> indexToCode;

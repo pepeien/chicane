@@ -15,6 +15,7 @@ namespace Chicane
         public:
             using FamilyParser = StyleProperty<String>::Parser;
             using SizeParser   = StyleProperty<float>::Parser;
+            using WeightParser = StyleProperty<float>::Parser;
 
         public:
             StyleFont();
@@ -24,11 +25,12 @@ namespace Chicane
 
             void setProperties(const StyleRuleset::Properties& inProperties);
 
-            void parseWith(FamilyParser inFamilyParser, SizeParser inSizeParser);
+            void parseWith(FamilyParser inFamilyParser, SizeParser inSizeParser, WeightParser inWeightParser);
 
         public:
             StyleProperty<String> family;
             StyleProperty<float>  size;
+            StyleProperty<float>  weight;
         };
     }
 }

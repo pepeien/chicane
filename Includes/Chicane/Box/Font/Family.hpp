@@ -33,6 +33,9 @@ namespace Chicane
             const String& getName() const;
             void setName(const String& inValue);
 
+            const String& getFamily() const;
+            void setFamily(const String& inValue);
+
             float getAscender() const;
             float getDescender() const;
             float getLineHeight() const;
@@ -41,6 +44,14 @@ namespace Chicane
 
             float getKerning(char32_t inLeft, char32_t inRight) const;
             void addKerning(char32_t inLeft, char32_t inRight, float inValue);
+
+            float getWeight() const;
+            void setWeight(float inValue);
+
+            float getWeightMin() const;
+            float getWeightMax() const;
+            void setWeightRange(float inMinimum, float inMaximum);
+            bool isVariable() const;
 
             const Glyphs& getGlyphs() const;
             const FontGlyph& getGlyph(char inCharacter) const;
@@ -54,10 +65,14 @@ namespace Chicane
 
         private:
             String   m_name;
+            String   m_family;
             Glyphs   m_glyphs;
 
             float    m_ascender  = 0.0f;
             float    m_descender = 0.0f;
+            float    m_weight    = 400.0f;
+            float    m_weightMin = 400.0f;
+            float    m_weightMax = 400.0f;
 
             Kernings m_kernings;
         };

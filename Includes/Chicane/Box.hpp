@@ -44,6 +44,10 @@ namespace Chicane
             return nullptr;
         }
 
+        CHICANE_BOX const class Font* findFont(const String& inFamily, float inWeight);
+
+        CHICANE_BOX void notify(const class Asset* inAsset);
+
         CHICANE_BOX const class Asset* load(const FileSystem::Path& inFilePath);
         template <typename T>
         inline const T* load(const FileSystem::Path& inFilePath)

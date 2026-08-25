@@ -1,14 +1,20 @@
 #include "Chicane/Box/Font/Family.hpp"
 
+#include <cmath>
+
 namespace Chicane
 {
     namespace Box
     {
         FontFamily::FontFamily()
             : m_name(String::empty()),
+              m_family(String::empty()),
               m_glyphs(),
               m_ascender(0.0f),
               m_descender(0.0f),
+              m_weight(400.0f),
+              m_weightMin(400.0f),
+              m_weightMax(400.0f),
               m_kernings({})
         {}
 
@@ -60,6 +66,37 @@ namespace Chicane
             m_kernings[kerningKey(inLeft, inRight)] = inValue;
         }
 
+        float FontFamily::getWeight() const
+        {
+            return m_weight;
+        }
+
+        void FontFamily::setWeight(float inValue)
+        {
+            m_weight = inValue;
+        }
+
+        float FontFamily::getWeightMin() const
+        {
+            return m_weightMin;
+        }
+
+        float FontFamily::getWeightMax() const
+        {
+            return m_weightMax;
+        }
+
+        void FontFamily::setWeightRange(float inMinimum, float inMaximum)
+        {
+            m_weightMin = inMinimum;
+            m_weightMax = inMaximum;
+        }
+
+        bool FontFamily::isVariable() const
+        {
+            return m_weightMin < m_weightMax;
+        }
+
         bool FontFamily::hasGlyph(char inCharacter) const
         {
             return hasGlyph(static_cast<char32_t>(inCharacter));
@@ -78,6 +115,16 @@ namespace Chicane
         void FontFamily::setName(const String& inValue)
         {
             m_name = inValue;
+        }
+
+        const String& FontFamily::getFamily() const
+        {
+            return m_family;
+        }
+
+        void FontFamily::setFamily(const String& inValue)
+        {
+            m_family = inValue;
         }
 
         const FontFamily::Glyphs& FontFamily::getGlyphs() const
@@ -112,6 +159,8 @@ namespace Chicane
         {
             FontGlyph glyph = inValue;
             glyph.name      = m_name;
+            glyph.name.append('_');
+            glyph.name.append(std::to_string(static_cast<int>(std::round(m_weight))));
             glyph.name.append('_');
             glyph.name.append(std::to_string(static_cast<int>(glyph.code)));
 

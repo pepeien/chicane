@@ -8,16 +8,19 @@ namespace Chicane
     {
         StyleFont::StyleFont()
             : family(),
-              size()
+              size(),
+              weight()
         {
             family.setRaw(Style::FONT_FAMILY_DEFAULT_VALUE);
             size.setRaw(Style::FONT_SIZE_DEFAULT_VALUE);
+            weight.setRaw(Style::FONT_WEIGHT_DEFAULT_VALUE);
         }
 
         void StyleFont::refresh()
         {
             family.refresh();
             size.refresh();
+            weight.refresh();
         }
 
         void StyleFont::setProperties(const StyleRuleset::Properties& inProperties)
@@ -31,12 +34,18 @@ namespace Chicane
             {
                 size.setRaw(inProperties.at(Style::FONT_SIZE_ATTRIBUTE_NAME));
             }
+
+            if (inProperties.find(Style::FONT_WEIGHT_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                weight.setRaw(inProperties.at(Style::FONT_WEIGHT_ATTRIBUTE_NAME));
+            }
         }
 
-        void StyleFont::parseWith(FamilyParser inFamilyParser, SizeParser inSizeParser)
+        void StyleFont::parseWith(FamilyParser inFamilyParser, SizeParser inSizeParser, WeightParser inWeightParser)
         {
             family.parseWith(inFamilyParser);
             size.parseWith(inSizeParser);
+            weight.parseWith(inWeightParser);
         }
     }
 }
