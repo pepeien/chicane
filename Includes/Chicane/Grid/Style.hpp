@@ -171,7 +171,7 @@ namespace Chicane
 
             /*
              * Template 1: "`PROPERTY` `DURATION`"
-             * Template 2: "`PROPERTY` `DURATION` `DELAY`"
+             * Template 2: "`PROPERTY` `DURATION` `TIMING_FUNCTION`"
              * Template 3: "`PROPERTY` `DURATION` `TIMING_FUNCTION` `DELAY`"
              */
             static constexpr inline const char* TRANSITION_ATTRIBUTE_NAME          = "transition";
@@ -308,6 +308,7 @@ namespace Chicane
         public:
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
+            bool isPositioned() const;
             bool isClippingOverflow() const;
 
             void setProperties(const StyleRuleset::Properties& inProperties);

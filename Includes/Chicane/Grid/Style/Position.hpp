@@ -8,8 +8,8 @@ namespace Chicane
     {
         enum class StylePosition : std::uint8_t
         {
-            Absolute, // Start from (0, 0) a.k.a Top Left corner
-            Relative  // Continue from the current ImGui's cursor position
+            Absolute, // Out of flow; origin is the nearest positioned ancestor, else the root
+            Relative  // In flow; also a containing block when explicitly set
         };
     }
 }

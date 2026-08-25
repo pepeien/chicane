@@ -1227,6 +1227,29 @@ namespace Chicane
             return isRoot() ? nullptr : m_parent;
         }
 
+        const Component* Component::getContainingBlock() const
+        {
+            if (isRoot() || !hasParent())
+            {
+                return this;
+            }
+
+            if (!m_style.isPosition(StylePosition::Absolute))
+            {
+                return m_parent;
+            }
+
+            for (const Component* ancestor = m_parent; ancestor != nullptr; ancestor = ancestor->getParent())
+            {
+                if (ancestor->isRoot() || ancestor->getStyle().isPositioned())
+                {
+                    return ancestor;
+                }
+            }
+
+            return hasRoot() ? m_root : this;
+        }
+
         void Component::setParent(Component* inComponent)
         {
             if (inComponent == this)
@@ -1907,9 +1930,10 @@ namespace Chicane
                     }
                     else
                     {
-                        const Style& parentStyle = m_parent->getStyle();
-                        const float  available =
-                            m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get();
+                        const Component* box      = getContainingBlock();
+                        const Style&     boxStyle = box->getStyle();
+                        const float      available =
+                            box->getSize().x - boxStyle.padding.left.get() - boxStyle.padding.right.get();
                         const float horizontalMargin =
                             (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
                             (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
@@ -1949,16 +1973,12 @@ namespace Chicane
 
             if (hasParent() && !isRoot())
             {
-                const Style& parentStyle = m_parent->getStyle();
-                const Vec2   available   = {
-                    std::max(
-                        0.0f,
-                        m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()
-                    ),
-                    std::max(
-                        0.0f,
-                        m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get()
-                    )
+                const Component* box = m_style.isPosition(StylePosition::Absolute) ? getContainingBlock() : m_parent;
+                const Style&     boxStyle    = box->getStyle();
+                const Style&     parentStyle = m_parent->getStyle();
+                const Vec2       available   = {
+                    std::max(0.0f, box->getSize().x - boxStyle.padding.left.get() - boxStyle.padding.right.get()),
+                    std::max(0.0f, box->getSize().y - boxStyle.padding.top.get() - boxStyle.padding.bottom.get())
                 };
 
                 const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
@@ -2019,7 +2039,16 @@ namespace Chicane
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(marginLeft, marginTop);
+                Vec2 origin = Vec2::Zero();
+
+                if (!isRoot() && hasParent())
+                {
+                    const Component* containingBlock = getContainingBlock();
+                    origin.x = containingBlock->getPosition().x + containingBlock->getStyle().padding.left.get();
+                    origin.y = containingBlock->getPosition().y + containingBlock->getStyle().padding.top.get();
+                }
+
+                setPosition(origin.x + marginLeft, origin.y + marginTop);
                 addCursor(startPadding);
 
                 return;

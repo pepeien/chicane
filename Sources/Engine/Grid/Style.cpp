@@ -190,6 +190,11 @@ namespace Chicane
             return position.get() == inValue;
         }
 
+        bool Style::isPositioned() const
+        {
+            return !position.getRaw().isEmpty();
+        }
+
         bool Style::isClippingOverflow() const
         {
             return overflowX.get() != StyleOverflow::Visible || overflowY.get() != StyleOverflow::Visible;
@@ -1104,7 +1109,6 @@ namespace Chicane
         float Style::parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox) const
         {
             Size result;
-            result.setIsAsobute(isPosition(StylePosition::Absolute));
             result.setFontSize(Box::Font::BASE_SIZE);
             result.setTextParser([this](const String& inValue) { return parseText(inValue); });
 
@@ -1117,9 +1121,13 @@ namespace Chicane
             {
                 result.setParent(*inBox);
             }
-            else if (hasParent() && m_parent->hasParent())
+            else if (hasParent())
             {
-                result.setParent(m_parent->getParent()->getSize());
+                const Component* containingBlock = m_parent->getContainingBlock();
+                if (containingBlock && containingBlock != m_parent)
+                {
+                    result.setParent(containingBlock->getSize());
+                }
             }
 
             return result.parse(inValue, inDirection);

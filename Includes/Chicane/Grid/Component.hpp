@@ -186,6 +186,8 @@ namespace Chicane
             Component* getParent() const;
             void setParent(Component* inComponent);
 
+            const Component* getContainingBlock() const;
+
             bool hasNeighbours() const;
             Component* getNeighbour(int inJumps) const;
 
