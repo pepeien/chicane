@@ -51,6 +51,11 @@ namespace Chicane
             return found->second;
         }
 
+        const Model* Model::getDefault()
+        {
+            return Box::load<Model>(DEFAULT_SOURCE);
+        }
+
         Model::Model(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
               m_vendor(ModelVendor::Undefined),
@@ -107,12 +112,36 @@ namespace Chicane
         {
             const auto& found = m_data.find(inId);
 
-            if (found == m_data.end())
+            if (found != m_data.end() && !found->second.vertices.empty())
+            {
+                return found->second;
+            }
+
+            if (getFilepath() == DEFAULT_SOURCE)
+            {
+                const auto& body = m_data.find(DEFAULT_REFERENCE);
+
+                if (body != m_data.end() && !body->second.vertices.empty())
+                {
+                    return body->second;
+                }
+
+                if (!m_data.empty())
+                {
+                    return m_data.begin()->second;
+                }
+
+                return ModelParsed::empty();
+            }
+
+            const Model* fallback = getDefault();
+
+            if (!fallback || fallback == this)
             {
                 return ModelParsed::empty();
             }
 
-            return found->second;
+            return fallback->getModel(DEFAULT_REFERENCE);
         }
 
         void Model::fetchVendorFromXML()

@@ -7,6 +7,11 @@ namespace Chicane
 {
     namespace Box
     {
+        const Texture* Texture::getDefault()
+        {
+            return Box::load<Texture>(DEFAULT_SOURCE);
+        }
+
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
               m_vendor(ImageVendor::Undefined),
@@ -14,6 +19,11 @@ namespace Chicane
         {
             fetchVendorFromXML();
             fetchDataFromXML();
+        }
+
+        bool Texture::isEmpty() const
+        {
+            return !m_data || m_data->getPixels() == nullptr || m_data->getWidth() <= 0 || m_data->getHeight() <= 0;
         }
 
         ImageVendor Texture::getVendor() const

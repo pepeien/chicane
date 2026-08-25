@@ -17,10 +17,13 @@ namespace Chicane
             static constexpr inline const char* TAG       = "Model";
 
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Models/Shape/Cube.bmdl";
+            static constexpr inline const char* DEFAULT_REFERENCE     = "Cube_Body";
 
         public:
             static ModelVendor parseVendor(const String& inValue);
             static const String& getVendorExtension(ModelVendor inValue);
+            static const Model* getDefault();
 
         public:
             Model(const FileSystem::Path& inFilepath);

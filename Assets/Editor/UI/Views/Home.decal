@@ -1,5 +1,3 @@
-@import(Font, Assets/Engine/Fonts/Poppins.bfon);
-
 $sideBarSize:   15vw;
 $bottomBarSize: 20vh;
 

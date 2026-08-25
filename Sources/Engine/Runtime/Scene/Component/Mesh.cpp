@@ -58,6 +58,16 @@ namespace Chicane
         {
             const Box::Model* model = Box::load<Box::Model>(group.getModel().getSource());
 
+            if (!model)
+            {
+                model = Box::Model::getDefault();
+            }
+
+            if (!model)
+            {
+                continue;
+            }
+
             addBounds(Bounds3D(model->getModel(group.getModel().getReference()).vertices));
         }
 

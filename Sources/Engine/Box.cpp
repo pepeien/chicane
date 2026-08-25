@@ -1,5 +1,7 @@
 #include "Chicane/Box.hpp"
 
+#include <cmath>
+
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
@@ -83,12 +85,26 @@ namespace Chicane
                 throw std::runtime_error(inFilePath.toString() + " is not a model");
             }
 
-            if (!hasAsset(inFilePath))
+            const bool bIsDefault = inFilePath == Model::DEFAULT_SOURCE;
+
+            if (!bIsDefault && !FileSystem::exists(inFilePath))
             {
-                return addAsset<Model>(inFilePath);
+                return loadModel(Model::DEFAULT_SOURCE);
             }
 
-            return getAsset<Model>(inFilePath);
+            const Model* asset = hasAsset(inFilePath) ? getAsset<Model>(inFilePath) : addAsset<Model>(inFilePath);
+
+            if (asset && !asset->getData().empty())
+            {
+                return asset;
+            }
+
+            if (!bIsDefault)
+            {
+                return loadModel(Model::DEFAULT_SOURCE);
+            }
+
+            return asset;
         }
 
         const Texture* loadTexture(const FileSystem::Path& inFilePath)
@@ -98,12 +114,26 @@ namespace Chicane
                 throw std::runtime_error(inFilePath.toString() + "is not a texture");
             }
 
-            if (!hasAsset(inFilePath))
+            const bool bIsDefault = inFilePath == Texture::DEFAULT_SOURCE;
+
+            if (!bIsDefault && !FileSystem::exists(inFilePath))
             {
-                return addAsset<Texture>(inFilePath);
+                return loadTexture(Texture::DEFAULT_SOURCE);
             }
 
-            return getAsset<Texture>(inFilePath);
+            const Texture* asset = hasAsset(inFilePath) ? getAsset<Texture>(inFilePath) : addAsset<Texture>(inFilePath);
+
+            if (asset && !asset->isEmpty())
+            {
+                return asset;
+            }
+
+            if (!bIsDefault)
+            {
+                return loadTexture(Texture::DEFAULT_SOURCE);
+            }
+
+            return asset;
         }
 
         const Mesh* loadMesh(const FileSystem::Path& inFilePath)
@@ -168,6 +198,58 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        const Font* findFont(const String& inFamily, float inWeight)
+        {
+            const Font* result    = nullptr;
+            float       bestDelta = 0.0f;
+
+            for (const auto& [path, asset] : g_cache)
+            {
+                const Font* font = dynamic_cast<const Font*>(asset.get());
+
+                if (!font)
+                {
+                    continue;
+                }
+
+                const FontFamily& data = font->getData();
+
+                if (!font->getId().equals(inFamily) && !data.getName().equals(inFamily) &&
+                    !data.getFamily().equals(inFamily))
+                {
+                    continue;
+                }
+
+                const bool  bCovers = data.isVariable() && inWeight >= data.getWeightMin() &&
+                                     inWeight <= data.getWeightMax();
+                const float delta   = bCovers ? 0.0f : std::fabs(data.getWeight() - inWeight);
+
+                if (!result || delta < bestDelta ||
+                    (delta == bestDelta && result->getData().isVariable() && !data.isVariable()))
+                {
+                    result    = font;
+                    bestDelta = delta;
+                }
+            }
+
+            if (result)
+            {
+                return result;
+            }
+
+            return getById<Font>(inFamily);
+        }
+
+        void notify(const Asset* inAsset)
+        {
+            if (!inAsset)
+            {
+                return;
+            }
+
+            g_assetObservable.next(inAsset);
         }
 
         const Asset* load(const FileSystem::Path& inFilePath)

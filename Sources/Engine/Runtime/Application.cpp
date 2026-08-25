@@ -281,33 +281,47 @@ namespace Chicane
 
                 if (typeid(*inAsset) == typeid(Box::Font))
                 {
-                    for (const auto& [code, glyph] : static_cast<const Box::Font*>(inAsset)->getData().getGlyphs())
+                    const Box::Font* font = static_cast<const Box::Font*>(inAsset);
+
+                    for (const Box::FontFamily* instance : font->getInstances())
                     {
-                        if (glyph.curves.empty())
+                        if (!instance)
                         {
                             continue;
                         }
 
-                        Renderer::DrawGlyphData data;
-                        data.reference = glyph.name;
-                        data.boundsMin = glyph.boundsMin;
-                        data.boundsMax = glyph.boundsMax;
-
-                        data.points.reserve(glyph.curves.size() * 3);
-                        for (const Box::FontGlyphCurve& curve : glyph.curves)
+                        for (const auto& [code, glyph] : instance->getGlyphs())
                         {
-                            data.points.push_back(curve.start);
-                            data.points.push_back(curve.control);
-                            data.points.push_back(curve.end);
-                        }
+                            if (glyph.curves.empty())
+                            {
+                                continue;
+                            }
 
-                        m_renderer->loadGlyph(data);
+                            Renderer::DrawGlyphData data;
+                            data.reference = glyph.name;
+                            data.boundsMin = glyph.boundsMin;
+                            data.boundsMax = glyph.boundsMax;
+
+                            data.points.reserve(glyph.curves.size() * 3);
+                            for (const Box::FontGlyphCurve& curve : glyph.curves)
+                            {
+                                data.points.push_back(curve.start);
+                                data.points.push_back(curve.control);
+                                data.points.push_back(curve.end);
+                            }
+
+                            m_renderer->loadGlyph(data);
+                        }
                     }
 
                     return;
                 }
             }
         );
+
+        Box::load(Box::Font::DEFAULT_SOURCE);
+        Box::load(Box::Model::DEFAULT_SOURCE);
+        Box::load(Box::Texture::DEFAULT_SOURCE);
     }
 
     void Application::initKerb()
@@ -412,8 +426,22 @@ namespace Chicane
             {
                 Renderer::DrawPoly3DCommandMesh subcommand;
                 subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
+
+                if (subcommand.model <= Renderer::Draw::InvalidId)
+                {
+                    subcommand.model = m_renderer->findPoly(
+                        Renderer::DrawPolyType::e3D,
+                        Box::Model::DEFAULT_REFERENCE
+                    );
+                }
+
                 subcommand.instance.model   = matrix;
                 subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
+
+                if (subcommand.instance.texture <= Renderer::Draw::InvalidId)
+                {
+                    subcommand.instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                }
 
                 command.meshes.emplace_back(std::move(subcommand));
             }
@@ -427,9 +455,21 @@ namespace Chicane
             data.reference = asset->getFilepath();
             data.model     = asset->getModel().getReference();
 
+            if (m_renderer->findPoly(Renderer::DrawPolyType::e3D, data.model) <= Renderer::Draw::InvalidId)
+            {
+                data.model = Box::Model::DEFAULT_REFERENCE;
+            }
+
             for (const Box::AssetReference& texture : asset->getTextures())
             {
-                data.textures.push_back(texture.getReference());
+                String reference = texture.getReference();
+
+                if (m_renderer->findTexture(reference) <= Renderer::Draw::InvalidId)
+                {
+                    reference = Box::Texture::DEFAULT_REFERENCE;
+                }
+
+                data.textures.push_back(reference);
             }
 
             command.sky = data;
@@ -604,12 +644,22 @@ namespace Chicane
                 subcommand.instance.outerClipRadiusX,
                 subcommand.instance.outerClipRadiusY
             );
-            subcommand.instance.texture  = m_renderer->findTexture(style.background.image.get());
-            subcommand.instance.glyph    = m_renderer->findGlyph(primitive.glyph);
-            subcommand.instance.dilation      = primitive.dilation;
-            subcommand.instance.filterBlur    = blur;
-            subcommand.instance.backdropBlur  = style.backdrop.blur.get();
-            subcommand.instance.color         = style.background.color.get();
+            const String backgroundImage = style.background.image.get();
+
+            if (!backgroundImage.isEmpty())
+            {
+                subcommand.instance.texture = m_renderer->findTexture(backgroundImage);
+
+                if (subcommand.instance.texture <= Renderer::Draw::InvalidId)
+                {
+                    subcommand.instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                }
+            }
+            subcommand.instance.glyph        = m_renderer->findGlyph(primitive.glyph);
+            subcommand.instance.dilation     = primitive.dilation;
+            subcommand.instance.filterBlur   = blur;
+            subcommand.instance.backdropBlur = style.backdrop.blur.get();
+            subcommand.instance.color        = style.background.color.get();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 component->getOpacity();

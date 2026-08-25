@@ -171,7 +171,8 @@ namespace Chicane
 
             font.parseWith(
                 [this](const String& inValue) { return parseText(inValue); },
-                [this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); }
+                [this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); },
+                [this](const String& inValue) { return parseWeight(inValue); }
             );
 
             letterSpacing.parseWith([this](const String& inValue)
@@ -393,6 +394,7 @@ namespace Chicane
 
             font.family.copyValue(inStyle.font.family);
             font.size.copyValue(inStyle.font.size);
+            font.weight.copyValue(inStyle.font.weight);
             letterSpacing.copyValue(inStyle.letterSpacing);
             cursor.copyValue(inStyle.cursor);
 
@@ -1131,6 +1133,68 @@ namespace Chicane
             }
 
             return result.parse(inValue, inDirection);
+        }
+
+        float Style::parseWeight(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim().toLower();
+
+            if (value.isEmpty() || value.equals(FONT_WEIGHT_TYPE_NORMAL))
+            {
+                return FONT_WEIGHT_NORMAL_VALUE;
+            }
+
+            if (value.equals(FONT_WEIGHT_TYPE_BOLD))
+            {
+                return FONT_WEIGHT_BOLD_VALUE;
+            }
+
+            const float inherited =
+                hasParent() ? m_parent->getStyle().font.weight.get() : FONT_WEIGHT_NORMAL_VALUE;
+
+            if (value.equals(FONT_WEIGHT_TYPE_BOLDER))
+            {
+                if (inherited <= 300.0f)
+                {
+                    return FONT_WEIGHT_NORMAL_VALUE;
+                }
+
+                if (inherited <= 500.0f)
+                {
+                    return FONT_WEIGHT_BOLD_VALUE;
+                }
+
+                return 900.0f;
+            }
+
+            if (value.equals(FONT_WEIGHT_TYPE_LIGHTER))
+            {
+                if (inherited <= FONT_WEIGHT_NORMAL_VALUE)
+                {
+                    return 100.0f;
+                }
+
+                if (inherited <= FONT_WEIGHT_BOLD_VALUE)
+                {
+                    return FONT_WEIGHT_NORMAL_VALUE;
+                }
+
+                return FONT_WEIGHT_BOLD_VALUE;
+            }
+
+            if (value.isNaN())
+            {
+                return FONT_WEIGHT_NORMAL_VALUE;
+            }
+
+            try
+            {
+                return std::clamp(std::stof(value.toStandard()), 1.0f, 1000.0f);
+            }
+            catch (const std::exception&)
+            {
+                return FONT_WEIGHT_NORMAL_VALUE;
+            }
         }
 
         String Style::parseReference(const String& inValue) const
