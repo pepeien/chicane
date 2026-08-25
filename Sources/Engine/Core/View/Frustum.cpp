@@ -32,15 +32,14 @@ namespace Chicane
 
     void ViewFrustum::update(const Transformable* inView, const ViewSettings& inSettings)
     {
-        const Rotator& rotation    = inView->getRotation();
-        const Vec3&    translation = inView->getTranslation();
+        const Vec3& translation = inView->getTranslation();
 
-        const Vec3 up      = rotation.getUp();
-        const Vec3 right   = rotation.getRight();
-        const Vec3 forward = rotation.getForward();
+        const Vec3 up      = inView->getUp().normalize();
+        const Vec3 right   = inView->getRight().normalize();
+        const Vec3 forward = inView->getForward().normalize();
 
         const float aspectRatio = inSettings.aspectRatio;
-        const float fieldOfView = inSettings.fieldOfView;
+        const float fieldOfView = glm::radians(inSettings.fieldOfView);
         const float nearClip    = inSettings.nearClip;
         const float farClip     = inSettings.farClip;
 
