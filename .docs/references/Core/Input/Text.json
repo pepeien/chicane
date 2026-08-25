@@ -1,0 +1,16 @@
+{
+    "title": "Text",
+    "filename": "Text",
+    "path": "Core/Input/Text",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

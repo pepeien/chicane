@@ -58,6 +58,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsRepeating",
+                "description": "CHICANE_INPUT_KEYBOARDEVENT_BISREPEATING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "KeyboardButton",
                     "suffix": "",
                     "path": "Core/Input/Keyboard/Button",
@@ -91,6 +104,19 @@
                 },
                 "name": "status",
                 "description": "CHICANE_INPUT_KEYBOARDEVENT_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "key",
+                "description": "CHICANE_INPUT_KEYBOARDEVENT_KEY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_INPUT_KEYBOARDEVENT_DESCRIPTION"

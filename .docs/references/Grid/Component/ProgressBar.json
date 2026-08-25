@@ -31,14 +31,54 @@
                         "name": "inNode"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_GRID_PROGRESSBAR_PROGRESSBAR_DESCRIPTION"
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PROGRESSBAR_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPercentage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PROGRESSBAR_REFRESHPERCENTAGE_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
@@ -74,19 +114,16 @@
             },
             {
                 "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
+                "modifiers": [],
                 "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "OVERLAY_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_PROGRESSBAR_OVERLAY_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "percentage",
+                "description": "CHICANE_GRID_PROGRESSBAR_PERCENTAGE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_PROGRESSBAR_DESCRIPTION"

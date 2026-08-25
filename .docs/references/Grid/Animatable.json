@@ -5,42 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Grid/Animatable.hpp",
         "namespace": "Chicane::Grid::Animatable",
-        "types": [
-            {
-                "name": "Properties",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "std::vector",
-                            "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "float",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_ANIMATABLE_PROPERTIES_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -61,6 +26,24 @@
         ],
         "destructors": [],
         "functions": [
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "canPlayAnimation",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_GRID_ANIMATABLE_CANPLAYANIMATION_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "type": "virtual",
@@ -129,91 +112,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "snapshotAnimationVisual",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "inStyle"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_ANIMATABLE_SNAPSHOTANIMATIONVISUAL_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "restoreAnimationVisual",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "outStyle"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::unordered_map",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "String",
-                                    "suffix": "",
-                                    "path": "Core/String",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::vector",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": [
-                                        {
-                                            "prefix": "",
-                                            "name": "float",
-                                            "suffix": "",
-                                            "path": "",
-                                            "templates": []
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        "name": "inVisual"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_ANIMATABLE_RESTOREANIMATIONVISUAL_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "tickAnimation",
                 "parameters": [
                     {
@@ -239,172 +137,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_ANIMATABLE_TICKANIMATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Properties",
-                    "suffix": "",
-                    "path": "Grid/Animatable",
-                    "templates": []
-                },
-                "name": "extractAnimatedProperties",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "inStyle"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_ANIMATABLE_EXTRACTANIMATEDPROPERTIES_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "extractAnimatedProperty",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "inStyle"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_ANIMATABLE_EXTRACTANIMATEDPROPERTY_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "applyAnimatedProperty",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "outStyle"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "float",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_ANIMATABLE_APPLYANIMATEDPROPERTY_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "StyleTransition",
-                    "suffix": "*",
-                    "path": "Grid/Style/Transition",
-                    "templates": []
-                },
-                "name": "findTransition",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Style",
-                            "suffix": "&",
-                            "path": "Grid/Style",
-                            "templates": []
-                        },
-                        "name": "inStyle"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_ANIMATABLE_FINDTRANSITION_DESCRIPTION"
             }
         ],
         "members": [
@@ -420,32 +152,6 @@
                 },
                 "name": "m_animator",
                 "description": "CHICANE_GRID_ANIMATABLE_M_ANIMATOR_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Properties",
-                    "suffix": "",
-                    "path": "Grid/Animatable",
-                    "templates": []
-                },
-                "name": "m_animationVisual",
-                "description": "CHICANE_GRID_ANIMATABLE_M_ANIMATIONVISUAL_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Properties",
-                    "suffix": "",
-                    "path": "Grid/Animatable",
-                    "templates": []
-                },
-                "name": "m_animationTargets",
-                "description": "CHICANE_GRID_ANIMATABLE_M_ANIMATIONTARGETS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

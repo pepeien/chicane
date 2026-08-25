@@ -136,6 +136,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "focusOn",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_FOCUSON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -247,6 +273,34 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_VIEW_RESOLVEHIT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "resolveFocus",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inHit"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEW_RESOLVEFOCUS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

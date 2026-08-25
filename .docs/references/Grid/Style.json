@@ -5,7 +5,42 @@
     "source": {
         "header": "Includes/Chicane/Grid/Style.hpp",
         "namespace": "Chicane::Grid::Style",
-        "types": [],
+        "types": [
+            {
+                "name": "Properties",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLE_PROPERTIES_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -128,12 +163,29 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "clipsOverflow",
+                "name": "isPositioned",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_STYLE_CLIPSOVERFLOW_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLE_ISPOSITIONED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isClippingOverflow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_ISCLIPPINGOVERFLOW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -186,6 +238,178 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_STYLE_COPYVALUESFROM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "snapshot",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_SNAPSHOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "restore",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_RESTORE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Properties",
+                    "suffix": "",
+                    "path": "Grid/Style",
+                    "templates": []
+                },
+                "name": "extractAnimatedProperties",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_EXTRACTANIMATEDPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "extractAnimatedProperty",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_EXTRACTANIMATEDPROPERTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyAnimatedProperty",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_APPLYANIMATEDPROPERTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StyleTransition",
+                    "suffix": "*",
+                    "path": "Grid/Style/Transition",
+                    "templates": []
+                },
+                "name": "findTransition",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_FINDTRANSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Properties",
+                    "suffix": "&",
+                    "path": "Grid/Style",
+                    "templates": []
+                },
+                "name": "getSnapshot",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_GETSNAPSHOT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3555,6 +3779,19 @@
                 },
                 "name": "m_parent",
                 "description": "CHICANE_GRID_STYLE_M_PARENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Properties",
+                    "suffix": "",
+                    "path": "Grid/Style",
+                    "templates": []
+                },
+                "name": "m_snapshot",
+                "description": "CHICANE_GRID_STYLE_M_SNAPSHOT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLE_DESCRIPTION"

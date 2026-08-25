@@ -602,6 +602,53 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isTextInputActive",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WINDOW_ISTEXTINPUTACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "startTextInput",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_STARTTEXTINPUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopTextInput",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_STOPTEXTINPUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "WindowCursor",
                     "suffix": "",
                     "path": "Core/Window/Cursor",
@@ -841,6 +888,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_WATCHBACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "getCurrent",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WINDOW_GETCURRENT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

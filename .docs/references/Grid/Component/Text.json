@@ -70,6 +70,31 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
@@ -113,28 +138,20 @@
             },
             {
                 "accessor": "public",
-                "type": "override",
+                "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
                 },
-                "name": "getChildrenFlat",
+                "name": "getContentSize",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_TEXT_GETCHILDRENFLAT_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXT_GETCONTENTSIZE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

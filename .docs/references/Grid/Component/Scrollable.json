@@ -324,12 +324,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "clipsOverflow",
+                "name": "isClippingOverflow",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_SCROLLABLE_CLIPSOVERFLOW_DESCRIPTION"
+                "description": "CHICANE_GRID_SCROLLABLE_ISCLIPPINGOVERFLOW_DESCRIPTION"
             },
             {
                 "accessor": "public",
