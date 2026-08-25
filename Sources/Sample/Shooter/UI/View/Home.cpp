@@ -19,7 +19,8 @@ HomeView::HomeView()
       crosshairColorB(255),
       crosshairColorA(1.0f),
       playerScore(0U),
-      maxScore(0U)
+      maxScore(0U),
+      input("")
 {
     import <Telemetry>();
     load("Assets/Sample/Shooter/UI/Views/Home.grid", "Assets/Sample/Shooter/UI/Views/Home.decal");

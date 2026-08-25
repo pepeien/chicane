@@ -22,7 +22,7 @@ namespace Chicane
 
         void ProgressBar::refreshPercentage()
         {
-            const String value = parseText(getAttribute(PERCENTAGE_ATTRIBUTE_NAME));
+            const String value = parseText(getAttribute(PERCENTAGE_ATTRIBUTE_NAME)).trim();
             if (value.isEmpty())
             {
                 percentage = 0.0f;

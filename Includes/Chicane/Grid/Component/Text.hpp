@@ -29,6 +29,8 @@ namespace Chicane
         public:
             void refresh() override;
 
+            std::vector<Component*> getChildrenFlat() const override;
+
         protected:
             void onRefresh() override;
 
@@ -38,7 +40,7 @@ namespace Chicane
             const String& getText() const;
             void setText(const String& inValue);
 
-            std::vector<Component*> getChildrenFlat() const override;
+            const Vec2& getContentSize() const;
 
         private:
             bool hasFont() const;

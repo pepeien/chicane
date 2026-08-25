@@ -34,6 +34,7 @@ namespace Chicane
             void handle(const WindowEvent& inEvent);
             WindowCursor getPointer() const;
             void clearInteraction(Component* inComponent);
+            void focusOn(Component* inComponent);
 
             // Children
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
@@ -44,6 +45,7 @@ namespace Chicane
         protected:
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
             Component* resolveHit(Component* inHit) const;
+            Component* resolveFocus(Component* inHit) const;
             void syncHovered(Component* inComponent);
             void syncFocused(Component* inComponent);
 

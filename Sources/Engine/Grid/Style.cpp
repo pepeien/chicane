@@ -1400,10 +1400,14 @@ namespace Chicane
                             continue;
                         }
 
-                        if (!value.equals(ANIMATION_NAME_NONE))
+                        if (value.equals(ANIMATION_NAME_NONE))
                         {
-                            animation.name = token.trim();
+                            animation.name = "";
+
+                            continue;
                         }
+
+                        animation.name = token.trim();
                     }
                 }
             }

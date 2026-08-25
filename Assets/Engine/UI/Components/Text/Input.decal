@@ -1,0 +1,25 @@
+@keyframes blink {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+TextInput {
+    position: relative;
+    cursor: text;
+    overflow: hidden;
+
+    &:focus .text-input__caret {
+        opacity: 1;
+        animation: blink 1s ease-in-out infinite alternate;
+    }
+
+    .text-input__caret {
+        position: absolute;
+        width: 0.1em;
+        height: 1em;
+        background-color: #FFFFFFFF;
+        margin-left: ref(caretX);
+        opacity: 0;
+        animation-name: none;
+    }
+}

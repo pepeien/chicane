@@ -95,18 +95,41 @@ namespace Chicane
             return node;
         }
 
-        void View::handle(const WindowEvent& inEvent)
+        Component* View::resolveFocus(Component* inHit) const
         {
-            if (inEvent.type == WindowEventType::WindowMouseLeave || inEvent.type == WindowEventType::WindowFocusLost)
+            Component* node = inHit;
+            while (node && node != this)
             {
-                if (inEvent.type == WindowEventType::WindowMouseLeave)
+                if (node->isFocusable())
                 {
-                    syncHovered(nullptr);
+                    return node;
                 }
 
-                if (inEvent.type == WindowEventType::WindowFocusLost)
+                if (node->isRoot())
                 {
-                    syncFocused(nullptr);
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            return nullptr;
+        }
+
+        void View::handle(const WindowEvent& inEvent)
+        {
+            if (inEvent.type == WindowEventType::WindowMouseLeave)
+            {
+                syncHovered(nullptr);
+
+                return;
+            }
+
+            if (inEvent.type == WindowEventType::WindowFocusLost || inEvent.type == WindowEventType::WindowFocusGained)
+            {
+                if (m_focused)
+                {
+                    m_focused->onEvent(inEvent);
                 }
 
                 return;
@@ -123,10 +146,7 @@ namespace Chicane
             if (inEvent.type == WindowEventType::MouseButtonDown)
             {
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
-                if (bubbleEvent(inEvent, event.location))
-                {
-                    return;
-                }
+                bubbleEvent(inEvent, event.location);
 
                 Component* hit  = resolveHit(getHitAt(event.location));
                 Component* node = hit;
@@ -142,7 +162,7 @@ namespace Chicane
                     node = node->getParent();
                 }
 
-                syncFocused(hit);
+                syncFocused(resolveFocus(hit));
             }
 
             if (inEvent.type == WindowEventType::MouseMotion)
@@ -210,6 +230,11 @@ namespace Chicane
             {
                 m_focused = nullptr;
             }
+        }
+
+        void View::focusOn(Component* inComponent)
+        {
+            syncFocused(inComponent);
         }
 
         void View::syncHovered(Component* inComponent)

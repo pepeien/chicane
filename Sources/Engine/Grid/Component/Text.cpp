@@ -113,18 +113,8 @@ namespace Chicane
         void Text::refresh()
         {
             Component::refresh();
+
             syncGlyphs();
-        }
-
-        void Text::onRefresh()
-        {
-            if (!isDisplayable())
-            {
-                return;
-            }
-
-            refreshFont();
-            refreshText();
         }
 
         std::vector<Component*> Text::getChildrenFlat() const
@@ -144,6 +134,17 @@ namespace Chicane
             return result;
         }
 
+        void Text::onRefresh()
+        {
+            if (!isDisplayable())
+            {
+                return;
+            }
+
+            refreshFont();
+            refreshText();
+        }
+
         const String& Text::getText() const
         {
             return m_text;
@@ -157,6 +158,11 @@ namespace Chicane
             }
 
             m_text = inValue;
+        }
+
+        const Vec2& Text::getContentSize() const
+        {
+            return m_contentSize;
         }
 
         bool Text::hasFont() const

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <functional>
 
 #include "Chicane/Core.hpp"
@@ -19,9 +20,11 @@ namespace Chicane
             KeyboardEvent();
 
         public:
+            bool                   bIsRepeating;
             KeyboardButton         button;
             KeyboardButtonModifier modifier;
             Status                 status;
+            std::uint32_t          key;
         };
 
         using KeyboardEventCallback = std::function<void()>;

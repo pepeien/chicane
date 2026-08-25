@@ -65,10 +65,16 @@ namespace Chicane
         void destroyInstance();
 
         // Status
+        static Window* getCurrent();
+
         bool isFocused() const;
         void switchFocus();
         void focus();
         void blur();
+
+        bool isTextInputActive() const;
+        void startTextInput();
+        void stopTextInput();
 
         WindowCursor getCursor() const;
         void setCursor(WindowCursor inValue);

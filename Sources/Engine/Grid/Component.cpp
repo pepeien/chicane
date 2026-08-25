@@ -312,6 +312,11 @@ namespace Chicane
             refreshBounds();
         }
 
+        bool Component::isFocusable() const
+        {
+            return false;
+        }
+
         void Component::refreshStyleRuleset()
         {
             if (m_bIsAnimationReady)
@@ -1346,7 +1351,7 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
-                if (!child->containsPoint(inLocation))
+                if (!child->isDisplayable() || !child->containsPoint(inLocation))
                 {
                     continue;
                 }
@@ -1362,6 +1367,11 @@ namespace Chicane
 
         bool Component::containsPoint(const Vec2& inLocation) const
         {
+            if (!isDisplayable())
+            {
+                return false;
+            }
+
             const Bounds2D box = getDrawBounds();
             if (!box.containsRounded(inLocation, m_style.radius.horizontal(), m_style.radius.vertical()))
             {

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include <Chicane/Core/Reflection.hpp>
+#include <Chicane/Core/String.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 
 CH_TYPE(Manual)
@@ -39,4 +40,8 @@ public:
     std::uint32_t playerScore;
     CH_FIELD()
     std::uint32_t maxScore;
+
+    // Input
+    CH_FIELD()
+    Chicane::String input;
 };

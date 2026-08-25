@@ -12,16 +12,20 @@ namespace Chicane
         {
             SDL_KeyboardEvent event = *static_cast<SDL_KeyboardEvent*>(inData);
 
-            device   = event.which;
-            button   = (Input::KeyboardButton)event.scancode;
-            modifier = (Input::KeyboardButtonModifier)event.mod;
-            status   = event.down ? Input::Status::Pressed : Input::Status::Released;
+            bIsRepeating = event.repeat;
+            device       = event.which;
+            button       = (Input::KeyboardButton)event.scancode;
+            modifier     = (Input::KeyboardButtonModifier)event.mod;
+            status       = event.down ? Input::Status::Pressed : Input::Status::Released;
+            key          = event.key;
         }
 
         KeyboardEvent::KeyboardEvent()
             : button(KeyboardButton::Escape),
               modifier(KeyboardButtonModifier::None),
-              status(Status::Pressed)
+              status(Status::Pressed),
+              key(0),
+              bIsRepeating(false)
         {}
     }
 }

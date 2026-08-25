@@ -8,6 +8,7 @@
 #include "Chicane/Core/Input/Gamepad/Motion/Event.hpp"
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Text/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 #include "Chicane/Core/Log.hpp"
@@ -16,6 +17,8 @@
 namespace Chicane
 {
     static inline const Vec<2, std::uint32_t> VEC2_ZERO(0);
+
+    static Window* g_current = nullptr;
 
     Window::Window()
         : m_instance(nullptr),
@@ -29,6 +32,8 @@ namespace Chicane
           m_sizeObservable({}),
           m_backendObservable({})
     {
+        g_current = this;
+
         SDL_InitFlags initFlags = 0;
         initFlags |= SDL_INIT_GAMEPAD;
         initFlags |= SDL_INIT_HAPTIC;
@@ -42,6 +47,11 @@ namespace Chicane
 
     Window::~Window()
     {
+        if (g_current == this)
+        {
+            g_current = nullptr;
+        }
+
         destroyInstance();
 
         for (void*& cursor : m_cursors)
@@ -83,6 +93,9 @@ namespace Chicane
 
             // Keyboard
             Input::KeyboardEvent keyboardEvent;
+
+            // Text
+            Input::TextEvent textEvent;
 
             // Mouse
             Input::MouseMotionEvent mouseMotionEvent;
@@ -161,6 +174,12 @@ namespace Chicane
             case WindowEventType::KeyUp:
                 keyboardEvent = Input::KeyboardEvent(&data.key);
                 event.data    = &keyboardEvent;
+
+                break;
+
+            case WindowEventType::TextInput:
+                textEvent  = Input::TextEvent(&data.text);
+                event.data = &textEvent;
 
                 break;
 
@@ -497,6 +516,11 @@ namespace Chicane
         m_instance = nullptr;
     }
 
+    Window* Window::getCurrent()
+    {
+        return g_current;
+    }
+
     bool Window::isFocused() const
     {
         return m_bIsFocused;
@@ -551,6 +575,39 @@ namespace Chicane
         }
 
         m_bIsFocused = false;
+    }
+
+    bool Window::isTextInputActive() const
+    {
+        if (!hasInstance())
+        {
+            return false;
+        }
+
+        return SDL_TextInputActive(static_cast<SDL_Window*>(m_instance));
+    }
+
+    void Window::startTextInput()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        if (!SDL_StartTextInput(static_cast<SDL_Window*>(m_instance)))
+        {
+            emmitWarning("Failed to start text input");
+        }
+    }
+
+    void Window::stopTextInput()
+    {
+        if (!hasInstance() || !isTextInputActive())
+        {
+            return;
+        }
+
+        SDL_StopTextInput(static_cast<SDL_Window*>(m_instance));
     }
 
     WindowCursor Window::getCursor() const
