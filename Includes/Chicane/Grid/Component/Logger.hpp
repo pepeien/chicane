@@ -4,14 +4,14 @@
 #include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID Logger : public Component
+        class CHICANE_GRID Logger : public Container
         {
         public:
             // Tag

@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         Logger::Logger(const pugi::xml_node& inNode)
-            : Component(inNode),
+            : Container(inNode),
               logs({})
         {
             load("Assets/Engine/UI/Components/Logger.grid", "Assets/Engine/UI/Components/Logger.decal");
