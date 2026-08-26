@@ -5,10 +5,12 @@ on:
         paths:
             - 'Includes/Chicane/**.hpp'
             - 'Scripts/Documentation/Helper.py'
+            - 'Scripts/Documentation.sh'
+            - 'Scripts/Documentation.bat'
             - 'Doxyfile'
     workflow_dispatch:
 concurrency:
-    group: master-bots
+    group: documentation-bots
     cancel-in-progress: false
 jobs:
     build:
@@ -37,21 +39,24 @@ jobs:
 
             - name: Cleanup References
               working-directory: .
-              run: rm -rf .docs/references
+              run: rm -rf References
 
             - name: Build References
               run: bash Documentation.sh
 
-            - name: Rebase onto master
+            - name: Publish
               working-directory: .
               run: |
-                git fetch origin master
-                git pull --rebase --autostash origin master
+                cp -a References /tmp/References
+                git fetch origin documentation
+                git checkout -B documentation origin/documentation
+                rm -rf References
+                mv /tmp/References References
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v7
               with:
                 commit_message: 'docs: Updated documentation'
-                file_pattern: '.docs/**/*.json'
+                file_pattern: 'References'
                 skip_fetch: true
                 skip_checkout: true

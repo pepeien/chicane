@@ -2,6 +2,9 @@
 *.env.*
 .[Cc]ache/*
 
+# Documentation
+.docs/*
+
 # Build results
 [Bb]inaries/*
 [Bb]uild*/*
