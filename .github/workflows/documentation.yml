@@ -33,9 +33,10 @@ jobs:
               uses: mattnotmitt/doxygen-action@1.12.0
 
             - name: Fix permissions
+              working-directory: .
               run: |
-                sudo chown -R $USER:$USER .
-                chmod -R 755 .
+                sudo chown -R $USER:$USER .docs
+                chmod -R 755 .docs
 
             - name: Cleanup References
               working-directory: .
@@ -48,8 +49,9 @@ jobs:
               working-directory: .
               run: |
                 cp -a References /tmp/References
+                rm -rf References
                 git fetch origin documentation
-                git checkout -B documentation origin/documentation
+                git checkout -f -B documentation origin/documentation
                 rm -rf References
                 mv /tmp/References References
 
