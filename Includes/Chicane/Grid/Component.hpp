@@ -13,6 +13,7 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
+#include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Reflection.hpp"
@@ -223,6 +224,7 @@ namespace Chicane
             const Vec2& getOffset() const;
             void setOffset(const Vec2& inValue);
             void setOffset(float inX, float inY);
+            Vec2 getVisualCenter() const;
 
             const Vec2& getPosition() const;
             void addPosition(const Vec2& inValue);
@@ -231,6 +233,8 @@ namespace Chicane
             void setPosition(float inX, float inY);
 
             virtual Vec2 getDrawPosition() const;
+            virtual Vec2 getTransformPivot() const;
+            Mat3 getPaintMatrix() const;
 
             const Vec2& getCursor() const;
             void addCursor(const Vec2& inValue);

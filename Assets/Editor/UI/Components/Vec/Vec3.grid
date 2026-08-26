@@ -1,0 +1,14 @@
+<Container class="vector-3d">
+    <Container class="vector-3d__value --x">
+        <Container class="vector-3d__value__label --x" />
+        <TextInput value="value.x"/>
+    </Container>
+    <Container class="vector-3d__value">
+        <Container class="vector-3d__value__label --y" />
+        <TextInput value="value.y"/>
+    </Container>
+    <Container class="vector-3d__value --z">
+        <Container class="vector-3d__value__label --z" />
+        <TextInput value="value.z"/>
+    </Container>
+</Container>

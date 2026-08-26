@@ -12,6 +12,7 @@ layout(location = 0) in Data {
     flat vec4 clip;
     flat vec4 view;
     flat vec4 box;
+    flat vec4 linear;
     flat vec4 radiusX;
     flat vec4 radiusY;
     flat vec4 innerClip;
@@ -72,6 +73,16 @@ void main() {
     }
 
     vec2 frag = gl_FragCoord.xy;
+    vec2 localFrag = frag;
+    {
+        vec2  center = mix(inData.box.xy, inData.box.zw, 0.5);
+        mat2  linear = mat2(inData.linear.xy, inData.linear.zw);
+        float det    = (linear[0][0] * linear[1][1]) - (linear[0][1] * linear[1][0]);
+
+        if (abs(det) >= 1e-6) {
+            localFrag = center + (inverse(linear) * (frag - center));
+        }
+    }
     if (
         frag.x < inData.clip.x ||
         frag.y < inData.clip.y ||
@@ -100,11 +111,11 @@ void main() {
 
         if (inData.view.z > 0.0) {
             coverage = filterGaussianCoverage(
-                roundedRectSDF(frag, inData.box, inData.radiusX, inData.radiusY),
+                roundedRectSDF(localFrag, inData.box, inData.radiusX, inData.radiusY),
                 inData.view.z
             );
         } else if (hasRoundedCorners(inData.radiusX, inData.radiusY)) {
-            coverage = roundedRectCoverage(frag, inData.box, inData.radiusX, inData.radiusY);
+            coverage = roundedRectCoverage(localFrag, inData.box, inData.radiusX, inData.radiusY);
         }
 
         if (inData.view.w > 0.0) {

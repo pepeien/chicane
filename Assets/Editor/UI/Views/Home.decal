@@ -2,10 +2,10 @@ $sideBarSize:   15vw;
 $bottomBarSize: 20vh;
 
 .theme-button {
-    width: 10em;
-    height: 2em;
     position: absolute;
-    margin-left: calc(100% - calc($sideBarSize + 10em));
+    margin-left: calc(100% - calc($sideBarSize + 8em));
+    width: 8em;
+    height: 2em;
     background-color: $--dark-grey;
 
     Text {
@@ -17,7 +17,7 @@ $bottomBarSize: 20vh;
     $--green: #0b997d;
 
     $--grey: #aaaaaa;
-    $--light-grey: #7575757b;
+    $--light-grey: #524e4e;
     $--dark-grey: #323232;
 
     $--black: #252525;
@@ -28,7 +28,7 @@ $bottomBarSize: 20vh;
     $--green: #0b997d;
 
     $--grey: #aaaaaa;
-    $--light-grey: #7575757b;
+    $--light-grey: #524e4e;
     $--dark-grey: #323232;
 
     $--black: #f7f7f7;
@@ -36,30 +36,39 @@ $bottomBarSize: 20vh;
 }
 
 .home {
-    &__telemetry {
+    Telemetry {
         padding: 0.2em;
     }
 
-    &__outliner {
+    Outliner {
         position: absolute;
         width: $sideBarSize;
         height: 100%;
         margin: 0 0 0 auto;
-        background-color: $--dark-grey;
 
         .outliner {
-            background-color: $--dark-grey;
+            transition: background-color 300ms ease-in-out;
+            background-color: $--white;
+
+            Text {
+                color: $--black;
+            }
         }
     }
 
-    &__explorer {
+    Explorer {
         position: absolute;
         width: calc(100% - $sideBarSize);
         height: $bottomBarSize;
         margin: auto 0 0 0;
 
         .explorer {
-            background-color: $--dark-grey;
+            transition: background-color 300ms ease-in-out;
+            background-color: $--white;
+
+            Text {
+                color: $--black;
+            }
         }
     }
 

@@ -1,8 +1,8 @@
 <View path="home" class="home --{{ theme }}">
-    <Telemetry class="home__telemetry" />
+    <Telemetry />
     <Button class="theme-button" onClick="{{ onThemeSwitch() }}">
         <Text>Switch Theme</Text>
     </Button>
-    <Outliner class="home__outliner" />
-    <Explorer class="home__explorer" />
+    <Outliner />
+    <Explorer />
 </View>

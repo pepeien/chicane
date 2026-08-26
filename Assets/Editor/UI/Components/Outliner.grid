@@ -1,7 +1,8 @@
 <Container class="outliner">
     <Container class="outliner__items">
-        <Button dir:for="actor : outlinerActors" class="outliner__item">
-            <Text>{{ actor.translation }}</Text>
-        </Button>
+        <Container dir:for="actor : outlinerActors" class="outliner__item"></Container>
+    </Container>
+    <Container class="outliner__item-detail">
+        <OutlinerTab label="Transform" />
     </Container>
 </Container>

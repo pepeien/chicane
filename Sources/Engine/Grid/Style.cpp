@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <utility>
 
 #include "Chicane/Box/Font.hpp"
 
@@ -38,6 +39,11 @@ namespace Chicane
               opacity(OPACITY_DEFAULT_VALUE),
               filter({}),
               backdrop({}),
+              transform({}),
+              translate(Vec2::Zero()),
+              rotate(0.0f),
+              scale(Vec2::One()),
+              transformOrigin(Vec2::Zero()),
               font({}),
               letterSpacing(0.0f),
               cursor(WindowCursor::Default),
@@ -169,6 +175,16 @@ namespace Chicane
 
             backdrop.parseWith([this](const String& inValue) { return parseFilter(inValue); });
 
+            transform.parseWith([this](const String& inValue) { return parseTransform(inValue); });
+
+            translate.parseWith([this](const String& inValue) { return parseTranslation(inValue); });
+
+            rotate.parseWith([this](const String& inValue) { return parseRotation(inValue); });
+
+            scale.parseWith([this](const String& inValue) { return parseScale(inValue); });
+
+            transformOrigin.parseWith([this](const String& inValue) { return parseTransformOrigin(inValue); });
+
             font.parseWith(
                 [this](const String& inValue) { return parseText(inValue); },
                 [this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); },
@@ -265,6 +281,31 @@ namespace Chicane
             filter.setProperties(inProperties, FILTER_ATTRIBUTE_NAME);
 
             backdrop.setProperties(inProperties, BACKDROP_FILTER_ATTRIBUTE_NAME);
+
+            if (inProperties.find(TRANSFORM_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                transform.setRaw(inProperties.at(TRANSFORM_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(TRANSLATE_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                translate.setRaw(inProperties.at(TRANSLATE_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(ROTATE_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                rotate.setRaw(inProperties.at(ROTATE_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(SCALE_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                scale.setRaw(inProperties.at(SCALE_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(TRANSFORM_ORIGIN_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                transformOrigin.setRaw(inProperties.at(TRANSFORM_ORIGIN_ATTRIBUTE_NAME));
+            }
 
             margin.setProperties(
                 inProperties,
@@ -391,6 +432,11 @@ namespace Chicane
             opacity.copyValue(inStyle.opacity);
             filter.blur.copyValue(inStyle.filter.blur);
             backdrop.blur.copyValue(inStyle.backdrop.blur);
+            transform.copyValue(inStyle.transform);
+            translate.copyValue(inStyle.translate);
+            rotate.copyValue(inStyle.rotate);
+            scale.copyValue(inStyle.scale);
+            transformOrigin.copyValue(inStyle.transformOrigin);
 
             font.family.copyValue(inStyle.font.family);
             font.size.copyValue(inStyle.font.size);
@@ -521,6 +567,44 @@ namespace Chicane
             if (inName.equals(BACKDROP_FILTER_ATTRIBUTE_NAME))
             {
                 return {backdrop.blur.get()};
+            }
+
+            if (inName.equals(TRANSFORM_ATTRIBUTE_NAME))
+            {
+                const StyleTransform value = transform.get();
+
+                return {value.translation.x, value.translation.y, value.rotation, value.scale.x, value.scale.y};
+            }
+
+            if (inName.equals(TRANSLATE_ATTRIBUTE_NAME))
+            {
+                const Vec2 value = translate.get();
+
+                return {value.x, value.y};
+            }
+
+            if (inName.equals(ROTATE_ATTRIBUTE_NAME))
+            {
+                return {rotate.get()};
+            }
+
+            if (inName.equals(SCALE_ATTRIBUTE_NAME))
+            {
+                const Vec2 value = scale.get();
+
+                return {value.x, value.y};
+            }
+
+            if (inName.equals(TRANSFORM_ORIGIN_ATTRIBUTE_NAME))
+            {
+                if (transformOrigin.getRaw().isEmpty())
+                {
+                    return {};
+                }
+
+                const Vec2 value = transformOrigin.get();
+
+                return {value.x, value.y};
             }
 
             if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
@@ -681,6 +765,105 @@ namespace Chicane
                 return;
             }
 
+            if (inName.equals(TRANSFORM_ATTRIBUTE_NAME))
+            {
+                StyleTransform value = transform.get();
+
+                if (inValue.size() > 0)
+                {
+                    value.translation.x = inValue.at(0);
+                }
+
+                if (inValue.size() > 1)
+                {
+                    value.translation.y = inValue.at(1);
+                }
+
+                if (inValue.size() > 2)
+                {
+                    value.rotation = inValue.at(2);
+                }
+
+                if (inValue.size() > 3)
+                {
+                    value.scale.x = inValue.at(3);
+                }
+
+                if (inValue.size() > 4)
+                {
+                    value.scale.y = inValue.at(4);
+                }
+
+                transform.set(value);
+
+                return;
+            }
+
+            if (inName.equals(TRANSLATE_ATTRIBUTE_NAME))
+            {
+                Vec2 value = translate.get();
+
+                if (inValue.size() > 0)
+                {
+                    value.x = inValue.at(0);
+                }
+
+                if (inValue.size() > 1)
+                {
+                    value.y = inValue.at(1);
+                }
+
+                translate.set(value);
+
+                return;
+            }
+
+            if (inName.equals(ROTATE_ATTRIBUTE_NAME))
+            {
+                rotate.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(SCALE_ATTRIBUTE_NAME))
+            {
+                Vec2 value = scale.get();
+
+                if (inValue.size() > 0)
+                {
+                    value.x = inValue.at(0);
+                    value.y = inValue.at(0);
+                }
+
+                if (inValue.size() > 1)
+                {
+                    value.y = inValue.at(1);
+                }
+
+                scale.set(value);
+
+                return;
+            }
+
+            if (inName.equals(TRANSFORM_ORIGIN_ATTRIBUTE_NAME))
+            {
+                Vec2 value = transformOrigin.get();
+
+                if (inValue.size() > 0)
+                {
+                    value.x = inValue.at(0);
+                }
+
+                if (inValue.size() > 1)
+                {
+                    value.y = inValue.at(1);
+                }
+
+                transformOrigin.set(value);
+
+                return;
+            }
+
             if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
             {
                 margin.top.set(inValue.at(0));
@@ -819,6 +1002,7 @@ namespace Chicane
             refreshForegroundColor();
             refreshOpacity();
             refreshFilter();
+            refreshTransform();
             refreshFont();
             refreshLetterSpacing();
             refreshCursor();
@@ -940,6 +1124,45 @@ namespace Chicane
             backdrop.refresh();
         }
 
+        void Style::refreshTransform()
+        {
+            transform.refresh();
+            translate.refresh();
+            rotate.refresh();
+            scale.refresh();
+            transformOrigin.refresh();
+        }
+
+        StyleTransform Style::getTransform() const
+        {
+            StyleTransform result = transform.get();
+            const Vec2     extraTranslation = translate.get();
+            const Vec2     extraScale       = scale.get();
+
+            result.translation.x += extraTranslation.x;
+            result.translation.y += extraTranslation.y;
+            result.rotation += rotate.get();
+            result.scale.x *= extraScale.x;
+            result.scale.y *= extraScale.y;
+
+            return result;
+        }
+
+        Vec2 Style::getTransformOrigin() const
+        {
+            return getTransformOrigin(hasParent() ? m_parent->getSize() : Vec2::Zero());
+        }
+
+        Vec2 Style::getTransformOrigin(const Vec2& inBox) const
+        {
+            if (transformOrigin.getRaw().isEmpty())
+            {
+                return Vec2(inBox.x * 0.5f, inBox.y * 0.5f);
+            }
+
+            return parseTransformOrigin(transformOrigin.getRaw(), inBox);
+        }
+
         float Style::parseFilter(const String& inValue) const
         {
             const String value = parseText(inValue).trim();
@@ -973,6 +1196,299 @@ namespace Chicane
             }
 
             return blur;
+        }
+
+        StyleTransform Style::parseTransform(const String& inValue) const
+        {
+            StyleTransform result;
+            const String   value = parseText(inValue).trim();
+
+            if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
+            {
+                return result;
+            }
+
+            for (const String& block : splitOneliner(value))
+            {
+                const String token = block.trim();
+
+                if (!token.contains(METHOD_PARAMS_OPENING))
+                {
+                    continue;
+                }
+
+                const String argument = token.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).trim();
+                const std::vector<String> args = argument.split(METHOD_PARAMS_SEPARATOR);
+
+                if (token.startsWith(TRANSFORM_TRANSLATE_X_KEYWORD))
+                {
+                    if (!args.empty())
+                    {
+                        result.translation.x += parseSize(args.at(0).trim(), SizeDirection::Horizontal);
+                    }
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_TRANSLATE_Y_KEYWORD))
+                {
+                    if (!args.empty())
+                    {
+                        result.translation.y += parseSize(args.at(0).trim(), SizeDirection::Vertical);
+                    }
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_TRANSLATE_KEYWORD))
+                {
+                    const Vec2 translation = parseTranslation(argument);
+
+                    result.translation.x += translation.x;
+                    result.translation.y += translation.y;
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_ROTATE_KEYWORD))
+                {
+                    result.rotation += parseRotation(argument);
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_SCALE_X_KEYWORD))
+                {
+                    if (!args.empty())
+                    {
+                        result.scale.x *= parseScale(args.at(0).trim()).x;
+                    }
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_SCALE_Y_KEYWORD))
+                {
+                    if (!args.empty())
+                    {
+                        result.scale.y *= parseScale(args.at(0).trim()).y;
+                    }
+
+                    continue;
+                }
+
+                if (token.startsWith(TRANSFORM_SCALE_KEYWORD))
+                {
+                    const Vec2 scaleValue = parseScale(argument);
+
+                    result.scale.x *= scaleValue.x;
+                    result.scale.y *= scaleValue.y;
+                }
+            }
+
+            return result;
+        }
+
+        Vec2 Style::parseTranslation(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim();
+
+            if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
+            {
+                return Vec2::Zero();
+            }
+
+            std::vector<String> tokens = value.split(METHOD_PARAMS_SEPARATOR);
+
+            if (tokens.size() < 2)
+            {
+                tokens = splitOneliner(value);
+            }
+
+            if (tokens.empty())
+            {
+                return Vec2::Zero();
+            }
+
+            const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal);
+            const float y = tokens.size() > 1 ? parseSize(tokens.at(1).trim(), SizeDirection::Vertical) : 0.0f;
+
+            return {x, y};
+        }
+
+        float Style::parseRotation(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim();
+
+            if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
+            {
+                return 0.0f;
+            }
+
+            if (value.endsWith(TRANSFORM_DEGREE_UNIT))
+            {
+                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal);
+            }
+
+            if (value.endsWith(TRANSFORM_RADIAN_UNIT))
+            {
+                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal) * (180.0f / 3.14159265f);
+            }
+
+            if (value.endsWith(TRANSFORM_TURN_UNIT))
+            {
+                return parseSize(value.substr(0, value.size() - 4), SizeDirection::Horizontal) * 360.0f;
+            }
+
+            return parseSize(value, SizeDirection::Horizontal);
+        }
+
+        Vec2 Style::parseScale(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim();
+
+            if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
+            {
+                return Vec2::One();
+            }
+
+            auto parseFactor = [this](const String& inFactor, SizeDirection inDirection) -> float
+            {
+                const String factor = inFactor.trim();
+
+                if (factor.endsWith(Size::PERCENTAGE_UNIT))
+                {
+                    return parseSize(factor.substr(0, factor.size() - 1), inDirection) / 100.0f;
+                }
+
+                return parseSize(factor, inDirection);
+            };
+
+            const std::vector<String> args = value.split(METHOD_PARAMS_SEPARATOR);
+
+            if (args.size() >= 2)
+            {
+                return {parseFactor(args.at(0), SizeDirection::Horizontal), parseFactor(args.at(1), SizeDirection::Vertical)};
+            }
+
+            const std::vector<String> tokens = splitOneliner(value);
+
+            if (tokens.size() >= 2)
+            {
+                return {
+                    parseFactor(tokens.at(0), SizeDirection::Horizontal),
+                    parseFactor(tokens.at(1), SizeDirection::Vertical)
+                };
+            }
+
+            if (!args.empty() && !args.at(0).trim().isEmpty())
+            {
+                const float factor = parseFactor(args.at(0), SizeDirection::Horizontal);
+
+                return {factor, factor};
+            }
+
+            if (!tokens.empty())
+            {
+                const float factor = parseFactor(tokens.at(0), SizeDirection::Horizontal);
+
+                return {factor, factor};
+            }
+
+            return Vec2::One();
+        }
+
+        Vec2 Style::parseTransformOrigin(const String& inValue) const
+        {
+            return parseTransformOrigin(inValue, hasParent() ? m_parent->getSize() : Vec2::Zero());
+        }
+
+        Vec2 Style::parseTransformOrigin(const String& inValue, const Vec2& inBox) const
+        {
+            const String value   = parseText(inValue).trim();
+            const float  centerX = inBox.x * 0.5f;
+            const float  centerY = inBox.y * 0.5f;
+
+            if (value.isEmpty())
+            {
+                return {centerX, centerY};
+            }
+
+            std::vector<String> tokens;
+
+            for (const String& block : splitOneliner(value))
+            {
+                const String token = block.trim();
+
+                if (!token.isEmpty())
+                {
+                    tokens.push_back(token);
+                }
+            }
+
+            if (tokens.empty())
+            {
+                return {centerX, centerY};
+            }
+
+            auto isLeft = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_LEFT); };
+            auto isRight = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_RIGHT); };
+            auto isTop = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_TOP); };
+            auto isBottom = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_BOTTOM); };
+            auto isCenter = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_CENTER); };
+
+            auto parseAxis = [&](const String& inToken, SizeDirection inDirection) -> float
+            {
+                if (isLeft(inToken) || isTop(inToken))
+                {
+                    return 0.0f;
+                }
+
+                if (isCenter(inToken))
+                {
+                    return inDirection == SizeDirection::Horizontal ? centerX : centerY;
+                }
+
+                if (isRight(inToken))
+                {
+                    return inBox.x;
+                }
+
+                if (isBottom(inToken))
+                {
+                    return inBox.y;
+                }
+
+                return parseSize(inToken, inDirection, &inBox);
+            };
+
+            if (tokens.size() == 1)
+            {
+                const String& token = tokens.at(0);
+
+                if (isTop(token) || isBottom(token))
+                {
+                    return {centerX, parseAxis(token, SizeDirection::Vertical)};
+                }
+
+                return {parseAxis(token, SizeDirection::Horizontal), centerY};
+            }
+
+            String xToken = tokens.at(0);
+            String yToken = tokens.at(1);
+
+            const bool firstIsTopBottom  = isTop(xToken) || isBottom(xToken);
+            const bool secondIsTopBottom = isTop(yToken) || isBottom(yToken);
+            const bool firstIsLeftRight  = isLeft(xToken) || isRight(xToken);
+            const bool secondIsLeftRight = isLeft(yToken) || isRight(yToken);
+
+            if ((firstIsTopBottom && !secondIsTopBottom) ||
+                (secondIsLeftRight && !firstIsLeftRight && !firstIsTopBottom))
+            {
+                std::swap(xToken, yToken);
+            }
+
+            return {parseAxis(xToken, SizeDirection::Horizontal), parseAxis(yToken, SizeDirection::Vertical)};
         }
 
         void Style::refreshFont()

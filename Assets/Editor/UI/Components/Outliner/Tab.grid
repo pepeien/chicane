@@ -1,0 +1,9 @@
+<Container class="outliner__tab">
+    <Button class="outliner__tab__button" onClick="{{ onDropdownClick() }}">
+        <Text class="outliner__tab__button__label">{{ label }}</Text>
+        <Text class="outliner__tab__button__status --{{ contentVisibility }}">v</Text>
+    </Button>
+    <Container class="outliner__tab__content --{{ contentVisibility }}">
+        <Text>huh</Text>
+    </Container>         
+</Container>

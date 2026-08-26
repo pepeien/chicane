@@ -27,6 +27,7 @@
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
+#include "Chicane/Grid/Style/Transform.hpp"
 #include "Chicane/Grid/Style/Transition.hpp"
 
 namespace Chicane
@@ -156,6 +157,33 @@ namespace Chicane
             static constexpr inline const char* FILTER_BLUR_KEYWORD   = "blur";
 
             static constexpr inline const char* BACKDROP_FILTER_ATTRIBUTE_NAME = "backdrop-filter";
+
+            // Transform
+            static constexpr inline const char* TRANSFORM_ATTRIBUTE_NAME        = "transform";
+            static constexpr inline const char* TRANSFORM_TYPE_NONE             = "none";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_KEYWORD     = "translate";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_X_KEYWORD   = "translateX";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_Y_KEYWORD   = "translateY";
+            static constexpr inline const char* TRANSFORM_ROTATE_KEYWORD        = "rotate";
+            static constexpr inline const char* TRANSFORM_SCALE_KEYWORD         = "scale";
+            static constexpr inline const char* TRANSFORM_SCALE_X_KEYWORD       = "scaleX";
+            static constexpr inline const char* TRANSFORM_SCALE_Y_KEYWORD       = "scaleY";
+            static constexpr inline const char* TRANSLATE_ATTRIBUTE_NAME        = "translate";
+            static constexpr inline const char* ROTATE_ATTRIBUTE_NAME           = "rotate";
+            static constexpr inline const char* SCALE_ATTRIBUTE_NAME            = "scale";
+            /*
+             * Template 1: "`SINGLE_ORIGIN`"
+             * Template 2: "`HORIZONTAL_ORIGIN` `VERTICAL_ORIGIN`"
+             */
+            static constexpr inline const char* TRANSFORM_ORIGIN_ATTRIBUTE_NAME = "transform-origin";
+            static constexpr inline const char* TRANSFORM_ORIGIN_TYPE_LEFT      = "left";
+            static constexpr inline const char* TRANSFORM_ORIGIN_TYPE_CENTER    = "center";
+            static constexpr inline const char* TRANSFORM_ORIGIN_TYPE_RIGHT     = "right";
+            static constexpr inline const char* TRANSFORM_ORIGIN_TYPE_TOP       = "top";
+            static constexpr inline const char* TRANSFORM_ORIGIN_TYPE_BOTTOM    = "bottom";
+            static constexpr inline const char* TRANSFORM_DEGREE_UNIT           = "deg";
+            static constexpr inline const char* TRANSFORM_RADIAN_UNIT           = "rad";
+            static constexpr inline const char* TRANSFORM_TURN_UNIT             = "turn";
 
             // Corner
             static constexpr inline const char* CORNER_DEFAULT_VALUE = "0px";
@@ -302,6 +330,9 @@ namespace Chicane
                 FOREGROUND_COLOR_ATTRIBUTE_NAME, BACKGROUND_COLOR_ATTRIBUTE_NAME,
                 FONT_SIZE_ATTRIBUTE_NAME,        LETTER_SPACING_ATTRIBUTE_NAME,
                 FILTER_ATTRIBUTE_NAME,           BACKDROP_FILTER_ATTRIBUTE_NAME,
+                TRANSFORM_ATTRIBUTE_NAME,        TRANSLATE_ATTRIBUTE_NAME,
+                ROTATE_ATTRIBUTE_NAME,           SCALE_ATTRIBUTE_NAME,
+                TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
                 MARGIN_TOP_ATTRIBUTE_NAME,       MARGIN_BOTTOM_ATTRIBUTE_NAME,
                 MARGIN_LEFT_ATTRIBUTE_NAME,      MARGIN_RIGHT_ATTRIBUTE_NAME,
                 PADDING_TOP_ATTRIBUTE_NAME,      PADDING_BOTTOM_ATTRIBUTE_NAME,
@@ -333,6 +364,10 @@ namespace Chicane
             const StyleTransition* findTransition(const String& inName) const;
             const Properties& getSnapshot() const;
 
+            StyleTransform getTransform() const;
+            Vec2 getTransformOrigin() const;
+            Vec2 getTransformOrigin(const Vec2& inBox) const;
+
             bool hasParent() const;
             void setParent(const Component* inComponent);
 
@@ -354,6 +389,7 @@ namespace Chicane
             void refreshForegroundColor();
             void refreshOpacity();
             void refreshFilter();
+            void refreshTransform();
             void refreshFont();
             void refreshLetterSpacing();
             void refreshCursor();
@@ -365,6 +401,12 @@ namespace Chicane
             WindowCursor parseCursor(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
             float parseFilter(const String& inValue) const;
+            StyleTransform parseTransform(const String& inValue) const;
+            Vec2 parseTranslation(const String& inValue) const;
+            float parseRotation(const String& inValue) const;
+            Vec2 parseScale(const String& inValue) const;
+            Vec2 parseTransformOrigin(const String& inValue) const;
+            Vec2 parseTransformOrigin(const String& inValue, const Vec2& inBox) const;
             float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
             float parseWeight(const String& inValue) const;
             String parseReference(const String& inValue) const;
@@ -403,6 +445,11 @@ namespace Chicane
             StyleProperty<float>          opacity;
             StyleFilter                   filter;
             StyleFilter                   backdrop;
+            StyleProperty<StyleTransform> transform;
+            StyleProperty<Vec2>           translate;
+            StyleProperty<float>          rotate;
+            StyleProperty<Vec2>           scale;
+            StyleProperty<Vec2>           transformOrigin;
 
             // Text
             StyleFont                     font;

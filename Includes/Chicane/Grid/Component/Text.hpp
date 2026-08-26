@@ -31,6 +31,8 @@ namespace Chicane
 
             std::vector<Component*> getChildrenFlat() const override;
 
+            Vec2 getTransformPivot() const override;
+
         protected:
             void onRefresh() override;
 
@@ -44,6 +46,7 @@ namespace Chicane
 
         private:
             bool hasFont() const;
+            bool getGlyphVisualBounds(Vec2& outMin, Vec2& outMax) const;
 
             void refreshFont();
             void refreshText();

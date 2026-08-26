@@ -4,8 +4,11 @@
 #include <cmath>
 #include <unordered_map>
 
+#include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Size.hpp"
+
+#include <glm/gtc/matrix_inverse.hpp>
 
 #include "Chicane/Drift/Clip.hpp"
 #include "Chicane/Drift/Loop.hpp"
@@ -1372,8 +1375,22 @@ namespace Chicane
                 return false;
             }
 
-            const Bounds2D box = getDrawBounds();
-            if (!box.containsRounded(inLocation, m_style.radius.horizontal(), m_style.radius.vertical()))
+            Vec2 local = inLocation;
+            const Mat3 paint = getPaintMatrix();
+            const Mat3 inverse = glm::inverse(static_cast<glm::mat3>(paint));
+            const glm::vec3 mapped = inverse * glm::vec3(inLocation.x, inLocation.y, 1.0f);
+
+            local.x = mapped.x;
+            local.y = mapped.y;
+
+            const Vec2     position = getDrawPosition();
+            Bounds2D       box;
+            box.left   = position.x;
+            box.top    = position.y;
+            box.right  = position.x + m_size.x;
+            box.bottom = position.y + m_size.y;
+
+            if (!box.containsRounded(local, m_style.radius.horizontal(), m_style.radius.vertical()))
             {
                 return false;
             }
@@ -1650,6 +1667,14 @@ namespace Chicane
             m_offset.y = inY;
         }
 
+        Vec2 Component::getVisualCenter() const
+        {
+            const Vec2& size   = getSize();
+            const Vec2& offset = getOffset();
+
+            return getDrawPosition() + Vec2(size.x * 0.5f + offset.x, size.y * 0.5f - offset.y);
+        }
+
         const Vec2& Component::getPosition() const
         {
             return getTranslation();
@@ -1703,6 +1728,75 @@ namespace Chicane
             return result;
         }
 
+        Vec2 Component::getTransformPivot() const
+        {
+            return getDrawPosition() + getStyle().getTransformOrigin();
+        }
+
+        Mat3 Component::getPaintMatrix() const
+        {
+            std::vector<const Component*> chain;
+            const Component*              node = this;
+
+            while (node)
+            {
+                chain.push_back(node);
+
+                if (node->isRoot() || !node->hasParent())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            Mat3 world(1.0f);
+
+            for (auto it = chain.rbegin(); it != chain.rend(); ++it)
+            {
+                const Component*     component = *it;
+                const StyleTransform xform     = component->getStyle().getTransform();
+
+                if (xform.isIdentity())
+                {
+                    continue;
+                }
+
+                const Vec2  origin  = component->getTransformPivot();
+                const float radians = glm::radians(xform.rotation);
+                const float cosine  = glm::cos(radians);
+                const float sine    = glm::sin(radians);
+
+                const Mat3 toOrigin(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -origin.x, -origin.y, 1.0f);
+                const Mat3 fromOrigin(
+                    1.0f,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    1.0f,
+                    0.0f,
+                    origin.x + xform.translation.x,
+                    origin.y + xform.translation.y,
+                    1.0f
+                );
+                const Mat3 linear(
+                    cosine * xform.scale.x,
+                    sine * xform.scale.x,
+                    0.0f,
+                    -sine * xform.scale.y,
+                    cosine * xform.scale.y,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    1.0f
+                );
+
+                world = world * fromOrigin * linear * toOrigin;
+            }
+
+            return world;
+        }
+
         const Vec2& Component::getCursor() const
         {
             return m_cursor;
@@ -1744,6 +1838,11 @@ namespace Chicane
             result.top    = position.y;
             result.right  = position.x + m_size.x;
             result.bottom = position.y + m_size.y;
+
+            const Mat3 paint = getPaintMatrix();
+
+            result.set(result.top, result.left, result.bottom, result.right);
+            result.transform(paint);
 
             return result;
         }

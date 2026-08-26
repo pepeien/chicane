@@ -10,7 +10,6 @@ $explorerHeaderHeight: 2em;
         display: flex;
         flex-direction: row;
         gap: 0 0.25em;
-        background-color: $--white;
 
         &__location {
             display: flex;

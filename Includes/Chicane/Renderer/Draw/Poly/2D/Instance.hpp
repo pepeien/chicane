@@ -33,6 +33,8 @@ namespace Chicane
             Draw::Id glyph            = -1;
             float    dilation         = 0.0f;
             float    filterBlur       = 0.0f;
+            Vec2     transformX       = Vec2::Right();
+            Vec2     transformY       = Vec2::Up();
             Vec4     radiusX          = Vec4::Zero();
             Vec4     radiusY          = Vec4::Zero();
             Vec4     innerClip        = Vec4::Sentinel();

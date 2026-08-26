@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Component/Text.reflected.hpp"
 
 #include <algorithm>
+#include <limits>
 
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
@@ -165,9 +166,65 @@ namespace Chicane
             return m_contentSize;
         }
 
+        Vec2 Text::getTransformPivot() const
+        {
+            Vec2 min;
+            Vec2 max;
+
+            if (!getGlyphVisualBounds(min, max))
+            {
+                return Component::getTransformPivot();
+            }
+
+            const Vec2 visualSize(max.x - min.x, max.y - min.y);
+
+            return getDrawPosition() + min + getStyle().getTransformOrigin(visualSize);
+        }
+
         bool Text::hasFont() const
         {
             return m_font != nullptr;
+        }
+
+        bool Text::getGlyphVisualBounds(Vec2& outMin, Vec2& outMax) const
+        {
+            bool hasGlyph = false;
+
+            outMin = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+            outMax = Vec2(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
+
+            const Vec2 padding(m_style.padding.left.get(), m_style.padding.top.get());
+
+            for (const TextGlyph* glyph : m_glyphs)
+            {
+                if (!glyph)
+                {
+                    continue;
+                }
+
+                const Vec2 scale = glyph->getScale();
+
+                if (scale.x <= 0.0f && scale.y <= 0.0f)
+                {
+                    continue;
+                }
+
+                const Vec2 size   = glyph->getSize();
+                const Vec2 offset = glyph->getOffset();
+                const Vec2 center(
+                    padding.x + glyph->getRelativeX() + (size.x * 0.5f) + offset.x,
+                    padding.y + glyph->getRelativeY() + (size.y * 0.5f) - offset.y
+                );
+                const Vec2 half(scale.x * 0.5f, scale.y * 0.5f);
+
+                outMin.x = std::min(outMin.x, center.x - half.x);
+                outMin.y = std::min(outMin.y, center.y - half.y);
+                outMax.x = std::max(outMax.x, center.x + half.x);
+                outMax.y = std::max(outMax.y, center.y + half.y);
+                hasGlyph = true;
+            }
+
+            return hasGlyph;
         }
 
         void Text::refreshFont()

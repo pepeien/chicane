@@ -1,0 +1,35 @@
+.vector-3d {
+    display: flex;
+    flex-direction: row;
+
+    &__value {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25em;
+        background-color: $--dark-grey;
+        padding: 0.05em;
+        border-radius: 0.15em;
+        overflow: hidden;
+
+        &__label {
+            height: 1em;
+            width: 2px;
+
+            &.--x {
+                background-color: red;
+            }
+
+            &.--y {
+                background-color: green;
+            }
+
+            &.--z {
+                background-color: blue;
+            }
+        }
+
+        &__input {
+            color: $--black;
+        }
+    }
+}

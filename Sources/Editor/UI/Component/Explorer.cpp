@@ -13,6 +13,7 @@ namespace Editor
           explorerFolder({})
     {
         import <ExplorerItem>();
+
         load("Assets/Editor/UI/Components/Explorer.grid", "Assets/Editor/UI/Components/Explorer.decal");
 
         explorerFolder.children = Chicane::FileSystem::ls();

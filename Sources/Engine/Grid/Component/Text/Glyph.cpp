@@ -129,6 +129,16 @@ namespace Chicane
             return m_advance;
         }
 
+        float TextGlyph::getRelativeX() const
+        {
+            return m_relativeX;
+        }
+
+        float TextGlyph::getRelativeY() const
+        {
+            return m_relativeY;
+        }
+
         void TextGlyph::clear()
         {
             m_glyph     = nullptr;

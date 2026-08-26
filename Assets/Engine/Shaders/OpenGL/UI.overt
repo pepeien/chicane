@@ -12,6 +12,7 @@ layout(location = 0) out Data {
     flat vec4 clip;
     flat vec4 view;
     flat vec4 box;
+    flat vec4 linear;
     flat vec4 radiusX;
     flat vec4 radiusY;
     flat vec4 innerClip;
@@ -50,6 +51,7 @@ void main() {
     outData.clip             = component.clip;
     outData.view             = vec4(component.view, component.filterBlur, component.backdropBlur);
     outData.box              = vec4(component.position.xy, component.position.xy + component.size);
+    outData.linear           = vec4(component.transformX, component.transformY);
     outData.radiusX          = component.radiusX;
     outData.radiusY          = component.radiusY;
     outData.innerClip        = component.innerClip;

@@ -38,6 +38,8 @@ namespace Chicane
                 float                 inAscender
             );
             float getAdvance() const;
+            float getRelativeX() const;
+            float getRelativeY() const;
 
             void clear();
             void syncPosition();

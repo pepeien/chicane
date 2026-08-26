@@ -11,6 +11,8 @@ struct PolyInstance2D {
     int glyphIndex;
     float glyphDilation;
     float filterBlur;
+    vec2 transformX;
+    vec2 transformY;
     vec4 radiusX;
     vec4 radiusY;
     vec4 innerClip;
@@ -33,11 +35,24 @@ vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMult
     vec2 position = inPosition;
     position *= inInstance.scale;  // Apply vertex scale
     position += inInstance.offset; // Apply vertex offset
+    position  = (inInstance.transformX * position.x) + (inInstance.transformY * position.y);
     position /= inInstance.view;   // Normalize to view size
     position *= 2.0;               // Normalize to NDC
     position *= inMultipliers;
 
     return position;
+}
+
+vec2 get2DLocalFrag(vec2 inFrag, vec4 inBox, vec4 inLinear) {
+    vec2 center = mix(inBox.xy, inBox.zw, 0.5);
+    mat2 linear = mat2(inLinear.xy, inLinear.zw);
+    float det   = (linear[0][0] * linear[1][1]) - (linear[0][1] * linear[1][0]);
+
+    if (abs(det) < 1e-6) {
+        return inFrag;
+    }
+
+    return center + (inverse(linear) * (inFrag - center));
 }
 
 vec3 get2DScreenPosition(PolyInstance2D inInstance, vec2 inMultipliers) {
