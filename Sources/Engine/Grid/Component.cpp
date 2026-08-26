@@ -1996,7 +1996,15 @@ namespace Chicane
                 const bool bTopAuto    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
                 const bool bBottomAuto = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
 
-                const float leftoverW = available.x - usedWidth - marginLeft - marginRight;
+                float leftoverW = available.x - usedWidth - marginLeft - marginRight;
+
+                if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
+                    parentStyle.flex.direction.get() == StyleFlexDirection::Row)
+                {
+                    leftoverW = m_parent->getPosition().x + parentStyle.padding.left.get() + m_parent->getSize().x -
+                                m_parent->getCursor().x - usedWidth - marginLeft - marginRight;
+                }
+
                 if (leftoverW > 0.0f)
                 {
                     if (bLeftAuto && bRightAuto)
@@ -2014,18 +2022,20 @@ namespace Chicane
                     }
                 }
 
-                const bool bCanAutoVertical =
-                    m_style.isPosition(StylePosition::Absolute) || parentStyle.isDisplay(StyleDisplay::Flex);
+                const bool bParentHeightAuto = parentStyle.height.getRaw().isEmpty() ||
+                                               parentStyle.height.isRaw(Size::AUTO_KEYWORD);
+
+                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
+                                              parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;
 
                 if (bCanAutoVertical && (bTopAuto || bBottomAuto))
                 {
                     float leftoverH = available.y - usedHeight - marginTop - marginBottom;
 
-                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
-                        parentStyle.flex.direction.get() == StyleFlexDirection::Column)
+                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex))
                     {
-                        leftoverH = (m_parent->getPosition().y + parentStyle.padding.top.get() + available.y) -
-                                    m_parent->getCursor().y - usedHeight - marginBottom;
+                        leftoverH = m_parent->getPosition().y + parentStyle.padding.top.get() + m_parent->getSize().y -
+                                    m_parent->getCursor().y - usedHeight - marginTop - marginBottom;
                     }
 
                     if (leftoverH > 0.0f)
