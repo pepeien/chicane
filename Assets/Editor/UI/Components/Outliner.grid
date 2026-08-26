@@ -1,8 +1,0 @@
-<Container class="outliner">
-    <Container class="outliner__items">
-        <Container dir:for="actor : outlinerActors" class="outliner__item"></Container>
-    </Container>
-    <Container class="outliner__item-detail">
-        <OutlinerTab label="Transform" />
-    </Container>
-</Container>

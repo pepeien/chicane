@@ -1,5 +1,0 @@
-<Container class="progress-bar">
-    <Container class="progress-bar__wrapper">
-        <Container class="progress-bar__progress" />
-    </Container>
-</Container>
