@@ -1989,6 +1989,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getVisualCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETVISUALCENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
@@ -2142,6 +2159,40 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETDRAWPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getTransformPivot",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETTRANSFORMPIVOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat3",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat3",
+                    "templates": []
+                },
+                "name": "getPaintMatrix",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETPAINTMATRIX_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -80,6 +80,44 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleTransform",
+                            "suffix": "&",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleTransform",
+                            "suffix": "&",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR==_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "isTime",
                 "parameters": [
                     {

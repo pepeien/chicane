@@ -218,6 +218,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "transformX",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_TRANSFORMX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "transformY",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_TRANSFORMY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vec4",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec4",

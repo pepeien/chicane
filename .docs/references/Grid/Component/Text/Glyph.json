@@ -151,6 +151,40 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getRelativeX",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXTGLYPH_GETRELATIVEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getRelativeY",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXTGLYPH_GETRELATIVEY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",

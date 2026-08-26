@@ -416,6 +416,68 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "StyleTransform",
+                    "suffix": "",
+                    "path": "Grid/Style/Transform",
+                    "templates": []
+                },
+                "name": "getTransform",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_GETTRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getTransformOrigin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_GETTRANSFORMORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getTransformOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inBox"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_GETTRANSFORMORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -704,6 +766,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshTransform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHTRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshFont",
                 "parameters": [],
                 "modifiers": [],
@@ -902,6 +979,184 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLE_PARSEFILTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleTransform",
+                    "suffix": "",
+                    "path": "Grid/Style/Transform",
+                    "templates": []
+                },
+                "name": "parseTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "parseTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "parseScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "parseTransformOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSETRANSFORMORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "parseTransformOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inBox"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSETRANSFORMORIGIN_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -2268,6 +2523,342 @@
                 },
                 "name": "BACKDROP_FILTER_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_BACKDROP_FILTER_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_TYPE_NONE",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_TYPE_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_TRANSLATE_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_TRANSLATE_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_TRANSLATE_X_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_TRANSLATE_X_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_TRANSLATE_Y_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_TRANSLATE_Y_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ROTATE_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ROTATE_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_SCALE_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_SCALE_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_SCALE_X_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_SCALE_X_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_SCALE_Y_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_SCALE_Y_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSLATE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSLATE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ROTATE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_ROTATE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_TYPE_LEFT",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_TYPE_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_TYPE_CENTER",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_TYPE_CENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_TYPE_RIGHT",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_TYPE_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_TYPE_TOP",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_TYPE_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ORIGIN_TYPE_BOTTOM",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_ORIGIN_TYPE_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_DEGREE_UNIT",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_DEGREE_UNIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_RADIAN_UNIT",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_RADIAN_UNIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_TURN_UNIT",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_TURN_UNIT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3841,6 +4432,111 @@
                 },
                 "name": "backdrop",
                 "description": "CHICANE_GRID_STYLE_BACKDROP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleTransform",
+                            "suffix": "",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "transform",
+                "description": "CHICANE_GRID_STYLE_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "translate",
+                "description": "CHICANE_GRID_STYLE_TRANSLATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "rotate",
+                "description": "CHICANE_GRID_STYLE_ROTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "scale",
+                "description": "CHICANE_GRID_STYLE_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "transformOrigin",
+                "description": "CHICANE_GRID_STYLE_TRANSFORMORIGIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
