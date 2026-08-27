@@ -126,6 +126,42 @@ namespace Reflector
             return CleanSpelling(type.CanonicalType.Spelling.CString);
         }
 
+        static string GetCastTypeName(CXType type)
+        {
+            if (
+                type.kind == CXTypeKind.CXType_LValueReference ||
+                type.kind == CXTypeKind.CXType_RValueReference
+            )
+            {
+                return GetCastTypeName(type.PointeeType);
+            }
+
+            if (type.kind == CXTypeKind.CXType_Elaborated)
+            {
+                return GetCastTypeName(type.NamedType);
+            }
+
+            int stars = 0;
+            while (type.kind == CXTypeKind.CXType_Pointer)
+            {
+                stars++;
+                type = type.PointeeType;
+
+                if (type.kind == CXTypeKind.CXType_Elaborated)
+                {
+                    type = type.NamedType;
+                }
+            }
+
+            string name = GetTypeName(type);
+            if (stars > 0)
+            {
+                name += new string('*', stars);
+            }
+
+            return name;
+        }
+
         public static (List<TypeModel>, List<EnumModel>) Parse(string filePath, List<string> lookUpFolders)
         {
             var types = new List<TypeModel>();
@@ -506,7 +542,7 @@ namespace Reflector
             {
                 if (child.Kind == CXCursorKind.CXCursor_ParmDecl)
                 {
-                    paramTypes.Add(GetTypeName(child.Type));
+                    paramTypes.Add(GetCastTypeName(child.Type));
                 }
 
                 return CXChildVisitResult.CXChildVisit_Continue;
@@ -523,14 +559,14 @@ namespace Reflector
             {
                 if (child.Kind == CXCursorKind.CXCursor_ParmDecl)
                 {
-                    paramTypes.Add(GetTypeName(child.Type));
+                    paramTypes.Add(GetCastTypeName(child.Type));
                 }
 
                 return CXChildVisitResult.CXChildVisit_Continue;
             }, default);
 
             var resultType = cursor.ResultType;
-            string returnType = GetTypeName(resultType);
+            string returnType = GetCastTypeName(resultType);
             bool isIterable = IsIterableType(resultType);
             string elementName = isIterable ? GetTemplateParam(resultType) : "";
             bool isElementPointer = elementName.EndsWith('*');

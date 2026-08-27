@@ -1,4 +1,4 @@
-#include "Editor/Actor/Item.hpp"
+#include "Editor/Actor/Item.reflected.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 

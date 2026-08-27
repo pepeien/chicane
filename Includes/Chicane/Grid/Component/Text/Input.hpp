@@ -54,6 +54,7 @@ namespace Chicane
 
         private:
             bool   m_bEdited;
+            bool   m_bReplaceOnInput;
             String m_pendingText;
         };
     }

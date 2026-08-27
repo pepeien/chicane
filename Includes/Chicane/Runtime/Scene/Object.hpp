@@ -33,6 +33,9 @@ namespace Chicane
         const String& getId() const;
         void setId(const String& inId);
 
+        CH_FUNCTION()
+        String getTypeName() const;
+
     protected:
         template <typename T = Scene>
         T* getScene() const

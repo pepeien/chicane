@@ -11,8 +11,24 @@ namespace Editor
     class Vec3 : public Chicane::Grid::Container
     {
     public:
+        static constexpr inline const char* VALUE_ATTRIBUTE_NAME = "value";
+
+    public:
         CH_CONSTRUCTOR()
         Vec3(const pugi::xml_node& inNode);
+
+    protected:
+        void onTick(float inDeltaTime) override;
+
+    public:
+        CH_FUNCTION()
+        void commit();
+
+    private:
+        bool isEditing() const;
+        bool resolveBinding(Chicane::ReflectionFieldAccessor& outAccessor, void*& outInstance);
+        void refreshValue();
+        void applyValue();
 
     public:
         CH_FIELD()

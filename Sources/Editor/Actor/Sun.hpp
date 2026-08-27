@@ -4,6 +4,7 @@
 
 namespace Editor
 {
+    CH_TYPE(Manual)
     class Sun : public Chicane::ALight
     {
     public:

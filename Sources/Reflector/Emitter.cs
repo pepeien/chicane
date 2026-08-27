@@ -37,6 +37,16 @@ namespace Reflector
         static string SafeIdentifier(string qualifiedName)
             => qualifiedName.Replace("::", "_");
 
+        static string EmitAnyCast(string typeName, string expr)
+        {
+            if (typeName.EndsWith('*'))
+            {
+                return $"static_cast<{typeName}>(std::any_cast<void*>({expr}))";
+            }
+
+            return $"std::any_cast<{typeName}>({expr})";
+        }
+
         static void EmitEnum(StringBuilder sb, EnumModel e)
         {
             sb.AppendLine($"inline Chicane::ReflectionEnumAutoRegister _reg_enum_{SafeIdentifier(e.Name)}(");
@@ -125,7 +135,7 @@ namespace Reflector
             sb.AppendLine("\t\t{");
             foreach (ConstructorModel c in t.Constructors)
             {
-                var paramUnpack = string.Join(",", c.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\tstd::any_cast<{p}>(inParams.at({i}))"));
+                var paramUnpack = string.Join(",", c.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\t{EmitAnyCast(p, $"inParams.at({i})")}"));
 
                 if (c.ParamTypes.Count() > 0)
                 {
@@ -151,7 +161,7 @@ namespace Reflector
             sb.AppendLine("\t\t{");
             foreach (FunctionModel f in t.Functions)
             {
-                var paramUnpack = string.Join(",", f.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\tstd::any_cast<{p}>(inParams.at({i}))"));
+                var paramUnpack = string.Join(",", f.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\t{EmitAnyCast(p, $"inParams.at({i})")}"));
                 var paramChecker = "";
 
                 if (f.ParamTypes.Count() > 0)

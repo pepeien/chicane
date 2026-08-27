@@ -6,6 +6,6 @@
         </Svg>
     </Button>
     <Container class="outliner__tab__content --{{ contentVisibility }}">
-        <Text>huh</Text>
+        <Content />
     </Container>         
 </Container>

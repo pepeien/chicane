@@ -7,6 +7,7 @@
 
 namespace Editor
 {
+    CH_TYPE(Manual)
     class Item : public Chicane::Actor
     {
     public:

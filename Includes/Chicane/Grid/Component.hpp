@@ -49,6 +49,9 @@ namespace Chicane
             static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
             static constexpr inline const char* FOR_DIRECTIVE_KEYWORD = "dir:for";
 
+            static constexpr inline const char* CONTENT_TAG_ID                = "Content";
+            static constexpr inline const char* CONTENT_SELECT_ATTRIBUTE_NAME = "select";
+
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
             static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
@@ -59,6 +62,8 @@ namespace Chicane
 
         public:
             static Component* create(const pugi::xml_node& inNode);
+
+            static bool isContentSlot(const pugi::xml_node& inNode);
 
         public:
             CH_CONSTRUCTOR()
@@ -207,6 +212,7 @@ namespace Chicane
             Vec2 getChildrenContentSizeBlock() const;
             Vec2 getChildrenContentSizeFlex() const;
             Vec2 getChildrenContentSize() const;
+            Vec2 getChildIntrinsicSize(const Component* inChild) const;
 
             // Positioning
             virtual float getDepth() const;
@@ -287,6 +293,7 @@ namespace Chicane
             }
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
+            void addProjectedContent(const pugi::xml_node& inSlot);
 
             void refreshClassName();
             void refreshStyle();

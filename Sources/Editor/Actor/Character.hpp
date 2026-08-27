@@ -6,6 +6,7 @@
 
 namespace Editor
 {
+    CH_TYPE(Manual)
     class Character : public Chicane::ACharacter
     {
     public:

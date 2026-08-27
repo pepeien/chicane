@@ -1,5 +1,7 @@
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 
+#include <cstdio>
+
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
@@ -290,15 +292,29 @@ namespace Chicane
         if (isType<float>())
         {
             const float* v = getValue<float>(inInstance);
+            if (!v)
+            {
+                return "";
+            }
 
-            return v ? std::to_string(*v) : "";
+            char buffer[64];
+            std::snprintf(buffer, sizeof(buffer), "%g", *v);
+
+            return buffer;
         }
 
         if (isType<double>())
         {
             const double* v = getValue<double>(inInstance);
+            if (!v)
+            {
+                return "";
+            }
 
-            return v ? std::to_string(*v) : "";
+            char buffer[64];
+            std::snprintf(buffer, sizeof(buffer), "%g", *v);
+
+            return buffer;
         }
 
         if (isType<std::uint64_t>())

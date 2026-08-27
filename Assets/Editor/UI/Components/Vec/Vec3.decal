@@ -1,12 +1,13 @@
 .vector-3d {
     display: flex;
     flex-direction: row;
+    gap: 0.5em;
 
     &__value {
         display: flex;
         flex-direction: row;
         gap: 0.25em;
-        background-color: $--dark-grey;
+        background-color: $--light-grey;
         padding: 0.05em;
         border-radius: 0.15em;
         overflow: hidden;
@@ -28,7 +29,9 @@
             }
         }
 
-        &__input {
+        TextInput {
+            width: 4em;
+            height: 1em;
             color: $--black;
         }
     }

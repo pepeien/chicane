@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component/Text/Input.reflected.hpp"
 
+#include <cstdlib>
+
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Text/Event.hpp"
 #include "Chicane/Core/Window.hpp"
@@ -49,6 +51,7 @@ namespace Chicane
               value(String::empty()),
               caretX(0.0f),
               m_bEdited(false),
+              m_bReplaceOnInput(false),
               m_pendingText(String::empty())
         {
             load("Assets/Engine/UI/Components/Text/Input.grid", "Assets/Engine/UI/Components/Text/Input.decal");
@@ -96,6 +99,13 @@ namespace Chicane
                 }
 
                 const Input::TextEvent event = *static_cast<Input::TextEvent*>(inEvent.data);
+                if (event.text.isEmpty() || event.text.equals(m_pendingText))
+                {
+                    m_pendingText = String::empty();
+
+                    return true;
+                }
+
                 insert(event.text);
                 m_pendingText = String::empty();
 
@@ -130,22 +140,10 @@ namespace Chicane
                     return true;
                 }
 
-                if (event.bIsRepeating)
-                {
-                    insert(character);
-
-                    return true;
-                }
-
+                insert(character);
                 m_pendingText = character;
 
                 return true;
-            }
-
-            if (!m_pendingText.isEmpty())
-            {
-                insert(m_pendingText);
-                m_pendingText = String::empty();
             }
 
             return true;
@@ -163,6 +161,7 @@ namespace Chicane
 
         void TextInput::onFocus()
         {
+            m_bReplaceOnInput = true;
             setTextInputActive(true);
             refreshStyleSubtree();
         }
@@ -205,6 +204,12 @@ namespace Chicane
                 return;
             }
 
+            if (m_bReplaceOnInput)
+            {
+                value             = String::empty();
+                m_bReplaceOnInput = false;
+            }
+
             value.append(inText);
             m_bEdited = true;
             setText(value);
@@ -215,6 +220,19 @@ namespace Chicane
 
         void TextInput::erase()
         {
+            if (m_bReplaceOnInput)
+            {
+                value             = String::empty();
+                m_bReplaceOnInput = false;
+                m_bEdited         = true;
+                setText(value);
+
+                commit();
+                emitInput();
+
+                return;
+            }
+
             if (value.isEmpty())
             {
                 return;
@@ -255,11 +273,44 @@ namespace Chicane
             for (Component* node = getParent(); node != nullptr; node = node->getParent())
             {
                 const ReflectionFieldAccessor accessor = node->getField(id);
-                if (accessor.isValid() && accessor.isType<String>())
+                if (accessor.isValid())
                 {
-                    accessor.set<String>(node, value);
+                    void* instance = accessor.boundInstance != nullptr
+                        ? const_cast<void*>(accessor.boundInstance)
+                        : static_cast<void*>(node);
 
-                    return;
+                    if (accessor.isType<String>())
+                    {
+                        if (String* target = accessor.getValue<String>(instance))
+                        {
+                            *target = value;
+                        }
+
+                        return;
+                    }
+
+                    if (accessor.isType<float>())
+                    {
+                        const String trimmed = value.trim();
+                        if (trimmed.isEmpty())
+                        {
+                            return;
+                        }
+
+                        char*       end    = nullptr;
+                        const float parsed = std::strtof(trimmed.toChar(), &end);
+                        if (!end || end == trimmed.toChar() || *end != '\0')
+                        {
+                            return;
+                        }
+
+                        if (float* target = accessor.getValue<float>(instance))
+                        {
+                            *target = parsed;
+                        }
+
+                        return;
+                    }
                 }
 
                 if (node->isRoot())

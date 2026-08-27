@@ -1,4 +1,4 @@
-#include "Editor/Actor/Sun.hpp"
+#include "Editor/Actor/Sun.reflected.hpp"
 
 namespace Editor
 {

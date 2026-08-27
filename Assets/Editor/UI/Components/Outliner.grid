@@ -1,8 +1,33 @@
 <Container class="outliner">
     <Container class="outliner__items">
-        <Container dir:for="actor : outlinerActors" class="outliner__item"></Container>
+        <Button
+            dir:for="actor : outlinerActors"
+            class="outliner__item"
+            onClick="{{ onItemSelection(actor) }}"
+        >
+            <Text>{{ actor.getId() }}</Text>
+        </Button>
     </Container>
-    <Container class="outliner__item-detail">
-        <OutlinerTab label="Transform" />
+    <Container dir:if="{{ bIsItemSelected }}" class="outliner__item-detail">
+        <OutlinerTab class="outliner__item-detail__transforms" label="Transform">
+            <Container class="outliner__item-detail__transform">
+                <Container class="outliner__item-detail__transform__label">
+                    <Text>Translation</Text>
+                </Container>
+                <Vec3 value="{{ selectedItem.translation }}" />
+            </Container>
+            <Container class="outliner__item-detail__transform">
+                <Container class="outliner__item-detail__transform__label">
+                    <Text>Rotation</Text>
+                </Container>
+                <Vec3 value="{{ selectedItem.rotation }}" />
+            </Container>
+            <Container class="outliner__item-detail__transform">
+                <Container class="outliner__item-detail__transform__label">
+                    <Text>Scale</Text>
+                </Container>
+                <Vec3 value="{{ selectedItem.scale }}" />
+            </Container>
+        </OutlinerTab>
     </Container>
 </Container>

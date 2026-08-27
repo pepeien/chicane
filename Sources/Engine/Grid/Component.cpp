@@ -22,6 +22,7 @@ namespace Chicane
     namespace Grid
     {
         thread_local Component* g_scope = nullptr;
+        thread_local std::vector<Component*>* g_projected = nullptr;
 
         struct Scope
         {
@@ -36,6 +37,21 @@ namespace Chicane
 
         public:
             Component* previous = nullptr;
+        };
+
+        struct Projection
+        {
+        public:
+            explicit Projection(std::vector<Component*>& inChildren)
+                : previous(g_projected)
+            {
+                g_projected = &inChildren;
+            }
+
+            ~Projection() { g_projected = previous; }
+
+        public:
+            std::vector<Component*>* previous = nullptr;
         };
 
         struct Loading
@@ -55,7 +71,7 @@ namespace Chicane
 
         Component* Component::create(const pugi::xml_node& inNode)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element)
+            if (inNode.empty() || inNode.type() != pugi::node_element || isContentSlot(inNode))
             {
                 return nullptr;
             }
@@ -93,6 +109,16 @@ namespace Chicane
             return instance;
         }
 
+        bool Component::isContentSlot(const pugi::xml_node& inNode)
+        {
+            if (inNode.empty() || inNode.type() != pugi::node_element)
+            {
+                return false;
+            }
+
+            return String(inNode.name()).equals(CONTENT_TAG_ID);
+        }
+
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
@@ -114,6 +140,15 @@ namespace Chicane
 
                     if (parseText(inValue).equals("true", "1"))
                     {
+                        if (m_style.display.getRaw().isEmpty())
+                        {
+                            m_style.display.set(StyleDisplay::Block);
+                        }
+                        else
+                        {
+                            m_style.display.refresh();
+                        }
+
                         return;
                     }
 
@@ -960,7 +995,11 @@ namespace Chicane
                 throw std::runtime_error("UI document root element must not have any siblings");
             }
 
-            Scope scope(this);
+            std::vector<Component*> projected = m_children;
+            m_children.clear();
+
+            Scope      scope(this);
+            Projection projection(projected);
 
             if (String(root.name()).equals(getTag()))
             {
@@ -969,14 +1008,8 @@ namespace Chicane
                 setId(getAttribute(ID_ATTRIBUTE_NAME));
                 setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
                 addChildren(root);
-
-                return;
             }
-
-            std::vector<Component*> projected = m_children;
-            m_children.clear();
-
-            if (Component* wrapper = create(root))
+            else if (Component* wrapper = create(root))
             {
                 addChild(wrapper);
             }
@@ -1131,6 +1164,9 @@ namespace Chicane
                 return;
             }
 
+            const ReflectionTypeMethodInfo* info       = outMethod.getInfo();
+            std::size_t                    paramIndex = 0;
+
             for (const String& rawParam : splitMethodParams(paramsRaw))
             {
                 const String param = rawParam.trim();
@@ -1138,6 +1174,10 @@ namespace Chicane
                 {
                     continue;
                 }
+
+                const String expected =
+                    info && paramIndex < info->paramTypes.size() ? info->paramTypes.at(paramIndex) : String::empty();
+                paramIndex++;
 
                 if ((param.startsWith("\"") && param.endsWith("\"")) || (param.startsWith("'") && param.endsWith("'")))
                 {
@@ -1156,6 +1196,13 @@ namespace Chicane
                 {
                     const void* instance =
                         accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+
+                    if (expected.endsWith('*'))
+                    {
+                        outMethod.addParam(const_cast<void*>(static_cast<const void*>(accessor.address(instance))));
+
+                        continue;
+                    }
 
                     outMethod.addParam(accessor.toString(instance));
 
@@ -1485,6 +1532,13 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
+                if (isContentSlot(child))
+                {
+                    addProjectedContent(child);
+
+                    continue;
+                }
+
                 Component* component = create(child);
                 if (!component)
                 {
@@ -1493,6 +1547,39 @@ namespace Chicane
 
                 addChild(component);
             }
+        }
+
+        void Component::addProjectedContent(const pugi::xml_node& inSlot)
+        {
+            if (!g_projected || g_projected->empty())
+            {
+                return;
+            }
+
+            const pugi::xml_attribute attribute = Xml::getAttribute(CONTENT_SELECT_ATTRIBUTE_NAME, inSlot);
+            const String              select    = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
+
+            std::vector<Component*> leftover;
+            leftover.reserve(g_projected->size());
+
+            for (Component* child : *g_projected)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                if (select.isEmpty() || child->hasLocalSelector(select))
+                {
+                    addChild(child);
+
+                    continue;
+                }
+
+                leftover.push_back(child);
+            }
+
+            *g_projected = std::move(leftover);
         }
 
         void Component::addChild(Component* inComponent, std::size_t inIndex)
@@ -1553,6 +1640,7 @@ namespace Chicane
                 }
 
                 const Style& style = child->getStyle();
+                const Vec2   size  = getChildIntrinsicSize(child);
 
                 const Vec2 margin = {
                     (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get()) +
@@ -1562,8 +1650,8 @@ namespace Chicane
                 };
 
                 const Vec2 occupied = {
-                    (child->getPosition().x - getPosition().x) + child->getSize().x + margin.x,
-                    (child->getPosition().y - getPosition().y) + child->getSize().y + margin.y
+                    (child->getPosition().x - getPosition().x) + size.x + margin.x,
+                    (child->getPosition().y - getPosition().y) + size.y + margin.y
                 };
 
                 result.x = std::max(result.x, occupied.x);
@@ -1585,16 +1673,15 @@ namespace Chicane
                 }
 
                 const Style& style = child->getStyle();
+                const Vec2   size  = getChildIntrinsicSize(child);
 
-                const Vec2 margin = {
-                    style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get(),
-                    style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get()
-                };
+                const float marginRight =
+                    style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get();
+                const float marginBottom =
+                    style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get();
 
-                result.x =
-                    std::max(result.x, (child->getPosition().x - getPosition().x) + child->getSize().x + margin.x);
-                result.y =
-                    std::max(result.y, (child->getPosition().y - getPosition().y) + child->getSize().y + margin.y);
+                result.x = std::max(result.x, (child->getPosition().x - getPosition().x) + size.x + marginRight);
+                result.y = std::max(result.y, (child->getPosition().y - getPosition().y) + size.y + marginBottom);
             }
 
             return result;
@@ -1608,6 +1695,41 @@ namespace Chicane
             }
 
             return getChildrenContentSizeBlock();
+        }
+
+        Vec2 Component::getChildIntrinsicSize(const Component* inChild) const
+        {
+            Vec2 size = inChild->getSize();
+            const Style& style = inChild->getStyle();
+
+            const bool bWidthAuto =
+                style.width.getRaw().isEmpty() || style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bHeightAuto =
+                style.height.getRaw().isEmpty() || style.height.isRaw(Size::AUTO_KEYWORD);
+
+            if (!bWidthAuto && !bHeightAuto)
+            {
+                return size;
+            }
+
+            const bool bParentFlexRow = m_style.isDisplay(StyleDisplay::Flex) &&
+                                        m_style.flex.direction.get() == StyleFlexDirection::Row;
+            const bool bParentFlexColumn = m_style.isDisplay(StyleDisplay::Flex) &&
+                                           m_style.flex.direction.get() == StyleFlexDirection::Column;
+
+            const Vec2 inner = inChild->getChildrenContentSize();
+
+            if (bWidthAuto && !bParentFlexRow && inner.x > 0.0f)
+            {
+                size.x = inner.x + style.padding.left.get() + style.padding.right.get();
+            }
+
+            if (bHeightAuto && !bParentFlexColumn && inner.y > 0.0f)
+            {
+                size.y = inner.y + style.padding.top.get() + style.padding.bottom.get();
+            }
+
+            return size;
         }
 
         float Component::getDepth() const
@@ -2043,8 +2165,10 @@ namespace Chicane
                     const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
                                                 m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
                                                 !m_style.isPosition(StylePosition::Absolute);
+                    const bool bHasAutoHorizontalMargin = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ||
+                                                          m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
 
-                    if (bIsFlexRowItem || !hasParent())
+                    if (bIsFlexRowItem || bHasAutoHorizontalMargin || !hasParent())
                     {
                         width = content.x;
                     }
@@ -2327,14 +2451,7 @@ namespace Chicane
         {
             if (isMethod(inValue))
             {
-                String result = parseMethod(inValue);
-
-                if (result.isEmpty())
-                {
-                    return result;
-                }
-
-                return hasParent() ? m_parent->parseReference(inValue) : inValue;
+                return parseMethod(inValue);
             }
 
             ReflectionFieldAccessor accessor = getField(inValue);
@@ -2364,42 +2481,56 @@ namespace Chicane
                 return String::empty();
             }
 
-            const std::size_t         dot      = qualified.lastOf('.');
-            const String              receiver = dot == String::npos ? String::empty() : qualified.substr(0, dot);
-            const String              name     = dot == String::npos ? qualified : qualified.substr(dot + 1);
-            const ReflectionTypeInfo* type     = nullptr;
-            void*                     instance = nullptr;
-
-            if (receiver.isEmpty())
+            const std::size_t dot      = qualified.lastOf('.');
+            const String      receiver = dot == String::npos ? String::empty() : qualified.substr(0, dot);
+            const String      name     = dot == String::npos ? qualified : qualified.substr(dot + 1);
+            if (name.isEmpty())
             {
-                type     = ReflectionTypeRegistry::getInstance().find(typeid(*this));
-                instance = const_cast<Component*>(this);
+                return String::empty();
             }
-            else
-            {
-                const ReflectionFieldAccessor accessor = getField(receiver);
 
-                if (!accessor.isValid() || !accessor.typeIndex.has_value())
+            for (const Component* node = this; node != nullptr; node = node->hasParent() ? node->getParent() : nullptr)
+            {
+                const ReflectionTypeInfo* type     = nullptr;
+                void*                     instance = nullptr;
+
+                if (receiver.isEmpty())
                 {
-                    return String::empty();
+                    type     = ReflectionTypeRegistry::getInstance().find(typeid(*node));
+                    instance = const_cast<Component*>(node);
+                }
+                else
+                {
+                    const ReflectionFieldAccessor accessor = node->getField(receiver);
+                    if (!accessor.isValid() || !accessor.typeIndex.has_value())
+                    {
+                        if (node->isRoot())
+                        {
+                            break;
+                        }
+
+                        continue;
+                    }
+
+                    type     = ReflectionTypeRegistry::getInstance().find(accessor.typeIndex.value());
+                    instance = const_cast<char*>(accessor.address(node));
                 }
 
-                type     = ReflectionTypeRegistry::getInstance().find(accessor.typeIndex.value());
-                instance = const_cast<char*>(accessor.address(this));
+                if (type && instance)
+                {
+                    if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
+                    {
+                        return method->toString(method->invoke(instance));
+                    }
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
             }
 
-            if (!type || !instance || name.isEmpty())
-            {
-                return String::empty();
-            }
-
-            const ReflectionTypeMethodInfo* method = type->findMethod(name);
-            if (!method)
-            {
-                return String::empty();
-            }
-
-            return method->toString(method->invoke(instance));
+            return String::empty();
         }
 
         void Component::addVariable(const String& inId, const ReflectionFieldAccessor& inValue)

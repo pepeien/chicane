@@ -40,6 +40,11 @@ $bottomBarSize: 30vh;
         padding: 0.2em;
     }
 
+    Logger {
+        width: 70vw;
+        height: 50vh;
+    }
+
     Outliner {
         position: absolute;
         width: $sideBarSize;

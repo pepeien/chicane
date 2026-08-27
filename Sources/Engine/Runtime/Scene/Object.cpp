@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Scene/Object.reflected.hpp"
 
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
+
 namespace Chicane
 {
     Object::Object()
@@ -37,6 +39,23 @@ namespace Chicane
     void Object::setId(const String& inId)
     {
         m_id = inId;
+    }
+
+    String Object::getTypeName() const
+    {
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        if (!type)
+        {
+            return String::empty();
+        }
+
+        const std::size_t split = type->name.lastOf(':');
+        if (split == String::npos)
+        {
+            return type->name;
+        }
+
+        return type->name.substr(split + 1);
     }
 
     void Object::setScene(Scene* inScene)

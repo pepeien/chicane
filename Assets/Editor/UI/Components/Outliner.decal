@@ -9,4 +9,26 @@
         overflow: hidden;
         overflow-y: auto;
     }
+
+    &__item-detail {
+        &__transforms {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25em;
+        }
+
+        &__transform {
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+
+            &__label {
+                width: 6em;
+            }
+
+            Vec3 {
+                margin-left: auto;
+            }
+        }
+    }
 }

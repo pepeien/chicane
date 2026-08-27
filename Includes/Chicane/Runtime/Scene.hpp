@@ -84,6 +84,22 @@ namespace Chicane
             Actor* added = m_actors.back();
             added->setScene(this);
 
+            String typeName = added->getTypeName();
+            if (typeName.isEmpty())
+            {
+                typeName = "Actor";
+            }
+
+            const std::size_t duplicateCount = getActorCount<T>();
+            if (duplicateCount <= 1)
+            {
+                added->setId(typeName);
+            }
+            else
+            {
+                added->setId(String::sprint("%s%d", typeName.toChar(), duplicateCount));
+            }
+
             if (isLoaded())
             {
                 added->onLoad();
