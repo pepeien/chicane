@@ -1,5 +1,5 @@
-$sideBarSize:   15vw;
-$bottomBarSize: 20vh;
+$sideBarSize:   25vw;
+$bottomBarSize: 30vh;
 
 .theme-button {
     position: absolute;

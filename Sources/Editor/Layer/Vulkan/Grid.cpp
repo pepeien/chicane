@@ -269,8 +269,9 @@ namespace Editor
     void VulkanLUI::initViewport()
     {
         Chicane::Renderer::ViewportSettings viewport;
-        viewport.width  = "85vw";
-        viewport.height = "80vh";
+        viewport.width   = "75vw";
+        viewport.height  = "70vh";
+        viewport.offsetY = "32px";
 
         setViewport(viewport);
 

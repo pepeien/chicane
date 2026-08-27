@@ -39,7 +39,7 @@ namespace Chicane
           m_indices({})
     {}
 
-    void Contour::triangulate(const Curve::List& inCurves)
+    void Contour::triangulate(const Curve::List& inCurves, bool bInEvenOdd)
     {
         m_positions.clear();
         m_indices.clear();
@@ -89,7 +89,9 @@ namespace Chicane
             tessAddContour(tess, 2, flat.data(), sizeof(float) * 2, static_cast<int>(points.size()));
         }
 
-        if (!tessTesselate(tess, TESS_WINDING_ODD, TESS_POLYGONS, 3, 2, nullptr))
+        const int winding = bInEvenOdd ? TESS_WINDING_ODD : TESS_WINDING_NONZERO;
+
+        if (!tessTesselate(tess, winding, TESS_POLYGONS, 3, 2, nullptr))
         {
             tessDeleteTess(tess);
 

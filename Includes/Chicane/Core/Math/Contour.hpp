@@ -12,7 +12,7 @@ namespace Chicane
         Contour();
 
     public:
-        void triangulate(const Curve::List& inCurves);
+        void triangulate(const Curve::List& inCurves, bool bInEvenOdd = true);
 
         const Vertex::Positions& getPositions() const;
         const Vertex::Indices& getIndices() const;

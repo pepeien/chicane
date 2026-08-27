@@ -64,6 +64,16 @@ namespace Chicane
             const ReflectionTypeInfo* type =
                 ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + tag);
 
+            if (!type && !tag.isEmpty())
+            {
+                const String pascal = tag.substr(0, 1).toUpper() + tag.substr(1);
+
+                if (!pascal.equals(tag))
+                {
+                    type = ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + pascal);
+                }
+            }
+
             if (!type && g_scope)
             {
                 type = g_scope->findImported(tag);
@@ -159,6 +169,7 @@ namespace Chicane
                             }
 
                             m_forSource = {};
+
                             syncForLoop(variableId, accessor, owner);
 
                             return;
@@ -1375,16 +1386,16 @@ namespace Chicane
                 return false;
             }
 
-            Vec2 local = inLocation;
-            const Mat3 paint = getPaintMatrix();
-            const Mat3 inverse = glm::inverse(static_cast<glm::mat3>(paint));
-            const glm::vec3 mapped = inverse * glm::vec3(inLocation.x, inLocation.y, 1.0f);
+            Vec2            local   = inLocation;
+            const Mat3      paint   = getPaintMatrix();
+            const Mat3      inverse = glm::inverse(static_cast<glm::mat3>(paint));
+            const glm::vec3 mapped  = inverse * glm::vec3(inLocation.x, inLocation.y, 1.0f);
 
             local.x = mapped.x;
             local.y = mapped.y;
 
-            const Vec2     position = getDrawPosition();
-            Bounds2D       box;
+            const Vec2 position = getDrawPosition();
+            Bounds2D   box;
             box.left   = position.x;
             box.top    = position.y;
             box.right  = position.x + m_size.x;
@@ -2121,8 +2132,8 @@ namespace Chicane
                     }
                 }
 
-                const bool bParentHeightAuto = parentStyle.height.getRaw().isEmpty() ||
-                                               parentStyle.height.isRaw(Size::AUTO_KEYWORD);
+                const bool bParentHeightAuto =
+                    parentStyle.height.getRaw().isEmpty() || parentStyle.height.isRaw(Size::AUTO_KEYWORD);
 
                 const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
                                               parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;

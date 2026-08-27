@@ -1,0 +1,4 @@
+<Container class="telemetry">
+    <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
+    <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
+</Container>

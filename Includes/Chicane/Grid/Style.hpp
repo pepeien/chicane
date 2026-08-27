@@ -159,18 +159,18 @@ namespace Chicane
             static constexpr inline const char* BACKDROP_FILTER_ATTRIBUTE_NAME = "backdrop-filter";
 
             // Transform
-            static constexpr inline const char* TRANSFORM_ATTRIBUTE_NAME        = "transform";
-            static constexpr inline const char* TRANSFORM_TYPE_NONE             = "none";
-            static constexpr inline const char* TRANSFORM_TRANSLATE_KEYWORD     = "translate";
-            static constexpr inline const char* TRANSFORM_TRANSLATE_X_KEYWORD   = "translateX";
-            static constexpr inline const char* TRANSFORM_TRANSLATE_Y_KEYWORD   = "translateY";
-            static constexpr inline const char* TRANSFORM_ROTATE_KEYWORD        = "rotate";
-            static constexpr inline const char* TRANSFORM_SCALE_KEYWORD         = "scale";
-            static constexpr inline const char* TRANSFORM_SCALE_X_KEYWORD       = "scaleX";
-            static constexpr inline const char* TRANSFORM_SCALE_Y_KEYWORD       = "scaleY";
-            static constexpr inline const char* TRANSLATE_ATTRIBUTE_NAME        = "translate";
-            static constexpr inline const char* ROTATE_ATTRIBUTE_NAME           = "rotate";
-            static constexpr inline const char* SCALE_ATTRIBUTE_NAME            = "scale";
+            static constexpr inline const char* TRANSFORM_ATTRIBUTE_NAME      = "transform";
+            static constexpr inline const char* TRANSFORM_TYPE_NONE           = "none";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_KEYWORD   = "translate";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_X_KEYWORD = "translateX";
+            static constexpr inline const char* TRANSFORM_TRANSLATE_Y_KEYWORD = "translateY";
+            static constexpr inline const char* TRANSFORM_ROTATE_KEYWORD      = "rotate";
+            static constexpr inline const char* TRANSFORM_SCALE_KEYWORD       = "scale";
+            static constexpr inline const char* TRANSFORM_SCALE_X_KEYWORD     = "scaleX";
+            static constexpr inline const char* TRANSFORM_SCALE_Y_KEYWORD     = "scaleY";
+            static constexpr inline const char* TRANSLATE_ATTRIBUTE_NAME      = "translate";
+            static constexpr inline const char* ROTATE_ATTRIBUTE_NAME         = "rotate";
+            static constexpr inline const char* SCALE_ATTRIBUTE_NAME          = "scale";
             /*
              * Template 1: "`SINGLE_ORIGIN`"
              * Template 2: "`HORIZONTAL_ORIGIN` `VERTICAL_ORIGIN`"
@@ -332,13 +332,13 @@ namespace Chicane
                 FILTER_ATTRIBUTE_NAME,           BACKDROP_FILTER_ATTRIBUTE_NAME,
                 TRANSFORM_ATTRIBUTE_NAME,        TRANSLATE_ATTRIBUTE_NAME,
                 ROTATE_ATTRIBUTE_NAME,           SCALE_ATTRIBUTE_NAME,
-                TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
-                MARGIN_TOP_ATTRIBUTE_NAME,       MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                MARGIN_LEFT_ATTRIBUTE_NAME,      MARGIN_RIGHT_ATTRIBUTE_NAME,
-                PADDING_TOP_ATTRIBUTE_NAME,      PADDING_BOTTOM_ATTRIBUTE_NAME,
-                PADDING_LEFT_ATTRIBUTE_NAME,     PADDING_RIGHT_ATTRIBUTE_NAME,
-                GAP_TOP_ATTRIBUTE_NAME,          GAP_BOTTOM_ATTRIBUTE_NAME,
-                GAP_LEFT_ATTRIBUTE_NAME,         GAP_RIGHT_ATTRIBUTE_NAME
+                TRANSFORM_ORIGIN_ATTRIBUTE_NAME, MARGIN_TOP_ATTRIBUTE_NAME,
+                MARGIN_BOTTOM_ATTRIBUTE_NAME,    MARGIN_LEFT_ATTRIBUTE_NAME,
+                MARGIN_RIGHT_ATTRIBUTE_NAME,     PADDING_TOP_ATTRIBUTE_NAME,
+                PADDING_BOTTOM_ATTRIBUTE_NAME,   PADDING_LEFT_ATTRIBUTE_NAME,
+                PADDING_RIGHT_ATTRIBUTE_NAME,    GAP_TOP_ATTRIBUTE_NAME,
+                GAP_BOTTOM_ATTRIBUTE_NAME,       GAP_LEFT_ATTRIBUTE_NAME,
+                GAP_RIGHT_ATTRIBUTE_NAME
             };
 
         public:
