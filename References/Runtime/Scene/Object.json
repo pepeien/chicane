@@ -139,6 +139,23 @@
                 "description": "CHICANE_OBJECT_SETID_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTypeName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETTYPENAME_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "virtual",
                 "return": {

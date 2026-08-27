@@ -200,6 +200,34 @@
             },
             {
                 "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isContentSlot",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISCONTENTSLOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -1671,6 +1699,34 @@
             },
             {
                 "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getChildIntrinsicSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inChild"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCHILDINTRINSICSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -2880,6 +2936,32 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "addProjectedContent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDPROJECTEDCONTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshClassName",
                 "parameters": [],
                 "modifiers": [],
@@ -3370,6 +3452,38 @@
                 },
                 "name": "FOR_DIRECTIVE_KEYWORD",
                 "description": "CHICANE_GRID_COMPONENT_FOR_DIRECTIVE_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CONTENT_TAG_ID",
+                "description": "CHICANE_GRID_COMPONENT_CONTENT_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CONTENT_SELECT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_CONTENT_SELECT_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
