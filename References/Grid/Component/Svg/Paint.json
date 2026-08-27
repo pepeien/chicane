@@ -1,0 +1,190 @@
+{
+    "title": "SvgPaint",
+    "filename": "Paint",
+    "path": "Grid/Component/Svg/Paint",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Paint.hpp",
+        "namespace": "Chicane::Grid::SvgPaint",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgPaint",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGPAINT_SVGPAINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgPaint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGPAINT_SVGPAINT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsStrokeEnabled",
+                "description": "CHICANE_GRID_SVGPAINT_BISSTROKEENABLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsEvenOdd",
+                "description": "CHICANE_GRID_SVGPAINT_BISEVENODD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsFillEnabled",
+                "description": "CHICANE_GRID_SVGPAINT_BISFILLENABLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "fill",
+                "description": "CHICANE_GRID_SVGPAINT_FILL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "stroke",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "strokeWidth",
+                "description": "CHICANE_GRID_SVGPAINT_STROKEWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "opacity",
+                "description": "CHICANE_GRID_SVGPAINT_OPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fillOpacity",
+                "description": "CHICANE_GRID_SVGPAINT_FILLOPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "strokeOpacity",
+                "description": "CHICANE_GRID_SVGPAINT_STROKEOPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat3",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat3",
+                    "templates": []
+                },
+                "name": "transform",
+                "description": "CHICANE_GRID_SVGPAINT_TRANSFORM_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVGPAINT_DESCRIPTION"
+    },
+    "children": []
+}

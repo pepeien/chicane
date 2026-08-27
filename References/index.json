@@ -2695,6 +2695,87 @@
                         "children": []
                     },
                     {
+                        "title": "Svg",
+                        "filename": "Svg",
+                        "path": "Grid/Component/Svg",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Svg.hpp",
+                            "namespace": "Chicane::Grid::Svg",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "SvgPaint",
+                                "filename": "Paint",
+                                "path": "Grid/Component/Svg/Paint",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Svg/Paint.hpp",
+                                    "namespace": "Chicane::Grid::SvgPaint",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "SvgScanner",
+                                "filename": "Scanner",
+                                "path": "Grid/Component/Svg/Scanner",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Svg/Scanner.hpp",
+                                    "namespace": "Chicane::Grid::SvgScanner",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "SvgShape",
+                                "filename": "Shape",
+                                "path": "Grid/Component/Svg/Shape",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Svg/Shape.hpp",
+                                    "namespace": "Chicane::Grid::SvgShape",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "SvgViewBox",
+                                "filename": "ViewBox",
+                                "path": "Grid/Component/Svg/ViewBox",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Svg/ViewBox.hpp",
+                                    "namespace": "Chicane::Grid::SvgViewBox",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "Text",
                         "filename": "Text",
                         "path": "Grid/Component/Text",

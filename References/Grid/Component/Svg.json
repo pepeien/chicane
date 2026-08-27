@@ -1,0 +1,327 @@
+{
+    "title": "Svg",
+    "filename": "Svg",
+    "path": "Grid/Component/Svg",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg.hpp",
+        "namespace": "Chicane::Grid::Svg",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Svg",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_SVG_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Svg",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_~SVG_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SVG_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applySizeAttributes",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_APPLYSIZEATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildShapes",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_REBUILDSHAPES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncShapes",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_SYNCSHAPES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SvgShape",
+                    "suffix": "*",
+                    "path": "Grid/Component/Svg/Shape",
+                    "templates": []
+                },
+                "name": "acquireShape",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_ACQUIRESHAPE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_SVG_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVG_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HEIGHT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVG_HEIGHT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VIEWBOX_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVG_VIEWBOX_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_intrinsic",
+                "description": "CHICANE_GRID_SVG_M_INTRINSIC_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SvgViewBox",
+                    "suffix": "",
+                    "path": "Grid/Component/Svg/ViewBox",
+                    "templates": []
+                },
+                "name": "m_viewBox",
+                "description": "CHICANE_GRID_SVG_M_VIEWBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_signature",
+                "description": "CHICANE_GRID_SVG_M_SIGNATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SvgShape",
+                            "suffix": "*",
+                            "path": "Grid/Component/Svg/Shape",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_shapes",
+                "description": "CHICANE_GRID_SVG_M_SHAPES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVG_DESCRIPTION"
+    },
+    "children": []
+}

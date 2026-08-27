@@ -1,0 +1,177 @@
+{
+    "title": "SvgScanner",
+    "filename": "Scanner",
+    "path": "Grid/Component/Svg/Scanner",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Scanner.hpp",
+        "namespace": "Chicane::Grid::SvgScanner",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgScanner",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_SVGSCANNER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgScanner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_SVGSCANNER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "skip",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_SKIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "done",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_DONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasNumber",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_HASNUMBER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "number",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_NUMBER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flag",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_FLAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "command",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSCANNER_COMMAND_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "p",
+                "description": "CHICANE_GRID_SVGSCANNER_P_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "end",
+                "description": "CHICANE_GRID_SVGSCANNER_END_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVGSCANNER_DESCRIPTION"
+    },
+    "children": []
+}

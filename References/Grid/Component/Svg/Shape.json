@@ -1,0 +1,170 @@
+{
+    "title": "SvgShape",
+    "filename": "Shape",
+    "path": "Grid/Component/Svg/Shape",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Shape.hpp",
+        "namespace": "Chicane::Grid::SvgShape",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgShape",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSHAPE_SVGSHAPE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDrawable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SVGSHAPE_ISDRAWABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "configure",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Primitive",
+                            "suffix": "&",
+                            "path": "Grid/Primitive",
+                            "templates": []
+                        },
+                        "name": "inPrimitive"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSHAPE_CONFIGURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sync",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inParent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSHAPE_SYNC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSHAPE_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshStyleRuleset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGSHAPE_REFRESHSTYLERULESET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_SVGSHAPE_TAG_ID_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVGSHAPE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,70 @@
+{
+    "title": "SvgViewBox",
+    "filename": "ViewBox",
+    "path": "Grid/Component/Svg/ViewBox",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/ViewBox.hpp",
+        "namespace": "Chicane::Grid::SvgViewBox",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "x",
+                "description": "CHICANE_GRID_SVGVIEWBOX_X_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "y",
+                "description": "CHICANE_GRID_SVGVIEWBOX_Y_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_GRID_SVGVIEWBOX_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_GRID_SVGVIEWBOX_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVGVIEWBOX_DESCRIPTION"
+    },
+    "children": []
+}

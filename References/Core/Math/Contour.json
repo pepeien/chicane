@@ -47,6 +47,16 @@
                             "templates": []
                         },
                         "name": "inCurves"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInEvenOdd"
                     }
                 ],
                 "modifiers": [],
