@@ -9,5 +9,6 @@ namespace Chicane
         Undefined, // N/A
         Jpg,       // .jpg | .jpeg
         Png,       // .png
+        Gif,       // .gif
     };
 }

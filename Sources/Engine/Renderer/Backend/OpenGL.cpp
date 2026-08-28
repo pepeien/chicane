@@ -6,6 +6,7 @@
 #include <SDL3/SDL_opengl.h>
 
 #include <iostream>
+#include <vector>
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
@@ -68,10 +69,26 @@ namespace Chicane
             GLubyte zero[4] = {0, 0, 0, 0};
             glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, zero);
 
+            std::vector<Image::Pixel> staging(TEXTURE_WIDTH * TEXTURE_HEIGHT * 4);
+
             for (const DrawTexture& texture : inResources.getDraws())
             {
                 if (const Image::Instance image = texture.image.lock())
                 {
+                    const void* pixels = image->getPixels();
+
+                    if (image->getWidth() != static_cast<int>(TEXTURE_WIDTH) ||
+                        image->getHeight() != static_cast<int>(TEXTURE_HEIGHT))
+                    {
+                        image->blit(staging.data(), static_cast<int>(TEXTURE_WIDTH), static_cast<int>(TEXTURE_HEIGHT));
+                        pixels = staging.data();
+                    }
+
+                    if (!pixels)
+                    {
+                        continue;
+                    }
+
                     glTextureSubImage3D(
                         m_texturesBuffer,
                         0,
@@ -83,7 +100,7 @@ namespace Chicane
                         1,
                         GL_RGBA,
                         GL_UNSIGNED_BYTE,
-                        image->getPixels()
+                        pixels
                     );
                 }
             }

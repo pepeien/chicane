@@ -8,6 +8,9 @@ namespace Chicane
     struct CHICANE_CORE ImageInfo
     {
     public:
+        ImageInfo();
+
+    public:
         int getWidth() const;
         int getHeight() const;
         int getChannel() const;

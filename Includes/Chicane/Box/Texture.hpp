@@ -29,6 +29,7 @@ namespace Chicane
 
         public:
             bool isEmpty() const;
+            bool isAnimated() const;
 
             ImageVendor getVendor() const;
             void setVendor(const String& inValue);
@@ -38,13 +39,21 @@ namespace Chicane
             void setData(const FileSystem::Path& inFilepath);
             void setData(const Image::Raw& inData);
 
+            std::size_t getFrameCount() const;
+            int getDelay(std::size_t inIndex) const;
+            Image::Reference getFrame(std::size_t inIndex) const;
+            String getFrameId(std::size_t inIndex) const;
+
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();
+            void rebuildFrames();
 
         private:
-            ImageVendor     m_vendor;
-            Image::Instance m_data;
+            ImageVendor                  m_vendor;
+            Image::Instance              m_data;
+            std::vector<Image::Instance> m_frames;
+            std::vector<int>             m_delays;
         };
     }
 }

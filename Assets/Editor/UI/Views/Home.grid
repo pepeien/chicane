@@ -1,6 +1,5 @@
 <View path="home" class="home --{{ theme }}">
     <Telemetry />
-    <Logger />
     <Button class="theme-button" onClick="{{ onThemeSwitch() }}">
         <Text>Switch Theme</Text>
     </Button>

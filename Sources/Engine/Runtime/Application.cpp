@@ -271,12 +271,16 @@ namespace Chicane
                 if (typeid(*inAsset) == typeid(Box::Texture))
                 {
                     const Box::Texture* texture = static_cast<const Box::Texture*>(inAsset);
+                    const std::size_t   count   = std::max<std::size_t>(1, texture->getFrameCount());
 
-                    Renderer::DrawTextureData data;
-                    data.reference = texture->getId();
-                    data.image     = texture->getData();
+                    for (std::size_t i = 0; i < count; i++)
+                    {
+                        Renderer::DrawTextureData data;
+                        data.reference = texture->getFrameId(i);
+                        data.image     = texture->getFrame(i);
 
-                    m_renderer->loadTexture(data);
+                        m_renderer->loadTexture(data);
+                    }
 
                     return;
                 }
@@ -656,7 +660,7 @@ namespace Chicane
                 subcommand.instance.outerClipRadiusX,
                 subcommand.instance.outerClipRadiusY
             );
-            const String backgroundImage = style.background.image.get();
+            const String backgroundImage = style.background.image.getRaw();
 
             if (!backgroundImage.isEmpty())
             {

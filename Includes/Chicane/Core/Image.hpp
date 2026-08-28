@@ -28,13 +28,18 @@ namespace Chicane
     public:
         Image(const FileSystem::Path& inLocation);
         Image(const Raw& inData, ImageVendor inVendor);
+        Image(const Pixel* inPixels, int inWidth, int inHeight, int inChannel, int inFormat);
         Image();
 
         virtual ~Image();
 
     public:
         ImageVendor getVendor() const;
+        int getFrameCount() const;
+        int getDelay(int inFrame = 0) const;
         const Pixels getPixels() const;
+        const Pixels getPixels(int inFrame) const;
+        void blit(Pixels outPixels, int outWidth, int outHeight, int inFrame = 0) const;
 
         std::uint32_t getMemorySize() const;
 
@@ -43,7 +48,14 @@ namespace Chicane
         void rotateBy(float inAngle);
 
     protected:
-        ImageVendor m_vendor;
-        Pixels      m_pixels;
+        void decode(const Raw& inData);
+        void decodeGif(const Raw& inData);
+        int getFrameStride() const;
+
+    protected:
+        ImageVendor      m_vendor;
+        Pixels           m_pixels;
+        int              m_frameCount;
+        std::vector<int> m_delays;
     };
 }

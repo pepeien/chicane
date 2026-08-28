@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
 
+#include <vector>
+
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture/CreateInfo.hpp"
@@ -30,13 +32,10 @@ namespace Chicane
             m_logicalDevice.destroySampler(sampler);
         }
 
-        void VulkanTexture::initExtent(const Image::Reference inImage)
+        void VulkanTexture::initExtent([[maybe_unused]] const Image::Reference inImage)
         {
-            if (const Image::Instance instance = inImage.lock())
-            {
-                extent.width  = static_cast<std::uint32_t>(instance->getWidth());
-                extent.height = static_cast<std::uint32_t>(instance->getHeight());
-            }
+            extent.width  = TEXTURE_WIDTH;
+            extent.height = TEXTURE_HEIGHT;
         }
 
         void VulkanTexture::initInstance()
@@ -89,19 +88,28 @@ namespace Chicane
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
             createInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.size  = 0;
-
-            if (const Image::Instance instance = inImage.lock())
-            {
-                createInfo.size = instance->getMemorySize();
-            }
+            createInfo.size  = static_cast<vk::DeviceSize>(extent.width) * extent.height * 4;
 
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
-            if (const Image::Instance instance = inImage.lock())
+
+            if (const Image::Instance image = inImage.lock())
             {
-                void* statingWriteLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
-                memcpy(statingWriteLocation, instance->getPixels(), createInfo.size);
+                void* writeLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+
+                if (image->getWidth() == static_cast<int>(extent.width) &&
+                    image->getHeight() == static_cast<int>(extent.height) &&
+                    image->getPixels())
+                {
+                    memcpy(writeLocation, image->getPixels(), static_cast<std::size_t>(createInfo.size));
+                }
+                else
+                {
+                    std::vector<Image::Pixel> resized(static_cast<std::size_t>(createInfo.size));
+                    image->blit(resized.data(), static_cast<int>(extent.width), static_cast<int>(extent.height));
+                    memcpy(writeLocation, resized.data(), static_cast<std::size_t>(createInfo.size));
+                }
+
                 m_logicalDevice.unmapMemory(stagingBuffer.memory);
             }
 

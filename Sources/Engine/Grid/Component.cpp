@@ -1739,7 +1739,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return std::max(m_parent->getDepth() + 0.1f, m_style.zIndex.get());
+            return m_parent->getDepth() + m_style.zIndex.get() + 0.1f;
         }
 
         const Vec2& Component::getSize() const

@@ -2,6 +2,13 @@
 
 namespace Chicane
 {
+    ImageInfo::ImageInfo()
+        : m_width(0),
+          m_height(0),
+          m_channel(0),
+          m_format(0)
+    {}
+
     int ImageInfo::getWidth() const
     {
         return m_width;
