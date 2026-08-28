@@ -132,6 +132,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "flushTarget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANFRAME_FLUSHTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "end",
                 "parameters": [],
                 "modifiers": [],

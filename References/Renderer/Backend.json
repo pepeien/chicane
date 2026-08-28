@@ -560,6 +560,24 @@
                             "templates": []
                         },
                         "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "bool(const Layer *inLayer)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inFilter"
                     }
                 ],
                 "modifiers": [],

@@ -1,0 +1,147 @@
+{
+    "title": "Viewport",
+    "filename": "Viewport",
+    "path": "Grid/Component/Viewport",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Viewport.hpp",
+        "namespace": "Chicane::Grid::Viewport",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Viewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEWPORT_VIEWPORT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEWPORT_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEWPORT_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshTarget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEWPORT_REFRESHTARGET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_VIEWPORT_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TARGET_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_VIEWPORT_TARGET_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "target",
+                "description": "CHICANE_GRID_VIEWPORT_TARGET_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_VIEWPORT_DESCRIPTION"
+    },
+    "children": []
+}
