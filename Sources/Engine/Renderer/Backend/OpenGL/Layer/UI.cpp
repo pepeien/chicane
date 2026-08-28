@@ -14,7 +14,7 @@ namespace Chicane
     namespace Renderer
     {
         OpenGLLUI::OpenGLLUI()
-            : Layer(u_LAYER_ID),
+            : Layer(UI_LAYER_ID),
               m_shaderProgram(0),
               m_primitiveVertexArray(0),
               m_primitiveVertexBuffer(0),
@@ -108,7 +108,7 @@ namespace Chicane
                 inFrame.getInstances2D().data()
             );
 
-            OpenGLBackend* backend = getBackend<OpenGLBackend>();
+            OpenGLBackend* backend  = getBackend<OpenGLBackend>();
             Viewport       viewport = backend->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 

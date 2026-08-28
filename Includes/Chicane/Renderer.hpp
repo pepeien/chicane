@@ -35,7 +35,7 @@ namespace Chicane
         static constexpr inline const char*         SCENE_MESH_LAYER_ID   = "Engine_Scene_Mesh";
         static constexpr inline const char*         SCENE_LINE_LAYER_ID   = "Engine_Scene_Line";
 
-        static constexpr inline const char*         u_LAYER_ID = "Engine_UI";
+        static constexpr inline const char*         UI_LAYER_ID = "Engine_UI";
 
         // Targets
         static constexpr inline const char*         SCREEN_TARGET_ID = "Screen";

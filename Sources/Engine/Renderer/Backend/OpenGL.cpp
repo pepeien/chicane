@@ -142,20 +142,12 @@ namespace Chicane
 
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
-            renderLayers(
-                inFrame,
-                nullptr,
-                [](const Layer* inLayer) { return !inLayer->getId().equals(u_LAYER_ID); }
-            );
+            renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); });
 
             presentTarget();
             glBindTextureUnit(0, m_texturesBuffer);
 
-            renderLayers(
-                inFrame,
-                nullptr,
-                [](const Layer* inLayer) { return inLayer->getId().equals(u_LAYER_ID); }
-            );
+            renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); });
         }
 
         void OpenGLBackend::onEndRender()

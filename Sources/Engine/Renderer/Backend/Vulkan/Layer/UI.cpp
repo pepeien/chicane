@@ -22,7 +22,7 @@ namespace Chicane
     namespace Renderer
     {
         VulkanLUI::VulkanLUI()
-            : Layer(u_LAYER_ID),
+            : Layer(UI_LAYER_ID),
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 

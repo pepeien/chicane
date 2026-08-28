@@ -125,14 +125,14 @@ namespace Chicane
             renderLayers(
                 inFrame,
                 &nextFrame,
-                [](const Layer* inLayer) { return !inLayer->getId().equals(u_LAYER_ID); }
+                [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
             );
             nextFrame.flushTarget();
             bindScreenTarget(nextImage.targetImage);
             renderLayers(
                 inFrame,
                 &nextFrame,
-                [](const Layer* inLayer) { return inLayer->getId().equals(u_LAYER_ID); }
+                [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
             );
             nextFrame.end();
 
@@ -445,8 +445,8 @@ namespace Chicane
                 {
                     createInfo.image = texture.image;
                     textures.push_back(std::make_shared<VulkanTexture>(createInfo));
-                    info.imageView   = textures.back()->view;
-                    info.sampler     = textures.back()->sampler;
+                    info.imageView = textures.back()->view;
+                    info.sampler   = textures.back()->sampler;
                 }
 
                 infos.push_back(info);
