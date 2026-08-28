@@ -22,6 +22,7 @@
 #include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Settings.hpp"
+#include "Chicane/Renderer/Target.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -74,6 +75,8 @@ namespace Chicane
 
             Draw::Id findTexture(const Draw::Reference& inReference);
             Draw::Id loadTexture(const DrawTextureData& inData);
+
+            Draw::Id findTarget(const Draw::Reference& inReference);
 
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);

@@ -420,7 +420,7 @@ namespace Chicane
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
                 createInfo.extent.width  = viewport.width;
                 createInfo.extent.height = viewport.height;
-                createInfo.attachments.push_back(image.colorImage.view);
+                createInfo.attachments.push_back(image.targetImage.view);
                 createInfo.attachments.push_back(image.depthImage.view);
 
                 image.addBuffer(createInfo);
@@ -695,7 +695,7 @@ namespace Chicane
             }
 
             const VulkanImageInfo& backdrop = m_backdrops.at(inIndex);
-            const vk::Image        source   = inFrame.image.colorImage.instance;
+            const vk::Image        source   = inFrame.image.targetImage.instance;
             vk::CommandBuffer      commands = inFrame.commandBuffer;
             const vk::Extent2D     extent   = backdrop.extent;
 

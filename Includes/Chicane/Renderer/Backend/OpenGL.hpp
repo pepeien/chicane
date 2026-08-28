@@ -5,6 +5,7 @@
 #include "Chicane/Renderer/Blending.hpp"
 #include "Chicane/Renderer/Culling.hpp"
 #include "Chicane/Renderer/Depth.hpp"
+#include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Shader.hpp"
@@ -62,6 +63,9 @@ namespace Chicane
             // Draw
             void drawPolyArrays(const DrawPoly& inSettings, std::uint32_t inVertexArrayId) const;
 
+            // Target
+            void bindTarget() const;
+
         private:
             // OpenGL
             void buildContext();
@@ -72,6 +76,11 @@ namespace Chicane
 
             void buildTextureData();
             void destroyTextureData();
+
+            void buildTarget();
+            void destroyTarget();
+            void presentTarget() const;
+            void captureScreenTarget();
 
             // Layer
             void buildLayers();
@@ -85,6 +94,13 @@ namespace Chicane
 
         private:
             std::uint32_t m_texturesBuffer;
+            std::uint32_t m_targetFramebuffer;
+            std::uint32_t m_targetColor;
+            std::uint32_t m_targetDepth;
+            std::uint32_t m_targetWidth;
+            std::uint32_t m_targetHeight;
+            std::uint32_t m_screenBlitFramebuffer;
+            Draw::Id      m_screenTextureId;
         };
     }
 }

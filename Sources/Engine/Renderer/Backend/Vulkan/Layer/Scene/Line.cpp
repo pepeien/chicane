@@ -278,7 +278,7 @@ namespace Chicane
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
                 createInfo.extent.width  = viewport.width;
                 createInfo.extent.height = viewport.height;
-                createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.push_back(frame.targetImage.view);
                 createInfo.attachments.push_back(frame.depthImage.view);
 
                 frame.addBuffer(createInfo);

@@ -112,7 +112,7 @@ namespace Chicane
                 createInfo.imageExtent      = extent;
                 createInfo.imageArrayLayers = 1;
                 createInfo.imageUsage       = vk::ImageUsageFlagBits::eColorAttachment |
-                                        vk::ImageUsageFlagBits::eTransferSrc;
+                                        vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst;
 
                 VulkanQueueFamilyIndices familyIndices(inPhysicalDevice, inSurface);
 

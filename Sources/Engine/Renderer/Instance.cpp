@@ -109,6 +109,11 @@ namespace Chicane
             return m_textureResources.add(inData);
         }
 
+        Draw::Id Instance::findTarget(const Draw::Reference& inReference)
+        {
+            return findTexture(inReference);
+        }
+
         Draw::Id Instance::findSky(const Draw::Reference& inReference)
         {
             return m_skyResource.findId(inReference);
@@ -239,6 +244,10 @@ namespace Chicane
             m_backend->setRenderer(this);
 
             m_backend->onInit();
+
+            DrawTextureData screen;
+            screen.reference = SCREEN_TARGET_ID;
+            loadTexture(screen);
 
             markResourcesAsDirty();
         }

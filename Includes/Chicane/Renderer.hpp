@@ -37,6 +37,9 @@ namespace Chicane
 
         static constexpr inline const char*         u_LAYER_ID = "Engine_UI";
 
+        // Targets
+        static constexpr inline const char*         SCREEN_TARGET_ID = "Screen";
+
         // Resources
         static constexpr inline const std::size_t   TEXTURE_WIDTH  = 512;
         static constexpr inline const std::size_t   TEXTURE_HEIGHT = 512;

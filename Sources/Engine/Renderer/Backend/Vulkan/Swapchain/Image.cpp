@@ -4,6 +4,9 @@
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
 
 namespace Chicane
@@ -18,6 +21,7 @@ namespace Chicane
             }
 
             destroyColorImage();
+            destroyTargetImage();
             destroyDepthImage();
             destroySync();
         }
@@ -63,6 +67,84 @@ namespace Chicane
         void VulkanSwapchainImage::destroyColorImage()
         {
             logicalDevice.destroyImageView(colorImage.view);
+        }
+
+        void VulkanSwapchainImage::setupTargetImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+        {
+            targetImage.format = inFormat;
+            targetImage.extent = inExtent;
+
+            VulkanImageCreateInfo instanceCreateInfo;
+            instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
+            instanceCreateInfo.width  = inExtent.width;
+            instanceCreateInfo.height = inExtent.height;
+            instanceCreateInfo.count  = 1;
+            instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
+            instanceCreateInfo.usage  = vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled |
+                                       vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst;
+            instanceCreateInfo.format        = inFormat;
+            instanceCreateInfo.logicalDevice = logicalDevice;
+            VulkanImage::initInstance(targetImage.instance, instanceCreateInfo);
+
+            vk::SamplerCreateInfo samplerCreateInfo;
+            samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
+            samplerCreateInfo.minFilter               = vk::Filter::eLinear;
+            samplerCreateInfo.magFilter               = vk::Filter::eLinear;
+            samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+            samplerCreateInfo.mipLodBias              = 0.0f;
+            samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
+            samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
+            samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+            samplerCreateInfo.anisotropyEnable        = false;
+            samplerCreateInfo.maxAnisotropy           = 1.0f;
+            samplerCreateInfo.borderColor             = vk::BorderColor::eIntTransparentBlack;
+            samplerCreateInfo.compareEnable           = false;
+            samplerCreateInfo.compareOp               = vk::CompareOp::eAlways;
+            samplerCreateInfo.minLod                  = 0.0f;
+            samplerCreateInfo.maxLod                  = 1.0f;
+            samplerCreateInfo.unnormalizedCoordinates = false;
+            targetImage.sampler                       = logicalDevice.createSampler(samplerCreateInfo);
+
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = logicalDevice;
+            memoryCreateInfo.physicalDevice = physicalDevice;
+            VulkanImage::initMemory(targetImage.memory, targetImage.instance, memoryCreateInfo);
+
+            VulkanImageViewCreateInfo viewCreateInfo;
+            viewCreateInfo.count         = 1;
+            viewCreateInfo.type          = vk::ImageViewType::e2D;
+            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+            viewCreateInfo.format        = inFormat;
+            viewCreateInfo.logicalDevice = logicalDevice;
+            VulkanImage::initView(targetImage.view, targetImage.instance, viewCreateInfo);
+        }
+
+        void VulkanSwapchainImage::destroyTargetImage()
+        {
+            if (targetImage.sampler)
+            {
+                logicalDevice.destroySampler(targetImage.sampler);
+                targetImage.sampler = nullptr;
+            }
+
+            if (targetImage.view)
+            {
+                logicalDevice.destroyImageView(targetImage.view);
+                targetImage.view = nullptr;
+            }
+
+            if (targetImage.instance)
+            {
+                logicalDevice.destroyImage(targetImage.instance);
+                targetImage.instance = nullptr;
+            }
+
+            if (targetImage.memory)
+            {
+                logicalDevice.freeMemory(targetImage.memory);
+                targetImage.memory = nullptr;
+            }
         }
 
         void VulkanSwapchainImage::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)

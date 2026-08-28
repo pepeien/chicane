@@ -259,7 +259,7 @@ namespace Editor
             createInfo.renderPass    = m_graphicsPipeline.renderPass;
             createInfo.extent.width  = viewport.width;
             createInfo.extent.height = viewport.height;
-            createInfo.attachments.push_back(image.colorImage.view);
+            createInfo.attachments.push_back(image.targetImage.view);
             createInfo.attachments.push_back(image.depthImage.view);
 
             image.addBuffer(createInfo);
@@ -269,9 +269,8 @@ namespace Editor
     void VulkanLUI::initViewport()
     {
         Chicane::Renderer::ViewportSettings viewport;
-        viewport.width   = "75vw";
-        viewport.height  = "70vh";
-        viewport.offsetY = "32px";
+        viewport.width  = "75vw";
+        viewport.height = "70vh";
 
         setViewport(viewport);
 

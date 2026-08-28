@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <vulkan/vulkan.hpp>
 
 #include "Chicane/Core/View.hpp"
@@ -34,6 +35,9 @@ namespace Chicane
             void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
             void destroyColorImage();
 
+            void setupTargetImage(vk::Format inFormat, const vk::Extent2D& inExtent);
+            void destroyTargetImage();
+
             void setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent);
             void destroyDepthImage();
 
@@ -48,6 +52,7 @@ namespace Chicane
 
             // Image
             VulkanImageInfo                             colorImage;
+            VulkanImageInfo                             targetImage;
             VulkanImageInfo                             depthImage;
 
             // Buffer

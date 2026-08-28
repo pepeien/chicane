@@ -76,6 +76,8 @@ namespace Chicane
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
             glBindTextureUnit(2, m_depthMapBuffer);
+
+            getBackend<OpenGLBackend>()->bindTarget();
         }
 
         void OpenGLLSceneShadow::onEndRender()

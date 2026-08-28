@@ -5,11 +5,13 @@
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
@@ -74,6 +76,7 @@ namespace Chicane
             void buildTextureDescriptor();
             void buildTextureData(const DrawTexture::List& inTextures);
             void destroyTextureData();
+            void bindScreenTarget(const VulkanImageInfo& inTarget);
 
         public:
             // Instance
@@ -105,6 +108,7 @@ namespace Chicane
         private:
             // Frame
             std::uint32_t              m_currentFrameIndex;
+            Draw::Id                   m_screenTextureId;
 
             // Instance
             vk::DispatchLoaderDynamic  m_dispatcher;

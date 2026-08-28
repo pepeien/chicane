@@ -20,7 +20,15 @@ namespace Chicane
         static SDL_GLContext g_context;
 
         OpenGLBackend::OpenGLBackend()
-            : Backend()
+            : Backend(),
+              m_texturesBuffer(0),
+              m_targetFramebuffer(0),
+              m_targetColor(0),
+              m_targetDepth(0),
+              m_targetWidth(0),
+              m_targetHeight(0),
+              m_screenBlitFramebuffer(0),
+              m_screenTextureId(Draw::InvalidId)
         {}
 
         OpenGLBackend::~OpenGLBackend()
@@ -42,6 +50,7 @@ namespace Chicane
             enableFeatures();
             updateResourcesBudget();
             buildTextureData();
+            buildTarget();
             buildLayers();
         }
 
@@ -59,6 +68,7 @@ namespace Chicane
 
             // OpenGL
             destroyTextureData();
+            destroyTarget();
             destroyContext();
         }
 
@@ -73,6 +83,13 @@ namespace Chicane
 
             for (const DrawTexture& texture : inResources.getDraws())
             {
+                if (texture.reference.equals(SCREEN_TARGET_ID))
+                {
+                    m_screenTextureId = texture.id;
+
+                    continue;
+                }
+
                 if (const Image::Instance image = texture.image.lock())
                 {
                     const void* pixels = image->getPixels();
@@ -110,6 +127,9 @@ namespace Chicane
 
         void OpenGLBackend::onBeginRender()
         {
+            buildTarget();
+            bindTarget();
+
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
 
@@ -127,6 +147,9 @@ namespace Chicane
 
         void OpenGLBackend::onEndRender()
         {
+            captureScreenTarget();
+            presentTarget();
+
             SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
@@ -392,6 +415,141 @@ namespace Chicane
         void OpenGLBackend::destroyTextureData()
         {
             glDeleteTextures(1, &m_texturesBuffer);
+        }
+
+        void OpenGLBackend::buildTarget()
+        {
+            const Vec<2, std::uint32_t> resolution = getRenderer()->getResolution();
+            const std::uint32_t         width      = std::max(1u, resolution.x);
+            const std::uint32_t         height     = std::max(1u, resolution.y);
+
+            if (m_targetFramebuffer != 0 && m_targetWidth == width && m_targetHeight == height)
+            {
+                return;
+            }
+
+            destroyTarget();
+
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_targetColor);
+            glTextureStorage2D(m_targetColor, 1, GL_RGBA8, width, height);
+            glTextureParameteri(m_targetColor, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_targetColor, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(m_targetColor, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTextureParameteri(m_targetColor, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+            glCreateRenderbuffers(1, &m_targetDepth);
+            glNamedRenderbufferStorage(m_targetDepth, GL_DEPTH24_STENCIL8, width, height);
+
+            glCreateFramebuffers(1, &m_targetFramebuffer);
+            glNamedFramebufferTexture(m_targetFramebuffer, GL_COLOR_ATTACHMENT0, m_targetColor, 0);
+            glNamedFramebufferRenderbuffer(
+                m_targetFramebuffer,
+                GL_DEPTH_STENCIL_ATTACHMENT,
+                GL_RENDERBUFFER,
+                m_targetDepth
+            );
+
+            glCreateFramebuffers(1, &m_screenBlitFramebuffer);
+
+            m_targetWidth  = width;
+            m_targetHeight = height;
+        }
+
+        void OpenGLBackend::destroyTarget()
+        {
+            if (m_screenBlitFramebuffer != 0)
+            {
+                glDeleteFramebuffers(1, &m_screenBlitFramebuffer);
+                m_screenBlitFramebuffer = 0;
+            }
+
+            if (m_targetFramebuffer != 0)
+            {
+                glDeleteFramebuffers(1, &m_targetFramebuffer);
+                m_targetFramebuffer = 0;
+            }
+
+            if (m_targetDepth != 0)
+            {
+                glDeleteRenderbuffers(1, &m_targetDepth);
+                m_targetDepth = 0;
+            }
+
+            if (m_targetColor != 0)
+            {
+                glDeleteTextures(1, &m_targetColor);
+                m_targetColor = 0;
+            }
+
+            m_targetWidth  = 0;
+            m_targetHeight = 0;
+        }
+
+        void OpenGLBackend::bindTarget() const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
+        }
+
+        void OpenGLBackend::presentTarget() const
+        {
+            if (m_targetFramebuffer == 0)
+            {
+                return;
+            }
+
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
+            glReadBuffer(GL_COLOR_ATTACHMENT0);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            glDrawBuffer(GL_BACK);
+            glBlitFramebuffer(
+                0,
+                0,
+                static_cast<GLint>(m_targetWidth),
+                static_cast<GLint>(m_targetHeight),
+                0,
+                0,
+                static_cast<GLint>(m_targetWidth),
+                static_cast<GLint>(m_targetHeight),
+                GL_COLOR_BUFFER_BIT,
+                GL_NEAREST
+            );
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
+        void OpenGLBackend::captureScreenTarget()
+        {
+            if (m_screenTextureId <= Draw::InvalidId || m_targetFramebuffer == 0 || m_texturesBuffer == 0)
+            {
+                return;
+            }
+
+            glNamedFramebufferTextureLayer(
+                m_screenBlitFramebuffer,
+                GL_COLOR_ATTACHMENT0,
+                m_texturesBuffer,
+                0,
+                m_screenTextureId
+            );
+
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
+            glReadBuffer(GL_COLOR_ATTACHMENT0);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_screenBlitFramebuffer);
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
+            glBlitFramebuffer(
+                0,
+                0,
+                static_cast<GLint>(m_targetWidth),
+                static_cast<GLint>(m_targetHeight),
+                0,
+                0,
+                static_cast<GLint>(TEXTURE_WIDTH),
+                static_cast<GLint>(TEXTURE_HEIGHT),
+                GL_COLOR_BUFFER_BIT,
+                GL_LINEAR
+            );
+
+            glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
         }
 
         void OpenGLBackend::buildLayers()

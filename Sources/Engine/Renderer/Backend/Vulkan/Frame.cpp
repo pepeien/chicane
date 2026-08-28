@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 
+#include <array>
+
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
 
@@ -39,31 +41,107 @@ namespace Chicane
             vk::CommandBufferBeginInfo commandBufferBegin;
             commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
             commandBuffer.begin(commandBufferBegin);
+
+            vk::ImageMemoryBarrier targetToColor;
+            targetToColor.oldLayout                       = vk::ImageLayout::eUndefined;
+            targetToColor.newLayout                       = vk::ImageLayout::eColorAttachmentOptimal;
+            targetToColor.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            targetToColor.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            targetToColor.image                           = image.targetImage.instance;
+            targetToColor.srcAccessMask                   = vk::AccessFlagBits::eNone;
+            targetToColor.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
+            targetToColor.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            targetToColor.subresourceRange.baseMipLevel   = 0;
+            targetToColor.subresourceRange.levelCount     = 1;
+            targetToColor.subresourceRange.baseArrayLayer = 0;
+            targetToColor.subresourceRange.layerCount     = 1;
+
+            commandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eTopOfPipe,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                targetToColor
+            );
         }
 
         void VulkanFrame::end()
         {
-            vk::ImageMemoryBarrier presentBarrier;
-            presentBarrier.oldLayout                       = vk::ImageLayout::eColorAttachmentOptimal;
-            presentBarrier.newLayout                       = vk::ImageLayout::ePresentSrcKHR;
-            presentBarrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-            presentBarrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-            presentBarrier.image                           = image.colorImage.instance;
-            presentBarrier.srcAccessMask                   = vk::AccessFlagBits::eColorAttachmentWrite;
-            presentBarrier.dstAccessMask                   = vk::AccessFlagBits::eNone;
-            presentBarrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
-            presentBarrier.subresourceRange.baseMipLevel   = 0;
-            presentBarrier.subresourceRange.levelCount     = 1;
-            presentBarrier.subresourceRange.baseArrayLayer = 0;
-            presentBarrier.subresourceRange.layerCount     = 1;
+            vk::ImageSubresourceRange range;
+            range.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            range.baseMipLevel   = 0;
+            range.levelCount     = 1;
+            range.baseArrayLayer = 0;
+            range.layerCount     = 1;
 
+            vk::ImageMemoryBarrier targetToTransfer;
+            targetToTransfer.oldLayout           = vk::ImageLayout::eColorAttachmentOptimal;
+            targetToTransfer.newLayout           = vk::ImageLayout::eTransferSrcOptimal;
+            targetToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            targetToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            targetToTransfer.image               = image.targetImage.instance;
+            targetToTransfer.srcAccessMask       = vk::AccessFlagBits::eColorAttachmentWrite;
+            targetToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferRead;
+            targetToTransfer.subresourceRange    = range;
+
+            vk::ImageMemoryBarrier swapchainToTransfer;
+            swapchainToTransfer.oldLayout           = vk::ImageLayout::eUndefined;
+            swapchainToTransfer.newLayout           = vk::ImageLayout::eTransferDstOptimal;
+            swapchainToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            swapchainToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            swapchainToTransfer.image               = image.colorImage.instance;
+            swapchainToTransfer.srcAccessMask       = vk::AccessFlagBits::eNone;
+            swapchainToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferWrite;
+            swapchainToTransfer.subresourceRange    = range;
+
+            std::array<vk::ImageMemoryBarrier, 2> before = {targetToTransfer, swapchainToTransfer};
             commandBuffer.pipelineBarrier(
                 vk::PipelineStageFlagBits::eColorAttachmentOutput,
-                vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::PipelineStageFlagBits::eTransfer,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
-                presentBarrier
+                before
+            );
+
+            vk::ImageCopy region;
+            region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            region.srcSubresource.mipLevel       = 0;
+            region.srcSubresource.baseArrayLayer = 0;
+            region.srcSubresource.layerCount     = 1;
+            region.dstSubresource                = region.srcSubresource;
+            region.extent = vk::Extent3D(image.targetImage.extent.width, image.targetImage.extent.height, 1);
+
+            commandBuffer.copyImage(
+                image.targetImage.instance,
+                vk::ImageLayout::eTransferSrcOptimal,
+                image.colorImage.instance,
+                vk::ImageLayout::eTransferDstOptimal,
+                region
+            );
+
+            vk::ImageMemoryBarrier presentBarrier = swapchainToTransfer;
+            presentBarrier.oldLayout              = vk::ImageLayout::eTransferDstOptimal;
+            presentBarrier.newLayout              = vk::ImageLayout::ePresentSrcKHR;
+            presentBarrier.srcAccessMask          = vk::AccessFlagBits::eTransferWrite;
+            presentBarrier.dstAccessMask          = vk::AccessFlagBits::eNone;
+
+            vk::ImageMemoryBarrier targetToSample = targetToTransfer;
+            targetToSample.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
+            targetToSample.newLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
+            targetToSample.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
+            targetToSample.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
+
+            std::array<vk::ImageMemoryBarrier, 2> after = {presentBarrier, targetToSample};
+            commandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::PipelineStageFlagBits::eFragmentShader | vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                after
             );
 
             commandBuffer.end();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
 #include "Chicane/Core/View/Settings.hpp"
@@ -57,6 +58,10 @@ namespace Chicane
         const ViewProjectionType getProjectionType() const;
         void setProjectionType(ViewProjectionType inType);
 
+        // Target
+        const String& getTarget() const;
+        void setTarget(const String& inValue);
+
     protected:
         void updateProjection();
         void updateView();
@@ -66,5 +71,6 @@ namespace Chicane
         ViewFrustum  m_frustum;
         View         m_data;
         Vec3         m_focusPoint;
+        String       m_target;
     };
 }

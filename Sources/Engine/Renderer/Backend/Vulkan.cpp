@@ -23,7 +23,8 @@ namespace Chicane
             : Backend(),
               swapchain({}),
               frames({}),
-              m_currentFrameIndex(0U)
+              m_currentFrameIndex(0U),
+              m_screenTextureId(Draw::InvalidId)
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -119,6 +120,12 @@ namespace Chicane
             nextFrame.reset();
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
+            if (swapchain.images.size() > 1)
+            {
+                const std::size_t sampleIndex = (static_cast<std::size_t>(imageIndex) + swapchain.images.size() - 1) %
+                                                swapchain.images.size();
+                bindScreenTarget(swapchain.images.at(sampleIndex).targetImage);
+            }
 
             nextFrame.begin(inFrame, nextImage);
             renderLayers(inFrame, &nextFrame);
@@ -286,6 +293,7 @@ namespace Chicane
 
                 // Images
                 image.setupColorImage(swapchain.colorFormat, swapchain.extent);
+                image.setupTargetImage(swapchain.colorFormat, swapchain.extent);
                 image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
             }
         }
@@ -405,15 +413,32 @@ namespace Chicane
             createInfo.queue          = graphicsQueue;
 
             std::vector<vk::DescriptorImageInfo> infos;
+            textures.clear();
+            m_screenTextureId = Draw::InvalidId;
+
             for (const DrawTexture& texture : inTextures)
             {
-                createInfo.image = texture.image;
-                textures.push_back(std::make_shared<VulkanTexture>(createInfo));
-
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                info.imageView   = textures.back()->view;
-                info.sampler     = textures.back()->sampler;
+
+                const bool bIsScreen = texture.reference.equals(SCREEN_TARGET_ID);
+
+                if (bIsScreen && !swapchain.images.empty() && swapchain.images.front().targetImage.view)
+                {
+                    const VulkanImageInfo& target = swapchain.images.front().targetImage;
+                    info.imageView                = target.view;
+                    info.sampler                  = target.sampler;
+                    textures.push_back(nullptr);
+                    m_screenTextureId = texture.id;
+                }
+                else
+                {
+                    createInfo.image = texture.image;
+                    textures.push_back(std::make_shared<VulkanTexture>(createInfo));
+                    info.imageView   = textures.back()->view;
+                    info.sampler     = textures.back()->sampler;
+                }
+
                 infos.push_back(info);
             }
 
@@ -424,6 +449,29 @@ namespace Chicane
             set.descriptorCount = static_cast<std::uint32_t>(infos.size());
             set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             set.pImageInfo      = infos.data();
+
+            logicalDevice.updateDescriptorSets(set, nullptr);
+        }
+
+        void VulkanBackend::bindScreenTarget(const VulkanImageInfo& inTarget)
+        {
+            if (m_screenTextureId <= Draw::InvalidId || !inTarget.view || !inTarget.sampler)
+            {
+                return;
+            }
+
+            vk::DescriptorImageInfo info;
+            info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+            info.imageView   = inTarget.view;
+            info.sampler     = inTarget.sampler;
+
+            vk::WriteDescriptorSet set;
+            set.dstSet          = textureDescriptor.set;
+            set.dstBinding      = 0;
+            set.dstArrayElement = static_cast<std::uint32_t>(m_screenTextureId);
+            set.descriptorCount = 1;
+            set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            set.pImageInfo      = &info;
 
             logicalDevice.updateDescriptorSets(set, nullptr);
         }

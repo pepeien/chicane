@@ -7,7 +7,8 @@ namespace Chicane
           m_settings({}),
           m_frustum({}),
           m_data({}),
-          m_focusPoint(Vec3::Zero())
+          m_focusPoint(Vec3::Zero()),
+          m_target("")
     {}
 
     void CView::onTransform()
@@ -130,6 +131,16 @@ namespace Chicane
         m_settings.projection = inType;
 
         updateProjection();
+    }
+
+    const String& CView::getTarget() const
+    {
+        return m_target;
+    }
+
+    void CView::setTarget(const String& inValue)
+    {
+        m_target = inValue;
     }
 
     const View& CView::getData() const
