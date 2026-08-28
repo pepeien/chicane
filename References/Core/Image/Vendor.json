@@ -39,6 +39,17 @@
                 },
                 "name": "Png",
                 "description": "CHICANE_IMAGEVENDOR_PNG_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Gif",
+                "description": "CHICANE_IMAGEVENDOR_GIF_DESCRIPTION"
             }
         ],
         "constructors": [],

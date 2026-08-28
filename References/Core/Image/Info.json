@@ -7,7 +7,23 @@
         "namespace": "Chicane::ImageInfo",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ImageInfo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_IMAGEINFO_IMAGEINFO_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [
             {

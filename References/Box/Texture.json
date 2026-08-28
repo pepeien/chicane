@@ -92,6 +92,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isAnimated",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_ISANIMATED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ImageVendor",
                     "suffix": "",
                     "path": "Core/Image/Vendor",
@@ -226,6 +243,107 @@
                 "description": "CHICANE_BOX_TEXTURE_SETDATA_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getFrameCount",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETFRAMECOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDelay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETDELAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Image::Reference",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "getFrame",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getFrameId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETFRAMEID_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -254,6 +372,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_TEXTURE_FETCHDATAFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_REBUILDFRAMES_DESCRIPTION"
             }
         ],
         "members": [
@@ -362,6 +495,48 @@
                 },
                 "name": "m_data",
                 "description": "CHICANE_BOX_TEXTURE_M_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Image::Instance",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_frames",
+                "description": "CHICANE_BOX_TEXTURE_M_FRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_delays",
+                "description": "CHICANE_BOX_TEXTURE_M_DELAYS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_TEXTURE_DESCRIPTION"

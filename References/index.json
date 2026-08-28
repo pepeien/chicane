@@ -2598,6 +2598,22 @@
                         "children": []
                     },
                     {
+                        "title": "Image",
+                        "filename": "Image",
+                        "path": "Grid/Component/Image",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Image.hpp",
+                            "namespace": "Chicane::Grid::Image",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Logger",
                         "filename": "Logger",
                         "path": "Grid/Component/Logger",

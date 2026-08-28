@@ -1,0 +1,318 @@
+{
+    "title": "Image",
+    "filename": "Image",
+    "path": "Grid/Component/Image",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Image.hpp",
+        "namespace": "Chicane::Grid::Image",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Image",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_IMAGE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSource",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_REFRESHSOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPlaybackRate",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_REFRESHPLAYBACKRATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindFrame",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_BINDFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "advanceFrame",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_ADVANCEFRAME_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_IMAGE_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SRC_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_IMAGE_SRC_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PLAYBACK_RATE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_IMAGE_PLAYBACK_RATE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GIF_MAX_FPS",
+                "description": "CHICANE_GRID_IMAGE_GIF_MAX_FPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GIF_MIN_FRAME_MS",
+                "description": "CHICANE_GRID_IMAGE_GIF_MIN_FRAME_MS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "src",
+                "description": "CHICANE_GRID_IMAGE_SRC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "playbackRate",
+                "description": "CHICANE_GRID_IMAGE_PLAYBACKRATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Box::Texture",
+                    "suffix": "*",
+                    "path": "Box/Texture",
+                    "templates": []
+                },
+                "name": "m_texture",
+                "description": "CHICANE_GRID_IMAGE_M_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_frame",
+                "description": "CHICANE_GRID_IMAGE_M_FRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_elapsed",
+                "description": "CHICANE_GRID_IMAGE_M_ELAPSED_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_IMAGE_DESCRIPTION"
+    },
+    "children": []
+}
