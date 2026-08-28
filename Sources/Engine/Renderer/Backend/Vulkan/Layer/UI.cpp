@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
 
 #include <algorithm>
+#include <cstdint>
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
@@ -142,6 +143,15 @@ namespace Chicane
                 m_graphicsPipeline.bind(commandBuffer);
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
+
+                const std::int32_t screenPush[4] = {backend->getScreenTextureId(), 0, 0, 0};
+                commandBuffer.pushConstants(
+                    m_graphicsPipeline.layout,
+                    vk::ShaderStageFlagBits::eFragment,
+                    0,
+                    sizeof(screenPush),
+                    screenPush
+                );
 
                 vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
                 vk::DeviceSize offsets[]       = {0};
@@ -382,6 +392,11 @@ namespace Chicane
             rasterization.cullMode                = vk::CullModeFlagBits::eNone;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
 
+            vk::PushConstantRange screenPush;
+            screenPush.stageFlags = vk::ShaderStageFlagBits::eFragment;
+            screenPush.offset     = 0;
+            screenPush.size       = sizeof(std::int32_t) * 4;
+
             // Build
             VulkanGraphicsPipelineBuilder()
                 .addVertexBinding(VulkanVertex::getBindingDescription())
@@ -403,6 +418,7 @@ namespace Chicane
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .addDescriptorSetLayout(backend->textureDescriptor.setLayout)
+                .addPushConstant(screenPush)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }
@@ -420,7 +436,7 @@ namespace Chicane
                 createInfo.renderPass    = m_graphicsPipeline.renderPass;
                 createInfo.extent.width  = viewport.width;
                 createInfo.extent.height = viewport.height;
-                createInfo.attachments.push_back(image.targetImage.view);
+                createInfo.attachments.push_back(image.colorImage.view);
                 createInfo.attachments.push_back(image.depthImage.view);
 
                 image.addBuffer(createInfo);
@@ -707,12 +723,12 @@ namespace Chicane
             range.layerCount     = 1;
 
             vk::ImageMemoryBarrier sourceToTransfer;
-            sourceToTransfer.oldLayout           = vk::ImageLayout::eColorAttachmentOptimal;
+            sourceToTransfer.oldLayout           = vk::ImageLayout::eShaderReadOnlyOptimal;
             sourceToTransfer.newLayout           = vk::ImageLayout::eTransferSrcOptimal;
             sourceToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             sourceToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             sourceToTransfer.image               = source;
-            sourceToTransfer.srcAccessMask       = vk::AccessFlagBits::eColorAttachmentWrite;
+            sourceToTransfer.srcAccessMask       = vk::AccessFlagBits::eShaderRead;
             sourceToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferRead;
             sourceToTransfer.subresourceRange    = range;
 
@@ -728,7 +744,7 @@ namespace Chicane
 
             std::array<vk::ImageMemoryBarrier, 2> before = {sourceToTransfer, backdropToTransfer};
             commands.pipelineBarrier(
-                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
+                vk::PipelineStageFlagBits::eFragmentShader,
                 vk::PipelineStageFlagBits::eTransfer,
                 vk::DependencyFlags(),
                 nullptr,
@@ -754,20 +770,19 @@ namespace Chicane
 
             generateBackdropMips(commands, inIndex);
 
-            vk::ImageMemoryBarrier sourceToColor = sourceToTransfer;
-            sourceToColor.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
-            sourceToColor.newLayout              = vk::ImageLayout::eColorAttachmentOptimal;
-            sourceToColor.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
-            sourceToColor.dstAccessMask =
-                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
+            vk::ImageMemoryBarrier sourceToSample = sourceToTransfer;
+            sourceToSample.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
+            sourceToSample.newLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
+            sourceToSample.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
+            sourceToSample.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
 
             commands.pipelineBarrier(
                 vk::PipelineStageFlagBits::eTransfer,
-                vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                vk::PipelineStageFlagBits::eFragmentShader,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
-                sourceToColor
+                sourceToSample
             );
         }
 

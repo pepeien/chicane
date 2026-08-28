@@ -142,14 +142,24 @@ namespace Chicane
 
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
-            renderLayers(inFrame);
+            renderLayers(
+                inFrame,
+                nullptr,
+                [](const Layer* inLayer) { return !inLayer->getId().equals(u_LAYER_ID); }
+            );
+
+            presentTarget();
+            glBindTextureUnit(0, m_texturesBuffer);
+
+            renderLayers(
+                inFrame,
+                nullptr,
+                [](const Layer* inLayer) { return inLayer->getId().equals(u_LAYER_ID); }
+            );
         }
 
         void OpenGLBackend::onEndRender()
         {
-            captureScreenTarget();
-            presentTarget();
-
             SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
@@ -488,6 +498,16 @@ namespace Chicane
         void OpenGLBackend::bindTarget() const
         {
             glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
+        }
+
+        std::uint32_t OpenGLBackend::getTargetColor() const
+        {
+            return m_targetColor;
+        }
+
+        Draw::Id OpenGLBackend::getScreenTextureId() const
+        {
+            return m_screenTextureId;
         }
 
         void OpenGLBackend::presentTarget() const

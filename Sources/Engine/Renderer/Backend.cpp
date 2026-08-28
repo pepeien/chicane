@@ -198,11 +198,20 @@ namespace Chicane
             return m_status == inValue;
         }
 
-        void Backend::renderLayers(const Frame& inFrame, void* inData)
+        void Backend::renderLayers(
+            const Frame&                              inFrame,
+            void*                                     inData,
+            std::function<bool(const Layer* inLayer)> inFilter
+        )
         {
             for (std::shared_ptr<Layer>& layer : m_layers)
             {
                 if (!layer)
+                {
+                    continue;
+                }
+
+                if (inFilter && !inFilter(layer.get()))
                 {
                     continue;
                 }

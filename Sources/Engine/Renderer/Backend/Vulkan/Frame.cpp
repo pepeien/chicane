@@ -67,7 +67,7 @@ namespace Chicane
             );
         }
 
-        void VulkanFrame::end()
+        void VulkanFrame::flushTarget()
         {
             vk::ImageSubresourceRange range;
             range.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -122,11 +122,12 @@ namespace Chicane
                 region
             );
 
-            vk::ImageMemoryBarrier presentBarrier = swapchainToTransfer;
-            presentBarrier.oldLayout              = vk::ImageLayout::eTransferDstOptimal;
-            presentBarrier.newLayout              = vk::ImageLayout::ePresentSrcKHR;
-            presentBarrier.srcAccessMask          = vk::AccessFlagBits::eTransferWrite;
-            presentBarrier.dstAccessMask          = vk::AccessFlagBits::eNone;
+            vk::ImageMemoryBarrier swapchainToColor = swapchainToTransfer;
+            swapchainToColor.oldLayout              = vk::ImageLayout::eTransferDstOptimal;
+            swapchainToColor.newLayout              = vk::ImageLayout::eColorAttachmentOptimal;
+            swapchainToColor.srcAccessMask          = vk::AccessFlagBits::eTransferWrite;
+            swapchainToColor.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::ImageMemoryBarrier targetToSample = targetToTransfer;
             targetToSample.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
@@ -134,14 +135,40 @@ namespace Chicane
             targetToSample.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
             targetToSample.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
 
-            std::array<vk::ImageMemoryBarrier, 2> after = {presentBarrier, targetToSample};
+            std::array<vk::ImageMemoryBarrier, 2> after = {swapchainToColor, targetToSample};
             commandBuffer.pipelineBarrier(
                 vk::PipelineStageFlagBits::eTransfer,
-                vk::PipelineStageFlagBits::eFragmentShader | vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
                 after
+            );
+        }
+
+        void VulkanFrame::end()
+        {
+            vk::ImageMemoryBarrier presentBarrier;
+            presentBarrier.oldLayout                       = vk::ImageLayout::eColorAttachmentOptimal;
+            presentBarrier.newLayout                       = vk::ImageLayout::ePresentSrcKHR;
+            presentBarrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            presentBarrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            presentBarrier.image                           = image.colorImage.instance;
+            presentBarrier.srcAccessMask                   = vk::AccessFlagBits::eColorAttachmentWrite;
+            presentBarrier.dstAccessMask                   = vk::AccessFlagBits::eNone;
+            presentBarrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            presentBarrier.subresourceRange.baseMipLevel   = 0;
+            presentBarrier.subresourceRange.levelCount     = 1;
+            presentBarrier.subresourceRange.baseArrayLayer = 0;
+            presentBarrier.subresourceRange.layerCount     = 1;
+
+            commandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                presentBarrier
             );
 
             commandBuffer.end();

@@ -65,6 +65,8 @@ namespace Chicane
 
             // Target
             void bindTarget() const;
+            std::uint32_t getTargetColor() const;
+            Draw::Id getScreenTextureId() const;
 
         private:
             // OpenGL

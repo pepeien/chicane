@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 
 #include "Chicane/Core/List/Push.hpp"
 
@@ -130,7 +131,11 @@ namespace Chicane
         protected:
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
-            void renderLayers(const Frame& inFrame, void* inData = nullptr);
+            void renderLayers(
+                const Frame&                            inFrame,
+                void*                                   inData   = nullptr,
+                std::function<bool(const Layer* inLayer)> inFilter = nullptr
+            );
             void shutdownLayers();
             void rebuildLayers();
             void destroyLayers();

@@ -36,6 +36,13 @@ $bottomBarSize: 30vh;
 }
 
 .home {
+    .viewport {
+        position: absolute;
+        width: calc(100% - $sideBarSize);
+        height: calc(100% - $bottomBarSize);
+        background-color: #000000;
+    }
+
     Telemetry {
         padding: 0.2em;
     }

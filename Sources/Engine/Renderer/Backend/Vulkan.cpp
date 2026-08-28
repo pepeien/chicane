@@ -120,15 +120,20 @@ namespace Chicane
             nextFrame.reset();
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
-            if (swapchain.images.size() > 1)
-            {
-                const std::size_t sampleIndex = (static_cast<std::size_t>(imageIndex) + swapchain.images.size() - 1) %
-                                                swapchain.images.size();
-                bindScreenTarget(swapchain.images.at(sampleIndex).targetImage);
-            }
 
             nextFrame.begin(inFrame, nextImage);
-            renderLayers(inFrame, &nextFrame);
+            renderLayers(
+                inFrame,
+                &nextFrame,
+                [](const Layer* inLayer) { return !inLayer->getId().equals(u_LAYER_ID); }
+            );
+            nextFrame.flushTarget();
+            bindScreenTarget(nextImage.targetImage);
+            renderLayers(
+                inFrame,
+                &nextFrame,
+                [](const Layer* inLayer) { return inLayer->getId().equals(u_LAYER_ID); }
+            );
             nextFrame.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -168,6 +173,11 @@ namespace Chicane
             }
 
             m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
+        }
+
+        Draw::Id VulkanBackend::getScreenTextureId() const
+        {
+            return m_screenTextureId;
         }
 
         vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const

@@ -33,9 +33,27 @@ layout(std430, set = 0, binding = 1) readonly buffer Glyph {
 layout(set = 1, binding = 0) uniform sampler2D textures[];
 layout(set = 0, binding = 2) uniform sampler2D backdrop;
 
+layout(push_constant) uniform ScreenPush {
+    ivec4 data;
+} screen;
+
 #include "../Common/Glyph.glsl"
 #include "../Common/Rounded.glsl"
 #include "../Common/Filter.glsl"
+
+vec2 getUITextureUV(int textureIndex, vec2 uv) {
+    vec2 result = clamp(uv, 0.0, 1.0);
+
+    if (textureIndex == screen.data.x) {
+        result.y = 1.0 - result.y;
+    }
+
+    return result;
+}
+
+vec3 sampleUITexture(int textureIndex, vec2 uv) {
+    return texture(textures[textureIndex], getUITextureUV(textureIndex, uv)).rgb;
+}
 
 void main() {
     vec4 color = inData.color.rgba;
@@ -49,7 +67,7 @@ void main() {
     if (inData.glyphIndex >= 0) {
         color.a *= getGlyphCoverage(inData.glyphIndex, position, pixel);
     } else if (inData.textureIndex >= 0) {
-        vec3 rgb = texture(textures[inData.textureIndex], clamp(inData.UV, 0.0, 1.0)).rgb;
+        vec3 rgb = sampleUITexture(inData.textureIndex, inData.UV);
 
         if (inData.view.z >= 0.5) {
             vec2  texel = vec2(inData.view.z) / max(inData.box.zw - inData.box.xy, vec2(1.0));
@@ -58,10 +76,10 @@ void main() {
 
             for (int y = -1; y <= 1; y++) {
                 for (int x = -1; x <= 1; x++) {
-                    vec2  tap = clamp(inData.UV + (vec2(float(x), float(y)) * texel), 0.0, 1.0);
+                    vec2  tap = inData.UV + (vec2(float(x), float(y)) * texel);
                     float w   = exp(-0.5 * float((x * x) + (y * y)) / 2.0);
 
-                    acc  += texture(textures[inData.textureIndex], tap).rgb * w;
+                    acc  += sampleUITexture(inData.textureIndex, tap) * w;
                     wsum += w;
                 }
             }

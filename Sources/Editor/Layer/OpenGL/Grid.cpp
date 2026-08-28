@@ -94,8 +94,8 @@ namespace Editor
     void OpenGLLUI::buildViewport()
     {
         Chicane::Renderer::ViewportSettings viewport;
-        viewport.width  = "75vw";
-        viewport.height = "70vh";
+        viewport.width  = "100%";
+        viewport.height = "100%";
 
         setViewport(viewport);
 

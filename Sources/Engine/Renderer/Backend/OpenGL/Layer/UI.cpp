@@ -108,7 +108,8 @@ namespace Chicane
                 inFrame.getInstances2D().data()
             );
 
-            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
+            OpenGLBackend* backend = getBackend<OpenGLBackend>();
+            Viewport       viewport = backend->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             const std::uint32_t width  = std::max(1u, static_cast<std::uint32_t>(viewport.size.x));
@@ -116,6 +117,9 @@ namespace Chicane
 
             ensureBackdrop(width, height);
             glBindTextureUnit(1, m_backdropTexture);
+            glBindTextureUnit(2, backend->getTargetColor());
+            glUniform1i(2, 2);
+            glUniform1i(3, backend->getScreenTextureId());
 
             const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
 
