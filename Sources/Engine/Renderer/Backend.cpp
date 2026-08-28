@@ -199,9 +199,7 @@ namespace Chicane
         }
 
         void Backend::renderLayers(
-            const Frame&                              inFrame,
-            void*                                     inData,
-            std::function<bool(const Layer* inLayer)> inFilter
+            const Frame& inFrame, void* inData, std::function<bool(const Layer* inLayer)> inFilter
         )
         {
             for (std::shared_ptr<Layer>& layer : m_layers)

@@ -154,17 +154,15 @@ namespace Chicane
             for (std::size_t step = 0; step < count; step++)
             {
                 const int   frameDelay = m_texture->getDelay(m_frame);
-                const float delay      = std::max(
-                    static_cast<float>(frameDelay > 0 ? frameDelay : 100) / rate,
-                    GIF_MIN_FRAME_MS
-                );
+                const float delay =
+                    std::max(static_cast<float>(frameDelay > 0 ? frameDelay : 100) / rate, GIF_MIN_FRAME_MS);
                 if (m_elapsed < delay)
                 {
                     break;
                 }
 
                 m_elapsed -= delay;
-                m_frame    = bIsReverse ? (m_frame + count - 1) % count : (m_frame + 1) % count;
+                m_frame = bIsReverse ? (m_frame + count - 1) % count : (m_frame + 1) % count;
             }
         }
     }

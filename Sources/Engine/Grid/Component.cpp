@@ -21,7 +21,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        thread_local Component* g_scope = nullptr;
+        thread_local Component*               g_scope     = nullptr;
         thread_local std::vector<Component*>* g_projected = nullptr;
 
         struct Scope
@@ -1165,7 +1165,7 @@ namespace Chicane
             }
 
             const ReflectionTypeMethodInfo* info       = outMethod.getInfo();
-            std::size_t                    paramIndex = 0;
+            std::size_t                     paramIndex = 0;
 
             for (const String& rawParam : splitMethodParams(paramsRaw))
             {
@@ -1557,7 +1557,7 @@ namespace Chicane
             }
 
             const pugi::xml_attribute attribute = Xml::getAttribute(CONTENT_SELECT_ATTRIBUTE_NAME, inSlot);
-            const String              select    = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
+            const String select = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
 
             std::vector<Component*> leftover;
             leftover.reserve(g_projected->size());
@@ -1699,23 +1699,21 @@ namespace Chicane
 
         Vec2 Component::getChildIntrinsicSize(const Component* inChild) const
         {
-            Vec2 size = inChild->getSize();
+            Vec2         size  = inChild->getSize();
             const Style& style = inChild->getStyle();
 
-            const bool bWidthAuto =
-                style.width.getRaw().isEmpty() || style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bHeightAuto =
-                style.height.getRaw().isEmpty() || style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bWidthAuto  = style.width.getRaw().isEmpty() || style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bHeightAuto = style.height.getRaw().isEmpty() || style.height.isRaw(Size::AUTO_KEYWORD);
 
             if (!bWidthAuto && !bHeightAuto)
             {
                 return size;
             }
 
-            const bool bParentFlexRow = m_style.isDisplay(StyleDisplay::Flex) &&
-                                        m_style.flex.direction.get() == StyleFlexDirection::Row;
-            const bool bParentFlexColumn = m_style.isDisplay(StyleDisplay::Flex) &&
-                                           m_style.flex.direction.get() == StyleFlexDirection::Column;
+            const bool bParentFlexRow =
+                m_style.isDisplay(StyleDisplay::Flex) && m_style.flex.direction.get() == StyleFlexDirection::Row;
+            const bool bParentFlexColumn =
+                m_style.isDisplay(StyleDisplay::Flex) && m_style.flex.direction.get() == StyleFlexDirection::Column;
 
             const Vec2 inner = inChild->getChildrenContentSize();
 
@@ -2165,8 +2163,8 @@ namespace Chicane
                     const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
                                                 m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
                                                 !m_style.isPosition(StylePosition::Absolute);
-                    const bool bHasAutoHorizontalMargin = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ||
-                                                          m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+                    const bool bHasAutoHorizontalMargin =
+                        m_style.margin.left.isRaw(Size::AUTO_KEYWORD) || m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
 
                     if (bIsFlexRowItem || bHasAutoHorizontalMargin || !hasParent())
                     {

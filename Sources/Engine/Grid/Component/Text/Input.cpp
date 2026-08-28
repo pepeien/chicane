@@ -275,9 +275,8 @@ namespace Chicane
                 const ReflectionFieldAccessor accessor = node->getField(id);
                 if (accessor.isValid())
                 {
-                    void* instance = accessor.boundInstance != nullptr
-                        ? const_cast<void*>(accessor.boundInstance)
-                        : static_cast<void*>(node);
+                    void* instance = accessor.boundInstance != nullptr ? const_cast<void*>(accessor.boundInstance)
+                                                                       : static_cast<void*>(node);
 
                     if (accessor.isType<String>())
                     {

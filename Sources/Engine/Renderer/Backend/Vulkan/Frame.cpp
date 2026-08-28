@@ -43,12 +43,12 @@ namespace Chicane
             commandBuffer.begin(commandBufferBegin);
 
             vk::ImageMemoryBarrier targetToColor;
-            targetToColor.oldLayout                       = vk::ImageLayout::eUndefined;
-            targetToColor.newLayout                       = vk::ImageLayout::eColorAttachmentOptimal;
-            targetToColor.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-            targetToColor.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-            targetToColor.image                           = image.targetImage.instance;
-            targetToColor.srcAccessMask                   = vk::AccessFlagBits::eNone;
+            targetToColor.oldLayout           = vk::ImageLayout::eUndefined;
+            targetToColor.newLayout           = vk::ImageLayout::eColorAttachmentOptimal;
+            targetToColor.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            targetToColor.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            targetToColor.image               = image.targetImage.instance;
+            targetToColor.srcAccessMask       = vk::AccessFlagBits::eNone;
             targetToColor.dstAccessMask =
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
             targetToColor.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;

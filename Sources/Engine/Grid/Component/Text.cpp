@@ -276,11 +276,10 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
-            const String signature = value + "|" + m_style.font.family.get() + "|" +
-                                     std::to_string(m_style.font.weight.get()) + "|" + std::to_string(fontSize) + "|" +
-                                     std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
-                                     std::to_string(color.g) + "|" + std::to_string(color.b) + "|" +
-                                     std::to_string(color.a);
+            const String      signature =
+                value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
+                std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
+                std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a);
 
             if (signature.equals(m_layoutSignature))
             {

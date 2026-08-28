@@ -15,9 +15,9 @@ namespace Chicane
             using Id = Draw::Id;
 
         public:
-            Draw::Reference   reference = Draw::InvalidReference;
-            std::uint32_t     width     = 0;
-            std::uint32_t     height    = 0;
+            Draw::Reference reference = Draw::InvalidReference;
+            std::uint32_t   width     = 0;
+            std::uint32_t   height    = 0;
         };
     }
 }

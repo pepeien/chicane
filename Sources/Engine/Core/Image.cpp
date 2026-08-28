@@ -214,8 +214,7 @@ namespace Chicane
         {
             for (int i = 0; i < m_frameCount; i++)
             {
-                m_delays[static_cast<std::size_t>(i)] =
-                    delays[i] < GIF_MIN_DELAY_MS ? GIF_DEFAULT_DELAY_MS : delays[i];
+                m_delays[static_cast<std::size_t>(i)] = delays[i] < GIF_MIN_DELAY_MS ? GIF_DEFAULT_DELAY_MS : delays[i];
             }
 
             STBI_FREE(delays);

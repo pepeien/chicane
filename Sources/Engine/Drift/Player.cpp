@@ -116,8 +116,7 @@ namespace Chicane
 
                 if (m_clip.loop == Loop::PingPong)
                 {
-                    m_direction =
-                        m_direction == Direction::Forward ? Direction::Reverse : Direction::Forward;
+                    m_direction = m_direction == Direction::Forward ? Direction::Reverse : Direction::Forward;
                 }
 
                 m_elapsed -= duration;

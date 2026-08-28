@@ -225,10 +225,10 @@ namespace Chicane
 
             if (m_loop == Loop::PingPong)
             {
-                const float span   = m_duration * 2.0f;
-                const float cycle  = std::fmod(m_elapsed, span);
-                const float linear = cycle <= m_duration ? (cycle / m_duration)
-                                                         : (1.0f - ((cycle - m_duration) / m_duration));
+                const float span  = m_duration * 2.0f;
+                const float cycle = std::fmod(m_elapsed, span);
+                const float linear =
+                    cycle <= m_duration ? (cycle / m_duration) : (1.0f - ((cycle - m_duration) / m_duration));
 
                 return std::clamp(linear, 0.0f, 1.0f);
             }

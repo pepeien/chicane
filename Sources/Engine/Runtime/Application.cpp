@@ -435,10 +435,7 @@ namespace Chicane
 
                 if (subcommand.model <= Renderer::Draw::InvalidId)
                 {
-                    subcommand.model = m_renderer->findPoly(
-                        Renderer::DrawPolyType::e3D,
-                        Box::Model::DEFAULT_REFERENCE
-                    );
+                    subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, Box::Model::DEFAULT_REFERENCE);
                 }
 
                 subcommand.instance.model   = matrix;
@@ -626,13 +623,12 @@ namespace Chicane
                 continue;
             }
 
-            const Grid::Primitive& primitive = component->getPrimitive();
-            const Grid::Style&     style     = component->getStyle();
-            const Vec2             size      = component->getSize();
-            const Mat3             paint     = component->getPaintMatrix();
+            const Grid::Primitive& primitive    = component->getPrimitive();
+            const Grid::Style&     style        = component->getStyle();
+            const Vec2             size         = component->getSize();
+            const Mat3             paint        = component->getPaintMatrix();
             const Vec2             visualCenter = component->getVisualCenter();
-            const glm::vec3        mapped    = static_cast<glm::mat3>(paint) *
-                                    glm::vec3(visualCenter.x, visualCenter.y, 1.0f);
+            const glm::vec3 mapped = static_cast<glm::mat3>(paint) * glm::vec3(visualCenter.x, visualCenter.y, 1.0f);
 
             Renderer::DrawPoly2DCommandFill subcommand;
             subcommand.polygon.reference = primitive.reference;
@@ -642,16 +638,13 @@ namespace Chicane
             subcommand.instance.scale    = component->getScale();
             subcommand.instance.size     = size;
             subcommand.instance.offset   = Vec2::Zero();
-            subcommand.instance.position = {
-                mapped.x - (size.x * 0.5f),
-                mapped.y - (size.y * 0.5f),
-                component->getDepth()
-            };
+            subcommand.instance
+                .position = {mapped.x - (size.x * 0.5f), mapped.y - (size.y * 0.5f), component->getDepth()};
             subcommand.instance.transformX = {paint[0][0], paint[0][1]};
             subcommand.instance.transformY = {paint[1][0], paint[1][1]};
-            subcommand.instance.clip     = {clip.left, clip.top, clip.right, clip.bottom};
-            subcommand.instance.radiusX  = style.radius.horizontal();
-            subcommand.instance.radiusY  = style.radius.vertical();
+            subcommand.instance.clip       = {clip.left, clip.top, clip.right, clip.bottom};
+            subcommand.instance.radiusX    = style.radius.horizontal();
+            subcommand.instance.radiusY    = style.radius.vertical();
             component->getOverflowRoundClips(
                 subcommand.instance.innerClip,
                 subcommand.instance.innerClipRadiusX,

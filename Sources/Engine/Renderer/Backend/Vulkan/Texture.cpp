@@ -98,8 +98,7 @@ namespace Chicane
                 void* writeLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
 
                 if (image->getWidth() == static_cast<int>(extent.width) &&
-                    image->getHeight() == static_cast<int>(extent.height) &&
-                    image->getPixels())
+                    image->getHeight() == static_cast<int>(extent.height) && image->getPixels())
                 {
                     memcpy(writeLocation, image->getPixels(), static_cast<std::size_t>(createInfo.size));
                 }

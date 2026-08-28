@@ -132,8 +132,8 @@ namespace Chicane
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
             void renderLayers(
-                const Frame&                            inFrame,
-                void*                                   inData   = nullptr,
+                const Frame&                              inFrame,
+                void*                                     inData   = nullptr,
                 std::function<bool(const Layer* inLayer)> inFilter = nullptr
             );
             void shutdownLayers();

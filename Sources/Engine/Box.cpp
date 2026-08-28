@@ -222,9 +222,9 @@ namespace Chicane
                     continue;
                 }
 
-                const bool  bCovers = data.isVariable() && inWeight >= data.getWeightMin() &&
-                                     inWeight <= data.getWeightMax();
-                const float delta   = bCovers ? 0.0f : std::fabs(data.getWeight() - inWeight);
+                const bool bCovers =
+                    data.isVariable() && inWeight >= data.getWeightMin() && inWeight <= data.getWeightMax();
+                const float delta = bCovers ? 0.0f : std::fabs(data.getWeight() - inWeight);
 
                 if (!result || delta < bestDelta ||
                     (delta == bestDelta && result->getData().isVariable() && !data.isVariable()))

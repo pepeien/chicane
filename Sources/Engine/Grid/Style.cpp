@@ -1135,7 +1135,7 @@ namespace Chicane
 
         StyleTransform Style::getTransform() const
         {
-            StyleTransform result = transform.get();
+            StyleTransform result           = transform.get();
             const Vec2     extraTranslation = translate.get();
             const Vec2     extraScale       = scale.get();
 
@@ -1217,7 +1217,7 @@ namespace Chicane
                     continue;
                 }
 
-                const String argument = token.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).trim();
+                const String argument          = token.getBetween(METHOD_PARAMS_OPENING, METHOD_PARAMS_CLOSING).trim();
                 const std::vector<String> args = argument.split(METHOD_PARAMS_SEPARATOR);
 
                 if (token.startsWith(TRANSFORM_TRANSLATE_X_KEYWORD))
@@ -1368,7 +1368,10 @@ namespace Chicane
 
             if (args.size() >= 2)
             {
-                return {parseFactor(args.at(0), SizeDirection::Horizontal), parseFactor(args.at(1), SizeDirection::Vertical)};
+                return {
+                    parseFactor(args.at(0), SizeDirection::Horizontal),
+                    parseFactor(args.at(1), SizeDirection::Vertical)
+                };
             }
 
             const std::vector<String> tokens = splitOneliner(value);
@@ -1431,9 +1434,9 @@ namespace Chicane
                 return {centerX, centerY};
             }
 
-            auto isLeft = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_LEFT); };
-            auto isRight = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_RIGHT); };
-            auto isTop = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_TOP); };
+            auto isLeft   = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_LEFT); };
+            auto isRight  = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_RIGHT); };
+            auto isTop    = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_TOP); };
             auto isBottom = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_BOTTOM); };
             auto isCenter = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_CENTER); };
 
@@ -1665,8 +1668,7 @@ namespace Chicane
                 return FONT_WEIGHT_BOLD_VALUE;
             }
 
-            const float inherited =
-                hasParent() ? m_parent->getStyle().font.weight.get() : FONT_WEIGHT_NORMAL_VALUE;
+            const float inherited = hasParent() ? m_parent->getStyle().font.weight.get() : FONT_WEIGHT_NORMAL_VALUE;
 
             if (value.equals(FONT_WEIGHT_TYPE_BOLDER))
             {
