@@ -492,6 +492,49 @@
                 "description": "CHICANE_CVIEW_SETPROJECTIONTYPE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTarget",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CVIEW_SETTARGET_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -589,6 +632,19 @@
                 },
                 "name": "m_focusPoint",
                 "description": "CHICANE_CVIEW_M_FOCUSPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_target",
+                "description": "CHICANE_CVIEW_M_TARGET_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CVIEW_DESCRIPTION"

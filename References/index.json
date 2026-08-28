@@ -5196,6 +5196,22 @@
                 ]
             },
             {
+                "title": "Target",
+                "filename": "Target",
+                "path": "Renderer/Target",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Target.hpp",
+                    "namespace": "Chicane::Renderer::Target",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
                 "title": "Viewport",
                 "filename": "Viewport",
                 "path": "Renderer/Viewport",

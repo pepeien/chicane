@@ -440,6 +440,23 @@
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_DRAWPOLYARRAYS_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindTarget",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BINDTARGET_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -666,6 +683,68 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildTarget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyTarget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "presentTarget",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_PRESENTTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "captureScreenTarget",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_CAPTURESCREENTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -825,6 +904,97 @@
                 },
                 "name": "m_texturesBuffer",
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURESBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_targetFramebuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TARGETFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_targetColor",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TARGETCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_targetDepth",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TARGETDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_targetWidth",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TARGETWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_targetHeight",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TARGETHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_screenBlitFramebuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCREENBLITFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "m_screenTextureId",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCREENTEXTUREID_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_OPENGLBACKEND_DESCRIPTION"

@@ -142,6 +142,57 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setupTargetImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINIMAGE_SETUPTARGETIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyTargetImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINIMAGE_DESTROYTARGETIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "setupDepthImage",
                 "parameters": [
                     {
@@ -287,6 +338,19 @@
                 },
                 "name": "colorImage",
                 "description": "CHICANE_RENDERER_VULKANSWAPCHAINIMAGE_COLORIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanImageInfo",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Image/Info",
+                    "templates": []
+                },
+                "name": "targetImage",
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINIMAGE_TARGETIMAGE_DESCRIPTION"
             },
             {
                 "accessor": "public",

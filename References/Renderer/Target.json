@@ -1,0 +1,69 @@
+{
+    "title": "Target",
+    "filename": "Target",
+    "path": "Renderer/Target",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Target.hpp",
+        "namespace": "Chicane::Renderer::Target",
+        "types": [
+            {
+                "name": "Id",
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "description": "CHICANE_RENDERER_TARGET_ID_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "reference",
+                "description": "CHICANE_RENDERER_TARGET_REFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_TARGET_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_TARGET_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_TARGET_DESCRIPTION"
+    },
+    "children": []
+}

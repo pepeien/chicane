@@ -327,7 +327,7 @@
                     "prefix": "",
                     "name": "Target",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Renderer/Target",
                     "templates": []
                 },
                 "name": "getLayer",

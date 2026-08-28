@@ -447,6 +447,32 @@
                     "path": "Renderer/Draw",
                     "templates": []
                 },
+                "name": "findTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_FINDTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
                 "name": "findSky",
                 "parameters": [
                     {

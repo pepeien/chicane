@@ -261,6 +261,22 @@
                 ],
                 "type": {
                     "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SCREEN_TARGET_ID",
+                "description": "CHICANE_RENDERER_SCREEN_TARGET_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
                     "name": "std::size_t",
                     "suffix": "",
                     "path": "",
