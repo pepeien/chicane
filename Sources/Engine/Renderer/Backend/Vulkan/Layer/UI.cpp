@@ -142,7 +142,7 @@ namespace Chicane
                 commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
                 m_graphicsPipeline.bind(commandBuffer);
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-                m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
+                m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
 
                 const std::int32_t screenPush[4] = {backend->getScreenTextureId(), 0, 0, 0};
                 commandBuffer.pushConstants(
@@ -361,7 +361,7 @@ namespace Chicane
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.initialLayout = vk::ImageLayout::eDepthStencilAttachmentOptimal;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             vk::AttachmentReference depthReference;
@@ -711,9 +711,11 @@ namespace Chicane
             }
 
             const VulkanImageInfo& backdrop = m_backdrops.at(inIndex);
-            const vk::Image        source   = inFrame.image.targetImage.instance;
-            vk::CommandBuffer      commands = inFrame.commandBuffer;
-            const vk::Extent2D     extent   = backdrop.extent;
+            // UI draws into the swapchain color image; capture that so backdrop-filter
+            // includes previously drawn UI (not only the offscreen scene target).
+            const vk::Image    source   = inFrame.image.colorImage.instance;
+            vk::CommandBuffer  commands = inFrame.commandBuffer;
+            const vk::Extent2D extent   = backdrop.extent;
 
             vk::ImageSubresourceRange range;
             range.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -723,12 +725,12 @@ namespace Chicane
             range.layerCount     = 1;
 
             vk::ImageMemoryBarrier sourceToTransfer;
-            sourceToTransfer.oldLayout           = vk::ImageLayout::eShaderReadOnlyOptimal;
+            sourceToTransfer.oldLayout           = vk::ImageLayout::eColorAttachmentOptimal;
             sourceToTransfer.newLayout           = vk::ImageLayout::eTransferSrcOptimal;
             sourceToTransfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             sourceToTransfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             sourceToTransfer.image               = source;
-            sourceToTransfer.srcAccessMask       = vk::AccessFlagBits::eShaderRead;
+            sourceToTransfer.srcAccessMask       = vk::AccessFlagBits::eColorAttachmentWrite;
             sourceToTransfer.dstAccessMask       = vk::AccessFlagBits::eTransferRead;
             sourceToTransfer.subresourceRange    = range;
 
@@ -744,7 +746,7 @@ namespace Chicane
 
             std::array<vk::ImageMemoryBarrier, 2> before = {sourceToTransfer, backdropToTransfer};
             commands.pipelineBarrier(
-                vk::PipelineStageFlagBits::eFragmentShader,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader,
                 vk::PipelineStageFlagBits::eTransfer,
                 vk::DependencyFlags(),
                 nullptr,
@@ -770,19 +772,20 @@ namespace Chicane
 
             generateBackdropMips(commands, inIndex);
 
-            vk::ImageMemoryBarrier sourceToSample = sourceToTransfer;
-            sourceToSample.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
-            sourceToSample.newLayout              = vk::ImageLayout::eShaderReadOnlyOptimal;
-            sourceToSample.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
-            sourceToSample.dstAccessMask          = vk::AccessFlagBits::eShaderRead;
+            vk::ImageMemoryBarrier sourceToColor = sourceToTransfer;
+            sourceToColor.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
+            sourceToColor.newLayout              = vk::ImageLayout::eColorAttachmentOptimal;
+            sourceToColor.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
+            sourceToColor.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             commands.pipelineBarrier(
                 vk::PipelineStageFlagBits::eTransfer,
-                vk::PipelineStageFlagBits::eFragmentShader,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
-                sourceToSample
+                sourceToColor
             );
         }
 

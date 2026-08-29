@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 
+#include <algorithm>
+
 #include <glad/gl.h>
 
 #include <SDL3/SDL.h>
@@ -28,7 +30,10 @@ namespace Chicane
               m_targetWidth(0),
               m_targetHeight(0),
               m_screenBlitFramebuffer(0),
-              m_screenTextureId(Draw::InvalidId)
+              m_screenTextureId(Draw::InvalidId),
+              m_gpuQueries({}),
+              m_gpuQueryPending({}),
+              m_gpuQueryWrite(0)
         {}
 
         OpenGLBackend::~OpenGLBackend()
@@ -49,6 +54,7 @@ namespace Chicane
             buildGlad();
             enableFeatures();
             updateResourcesBudget();
+            buildGpuQueries();
             buildTextureData();
             buildTarget();
             buildLayers();
@@ -67,6 +73,7 @@ namespace Chicane
             destroyLayers();
 
             // OpenGL
+            destroyGpuQueries();
             destroyTextureData();
             destroyTarget();
             destroyContext();
@@ -106,19 +113,17 @@ namespace Chicane
                         continue;
                     }
 
-                    glTextureSubImage3D(
-                        m_texturesBuffer,
-                        0,
-                        0,
-                        0,
-                        texture.id,
-                        TEXTURE_WIDTH,
-                        TEXTURE_HEIGHT,
-                        1,
-                        GL_RGBA,
-                        GL_UNSIGNED_BYTE,
-                        pixels
-                    );
+                    glTextureSubImage3D(m_texturesBuffer,
+                                        0,
+                                        0,
+                                        0,
+                                        texture.id,
+                                        TEXTURE_WIDTH,
+                                        TEXTURE_HEIGHT,
+                                        1,
+                                        GL_RGBA,
+                                        GL_UNSIGNED_BYTE,
+                                        pixels);
                 }
             }
 
@@ -127,6 +132,9 @@ namespace Chicane
 
         void OpenGLBackend::onBeginRender()
         {
+            resolveGpuQuery(m_gpuQueryWrite);
+            beginGpuQuery();
+
             buildTarget();
             bindTarget();
 
@@ -152,6 +160,8 @@ namespace Chicane
 
         void OpenGLBackend::onEndRender()
         {
+            endGpuQuery();
+
             SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
@@ -358,6 +368,75 @@ namespace Chicane
             }
         }
 
+        void OpenGLBackend::buildGpuQueries()
+        {
+            destroyGpuQueries();
+
+            const std::uint32_t count = std::max(3U, getRenderer()->getFrameInFlighCount());
+            m_gpuQueries.resize(count);
+            m_gpuQueryPending.assign(count, false);
+            m_gpuQueryWrite = 0;
+
+            for (std::array<std::uint32_t, 2>& pair : m_gpuQueries)
+            {
+                glGenQueries(2, pair.data());
+            }
+        }
+
+        void OpenGLBackend::destroyGpuQueries()
+        {
+            for (std::array<std::uint32_t, 2>& pair : m_gpuQueries)
+            {
+                if (pair[0] != 0)
+                {
+                    glDeleteQueries(2, pair.data());
+                    pair = {0, 0};
+                }
+            }
+
+            m_gpuQueries.clear();
+            m_gpuQueryPending.clear();
+            m_gpuQueryWrite = 0;
+        }
+
+        void OpenGLBackend::beginGpuQuery()
+        {
+            if (m_gpuQueries.empty())
+            {
+                return;
+            }
+
+            glQueryCounter(m_gpuQueries[m_gpuQueryWrite][0], GL_TIMESTAMP);
+        }
+
+        void OpenGLBackend::endGpuQuery()
+        {
+            if (m_gpuQueries.empty())
+            {
+                return;
+            }
+
+            glQueryCounter(m_gpuQueries[m_gpuQueryWrite][1], GL_TIMESTAMP);
+            m_gpuQueryPending[m_gpuQueryWrite] = true;
+            m_gpuQueryWrite = (m_gpuQueryWrite + 1U) % static_cast<std::uint32_t>(m_gpuQueries.size());
+        }
+
+        void OpenGLBackend::resolveGpuQuery(std::uint32_t inSlot)
+        {
+            if (m_gpuQueries.empty() || inSlot >= m_gpuQueries.size() || !m_gpuQueryPending[inSlot])
+            {
+                return;
+            }
+
+            GLint64 start = 0;
+            GLint64 end   = 0;
+            glGetQueryObjecti64v(m_gpuQueries[inSlot][0], GL_QUERY_RESULT, &start);
+            glGetQueryObjecti64v(m_gpuQueries[inSlot][1], GL_QUERY_RESULT, &end);
+
+            setGpuDelta(static_cast<float>(static_cast<double>(end - start) / 1'000'000.0));
+            m_gpuQueryPending[inSlot] = false;
+        }
+
         void OpenGLBackend::enableFeatures()
         {
             if (IS_DEBUGGING)
@@ -398,10 +477,9 @@ namespace Chicane
             GLint hwMaxLayers = 0;
             glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &hwMaxLayers);
 
-            const std::size_t maxAccepted = std::min(
-                static_cast<std::size_t>(hwMaxLayers / 4),
-                static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture))
-            );
+            const std::size_t maxAccepted =
+                std::min(static_cast<std::size_t>(hwMaxLayers / 4),
+                         static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture)));
 
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
             glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, maxAccepted);
@@ -444,12 +522,10 @@ namespace Chicane
 
             glCreateFramebuffers(1, &m_targetFramebuffer);
             glNamedFramebufferTexture(m_targetFramebuffer, GL_COLOR_ATTACHMENT0, m_targetColor, 0);
-            glNamedFramebufferRenderbuffer(
-                m_targetFramebuffer,
-                GL_DEPTH_STENCIL_ATTACHMENT,
-                GL_RENDERBUFFER,
-                m_targetDepth
-            );
+            glNamedFramebufferRenderbuffer(m_targetFramebuffer,
+                                           GL_DEPTH_STENCIL_ATTACHMENT,
+                                           GL_RENDERBUFFER,
+                                           m_targetDepth);
 
             glCreateFramebuffers(1, &m_screenBlitFramebuffer);
 
@@ -513,18 +589,16 @@ namespace Chicane
             glReadBuffer(GL_COLOR_ATTACHMENT0);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             glDrawBuffer(GL_BACK);
-            glBlitFramebuffer(
-                0,
-                0,
-                static_cast<GLint>(m_targetWidth),
-                static_cast<GLint>(m_targetHeight),
-                0,
-                0,
-                static_cast<GLint>(m_targetWidth),
-                static_cast<GLint>(m_targetHeight),
-                GL_COLOR_BUFFER_BIT,
-                GL_NEAREST
-            );
+            glBlitFramebuffer(0,
+                              0,
+                              static_cast<GLint>(m_targetWidth),
+                              static_cast<GLint>(m_targetHeight),
+                              0,
+                              0,
+                              static_cast<GLint>(m_targetWidth),
+                              static_cast<GLint>(m_targetHeight),
+                              GL_COLOR_BUFFER_BIT,
+                              GL_NEAREST);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -536,30 +610,26 @@ namespace Chicane
                 return;
             }
 
-            glNamedFramebufferTextureLayer(
-                m_screenBlitFramebuffer,
-                GL_COLOR_ATTACHMENT0,
-                m_texturesBuffer,
-                0,
-                m_screenTextureId
-            );
+            glNamedFramebufferTextureLayer(m_screenBlitFramebuffer,
+                                           GL_COLOR_ATTACHMENT0,
+                                           m_texturesBuffer,
+                                           0,
+                                           m_screenTextureId);
 
             glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
             glReadBuffer(GL_COLOR_ATTACHMENT0);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_screenBlitFramebuffer);
             glDrawBuffer(GL_COLOR_ATTACHMENT0);
-            glBlitFramebuffer(
-                0,
-                0,
-                static_cast<GLint>(m_targetWidth),
-                static_cast<GLint>(m_targetHeight),
-                0,
-                0,
-                static_cast<GLint>(TEXTURE_WIDTH),
-                static_cast<GLint>(TEXTURE_HEIGHT),
-                GL_COLOR_BUFFER_BIT,
-                GL_LINEAR
-            );
+            glBlitFramebuffer(0,
+                              0,
+                              static_cast<GLint>(m_targetWidth),
+                              static_cast<GLint>(m_targetHeight),
+                              0,
+                              0,
+                              static_cast<GLint>(TEXTURE_WIDTH),
+                              static_cast<GLint>(TEXTURE_HEIGHT),
+                              GL_COLOR_BUFFER_BIT,
+                              GL_LINEAR);
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
         }

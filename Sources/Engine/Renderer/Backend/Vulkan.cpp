@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp"
@@ -24,7 +26,11 @@ namespace Chicane
               swapchain({}),
               frames({}),
               m_currentFrameIndex(0U),
-              m_screenTextureId(Draw::InvalidId)
+              m_screenTextureId(Draw::InvalidId),
+              m_timestampQueryPool(nullptr),
+              m_timestampPeriod(1.0f),
+              m_bTimestampsEnabled(false),
+              m_timestampSubmitted({})
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -51,6 +57,7 @@ namespace Chicane
             buildMainCommandBuffer();
             buildSwapchain();
             buildFrames();
+            buildTimestampQueries();
             buildTextureDescriptor();
             buildLayers();
         }
@@ -68,6 +75,7 @@ namespace Chicane
 
             // Vulkan
             destroyCommandPool();
+            destroyTimestampQueries();
             destroySwapchain();
             destroyFrames();
             destroyTextureData();
@@ -102,6 +110,7 @@ namespace Chicane
         {
             VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
             nextFrame.wait();
+            resolveGpuTimestamp(m_currentFrameIndex);
 
             const auto [result, imageIndex] =
                 logicalDevice
@@ -121,19 +130,24 @@ namespace Chicane
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
 
+            // Update before any bind in this CB — view/sampler are stable for this
+            // swapchain image; flushTarget only refreshes contents later.
+            bindScreenTarget(nextImage.targetImage);
+
             nextFrame.begin(inFrame, nextImage);
+            writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
             renderLayers(
                 inFrame,
                 &nextFrame,
                 [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
             );
             nextFrame.flushTarget();
-            bindScreenTarget(nextImage.targetImage);
             renderLayers(
                 inFrame,
                 &nextFrame,
                 [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
             );
+            writeGpuTimestampEnd(nextFrame.commandBuffer, m_currentFrameIndex);
             nextFrame.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -151,6 +165,11 @@ namespace Chicane
             if (submitResult != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Queue submit failed");
+            }
+
+            if (m_bTimestampsEnabled)
+            {
+                m_timestampSubmitted[m_currentFrameIndex] = true;
             }
 
             vk::PresentInfoKHR presentInfo;
@@ -178,6 +197,16 @@ namespace Chicane
         Draw::Id VulkanBackend::getScreenTextureId() const
         {
             return m_screenTextureId;
+        }
+
+        vk::DescriptorSet VulkanBackend::getTextureDescriptorSet() const
+        {
+            if (textureDescriptorSets.empty())
+            {
+                return textureDescriptor.set;
+            }
+
+            return textureDescriptorSets.at(m_currentFrameIndex);
         }
 
         vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
@@ -370,6 +399,103 @@ namespace Chicane
             frames.clear();
         }
 
+        void VulkanBackend::buildTimestampQueries()
+        {
+            m_bTimestampsEnabled = false;
+            m_timestampSubmitted.assign(frames.size(), false);
+
+            if (frames.empty())
+            {
+                return;
+            }
+
+            VulkanQueueFamilyIndices familyIndices(physicalDevice, surface);
+            if (!familyIndices.graphicsFamily.has_value())
+            {
+                return;
+            }
+
+            const std::vector<vk::QueueFamilyProperties> queueProperties = physicalDevice.getQueueFamilyProperties();
+            const vk::QueueFamilyProperties&             graphicsProperties =
+                queueProperties.at(familyIndices.graphicsFamily.value());
+
+            if (graphicsProperties.timestampValidBits == 0)
+            {
+                return;
+            }
+
+            m_timestampPeriod = physicalDevice.getProperties().limits.timestampPeriod;
+
+            vk::QueryPoolCreateInfo createInfo;
+            createInfo.queryType  = vk::QueryType::eTimestamp;
+            createInfo.queryCount = static_cast<std::uint32_t>(frames.size() * 2U);
+
+            m_timestampQueryPool = logicalDevice.createQueryPool(createInfo);
+            m_bTimestampsEnabled = true;
+        }
+
+        void VulkanBackend::destroyTimestampQueries()
+        {
+            if (m_timestampQueryPool)
+            {
+                logicalDevice.destroyQueryPool(m_timestampQueryPool);
+                m_timestampQueryPool = nullptr;
+            }
+
+            m_bTimestampsEnabled = false;
+            m_timestampSubmitted.clear();
+        }
+
+        void VulkanBackend::resolveGpuTimestamp(std::uint32_t inFrameIndex)
+        {
+            if (!m_bTimestampsEnabled || !m_timestampSubmitted[inFrameIndex])
+            {
+                return;
+            }
+
+            std::uint64_t timestamps[2] = {0, 0};
+            vk::Result    result        = logicalDevice.getQueryPoolResults(
+                m_timestampQueryPool,
+                inFrameIndex * 2U,
+                2U,
+                sizeof(timestamps),
+                timestamps,
+                sizeof(std::uint64_t),
+                vk::QueryResultFlagBits::e64
+            );
+
+            if (result != vk::Result::eSuccess)
+            {
+                return;
+            }
+
+            const double nanoseconds = static_cast<double>(timestamps[1] - timestamps[0]) * m_timestampPeriod;
+            setGpuDelta(static_cast<float>(nanoseconds / 1'000'000.0));
+        }
+
+        void VulkanBackend::writeGpuTimestampStart(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex)
+        {
+            if (!m_bTimestampsEnabled)
+            {
+                return;
+            }
+
+            const std::uint32_t query = inFrameIndex * 2U;
+            inCommandBuffer.resetQueryPool(m_timestampQueryPool, query, 2U);
+            inCommandBuffer.writeTimestamp(vk::PipelineStageFlagBits::eTopOfPipe, m_timestampQueryPool, query);
+        }
+
+        void VulkanBackend::writeGpuTimestampEnd(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex)
+        {
+            if (!m_bTimestampsEnabled)
+            {
+                return;
+            }
+
+            inCommandBuffer
+                .writeTimestamp(vk::PipelineStageFlagBits::eBottomOfPipe, m_timestampQueryPool, inFrameIndex * 2U + 1U);
+        }
+
         void VulkanBackend::buildLayers()
         {
             ListPush<Layer*> settings;
@@ -393,20 +519,28 @@ namespace Chicane
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
 
+            const std::uint32_t setCount = std::max(1U, static_cast<std::uint32_t>(frames.size()));
+
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = 1;
+            descriptorPoolCreateInfo.maxSets = setCount;
             descriptorPoolCreateInfo.sizes.push_back(
-                {vk::DescriptorType::eCombinedImageSampler, getResourceBudgetCount(Resource::Texture)}
+                {vk::DescriptorType::eCombinedImageSampler, getResourceBudgetCount(Resource::Texture) * setCount}
             );
 
             VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
 
-            VulkanDescriptorSetLayout::allocate(
-                textureDescriptor.set,
-                logicalDevice,
-                textureDescriptor.setLayout,
-                textureDescriptor.pool
-            );
+            textureDescriptorSets.resize(setCount);
+            for (vk::DescriptorSet& set : textureDescriptorSets)
+            {
+                VulkanDescriptorSetLayout::allocate(
+                    set,
+                    logicalDevice,
+                    textureDescriptor.setLayout,
+                    textureDescriptor.pool
+                );
+            }
+
+            textureDescriptor.set = textureDescriptorSets.front();
         }
 
         void VulkanBackend::buildTextureData(const DrawTexture::List& inTextures)
@@ -414,6 +548,11 @@ namespace Chicane
             if (inTextures.empty())
             {
                 return;
+            }
+
+            for (VulkanFrame& frame : frames)
+            {
+                frame.wait();
             }
 
             VulkanTextureCreateInfo createInfo;
@@ -452,15 +591,18 @@ namespace Chicane
                 infos.push_back(info);
             }
 
-            vk::WriteDescriptorSet set;
-            set.dstSet          = textureDescriptor.set;
-            set.dstBinding      = 0;
-            set.dstArrayElement = 0;
-            set.descriptorCount = static_cast<std::uint32_t>(infos.size());
-            set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-            set.pImageInfo      = infos.data();
+            for (vk::DescriptorSet set : textureDescriptorSets)
+            {
+                vk::WriteDescriptorSet write;
+                write.dstSet          = set;
+                write.dstBinding      = 0;
+                write.dstArrayElement = 0;
+                write.descriptorCount = static_cast<std::uint32_t>(infos.size());
+                write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                write.pImageInfo      = infos.data();
 
-            logicalDevice.updateDescriptorSets(set, nullptr);
+                logicalDevice.updateDescriptorSets(write, nullptr);
+            }
         }
 
         void VulkanBackend::bindScreenTarget(const VulkanImageInfo& inTarget)
@@ -476,7 +618,7 @@ namespace Chicane
             info.sampler     = inTarget.sampler;
 
             vk::WriteDescriptorSet set;
-            set.dstSet          = textureDescriptor.set;
+            set.dstSet          = getTextureDescriptorSet();
             set.dstBinding      = 0;
             set.dstArrayElement = static_cast<std::uint32_t>(m_screenTextureId);
             set.descriptorCount = 1;
@@ -489,9 +631,14 @@ namespace Chicane
         void VulkanBackend::destroyTextureData()
         {
             textures.clear();
+            textureDescriptorSets.clear();
 
             logicalDevice.destroyDescriptorSetLayout(textureDescriptor.setLayout);
             logicalDevice.destroyDescriptorPool(textureDescriptor.pool);
+
+            textureDescriptor.set       = nullptr;
+            textureDescriptor.setLayout = nullptr;
+            textureDescriptor.pool      = nullptr;
         }
     }
 }

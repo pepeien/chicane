@@ -80,7 +80,7 @@ namespace Chicane
             m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
-            m_graphicsPipeline.bind(commandBuffer, 1, backend->textureDescriptor.set);
+            m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
 
             // Draw
             vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
@@ -263,7 +263,7 @@ namespace Chicane
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.initialLayout = vk::ImageLayout::eDepthStencilAttachmentOptimal;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             vk::AttachmentReference depthReference;
