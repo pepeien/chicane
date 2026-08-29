@@ -8,6 +8,9 @@ namespace Chicane
     {
         Backend::Backend()
             : m_renderer(nullptr),
+              m_layers({}),
+              m_VRAM(0U),
+              m_gpuDelta(0.0f),
               m_status(BackendStatus::Shutdown)
         {}
 
@@ -196,6 +199,16 @@ namespace Chicane
         bool Backend::isStatus(BackendStatus inValue) const
         {
             return m_status == inValue;
+        }
+
+        float Backend::getGpuDelta() const
+        {
+            return m_gpuDelta;
+        }
+
+        void Backend::setGpuDelta(float inMilliseconds)
+        {
+            m_gpuDelta = inMilliseconds;
         }
 
         void Backend::renderLayers(

@@ -10,7 +10,12 @@ namespace Chicane
 
     void FrameTelemetry::onTime()
     {
-        delta = getDelta().miliseconds();
+        set(getDelta().miliseconds());
+    }
+
+    void FrameTelemetry::set(float inDelta)
+    {
+        delta = inDelta;
         rate  = delta > 0.0f ? static_cast<std::uint32_t>(1000.0f / delta) : 0;
     }
 }

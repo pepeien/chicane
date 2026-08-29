@@ -252,6 +252,16 @@ namespace Chicane
             markResourcesAsDirty();
         }
 
+        float Instance::getGpuDelta() const
+        {
+            if (!hasBackend())
+            {
+                return 0.0f;
+            }
+
+            return m_backend->getGpuDelta();
+        }
+
         void Instance::syncDirtyResources()
         {
             for (auto& [type, resource] : m_polyResources)

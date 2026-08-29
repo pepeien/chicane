@@ -104,6 +104,8 @@ namespace Chicane
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }
 
+            float getGpuDelta() const;
+
         private:
             // Backend
             void reloadBackend();

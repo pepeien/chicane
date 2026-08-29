@@ -42,6 +42,7 @@ namespace Chicane
             vk::Viewport getVkViewport(Layer* inLayer) const;
             vk::Rect2D getVkScissor(Layer* inLayer) const;
             Draw::Id getScreenTextureId() const;
+            vk::DescriptorSet getTextureDescriptorSet() const;
 
         private:
             void buildInstance();
@@ -71,6 +72,12 @@ namespace Chicane
 
             void buildFrames();
             void destroyFrames();
+
+            void buildTimestampQueries();
+            void destroyTimestampQueries();
+            void resolveGpuTimestamp(std::uint32_t inFrameIndex);
+            void writeGpuTimestampStart(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex);
+            void writeGpuTimestampEnd(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex);
 
             void buildLayers();
 
@@ -104,6 +111,7 @@ namespace Chicane
 
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;
+            std::vector<vk::DescriptorSet>              textureDescriptorSets;
             std::vector<std::shared_ptr<VulkanTexture>> textures;
 
         private:
@@ -122,6 +130,12 @@ namespace Chicane
 
             // Command
             vk::CommandPool            m_mainCommandPool;
+
+            // GPU timing
+            vk::QueryPool              m_timestampQueryPool;
+            float                      m_timestampPeriod;
+            bool                       m_bTimestampsEnabled;
+            std::vector<bool>          m_timestampSubmitted;
         };
     }
 }

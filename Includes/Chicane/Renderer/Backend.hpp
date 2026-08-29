@@ -128,6 +128,9 @@ namespace Chicane
 
             bool isStatus(BackendStatus inValue) const;
 
+            // Telemetry
+            float getGpuDelta() const;
+
         protected:
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
@@ -141,6 +144,7 @@ namespace Chicane
             void destroyLayers();
 
             void setVRAM(std::size_t inBytes);
+            void setGpuDelta(float inMilliseconds);
 
         private:
             void setRenderer(const Instance* inValue);
@@ -149,6 +153,7 @@ namespace Chicane
             const Instance* m_renderer;
             LayerList       m_layers;
             std::size_t     m_VRAM;
+            float           m_gpuDelta;
 
         private:
             BackendStatus m_status;

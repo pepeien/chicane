@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <vector>
+
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Blending.hpp"
@@ -16,6 +19,9 @@ namespace Chicane
     {
         class CHICANE_RENDERER OpenGLBackend : public Backend
         {
+        public:
+            using GpuQueries = std::vector<std::array<std::uint32_t, 2>>;
+
         public:
             OpenGLBackend();
             ~OpenGLBackend();
@@ -84,6 +90,13 @@ namespace Chicane
             void presentTarget() const;
             void captureScreenTarget();
 
+            // GPU timing
+            void buildGpuQueries();
+            void destroyGpuQueries();
+            void beginGpuQuery();
+            void endGpuQuery();
+            void resolveGpuQuery(std::uint32_t inSlot);
+
             // Layer
             void buildLayers();
 
@@ -95,14 +108,19 @@ namespace Chicane
             std::uint32_t toGLDrawTopology(DrawPolyTopology inValue) const;
 
         private:
-            std::uint32_t m_texturesBuffer;
-            std::uint32_t m_targetFramebuffer;
-            std::uint32_t m_targetColor;
-            std::uint32_t m_targetDepth;
-            std::uint32_t m_targetWidth;
-            std::uint32_t m_targetHeight;
-            std::uint32_t m_screenBlitFramebuffer;
-            Draw::Id      m_screenTextureId;
+            std::uint32_t     m_texturesBuffer;
+            std::uint32_t     m_targetFramebuffer;
+            std::uint32_t     m_targetColor;
+            std::uint32_t     m_targetDepth;
+            std::uint32_t     m_targetWidth;
+            std::uint32_t     m_targetHeight;
+            std::uint32_t     m_screenBlitFramebuffer;
+            Draw::Id          m_screenTextureId;
+
+            // GPU timing
+            GpuQueries        m_gpuQueries;
+            std::vector<bool> m_gpuQueryPending;
+            std::uint32_t     m_gpuQueryWrite;
         };
     }
 }

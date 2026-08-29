@@ -71,11 +71,9 @@ namespace Chicane
 
         while (m_window->run())
         {
-            m_telemetry.renderer.start();
-
             render();
 
-            m_telemetry.renderer.end();
+            m_telemetry.renderer.frame.set(m_renderer ? m_renderer->getGpuDelta() : 0.0f);
         }
 
         m_bIsRunning.store(false, std::memory_order_seq_cst);

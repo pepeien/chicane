@@ -57,13 +57,30 @@ namespace Chicane
             targetToColor.subresourceRange.baseArrayLayer = 0;
             targetToColor.subresourceRange.layerCount     = 1;
 
+            vk::ImageMemoryBarrier depthToAttachment;
+            depthToAttachment.oldLayout           = vk::ImageLayout::eUndefined;
+            depthToAttachment.newLayout           = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+            depthToAttachment.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            depthToAttachment.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            depthToAttachment.image               = image.depthImage.instance;
+            depthToAttachment.srcAccessMask       = vk::AccessFlagBits::eNone;
+            depthToAttachment.dstAccessMask =
+                vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+            depthToAttachment.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eDepth;
+            depthToAttachment.subresourceRange.baseMipLevel   = 0;
+            depthToAttachment.subresourceRange.levelCount     = 1;
+            depthToAttachment.subresourceRange.baseArrayLayer = 0;
+            depthToAttachment.subresourceRange.layerCount     = 1;
+
+            std::array<vk::ImageMemoryBarrier, 2> barriers = {targetToColor, depthToAttachment};
             commandBuffer.pipelineBarrier(
                 vk::PipelineStageFlagBits::eTopOfPipe,
-                vk::PipelineStageFlagBits::eColorAttachmentOutput,
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eEarlyFragmentTests |
+                    vk::PipelineStageFlagBits::eLateFragmentTests,
                 vk::DependencyFlags(),
                 nullptr,
                 nullptr,
-                targetToColor
+                barriers
             );
         }
 

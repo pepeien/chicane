@@ -19,6 +19,9 @@ namespace Chicane
         void onTime() override;
 
     public:
+        void set(float inDelta);
+
+    public:
         CH_FIELD()
         float delta;
 
