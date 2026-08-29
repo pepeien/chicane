@@ -93,7 +93,6 @@ namespace Editor
                 default:
                     break;
                 }
-            }
-        );
+            });
     }
 }

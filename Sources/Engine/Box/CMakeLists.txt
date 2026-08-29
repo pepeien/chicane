@@ -1,3 +1,6 @@
+######################### Directories #########################
+add_subdirectory(Vendor)
+
 ######################### Files #########################
 file(
     GLOB_RECURSE
@@ -77,6 +80,3 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${CHICANE_ENGINE_BOX_TARGET_NAME})
 CH_GENERATE_REFLECTION(${CHICANE_ENGINE_BOX_TARGET_NAME})
-
-######################### Directories #########################
-add_subdirectory(Vendor)

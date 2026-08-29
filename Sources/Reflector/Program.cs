@@ -2,6 +2,46 @@
 
 class Program
 {
+    static HashSet<string> LoadReflectedTypeNames(string typesDir)
+    {
+        HashSet<string> names = new(StringComparer.Ordinal);
+
+        if (string.IsNullOrEmpty(typesDir) || !Directory.Exists(typesDir))
+        {
+            return names;
+        }
+
+        foreach (string file in Directory.EnumerateFiles(typesDir, "*.types"))
+        {
+            foreach (string line in File.ReadLines(file))
+            {
+                string trimmed = line.Trim();
+
+                if (trimmed.Length == 0 || trimmed.StartsWith('#'))
+                {
+                    continue;
+                }
+
+                names.Add(trimmed);
+            }
+        }
+
+        return names;
+    }
+
+    static void WriteReflectedTypeNames(string typesDir, string targetName, IEnumerable<string> typeNames)
+    {
+        Directory.CreateDirectory(typesDir);
+
+        string path = Path.Combine(typesDir, $"{targetName}.types");
+        IEnumerable<string> lines = typeNames
+            .Where(n => !string.IsNullOrWhiteSpace(n))
+            .Distinct(StringComparer.Ordinal)
+            .OrderBy(n => n, StringComparer.Ordinal);
+
+        File.WriteAllLines(path, lines);
+    }
+
     static int Main(string[] args)
     {
         List<string> inputFiles = [];
@@ -10,6 +50,8 @@ class Program
         string baseDir = "";
         string sourceDir = "";
         string outputDir = "";
+        string typesDir = "";
+        string targetName = "";
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -19,6 +61,39 @@ class Program
                     while (i + 1 < args.Length && !args[i + 1].StartsWith('-'))
                     {
                         inputFiles.Add(Path.GetFullPath(args[++i]));
+                    }
+
+                    break;
+
+                case "-f":
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.WriteLine("Error: -f requires an inputs list file.");
+
+                        return 1;
+                    }
+
+                    {
+                        string listPath = Path.GetFullPath(args[++i]);
+
+                        if (!File.Exists(listPath))
+                        {
+                            Console.WriteLine($"Error: inputs list not found: {listPath}");
+
+                            return 1;
+                        }
+
+                        foreach (string line in File.ReadLines(listPath))
+                        {
+                            string trimmed = line.Trim();
+
+                            if (trimmed.Length == 0 || trimmed.StartsWith('#'))
+                            {
+                                continue;
+                            }
+
+                            inputFiles.Add(Path.GetFullPath(trimmed));
+                        }
                     }
 
                     break;
@@ -59,6 +134,39 @@ class Program
 
                     break;
 
+                case "-L":
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.WriteLine("Error: -L requires an includes list file.");
+
+                        return 1;
+                    }
+
+                    {
+                        string listPath = Path.GetFullPath(args[++i]);
+
+                        if (!File.Exists(listPath))
+                        {
+                            Console.WriteLine($"Error: includes list not found: {listPath}");
+
+                            return 1;
+                        }
+
+                        foreach (string line in File.ReadLines(listPath))
+                        {
+                            string trimmed = line.Trim();
+
+                            if (trimmed.Length == 0 || trimmed.StartsWith('#'))
+                            {
+                                continue;
+                            }
+
+                            lookUpFolders.Add(Path.GetFullPath(trimmed));
+                        }
+                    }
+
+                    break;
+
                 case "-o":
                     if (i + 1 < args.Length)
                     {
@@ -73,6 +181,34 @@ class Program
 
                     break;
 
+                case "-t":
+                    if (i + 1 < args.Length)
+                    {
+                        typesDir = Path.GetFullPath(args[++i]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: -t requires a types directory path.");
+
+                        return 1;
+                    }
+
+                    break;
+
+                case "-n":
+                    if (i + 1 < args.Length)
+                    {
+                        targetName = args[++i];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: -n requires a target name.");
+
+                        return 1;
+                    }
+
+                    break;
+
                 default:
                     break;
             }
@@ -80,10 +216,12 @@ class Program
 
         if (inputFiles.Count == 0 || string.IsNullOrEmpty(baseDir) || string.IsNullOrEmpty(outputDir))
         {
-            Console.WriteLine("Usage: program -i <input files> -b <base folder> -s <source folder> -o <output folder>");
+            Console.WriteLine("Usage: program (-i <input files> | -f <inputs list>) -b <base folder> -s <source folder> -o <output folder> [-l <look-up folders>] [-L <includes list>] [-t <types dir> -n <target name>]");
 
             return 1;
         }
+
+        HashSet<string> reflectedTypeNames = LoadReflectedTypeNames(typesDir);
 
         ConcurrentDictionary<string, List<Reflector.EnumModel>> allEnums = new();
         ConcurrentDictionary<string, List<Reflector.TypeModel>> allTypes = new();
@@ -99,6 +237,12 @@ class Program
         );
 
         List<Reflector.TypeModel> flatTypes = [.. allTypes.Values.SelectMany(t => t)];
+
+        foreach (Reflector.TypeModel type in flatTypes)
+        {
+            reflectedTypeNames.Add(type.Name);
+        }
+
         Parallel.ForEach(
             inputFiles,
             file =>
@@ -124,9 +268,14 @@ class Program
 
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
-                File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, flatTypes, baseDir));
+                File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, reflectedTypeNames, baseDir));
             }
         );
+
+        if (!string.IsNullOrEmpty(typesDir) && !string.IsNullOrEmpty(targetName))
+        {
+            WriteReflectedTypeNames(typesDir, targetName, flatTypes.Select(t => t.Name));
+        }
 
         return 0;
     }
