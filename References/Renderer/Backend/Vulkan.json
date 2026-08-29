@@ -116,6 +116,23 @@
                 "description": "CHICANE_RENDERER_VULKANBACKEND_GETSCREENTEXTUREID_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSet",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getTextureDescriptorSet",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETTEXTUREDESCRIPTORSET_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -492,6 +509,134 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildTimestampQueries",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_BUILDTIMESTAMPQUERIES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyTimestampQueries",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_DESTROYTIMESTAMPQUERIES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resolveGpuTimestamp",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_RESOLVEGPUTIMESTAMP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeGpuTimestampStart",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_WRITEGPUTIMESTAMPSTART_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeGpuTimestampEnd",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_WRITEGPUTIMESTAMPEND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -717,6 +862,27 @@
                     "templates": [
                         {
                             "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "textureDescriptorSets",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_TEXTUREDESCRIPTORSETS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
                             "name": "std::shared_ptr",
                             "suffix": "",
                             "path": "",
@@ -812,6 +978,66 @@
                 },
                 "name": "m_mainCommandPool",
                 "description": "CHICANE_RENDERER_VULKANBACKEND_M_MAINCOMMANDPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::QueryPool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_timestampQueryPool",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_TIMESTAMPQUERYPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_timestampPeriod",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_TIMESTAMPPERIOD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bTimestampsEnabled",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_BTIMESTAMPSENABLED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_timestampSubmitted",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_TIMESTAMPSUBMITTED_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANBACKEND_DESCRIPTION"

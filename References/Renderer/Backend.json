@@ -502,6 +502,23 @@
                 "description": "CHICANE_RENDERER_BACKEND_ISSTATUS_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getGpuDelta",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETGPUDELTA_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -655,6 +672,32 @@
                 "description": "CHICANE_RENDERER_BACKEND_SETVRAM_DESCRIPTION"
             },
             {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setGpuDelta",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMilliseconds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_SETGPUDELTA_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -746,6 +789,19 @@
                 },
                 "name": "m_VRAM",
                 "description": "CHICANE_RENDERER_BACKEND_M_VRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_gpuDelta",
+                "description": "CHICANE_RENDERER_BACKEND_M_GPUDELTA_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_BACKEND_DESCRIPTION"
