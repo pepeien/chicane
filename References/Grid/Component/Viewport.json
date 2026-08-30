@@ -129,6 +129,22 @@
             },
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_TARGET",
+                "description": "CHICANE_GRID_VIEWPORT_DEFAULT_TARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",

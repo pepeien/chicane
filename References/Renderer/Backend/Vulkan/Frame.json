@@ -133,7 +133,18 @@
                     "templates": []
                 },
                 "name": "flushTarget",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInPresentToWindow"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANFRAME_FLUSHTARGET_DESCRIPTION"
             },

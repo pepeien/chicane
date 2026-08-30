@@ -100,7 +100,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "Draw::Id",

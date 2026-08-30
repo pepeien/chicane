@@ -510,7 +510,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "Draw::Id",
@@ -783,7 +783,18 @@
                     "templates": []
                 },
                 "name": "presentTarget",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPresentToWindow"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
