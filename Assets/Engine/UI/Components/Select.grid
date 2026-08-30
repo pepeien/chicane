@@ -1,0 +1,9 @@
+<Container class="select">
+    <Button class="select__control" onClick="{{ toggle() }}">
+        <Text class="select__label">{{ label }}</Text>
+    </Button>
+    <Container class="select__list" dir:if="{{ isOpen }}">
+        <SelectOption dir:for="item : items" value="{{ item }}">{{ item }}</SelectOption>
+        <Content select="SelectOption" />
+    </Container>
+</Container>

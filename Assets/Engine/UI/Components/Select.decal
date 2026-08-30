@@ -1,0 +1,51 @@
+Select {
+    position: relative;
+    overflow: visible;
+    cursor: pointer;
+}
+
+.select {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: visible;
+
+    &__control {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        cursor: pointer;
+        overflow: hidden;
+        background-color: rgba(40, 40, 40, 0.92);
+    }
+
+    &__label {
+        margin: auto 0 auto 0.4em;
+    }
+
+    &__list {
+        position: absolute;
+        width: 100%;
+        margin-top: 100%;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        background-color: rgba(24, 24, 24, 0.96);
+    }
+}
+
+Option {
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+
+    Text {
+        margin: 0.25em 0.4em;
+    }
+
+    &:hover, &.--active, &.--selected {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+}
