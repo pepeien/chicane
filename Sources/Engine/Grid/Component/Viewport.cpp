@@ -25,7 +25,14 @@ namespace Chicane
 
         void Viewport::refreshTarget()
         {
-            m_style.background.image.setRaw(parseText(getAttribute(TARGET_ATTRIBUTE_NAME)).trim());
+            String value = parseText(getAttribute(TARGET_ATTRIBUTE_NAME)).trim();
+
+            if (value.isEmpty())
+            {
+                value = DEFAULT_TARGET;
+            }
+
+            m_style.background.image.setRaw(value);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Chicane
 
             // Attributes
             static constexpr inline const char* TARGET_ATTRIBUTE_NAME = "target";
+            static constexpr inline const char* DEFAULT_TARGET        = "Screen";
 
         public:
             CH_CONSTRUCTOR()

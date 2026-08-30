@@ -7,6 +7,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Status.hpp"
+#include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
@@ -131,7 +132,12 @@ namespace Chicane
             // Telemetry
             float getGpuDelta() const;
 
+            // Target
+            virtual Draw::Id getScreenTextureId() const;
+
         protected:
+            bool isScreenComposited(const Frame& inFrame) const;
+
             // Layer
             Viewport getLayerViewport(Layer* inLayer) const;
             void renderLayers(

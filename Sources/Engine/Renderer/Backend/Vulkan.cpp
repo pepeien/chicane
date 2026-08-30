@@ -130,8 +130,6 @@ namespace Chicane
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
 
-            // Update before any bind in this CB — view/sampler are stable for this
-            // swapchain image; flushTarget only refreshes contents later.
             bindScreenTarget(nextImage.targetImage);
 
             nextFrame.begin(inFrame, nextImage);
@@ -141,7 +139,7 @@ namespace Chicane
                 &nextFrame,
                 [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
             );
-            nextFrame.flushTarget();
+            nextFrame.flushTarget(!isScreenComposited(inFrame));
             renderLayers(
                 inFrame,
                 &nextFrame,

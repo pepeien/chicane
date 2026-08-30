@@ -152,7 +152,7 @@ namespace Chicane
         {
             renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); });
 
-            presentTarget();
+            presentTarget(!isScreenComposited(inFrame));
             glBindTextureUnit(0, m_texturesBuffer);
 
             renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); });
@@ -578,27 +578,36 @@ namespace Chicane
             return m_screenTextureId;
         }
 
-        void OpenGLBackend::presentTarget() const
+        void OpenGLBackend::presentTarget(bool inPresentToWindow) const
         {
             if (m_targetFramebuffer == 0)
             {
                 return;
             }
 
-            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
-            glReadBuffer(GL_COLOR_ATTACHMENT0);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             glDrawBuffer(GL_BACK);
-            glBlitFramebuffer(0,
-                              0,
-                              static_cast<GLint>(m_targetWidth),
-                              static_cast<GLint>(m_targetHeight),
-                              0,
-                              0,
-                              static_cast<GLint>(m_targetWidth),
-                              static_cast<GLint>(m_targetHeight),
-                              GL_COLOR_BUFFER_BIT,
-                              GL_NEAREST);
+
+            if (inPresentToWindow)
+            {
+                glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
+                glReadBuffer(GL_COLOR_ATTACHMENT0);
+                glBlitFramebuffer(0,
+                                  0,
+                                  static_cast<GLint>(m_targetWidth),
+                                  static_cast<GLint>(m_targetHeight),
+                                  0,
+                                  0,
+                                  static_cast<GLint>(m_targetWidth),
+                                  static_cast<GLint>(m_targetHeight),
+                                  GL_COLOR_BUFFER_BIT,
+                                  GL_NEAREST);
+            }
+            else
+            {
+                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+            }
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }

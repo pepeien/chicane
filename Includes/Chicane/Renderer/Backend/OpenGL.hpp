@@ -72,7 +72,7 @@ namespace Chicane
             // Target
             void bindTarget() const;
             std::uint32_t getTargetColor() const;
-            Draw::Id getScreenTextureId() const;
+            Draw::Id getScreenTextureId() const override;
 
         private:
             // OpenGL
@@ -87,7 +87,7 @@ namespace Chicane
 
             void buildTarget();
             void destroyTarget();
-            void presentTarget() const;
+            void presentTarget(bool inPresentToWindow) const;
             void captureScreenTarget();
 
             // GPU timing

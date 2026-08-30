@@ -84,7 +84,7 @@ namespace Chicane
             );
         }
 
-        void VulkanFrame::flushTarget()
+        void VulkanFrame::flushTarget(bool bInPresentToWindow)
         {
             vk::ImageSubresourceRange range;
             range.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -123,21 +123,32 @@ namespace Chicane
                 before
             );
 
-            vk::ImageCopy region;
-            region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
-            region.srcSubresource.mipLevel       = 0;
-            region.srcSubresource.baseArrayLayer = 0;
-            region.srcSubresource.layerCount     = 1;
-            region.dstSubresource                = region.srcSubresource;
-            region.extent = vk::Extent3D(image.targetImage.extent.width, image.targetImage.extent.height, 1);
+            if (bInPresentToWindow)
+            {
+                vk::ImageCopy region;
+                region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                region.srcSubresource.mipLevel       = 0;
+                region.srcSubresource.baseArrayLayer = 0;
+                region.srcSubresource.layerCount     = 1;
+                region.dstSubresource                = region.srcSubresource;
+                region.extent = vk::Extent3D(image.targetImage.extent.width, image.targetImage.extent.height, 1);
 
-            commandBuffer.copyImage(
-                image.targetImage.instance,
-                vk::ImageLayout::eTransferSrcOptimal,
-                image.colorImage.instance,
-                vk::ImageLayout::eTransferDstOptimal,
-                region
-            );
+                commandBuffer.copyImage(
+                    image.targetImage.instance,
+                    vk::ImageLayout::eTransferSrcOptimal,
+                    image.colorImage.instance,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    region
+                );
+            }
+            else
+            {
+                vk::ClearColorValue clear;
+                clear.setFloat32({0.0f, 0.0f, 0.0f, 1.0f});
+
+                commandBuffer
+                    .clearColorImage(image.colorImage.instance, vk::ImageLayout::eTransferDstOptimal, clear, range);
+            }
 
             vk::ImageMemoryBarrier swapchainToColor = swapchainToTransfer;
             swapchainToColor.oldLayout              = vk::ImageLayout::eTransferDstOptimal;

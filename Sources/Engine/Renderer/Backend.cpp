@@ -206,6 +206,31 @@ namespace Chicane
             return m_gpuDelta;
         }
 
+        Draw::Id Backend::getScreenTextureId() const
+        {
+            return Draw::InvalidId;
+        }
+
+        bool Backend::isScreenComposited(const Frame& inFrame) const
+        {
+            const Draw::Id screenId = getScreenTextureId();
+
+            if (screenId <= Draw::InvalidId)
+            {
+                return false;
+            }
+
+            for (const DrawPoly2DInstance& instance : inFrame.getInstances2D())
+            {
+                if (instance.texture == screenId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         void Backend::setGpuDelta(float inMilliseconds)
         {
             m_gpuDelta = inMilliseconds;

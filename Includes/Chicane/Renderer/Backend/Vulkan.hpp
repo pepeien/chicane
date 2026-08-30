@@ -41,7 +41,7 @@ namespace Chicane
         public:
             vk::Viewport getVkViewport(Layer* inLayer) const;
             vk::Rect2D getVkScissor(Layer* inLayer) const;
-            Draw::Id getScreenTextureId() const;
+            Draw::Id getScreenTextureId() const override;
             vk::DescriptorSet getTextureDescriptorSet() const;
 
         private:
