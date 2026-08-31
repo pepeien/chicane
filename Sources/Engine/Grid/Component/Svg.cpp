@@ -142,51 +142,65 @@ namespace Chicane
                     const String key   = block.substr(0, split).trim().toLower();
                     const String value = block.substr(split + 1).trim();
 
-                    if (key.equals("fill"))
+                    if (key.equals(SvgPaint::FILL_ATTRIBUTE_NAME))
                     {
                         parsePaint(value, inCurrent, outPaint.fill, outPaint.bIsFillEnabled);
 
                         continue;
                     }
 
-                    if (key.equals("stroke"))
+                    if (key.equals(SvgPaint::STROKE_ATTRIBUTE_NAME))
                     {
                         parsePaint(value, inCurrent, outPaint.stroke, outPaint.bIsStrokeEnabled);
 
                         continue;
                     }
 
-                    if (key.equals("stroke-width"))
+                    if (key.equals(SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME))
                     {
                         outPaint.strokeWidth = parseNumber(value, outPaint.strokeWidth);
 
                         continue;
                     }
 
-                    if (key.equals("opacity"))
+                    if (key.equals(SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME))
+                    {
+                        outPaint.lineCap = SvgPaint::parseLineCap(value);
+
+                        continue;
+                    }
+
+                    if (key.equals(SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME))
+                    {
+                        outPaint.lineJoin = SvgPaint::parseLineJoin(value);
+
+                        continue;
+                    }
+
+                    if (key.equals(SvgPaint::OPACITY_ATTRIBUTE_NAME))
                     {
                         outPaint.opacity = parseNumber(value, outPaint.opacity);
 
                         continue;
                     }
 
-                    if (key.equals("fill-opacity"))
+                    if (key.equals(SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME))
                     {
                         outPaint.fillOpacity = parseNumber(value, outPaint.fillOpacity);
 
                         continue;
                     }
 
-                    if (key.equals("stroke-opacity"))
+                    if (key.equals(SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME))
                     {
                         outPaint.strokeOpacity = parseNumber(value, outPaint.strokeOpacity);
 
                         continue;
                     }
 
-                    if (key.equals("fill-rule"))
+                    if (key.equals(SvgPaint::FILL_RULE_ATTRIBUTE_NAME))
                     {
-                        outPaint.bIsEvenOdd = value.toLower().equals("evenodd");
+                        outPaint.bIsEvenOdd = value.toLower().equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
                     }
                 }
             }
@@ -290,48 +304,60 @@ namespace Chicane
             {
                 SvgPaint    paint            = inParent;
                 const float inheritedOpacity = inParent.opacity;
-                paint.opacity                = 1.0f;
+                paint.opacity                = SvgPaint::OPACITY_DEFAULT_VALUE;
 
-                parsePaint(attribute(inNode, "fill"), inCurrent, paint.fill, paint.bIsFillEnabled);
-                parsePaint(attribute(inNode, "stroke"), inCurrent, paint.stroke, paint.bIsStrokeEnabled);
+                parsePaint(attribute(inNode, SvgPaint::FILL_ATTRIBUTE_NAME), inCurrent, paint.fill, paint.bIsFillEnabled);
+                parsePaint(attribute(inNode, SvgPaint::STROKE_ATTRIBUTE_NAME), inCurrent, paint.stroke, paint.bIsStrokeEnabled);
 
-                const String strokeWidth = attribute(inNode, "stroke-width");
+                const String strokeWidth = attribute(inNode, SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME);
                 if (!strokeWidth.isEmpty())
                 {
                     paint.strokeWidth = parseNumber(strokeWidth, paint.strokeWidth);
                 }
 
-                const String opacity = attribute(inNode, "opacity");
-                if (!opacity.isEmpty())
+                const String strokeLinecap = attribute(inNode, SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME);
+                if (!strokeLinecap.isEmpty())
                 {
-                    paint.opacity = parseNumber(opacity, 1.0f);
+                    paint.lineCap = SvgPaint::parseLineCap(strokeLinecap);
                 }
 
-                const String fillOpacity = attribute(inNode, "fill-opacity");
+                const String strokeLinejoin = attribute(inNode, SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME);
+                if (!strokeLinejoin.isEmpty())
+                {
+                    paint.lineJoin = SvgPaint::parseLineJoin(strokeLinejoin);
+                }
+
+                const String opacity = attribute(inNode, SvgPaint::OPACITY_ATTRIBUTE_NAME);
+                if (!opacity.isEmpty())
+                {
+                    paint.opacity = parseNumber(opacity, SvgPaint::OPACITY_DEFAULT_VALUE);
+                }
+
+                const String fillOpacity = attribute(inNode, SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME);
                 if (!fillOpacity.isEmpty())
                 {
                     paint.fillOpacity = parseNumber(fillOpacity, paint.fillOpacity);
                 }
 
-                const String strokeOpacity = attribute(inNode, "stroke-opacity");
+                const String strokeOpacity = attribute(inNode, SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME);
                 if (!strokeOpacity.isEmpty())
                 {
                     paint.strokeOpacity = parseNumber(strokeOpacity, paint.strokeOpacity);
                 }
 
-                const String fillRule = attribute(inNode, "fill-rule").toLower();
+                const String fillRule = attribute(inNode, SvgPaint::FILL_RULE_ATTRIBUTE_NAME).toLower();
                 if (!fillRule.isEmpty())
                 {
-                    paint.bIsEvenOdd = fillRule.equals("evenodd");
+                    paint.bIsEvenOdd = fillRule.equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
                 }
 
-                const String transform = attribute(inNode, "transform");
+                const String transform = attribute(inNode, SvgPaint::TRANSFORM_ATTRIBUTE_NAME);
                 if (!transform.isEmpty())
                 {
                     paint.transform = parseTransform(transform) * paint.transform;
                 }
 
-                parseStyle(attribute(inNode, "style"), inCurrent, paint);
+                parseStyle(attribute(inNode, SvgPaint::STYLE_ATTRIBUTE_NAME), inCurrent, paint);
 
                 paint.opacity *= inheritedOpacity;
 
@@ -354,10 +380,10 @@ namespace Chicane
                     return Vec2::Zero();
                 }
 
-                return {
-                    ((inPoint.x - inView.x) - (inView.width * 0.5f)) / extent,
-                    ((inPoint.y - inView.y) - (inView.height * 0.5f)) / extent
-                };
+                const float localX = ((inPoint.x - inView.x) - (inView.width * 0.5f)) / extent;
+                const float localY = ((inPoint.y - inView.y) - (inView.height * 0.5f)) / extent;
+
+                return {localX, -localY};
             }
 
             SvgViewBox parseViewBox(const String& inValue)
@@ -923,52 +949,311 @@ namespace Chicane
                 );
                 const float half = inPaint.strokeWidth * 0.5f * ((scaleX + scaleY) * 0.5f);
 
+                if (half <= 0.0f)
+                {
+                    return primitive;
+                }
+
+                auto vecLength = [](const Vec2& inValue) -> float
+                {
+                    return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y));
+                };
+
+                auto scaleVec = [](const Vec2& inValue, float inScale) -> Vec2
+                {
+                    return Vec2(inValue.x * inScale, inValue.y * inScale);
+                };
+
+                auto push = [&](const Vec2& inPoint)
+                {
+                    Vertex vertex;
+                    vertex.position.x = inPoint.x;
+                    vertex.position.y = inPoint.y;
+                    vertex.uv.x       = inPoint.x + 0.5f;
+                    vertex.uv.y       = inPoint.y + 0.5f;
+                    primitive.vertices.push_back(vertex);
+                };
+
+                auto emitTriangle = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC)
+                {
+                    const std::uint32_t index = static_cast<std::uint32_t>(primitive.vertices.size());
+
+                    push(toLocal(inA, inView));
+                    push(toLocal(inB, inView));
+                    push(toLocal(inC, inView));
+
+                    primitive.indices.push_back(index);
+                    primitive.indices.push_back(index + 1);
+                    primitive.indices.push_back(index + 2);
+                };
+
+                auto emitQuad = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC, const Vec2& inD)
+                {
+                    emitTriangle(inA, inB, inC);
+                    emitTriangle(inA, inC, inD);
+                };
+
+                auto sideNormal = [&](const Vec2& inDelta) -> Vec2
+                {
+                    const float length = vecLength(inDelta);
+
+                    if (length < kMinLength)
+                    {
+                        return Vec2::Zero();
+                    }
+
+                    return Vec2(-inDelta.y / length, inDelta.x / length);
+                };
+
+                auto emitCap = [&](const Vec2& inCenter, const Vec2& inOutbound, const Vec2& inNormal)
+                {
+                    if (inPaint.lineCap == SvgLineCap::Butt)
+                    {
+                        return;
+                    }
+
+                    const Vec2 left  = inCenter + scaleVec(inNormal, half);
+                    const Vec2 right = inCenter - scaleVec(inNormal, half);
+
+                    if (inPaint.lineCap == SvgLineCap::Square)
+                    {
+                        const Vec2 extend = scaleVec(inOutbound, half);
+
+                        emitQuad(left, left + extend, right + extend, right);
+
+                        return;
+                    }
+
+                    Vec2 prev = right;
+
+                    for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
+                    {
+                        const float angle = static_cast<float>(M_PI) *
+                                            (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                        const Vec2  curr   = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
+                                          scaleVec(inOutbound, std::sin(angle) * half);
+
+                        emitTriangle(inCenter, prev, curr);
+
+                        prev = curr;
+                    }
+                };
+
+                auto unitVec = [&](const Vec2& inValue) -> Vec2
+                {
+                    const float length = vecLength(inValue);
+
+                    if (length < kMinLength)
+                    {
+                        return Vec2::Zero();
+                    }
+
+                    return Vec2(inValue.x / length, inValue.y / length);
+                };
+
+                auto emitJoin = [&](const Vec2& inCenter, const Vec2& inIncoming, const Vec2& inOutgoing)
+                {
+                    if (inPaint.lineJoin == SvgLineJoin::Miter)
+                    {
+                        return;
+                    }
+
+                    const Vec2  inDir  = unitVec(inIncoming);
+                    const Vec2  outDir = unitVec(inOutgoing);
+                    const float cross  = (inDir.x * outDir.y) - (inDir.y * outDir.x);
+
+                    if (std::fabs(cross) < SvgPaint::STROKE_JOIN_MIN_LENGTH)
+                    {
+                        return;
+                    }
+
+                    const Vec2 inN  = sideNormal(inIncoming);
+                    const Vec2 outN = sideNormal(inOutgoing);
+                    const bool bIsLeftTurn = cross > 0.0f;
+                    const Vec2 from = bIsLeftTurn ? Vec2(-inN.x, -inN.y) : inN;
+                    const Vec2 to   = bIsLeftTurn ? Vec2(-outN.x, -outN.y) : outN;
+                    const Vec2 fromP = inCenter + scaleVec(from, half);
+                    const Vec2 toP   = inCenter + scaleVec(to, half);
+
+                    if (inPaint.lineJoin == SvgLineJoin::Bevel)
+                    {
+                        emitTriangle(inCenter, fromP, toP);
+
+                        return;
+                    }
+
+                    const float pi    = static_cast<float>(M_PI);
+                    const float twoPi = pi * 2.0f;
+                    float       start = std::atan2(from.y, from.x);
+                    float       delta = std::atan2(to.y, to.x) - start;
+
+                    while (delta > pi)
+                    {
+                        delta -= twoPi;
+                    }
+
+                    while (delta < -pi)
+                    {
+                        delta += twoPi;
+                    }
+
+                    const float stepSize = pi / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
+                    const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
+                    Vec2        prev     = fromP;
+
+                    for (int i = 1; i <= steps; i++)
+                    {
+                        const float t    = static_cast<float>(i) / static_cast<float>(steps);
+                        const float a    = start + (delta * t);
+                        const Vec2  curr = inCenter + Vec2(std::cos(a) * half, std::sin(a) * half);
+
+                        emitTriangle(inCenter, prev, curr);
+
+                        prev = curr;
+                    }
+                };
+
                 for (const Curve& contour : inContours)
                 {
-                    const Line::Points& points = contour.getPoints();
+                    std::vector<Vec2> points;
 
-                    for (std::size_t i = 1; i < points.size(); i++)
+                    for (const Vec2& point : contour.getPoints())
                     {
-                        const Vec2  start  = transformPoint(inPaint.transform, points.at(i - 1));
-                        const Vec2  end    = transformPoint(inPaint.transform, points.at(i));
-                        const Vec2  delta  = end - start;
-                        const float length = std::sqrt((delta.x * delta.x) + (delta.y * delta.y));
+                        const Vec2 mapped = transformPoint(inPaint.transform, point);
 
-                        if (length < kMinLength)
+                        if (!points.empty() && vecLength(mapped - points.back()) < kMinLength)
                         {
                             continue;
                         }
 
-                        const Vec2 normal(-delta.y / length * half, delta.x / length * half);
-                        const Vec2 a = toLocal({start.x + normal.x, start.y + normal.y}, inView);
-                        const Vec2 b = toLocal({end.x + normal.x, end.y + normal.y}, inView);
-                        const Vec2 c = toLocal({end.x - normal.x, end.y - normal.y}, inView);
-                        const Vec2 d = toLocal({start.x - normal.x, start.y - normal.y}, inView);
+                        points.push_back(mapped);
+                    }
 
-                        const std::uint32_t index = static_cast<std::uint32_t>(primitive.vertices.size());
+                    bool bIsClosed = false;
 
-                        auto push = [&](const Vec2& inPoint)
+                    if (points.size() >= 3 && vecLength(points.front() - points.back()) < kMinLength)
+                    {
+                        points.pop_back();
+                        bIsClosed = true;
+                    }
+
+                    if (points.size() < 2)
+                    {
+                        continue;
+                    }
+
+                    const std::size_t count = points.size();
+
+                    if (inPaint.lineJoin == SvgLineJoin::Miter)
+                    {
+                        std::vector<Vec2> left(count);
+                        std::vector<Vec2> right(count);
+
+                        for (std::size_t i = 0; i < count; i++)
                         {
-                            Vertex vertex;
-                            vertex.position.x = inPoint.x;
-                            vertex.position.y = inPoint.y;
-                            vertex.uv.x       = inPoint.x + 0.5f;
-                            vertex.uv.y       = inPoint.y + 0.5f;
-                            primitive.vertices.push_back(vertex);
+                            Vec2 normal;
+
+                            if (!bIsClosed && i == 0)
+                            {
+                                normal = sideNormal(points.at(1) - points.at(0));
+                            }
+                            else if (!bIsClosed && i + 1 == count)
+                            {
+                                normal = sideNormal(points.at(i) - points.at(i - 1));
+                            }
+                            else
+                            {
+                                const Vec2 prev = points.at((i + count - 1) % count);
+                                const Vec2 next = points.at((i + 1) % count);
+                                const Vec2 inN  = sideNormal(points.at(i) - prev);
+                                const Vec2 outN = sideNormal(next - points.at(i));
+                                Vec2       join = inN + outN;
+                                const float joinLength = vecLength(join);
+
+                                if (joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH)
+                                {
+                                    normal = inN;
+                                }
+                                else
+                                {
+                                    join.x /= joinLength;
+                                    join.y /= joinLength;
+
+                                    const float cosine = std::clamp(
+                                        join.x * inN.x + join.y * inN.y,
+                                        SvgPaint::STROKE_MITER_COSINE_MIN,
+                                        SvgPaint::STROKE_MITER_COSINE_MAX
+                                    );
+
+                                    if ((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT)
+                                    {
+                                        normal = inN;
+                                    }
+                                    else
+                                    {
+                                        normal = scaleVec(join, 1.0f / cosine);
+                                    }
+                                }
+                            }
+
+                            left.at(i)  = points.at(i) + scaleVec(normal, half);
+                            right.at(i) = points.at(i) - scaleVec(normal, half);
+                        }
+
+                        for (std::size_t i = 1; i < count; i++)
+                        {
+                            emitQuad(left.at(i - 1), left.at(i), right.at(i), right.at(i - 1));
+                        }
+
+                        if (bIsClosed)
+                        {
+                            emitQuad(left.back(), left.front(), right.front(), right.back());
+                        }
+                    }
+                    else
+                    {
+                        auto emitSegment = [&](const Vec2& inStart, const Vec2& inEnd)
+                        {
+                            const Vec2 normal = scaleVec(sideNormal(inEnd - inStart), half);
+
+                            emitQuad(inStart + normal, inEnd + normal, inEnd - normal, inStart - normal);
                         };
 
-                        push(a);
-                        push(b);
-                        push(c);
-                        push(d);
+                        for (std::size_t i = 1; i < count; i++)
+                        {
+                            emitSegment(points.at(i - 1), points.at(i));
+                        }
 
-                        primitive.indices.push_back(index);
-                        primitive.indices.push_back(index + 1);
-                        primitive.indices.push_back(index + 2);
-                        primitive.indices.push_back(index);
-                        primitive.indices.push_back(index + 2);
-                        primitive.indices.push_back(index + 3);
+                        for (std::size_t i = 1; i + 1 < count; i++)
+                        {
+                            emitJoin(points.at(i), points.at(i) - points.at(i - 1), points.at(i + 1) - points.at(i));
+                        }
+
+                        if (bIsClosed)
+                        {
+                            emitSegment(points.back(), points.front());
+                            emitJoin(points.front(), points.front() - points.back(), points.at(1) - points.front());
+                            emitJoin(points.back(), points.back() - points.at(count - 2), points.front() - points.back());
+                        }
                     }
+
+                    if (bIsClosed)
+                    {
+                        continue;
+                    }
+
+                    const Vec2 startDir = points.at(1) - points.front();
+                    const Vec2 endDir   = points.back() - points.at(count - 2);
+                    const float startLen = vecLength(startDir);
+                    const float endLen   = vecLength(endDir);
+                    const Vec2  startOut = startLen >= kMinLength
+                         ? Vec2(-startDir.x / startLen, -startDir.y / startLen)
+                         : Vec2::Zero();
+                    const Vec2 endOut = endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen)
+                                                              : Vec2::Zero();
+
+                    emitCap(points.front(), startOut, sideNormal(startDir));
+                    emitCap(points.back(), endOut, sideNormal(endDir));
                 }
 
                 return primitive;

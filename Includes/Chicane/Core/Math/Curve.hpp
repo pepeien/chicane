@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Core.hpp"
@@ -11,6 +12,9 @@ namespace Chicane
     {
     public:
         using List = std::vector<Curve>;
+
+        static constexpr inline float         FLATNESS  = 0.35f;
+        static constexpr inline std::uint32_t MAX_DEPTH = 8;
 
     public:
         void setSegmentCount(std::uint32_t inSegmentCount);
