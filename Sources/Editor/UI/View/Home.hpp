@@ -17,7 +17,7 @@ namespace Editor
         void onAssetImport();
 
         CH_FUNCTION()
-        void onThemeSwitch();
+        void onThemeSwitch(Chicane::String inValue);
 
     public:
         CH_FIELD()

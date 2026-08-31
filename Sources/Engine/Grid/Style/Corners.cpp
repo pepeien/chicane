@@ -72,6 +72,11 @@ namespace Chicane
             right.set(inValue);
         }
 
+        void StyleCorners::setOneliner(const String& inValue)
+        {
+            setOnelinerAttribute(inValue);
+        }
+
         void StyleCorners::setOnelinerAttribute(const String& inValue)
         {
             String topValue    = Style::CORNER_DEFAULT_VALUE;

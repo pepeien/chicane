@@ -16,6 +16,7 @@
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Animation.hpp"
 #include "Chicane/Grid/Style/Background.hpp"
+#include "Chicane/Grid/Style/Border.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Filter.hpp"
@@ -76,6 +77,7 @@ namespace Chicane
             static constexpr inline const char  PSEUDO_CLASS_SELECTOR    = ':';
             static constexpr inline const char* PSEUDO_CLASS_HOVER       = ":hover";
             static constexpr inline const char* PSEUDO_CLASS_FOCUS       = ":focus";
+            static constexpr inline const char* PSEUDO_CLASS_DRAG        = ":drag";
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
@@ -250,13 +252,11 @@ namespace Chicane
             static constexpr inline const char* EASING_TYPE_EASE_IN_OUT     = Drift::EasingCurve::TYPE_EASE_IN_OUT;
             static constexpr inline const char* EASING_CUBIC_BEZIER_KEYWORD = Drift::EasingCurve::CUBIC_BEZIER_KEYWORD;
 
-            static inline std::vector<String>   EASING_TYPES = {
-                Style::EASING_TYPE_LINEAR,
-                Style::EASING_TYPE_EASE,
-                Style::EASING_TYPE_EASE_IN,
-                Style::EASING_TYPE_EASE_OUT,
-                Style::EASING_TYPE_EASE_IN_OUT
-            };
+            static inline std::vector<String>   EASING_TYPES = {Style::EASING_TYPE_LINEAR,
+                                                                Style::EASING_TYPE_EASE,
+                                                                Style::EASING_TYPE_EASE_IN,
+                                                                Style::EASING_TYPE_EASE_OUT,
+                                                                Style::EASING_TYPE_EASE_IN_OUT};
 
             // Keyframes
             static constexpr inline const char* KEYFRAMES_KEYWORD      = "@keyframes";
@@ -286,6 +286,43 @@ namespace Chicane
             static constexpr inline const char* PADDING_BOTTOM_ATTRIBUTE_NAME = "padding-bottom";
             static constexpr inline const char* PADDING_LEFT_ATTRIBUTE_NAME   = "padding-left";
             static constexpr inline const char* PADDING_RIGHT_ATTRIBUTE_NAME  = "padding-right";
+
+            /*
+             * Template 1: "`WIDTH` `STYLE` `COLOR`"
+             */
+            static constexpr inline const char* BORDER_ATTRIBUTE_NAME              = "border";
+            static constexpr inline const char* BORDER_WIDTH_ATTRIBUTE_NAME        = "border-width";
+            static constexpr inline const char* BORDER_STYLE_ATTRIBUTE_NAME        = "border-style";
+            static constexpr inline const char* BORDER_COLOR_ATTRIBUTE_NAME        = "border-color";
+            static constexpr inline const char* BORDER_TOP_ATTRIBUTE_NAME          = "border-top";
+            static constexpr inline const char* BORDER_RIGHT_ATTRIBUTE_NAME        = "border-right";
+            static constexpr inline const char* BORDER_BOTTOM_ATTRIBUTE_NAME       = "border-bottom";
+            static constexpr inline const char* BORDER_LEFT_ATTRIBUTE_NAME         = "border-left";
+            static constexpr inline const char* BORDER_TOP_WIDTH_ATTRIBUTE_NAME    = "border-top-width";
+            static constexpr inline const char* BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME  = "border-right-width";
+            static constexpr inline const char* BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME = "border-bottom-width";
+            static constexpr inline const char* BORDER_LEFT_WIDTH_ATTRIBUTE_NAME   = "border-left-width";
+            static constexpr inline const char* BORDER_TOP_STYLE_ATTRIBUTE_NAME    = "border-top-style";
+            static constexpr inline const char* BORDER_RIGHT_STYLE_ATTRIBUTE_NAME  = "border-right-style";
+            static constexpr inline const char* BORDER_BOTTOM_STYLE_ATTRIBUTE_NAME = "border-bottom-style";
+            static constexpr inline const char* BORDER_LEFT_STYLE_ATTRIBUTE_NAME   = "border-left-style";
+            static constexpr inline const char* BORDER_TOP_COLOR_ATTRIBUTE_NAME    = "border-top-color";
+            static constexpr inline const char* BORDER_RIGHT_COLOR_ATTRIBUTE_NAME  = "border-right-color";
+            static constexpr inline const char* BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME = "border-bottom-color";
+            static constexpr inline const char* BORDER_LEFT_COLOR_ATTRIBUTE_NAME   = "border-left-color";
+            static constexpr inline const char* BORDER_STYLE_TYPE_NONE             = "none";
+            static constexpr inline const char* BORDER_STYLE_TYPE_HIDDEN           = "hidden";
+            static constexpr inline const char* BORDER_STYLE_TYPE_SOLID            = "solid";
+            static constexpr inline const char* BORDER_STYLE_TYPE_DASHED           = "dashed";
+            static constexpr inline const char* BORDER_STYLE_TYPE_DOTTED           = "dotted";
+            static constexpr inline const char* BORDER_STYLE_TYPE_DOUBLE           = "double";
+            static constexpr inline const char* BORDER_STYLE_TYPE_GROOVE           = "groove";
+            static constexpr inline const char* BORDER_STYLE_TYPE_RIDGE            = "ridge";
+            static constexpr inline const char* BORDER_STYLE_TYPE_INSET            = "inset";
+            static constexpr inline const char* BORDER_STYLE_TYPE_OUTSET           = "outset";
+            static constexpr inline const char* BORDER_WIDTH_TYPE_THIN             = "thin";
+            static constexpr inline const char* BORDER_WIDTH_TYPE_MEDIUM           = "medium";
+            static constexpr inline const char* BORDER_WIDTH_TYPE_THICK            = "thick";
 
             /*
              * Template 1: "`SINGLE_GAP`"
@@ -324,22 +361,41 @@ namespace Chicane
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
             // Lists
-            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {
-                OPACITY_ATTRIBUTE_NAME,          WIDTH_ATTRIBUTE_NAME,
-                HEIGHT_ATTRIBUTE_NAME,           Z_INDEX_ATTRIBUTE_NAME,
-                FOREGROUND_COLOR_ATTRIBUTE_NAME, BACKGROUND_COLOR_ATTRIBUTE_NAME,
-                FONT_SIZE_ATTRIBUTE_NAME,        LETTER_SPACING_ATTRIBUTE_NAME,
-                FILTER_ATTRIBUTE_NAME,           BACKDROP_FILTER_ATTRIBUTE_NAME,
-                TRANSFORM_ATTRIBUTE_NAME,        TRANSLATE_ATTRIBUTE_NAME,
-                ROTATE_ATTRIBUTE_NAME,           SCALE_ATTRIBUTE_NAME,
-                TRANSFORM_ORIGIN_ATTRIBUTE_NAME, MARGIN_TOP_ATTRIBUTE_NAME,
-                MARGIN_BOTTOM_ATTRIBUTE_NAME,    MARGIN_LEFT_ATTRIBUTE_NAME,
-                MARGIN_RIGHT_ATTRIBUTE_NAME,     PADDING_TOP_ATTRIBUTE_NAME,
-                PADDING_BOTTOM_ATTRIBUTE_NAME,   PADDING_LEFT_ATTRIBUTE_NAME,
-                PADDING_RIGHT_ATTRIBUTE_NAME,    GAP_TOP_ATTRIBUTE_NAME,
-                GAP_BOTTOM_ATTRIBUTE_NAME,       GAP_LEFT_ATTRIBUTE_NAME,
-                GAP_RIGHT_ATTRIBUTE_NAME
-            };
+            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {OPACITY_ATTRIBUTE_NAME,
+                                                                             WIDTH_ATTRIBUTE_NAME,
+                                                                             HEIGHT_ATTRIBUTE_NAME,
+                                                                             Z_INDEX_ATTRIBUTE_NAME,
+                                                                             FOREGROUND_COLOR_ATTRIBUTE_NAME,
+                                                                             BACKGROUND_COLOR_ATTRIBUTE_NAME,
+                                                                             FONT_SIZE_ATTRIBUTE_NAME,
+                                                                             LETTER_SPACING_ATTRIBUTE_NAME,
+                                                                             FILTER_ATTRIBUTE_NAME,
+                                                                             BACKDROP_FILTER_ATTRIBUTE_NAME,
+                                                                             TRANSFORM_ATTRIBUTE_NAME,
+                                                                             TRANSLATE_ATTRIBUTE_NAME,
+                                                                             ROTATE_ATTRIBUTE_NAME,
+                                                                             SCALE_ATTRIBUTE_NAME,
+                                                                             TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
+                                                                             MARGIN_TOP_ATTRIBUTE_NAME,
+                                                                             MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                                                                             MARGIN_LEFT_ATTRIBUTE_NAME,
+                                                                             MARGIN_RIGHT_ATTRIBUTE_NAME,
+                                                                             PADDING_TOP_ATTRIBUTE_NAME,
+                                                                             PADDING_BOTTOM_ATTRIBUTE_NAME,
+                                                                             PADDING_LEFT_ATTRIBUTE_NAME,
+                                                                             PADDING_RIGHT_ATTRIBUTE_NAME,
+                                                                             BORDER_TOP_WIDTH_ATTRIBUTE_NAME,
+                                                                             BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME,
+                                                                             BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME,
+                                                                             BORDER_LEFT_WIDTH_ATTRIBUTE_NAME,
+                                                                             BORDER_TOP_COLOR_ATTRIBUTE_NAME,
+                                                                             BORDER_RIGHT_COLOR_ATTRIBUTE_NAME,
+                                                                             BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME,
+                                                                             BORDER_LEFT_COLOR_ATTRIBUTE_NAME,
+                                                                             GAP_TOP_ATTRIBUTE_NAME,
+                                                                             GAP_BOTTOM_ATTRIBUTE_NAME,
+                                                                             GAP_LEFT_ATTRIBUTE_NAME,
+                                                                             GAP_RIGHT_ATTRIBUTE_NAME};
 
         public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
@@ -350,6 +406,13 @@ namespace Chicane
             bool isPosition(StylePosition inValue) const;
             bool isPositioned() const;
             bool isClippingOverflow() const;
+
+            float insetLeft() const;
+            float insetRight() const;
+            float insetTop() const;
+            float insetBottom() const;
+            float insetHorizontal() const;
+            float insetVertical() const;
 
             void setProperties(const StyleRuleset::Properties& inProperties);
 
@@ -383,6 +446,7 @@ namespace Chicane
             void refreshAlignment();
             void refreshMargin();
             void refreshPadding();
+            void refreshBorder();
             void refreshGap();
             void refreshOverflow();
             void refreshRadius();
@@ -399,6 +463,7 @@ namespace Chicane
             void parseAnimation(const StyleRuleset::Properties& inProperties);
 
             StyleOverflow parseOverflow(const String& inValue) const;
+            StyleBorderType parseBorderType(const String& inValue) const;
             WindowCursor parseCursor(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
             float parseFilter(const String& inValue) const;
@@ -433,6 +498,7 @@ namespace Chicane
             StyleProperty<StyleAlignment> align;
             StyleCorners                  margin;
             StyleCorners                  padding;
+            StyleBorder                   border;
             StyleCorners                  gap;
             StyleProperty<StyleOverflow>  overflowX;
             StyleProperty<StyleOverflow>  overflowY;

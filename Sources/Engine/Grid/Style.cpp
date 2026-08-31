@@ -30,6 +30,7 @@ namespace Chicane
               align(StyleAlignment::Start),
               margin({}),
               padding({}),
+              border({}),
               gap({}),
               overflowX(StyleOverflow::Visible),
               overflowY(StyleOverflow::Visible),
@@ -146,6 +147,32 @@ namespace Chicane
             padding.parseWith([this](const String& inValue, SizeDirection inDirection)
                               { return parseSize(inValue, inDirection); });
 
+            border.parseWith(
+                [this](const String& inValue, SizeDirection inDirection)
+                {
+                    const String value = parseText(inValue).trim().toLower();
+
+                    if (value.equals(BORDER_WIDTH_TYPE_THIN))
+                    {
+                        return 1.0f;
+                    }
+
+                    if (value.equals(BORDER_WIDTH_TYPE_MEDIUM))
+                    {
+                        return 3.0f;
+                    }
+
+                    if (value.equals(BORDER_WIDTH_TYPE_THICK))
+                    {
+                        return 5.0f;
+                    }
+
+                    return parseSize(inValue, inDirection);
+                },
+                [this](const String& inValue) { return parseColor(inValue); },
+                [this](const String& inValue) { return parseBorderType(inValue); }
+            );
+
             gap.parseWith([this](const String& inValue, SizeDirection inDirection)
                           { return parseSize(inValue, inDirection); });
 
@@ -215,6 +242,36 @@ namespace Chicane
         bool Style::isClippingOverflow() const
         {
             return overflowX.get() != StyleOverflow::Visible || overflowY.get() != StyleOverflow::Visible;
+        }
+
+        float Style::insetLeft() const
+        {
+            return padding.left.get() + border.paintedLeft();
+        }
+
+        float Style::insetRight() const
+        {
+            return padding.right.get() + border.paintedRight();
+        }
+
+        float Style::insetTop() const
+        {
+            return padding.top.get() + border.paintedTop();
+        }
+
+        float Style::insetBottom() const
+        {
+            return padding.bottom.get() + border.paintedBottom();
+        }
+
+        float Style::insetHorizontal() const
+        {
+            return insetLeft() + insetRight();
+        }
+
+        float Style::insetVertical() const
+        {
+            return insetTop() + insetBottom();
         }
 
         void Style::setProperties(const StyleRuleset::Properties& inProperties)
@@ -325,6 +382,8 @@ namespace Chicane
                 Style::PADDING_RIGHT_ATTRIBUTE_NAME
             );
 
+            border.setProperties(inProperties);
+
             gap.setProperties(
                 inProperties,
                 Style::GAP_ATTRIBUTE_NAME,
@@ -406,6 +465,19 @@ namespace Chicane
             padding.bottom.copyValue(inStyle.padding.bottom);
             padding.left.copyValue(inStyle.padding.left);
             padding.right.copyValue(inStyle.padding.right);
+
+            border.width.top.copyValue(inStyle.border.width.top);
+            border.width.bottom.copyValue(inStyle.border.width.bottom);
+            border.width.left.copyValue(inStyle.border.width.left);
+            border.width.right.copyValue(inStyle.border.width.right);
+            border.typeTop.copyValue(inStyle.border.typeTop);
+            border.typeBottom.copyValue(inStyle.border.typeBottom);
+            border.typeLeft.copyValue(inStyle.border.typeLeft);
+            border.typeRight.copyValue(inStyle.border.typeRight);
+            border.colorTop.copyValue(inStyle.border.colorTop);
+            border.colorBottom.copyValue(inStyle.border.colorBottom);
+            border.colorLeft.copyValue(inStyle.border.colorLeft);
+            border.colorRight.copyValue(inStyle.border.colorRight);
 
             gap.top.copyValue(inStyle.gap.top);
             gap.bottom.copyValue(inStyle.gap.bottom);
@@ -652,6 +724,46 @@ namespace Chicane
             if (inName.equals(PADDING_RIGHT_ATTRIBUTE_NAME))
             {
                 return {padding.right.get()};
+            }
+
+            if (inName.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME))
+            {
+                return {border.width.top.get()};
+            }
+
+            if (inName.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME))
+            {
+                return {border.width.right.get()};
+            }
+
+            if (inName.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME))
+            {
+                return {border.width.bottom.get()};
+            }
+
+            if (inName.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME))
+            {
+                return {border.width.left.get()};
+            }
+
+            if (inName.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(border.colorTop.get());
+            }
+
+            if (inName.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(border.colorRight.get());
+            }
+
+            if (inName.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(border.colorBottom.get());
+            }
+
+            if (inName.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME))
+            {
+                return asColor(border.colorLeft.get());
             }
 
             if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
@@ -927,6 +1039,62 @@ namespace Chicane
                 return;
             }
 
+            if (inName.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME))
+            {
+                border.width.top.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME))
+            {
+                border.width.right.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME))
+            {
+                border.width.bottom.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME))
+            {
+                border.width.left.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME))
+            {
+                border.colorTop.set(asColor(inValue));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME))
+            {
+                border.colorRight.set(asColor(inValue));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME))
+            {
+                border.colorBottom.set(asColor(inValue));
+
+                return;
+            }
+
+            if (inName.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME))
+            {
+                border.colorLeft.set(asColor(inValue));
+
+                return;
+            }
+
             if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
             {
                 gap.top.set(inValue.at(0));
@@ -956,8 +1124,93 @@ namespace Chicane
 
         const StyleTransition* Style::findTransition(const String& inName) const
         {
-            const StyleTransition* all      = nullptr;
-            const StyleTransition* specific = nullptr;
+            auto contains = [](const String& inProperty, const String& inTarget) -> bool
+            {
+                if (inProperty.equals(inTarget))
+                {
+                    return true;
+                }
+
+                if (inProperty.equals(PADDING_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(PADDING_TOP_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_BOTTOM_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(GAP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(GAP_TOP_ATTRIBUTE_NAME) || inTarget.equals(GAP_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(GAP_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(GAP_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_WIDTH_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_COLOR_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_TOP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_RIGHT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_BOTTOM_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_LEFT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                return false;
+            };
+
+            const StyleTransition* all       = nullptr;
+            const StyleTransition* shorthand = nullptr;
+            const StyleTransition* specific  = nullptr;
 
             for (const StyleTransition& transition : transitions)
             {
@@ -970,9 +1223,13 @@ namespace Chicane
                 {
                     specific = &transition;
                 }
+                else if (contains(transition.property, inName))
+                {
+                    shorthand = &transition;
+                }
             }
 
-            return specific ? specific : all;
+            return specific ? specific : (shorthand ? shorthand : all);
         }
 
         bool Style::hasParent() const
@@ -1001,6 +1258,7 @@ namespace Chicane
             refreshPosition();
             refreshMargin();
             refreshPadding();
+            refreshBorder();
             refreshGap();
             refreshOverflow();
             refreshRadius();
@@ -1056,6 +1314,11 @@ namespace Chicane
             padding.refresh();
         }
 
+        void Style::refreshBorder()
+        {
+            border.refresh();
+        }
+
         void Style::refreshGap()
         {
             gap.refresh();
@@ -1108,6 +1371,21 @@ namespace Chicane
             }
 
             return StyleOverflow::Visible;
+        }
+
+        StyleBorderType Style::parseBorderType(const String& inValue) const
+        {
+            const String value = parseText(inValue).trim().toLower();
+
+            if (value.equals(BORDER_STYLE_TYPE_SOLID) || value.equals(BORDER_STYLE_TYPE_DASHED) ||
+                value.equals(BORDER_STYLE_TYPE_DOTTED) || value.equals(BORDER_STYLE_TYPE_DOUBLE) ||
+                value.equals(BORDER_STYLE_TYPE_GROOVE) || value.equals(BORDER_STYLE_TYPE_RIDGE) ||
+                value.equals(BORDER_STYLE_TYPE_INSET) || value.equals(BORDER_STYLE_TYPE_OUTSET))
+            {
+                return StyleBorderType::Solid;
+            }
+
+            return StyleBorderType::None;
         }
 
         void Style::refreshBackground()

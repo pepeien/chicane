@@ -1,5 +1,8 @@
-<Container class="header --{{ dragState }}">
+<Container class="header">
     <Logo />
+    <Container class="header__menus">
+        <HeaderMenu dir:for="menu : menus" />
+    </Container>
     <Container class="header__controls">
         <Button class="header__control" onClick="{{ onMinimize() }}">
             <Svg class="header__control__icon" viewBox="0 0 12 12">

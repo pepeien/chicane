@@ -116,3 +116,71 @@ float roundedRectSDF(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
 
     return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
 }
+
+vec4 pickBorderColor(vec2 inPoint, vec4 inBox, vec4 inColorTop, vec4 inColorRight, vec4 inColorBottom, vec4 inColorLeft) {
+    vec2 size = max(inBox.zw - inBox.xy, vec2(1e-4));
+    vec2 local = inPoint - inBox.xy;
+    float dTop = local.y;
+    float dRight = size.x - local.x;
+    float dBottom = size.y - local.y;
+    float dLeft = local.x;
+    float nearest = dTop;
+    vec4 color = inColorTop;
+
+    if (dRight < nearest) {
+        nearest = dRight;
+        color = inColorRight;
+    }
+
+    if (dBottom < nearest) {
+        nearest = dBottom;
+        color = inColorBottom;
+    }
+
+    if (dLeft < nearest) {
+        color = inColorLeft;
+    }
+
+    return color;
+}
+
+vec4 applyRoundedBorder(
+    vec4 inFill,
+    vec2 inPoint,
+    vec4 inBox,
+    vec4 inRadiusX,
+    vec4 inRadiusY,
+    vec4 inWidth,
+    vec4 inColorTop,
+    vec4 inColorRight,
+    vec4 inColorBottom,
+    vec4 inColorLeft
+) {
+    float maxWidth = max(max(inWidth.x, inWidth.y), max(inWidth.z, inWidth.w));
+
+    if (maxWidth <= 0.0) {
+        return inFill;
+    }
+
+    vec4 innerBox = vec4(
+        inBox.x + inWidth.w,
+        inBox.y + inWidth.x,
+        inBox.z - inWidth.y,
+        inBox.w - inWidth.z
+    );
+    innerBox.z = max(innerBox.x, innerBox.z);
+    innerBox.w = max(innerBox.y, innerBox.w);
+
+    vec4 innerRadiusX = max(inRadiusX - vec4(inWidth.w, inWidth.y, inWidth.y, inWidth.w), vec4(0.0));
+    vec4 innerRadiusY = max(inRadiusY - vec4(inWidth.x, inWidth.x, inWidth.z, inWidth.z), vec4(0.0));
+    float innerCoverage = roundedRectCoverage(inPoint, innerBox, innerRadiusX, innerRadiusY);
+    float ring = 1.0 - innerCoverage;
+
+    if (ring <= 0.0) {
+        return inFill;
+    }
+
+    vec4 borderColor = pickBorderColor(inPoint, inBox, inColorTop, inColorRight, inColorBottom, inColorLeft);
+
+    return mix(inFill, borderColor, ring);
+}

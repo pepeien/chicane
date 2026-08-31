@@ -20,6 +20,11 @@ layout(location = 0) in Data {
     flat vec4 outerClip;
     flat vec4 outerClipRadiusX;
     flat vec4 outerClipRadiusY;
+    flat vec4 borderWidth;
+    flat vec4 borderColorTop;
+    flat vec4 borderColorRight;
+    flat vec4 borderColorBottom;
+    flat vec4 borderColorLeft;
     vec2 UV;
     vec3 normal;
     vec4 color;
@@ -120,6 +125,19 @@ void main() {
         } else if (hasRoundedCorners(inData.radiusX, inData.radiusY)) {
             coverage = roundedRectCoverage(localFrag, inData.box, inData.radiusX, inData.radiusY);
         }
+
+        color = applyRoundedBorder(
+            color,
+            localFrag,
+            inData.box,
+            inData.radiusX,
+            inData.radiusY,
+            inData.borderWidth,
+            inData.borderColorTop,
+            inData.borderColorRight,
+            inData.borderColorBottom,
+            inData.borderColorLeft
+        );
 
         if (inData.view.w > 0.0) {
             vec3 backdropColor = sampleBackdropBlur(backdrop, gl_FragCoord.xy, inData.view.xy, inData.view.w);

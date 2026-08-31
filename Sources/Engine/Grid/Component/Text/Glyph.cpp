@@ -162,8 +162,8 @@ namespace Chicane
             const Style&     parentStyle = parent->getStyle();
 
             setPosition(
-                parent->getPosition().x + parentStyle.padding.left.get() + m_relativeX,
-                parent->getPosition().y + parentStyle.padding.top.get() + m_relativeY
+                parent->getPosition().x + parentStyle.insetLeft() + m_relativeX,
+                parent->getPosition().y + parentStyle.insetTop() + m_relativeY
             );
 
             refreshBounds();

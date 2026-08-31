@@ -21,6 +21,11 @@ struct PolyInstance2D {
     vec4 outerClip;
     vec4 outerClipRadiusX;
     vec4 outerClipRadiusY;
+    vec4 borderWidth;
+    vec4 borderColorTop;
+    vec4 borderColorRight;
+    vec4 borderColorBottom;
+    vec4 borderColorLeft;
 };
 
 float normalize2DDepth(float inValue) {

@@ -152,8 +152,8 @@ namespace Chicane
             const Vec2 content = getChildrenContentSize();
 
             return Vec2(
-                std::max(0.0f, content.x + m_style.padding.right.get() - m_size.x),
-                std::max(0.0f, content.y + m_style.padding.bottom.get() - m_size.y)
+                std::max(0.0f, content.x + m_style.insetRight() - m_size.x),
+                std::max(0.0f, content.y + m_style.insetBottom() - m_size.y)
             );
         }
 

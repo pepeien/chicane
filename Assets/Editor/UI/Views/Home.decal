@@ -1,6 +1,6 @@
 $sideBarSize:   25%;
 $bottomBarSize: 30%;
-$headerSize:    4em;
+$headerSize:    2em;
 
 .--light {
     $--green: #0b997d;

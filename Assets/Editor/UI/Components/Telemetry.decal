@@ -1,0 +1,15 @@
+.telemetry {
+    display: flex;
+    flex-direction: column;
+
+    &__group {
+        display: flex;
+        flex-direction: row;
+        gap: 0 0.25em;
+
+        &__label {
+            width: 5em;
+            overflow: hidden;
+        }
+    }
+}

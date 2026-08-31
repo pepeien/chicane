@@ -193,7 +193,7 @@ namespace Chicane
             outMin = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             outMax = Vec2(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
 
-            const Vec2 padding(m_style.padding.left.get(), m_style.padding.top.get());
+            const Vec2 padding(m_style.insetLeft(), m_style.insetTop());
 
             for (const TextGlyph* glyph : m_glyphs)
             {

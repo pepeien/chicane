@@ -174,7 +174,7 @@ namespace Chicane
                     const String variableId = values.at(0).trim();
                     const String accessorId = values.at(1).trim();
 
-                    Component* owner = this;
+                    Component* owner = hasParent() ? getParent() : this;
                     while (owner)
                     {
                         ReflectionFieldAccessor accessor = owner->getField(accessorId);
@@ -279,7 +279,8 @@ namespace Chicane
               m_forSource({}),
               m_bSkipForDirective(false),
               m_bHovered(false),
-              m_bFocused(false)
+              m_bFocused(false),
+              m_bDragging(false)
         {
             m_style.setParent(this);
             m_styleBase.setParent(this);
@@ -346,8 +347,8 @@ namespace Chicane
             const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
             addSize(
-                m_style.padding.left.get() + m_style.padding.right.get(),
-                bIsHeightAuto ? (m_style.padding.top.get() + m_style.padding.bottom.get()) : 0.0f
+                m_style.insetHorizontal(),
+                bIsHeightAuto ? m_style.insetVertical() : 0.0f
             );
         }
 
@@ -460,7 +461,7 @@ namespace Chicane
                 addStyleProperties(properties);
             }
 
-            if (!m_bHovered && !m_bFocused)
+            if (!m_bHovered && !m_bFocused && !m_bDragging)
             {
                 m_styleBase.copyValuesFrom(m_style);
                 m_bHasStyleBase = true;
@@ -488,8 +489,10 @@ namespace Chicane
             const bool bIsBackgroundImageVisible = !m_style.background.image.getRaw().isEmpty();
             const bool bIsBackgroundColorVisible = m_style.background.color.get().a > 0.0f;
             const bool bIsBackdropVisible        = m_style.backdrop.blur.get() > 0.0f;
+            const bool bIsBorderVisible          = m_style.border.isVisible();
 
-            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible) &&
+            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible ||
+                    bIsBorderVisible) &&
                    getOpacity() > 0.0f;
         }
 
@@ -506,6 +509,11 @@ namespace Chicane
         bool Component::isFocused() const
         {
             return m_bFocused;
+        }
+
+        bool Component::isDragging() const
+        {
+            return m_bDragging;
         }
 
         bool Component::canAdopt(Component* inComponent) const
@@ -548,6 +556,20 @@ namespace Chicane
             getMethod(getAttribute(ON_BLUR_ATTRIBUTE_NAME)).invoke();
         }
 
+        void Component::drag()
+        {
+            onDrag();
+
+            getMethod(getAttribute(ON_DRAG_ATTRIBUTE_NAME)).invoke();
+        }
+
+        void Component::endDrag()
+        {
+            onDragEnd();
+
+            getMethod(getAttribute(ON_DRAG_END_ATTRIBUTE_NAME)).invoke();
+        }
+
         void Component::setHovered(bool inValue)
         {
             if (m_bHovered == inValue)
@@ -588,6 +610,27 @@ namespace Chicane
             }
 
             blur();
+        }
+
+        void Component::setDragging(bool inValue)
+        {
+            if (m_bDragging == inValue)
+            {
+                return;
+            }
+
+            m_bDragging = inValue;
+
+            refreshStyleSubtree();
+
+            if (inValue)
+            {
+                drag();
+
+                return;
+            }
+
+            endDrag();
         }
 
         const String& Component::getTag() const
@@ -749,27 +792,39 @@ namespace Chicane
             String value  = inValue.trim();
             bool   bHover = false;
             bool   bFocus = false;
+            bool   bDrag  = false;
 
             while (true)
             {
                 const std::size_t hoverAt = value.find(Style::PSEUDO_CLASS_HOVER);
                 const std::size_t focusAt = value.find(Style::PSEUDO_CLASS_FOCUS);
+                const std::size_t dragAt  = value.find(Style::PSEUDO_CLASS_DRAG);
 
-                if (hoverAt == String::npos && focusAt == String::npos)
+                std::size_t at    = String::npos;
+                const char* token = nullptr;
+                bool*       flag  = nullptr;
+
+                auto consider = [&](std::size_t inAt, const char* inToken, bool& inFlag)
+                {
+                    if (inAt != String::npos && (at == String::npos || inAt < at))
+                    {
+                        at    = inAt;
+                        token = inToken;
+                        flag  = &inFlag;
+                    }
+                };
+
+                consider(hoverAt, Style::PSEUDO_CLASS_HOVER, bHover);
+                consider(focusAt, Style::PSEUDO_CLASS_FOCUS, bFocus);
+                consider(dragAt, Style::PSEUDO_CLASS_DRAG, bDrag);
+
+                if (!token)
                 {
                     break;
                 }
 
-                if (hoverAt != String::npos && (focusAt == String::npos || hoverAt <= focusAt))
-                {
-                    bHover = true;
-                    value  = value.substr(0, hoverAt) + value.substr(hoverAt + std::strlen(Style::PSEUDO_CLASS_HOVER));
-
-                    continue;
-                }
-
-                bFocus = true;
-                value  = value.substr(0, focusAt) + value.substr(focusAt + std::strlen(Style::PSEUDO_CLASS_FOCUS));
+                *flag = true;
+                value = value.substr(0, at) + value.substr(at + std::strlen(token));
             }
 
             if (bHover && !m_bHovered)
@@ -778,6 +833,11 @@ namespace Chicane
             }
 
             if (bFocus && !m_bFocused)
+            {
+                return false;
+            }
+
+            if (bDrag && !m_bDragging)
             {
                 return false;
             }
@@ -1716,12 +1776,12 @@ namespace Chicane
 
             if (bWidthAuto && !bParentFlexRow && inner.x > 0.0f)
             {
-                size.x = inner.x + style.padding.left.get() + style.padding.right.get();
+                size.x = inner.x + style.insetHorizontal();
             }
 
             if (bHeightAuto && !bParentFlexColumn && inner.y > 0.0f)
             {
-                size.y = inner.y + style.padding.top.get() + style.padding.bottom.get();
+                size.y = inner.y + style.insetVertical();
             }
 
             return size;
@@ -2172,14 +2232,14 @@ namespace Chicane
                         const Component* box      = getContainingBlock();
                         const Style&     boxStyle = box->getStyle();
                         const float      available =
-                            box->getSize().x - boxStyle.padding.left.get() - boxStyle.padding.right.get();
+                            box->getSize().x - boxStyle.insetHorizontal();
                         const float horizontalMargin =
                             (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
                             (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
 
                         width = std::max(
                             0.0f,
-                            available - horizontalMargin - m_style.padding.left.get() - m_style.padding.right.get()
+                            available - horizontalMargin - m_style.insetHorizontal()
                         );
                     }
                 }
@@ -2207,13 +2267,13 @@ namespace Chicane
             float marginTop    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.top.get();
             float marginBottom = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.bottom.get();
 
-            const Vec2 startPadding(m_style.padding.left.get(), m_style.padding.top.get());
+            const Vec2 startPadding(m_style.insetLeft(), m_style.insetTop());
 
             const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
-            const float usedWidth = m_size.x + m_style.padding.left.get() + m_style.padding.right.get();
+            const float usedWidth = m_size.x + m_style.insetHorizontal();
             const float usedHeight =
-                m_size.y + (bIsHeightAuto ? (m_style.padding.top.get() + m_style.padding.bottom.get()) : 0.0f);
+                m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
 
             if (hasParent() && !isRoot())
             {
@@ -2221,8 +2281,8 @@ namespace Chicane
                 const Style&     boxStyle    = box->getStyle();
                 const Style&     parentStyle = m_parent->getStyle();
                 const Vec2       available   = {
-                    std::max(0.0f, box->getSize().x - boxStyle.padding.left.get() - boxStyle.padding.right.get()),
-                    std::max(0.0f, box->getSize().y - boxStyle.padding.top.get() - boxStyle.padding.bottom.get())
+                    std::max(0.0f, box->getSize().x - boxStyle.insetHorizontal()),
+                    std::max(0.0f, box->getSize().y - boxStyle.insetVertical())
                 };
 
                 const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
@@ -2235,7 +2295,7 @@ namespace Chicane
                 if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
                     parentStyle.flex.direction.get() == StyleFlexDirection::Row)
                 {
-                    leftoverW = m_parent->getPosition().x + parentStyle.padding.left.get() + m_parent->getSize().x -
+                    leftoverW = m_parent->getPosition().x + parentStyle.insetLeft() + m_parent->getSize().x -
                                 m_parent->getCursor().x - usedWidth - marginLeft - marginRight;
                 }
 
@@ -2268,7 +2328,7 @@ namespace Chicane
 
                     if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex))
                     {
-                        leftoverH = m_parent->getPosition().y + parentStyle.padding.top.get() + m_parent->getSize().y -
+                        leftoverH = m_parent->getPosition().y + parentStyle.insetTop() + m_parent->getSize().y -
                                     m_parent->getCursor().y - usedHeight - marginTop - marginBottom;
                     }
 
@@ -2298,8 +2358,8 @@ namespace Chicane
                 if (!isRoot() && hasParent())
                 {
                     const Component* containingBlock = getContainingBlock();
-                    origin.x = containingBlock->getPosition().x + containingBlock->getStyle().padding.left.get();
-                    origin.y = containingBlock->getPosition().y + containingBlock->getStyle().padding.top.get();
+                    origin.x = containingBlock->getPosition().x + containingBlock->getStyle().insetLeft();
+                    origin.y = containingBlock->getPosition().y + containingBlock->getStyle().insetTop();
                 }
 
                 setPosition(origin.x + marginLeft, origin.y + marginTop);
@@ -2312,9 +2372,9 @@ namespace Chicane
             const Vec2   available   = {
                 std::max(
                     0.0f,
-                    m_parent->getSize().x - parentStyle.padding.left.get() - parentStyle.padding.right.get()
+                    m_parent->getSize().x - parentStyle.insetHorizontal()
                 ),
-                std::max(0.0f, m_parent->getSize().y - parentStyle.padding.top.get() - parentStyle.padding.bottom.get())
+                std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
             };
 
             switch (parentStyle.display.get())
@@ -2331,8 +2391,8 @@ namespace Chicane
                 const float itemCross =
                     bIsRow ? (usedHeight + marginTop + marginBottom) : (usedWidth + marginLeft + marginRight);
 
-                const float lineStart    = bIsRow ? (m_parent->getPosition().x + parentStyle.padding.left.get())
-                                                  : (m_parent->getPosition().y + parentStyle.padding.top.get());
+                const float lineStart    = bIsRow ? (m_parent->getPosition().x + parentStyle.insetLeft())
+                                                  : (m_parent->getPosition().y + parentStyle.insetTop());
                 const float lineLimit    = bIsRow ? (lineStart + available.x) : (lineStart + available.y);
                 float       cursorMain   = bIsRow ? m_parent->getCursor().x : m_parent->getCursor().y;
                 const bool  bLineStarted = cursorMain > lineStart;

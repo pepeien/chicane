@@ -46,6 +46,7 @@ namespace Chicane
             void parseWith(std::function<float(const String&, SizeDirection)> inParser);
 
             void setAll(float inValue);
+            void setOneliner(const String& inValue);
 
         protected:
             void setOnelinerAttribute(const String& inValue);

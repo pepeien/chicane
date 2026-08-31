@@ -1,5 +1,7 @@
 #include "Editor/UI/Component/Header.reflected.hpp"
 
+#include <Chicane/Core/Input/Keyboard/Button.hpp>
+#include <Chicane/Core/Input/Keyboard/Event.hpp>
 #include <Chicane/Core/Input/Mouse/Button.hpp>
 #include <Chicane/Core/Input/Mouse/Button/Event.hpp>
 #include <Chicane/Grid/Component/Button.hpp>
@@ -7,6 +9,7 @@
 #include <Chicane/Grid/Component/Select/Option.hpp>
 #include <Chicane/Runtime/Application.hpp>
 
+#include "Editor/UI/Component/Header/Menu.hpp"
 #include "Editor/UI/Component/Logo.hpp"
 
 namespace Editor
@@ -14,12 +17,15 @@ namespace Editor
     Header::Header(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
           maximizeState("restored"),
-          dragState("idle"),
+          menus({}),
           m_moveWindow(nullptr)
     {
         import <Logo>();
+        import <HeaderMenu>();
 
         load("Assets/Editor/UI/Components/Header.grid", "Assets/Editor/UI/Components/Header.decal");
+
+        initSettingsMenu();
     }
 
     Header::~Header()
@@ -27,8 +33,27 @@ namespace Editor
         unbindMoveHitTest();
     }
 
+    bool Header::isFocusable() const
+    {
+        return true;
+    }
+
     bool Header::onEvent(const Chicane::WindowEvent& inEvent)
     {
+        if (inEvent.type == Chicane::WindowEventType::KeyDown && inEvent.data)
+        {
+            const Chicane::Input::KeyboardEvent event = *static_cast<Chicane::Input::KeyboardEvent*>(inEvent.data);
+
+            if (event.button == Chicane::Input::KeyboardButton::Escape)
+            {
+                closeMenus();
+
+                return true;
+            }
+
+            return false;
+        }
+
         if (inEvent.type != Chicane::WindowEventType::MouseButtonDown)
         {
             return false;
@@ -61,6 +86,11 @@ namespace Editor
         bindMoveHitTest();
     }
 
+    void Header::onBlur()
+    {
+        closeMenus();
+    }
+
     void Header::onMinimize()
     {
         if (Chicane::Window* window = Chicane::Application::getInstance().getWindow())
@@ -90,11 +120,10 @@ namespace Editor
         Chicane::Grid::Component* node = getHitAt(inLocation);
         while (node && node != this)
         {
-            if (node->getTag().equals(
-                    Chicane::Grid::Button::TAG_ID,
-                    Chicane::Grid::Select::TAG_ID,
-                    Chicane::Grid::SelectOption::TAG_ID
-                ))
+            if (node->getTag().equals(Chicane::Grid::Button::TAG_ID,
+                                      Chicane::Grid::Select::TAG_ID,
+                                      Chicane::Grid::SelectOption::TAG_ID,
+                                      HeaderMenu::TAG_ID))
             {
                 return true;
             }
@@ -108,6 +137,17 @@ namespace Editor
         }
 
         return false;
+    }
+
+    void Header::closeMenus()
+    {
+        for (Chicane::Grid::Component* child : getChildrenFlat())
+        {
+            if (HeaderMenu* menu = dynamic_cast<HeaderMenu*>(child))
+            {
+                menu->close();
+            }
+        }
     }
 
     void Header::bindMoveHitTest()
@@ -126,8 +166,7 @@ namespace Editor
                 const Chicane::Vec2 location(static_cast<float>(inX), static_cast<float>(inY));
 
                 return containsPoint(location) && !isControlHit(location);
-            }
-        );
+            });
     }
 
     void Header::unbindMoveHitTest()
@@ -140,5 +179,27 @@ namespace Editor
         }
 
         m_moveWindow = nullptr;
+    }
+
+    void Header::initSettingsMenu()
+    {
+        // Themes
+        HeaderMenuItem themes = {};
+        themes.label          = "Themes";
+
+        for (const Chicane::String& theme : {"light", "dark"})
+        {
+            HeaderMenuItem submenu = {};
+            submenu.label          = theme.toUpper().substr(0, 1) + theme.substr(1);
+            submenu.action         = Chicane::String::sprint("onThemeSwitch(%s)", theme);
+
+            themes.children.push_back(submenu);
+        }
+
+        HeaderMenuItem root = {};
+        root.label          = "Settings";
+        root.children.push_back(themes);
+
+        menus.push_back(root);
     }
 }

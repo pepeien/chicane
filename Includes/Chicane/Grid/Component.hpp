@@ -54,11 +54,13 @@ namespace Chicane
 
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
-            static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
-            static constexpr inline const char* ON_LEAVE_ATTRIBUTE_NAME = "onLeave";
-            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
-            static constexpr inline const char* ON_FOCUS_ATTRIBUTE_NAME = "onFocus";
-            static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME  = "onBlur";
+            static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME     = "onHover";
+            static constexpr inline const char* ON_LEAVE_ATTRIBUTE_NAME     = "onLeave";
+            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME     = "onClick";
+            static constexpr inline const char* ON_FOCUS_ATTRIBUTE_NAME     = "onFocus";
+            static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME      = "onBlur";
+            static constexpr inline const char* ON_DRAG_ATTRIBUTE_NAME      = "onDrag";
+            static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME  = "onDragEnd";
 
         public:
             static Component* create(const pugi::xml_node& inNode);
@@ -98,6 +100,8 @@ namespace Chicane
             virtual void onClick() { return; }
             virtual void onFocus() { return; }
             virtual void onBlur() { return; }
+            virtual void onDrag() { return; }
+            virtual void onDragEnd() { return; }
 
             // Refresh Events
             virtual void refreshPrimitive() { return; }
@@ -112,6 +116,7 @@ namespace Chicane
             bool isSolid() const;
             bool isHovered() const;
             bool isFocused() const;
+            bool isDragging() const;
 
             bool canAdopt(Component* inComponent) const;
 
@@ -121,9 +126,12 @@ namespace Chicane
             void click();
             void focus();
             void blur();
+            void drag();
+            void endDrag();
 
             void setHovered(bool inValue);
             void setFocused(bool inValue);
+            void setDragging(bool inValue);
 
             // Lifecycle Events
             virtual void tick(float inDelta);
@@ -372,6 +380,7 @@ namespace Chicane
             bool                                                  m_bSkipForDirective;
             bool                                                  m_bHovered;
             bool                                                  m_bFocused;
+            bool                                                  m_bDragging;
         };
     }
 }

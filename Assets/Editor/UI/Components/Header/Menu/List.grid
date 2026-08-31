@@ -1,0 +1,3 @@
+<Container class="header-menu__list" dir:if="{{ bIsOpen }}">
+    <HeaderMenu dir:for="child : submenu" />
+</Container>

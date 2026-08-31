@@ -121,26 +121,21 @@ namespace Chicane
     Application::ControllerSubscription Application::watchController(
         ControllerSubscription::NextCallback     inNext,
         ControllerSubscription::ErrorCallback    inError,
-        ControllerSubscription::CompleteCallback inComplete
-    )
+        ControllerSubscription::CompleteCallback inComplete)
     {
         return m_controllerObservable.subscribe(inNext, inError, inComplete).next(m_controller);
     }
 
-    Application::SceneSubscription Application::watchScene(
-        SceneSubscription::NextCallback     inNext,
-        SceneSubscription::ErrorCallback    inError,
-        SceneSubscription::CompleteCallback inComplete
-    )
+    Application::SceneSubscription Application::watchScene(SceneSubscription::NextCallback     inNext,
+                                                           SceneSubscription::ErrorCallback    inError,
+                                                           SceneSubscription::CompleteCallback inComplete)
     {
         return m_sceneObservable.subscribe(inNext, inError, inComplete).next(getScene());
     }
 
-    Application::ViewSubscription Application::watchView(
-        ViewSubscription::NextCallback     inNext,
-        ViewSubscription::ErrorCallback    inError,
-        ViewSubscription::CompleteCallback inComplete
-    )
+    Application::ViewSubscription Application::watchView(ViewSubscription::NextCallback     inNext,
+                                                         ViewSubscription::ErrorCallback    inError,
+                                                         ViewSubscription::CompleteCallback inComplete)
     {
         return m_viewObservable.subscribe(inNext, inError, inComplete).next(getView());
     }
@@ -208,8 +203,7 @@ namespace Chicane
                         m_window->setCursor(view->getPointer());
                     }
                 }
-            }
-        );
+            });
         m_window->watchBackend(
             [this](WindowBackend inValue)
             {
@@ -217,8 +211,7 @@ namespace Chicane
                 {
                     m_renderer->reloadBackend();
                 }
-            }
-        );
+            });
     }
 
     void Application::initRenderer(const Renderer::Settings& inSettings)
@@ -320,8 +313,7 @@ namespace Chicane
 
                     return;
                 }
-            }
-        );
+            });
 
         Box::load(Box::Font::DEFAULT_SOURCE);
         Box::load(Box::Model::DEFAULT_SOURCE);
@@ -540,8 +532,7 @@ namespace Chicane
                         break;
                     };
                 }
-            }
-        );
+            });
 
         m_viewThread = std::thread(&Application::tickUI, this);
     }
@@ -629,28 +620,27 @@ namespace Chicane
             const glm::vec3 mapped = static_cast<glm::mat3>(paint) * glm::vec3(visualCenter.x, visualCenter.y, 1.0f);
 
             Renderer::DrawPoly2DCommandFill subcommand;
-            subcommand.polygon.reference = primitive.reference;
-            subcommand.polygon.vertices  = primitive.vertices;
-            subcommand.polygon.indices   = primitive.indices;
-            subcommand.instance.view     = viewSize;
-            subcommand.instance.scale    = component->getScale();
-            subcommand.instance.size     = size;
-            subcommand.instance.offset   = Vec2::Zero();
-            subcommand.instance
-                .position = {mapped.x - (size.x * 0.5f), mapped.y - (size.y * 0.5f), component->getDepth()};
+            subcommand.polygon.reference   = primitive.reference;
+            subcommand.polygon.vertices    = primitive.vertices;
+            subcommand.polygon.indices     = primitive.indices;
+            subcommand.instance.view       = viewSize;
+            subcommand.instance.scale      = component->getScale();
+            subcommand.instance.size       = size;
+            subcommand.instance.offset     = Vec2::Zero();
+            subcommand.instance.position   = {mapped.x - (size.x * 0.5f),
+                                              mapped.y - (size.y * 0.5f),
+                                              component->getDepth()};
             subcommand.instance.transformX = {paint[0][0], paint[0][1]};
             subcommand.instance.transformY = {paint[1][0], paint[1][1]};
             subcommand.instance.clip       = {clip.left, clip.top, clip.right, clip.bottom};
             subcommand.instance.radiusX    = style.radius.horizontal();
             subcommand.instance.radiusY    = style.radius.vertical();
-            component->getOverflowRoundClips(
-                subcommand.instance.innerClip,
-                subcommand.instance.innerClipRadiusX,
-                subcommand.instance.innerClipRadiusY,
-                subcommand.instance.outerClip,
-                subcommand.instance.outerClipRadiusX,
-                subcommand.instance.outerClipRadiusY
-            );
+            component->getOverflowRoundClips(subcommand.instance.innerClip,
+                                             subcommand.instance.innerClipRadiusX,
+                                             subcommand.instance.innerClipRadiusY,
+                                             subcommand.instance.outerClip,
+                                             subcommand.instance.outerClipRadiusX,
+                                             subcommand.instance.outerClipRadiusY);
             const String backgroundImage = style.background.image.getRaw();
 
             if (!backgroundImage.isEmpty())
@@ -670,6 +660,20 @@ namespace Chicane
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
                 component->getOpacity();
+            subcommand.instance.borderWidth = style.border.paintedWidths();
+
+            auto borderColor = [&](const auto& inProperty) -> Vec4
+            {
+                Vec4 result = inProperty.getRaw().isEmpty() ? style.foregroundColor.get() : inProperty.get();
+                result.a *= component->getOpacity();
+
+                return result;
+            };
+
+            subcommand.instance.borderColorTop    = borderColor(style.border.colorTop);
+            subcommand.instance.borderColorRight  = borderColor(style.border.colorRight);
+            subcommand.instance.borderColorBottom = borderColor(style.border.colorBottom);
+            subcommand.instance.borderColorLeft   = borderColor(style.border.colorLeft);
 
             command.fills.emplace_back(std::move(subcommand));
         }
@@ -679,8 +683,7 @@ namespace Chicane
             command.fills.begin(),
             command.fills.end(),
             [](const Renderer::DrawPoly2DCommandFill& inLeft, const Renderer::DrawPoly2DCommandFill& inRight)
-            { return inLeft.instance.position.z < inRight.instance.position.z; }
-        );
+            { return inLeft.instance.position.z < inRight.instance.position.z; });
 
         m_viewReadIndex.store(index, std::memory_order_release);
         m_viewWriteIndex.store(1 - index, std::memory_order_relaxed);

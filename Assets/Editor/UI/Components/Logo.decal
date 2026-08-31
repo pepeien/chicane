@@ -2,12 +2,9 @@
     width: 100%;
     height: 100%;
 
-    &__background, &__path {
+    &__path {
         width: 100%;
         height: 100%;
-    }
-
-    &__path {
         fill: $dark-grey;
     }
 }

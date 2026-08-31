@@ -21,6 +21,7 @@ namespace Chicane
               m_path(""),
               m_hovered(nullptr),
               m_focused(nullptr),
+              m_dragging(nullptr),
               m_inputs(std::make_unique<ViewInputQueue>()),
               m_pointer(WindowCursor::Default)
         {
@@ -142,12 +143,26 @@ namespace Chicane
 
             if (inEvent.type == WindowEventType::WindowFocusLost || inEvent.type == WindowEventType::WindowFocusGained)
             {
+                if (inEvent.type == WindowEventType::WindowFocusLost)
+                {
+                    syncDragging(nullptr);
+                }
+
                 if (m_focused)
                 {
                     m_focused->onEvent(inEvent);
                 }
 
                 return;
+            }
+
+            if (inEvent.type == WindowEventType::MouseButtonUp)
+            {
+                Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                if (event.button == Input::MouseButton::Left)
+                {
+                    syncDragging(nullptr);
+                }
             }
 
             if (inEvent.type == WindowEventType::MouseButtonUp || inEvent.type == WindowEventType::MouseMotion)
@@ -178,6 +193,11 @@ namespace Chicane
                 }
 
                 syncFocused(resolveFocus(hit));
+
+                if (event.button == Input::MouseButton::Left)
+                {
+                    syncDragging(hit);
+                }
             }
 
             if (inEvent.type == WindowEventType::MouseMotion)
@@ -377,6 +397,11 @@ namespace Chicane
             {
                 m_focused = nullptr;
             }
+
+            if (m_dragging == inComponent)
+            {
+                syncDragging(nullptr);
+            }
         }
 
         void View::focusOn(Component* inComponent)
@@ -463,6 +488,70 @@ namespace Chicane
             {
                 m_focused->setFocused(true);
             }
+        }
+
+        void View::syncDragging(Component* inComponent)
+        {
+            Component* hit = (inComponent == this) ? nullptr : inComponent;
+
+            if (m_dragging == hit)
+            {
+                return;
+            }
+
+            std::vector<Component*> next;
+            Component*              node = hit;
+            while (node && node != this)
+            {
+                next.push_back(node);
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            std::vector<Component*> previous;
+            node = m_dragging;
+            while (node && node != this)
+            {
+                previous.push_back(node);
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            for (Component* candidate : previous)
+            {
+                bool bKeep = false;
+                for (Component* kept : next)
+                {
+                    if (kept == candidate)
+                    {
+                        bKeep = true;
+
+                        break;
+                    }
+                }
+
+                if (!bKeep)
+                {
+                    candidate->setDragging(false);
+                }
+            }
+
+            for (auto it = next.rbegin(); it != next.rend(); ++it)
+            {
+                (*it)->setDragging(true);
+            }
+
+            m_dragging = hit;
         }
     }
 }

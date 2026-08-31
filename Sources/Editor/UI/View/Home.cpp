@@ -39,10 +39,8 @@ namespace Editor
                     {
                         outlinerActors.clear();
                         outlinerActors = inActors;
-                    }
-                );
-            }
-        );
+                    });
+            });
     }
 
     void HomeView::onAssetImport()
@@ -75,12 +73,11 @@ namespace Editor
                         continue;
                     }
                 }
-            }
-        );
+            });
     }
 
-    void HomeView::onThemeSwitch()
+    void HomeView::onThemeSwitch(Chicane::String inValue)
     {
-        theme = theme.equals("dark") ? "light" : "dark";
+        theme = inValue;
     }
 }

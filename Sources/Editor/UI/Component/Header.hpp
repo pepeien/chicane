@@ -7,6 +7,8 @@
 #include <Chicane/Core/Xml.hpp>
 #include <Chicane/Grid/Component/Container.hpp>
 
+#include "Editor/UI/Component/Header/Menu.hpp"
+
 namespace Editor
 {
     CH_TYPE(Manual)
@@ -19,10 +21,13 @@ namespace Editor
         ~Header() override;
 
     public:
+        bool isFocusable() const override;
+
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
 
     protected:
         void onTick(float inDeltaTime) override;
+        void onBlur() override;
 
     public:
         CH_FUNCTION()
@@ -36,15 +41,18 @@ namespace Editor
 
     private:
         bool isControlHit(const Chicane::Vec2& inLocation) const;
+        void closeMenus();
         void bindMoveHitTest();
         void unbindMoveHitTest();
+
+        void initSettingsMenu();
 
     public:
         CH_FIELD()
         Chicane::String maximizeState;
 
         CH_FIELD()
-        Chicane::String dragState;
+        HeaderMenuItem::List menus;
 
     private:
         void* m_moveWindow;

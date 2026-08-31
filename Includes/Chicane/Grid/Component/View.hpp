@@ -60,6 +60,7 @@ namespace Chicane
             Component* resolveFocus(Component* inHit) const;
             void syncHovered(Component* inComponent);
             void syncFocused(Component* inComponent);
+            void syncDragging(Component* inComponent);
 
         protected:
             // Routing
@@ -68,6 +69,7 @@ namespace Chicane
             // Interaction
             Component*                      m_hovered;
             Component*                      m_focused;
+            Component*                      m_dragging;
             std::unique_ptr<ViewInputQueue> m_inputs;
             std::atomic<WindowCursor>       m_pointer;
         };

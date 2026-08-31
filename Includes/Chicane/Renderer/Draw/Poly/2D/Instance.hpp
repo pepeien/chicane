@@ -43,6 +43,11 @@ namespace Chicane
             Vec4     outerClip        = Vec4::Sentinel();
             Vec4     outerClipRadiusX = Vec4::Zero();
             Vec4     outerClipRadiusY = Vec4::Zero();
+            Vec4     borderWidth        = Vec4::Zero();
+            Vec4     borderColorTop     = Vec4::Zero();
+            Vec4     borderColorRight   = Vec4::Zero();
+            Vec4     borderColorBottom  = Vec4::Zero();
+            Vec4     borderColorLeft    = Vec4::Zero();
         };
     }
 }
