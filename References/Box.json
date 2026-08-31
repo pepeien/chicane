@@ -151,6 +151,40 @@
                 "description": "CHICANE_WINDOWBACKENDSUBSCRIPTION_DESCRIPTION"
             },
             {
+                "name": "WindowCursors",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "static_cast",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::size_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWCURSORS_DESCRIPTION"
+            },
+            {
                 "name": "AssetObservable",
                 "type": {
                     "prefix": "",

@@ -249,6 +249,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "resetValues",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_RESETVALUES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "snapshot",
                 "parameters": [],
                 "modifiers": [],
