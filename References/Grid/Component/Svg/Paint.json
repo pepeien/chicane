@@ -51,8 +51,465 @@
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SvgLineCap",
+                    "suffix": "",
+                    "path": "Grid/Component/Svg/Paint/LineCap",
+                    "templates": []
+                },
+                "name": "parseLineCap",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_SVGPAINT_PARSELINECAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SvgLineJoin",
+                    "suffix": "",
+                    "path": "Grid/Component/Svg/Paint/LineJoin",
+                    "templates": []
+                },
+                "name": "parseLineJoin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_SVGPAINT_PARSELINEJOIN_DESCRIPTION"
+            }
+        ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FILL_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_FILL_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FILL_OPACITY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_FILL_OPACITY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FILL_RULE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_FILL_RULE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FILL_RULE_TYPE_EVENODD",
+                "description": "CHICANE_GRID_SVGPAINT_FILL_RULE_TYPE_EVENODD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_OPACITY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_OPACITY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_LINECAP_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_LINECAP_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_LINEJOIN_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_LINEJOIN_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINECAP_TYPE_BUTT",
+                "description": "CHICANE_GRID_SVGPAINT_LINECAP_TYPE_BUTT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINECAP_TYPE_ROUND",
+                "description": "CHICANE_GRID_SVGPAINT_LINECAP_TYPE_ROUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINECAP_TYPE_SQUARE",
+                "description": "CHICANE_GRID_SVGPAINT_LINECAP_TYPE_SQUARE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINEJOIN_TYPE_MITER",
+                "description": "CHICANE_GRID_SVGPAINT_LINEJOIN_TYPE_MITER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINEJOIN_TYPE_ROUND",
+                "description": "CHICANE_GRID_SVGPAINT_LINEJOIN_TYPE_ROUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINEJOIN_TYPE_BEVEL",
+                "description": "CHICANE_GRID_SVGPAINT_LINEJOIN_TYPE_BEVEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_WIDTH_DEFAULT_VALUE",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_WIDTH_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_MITER_LIMIT",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_MITER_LIMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_JOIN_MIN_LENGTH",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_JOIN_MIN_LENGTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_MITER_COSINE_MIN",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_MITER_COSINE_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_MITER_COSINE_MAX",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_MITER_COSINE_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STROKE_ARC_SEGMENTS",
+                "description": "CHICANE_GRID_SVGPAINT_STROKE_ARC_SEGMENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OPACITY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_OPACITY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OPACITY_DEFAULT_VALUE",
+                "description": "CHICANE_GRID_SVGPAINT_OPACITY_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSFORM_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_TRANSFORM_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_SVGPAINT_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "modifiers": [],
@@ -169,6 +626,32 @@
                 },
                 "name": "strokeOpacity",
                 "description": "CHICANE_GRID_SVGPAINT_STROKEOPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SvgLineCap",
+                    "suffix": "",
+                    "path": "Grid/Component/Svg/Paint/LineCap",
+                    "templates": []
+                },
+                "name": "lineCap",
+                "description": "CHICANE_GRID_SVGPAINT_LINECAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SvgLineJoin",
+                    "suffix": "",
+                    "path": "Grid/Component/Svg/Paint/LineJoin",
+                    "templates": []
+                },
+                "name": "lineJoin",
+                "description": "CHICANE_GRID_SVGPAINT_LINEJOIN_DESCRIPTION"
             },
             {
                 "accessor": "public",

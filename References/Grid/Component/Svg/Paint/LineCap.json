@@ -1,0 +1,51 @@
+{
+    "title": "SvgLineCap",
+    "filename": "LineCap",
+    "path": "Grid/Component/Svg/Paint/LineCap",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Paint/LineCap.hpp",
+        "namespace": "Chicane::Grid::SvgLineCap",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Butt",
+                "description": "CHICANE_GRID_SVGLINECAP_BUTT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Round",
+                "description": "CHICANE_GRID_SVGLINECAP_ROUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Square",
+                "description": "CHICANE_GRID_SVGLINECAP_SQUARE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_SVGLINECAP_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,51 @@
+{
+    "title": "SvgLineJoin",
+    "filename": "LineJoin",
+    "path": "Grid/Component/Svg/Paint/LineJoin",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Paint/LineJoin.hpp",
+        "namespace": "Chicane::Grid::SvgLineJoin",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Miter",
+                "description": "CHICANE_GRID_SVGLINEJOIN_MITER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Round",
+                "description": "CHICANE_GRID_SVGLINEJOIN_ROUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bevel",
+                "description": "CHICANE_GRID_SVGLINEJOIN_BEVEL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_SVGLINEJOIN_DESCRIPTION"
+    },
+    "children": []
+}

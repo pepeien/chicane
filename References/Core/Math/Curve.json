@@ -141,6 +141,38 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FLATNESS",
+                "description": "CHICANE_CURVE_FLATNESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_DEPTH",
+                "description": "CHICANE_CURVE_MAX_DEPTH_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
