@@ -354,6 +354,7 @@ namespace Chicane
             void setProperties(const StyleRuleset::Properties& inProperties);
 
             void copyValuesFrom(const Style& inStyle);
+            void resetValues();
 
             void snapshot();
             void restore();

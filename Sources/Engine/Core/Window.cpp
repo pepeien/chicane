@@ -26,6 +26,12 @@ namespace Chicane
           m_bIsFocused(false),
           m_bIsResizable(true),
           m_bIsMinimized(false),
+          m_bIsFillMaximized(false),
+          m_restoreX(0),
+          m_restoreY(0),
+          m_restoreWidth(0),
+          m_restoreHeight(0),
+          m_moveHitTest(nullptr),
           m_cursor(WindowCursor::Default),
           m_cursors({}),
           m_eventObservable({}),
@@ -70,6 +76,8 @@ namespace Chicane
 
     void Window::init(const WindowSettings& inSettings)
     {
+        m_settings.type = inSettings.type;
+
         setBackend(inSettings.backend);
         setTitle(inSettings.title);
         setIcon(inSettings.icon);
@@ -412,6 +420,13 @@ namespace Chicane
         case WindowType::WindowedBorderless:
             SDL_SetWindowBordered(static_cast<SDL_Window*>(m_instance), false);
 
+            if (m_bIsResizable)
+            {
+                enableResizing();
+
+                break;
+            }
+
             disableResizing();
 
             break;
@@ -492,12 +507,24 @@ namespace Chicane
             break;
         };
 
+        if (m_settings.type == WindowType::WindowedBorderless)
+        {
+            flag |= SDL_WINDOW_BORDERLESS;
+        }
+
+        if (m_bIsResizable)
+        {
+            flag |= SDL_WINDOW_RESIZABLE;
+        }
+
         m_instance = SDL_CreateWindow("", 0, 0, flag);
 
         if (!m_instance)
         {
             emmitError("Error creating window");
         }
+
+        applyMoveHitTest();
     }
 
     void* Window::getInstance() const
@@ -513,6 +540,7 @@ namespace Chicane
         }
 
         SDL_DestroyWindow(static_cast<SDL_Window*>(m_instance));
+
         m_instance = nullptr;
     }
 
@@ -737,7 +765,7 @@ namespace Chicane
             return;
         }
 
-        if (m_settings.type != WindowType::Windowed)
+        if (m_settings.type != WindowType::Windowed && m_settings.type != WindowType::WindowedBorderless)
         {
             return;
         }
@@ -779,6 +807,160 @@ namespace Chicane
         Vec<2, std::uint32_t> currentSize = getSize();
 
         return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
+    }
+
+    void Window::minimize()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        if (!SDL_MinimizeWindow(static_cast<SDL_Window*>(m_instance)))
+        {
+            emmitWarning("Failed to minimize the window");
+        }
+    }
+
+    bool Window::isMaximized() const
+    {
+        if (!hasInstance())
+        {
+            return false;
+        }
+
+        return m_bIsFillMaximized ||
+               (SDL_GetWindowFlags(static_cast<SDL_Window*>(m_instance)) & SDL_WINDOW_MAXIMIZED) != 0;
+    }
+
+    void Window::maximize()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        if (isMaximized())
+        {
+            restore();
+
+            return;
+        }
+
+        if (SDL_MaximizeWindow(static_cast<SDL_Window*>(m_instance)))
+        {
+            SDL_SyncWindow(static_cast<SDL_Window*>(m_instance));
+        }
+        else
+        {
+            emmitWarning("Failed to maximize the window");
+        }
+
+        if (isMaximized())
+        {
+            return;
+        }
+
+        maximizeToDisplay();
+    }
+
+    void Window::restore()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        if (m_bIsFillMaximized)
+        {
+            m_bIsFillMaximized = false;
+
+            setPosition(m_restoreX, m_restoreY);
+            setSize(m_restoreWidth, m_restoreHeight);
+
+            return;
+        }
+
+        if (!SDL_RestoreWindow(static_cast<SDL_Window*>(m_instance)))
+        {
+            emmitWarning("Failed to restore the window");
+        }
+    }
+
+    void Window::maximizeToDisplay()
+    {
+        SDL_Window*         window  = static_cast<SDL_Window*>(m_instance);
+        SDL_Rect            bounds  = {};
+        const SDL_DisplayID display = SDL_GetDisplayForWindow(window);
+
+        if (!SDL_GetDisplayUsableBounds(display, &bounds) && !SDL_GetDisplayBounds(display, &bounds))
+        {
+            emmitWarning("Failed to read the display bounds");
+
+            return;
+        }
+
+        setPosition(m_restoreX, m_restoreY);
+        setSize(m_restoreWidth, m_restoreHeight);
+
+        m_bIsFillMaximized = true;
+
+        setPosition(bounds.x, bounds.y);
+        setSize(bounds.w, bounds.h);
+    }
+
+    void Window::close()
+    {
+        SDL_Event event = {};
+        event.type      = SDL_EVENT_QUIT;
+
+        if (!SDL_PushEvent(&event))
+        {
+            emmitWarning("Failed to close the window");
+        }
+    }
+
+    void Window::setMoveHitTest(const std::function<bool(int, int)>& inHitTest)
+    {
+        m_moveHitTest = inHitTest;
+
+        applyMoveHitTest();
+    }
+
+    void Window::applyMoveHitTest()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        SDL_Window* window = static_cast<SDL_Window*>(m_instance);
+
+        if (!m_moveHitTest)
+        {
+            SDL_SetWindowHitTest(window, nullptr, nullptr);
+
+            return;
+        }
+
+        if (!SDL_SetWindowHitTest(
+                window,
+                [](SDL_Window*, const SDL_Point* inArea, void* inData) -> SDL_HitTestResult
+                {
+                    Window* current = static_cast<Window*>(inData);
+
+                    if (current->m_moveHitTest && current->m_moveHitTest(inArea->x, inArea->y))
+                    {
+                        return SDL_HITTEST_DRAGGABLE;
+                    }
+
+                    return SDL_HITTEST_NORMAL;
+                },
+                this
+            ))
+        {
+            emmitWarning("Failed to set the window move hit test");
+        }
     }
 
     WindowEventSubscription Window::watchEvent(

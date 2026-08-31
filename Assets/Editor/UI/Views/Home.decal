@@ -1,17 +1,6 @@
-$sideBarSize:   25vw;
-$bottomBarSize: 30vh;
-
-.theme-button {
-    position: absolute;
-    margin-left: calc(100% - calc($sideBarSize + 8em));
-    width: 8em;
-    height: 2em;
-    background-color: $--dark-grey;
-
-    Text {
-        margin: auto;
-    }
-}
+$sideBarSize:   25%;
+$bottomBarSize: 30%;
+$headerSize:    4em;
 
 .--light {
     $--green: #0b997d;
@@ -36,13 +25,20 @@ $bottomBarSize: 30vh;
 }
 
 .home {
+    Header {
+        width: 100% ;
+        height: $headerSize;
+        overflow: visible;
+    }
+
     Viewport {
-        position: absolute;
-        width: calc(100% - $sideBarSize);
-        height: calc(100% - $bottomBarSize);
+        width: 100%;
+        height: 100%;
     }
 
     Telemetry {
+        position: absolute;
+        margin-top: $headerSize;
         padding: 0.2em;
     }
 

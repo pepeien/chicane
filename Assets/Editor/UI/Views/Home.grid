@@ -1,9 +1,5 @@
 <View path="home" class="home --{{ theme }}">
-    <Viewport target="Screen" />
+    <Header />
     <Telemetry />
-    <Button class="theme-button" onClick="{{ onThemeSwitch() }}">
-        <Text>Switch Theme</Text>
-    </Button>
-    <Outliner />
-    <Explorer />
+    <Viewport />
 </View>

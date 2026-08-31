@@ -6,6 +6,7 @@
 
 #include "Editor/Actor/Item.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
+#include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
@@ -17,6 +18,7 @@ namespace Editor
           theme("dark")
     {
         import <Explorer>();
+        import <Header>();
         import <Outliner>();
         import <Telemetry>();
 

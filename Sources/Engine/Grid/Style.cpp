@@ -448,6 +448,13 @@ namespace Chicane
             animation   = inStyle.animation;
         }
 
+        void Style::resetValues()
+        {
+            static const Style defaults;
+
+            copyValuesFrom(defaults);
+        }
+
         void Style::snapshot()
         {
             m_snapshot = extractAnimatedProperties();

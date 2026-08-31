@@ -11,6 +11,7 @@
 #include "Chicane/Core/Window/Type.hpp"
 
 #include <array>
+#include <functional>
 
 namespace Chicane
 {
@@ -22,6 +23,8 @@ namespace Chicane
 
     using WindowBackendObservable   = EventObservable<WindowBackend>;
     using WindowBackendSubscription = EventSubscription<WindowBackend>;
+
+    using WindowCursors = std::array<void*, static_cast<std::size_t>(WindowCursor::Count)>;
 
     class Application;
 
@@ -80,10 +83,20 @@ namespace Chicane
         void setCursor(WindowCursor inValue);
 
         bool isResizable() const;
-        void enableResizing();  // Only takes effect when the type is `Type::Windowed`
-        void disableResizing(); // Only takes effect when the type is `Type::Windowed`
+        void enableResizing(); // Windowed and WindowedBorderless
+        void disableResizing();
 
         bool isMinimized() const;
+        void minimize();
+
+        bool isMaximized() const;
+        void maximize();
+
+        void restore();
+
+        void close();
+
+        void setMoveHitTest(const std::function<bool(int, int)>& inHitTest);
 
         // Event
         WindowEventSubscription watchEvent(
@@ -109,25 +122,33 @@ namespace Chicane
         // Settings
         void refreshSize();
         void refreshPosition();
+        void applyMoveHitTest();
+        void maximizeToDisplay();
 
         // Helpers
         void emmitWarning(const String& inMessage);
         void emmitError(const String& inMessage);
 
     private:
-        void*          m_instance;
+        void*                         m_instance;
 
-        WindowSettings m_settings;
+        WindowSettings                m_settings;
 
-        bool           m_bIsFocused;
-        bool           m_bIsResizable;
-        bool           m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
+        bool                          m_bIsFocused;
+        bool                          m_bIsResizable;
+        bool                          m_bIsMinimized;
+        bool                          m_bIsFillMaximized;
+        int                           m_restoreX;
+        int                           m_restoreY;
+        int                           m_restoreWidth;
+        int                           m_restoreHeight;
+        std::function<bool(int, int)> m_moveHitTest;
 
-        WindowCursor   m_cursor;
-        std::array<void*, static_cast<std::size_t>(WindowCursor::Count)> m_cursors;
+        WindowCursor                  m_cursor;
+        WindowCursors                 m_cursors;
 
-        WindowEventObservable                                            m_eventObservable;
-        WindowSizeObservable                                             m_sizeObservable;
-        WindowBackendObservable                                          m_backendObservable;
+        WindowEventObservable         m_eventObservable;
+        WindowSizeObservable          m_sizeObservable;
+        WindowBackendObservable       m_backendObservable;
     };
 }

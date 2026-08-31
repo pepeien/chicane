@@ -375,10 +375,7 @@ namespace Chicane
 
             m_styleVariables.clear();
 
-            if (m_bHasStyleBase)
-            {
-                m_style.copyValuesFrom(m_styleBase);
-            }
+            m_style.resetValues();
 
             std::vector<StyleFile*> files;
             auto                    addFile = [&](StyleFile* file)
@@ -648,7 +645,7 @@ namespace Chicane
         {
             m_className = inValue;
 
-            refreshStyleRuleset();
+            refreshStyleSubtree();
         }
 
         void Component::refreshDirectives()
@@ -1861,7 +1858,7 @@ namespace Chicane
 
         Vec2 Component::getTransformPivot() const
         {
-            return getDrawPosition() + getStyle().getTransformOrigin();
+            return getDrawPosition() + getStyle().getTransformOrigin(getSize());
         }
 
         Mat3 Component::getPaintMatrix() const
@@ -2198,6 +2195,11 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
             setPosition(0.0f, 0.0f);
 
             float marginLeft   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get();
