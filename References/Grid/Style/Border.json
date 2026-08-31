@@ -1,0 +1,658 @@
+{
+    "title": "StyleBorder",
+    "filename": "Border",
+    "path": "Grid/Style/Border",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Border.hpp",
+        "namespace": "Chicane::Grid::StyleBorder",
+        "types": [
+            {
+                "name": "WidthParser",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float(const String",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SizeDirection)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEBORDER_WIDTHPARSER_DESCRIPTION"
+            },
+            {
+                "name": "ColorParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEBORDER_COLORPARSER_DESCRIPTION"
+            },
+            {
+                "name": "TypeParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleBorderType",
+                            "suffix": "",
+                            "path": "Grid/Style/Border/Type",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEBORDER_TYPEPARSER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleBorder",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_STYLEBORDER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_SETPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WidthParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Border",
+                            "templates": []
+                        },
+                        "name": "inWidthParser"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ColorParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Border",
+                            "templates": []
+                        },
+                        "name": "inColorParser"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TypeParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Border",
+                            "templates": []
+                        },
+                        "name": "inTypeParser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_PARSEWITH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintedTop",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_PAINTEDTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintedRight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_PAINTEDRIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintedBottom",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_PAINTEDBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintedLeft",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_PAINTEDLEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "paintedWidths",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_PAINTEDWIDTHS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVisible",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_ISVISIBLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyShorthand",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "StyleBorderType",
+                                    "suffix": "",
+                                    "path": "Grid/Style/Border/Type",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleProperty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Color::Rgba",
+                                    "suffix": "",
+                                    "path": "Core/Color",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_APPLYSHORTHAND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyTypeOneliner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_APPLYTYPEONELINER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyColorOneliner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEBORDER_APPLYCOLORONELINER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isTypeToken",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_ISTYPETOKEN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isColorToken",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEBORDER_ISCOLORTOKEN_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleCorners",
+                    "suffix": "",
+                    "path": "Grid/Style/Corners",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_GRID_STYLEBORDER_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleBorderType",
+                            "suffix": "",
+                            "path": "Grid/Style/Border/Type",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "typeTop",
+                "description": "CHICANE_GRID_STYLEBORDER_TYPETOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleBorderType",
+                            "suffix": "",
+                            "path": "Grid/Style/Border/Type",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "typeBottom",
+                "description": "CHICANE_GRID_STYLEBORDER_TYPEBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleBorderType",
+                            "suffix": "",
+                            "path": "Grid/Style/Border/Type",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "typeLeft",
+                "description": "CHICANE_GRID_STYLEBORDER_TYPELEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleBorderType",
+                            "suffix": "",
+                            "path": "Grid/Style/Border/Type",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "typeRight",
+                "description": "CHICANE_GRID_STYLEBORDER_TYPERIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "colorTop",
+                "description": "CHICANE_GRID_STYLEBORDER_COLORTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "colorBottom",
+                "description": "CHICANE_GRID_STYLEBORDER_COLORBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "colorLeft",
+                "description": "CHICANE_GRID_STYLEBORDER_COLORLEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "colorRight",
+                "description": "CHICANE_GRID_STYLEBORDER_COLORRIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEBORDER_DESCRIPTION"
+    },
+    "children": []
+}

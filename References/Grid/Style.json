@@ -192,6 +192,108 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetLeft",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETLEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetRight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETRIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetTop",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetBottom",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetHorizontal",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETHORIZONTAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insetVertical",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_INSETVERTICAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -676,6 +778,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshBorder",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHBORDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshGap",
                 "parameters": [],
                 "modifiers": [],
@@ -910,6 +1027,34 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLE_PARSEOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleBorderType",
+                    "suffix": "",
+                    "path": "Grid/Style/Border/Type",
+                    "templates": []
+                },
+                "name": "parseBorderType",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEBORDERTYPE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1642,6 +1787,22 @@
                 },
                 "name": "PSEUDO_CLASS_FOCUS",
                 "description": "CHICANE_GRID_STYLE_PSEUDO_CLASS_FOCUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PSEUDO_CLASS_DRAG",
+                "description": "CHICANE_GRID_STYLE_PSEUDO_CLASS_DRAG_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3871,6 +4032,534 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "BORDER_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RIGHT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_RIGHT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_LEFT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_LEFT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_LEFT_WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_LEFT_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RIGHT_STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_RIGHT_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_LEFT_STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_LEFT_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_TOP_COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_TOP_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RIGHT_COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_RIGHT_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_LEFT_COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BORDER_LEFT_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_NONE",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_HIDDEN",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_HIDDEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_SOLID",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_SOLID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_DASHED",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_DASHED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_DOTTED",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_DOTTED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_DOUBLE",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_DOUBLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_GROOVE",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_GROOVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_RIDGE",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_RIDGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_INSET",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_INSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_STYLE_TYPE_OUTSET",
+                "description": "CHICANE_GRID_STYLE_BORDER_STYLE_TYPE_OUTSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_WIDTH_TYPE_THIN",
+                "description": "CHICANE_GRID_STYLE_BORDER_WIDTH_TYPE_THIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_WIDTH_TYPE_MEDIUM",
+                "description": "CHICANE_GRID_STYLE_BORDER_WIDTH_TYPE_MEDIUM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_WIDTH_TYPE_THICK",
+                "description": "CHICANE_GRID_STYLE_BORDER_WIDTH_TYPE_THICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "GAP_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_GAP_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -4298,6 +4987,19 @@
                 },
                 "name": "padding",
                 "description": "CHICANE_GRID_STYLE_PADDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleBorder",
+                    "suffix": "",
+                    "path": "Grid/Style/Border",
+                    "templates": []
+                },
+                "name": "border",
+                "description": "CHICANE_GRID_STYLE_BORDER_DESCRIPTION"
             },
             {
                 "accessor": "public",

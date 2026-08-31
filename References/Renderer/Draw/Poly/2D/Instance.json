@@ -342,6 +342,71 @@
                 },
                 "name": "outerClipRadiusY",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_OUTERCLIPRADIUSY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "borderWidth",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BORDERWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "borderColorTop",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BORDERCOLORTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "borderColorRight",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BORDERCOLORRIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "borderColorBottom",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BORDERCOLORBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "borderColorLeft",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_BORDERCOLORLEFT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DESCRIPTION"

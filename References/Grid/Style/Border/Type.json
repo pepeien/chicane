@@ -1,0 +1,40 @@
+{
+    "title": "StyleBorderType",
+    "filename": "Type",
+    "path": "Grid/Style/Border/Type",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Border/Type.hpp",
+        "namespace": "Chicane::Grid::StyleBorderType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_GRID_STYLEBORDERTYPE_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Solid",
+                "description": "CHICANE_GRID_STYLEBORDERTYPE_SOLID_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEBORDERTYPE_DESCRIPTION"
+    },
+    "children": []
+}
