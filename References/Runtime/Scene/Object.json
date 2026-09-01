@@ -24,7 +24,23 @@
                 "description": "CHICANE_OBJECT_OBJECT_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Object",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_~OBJECT_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -216,6 +232,21 @@
                     "inline"
                 ],
                 "description": "CHICANE_OBJECT_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",

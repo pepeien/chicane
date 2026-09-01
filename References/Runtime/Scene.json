@@ -1,10 +1,10 @@
 {
-    "title": "Scene",
+    "title": "SpatialCell",
     "filename": "Scene",
     "path": "Runtime/Scene",
     "source": {
         "header": "Includes/Chicane/Runtime/Scene.hpp",
-        "namespace": "Chicane::Scene",
+        "namespace": "Chicane::Scene::SpatialCell",
         "types": [
             {
                 "name": "ActorsObservable",
@@ -769,6 +769,45 @@
                 "description": "CHICANE_SCENE_GETCOMPONENTCOUNT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "forEachInFrustum",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ViewFrustum",
+                            "suffix": "&",
+                            "path": "Core/View/Frustum",
+                            "templates": []
+                        },
+                        "name": "inFrustum"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Function",
+                            "suffix": "&&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFunction"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_FOREACHINFRUSTUM_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -866,9 +905,268 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_SCENE_DELETECOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateSpatial",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_UPDATESPATIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "removeSpatial",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_REMOVESPATIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "makeCellKey",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_MAKECELLKEY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "makeCellKey",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inPosition"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_MAKECELLKEY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collectCellKeys",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint64_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outKeys"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_COLLECTCELLKEYS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "insertIntoCell",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_INSERTINTOCELL_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "eraseFromCell",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_ERASEFROMCELL_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "friend",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Object",
+                "description": "CHICANE_SCENE_OBJECT_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -1005,9 +1303,120 @@
                 },
                 "name": "m_componentsObservable",
                 "description": "CHICANE_SCENE_M_COMPONENTSOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SpatialCell",
+                            "suffix": "",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_cells",
+                "description": "CHICANE_SCENE_M_CELLS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint64_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_objectCells",
+                "description": "CHICANE_SCENE_M_OBJECTCELLS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "min",
+                "description": "CHICANE_SCENE_SPATIALCELL_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "max",
+                "description": "CHICANE_SCENE_SPATIALCELL_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "objects",
+                "description": "CHICANE_SCENE_SPATIALCELL_OBJECTS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_SCENE_DESCRIPTION"
+        "description": "CHICANE_SCENE_SPATIALCELL_DESCRIPTION"
     },
     "children": []
 }

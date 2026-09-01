@@ -102,6 +102,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
+                    "name": "ViewFrustum",
+                    "suffix": "&",
+                    "path": "Core/View/Frustum",
+                    "templates": []
+                },
+                "name": "getFrustum",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETFRUSTUM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "&",
                     "path": "Core/Math/Vec",

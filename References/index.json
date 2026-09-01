@@ -5442,12 +5442,12 @@
                 "children": []
             },
             {
-                "title": "Scene",
+                "title": "SpatialCell",
                 "filename": "Scene",
                 "path": "Runtime/Scene",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Scene.hpp",
-                    "namespace": "Chicane::Scene",
+                    "namespace": "Chicane::Scene::SpatialCell",
                     "types": [],
                     "enums": [],
                     "constructors": [],
