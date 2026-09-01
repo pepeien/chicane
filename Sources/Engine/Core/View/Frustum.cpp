@@ -8,8 +8,13 @@ namespace Chicane
         const Vec3&     min    = bounds.getMin().transformed;
         const Vec3&     max    = bounds.getMax().transformed;
 
-        return m_top.contains(min, max) && m_bottom.contains(min, max) && m_near.contains(min, max) &&
-               m_far.contains(min, max) && m_right.contains(min, max) && m_left.contains(min, max);
+        return contains(min, max);
+    }
+
+    bool ViewFrustum::contains(const Vec3& inMin, const Vec3& inMax) const
+    {
+        return m_top.contains(inMin, inMax) && m_bottom.contains(inMin, inMax) && m_near.contains(inMin, inMax) &&
+               m_far.contains(inMin, inMax) && m_right.contains(inMin, inMax) && m_left.contains(inMin, inMax);
     }
 
     void ViewFrustum::update(const Transformable* inView, const ViewSettings& inSettings)

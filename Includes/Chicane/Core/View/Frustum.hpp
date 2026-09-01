@@ -11,6 +11,7 @@ namespace Chicane
     {
     public:
         virtual bool contains(const Transformable* inSubject) const;
+        virtual bool contains(const Vec3& inMin, const Vec3& inMax) const;
         virtual void update(const Transformable* inView, const ViewSettings& inSettings);
 
     protected:

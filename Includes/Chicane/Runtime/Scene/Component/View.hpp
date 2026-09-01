@@ -26,6 +26,7 @@ namespace Chicane
     public:
         // Frustum
         bool canSee(const Transformable* inSubject) const;
+        const ViewFrustum& getFrustum() const;
 
         // Viewport
         const Vec<2, std::uint32_t>& getViewport() const;

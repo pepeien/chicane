@@ -29,6 +29,11 @@ namespace Chicane
         return m_frustum.contains(inSubject);
     }
 
+    const ViewFrustum& CView::getFrustum() const
+    {
+        return m_frustum;
+    }
+
     const Vec<2, std::uint32_t>& CView::getViewport() const
     {
         return m_settings.viewport;

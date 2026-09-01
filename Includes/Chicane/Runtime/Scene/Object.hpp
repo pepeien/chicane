@@ -17,11 +17,15 @@ namespace Chicane
 
     public:
         Object();
+        virtual ~Object();
 
     protected:
         inline virtual void onLoad() { return; }
         inline virtual void onUnload() { return; }
         inline virtual void onTick(float inDeltaTime) { return; }
+
+    protected:
+        void onRefresh() override;
 
     public:
         CH_FUNCTION()
@@ -58,6 +62,6 @@ namespace Chicane
         String m_id;
 
     private:
-        Scene* m_scene;
+        Scene* m_scene = nullptr;
     };
 }

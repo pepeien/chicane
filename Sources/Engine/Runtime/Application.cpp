@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include <algorithm>
+#include <typeinfo>
 
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Font.hpp"
@@ -409,19 +410,16 @@ namespace Chicane
             command.lights.push_back(light->getData());
         }
 
-        for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
+        auto submitMesh = [&](CMesh* mesh)
         {
-            if (!mesh->hasMesh())
+            if (!mesh || !mesh->isActive() || !mesh->hasMesh())
             {
-                continue;
+                return;
             }
 
-            if (activeCamera != nullptr)
+            if (activeCamera != nullptr && !activeCamera->canSee(mesh))
             {
-                if (!activeCamera->canSee(mesh))
-                {
-                    continue;
-                }
+                return;
             }
 
             const Mat4& matrix = mesh->getMatrix();
@@ -445,6 +443,29 @@ namespace Chicane
                 }
 
                 command.meshes.emplace_back(std::move(subcommand));
+            }
+        };
+
+        if (activeCamera != nullptr)
+        {
+            inScene->forEachInFrustum(
+                activeCamera->getFrustum(),
+                [&submitMesh](Object* object)
+                {
+                    if (typeid(*object) != typeid(CMesh))
+                    {
+                        return;
+                    }
+
+                    submitMesh(static_cast<CMesh*>(object));
+                }
+            );
+        }
+        else
+        {
+            for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
+            {
+                submitMesh(mesh);
             }
         }
 

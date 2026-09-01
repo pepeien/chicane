@@ -2,14 +2,35 @@
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
+#include "Chicane/Runtime/Scene.hpp"
+
 namespace Chicane
 {
     Object::Object()
         : Transformable(),
           m_bCanCollide(false),
           m_bCanTick(false),
-          m_id("")
+          m_id(""),
+          m_scene(nullptr)
     {}
+
+    Object::~Object()
+    {
+        if (m_scene)
+        {
+            m_scene->removeSpatial(this);
+        }
+    }
+
+    void Object::onRefresh()
+    {
+        Transformable::onRefresh();
+
+        if (m_scene)
+        {
+            m_scene->updateSpatial(this);
+        }
+    }
 
     bool Object::canTick() const
     {
@@ -60,6 +81,21 @@ namespace Chicane
 
     void Object::setScene(Scene* inScene)
     {
+        if (m_scene == inScene)
+        {
+            return;
+        }
+
+        if (m_scene)
+        {
+            m_scene->removeSpatial(this);
+        }
+
         m_scene = inScene;
+
+        if (m_scene)
+        {
+            m_scene->updateSpatial(this);
+        }
     }
 }

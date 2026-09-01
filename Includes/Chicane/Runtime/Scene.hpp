@@ -1,14 +1,21 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <typeindex>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+#include "Chicane/Core/View/Frustum.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
 constexpr inline float LINE_TRACE_STEP_SIZE = 0.1f;
+constexpr inline float SPATIAL_CELL_SIZE    = 64.0f;
 
 namespace Chicane
 {
@@ -301,6 +308,30 @@ namespace Chicane
             return found->second.size();
         }
 
+        template <class Function>
+        inline void forEachInFrustum(const ViewFrustum& inFrustum, Function&& inFunction) const
+        {
+            std::unordered_set<Object*> seen;
+
+            for (const auto& [key, cell] : m_cells)
+            {
+                if (!inFrustum.contains(cell.min, cell.max))
+                {
+                    continue;
+                }
+
+                for (Object* object : cell.objects)
+                {
+                    if (!seen.insert(object).second)
+                    {
+                        continue;
+                    }
+
+                    inFunction(object);
+                }
+            }
+        }
+
     protected:
         bool isLoaded() const;
 
@@ -310,7 +341,25 @@ namespace Chicane
         void tickComponents(float inDeltaTime);
         void deleteComponents();
 
+        void updateSpatial(Object* inObject);
+        void removeSpatial(Object* inObject);
+
+        std::uint64_t makeCellKey(int inX, int inY, int inZ) const;
+        std::uint64_t makeCellKey(const Vec3& inPosition) const;
+        void collectCellKeys(const Object* inObject, std::vector<std::uint64_t>& outKeys) const;
+        void insertIntoCell(Object* inObject, std::uint64_t inKey);
+        void eraseFromCell(Object* inObject, std::uint64_t inKey);
+
     private:
+        friend Object;
+
+        struct SpatialCell
+        {
+            Vec3                 min     = Vec3::Zero();
+            Vec3                 max     = Vec3::Zero();
+            std::vector<Object*> objects = {};
+        };
+
         bool                                                         m_bIsLoaded;
 
         std::size_t                                                  m_actorCount;
@@ -320,5 +369,8 @@ namespace Chicane
         std::size_t                                                  m_componentCount;
         std::unordered_map<std::type_index, std::vector<Component*>> m_components;
         ComponentsObservable                                         m_componentsObservable;
+
+        std::unordered_map<std::uint64_t, SpatialCell>               m_cells;
+        std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
     };
 }
