@@ -1,6 +1,7 @@
 .logo {
     width: 100%;
     height: 100%;
+    border-radius: 0.2em;
 
     &__path {
         width: 100%;

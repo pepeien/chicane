@@ -191,7 +191,7 @@ namespace Editor
         {
             HeaderMenuItem submenu = {};
             submenu.label          = theme.toUpper().substr(0, 1) + theme.substr(1);
-            submenu.action         = Chicane::String::sprint("onThemeSwitch(%s)", theme);
+            submenu.action         = "onThemeSwitch(\"" + theme + "\")";
 
             themes.children.push_back(submenu);
         }

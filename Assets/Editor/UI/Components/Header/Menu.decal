@@ -1,6 +1,5 @@
 HeaderMenu {
     position: relative;
-    overflow: visible;
     height: 90%;
 }
 
@@ -8,6 +7,13 @@ HeaderMenu {
     height: 100%;
     display: flex;
     overflow: visible;
+
+    &__label {
+        margin: auto 0;
+        color: $--black;
+        font-size: 0.7em;
+        transition: color 200ms ease-in-out;
+    }
 
     &__control {
         height: 100%;
@@ -20,14 +26,12 @@ HeaderMenu {
         border-radius: 7px;
 
         &:hover {
-            background-color: $--dark-grey;
-        }
-    }
+            background-color: $--black;
 
-    &__label {
-        margin: auto 0;
-        color: $--black;
-        font-size: 0.7em;
+            Text {
+                color: $--white;
+            }
+        }
     }
 
     &__shortcut {
@@ -48,11 +52,11 @@ HeaderMenu {
         flex-direction: column;
         gap: 0.25em;
         overflow: visible;
-        margin-top: 100%;
+        margin: calc(100% + 0.75em) 0 0 50%;
         padding: 0.5em;
         width: 14em;
         border-radius: 5px;
-        background-color: $--light-grey;
+        background-color: $--white;
         z-index: 3;
 
         HeaderMenu {
@@ -64,23 +68,27 @@ HeaderMenu {
             width: 100%;
             height: auto;
 
+            &__label {
+                color: $--black;
+            }
+
             &__control {
-                width: calc(100% - 1.6em);
+                width: calc(100% - 1.2em);
                 height: auto;
-                padding: 0.35em 0.8em;
+                padding: 0.35em 0.6em;
                 border: 1px solid transparent;
                 transition: width 100ms ease-in-out, padding-left 200ms ease-in-out, border-color 250ms ease-in-out;
 
                 &:hover {
-                    width: calc(100% - 2em);
-                    padding-left: 1.2em;
-                    border-color: $--black;
+                    width: calc(100% - 1.4em);
+                    padding-left: 0.8em;
+                    border-color: $--light-grey;
                     background-color: transparent;
                 }
             }
 
             &__list {
-                margin-top: 1em;
+                margin-top: 0.7em;
                 margin-left: calc(100% + 0.75em);
             }
         }
