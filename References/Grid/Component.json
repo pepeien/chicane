@@ -1763,6 +1763,44 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
+                "name": "getChildrenContentSizeFromOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOriginX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOriginY"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENCONTENTSIZEFROMORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
                 "name": "getChildrenContentSize",
                 "parameters": [],
                 "modifiers": [
