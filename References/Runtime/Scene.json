@@ -308,9 +308,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "std::vector",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "",
                     "templates": [
                         {
@@ -494,9 +494,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "std::vector",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "",
                     "templates": [
                         {
@@ -887,16 +887,44 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_actorCount",
+                "description": "CHICANE_SCENE_M_ACTORCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Actor",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Actor",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Actor",
+                                    "suffix": "*",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -921,16 +949,44 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_componentCount",
+                "description": "CHICANE_SCENE_M_COMPONENTCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Component",
+                            "name": "std::type_index",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },

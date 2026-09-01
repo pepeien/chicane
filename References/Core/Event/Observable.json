@@ -240,6 +240,24 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_EVENTOBSERVABLE_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -266,9 +284,9 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "T",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },

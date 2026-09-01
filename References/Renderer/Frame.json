@@ -322,9 +322,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "DrawPoly3DInstance::List",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Renderer/Draw/Poly/3D/Instance",
                     "templates": []
                 },
@@ -544,6 +544,32 @@
                 },
                 "name": "m_3DInstances",
                 "description": "CHICANE_RENDERER_FRAME_M_3DINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DInstance::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "templates": []
+                },
+                "name": "m_3DInstancesFlat",
+                "description": "CHICANE_RENDERER_FRAME_M_3DINSTANCESFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_b3DInstancesDirty",
+                "description": "CHICANE_RENDERER_FRAME_M_B3DINSTANCESDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "protected",

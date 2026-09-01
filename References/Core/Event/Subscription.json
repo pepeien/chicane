@@ -248,9 +248,9 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "T",
-                            "suffix": "",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },
