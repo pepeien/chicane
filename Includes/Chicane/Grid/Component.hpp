@@ -219,6 +219,7 @@ namespace Chicane
 
             Vec2 getChildrenContentSizeBlock() const;
             Vec2 getChildrenContentSizeFlex() const;
+            Vec2 getChildrenContentSizeFromOrigin(float inOriginX, float inOriginY) const;
             Vec2 getChildrenContentSize() const;
             Vec2 getChildIntrinsicSize(const Component* inChild) const;
 

@@ -872,24 +872,34 @@ namespace Chicane
                     return curve;
                 }
 
+                const float kx = kKappa * rx;
+                const float ky = kKappa * ry;
+
                 curve.addPoint({inX + rx, inY});
                 curve.addPoint({inX + inWidth - rx, inY});
-                addArc(curve, {inX + inWidth - rx, inY}, rx, ry, 0.0f, false, true, {inX + inWidth, inY + ry});
+                curve.addBezierPoint(
+                    {inX + inWidth - rx + kx, inY},
+                    {inX + inWidth, inY + ry - ky},
+                    {inX + inWidth, inY + ry}
+                );
                 curve.addPoint({inX + inWidth, inY + inHeight - ry});
-                addArc(
-                    curve,
-                    {inX + inWidth, inY + inHeight - ry},
-                    rx,
-                    ry,
-                    0.0f,
-                    false,
-                    true,
+                curve.addBezierPoint(
+                    {inX + inWidth, inY + inHeight - ry + ky},
+                    {inX + inWidth - rx + kx, inY + inHeight},
                     {inX + inWidth - rx, inY + inHeight}
                 );
                 curve.addPoint({inX + rx, inY + inHeight});
-                addArc(curve, {inX + rx, inY + inHeight}, rx, ry, 0.0f, false, true, {inX, inY + inHeight - ry});
+                curve.addBezierPoint(
+                    {inX + rx - kx, inY + inHeight},
+                    {inX, inY + inHeight - ry + ky},
+                    {inX, inY + inHeight - ry}
+                );
                 curve.addPoint({inX, inY + ry});
-                addArc(curve, {inX, inY + ry}, rx, ry, 0.0f, false, true, {inX + rx, inY});
+                curve.addBezierPoint(
+                    {inX, inY + ry - ky},
+                    {inX + rx - kx, inY},
+                    {inX + rx, inY}
+                );
 
                 return curve;
             }

@@ -1687,38 +1687,21 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeBlock() const
         {
-            Vec2 result = Vec2::Zero();
-
-            for (const Component* child : m_children)
-            {
-                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
-                {
-                    continue;
-                }
-
-                const Style& style = child->getStyle();
-                const Vec2   size  = getChildIntrinsicSize(child);
-
-                const Vec2 margin = {
-                    (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get()) +
-                        (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get()),
-                    (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get()) +
-                        (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get())
-                };
-
-                const Vec2 occupied = {
-                    (child->getPosition().x - getPosition().x) + size.x + margin.x,
-                    (child->getPosition().y - getPosition().y) + size.y + margin.y
-                };
-
-                result.x = std::max(result.x, occupied.x);
-                result.y = std::max(result.y, occupied.y);
-            }
-
-            return result;
+            return getChildrenContentSizeFromOrigin(
+                getPosition().x + m_style.insetLeft(),
+                getPosition().y + m_style.insetTop()
+            );
         }
 
         Vec2 Component::getChildrenContentSizeFlex() const
+        {
+            return getChildrenContentSizeFromOrigin(
+                getPosition().x + m_style.insetLeft(),
+                getPosition().y + m_style.insetTop()
+            );
+        }
+
+        Vec2 Component::getChildrenContentSizeFromOrigin(float inOriginX, float inOriginY) const
         {
             Vec2 result = Vec2::Zero();
 
@@ -1737,8 +1720,8 @@ namespace Chicane
                 const float marginBottom =
                     style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get();
 
-                result.x = std::max(result.x, (child->getPosition().x - getPosition().x) + size.x + marginRight);
-                result.y = std::max(result.y, (child->getPosition().y - getPosition().y) + size.y + marginBottom);
+                result.x = std::max(result.x, (child->getPosition().x - inOriginX) + size.x + marginRight);
+                result.y = std::max(result.y, (child->getPosition().y - inOriginY) + size.y + marginBottom);
             }
 
             return result;

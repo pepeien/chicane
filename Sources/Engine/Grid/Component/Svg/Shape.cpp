@@ -39,11 +39,21 @@ namespace Chicane
                 return;
             }
 
-            const Vec2& size = inParent->getSize();
+            const Vec2&        size   = inParent->getSize();
+            const StyleRadius& radius = inParent->getStyle().radius;
 
             setSize(size);
             setScale(inScale, inScale);
             setPosition(inParent->getPosition());
+
+            m_style.radius.x.top.copyValue(radius.x.top);
+            m_style.radius.x.right.copyValue(radius.x.right);
+            m_style.radius.x.bottom.copyValue(radius.x.bottom);
+            m_style.radius.x.left.copyValue(radius.x.left);
+            m_style.radius.y.top.copyValue(radius.y.top);
+            m_style.radius.y.right.copyValue(radius.y.right);
+            m_style.radius.y.bottom.copyValue(radius.y.bottom);
+            m_style.radius.y.left.copyValue(radius.y.left);
 
             refreshBounds();
         }
