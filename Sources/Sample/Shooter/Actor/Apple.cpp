@@ -18,20 +18,22 @@ Apple::Apple()
 
 void Apple::onLoad()
 {
+    static const Chicane::FileSystem::Path meshPath("Assets/Sample/Shooter/Meshes/Apple.bmsh");
+
     m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
-    m_meshComponent->setMesh("Assets/Sample/Shooter/Meshes/Apple.bmsh");
+    m_meshComponent->setMesh(meshPath);
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
-
-    m_hitSound = getScene()->createComponent<Chicane::CSound>();
-    m_hitSound->load("Assets/Sample/Shooter/Sounds/Hit.bsnd");
-    m_hitSound->attachTo(this);
-    m_hitSound->activate();
 }
 
 void Apple::onTick(float inDeltaTime)
 {
-    addAbsoluteRotation(0.0f, 0.0f, m_rotateRate);
+    if (!m_meshComponent)
+    {
+        return;
+    }
+
+    m_meshComponent->addRelativeRotation(0.0f, 0.0f, m_rotateRate);
     //addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
 }
 
@@ -53,7 +55,17 @@ void Apple::onHit(const Chicane::Actor* inSubject)
 
     getScene()->removeComponent(m_meshComponent);
 
+    m_meshComponent = nullptr;
+
     Game::incrementScore(1);
+
+    if (!m_hitSound)
+    {
+        m_hitSound = getScene()->createComponent<Chicane::CSound>();
+        m_hitSound->load("Assets/Sample/Shooter/Sounds/Hit.bsnd");
+        m_hitSound->attachTo(this);
+        m_hitSound->activate();
+    }
 
     m_hitSound->play();
 }

@@ -18,7 +18,7 @@ namespace Chicane
 
     public:
         inline EventSubscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
-            : EventSubscription([inNext](T inValue) { inNext(); }, inError, inComplete)
+            : EventSubscription([inNext](const T&) { inNext(); }, inError, inComplete)
         {}
 
         inline EventSubscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
@@ -38,7 +38,7 @@ namespace Chicane
     public:
         inline EventSubscription<T> next() { return next(nullptr); }
 
-        inline EventSubscription<T> next(T inData)
+        inline EventSubscription<T> next(const T& inData)
         {
             if (isCompleted())
             {

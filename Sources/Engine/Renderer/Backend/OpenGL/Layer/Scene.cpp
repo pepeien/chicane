@@ -52,7 +52,8 @@ namespace Chicane
 
         bool OpenGLLScene::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().empty() && inFrame.getLights().empty())
+            const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
+            if (instances.empty() && inFrame.getLights().empty())
             {
                 return false;
             }
@@ -75,8 +76,9 @@ namespace Chicane
             glNamedBufferSubData(m_instanceBuffer, offset, size, inFrame.getLights().data());
             offset += size;
 
-            size = sizeof(DrawPoly3DInstance) * inFrame.getInstances3D().size();
-            glNamedBufferSubData(m_instanceBuffer, offset, size, inFrame.getInstances3D().data());
+            const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
+            size                                     = sizeof(DrawPoly3DInstance) * instances.size();
+            glNamedBufferSubData(m_instanceBuffer, offset, size, instances.data());
         }
 
         void OpenGLLScene::buildModelVertexArray()

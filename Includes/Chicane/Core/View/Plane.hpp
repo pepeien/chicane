@@ -9,6 +9,7 @@ namespace Chicane
     {
     public:
         bool contains(const Vec3& inPoint) const;
+        bool contains(const Vec3& inMin, const Vec3& inMax) const;
 
         void setNormal(const Vec3& inFirstEdge, const Vec3& inSecondEdge, const Vec3& inPosition);
         void setNormal(const Vec3& inNormal, const Vec3& inPosition);

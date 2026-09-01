@@ -1,6 +1,8 @@
 #pragma once
 
 #include <algorithm>
+#include <typeindex>
+#include <unordered_map>
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
@@ -42,34 +44,28 @@ namespace Chicane
         template <class T>
         inline bool hasActors() const
         {
-            for (Actor* actor : getActors())
-            {
-                if (typeid(*actor) != typeid(T))
-                {
-                    continue;
-                }
+            auto found = m_actors.find(std::type_index(typeid(T)));
 
-                return true;
-            }
-
-            return false;
+            return found != m_actors.end() && !found->second.empty();
         }
 
-        const std::vector<Actor*>& getActors() const;
+        std::vector<Actor*> getActors() const;
 
         template <class T>
         inline std::vector<T*> getActors() const
         {
             std::vector<T*> result;
-            result.reserve(m_actors.size());
 
-            for (Actor* actor : m_actors)
+            auto found = m_actors.find(std::type_index(typeid(T)));
+            if (found == m_actors.end())
             {
-                if (typeid(*actor) != typeid(T))
-                {
-                    continue;
-                }
+                return result;
+            }
 
+            result.reserve(found->second.size());
+
+            for (Actor* actor : found->second)
+            {
                 result.push_back(static_cast<T*>(actor));
             }
 
@@ -79,10 +75,13 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            m_actors.push_back(new T(inParams...));
+            auto& typed = m_actors[std::type_index(typeid(T))];
+            typed.push_back(new T(inParams...));
 
-            Actor* added = m_actors.back();
+            Actor* added = typed.back();
             added->setScene(this);
+
+            m_actorCount++;
 
             String typeName = added->getTypeName();
             if (typeName.isEmpty())
@@ -90,14 +89,13 @@ namespace Chicane
                 typeName = "Actor";
             }
 
-            const std::size_t duplicateCount = getActorCount<T>();
-            if (duplicateCount <= 1)
+            if (typed.size() <= 1)
             {
                 added->setId(typeName);
             }
             else
             {
-                added->setId(String::sprint("%s%d", typeName.toChar(), duplicateCount));
+                added->setId(String::sprint("%s%d", typeName.toChar(), typed.size()));
             }
 
             if (isLoaded())
@@ -105,7 +103,10 @@ namespace Chicane
                 added->onLoad();
             }
 
-            m_actorsObservable.next(m_actors);
+            if (!m_actorsObservable.isEmpty())
+            {
+                m_actorsObservable.next(getActors());
+            }
 
             return static_cast<T*>(added);
         }
@@ -124,34 +125,28 @@ namespace Chicane
         template <class T>
         inline bool hasComponents() const
         {
-            for (Component* component : getComponents())
-            {
-                if (typeid(*component) != typeid(T))
-                {
-                    continue;
-                }
+            auto found = m_components.find(std::type_index(typeid(T)));
 
-                return true;
-            }
-
-            return false;
+            return found != m_components.end() && !found->second.empty();
         }
 
-        const std::vector<Component*>& getComponents() const;
+        std::vector<Component*> getComponents() const;
 
         template <class T>
         inline std::vector<T*> getComponents() const
         {
             std::vector<T*> result;
-            result.reserve(m_components.size());
 
-            for (Component* component : m_components)
+            auto found = m_components.find(std::type_index(typeid(T)));
+            if (found == m_components.end())
             {
-                if (typeid(*component) != typeid(T))
-                {
-                    continue;
-                }
+                return result;
+            }
 
+            result.reserve(found->second.size());
+
+            for (Component* component : found->second)
+            {
                 result.push_back(static_cast<T*>(component));
             }
 
@@ -162,11 +157,18 @@ namespace Chicane
         inline std::vector<T*> getActiveComponents() const
         {
             std::vector<T*> result;
-            result.reserve(m_components.size());
 
-            for (Component* component : m_components)
+            auto found = m_components.find(std::type_index(typeid(T)));
+            if (found == m_components.end())
             {
-                if (typeid(*component) != typeid(T) || !component->isActive())
+                return result;
+            }
+
+            result.reserve(found->second.size());
+
+            for (Component* component : found->second)
+            {
+                if (!component->isActive())
                 {
                     continue;
                 }
@@ -180,17 +182,23 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            m_components.push_back(new T(inParams...));
+            auto& typed = m_components[std::type_index(typeid(T))];
+            typed.push_back(new T(inParams...));
 
-            Component* added = m_components.back();
+            Component* added = typed.back();
             added->setScene(this);
+
+            m_componentCount++;
 
             if (isLoaded())
             {
                 added->onLoad();
             }
 
-            m_componentsObservable.next(m_components);
+            if (!m_componentsObservable.isEmpty())
+            {
+                m_componentsObservable.next(getComponents());
+            }
 
             return static_cast<T*>(added);
         }
@@ -209,7 +217,8 @@ namespace Chicane
             const Vec3& inOrigin, const Vec3& inDestination, const std::vector<Actor*>& inIgnoredActors
         ) const
         {
-            if (!hasActors())
+            auto found = m_actors.find(std::type_index(typeid(T)));
+            if (found == m_actors.end() || found->second.empty())
             {
                 return {};
             }
@@ -231,13 +240,8 @@ namespace Chicane
 
             while (traveled <= maxDistance)
             {
-                for (Actor* actor : m_actors)
+                for (Actor* actor : found->second)
                 {
-                    if (typeid(*actor) != typeid(T))
-                    {
-                        continue;
-                    }
-
                     if (!actor->isCollidingWith(point))
                     {
                         continue;
@@ -268,22 +272,16 @@ namespace Chicane
         {
             if (typeid(T) == typeid(Actor))
             {
-                return m_actors.size();
+                return m_actorCount;
             }
 
-            std::size_t result = 0;
-
-            for (const Actor* actor : m_actors)
+            auto found = m_actors.find(std::type_index(typeid(T)));
+            if (found == m_actors.end())
             {
-                if (typeid(*actor) != typeid(T))
-                {
-                    continue;
-                }
-
-                result++;
+                return 0;
             }
 
-            return result;
+            return found->second.size();
         }
 
         template <typename T = Component>
@@ -291,22 +289,16 @@ namespace Chicane
         {
             if (typeid(T) == typeid(Component))
             {
-                return m_components.size();
+                return m_componentCount;
             }
 
-            std::size_t result = 0;
-
-            for (const Component* component : m_components)
+            auto found = m_components.find(std::type_index(typeid(T)));
+            if (found == m_components.end())
             {
-                if (typeid(*component) != typeid(T))
-                {
-                    continue;
-                }
-
-                result++;
+                return 0;
             }
 
-            return result;
+            return found->second.size();
         }
 
     protected:
@@ -319,12 +311,14 @@ namespace Chicane
         void deleteComponents();
 
     private:
-        bool                    m_bIsLoaded;
+        bool                                                         m_bIsLoaded;
 
-        std::vector<Actor*>     m_actors;
-        ActorsObservable        m_actorsObservable;
+        std::size_t                                                  m_actorCount;
+        std::unordered_map<std::type_index, std::vector<Actor*>>     m_actors;
+        ActorsObservable                                             m_actorsObservable;
 
-        std::vector<Component*> m_components;
-        ComponentsObservable    m_componentsObservable;
+        std::size_t                                                  m_componentCount;
+        std::unordered_map<std::type_index, std::vector<Component*>> m_components;
+        ComponentsObservable                                         m_componentsObservable;
     };
 }

@@ -254,6 +254,11 @@ namespace Chicane
 
         const Asset* load(const FileSystem::Path& inFilePath)
         {
+            if (const Asset* cached = getAsset(inFilePath))
+            {
+                return cached;
+            }
+
             if (!AssetHeader::isFileAsset(inFilePath))
             {
                 Log::warning("File [%s] is not a valid asset", inFilePath.toChar());

@@ -8,6 +8,11 @@ namespace Chicane
 
     void Changeable::emmitChanges()
     {
+        if (m_observable.isEmpty())
+        {
+            return;
+        }
+
         m_observable.next();
     }
 

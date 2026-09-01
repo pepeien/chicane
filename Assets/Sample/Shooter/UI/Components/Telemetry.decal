@@ -2,11 +2,14 @@
     display: flex;
     flex-direction: column;
 
-    Text {
-        color: green;
-    }
+    &__group {
+        display: flex;
+        flex-direction: row;
+        gap: 0 0.25em;
 
-    &__system {
-        width: 5em;
+        &__label {
+            width: 5em;
+            overflow: hidden;
+        }
     }
 }

@@ -1,4 +1,20 @@
 <Container class="telemetry">
-    <Text>{{ telemetry.renderer.frame.rate }} FPS</Text>
-    <Text>{{ telemetry.renderer.frame.delta }} ms</Text>
+    <Container class="telemetry__group">
+        <Container class="telemetry__group__label">
+            <Text>Scene</Text>
+        </Container>
+        <Text>{{ telemetry.scene.frame.rate }} FPS ({{ telemetry.scene.frame.delta }} ms)</Text>
+    </Container>
+    <Container class="telemetry__group">
+        <Container class="telemetry__group__label">
+            <Text>UI</Text>
+        </Container>
+        <Text>{{ telemetry.ui.frame.rate }} FPS ({{ telemetry.ui.frame.delta }} ms)</Text>
+    </Container>
+    <Container class="telemetry__group">
+        <Container class="telemetry__group__label">
+            <Text>Renderer</Text>
+        </Container>
+        <Text>{{ telemetry.renderer.frame.rate }} FPS ({{ telemetry.renderer.frame.delta }} ms)</Text>
+    </Container>
 </Container>

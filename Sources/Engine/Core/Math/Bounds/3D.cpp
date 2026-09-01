@@ -213,43 +213,41 @@ namespace Chicane
         //  +------+       0+------+1
         // min
 
-        Vertex::List result;
+        outValue.resize(8);
 
         Vertex vertex;
         vertex.color = Vec4(255.0f);
 
         // 0
         vertex.position = {inMin.x, inMin.y, inMin.z};
-        result.push_back(vertex);
+        outValue[0]     = vertex;
 
         // 1
         vertex.position = {inMax.x, inMin.y, inMin.z};
-        result.push_back(vertex);
+        outValue[1]     = vertex;
 
         // 2
         vertex.position = {inMax.x, inMax.y, inMin.z};
-        result.push_back(vertex);
+        outValue[2]     = vertex;
 
         // 3
         vertex.position = {inMin.x, inMax.y, inMin.z};
-        result.push_back(vertex);
+        outValue[3]     = vertex;
 
         // 4
         vertex.position = {inMin.x, inMin.y, inMax.z};
-        result.push_back(vertex);
+        outValue[4]     = vertex;
 
         // 5
         vertex.position = {inMax.x, inMin.y, inMax.z};
-        result.push_back(vertex);
+        outValue[5]     = vertex;
 
         // 6
         vertex.position = {inMax.x, inMax.y, inMax.z};
-        result.push_back(vertex);
+        outValue[6]     = vertex;
 
         // 7
         vertex.position = {inMin.x, inMax.y, inMax.z};
-        result.push_back(vertex);
-
-        outValue = result;
+        outValue[7]     = vertex;
     }
 }

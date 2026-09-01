@@ -52,9 +52,7 @@ namespace Chicane
         m_parentSubscription = m_parent->watchChanges(
             [this]()
             {
-                setAbsoluteTranslation(m_parent->getTranslation());
-                setAbsoluteRotation(m_parent->getRotation());
-                setAbsoluteScale(m_parent->getScale());
+                setAbsolute(*m_parent);
             }
         );
 

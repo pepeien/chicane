@@ -4,30 +4,12 @@ namespace Chicane
 {
     bool ViewFrustum::contains(const Transformable* inSubject) const
     {
-        const std::vector<ViewPlane> planes  = {m_top, m_bottom, m_near, m_far, m_right, m_left};
-        const Vertex::List&          corners = inSubject->getBounds().getCorners();
+        const Bounds3D& bounds = inSubject->getBounds();
+        const Vec3&     min    = bounds.getMin().transformed;
+        const Vec3&     max    = bounds.getMax().transformed;
 
-        for (const ViewPlane& plane : planes)
-        {
-            bool bIsFullyOutside = true;
-
-            for (const Vertex& corner : corners)
-            {
-                if (plane.contains(corner.position))
-                {
-                    bIsFullyOutside = false;
-
-                    break;
-                }
-            }
-
-            if (bIsFullyOutside)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return m_top.contains(min, max) && m_bottom.contains(min, max) && m_near.contains(min, max) &&
+               m_far.contains(min, max) && m_right.contains(min, max) && m_left.contains(min, max);
     }
 
     void ViewFrustum::update(const Transformable* inView, const ViewSettings& inSettings)

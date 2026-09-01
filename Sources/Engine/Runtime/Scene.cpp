@@ -4,8 +4,10 @@ namespace Chicane
 {
     Scene::Scene()
         : m_bIsLoaded(false),
+          m_actorCount(0),
           m_actors({}),
           m_actorsObservable({}),
+          m_componentCount(0),
           m_components({}),
           m_componentsObservable({})
     {}
@@ -20,14 +22,20 @@ namespace Chicane
     {
         onLoad();
 
-        for (Actor* actor : m_actors)
+        for (auto& [type, actors] : m_actors)
         {
-            actor->onLoad();
+            for (Actor* actor : actors)
+            {
+                actor->onLoad();
+            }
         }
 
-        for (Component* component : m_components)
+        for (auto& [type, components] : m_components)
         {
-            component->onLoad();
+            for (Component* component : components)
+            {
+                component->onLoad();
+            }
         }
 
         m_bIsLoaded = true;
@@ -37,14 +45,20 @@ namespace Chicane
     {
         m_bIsLoaded = false;
 
-        for (Component* component : m_components)
+        for (auto& [type, components] : m_components)
         {
-            component->onUnload();
+            for (Component* component : components)
+            {
+                component->onUnload();
+            }
         }
 
-        for (Actor* actor : m_actors)
+        for (auto& [type, actors] : m_actors)
         {
-            actor->onUnload();
+            for (Actor* actor : actors)
+            {
+                actor->onUnload();
+            }
         }
 
         onUnload();
@@ -60,12 +74,20 @@ namespace Chicane
 
     bool Scene::hasActors() const
     {
-        return m_actors.size() > 0;
+        return m_actorCount > 0;
     }
 
-    const std::vector<Actor*>& Scene::getActors() const
+    std::vector<Actor*> Scene::getActors() const
     {
-        return m_actors;
+        std::vector<Actor*> result;
+        result.reserve(m_actorCount);
+
+        for (const auto& [type, actors] : m_actors)
+        {
+            result.insert(result.end(), actors.begin(), actors.end());
+        }
+
+        return result;
     }
 
     void Scene::removeActor(Actor* inActor)
@@ -75,16 +97,30 @@ namespace Chicane
             return;
         }
 
-        auto found = std::find(m_actors.begin(), m_actors.end(), inActor);
-
-        if (found == m_actors.end())
+        auto typed = m_actors.find(std::type_index(typeid(*inActor)));
+        if (typed == m_actors.end())
         {
             return;
         }
 
-        m_actors.erase(found);
+        auto found = std::find(typed->second.begin(), typed->second.end(), inActor);
+        if (found == typed->second.end())
+        {
+            return;
+        }
 
-        m_actorsObservable.next(m_actors);
+        typed->second.erase(found);
+        m_actorCount--;
+
+        if (typed->second.empty())
+        {
+            m_actors.erase(typed);
+        }
+
+        if (!m_actorsObservable.isEmpty())
+        {
+            m_actorsObservable.next(getActors());
+        }
     }
 
     Scene::ActorsSubscription Scene::watchActors(
@@ -93,17 +129,25 @@ namespace Chicane
         ActorsSubscription::CompleteCallback inComplete
     )
     {
-        return m_actorsObservable.subscribe(inNext, inError, inComplete).next(m_actors);
+        return m_actorsObservable.subscribe(inNext, inError, inComplete).next(getActors());
     }
 
     bool Scene::hasComponents() const
     {
-        return m_components.size() > 0;
+        return m_componentCount > 0;
     }
 
-    const std::vector<Component*>& Scene::getComponents() const
+    std::vector<Component*> Scene::getComponents() const
     {
-        return m_components;
+        std::vector<Component*> result;
+        result.reserve(m_componentCount);
+
+        for (const auto& [type, components] : m_components)
+        {
+            result.insert(result.end(), components.begin(), components.end());
+        }
+
+        return result;
     }
 
     void Scene::removeComponent(Component* inComponent)
@@ -113,16 +157,30 @@ namespace Chicane
             return;
         }
 
-        auto found = std::find(m_components.begin(), m_components.end(), inComponent);
-
-        if (found == m_components.end())
+        auto typed = m_components.find(std::type_index(typeid(*inComponent)));
+        if (typed == m_components.end())
         {
             return;
         }
 
-        m_components.erase(found);
+        auto found = std::find(typed->second.begin(), typed->second.end(), inComponent);
+        if (found == typed->second.end())
+        {
+            return;
+        }
 
-        m_componentsObservable.next(m_components);
+        typed->second.erase(found);
+        m_componentCount--;
+
+        if (typed->second.empty())
+        {
+            m_components.erase(typed);
+        }
+
+        if (!m_componentsObservable.isEmpty())
+        {
+            m_componentsObservable.next(getComponents());
+        }
     }
 
     Scene::ComponentsSubscription Scene::watchComponents(
@@ -131,7 +189,7 @@ namespace Chicane
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
-        return m_componentsObservable.subscribe(inNext, inError, inComplete).next(m_components);
+        return m_componentsObservable.subscribe(inNext, inError, inComplete).next(getComponents());
     }
 
     bool Scene::isLoaded() const
@@ -141,37 +199,53 @@ namespace Chicane
 
     void Scene::tickActors(float inDeltaTime)
     {
-        for (Actor* actor : m_actors)
+        for (auto& [type, actors] : m_actors)
         {
-            actor->tick(inDeltaTime);
+            for (Actor* actor : actors)
+            {
+                actor->tick(inDeltaTime);
+            }
         }
     }
 
     void Scene::deleteActors()
     {
-        for (Actor* actor : m_actors)
+        for (auto& [type, actors] : m_actors)
         {
-            delete actor;
-            actor = nullptr;
+            for (Actor* actor : actors)
+            {
+                delete actor;
+                actor = nullptr;
+            }
         }
+
         m_actors.clear();
+        m_actorCount = 0;
     }
 
     void Scene::tickComponents(float inDeltaTime)
     {
-        for (Component* component : m_components)
+        for (auto& [type, components] : m_components)
         {
-            component->tick(inDeltaTime);
+            for (Component* component : components)
+            {
+                component->tick(inDeltaTime);
+            }
         }
     }
 
     void Scene::deleteComponents()
     {
-        for (Component* component : m_components)
+        for (auto& [type, components] : m_components)
         {
-            delete component;
-            component = nullptr;
+            for (Component* component : components)
+            {
+                delete component;
+                component = nullptr;
+            }
         }
+
         m_components.clear();
+        m_componentCount = 0;
     }
 }

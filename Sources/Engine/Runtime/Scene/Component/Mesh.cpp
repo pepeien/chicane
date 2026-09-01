@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.reflected.hpp"
 
+#include <unordered_map>
+
 #include "Chicane/Box/Model.hpp"
 
 namespace Chicane
@@ -54,22 +56,34 @@ namespace Chicane
             return;
         }
 
-        for (const Box::MeshGroup& group : m_asset->getGroups())
+        static std::unordered_map<const Box::Mesh*, Bounds3D> boundsByMesh;
+
+        auto cached = boundsByMesh.find(m_asset);
+        if (cached == boundsByMesh.end())
         {
-            const Box::Model* model = Box::load<Box::Model>(group.getModel().getSource());
+            Bounds3D bounds;
 
-            if (!model)
+            for (const Box::MeshGroup& group : m_asset->getGroups())
             {
-                model = Box::Model::getDefault();
+                const Box::Model* model = Box::load<Box::Model>(group.getModel().getSource());
+
+                if (!model)
+                {
+                    model = Box::Model::getDefault();
+                }
+
+                if (!model)
+                {
+                    continue;
+                }
+
+                bounds.add(model->getModel(group.getModel().getReference()).vertices);
             }
 
-            if (!model)
-            {
-                continue;
-            }
-
-            addBounds(Bounds3D(model->getModel(group.getModel().getReference()).vertices));
+            cached = boundsByMesh.emplace(m_asset, std::move(bounds)).first;
         }
+
+        addBounds(cached->second);
 
         if (!isAttached())
         {

@@ -71,7 +71,7 @@ namespace Chicane
 
     void Rotator::addLocal(float inPitch, float inRoll, float inYaw)
     {
-        addLocal(Rotator(inPitch, inRoll, inYaw).get());
+        addLocal(QuatFloat(glm::quat(glm::radians(glm::vec3(inPitch, inRoll, inYaw)))));
     }
 
     void Rotator::addLocal(const Vec3& inValue)
@@ -98,7 +98,7 @@ namespace Chicane
 
     void Rotator::addWorld(float inPitch, float inRoll, float inYaw)
     {
-        addWorld(Rotator(inPitch, inRoll, inYaw).get());
+        addWorld(QuatFloat(glm::quat(glm::radians(glm::vec3(inPitch, inRoll, inYaw)))));
     }
 
     void Rotator::addWorld(const Vec3& inValue)

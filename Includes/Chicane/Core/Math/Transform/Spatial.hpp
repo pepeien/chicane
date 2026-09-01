@@ -41,7 +41,7 @@ namespace Chicane
         template <typename... Args>
         inline void addRelativeRotation(Args... inArgs)
         {
-            m_relative.addLocalRotation(std::forward<Args>(inArgs)...);
+            m_relative.rotation.addLocal(std::forward<Args>(inArgs)...);
 
             refresh();
         }
@@ -49,7 +49,7 @@ namespace Chicane
         template <typename... Args>
         inline void setRelativeRotation(Args... inArgs)
         {
-            m_relative.setRotation(std::forward<Args>(inArgs)...);
+            m_relative.rotation.set(std::forward<Args>(inArgs)...);
 
             refresh();
         }
@@ -95,7 +95,7 @@ namespace Chicane
         template <typename... Args>
         inline void addAbsoluteRotation(Args... inArgs)
         {
-            m_absolute.addWorldRotation(std::forward<Args>(inArgs)...);
+            m_absolute.rotation.addWorld(std::forward<Args>(inArgs)...);
 
             refresh();
         }
@@ -103,10 +103,12 @@ namespace Chicane
         template <typename... Args>
         inline void setAbsoluteRotation(Args... inArgs)
         {
-            m_absolute.setRotation(std::forward<Args>(inArgs)...);
+            m_absolute.rotation.set(std::forward<Args>(inArgs)...);
 
             refresh();
         }
+
+        void setAbsolute(const Transform& inTransform);
 
         const Vec3& getAbsoluteScale() const;
 

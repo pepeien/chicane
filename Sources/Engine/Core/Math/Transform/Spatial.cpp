@@ -44,6 +44,15 @@ namespace Chicane
         refresh();
     }
 
+    void SpatialTransform::setAbsolute(const Transform& inTransform)
+    {
+        m_absolute.translation = inTransform.translation;
+        m_absolute.rotation    = inTransform.rotation;
+        m_absolute.scale       = inTransform.scale;
+
+        refresh();
+    }
+
     void SpatialTransform::refresh()
     {
         const QuatFloat& absoluteRotation = m_absolute.getRotation().get();

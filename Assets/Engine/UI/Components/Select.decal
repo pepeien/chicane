@@ -16,11 +16,10 @@ Select {
         display: flex;
         cursor: pointer;
         overflow: hidden;
-        background-color: rgba(40, 40, 40, 0.92);
     }
 
     &__label {
-        margin: auto 0 auto 0.4em;
+        margin: auto;
     }
 
     &__list {
@@ -31,7 +30,6 @@ Select {
         display: flex;
         flex-direction: column;
         overflow: auto;
-        background-color: rgba(24, 24, 24, 0.96);
     }
 }
 
@@ -43,9 +41,5 @@ Option {
 
     Text {
         margin: 0.25em 0.4em;
-    }
-
-    &:hover, &.--active, &.--selected {
-        background-color: rgba(255, 255, 255, 0.12);
     }
 }

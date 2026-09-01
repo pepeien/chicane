@@ -37,7 +37,7 @@ namespace Chicane
             const DrawPoly2DInstance::List& getInstances2D() const;
             void draw(Draw::Id inId, const DrawPoly2DInstance& inInstance);
 
-            DrawPoly3DInstance::List getInstances3D() const;
+            const DrawPoly3DInstance::List& getInstances3D() const;
             void draw(Draw::Id inId, const DrawPoly3DInstance& inInstance);
 
             const DrawSkyInstance& getSkyInstance() const;
@@ -64,9 +64,11 @@ namespace Chicane
             DrawPoly::List           m_2DBatches = {};
 
             // Instances
-            DrawPoly3DInstance::Map  m_3DInstances = {};
-            DrawPoly2DInstance::List m_2DInstances = {};
-            DrawSkyInstance          m_skyInstance = {};
+            DrawPoly3DInstance::Map    m_3DInstances       = {};
+            mutable DrawPoly3DInstance::List m_3DInstancesFlat = {};
+            mutable bool               m_b3DInstancesDirty = true;
+            DrawPoly2DInstance::List   m_2DInstances       = {};
+            DrawSkyInstance            m_skyInstance       = {};
         };
     }
 }

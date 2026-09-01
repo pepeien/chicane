@@ -44,10 +44,17 @@ namespace Chicane
             return m_subscriptions.back();
         }
 
+        inline bool isEmpty() const { return m_subscriptions.empty(); }
+
         inline void next() { next(nullptr); }
 
-        inline void next(T inData)
+        inline void next(const T& inData)
         {
+            if (m_subscriptions.empty())
+            {
+                return;
+            }
+
             for (EventSubscription<T>& subscription : m_subscriptions)
             {
                 subscription.next(inData);
