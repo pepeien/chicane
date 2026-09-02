@@ -2598,6 +2598,151 @@
                         "children": []
                     },
                     {
+                        "title": "Dock",
+                        "filename": "Dock",
+                        "path": "Grid/Component/Dock",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Dock.hpp",
+                            "namespace": "Chicane::Grid::Dock",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": [
+                            {
+                                "title": "DockDrag",
+                                "filename": "Drag",
+                                "path": "Grid/Component/Dock/Drag",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Drag.hpp",
+                                    "namespace": "Chicane::Grid::DockDrag",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockDrop",
+                                "filename": "Drop",
+                                "path": "Grid/Component/Dock/Drop",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Drop.hpp",
+                                    "namespace": "Chicane::Grid::DockDrop",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockHandle",
+                                "filename": "Handle",
+                                "path": "Grid/Component/Dock/Handle",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Handle.hpp",
+                                    "namespace": "Chicane::Grid::DockHandle",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockPanel",
+                                "filename": "Panel",
+                                "path": "Grid/Component/Dock/Panel",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Panel.hpp",
+                                    "namespace": "Chicane::Grid::DockPanel",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockRegion",
+                                "filename": "Region",
+                                "path": "Grid/Component/Dock/Region",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Region.hpp",
+                                    "namespace": "Chicane::Grid::DockRegion",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockResize",
+                                "filename": "Resize",
+                                "path": "Grid/Component/Dock/Resize",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Resize.hpp",
+                                    "namespace": "Chicane::Grid::DockResize",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockSide",
+                                "filename": "Side",
+                                "path": "Grid/Component/Dock/Side",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Side.hpp",
+                                    "namespace": "Chicane::Grid::DockSide",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DockSplitter",
+                                "filename": "Splitter",
+                                "path": "Grid/Component/Dock/Splitter",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Splitter.hpp",
+                                    "namespace": "Chicane::Grid::DockSplitter",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "Image",
                         "filename": "Image",
                         "path": "Grid/Component/Image",

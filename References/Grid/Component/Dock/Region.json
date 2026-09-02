@@ -1,0 +1,57 @@
+{
+    "title": "DockRegion",
+    "filename": "Region",
+    "path": "Grid/Component/Dock/Region",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Dock/Region.hpp",
+        "namespace": "Chicane::Grid::DockRegion",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "box",
+                "description": "CHICANE_GRID_DOCKREGION_BOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "splitter",
+                "description": "CHICANE_GRID_DOCKREGION_SPLITTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasSplitter",
+                "description": "CHICANE_GRID_DOCKREGION_BHASSPLITTER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DOCKREGION_DESCRIPTION"
+    },
+    "children": []
+}

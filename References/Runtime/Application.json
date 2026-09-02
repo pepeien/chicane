@@ -605,7 +605,9 @@
                 },
                 "name": "hasWindow",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_APPLICATION_HASWINDOW_DESCRIPTION"
             },
             {
@@ -620,7 +622,9 @@
                 },
                 "name": "getWindow",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_APPLICATION_GETWINDOW_DESCRIPTION"
             },
             {
@@ -635,7 +639,9 @@
                 },
                 "name": "hasRenderer",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_APPLICATION_HASRENDERER_DESCRIPTION"
             },
             {
@@ -650,7 +656,9 @@
                 },
                 "name": "getRenderer",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
             },
             {
@@ -944,6 +952,72 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_TICKUI_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "snapshotScreenViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::shared_ptr",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "Grid/Component/View",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SNAPSHOTSCREENVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getScreenViewport",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_APPLICATION_GETSCREENVIEWPORT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1262,6 +1336,48 @@
                 },
                 "name": "m_viewReadIndex",
                 "description": "CHICANE_APPLICATION_M_VIEWREADINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportWidth",
+                "description": "CHICANE_APPLICATION_M_SCREENVIEWPORTWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportHeight",
+                "description": "CHICANE_APPLICATION_M_SCREENVIEWPORTHEIGHT_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -1,0 +1,1265 @@
+{
+    "title": "Dock",
+    "filename": "Dock",
+    "path": "Grid/Component/Dock",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Dock.hpp",
+        "namespace": "Chicane::Grid::Dock",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Dock",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_DOCK_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Dock",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_~DOCK_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_ONEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DockRegion",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Region",
+                    "templates": []
+                },
+                "name": "findRegion",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_FINDREGION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DockPanel",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Panel",
+                    "templates": []
+                },
+                "name": "asPanel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_ASPANEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collectPanels",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "DockPanel",
+                                    "suffix": "*",
+                                    "path": "Grid/Component/Dock/Panel",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outEdges"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "DockPanel",
+                                    "suffix": "*",
+                                    "path": "Grid/Component/Dock/Panel",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outFills"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "DockPanel",
+                                    "suffix": "*",
+                                    "path": "Grid/Component/Dock/Panel",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outFloats"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_COLLECTPANELS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layout",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "claim",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "outRemaining"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inContent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_CLAIM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "assignFill",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "DockPanel",
+                                    "suffix": "*",
+                                    "path": "Grid/Component/Dock/Panel",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inPanels"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inRemaining"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_ASSIGNFILL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "assignFloat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_ASSIGNFLOAT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSplitters",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_REFRESHSPLITTERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshDrop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_REFRESHDROP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearSplitters",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_CLEARSPLITTERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hitSplitter",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*&",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "outPanel"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_HITSPLITTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hitHandle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*&",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "outPanel"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_HITHANDLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getSplitterBounds",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DockRegion",
+                            "suffix": "&",
+                            "path": "Grid/Component/Dock/Region",
+                            "templates": []
+                        },
+                        "name": "inRegion"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_GETSPLITTERBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getContentBounds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_GETCONTENTBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getDropPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_GETDROPPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_BEGINRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_UPDATERESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "endResize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_ENDRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyResizeCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_APPLYRESIZECURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginDrag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_BEGINDRAG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateDrag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_UPDATEDRAG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "endDrag",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_ENDDRAG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyDragCursor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_APPLYDRAGCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearCursor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_CLEARCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "raise",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_RAISE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DockSide",
+                    "suffix": "",
+                    "path": "Grid/Component/Dock/Side",
+                    "templates": []
+                },
+                "name": "pickDropSide",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_PICKDROPSIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resolveExtent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "inPanel"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inRemaining"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inContent"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_RESOLVEEXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resolveLimit",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SizeDirection",
+                            "suffix": "",
+                            "path": "Core/Size/Direction",
+                            "templates": []
+                        },
+                        "name": "inDirection"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inContent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_RESOLVELIMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseExtent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SizeDirection",
+                            "suffix": "",
+                            "path": "Core/Size/Direction",
+                            "templates": []
+                        },
+                        "name": "inDirection"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inContent"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_PARSEEXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SizeDirection",
+                    "suffix": "",
+                    "path": "Core/Size/Direction",
+                    "templates": []
+                },
+                "name": "axisOf",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_AXISOF_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isHorizontal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_ISHORIZONTAL_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_DOCK_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPLITTER_THICKNESS",
+                "description": "CHICANE_GRID_DOCK_SPLITTER_THICKNESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HANDLE_THICKNESS",
+                "description": "CHICANE_GRID_DOCK_HANDLE_THICKNESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DRAG_THRESHOLD",
+                "description": "CHICANE_GRID_DOCK_DRAG_THRESHOLD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DROP_BAND_MIN",
+                "description": "CHICANE_GRID_DOCK_DROP_BAND_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DROP_BAND_RATIO",
+                "description": "CHICANE_GRID_DOCK_DROP_BAND_RATIO_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "DockPanel",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "DockRegion",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Region",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_regions",
+                "description": "CHICANE_GRID_DOCK_M_REGIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DockSplitter",
+                            "suffix": "*",
+                            "path": "Grid/Component/Dock/Splitter",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_splitters",
+                "description": "CHICANE_GRID_DOCK_M_SPLITTERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockDrop",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Drop",
+                    "templates": []
+                },
+                "name": "m_drop",
+                "description": "CHICANE_GRID_DOCK_M_DROP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockResize",
+                    "suffix": "",
+                    "path": "Grid/Component/Dock/Resize",
+                    "templates": []
+                },
+                "name": "m_resize",
+                "description": "CHICANE_GRID_DOCK_M_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockDrag",
+                    "suffix": "",
+                    "path": "Grid/Component/Dock/Drag",
+                    "templates": []
+                },
+                "name": "m_drag",
+                "description": "CHICANE_GRID_DOCK_M_DRAG_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DOCK_DESCRIPTION"
+    },
+    "children": []
+}

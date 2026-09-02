@@ -1,0 +1,57 @@
+{
+    "title": "DockResize",
+    "filename": "Resize",
+    "path": "Grid/Component/Dock/Resize",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Dock/Resize.hpp",
+        "namespace": "Chicane::Grid::DockResize",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockPanel",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Panel",
+                    "templates": []
+                },
+                "name": "panel",
+                "description": "CHICANE_GRID_DOCKRESIZE_PANEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "cursor",
+                "description": "CHICANE_GRID_DOCKRESIZE_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "startExtent",
+                "description": "CHICANE_GRID_DOCKRESIZE_STARTEXTENT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DOCKRESIZE_DESCRIPTION"
+    },
+    "children": []
+}

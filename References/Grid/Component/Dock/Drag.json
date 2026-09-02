@@ -1,0 +1,83 @@
+{
+    "title": "DockDrag",
+    "filename": "Drag",
+    "path": "Grid/Component/Dock/Drag",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Dock/Drag.hpp",
+        "namespace": "Chicane::Grid::DockDrag",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockPanel",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Panel",
+                    "templates": []
+                },
+                "name": "panel",
+                "description": "CHICANE_GRID_DOCKDRAG_PANEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "cursor",
+                "description": "CHICANE_GRID_DOCKDRAG_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "grab",
+                "description": "CHICANE_GRID_DOCKDRAG_GRAB_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bActive",
+                "description": "CHICANE_GRID_DOCKDRAG_BACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DockSide",
+                    "suffix": "",
+                    "path": "Grid/Component/Dock/Side",
+                    "templates": []
+                },
+                "name": "drop",
+                "description": "CHICANE_GRID_DOCKDRAG_DROP_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DOCKDRAG_DESCRIPTION"
+    },
+    "children": []
+}

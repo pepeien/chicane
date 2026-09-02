@@ -1,0 +1,84 @@
+{
+    "title": "DockSide",
+    "filename": "Side",
+    "path": "Grid/Component/Dock/Side",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Dock/Side.hpp",
+        "namespace": "Chicane::Grid::DockSide",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Fill",
+                "description": "CHICANE_GRID_DOCKSIDE_FILL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Float",
+                "description": "CHICANE_GRID_DOCKSIDE_FLOAT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Left",
+                "description": "CHICANE_GRID_DOCKSIDE_LEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Right",
+                "description": "CHICANE_GRID_DOCKSIDE_RIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Top",
+                "description": "CHICANE_GRID_DOCKSIDE_TOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bottom",
+                "description": "CHICANE_GRID_DOCKSIDE_BOTTOM_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_DOCKSIDE_DESCRIPTION"
+    },
+    "children": []
+}
