@@ -22,9 +22,9 @@ namespace Chicane
             static constexpr inline const char* FILL_RULE_TYPE_EVENODD      = "evenodd";
 
             // Stroke
-            static constexpr inline const char* STROKE_ATTRIBUTE_NAME         = "stroke";
-            static constexpr inline const char* STROKE_WIDTH_ATTRIBUTE_NAME   = "stroke-width";
-            static constexpr inline const char* STROKE_OPACITY_ATTRIBUTE_NAME = "stroke-opacity";
+            static constexpr inline const char* STROKE_ATTRIBUTE_NAME          = "stroke";
+            static constexpr inline const char* STROKE_WIDTH_ATTRIBUTE_NAME    = "stroke-width";
+            static constexpr inline const char* STROKE_OPACITY_ATTRIBUTE_NAME  = "stroke-opacity";
             static constexpr inline const char* STROKE_LINECAP_ATTRIBUTE_NAME  = "stroke-linecap";
             static constexpr inline const char* STROKE_LINEJOIN_ATTRIBUTE_NAME = "stroke-linejoin";
             static constexpr inline const char* LINECAP_TYPE_BUTT              = "butt";
@@ -53,7 +53,7 @@ namespace Chicane
             SvgPaint(const Color::Rgba& inColor);
 
         public:
-            static SvgLineCap  parseLineCap(const String& inValue);
+            static SvgLineCap parseLineCap(const String& inValue);
             static SvgLineJoin parseLineJoin(const String& inValue);
 
         public:

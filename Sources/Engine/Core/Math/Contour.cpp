@@ -10,16 +10,16 @@
 
 namespace Chicane
 {
-    static constexpr float         kMinLength              = 1.0e-12f;
-    static constexpr float         kSnapRelative           = 1.0e-6f;
-    static constexpr float         kConvexAreaRelative     = 1.0e-8f;
-    static constexpr float         kDegenerateAreaRelative = 1.0e-12f;
-    static constexpr float         kTessExtent             = 1024.0f;
-    static constexpr std::size_t   kMinPolygonVertices     = 3;
-    static constexpr std::size_t   kMaxFanVertices         = 4;
-    static constexpr int           kTessPolygonSize        = 3;
-    static constexpr int           kTessVertexSize         = 2;
-    static constexpr TESSreal      kTessNormal[3]          = {0.0f, 0.0f, 1.0f};
+    static constexpr float       kMinLength              = 1.0e-12f;
+    static constexpr float       kSnapRelative           = 1.0e-6f;
+    static constexpr float       kConvexAreaRelative     = 1.0e-8f;
+    static constexpr float       kDegenerateAreaRelative = 1.0e-12f;
+    static constexpr float       kTessExtent             = 1024.0f;
+    static constexpr std::size_t kMinPolygonVertices     = 3;
+    static constexpr std::size_t kMaxFanVertices         = 4;
+    static constexpr int         kTessPolygonSize        = 3;
+    static constexpr int         kTessVertexSize         = 2;
+    static constexpr TESSreal    kTessNormal[3]          = {0.0f, 0.0f, 1.0f};
 
     using ContourPoint  = std::array<float, 2>;
     using ContourPoints = std::vector<ContourPoint>;

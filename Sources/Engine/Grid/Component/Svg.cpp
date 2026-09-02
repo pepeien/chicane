@@ -269,15 +269,15 @@ namespace Chicane
                         const float cosA  = std::cos(angle);
                         const float sinA  = std::sin(angle);
                         Mat3        rotate(1.0f);
-                        rotate[0] = glm::vec3(cosA, sinA, 0.0f);
-                        rotate[1] = glm::vec3(-sinA, cosA, 0.0f);
+                        rotate[0] = Vec3(cosA, sinA, 0.0f);
+                        rotate[1] = Vec3(-sinA, cosA, 0.0f);
 
                         if (params.size() >= 3)
                         {
                             Mat3 to(1.0f);
                             Mat3 from(1.0f);
-                            to[2]   = glm::vec3(params[1], params[2], 1.0f);
-                            from[2] = glm::vec3(-params[1], -params[2], 1.0f);
+                            to[2]   = Vec3(params[1], params[2], 1.0f);
+                            from[2] = Vec3(-params[1], -params[2], 1.0f);
                             local   = to * rotate * from;
                         }
                         else
@@ -306,8 +306,18 @@ namespace Chicane
                 const float inheritedOpacity = inParent.opacity;
                 paint.opacity                = SvgPaint::OPACITY_DEFAULT_VALUE;
 
-                parsePaint(attribute(inNode, SvgPaint::FILL_ATTRIBUTE_NAME), inCurrent, paint.fill, paint.bIsFillEnabled);
-                parsePaint(attribute(inNode, SvgPaint::STROKE_ATTRIBUTE_NAME), inCurrent, paint.stroke, paint.bIsStrokeEnabled);
+                parsePaint(
+                    attribute(inNode, SvgPaint::FILL_ATTRIBUTE_NAME),
+                    inCurrent,
+                    paint.fill,
+                    paint.bIsFillEnabled
+                );
+                parsePaint(
+                    attribute(inNode, SvgPaint::STROKE_ATTRIBUTE_NAME),
+                    inCurrent,
+                    paint.stroke,
+                    paint.bIsStrokeEnabled
+                );
 
                 const String strokeWidth = attribute(inNode, SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME);
                 if (!strokeWidth.isEmpty())
@@ -895,11 +905,7 @@ namespace Chicane
                     {inX, inY + inHeight - ry}
                 );
                 curve.addPoint({inX, inY + ry});
-                curve.addBezierPoint(
-                    {inX, inY + ry - ky},
-                    {inX + rx - kx, inY},
-                    {inX + rx, inY}
-                );
+                curve.addBezierPoint({inX, inY + ry - ky}, {inX + rx - kx, inY}, {inX + rx, inY});
 
                 return curve;
             }
@@ -965,14 +971,10 @@ namespace Chicane
                 }
 
                 auto vecLength = [](const Vec2& inValue) -> float
-                {
-                    return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y));
-                };
+                { return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y)); };
 
                 auto scaleVec = [](const Vec2& inValue, float inScale) -> Vec2
-                {
-                    return Vec2(inValue.x * inScale, inValue.y * inScale);
-                };
+                { return Vec2(inValue.x * inScale, inValue.y * inScale); };
 
                 auto push = [&](const Vec2& inPoint)
                 {
@@ -1038,9 +1040,9 @@ namespace Chicane
 
                     for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
                     {
-                        const float angle = static_cast<float>(M_PI) *
-                                            (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
-                        const Vec2  curr   = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
+                        const float angle =
+                            static_cast<float>(M_PI) * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                        const Vec2 curr = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
                                           scaleVec(inOutbound, std::sin(angle) * half);
 
                         emitTriangle(inCenter, prev, curr);
@@ -1077,13 +1079,13 @@ namespace Chicane
                         return;
                     }
 
-                    const Vec2 inN  = sideNormal(inIncoming);
-                    const Vec2 outN = sideNormal(inOutgoing);
+                    const Vec2 inN         = sideNormal(inIncoming);
+                    const Vec2 outN        = sideNormal(inOutgoing);
                     const bool bIsLeftTurn = cross > 0.0f;
-                    const Vec2 from = bIsLeftTurn ? Vec2(-inN.x, -inN.y) : inN;
-                    const Vec2 to   = bIsLeftTurn ? Vec2(-outN.x, -outN.y) : outN;
-                    const Vec2 fromP = inCenter + scaleVec(from, half);
-                    const Vec2 toP   = inCenter + scaleVec(to, half);
+                    const Vec2 from        = bIsLeftTurn ? Vec2(-inN.x, -inN.y) : inN;
+                    const Vec2 to          = bIsLeftTurn ? Vec2(-outN.x, -outN.y) : outN;
+                    const Vec2 fromP       = inCenter + scaleVec(from, half);
+                    const Vec2 toP         = inCenter + scaleVec(to, half);
 
                     if (inPaint.lineJoin == SvgLineJoin::Bevel)
                     {
@@ -1173,11 +1175,11 @@ namespace Chicane
                             }
                             else
                             {
-                                const Vec2 prev = points.at((i + count - 1) % count);
-                                const Vec2 next = points.at((i + 1) % count);
-                                const Vec2 inN  = sideNormal(points.at(i) - prev);
-                                const Vec2 outN = sideNormal(next - points.at(i));
-                                Vec2       join = inN + outN;
+                                const Vec2  prev       = points.at((i + count - 1) % count);
+                                const Vec2  next       = points.at((i + 1) % count);
+                                const Vec2  inN        = sideNormal(points.at(i) - prev);
+                                const Vec2  outN       = sideNormal(next - points.at(i));
+                                Vec2        join       = inN + outN;
                                 const float joinLength = vecLength(join);
 
                                 if (joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH)
@@ -1243,7 +1245,11 @@ namespace Chicane
                         {
                             emitSegment(points.back(), points.front());
                             emitJoin(points.front(), points.front() - points.back(), points.at(1) - points.front());
-                            emitJoin(points.back(), points.back() - points.at(count - 2), points.front() - points.back());
+                            emitJoin(
+                                points.back(),
+                                points.back() - points.at(count - 2),
+                                points.front() - points.back()
+                            );
                         }
                     }
 
@@ -1252,15 +1258,14 @@ namespace Chicane
                         continue;
                     }
 
-                    const Vec2 startDir = points.at(1) - points.front();
-                    const Vec2 endDir   = points.back() - points.at(count - 2);
+                    const Vec2  startDir = points.at(1) - points.front();
+                    const Vec2  endDir   = points.back() - points.at(count - 2);
                     const float startLen = vecLength(startDir);
                     const float endLen   = vecLength(endDir);
-                    const Vec2  startOut = startLen >= kMinLength
-                         ? Vec2(-startDir.x / startLen, -startDir.y / startLen)
-                         : Vec2::Zero();
-                    const Vec2 endOut = endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen)
-                                                              : Vec2::Zero();
+                    const Vec2  startOut =
+                        startLen >= kMinLength ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
+                    const Vec2 endOut =
+                        endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
 
                     emitCap(points.front(), startOut, sideNormal(startDir));
                     emitCap(points.back(), endOut, sideNormal(endDir));

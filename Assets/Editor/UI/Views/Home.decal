@@ -1,6 +1,4 @@
-$sideBarSize:   25%;
-$bottomBarSize: 30%;
-$headerSize:    2em;
+$headerSize: 2em;
 
 .--light {
     $--green: #0b997d;
@@ -26,9 +24,14 @@ $headerSize:    2em;
 
 .home {
     Header {
-        width: 100% ;
+        width: 100%;
         height: $headerSize;
         overflow: visible;
+    }
+
+    Dock {
+        width: 100%;
+        height: calc(100% - $headerSize);
     }
 
     Viewport {
@@ -38,15 +41,12 @@ $headerSize:    2em;
 
     Telemetry {
         position: absolute;
-        margin-top: $headerSize;
         padding: 0.2em;
     }
 
     Outliner {
-        position: absolute;
-        width: $sideBarSize;
+        width: 100%;
         height: 100%;
-        margin: 0 0 0 auto;
 
         .outliner {
             transition: background-color 300ms ease-in-out;
@@ -59,10 +59,8 @@ $headerSize:    2em;
     }
 
     Explorer {
-        position: absolute;
-        width: calc(100% - $sideBarSize);
-        height: $bottomBarSize;
-        margin: auto 0 0 0;
+        width: 100%;
+        height: 100%;
 
         .explorer {
             transition: background-color 300ms ease-in-out;

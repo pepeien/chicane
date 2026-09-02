@@ -1,5 +1,5 @@
 <Container class="explorer">
-    <Container class="explorer__header">
+    <Container id="explorerHeader" class="explorer__header">
         <Text>/</Text>
         <Button dir:for="folder : getFolderLocations()" class="explorer__header__location">
             <Text>{{ folder }}</Text>

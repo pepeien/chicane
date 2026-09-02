@@ -63,7 +63,7 @@ namespace Chicane
         {
             std::vector<T*> result;
 
-            auto found = m_actors.find(std::type_index(typeid(T)));
+            auto            found = m_actors.find(std::type_index(typeid(T)));
             if (found == m_actors.end())
             {
                 return result;
@@ -86,24 +86,9 @@ namespace Chicane
             typed.push_back(new T(inParams...));
 
             Actor* added = typed.back();
-            added->setScene(this);
-
             m_actorCount++;
 
-            String typeName = added->getTypeName();
-            if (typeName.isEmpty())
-            {
-                typeName = "Actor";
-            }
-
-            if (typed.size() <= 1)
-            {
-                added->setId(typeName);
-            }
-            else
-            {
-                added->setId(String::sprint("%s%d", typeName.toChar(), typed.size()));
-            }
+            attachObject(added, "Actor");
 
             if (isLoaded())
             {
@@ -144,7 +129,7 @@ namespace Chicane
         {
             std::vector<T*> result;
 
-            auto found = m_components.find(std::type_index(typeid(T)));
+            auto            found = m_components.find(std::type_index(typeid(T)));
             if (found == m_components.end())
             {
                 return result;
@@ -165,7 +150,7 @@ namespace Chicane
         {
             std::vector<T*> result;
 
-            auto found = m_components.find(std::type_index(typeid(T)));
+            auto            found = m_components.find(std::type_index(typeid(T)));
             if (found == m_components.end())
             {
                 return result;
@@ -193,9 +178,9 @@ namespace Chicane
             typed.push_back(new T(inParams...));
 
             Component* added = typed.back();
-            added->setScene(this);
-
             m_componentCount++;
+
+            attachObject(added, "Component");
 
             if (isLoaded())
             {
@@ -217,6 +202,11 @@ namespace Chicane
             ComponentsSubscription::ErrorCallback    inError    = nullptr,
             ComponentsSubscription::CompleteCallback inComplete = nullptr
         );
+
+        // Objects
+        bool hasObject(const String& inId) const;
+        Object* getObject(const String& inId) const;
+        void setObjectId(Object* inObject, const String& inId);
 
         // Helper
         template <typename T = Actor>
@@ -352,6 +342,11 @@ namespace Chicane
 
     private:
         friend Object;
+
+        void attachObject(Object* inObject, const String& inFallback);
+        void assignUniqueId(Object* inObject, const String& inFallback);
+        String makeUniqueId(const String& inBase) const;
+        void ensureUniqueId(const String& inId, const Object* inIgnored) const;
 
         struct SpatialCell
         {

@@ -54,13 +54,13 @@ namespace Chicane
 
             static constexpr inline const char* EVENT_KEYWORD = "$event";
 
-            static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME     = "onHover";
-            static constexpr inline const char* ON_LEAVE_ATTRIBUTE_NAME     = "onLeave";
-            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME     = "onClick";
-            static constexpr inline const char* ON_FOCUS_ATTRIBUTE_NAME     = "onFocus";
-            static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME      = "onBlur";
-            static constexpr inline const char* ON_DRAG_ATTRIBUTE_NAME      = "onDrag";
-            static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME  = "onDragEnd";
+            static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME    = "onHover";
+            static constexpr inline const char* ON_LEAVE_ATTRIBUTE_NAME    = "onLeave";
+            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME    = "onClick";
+            static constexpr inline const char* ON_FOCUS_ATTRIBUTE_NAME    = "onFocus";
+            static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME     = "onBlur";
+            static constexpr inline const char* ON_DRAG_ATTRIBUTE_NAME     = "onDrag";
+            static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME = "onDragEnd";
 
         public:
             static Component* create(const pugi::xml_node& inNode);
@@ -107,6 +107,7 @@ namespace Chicane
             virtual void refreshPrimitive() { return; }
             virtual void refreshStyleRuleset();
             virtual void refreshSize();
+            virtual void refreshPosition();
 
         public:
             // Checkers
@@ -306,7 +307,6 @@ namespace Chicane
 
             void refreshClassName();
             void refreshStyle();
-            void refreshPosition();
             void refreshBounds();
 
             const StyleKeyframe::List* findKeyframes(const String& inName) const override;

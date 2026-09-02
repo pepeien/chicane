@@ -116,22 +116,12 @@ namespace Chicane
 
             if (inProperties.find(Style::BORDER_TOP_ATTRIBUTE_NAME) != inProperties.end())
             {
-                applyShorthand(
-                    inProperties.at(Style::BORDER_TOP_ATTRIBUTE_NAME),
-                    width.top,
-                    typeTop,
-                    colorTop
-                );
+                applyShorthand(inProperties.at(Style::BORDER_TOP_ATTRIBUTE_NAME), width.top, typeTop, colorTop);
             }
 
             if (inProperties.find(Style::BORDER_RIGHT_ATTRIBUTE_NAME) != inProperties.end())
             {
-                applyShorthand(
-                    inProperties.at(Style::BORDER_RIGHT_ATTRIBUTE_NAME),
-                    width.right,
-                    typeRight,
-                    colorRight
-                );
+                applyShorthand(inProperties.at(Style::BORDER_RIGHT_ATTRIBUTE_NAME), width.right, typeRight, colorRight);
             }
 
             if (inProperties.find(Style::BORDER_BOTTOM_ATTRIBUTE_NAME) != inProperties.end())
@@ -146,12 +136,7 @@ namespace Chicane
 
             if (inProperties.find(Style::BORDER_LEFT_ATTRIBUTE_NAME) != inProperties.end())
             {
-                applyShorthand(
-                    inProperties.at(Style::BORDER_LEFT_ATTRIBUTE_NAME),
-                    width.left,
-                    typeLeft,
-                    colorLeft
-                );
+                applyShorthand(inProperties.at(Style::BORDER_LEFT_ATTRIBUTE_NAME), width.left, typeLeft, colorLeft);
             }
 
             if (inProperties.find(Style::BORDER_TOP_WIDTH_ATTRIBUTE_NAME) != inProperties.end())

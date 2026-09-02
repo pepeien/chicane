@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Scene.hpp"
 
+#include <stdexcept>
+
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 
 namespace Chicane
@@ -96,13 +98,7 @@ namespace Chicane
         }
 
         std::vector<Object*> visible;
-        forEachInFrustum(
-            camera->getFrustum(),
-            [&visible](Object* inObject)
-            {
-                visible.push_back(inObject);
-            }
-        );
+        forEachInFrustum(camera->getFrustum(), [&visible](Object* inObject) { visible.push_back(inObject); });
 
         for (Object* object : visible)
         {
@@ -230,6 +226,117 @@ namespace Chicane
     )
     {
         return m_componentsObservable.subscribe(inNext, inError, inComplete).next(getComponents());
+    }
+
+    bool Scene::hasObject(const String& inId) const
+    {
+        return getObject(inId) != nullptr;
+    }
+
+    Object* Scene::getObject(const String& inId) const
+    {
+        if (inId.isEmpty())
+        {
+            return nullptr;
+        }
+
+        for (const auto& [type, actors] : m_actors)
+        {
+            for (Actor* actor : actors)
+            {
+                if (actor && actor->getId().equals(inId))
+                {
+                    return actor;
+                }
+            }
+        }
+
+        for (const auto& [type, components] : m_components)
+        {
+            for (Component* component : components)
+            {
+                if (component && component->getId().equals(inId))
+                {
+                    return component;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
+    void Scene::assignUniqueId(Object* inObject, const String& inFallback)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        String typeName = inObject->getTypeName();
+        if (typeName.isEmpty())
+        {
+            typeName = inFallback;
+        }
+
+        inObject->m_id = makeUniqueId(typeName);
+    }
+
+    void Scene::attachObject(Object* inObject, const String& inFallback)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        ensureUniqueId(inObject->getId(), inObject);
+        inObject->setScene(this);
+        assignUniqueId(inObject, inFallback);
+    }
+
+    void Scene::ensureUniqueId(const String& inId, const Object* inIgnored) const
+    {
+        if (inId.isEmpty())
+        {
+            return;
+        }
+
+        Object* existing = getObject(inId);
+        if (existing && existing != inIgnored)
+        {
+            throw std::runtime_error("An object with the ID " + inId.toStandard() + " already exists in the scene");
+        }
+    }
+
+    void Scene::setObjectId(Object* inObject, const String& inId)
+    {
+        if (!inObject || inObject->m_id.equals(inId))
+        {
+            return;
+        }
+
+        ensureUniqueId(inId, inObject);
+
+        inObject->m_id = inId;
+    }
+
+    String Scene::makeUniqueId(const String& inBase) const
+    {
+        if (!hasObject(inBase))
+        {
+            return inBase;
+        }
+
+        std::size_t index = 2;
+        String      candidate;
+
+        do
+        {
+            candidate = String::sprint("%s%d", inBase.toChar(), index);
+
+            index++;
+        } while (hasObject(candidate));
+
+        return candidate;
     }
 
     bool Scene::isLoaded() const
@@ -383,12 +490,14 @@ namespace Chicane
         int maxZ = static_cast<int>(std::floor(max.z / SPATIAL_CELL_SIZE));
 
         static constexpr int kMaxSpan = 32;
-        maxX = std::min(maxX, minX + kMaxSpan);
-        maxY = std::min(maxY, minY + kMaxSpan);
-        maxZ = std::min(maxZ, minZ + kMaxSpan);
+        maxX                          = std::min(maxX, minX + kMaxSpan);
+        maxY                          = std::min(maxY, minY + kMaxSpan);
+        maxZ                          = std::min(maxZ, minZ + kMaxSpan);
 
-        outKeys.reserve(static_cast<std::size_t>(maxX - minX + 1) * static_cast<std::size_t>(maxY - minY + 1) *
-                        static_cast<std::size_t>(maxZ - minZ + 1));
+        outKeys.reserve(
+            static_cast<std::size_t>(maxX - minX + 1) * static_cast<std::size_t>(maxY - minY + 1) *
+            static_cast<std::size_t>(maxZ - minZ + 1)
+        );
 
         for (int x = minX; x <= maxX; x++)
         {
@@ -412,10 +521,7 @@ namespace Chicane
             const int y = static_cast<int>((inKey >> 21) & 0x1FFFFF);
             const int z = static_cast<int>(inKey & 0x1FFFFF);
 
-            const auto restore = [](int inValue) -> int
-            {
-                return inValue >= 0x100000 ? inValue - 0x200000 : inValue;
-            };
+            const auto restore = [](int inValue) -> int { return inValue >= 0x100000 ? inValue - 0x200000 : inValue; };
 
             const int cellX = restore(x);
             const int cellY = restore(y);
@@ -426,11 +532,8 @@ namespace Chicane
                 static_cast<float>(cellY) * SPATIAL_CELL_SIZE,
                 static_cast<float>(cellZ) * SPATIAL_CELL_SIZE
             );
-            cell.max = Vec3(
-                cell.min.x + SPATIAL_CELL_SIZE,
-                cell.min.y + SPATIAL_CELL_SIZE,
-                cell.min.z + SPATIAL_CELL_SIZE
-            );
+            cell.max =
+                Vec3(cell.min.x + SPATIAL_CELL_SIZE, cell.min.y + SPATIAL_CELL_SIZE, cell.min.z + SPATIAL_CELL_SIZE);
         }
 
         cell.objects.push_back(inObject);

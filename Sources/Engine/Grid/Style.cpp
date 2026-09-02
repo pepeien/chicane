@@ -1141,10 +1141,8 @@ namespace Chicane
 
                 if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
                 {
-                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) ||
-                           inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) ||
-                           inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
+                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
                 }
 
                 if (inProperty.equals(GAP_ATTRIBUTE_NAME))

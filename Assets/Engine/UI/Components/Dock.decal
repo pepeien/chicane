@@ -1,0 +1,12 @@
+Dock {
+    position: relative;
+}
+
+DockPanel {
+    position: absolute;
+    overflow: hidden;
+}
+
+DockHandle {
+    cursor: grab;
+}

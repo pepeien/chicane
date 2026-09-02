@@ -28,6 +28,8 @@ namespace Chicane
         protected:
             void onRefresh() override;
             void onTick(float inDeltaTime) override;
+            void refreshSize() override;
+            void refreshPosition() override;
 
         private:
             void refreshTarget();

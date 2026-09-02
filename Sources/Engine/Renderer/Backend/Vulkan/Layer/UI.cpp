@@ -711,8 +711,7 @@ namespace Chicane
             }
 
             const VulkanImageInfo& backdrop = m_backdrops.at(inIndex);
-            // UI draws into the swapchain color image; capture that so backdrop-filter
-            // includes previously drawn UI (not only the offscreen scene target).
+
             const vk::Image    source   = inFrame.image.colorImage.instance;
             vk::CommandBuffer  commands = inFrame.commandBuffer;
             const vk::Extent2D extent   = backdrop.extent;

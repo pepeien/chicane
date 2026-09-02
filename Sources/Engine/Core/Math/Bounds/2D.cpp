@@ -134,11 +134,11 @@ namespace Chicane
 
     void Bounds2D::transform(const Mat3& inMatrix)
     {
-        const glm::vec<3, float, glm::packed_highp> corners[4] = {
-            inMatrix * glm::vec<3, float, glm::packed_highp>(m_baseLeft, m_baseTop, 1.0f),
-            inMatrix * glm::vec<3, float, glm::packed_highp>(m_baseRight, m_baseTop, 1.0f),
-            inMatrix * glm::vec<3, float, glm::packed_highp>(m_baseLeft, m_baseBottom, 1.0f),
-            inMatrix * glm::vec<3, float, glm::packed_highp>(m_baseRight, m_baseBottom, 1.0f)
+        const Vec3 corners[4] = {
+            inMatrix * Vec3(m_baseLeft, m_baseTop, 1.0f),
+            inMatrix * Vec3(m_baseRight, m_baseTop, 1.0f),
+            inMatrix * Vec3(m_baseLeft, m_baseBottom, 1.0f),
+            inMatrix * Vec3(m_baseRight, m_baseBottom, 1.0f)
         };
 
         left   = corners[0].x;

@@ -77,7 +77,7 @@ namespace Chicane
             offset += size;
 
             const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
-            size                                     = sizeof(DrawPoly3DInstance) * instances.size();
+            size                                      = sizeof(DrawPoly3DInstance) * instances.size();
             glNamedBufferSubData(m_instanceBuffer, offset, size, instances.data());
         }
 

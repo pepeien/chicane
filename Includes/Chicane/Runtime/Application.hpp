@@ -123,12 +123,12 @@ namespace Chicane
         );
 
         // Window
-        bool hasWindow();
-        Window* getWindow();
+        bool hasWindow() const;
+        Window* getWindow() const;
 
         // Renderer
-        bool hasRenderer();
-        Renderer::Instance* getRenderer();
+        bool hasRenderer() const;
+        Renderer::Instance* getRenderer() const;
         void setRenderer(WindowBackend inBackend);
 
     private:
@@ -158,6 +158,8 @@ namespace Chicane
         void initUI();
         void shutdownUI();
         void tickUI();
+        void snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView);
+        Vec<2, std::uint32_t> getScreenViewport() const;
         void buildUICommands(std::shared_ptr<Grid::View> inView);
         void renderUI();
 
@@ -183,6 +185,8 @@ namespace Chicane
         std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
         std::atomic<std::size_t>                 m_viewWriteIndex;
         std::atomic<std::size_t>                 m_viewReadIndex;
+        std::atomic<std::uint32_t>               m_screenViewportWidth;
+        std::atomic<std::uint32_t>               m_screenViewportHeight;
         ViewObservable                           m_viewObservable;
 
         // Window

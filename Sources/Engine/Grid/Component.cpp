@@ -346,10 +346,7 @@ namespace Chicane
 
             const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
-            addSize(
-                m_style.insetHorizontal(),
-                bIsHeightAuto ? m_style.insetVertical() : 0.0f
-            );
+            addSize(m_style.insetHorizontal(), bIsHeightAuto ? m_style.insetVertical() : 0.0f);
         }
 
         void Component::refresh()
@@ -491,8 +488,7 @@ namespace Chicane
             const bool bIsBackdropVisible        = m_style.backdrop.blur.get() > 0.0f;
             const bool bIsBorderVisible          = m_style.border.isVisible();
 
-            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible ||
-                    bIsBorderVisible) &&
+            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible || bIsBorderVisible) &&
                    getOpacity() > 0.0f;
         }
 
@@ -1490,10 +1486,10 @@ namespace Chicane
                 return false;
             }
 
-            Vec2            local   = inLocation;
-            const Mat3      paint   = getPaintMatrix();
-            const Mat3      inverse = glm::inverse(static_cast<glm::mat3>(paint));
-            const glm::vec3 mapped  = inverse * glm::vec3(inLocation.x, inLocation.y, 1.0f);
+            Vec2       local   = inLocation;
+            const Mat3 paint   = getPaintMatrix();
+            const Mat3 inverse = glm::inverse(static_cast<glm::mat3>(paint));
+            const Vec3 mapped  = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
 
             local.x = mapped.x;
             local.y = mapped.y;
@@ -2212,18 +2208,14 @@ namespace Chicane
                     }
                     else
                     {
-                        const Component* box      = getContainingBlock();
-                        const Style&     boxStyle = box->getStyle();
-                        const float      available =
-                            box->getSize().x - boxStyle.insetHorizontal();
-                        const float horizontalMargin =
+                        const Component* box       = getContainingBlock();
+                        const Style&     boxStyle  = box->getStyle();
+                        const float      available = box->getSize().x - boxStyle.insetHorizontal();
+                        const float      horizontalMargin =
                             (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
                             (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
 
-                        width = std::max(
-                            0.0f,
-                            available - horizontalMargin - m_style.insetHorizontal()
-                        );
+                        width = std::max(0.0f, available - horizontalMargin - m_style.insetHorizontal());
                     }
                 }
 
@@ -2254,9 +2246,8 @@ namespace Chicane
 
             const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
 
-            const float usedWidth = m_size.x + m_style.insetHorizontal();
-            const float usedHeight =
-                m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
+            const float usedWidth  = m_size.x + m_style.insetHorizontal();
+            const float usedHeight = m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
 
             if (hasParent() && !isRoot())
             {
@@ -2268,10 +2259,11 @@ namespace Chicane
                     std::max(0.0f, box->getSize().y - boxStyle.insetVertical())
                 };
 
-                const bool bLeftAuto   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
-                const bool bRightAuto  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
-                const bool bTopAuto    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
-                const bool bBottomAuto = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
+                const bool bLeftAuto     = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
+                const bool bRightAuto    = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+                const bool bTopAuto      = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
+                const bool bBottomAuto   = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
+                const bool bParentCenter = parentStyle.align.get() == StyleAlignment::Center;
 
                 float leftoverW = available.x - usedWidth - marginLeft - marginRight;
 
@@ -2284,7 +2276,7 @@ namespace Chicane
 
                 if (leftoverW > 0.0f)
                 {
-                    if (bLeftAuto && bRightAuto)
+                    if (bParentCenter || (bLeftAuto && bRightAuto))
                     {
                         marginLeft  = leftoverW * 0.5f;
                         marginRight = leftoverW * 0.5f;
@@ -2305,7 +2297,7 @@ namespace Chicane
                 const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
                                               parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;
 
-                if (bCanAutoVertical && (bTopAuto || bBottomAuto))
+                if (bCanAutoVertical && (bParentCenter || bTopAuto || bBottomAuto))
                 {
                     float leftoverH = available.y - usedHeight - marginTop - marginBottom;
 
@@ -2317,7 +2309,7 @@ namespace Chicane
 
                     if (leftoverH > 0.0f)
                     {
-                        if (bTopAuto && bBottomAuto)
+                        if (bParentCenter || (bTopAuto && bBottomAuto))
                         {
                             marginTop    = leftoverH * 0.5f;
                             marginBottom = leftoverH * 0.5f;
@@ -2353,10 +2345,7 @@ namespace Chicane
 
             const Style& parentStyle = m_parent->getStyle();
             const Vec2   available   = {
-                std::max(
-                    0.0f,
-                    m_parent->getSize().x - parentStyle.insetHorizontal()
-                ),
+                std::max(0.0f, m_parent->getSize().x - parentStyle.insetHorizontal()),
                 std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
             };
 

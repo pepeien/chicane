@@ -113,17 +113,19 @@ namespace Chicane
                         continue;
                     }
 
-                    glTextureSubImage3D(m_texturesBuffer,
-                                        0,
-                                        0,
-                                        0,
-                                        texture.id,
-                                        TEXTURE_WIDTH,
-                                        TEXTURE_HEIGHT,
-                                        1,
-                                        GL_RGBA,
-                                        GL_UNSIGNED_BYTE,
-                                        pixels);
+                    glTextureSubImage3D(
+                        m_texturesBuffer,
+                        0,
+                        0,
+                        0,
+                        texture.id,
+                        TEXTURE_WIDTH,
+                        TEXTURE_HEIGHT,
+                        1,
+                        GL_RGBA,
+                        GL_UNSIGNED_BYTE,
+                        pixels
+                    );
                 }
             }
 
@@ -477,9 +479,10 @@ namespace Chicane
             GLint hwMaxLayers = 0;
             glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &hwMaxLayers);
 
-            const std::size_t maxAccepted =
-                std::min(static_cast<std::size_t>(hwMaxLayers / 4),
-                         static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture)));
+            const std::size_t maxAccepted = std::min(
+                static_cast<std::size_t>(hwMaxLayers / 4),
+                static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture))
+            );
 
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
             glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, maxAccepted);
@@ -522,10 +525,12 @@ namespace Chicane
 
             glCreateFramebuffers(1, &m_targetFramebuffer);
             glNamedFramebufferTexture(m_targetFramebuffer, GL_COLOR_ATTACHMENT0, m_targetColor, 0);
-            glNamedFramebufferRenderbuffer(m_targetFramebuffer,
-                                           GL_DEPTH_STENCIL_ATTACHMENT,
-                                           GL_RENDERBUFFER,
-                                           m_targetDepth);
+            glNamedFramebufferRenderbuffer(
+                m_targetFramebuffer,
+                GL_DEPTH_STENCIL_ATTACHMENT,
+                GL_RENDERBUFFER,
+                m_targetDepth
+            );
 
             glCreateFramebuffers(1, &m_screenBlitFramebuffer);
 
@@ -592,16 +597,18 @@ namespace Chicane
             {
                 glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
                 glReadBuffer(GL_COLOR_ATTACHMENT0);
-                glBlitFramebuffer(0,
-                                  0,
-                                  static_cast<GLint>(m_targetWidth),
-                                  static_cast<GLint>(m_targetHeight),
-                                  0,
-                                  0,
-                                  static_cast<GLint>(m_targetWidth),
-                                  static_cast<GLint>(m_targetHeight),
-                                  GL_COLOR_BUFFER_BIT,
-                                  GL_NEAREST);
+                glBlitFramebuffer(
+                    0,
+                    0,
+                    static_cast<GLint>(m_targetWidth),
+                    static_cast<GLint>(m_targetHeight),
+                    0,
+                    0,
+                    static_cast<GLint>(m_targetWidth),
+                    static_cast<GLint>(m_targetHeight),
+                    GL_COLOR_BUFFER_BIT,
+                    GL_NEAREST
+                );
             }
             else
             {
@@ -619,26 +626,30 @@ namespace Chicane
                 return;
             }
 
-            glNamedFramebufferTextureLayer(m_screenBlitFramebuffer,
-                                           GL_COLOR_ATTACHMENT0,
-                                           m_texturesBuffer,
-                                           0,
-                                           m_screenTextureId);
+            glNamedFramebufferTextureLayer(
+                m_screenBlitFramebuffer,
+                GL_COLOR_ATTACHMENT0,
+                m_texturesBuffer,
+                0,
+                m_screenTextureId
+            );
 
             glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
             glReadBuffer(GL_COLOR_ATTACHMENT0);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_screenBlitFramebuffer);
             glDrawBuffer(GL_COLOR_ATTACHMENT0);
-            glBlitFramebuffer(0,
-                              0,
-                              static_cast<GLint>(m_targetWidth),
-                              static_cast<GLint>(m_targetHeight),
-                              0,
-                              0,
-                              static_cast<GLint>(TEXTURE_WIDTH),
-                              static_cast<GLint>(TEXTURE_HEIGHT),
-                              GL_COLOR_BUFFER_BIT,
-                              GL_LINEAR);
+            glBlitFramebuffer(
+                0,
+                0,
+                static_cast<GLint>(m_targetWidth),
+                static_cast<GLint>(m_targetHeight),
+                0,
+                0,
+                static_cast<GLint>(TEXTURE_WIDTH),
+                static_cast<GLint>(TEXTURE_HEIGHT),
+                GL_COLOR_BUFFER_BIT,
+                GL_LINEAR
+            );
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
         }

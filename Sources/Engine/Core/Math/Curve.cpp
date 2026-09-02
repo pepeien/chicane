@@ -45,11 +45,7 @@ namespace Chicane
     }
 
     static void flattenQuadratic(
-        Curve&              outCurve,
-        const Vec2&         inStart,
-        const Vec2&         inControl,
-        const Vec2&         inEnd,
-        const std::uint32_t inDepth
+        Curve& outCurve, const Vec2& inStart, const Vec2& inControl, const Vec2& inEnd, const std::uint32_t inDepth
     )
     {
         if (inDepth >= Curve::MAX_DEPTH)

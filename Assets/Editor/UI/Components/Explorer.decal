@@ -10,6 +10,7 @@ $explorerHeaderHeight: 2em;
         display: flex;
         flex-direction: row;
         gap: 0 0.25em;
+        cursor: grab;
 
         &__location {
             display: flex;

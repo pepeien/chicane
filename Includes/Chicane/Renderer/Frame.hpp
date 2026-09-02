@@ -54,21 +54,21 @@ namespace Chicane
 
         protected:
             // View
-            View                     m_camera = {};
-            View::List               m_lights = {};
+            View                             m_camera = {};
+            View::List                       m_lights = {};
 
             // Poly
-            DrawPoly::Map            m_polys = {};
+            DrawPoly::Map                    m_polys = {};
 
             // Batches
-            DrawPoly::List           m_2DBatches = {};
+            DrawPoly::List                   m_2DBatches = {};
 
             // Instances
-            DrawPoly3DInstance::Map    m_3DInstances       = {};
-            mutable DrawPoly3DInstance::List m_3DInstancesFlat = {};
-            mutable bool               m_b3DInstancesDirty = true;
-            DrawPoly2DInstance::List   m_2DInstances       = {};
-            DrawSkyInstance            m_skyInstance       = {};
+            DrawPoly3DInstance::Map          m_3DInstances       = {};
+            mutable DrawPoly3DInstance::List m_3DInstancesFlat   = {};
+            mutable bool                     m_b3DInstancesDirty = true;
+            DrawPoly2DInstance::List         m_2DInstances       = {};
+            DrawSkyInstance                  m_skyInstance       = {};
         };
     }
 }

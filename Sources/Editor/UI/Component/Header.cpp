@@ -120,10 +120,12 @@ namespace Editor
         Chicane::Grid::Component* node = getHitAt(inLocation);
         while (node && node != this)
         {
-            if (node->getTag().equals(Chicane::Grid::Button::TAG_ID,
-                                      Chicane::Grid::Select::TAG_ID,
-                                      Chicane::Grid::SelectOption::TAG_ID,
-                                      HeaderMenu::TAG_ID))
+            if (node->getTag().equals(
+                    Chicane::Grid::Button::TAG_ID,
+                    Chicane::Grid::Select::TAG_ID,
+                    Chicane::Grid::SelectOption::TAG_ID,
+                    HeaderMenu::TAG_ID
+                ))
             {
                 return true;
             }
@@ -166,7 +168,8 @@ namespace Editor
                 const Chicane::Vec2 location(static_cast<float>(inX), static_cast<float>(inY));
 
                 return containsPoint(location) && !isControlHit(location);
-            });
+            }
+        );
     }
 
     void Header::unbindMoveHitTest()

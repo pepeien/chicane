@@ -12,6 +12,11 @@
         background-color: $--light-grey;
         overflow: hidden;
         z-index: 1;
+        cursor: grab;
+
+        &:hover {
+            cursor: grab;
+        }
 
         &__label {
             font-weight: 600;

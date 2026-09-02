@@ -1,5 +1,15 @@
 <View path="home" class="home --{{ theme }}">
     <Header />
-    <Telemetry />
-    <Viewport />
+    <Dock>
+        <DockPanel>
+            <Telemetry />
+            <Viewport />
+        </DockPanel>
+        <DockPanel side="right" size="25%" handle="outlinerTab">
+            <Outliner />
+        </DockPanel>
+        <DockPanel side="bottom" size="30%" handle="explorerHeader">
+            <Explorer />
+        </DockPanel>
+    </Dock>
 </View>

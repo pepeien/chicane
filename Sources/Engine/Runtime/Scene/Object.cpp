@@ -59,6 +59,13 @@ namespace Chicane
 
     void Object::setId(const String& inId)
     {
+        if (m_scene)
+        {
+            m_scene->setObjectId(this, inId);
+
+            return;
+        }
+
         m_id = inId;
     }
 

@@ -252,11 +252,13 @@ namespace Chicane
             static constexpr inline const char* EASING_TYPE_EASE_IN_OUT     = Drift::EasingCurve::TYPE_EASE_IN_OUT;
             static constexpr inline const char* EASING_CUBIC_BEZIER_KEYWORD = Drift::EasingCurve::CUBIC_BEZIER_KEYWORD;
 
-            static inline std::vector<String>   EASING_TYPES = {Style::EASING_TYPE_LINEAR,
-                                                                Style::EASING_TYPE_EASE,
-                                                                Style::EASING_TYPE_EASE_IN,
-                                                                Style::EASING_TYPE_EASE_OUT,
-                                                                Style::EASING_TYPE_EASE_IN_OUT};
+            static inline std::vector<String>   EASING_TYPES = {
+                Style::EASING_TYPE_LINEAR,
+                Style::EASING_TYPE_EASE,
+                Style::EASING_TYPE_EASE_IN,
+                Style::EASING_TYPE_EASE_OUT,
+                Style::EASING_TYPE_EASE_IN_OUT
+            };
 
             // Keyframes
             static constexpr inline const char* KEYFRAMES_KEYWORD      = "@keyframes";
@@ -361,41 +363,43 @@ namespace Chicane
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
             // Lists
-            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {OPACITY_ATTRIBUTE_NAME,
-                                                                             WIDTH_ATTRIBUTE_NAME,
-                                                                             HEIGHT_ATTRIBUTE_NAME,
-                                                                             Z_INDEX_ATTRIBUTE_NAME,
-                                                                             FOREGROUND_COLOR_ATTRIBUTE_NAME,
-                                                                             BACKGROUND_COLOR_ATTRIBUTE_NAME,
-                                                                             FONT_SIZE_ATTRIBUTE_NAME,
-                                                                             LETTER_SPACING_ATTRIBUTE_NAME,
-                                                                             FILTER_ATTRIBUTE_NAME,
-                                                                             BACKDROP_FILTER_ATTRIBUTE_NAME,
-                                                                             TRANSFORM_ATTRIBUTE_NAME,
-                                                                             TRANSLATE_ATTRIBUTE_NAME,
-                                                                             ROTATE_ATTRIBUTE_NAME,
-                                                                             SCALE_ATTRIBUTE_NAME,
-                                                                             TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
-                                                                             MARGIN_TOP_ATTRIBUTE_NAME,
-                                                                             MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                                                                             MARGIN_LEFT_ATTRIBUTE_NAME,
-                                                                             MARGIN_RIGHT_ATTRIBUTE_NAME,
-                                                                             PADDING_TOP_ATTRIBUTE_NAME,
-                                                                             PADDING_BOTTOM_ATTRIBUTE_NAME,
-                                                                             PADDING_LEFT_ATTRIBUTE_NAME,
-                                                                             PADDING_RIGHT_ATTRIBUTE_NAME,
-                                                                             BORDER_TOP_WIDTH_ATTRIBUTE_NAME,
-                                                                             BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME,
-                                                                             BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME,
-                                                                             BORDER_LEFT_WIDTH_ATTRIBUTE_NAME,
-                                                                             BORDER_TOP_COLOR_ATTRIBUTE_NAME,
-                                                                             BORDER_RIGHT_COLOR_ATTRIBUTE_NAME,
-                                                                             BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME,
-                                                                             BORDER_LEFT_COLOR_ATTRIBUTE_NAME,
-                                                                             GAP_TOP_ATTRIBUTE_NAME,
-                                                                             GAP_BOTTOM_ATTRIBUTE_NAME,
-                                                                             GAP_LEFT_ATTRIBUTE_NAME,
-                                                                             GAP_RIGHT_ATTRIBUTE_NAME};
+            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {
+                OPACITY_ATTRIBUTE_NAME,
+                WIDTH_ATTRIBUTE_NAME,
+                HEIGHT_ATTRIBUTE_NAME,
+                Z_INDEX_ATTRIBUTE_NAME,
+                FOREGROUND_COLOR_ATTRIBUTE_NAME,
+                BACKGROUND_COLOR_ATTRIBUTE_NAME,
+                FONT_SIZE_ATTRIBUTE_NAME,
+                LETTER_SPACING_ATTRIBUTE_NAME,
+                FILTER_ATTRIBUTE_NAME,
+                BACKDROP_FILTER_ATTRIBUTE_NAME,
+                TRANSFORM_ATTRIBUTE_NAME,
+                TRANSLATE_ATTRIBUTE_NAME,
+                ROTATE_ATTRIBUTE_NAME,
+                SCALE_ATTRIBUTE_NAME,
+                TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
+                MARGIN_TOP_ATTRIBUTE_NAME,
+                MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                MARGIN_LEFT_ATTRIBUTE_NAME,
+                MARGIN_RIGHT_ATTRIBUTE_NAME,
+                PADDING_TOP_ATTRIBUTE_NAME,
+                PADDING_BOTTOM_ATTRIBUTE_NAME,
+                PADDING_LEFT_ATTRIBUTE_NAME,
+                PADDING_RIGHT_ATTRIBUTE_NAME,
+                BORDER_TOP_WIDTH_ATTRIBUTE_NAME,
+                BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME,
+                BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME,
+                BORDER_LEFT_WIDTH_ATTRIBUTE_NAME,
+                BORDER_TOP_COLOR_ATTRIBUTE_NAME,
+                BORDER_RIGHT_COLOR_ATTRIBUTE_NAME,
+                BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME,
+                BORDER_LEFT_COLOR_ATTRIBUTE_NAME,
+                GAP_TOP_ATTRIBUTE_NAME,
+                GAP_BOTTOM_ATTRIBUTE_NAME,
+                GAP_LEFT_ATTRIBUTE_NAME,
+                GAP_RIGHT_ATTRIBUTE_NAME
+            };
 
         public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);

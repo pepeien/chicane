@@ -39,16 +39,16 @@ namespace Chicane
             float paintedRight() const;
             float paintedBottom() const;
             float paintedLeft() const;
-            Vec4  paintedWidths() const;
+            Vec4 paintedWidths() const;
 
             bool isVisible() const;
 
         private:
             void applyShorthand(
-                const String&                    inValue,
-                StyleProperty<float>&            outWidth,
-                StyleProperty<StyleBorderType>&  outType,
-                StyleProperty<Color::Rgba>&      outColor
+                const String&                   inValue,
+                StyleProperty<float>&           outWidth,
+                StyleProperty<StyleBorderType>& outType,
+                StyleProperty<Color::Rgba>&     outColor
             );
             void applyTypeOneliner(const String& inValue);
             void applyColorOneliner(const String& inValue);

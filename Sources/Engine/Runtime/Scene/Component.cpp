@@ -49,12 +49,7 @@ namespace Chicane
 
         m_parent = inParent;
 
-        m_parentSubscription = m_parent->watchChanges(
-            [this]()
-            {
-                setAbsolute(*m_parent);
-            }
-        );
+        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
 
         onAttachment(inParent);
     }

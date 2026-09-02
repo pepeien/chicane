@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <typeinfo>
 
 #include "Chicane/Box/Asset/Header.hpp"
@@ -9,11 +10,14 @@
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Engine.hpp"
 
 #include "Chicane/Screech.hpp"
+
+#include "Chicane/Grid/Component/Viewport.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -45,6 +49,8 @@ namespace Chicane
           m_viewCommandBuffers({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
+          m_screenViewportWidth(0),
+          m_screenViewportHeight(0),
           m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr)
@@ -146,12 +152,12 @@ namespace Chicane
         return m_viewObservable.subscribe(inNext, inError, inComplete).next(getView());
     }
 
-    bool Application::hasWindow()
+    bool Application::hasWindow() const
     {
         return m_window && m_window.get() != nullptr;
     }
 
-    Window* Application::getWindow()
+    Window* Application::getWindow() const
     {
         if (!hasWindow())
         {
@@ -161,12 +167,12 @@ namespace Chicane
         return m_window.get();
     }
 
-    bool Application::hasRenderer()
+    bool Application::hasRenderer() const
     {
         return m_renderer && m_renderer.get() != nullptr;
     }
 
-    Renderer::Instance* Application::getRenderer()
+    Renderer::Instance* Application::getRenderer() const
     {
         if (!hasRenderer())
         {
@@ -393,10 +399,11 @@ namespace Chicane
         Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
         command.clear();
 
-        CCamera* activeCamera = nullptr;
+        CCamera*                    activeCamera   = nullptr;
+        const Vec<2, std::uint32_t> screenViewport = getScreenViewport();
         for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
-            camera->onResize(m_renderer->getResolution());
+            camera->onResize(screenViewport);
 
             command.camera = camera->getData();
 
@@ -594,6 +601,7 @@ namespace Chicane
                 view->setSize(m_renderer->getResolution());
 
                 view->tick(m_telemetry.ui.frame.delta);
+                snapshotScreenViewport(view);
 
                 buildUICommands(view);
                 m_telemetry.ui.end();
@@ -601,6 +609,50 @@ namespace Chicane
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+    }
+
+    void Application::snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView)
+    {
+        std::uint32_t width  = 0;
+        std::uint32_t height = 0;
+
+        if (inView)
+        {
+            for (Grid::Component* component : inView->getChildrenFlat())
+            {
+                if (!component || !component->getTag().equals(Grid::Viewport::TAG_ID) || !component->isDisplayable())
+                {
+                    continue;
+                }
+
+                const Vec2& size = component->getSize();
+                if (size.x <= 0.0f || size.y <= 0.0f)
+                {
+                    continue;
+                }
+
+                width  = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.x)));
+                height = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.y)));
+
+                break;
+            }
+        }
+
+        m_screenViewportWidth.store(width, std::memory_order_relaxed);
+        m_screenViewportHeight.store(height, std::memory_order_relaxed);
+    }
+
+    Vec<2, std::uint32_t> Application::getScreenViewport() const
+    {
+        const std::uint32_t width  = m_screenViewportWidth.load(std::memory_order_relaxed);
+        const std::uint32_t height = m_screenViewportHeight.load(std::memory_order_relaxed);
+
+        if (width > 0 && height > 0)
+        {
+            return {width, height};
+        }
+
+        return hasRenderer() ? m_renderer->getResolution() : Vec<2, std::uint32_t>(0, 0);
     }
 
     void Application::buildUICommands(std::shared_ptr<Grid::View> inView)
@@ -647,7 +699,7 @@ namespace Chicane
             const Vec2             size         = component->getSize();
             const Mat3             paint        = component->getPaintMatrix();
             const Vec2             visualCenter = component->getVisualCenter();
-            const glm::vec3 mapped = static_cast<glm::mat3>(paint) * glm::vec3(visualCenter.x, visualCenter.y, 1.0f);
+            const Vec3             mapped       = paint * Vec3(visualCenter.x, visualCenter.y, 1.0f);
 
             Renderer::DrawPoly2DCommandFill subcommand;
             subcommand.polygon.reference = primitive.reference;
