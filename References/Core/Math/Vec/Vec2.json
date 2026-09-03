@@ -45,6 +45,82 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "Zero",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_ZERO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "One",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_ONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "Right",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "Up",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_UP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "",
                     "suffix": "",
                     "path": "",
@@ -288,82 +364,6 @@
                     "const"
                 ],
                 "description": "CHICANE_VEC2_TOSTRING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "Zero",
-                "parameters": [],
-                "modifiers": [
-                    "static",
-                    "inline",
-                    "constexpr"
-                ],
-                "description": "CHICANE_VEC2_ZERO_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "One",
-                "parameters": [],
-                "modifiers": [
-                    "static",
-                    "inline",
-                    "constexpr"
-                ],
-                "description": "CHICANE_VEC2_ONE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "Right",
-                "parameters": [],
-                "modifiers": [
-                    "static",
-                    "inline",
-                    "constexpr"
-                ],
-                "description": "CHICANE_VEC2_RIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "Up",
-                "parameters": [],
-                "modifiers": [
-                    "static",
-                    "inline",
-                    "constexpr"
-                ],
-                "description": "CHICANE_VEC2_UP_DESCRIPTION"
             },
             {
                 "accessor": "public",

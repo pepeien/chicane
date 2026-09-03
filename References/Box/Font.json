@@ -335,6 +335,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildInstances",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONT_REBUILDINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "FontFamily",
                     "suffix": "",
                     "path": "Box/Font/Family",

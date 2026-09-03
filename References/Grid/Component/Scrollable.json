@@ -319,6 +319,47 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVirtualContentSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCROLLABLE_SETVIRTUALCONTENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearVirtualContentSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCROLLABLE_CLEARVIRTUALCONTENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -499,6 +540,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDragging",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SCROLLABLE_ISDRAGGING_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Bounds2D",
                     "suffix": "",
                     "path": "Core/Math/Bounds/2D",
@@ -561,23 +619,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_SCROLLABLE_GETSCROLLBARYTHUMB_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isDragging",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_SCROLLABLE_ISDRAGGING_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -731,6 +772,32 @@
                 },
                 "name": "m_currentPosition",
                 "description": "CHICANE_GRID_SCROLLABLE_M_CURRENTPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_virtualContentSize",
+                "description": "CHICANE_GRID_SCROLLABLE_M_VIRTUALCONTENTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasVirtualContent",
+                "description": "CHICANE_GRID_SCROLLABLE_M_BHASVIRTUALCONTENT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

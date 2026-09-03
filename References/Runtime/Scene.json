@@ -1,10 +1,10 @@
 {
-    "title": "SpatialCell",
+    "title": "Scene",
     "filename": "Scene",
     "path": "Runtime/Scene",
     "source": {
         "header": "Includes/Chicane/Runtime/Scene.hpp",
-        "namespace": "Chicane::Scene::SpatialCell",
+        "namespace": "Chicane::Scene",
         "types": [
             {
                 "name": "ActorsObservable",
@@ -1552,9 +1552,9 @@
                         },
                         {
                             "prefix": "",
-                            "name": "SpatialCell",
+                            "name": "SceneSpatialCell",
                             "suffix": "",
-                            "path": "Runtime/Scene",
+                            "path": "Runtime/Scene/SpatialCell",
                             "templates": []
                         }
                     ]
@@ -1597,56 +1597,9 @@
                 },
                 "name": "m_objectCells",
                 "description": "CHICANE_SCENE_M_OBJECTCELLS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "min",
-                "description": "CHICANE_SCENE_SPATIALCELL_MIN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "max",
-                "description": "CHICANE_SCENE_SPATIALCELL_MAX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Object",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Object",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "objects",
-                "description": "CHICANE_SCENE_SPATIALCELL_OBJECTS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_SCENE_SPATIALCELL_DESCRIPTION"
+        "description": "CHICANE_SCENE_DESCRIPTION"
     },
     "children": []
 }

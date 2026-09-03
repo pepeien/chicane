@@ -73,6 +73,59 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "DockPanel",
+                    "suffix": "*",
+                    "path": "Grid/Component/Dock/Panel",
+                    "templates": []
+                },
+                "name": "findFrom",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_DOCKPANEL_FINDFROM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCKPANEL_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "DockSide",
                     "suffix": "",
                     "path": "Grid/Component/Dock/Side",
@@ -512,59 +565,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_DOCKPANEL_GETHANDLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getChildrenFlat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCKPANEL_GETCHILDRENFLAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "DockPanel",
-                    "suffix": "*",
-                    "path": "Grid/Component/Dock/Panel",
-                    "templates": []
-                },
-                "name": "findFrom",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        },
-                        "name": "inComponent"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_GRID_DOCKPANEL_FINDFROM_DESCRIPTION"
             },
             {
                 "accessor": "protected",

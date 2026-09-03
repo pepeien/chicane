@@ -79,6 +79,23 @@
         "functions": [
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "getScreenTextureId",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_GETSCREENTEXTUREID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -507,23 +524,6 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_GETTARGETCOLOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "getScreenTextureId",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_GETSCREENTEXTUREID_DESCRIPTION"
             },
             {
                 "accessor": "protected",

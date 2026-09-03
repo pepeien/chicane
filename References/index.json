@@ -5637,12 +5637,12 @@
                 "children": []
             },
             {
-                "title": "SpatialCell",
+                "title": "Scene",
                 "filename": "Scene",
                 "path": "Runtime/Scene",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Scene.hpp",
-                    "namespace": "Chicane::Scene::SpatialCell",
+                    "namespace": "Chicane::Scene",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -5885,6 +5885,22 @@
                         "source": {
                             "header": "Includes/Chicane/Runtime/Scene/Object.hpp",
                             "namespace": "Chicane::Object",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "SceneSpatialCell",
+                        "filename": "SpatialCell",
+                        "path": "Runtime/Scene/SpatialCell",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/SpatialCell.hpp",
+                            "namespace": "Chicane::SceneSpatialCell",
                             "types": [],
                             "enums": [],
                             "constructors": [],

@@ -63,6 +63,40 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getId",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTypeName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETTYPENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -115,23 +149,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "getId",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_OBJECT_GETID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -155,21 +172,19 @@
                 "description": "CHICANE_OBJECT_SETID_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "standard",
+                "accessor": "protected",
+                "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "void",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "",
                     "templates": []
                 },
-                "name": "getTypeName",
+                "name": "onRefresh",
                 "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_OBJECT_GETTYPENAME_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -232,21 +247,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_OBJECT_ONTICK_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onRefresh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",

@@ -477,6 +477,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_FRAME_RESET3DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildInstances3D",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_REBUILDINSTANCES3D_DESCRIPTION"
             }
         ],
         "members": [
@@ -557,19 +572,6 @@
                 },
                 "name": "m_3DInstancesFlat",
                 "description": "CHICANE_RENDERER_FRAME_M_3DINSTANCESFLAT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_b3DInstancesDirty",
-                "description": "CHICANE_RENDERER_FRAME_M_B3DINSTANCESDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "protected",

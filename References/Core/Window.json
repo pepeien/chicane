@@ -47,6 +47,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "getCurrent",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WINDOW_GETCURRENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -1006,23 +1023,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_WATCHBACKEND_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Window",
-                    "suffix": "*",
-                    "path": "Core/Window",
-                    "templates": []
-                },
-                "name": "getCurrent",
-                "parameters": [],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_WINDOW_GETCURRENT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

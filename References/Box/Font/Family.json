@@ -98,6 +98,44 @@
                 "description": "CHICANE_BOX_FONTFAMILY_EMPTY_DESCRIPTION"
             },
             {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "kerningKey",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_FONTFAMILY_KERNINGKEY_DESCRIPTION"
+            },
+            {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
@@ -664,44 +702,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_FONTFAMILY_ADDGLYPH_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint64_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "kerningKey",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "char32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inLeft"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "char32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inRight"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_BOX_FONTFAMILY_KERNINGKEY_DESCRIPTION"
             }
         ],
         "members": [

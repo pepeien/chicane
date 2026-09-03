@@ -261,6 +261,23 @@
             },
             {
                 "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "getScreenTextureId",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETSCREENTEXTUREID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
@@ -517,23 +534,6 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_BACKEND_GETGPUDELTA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "getScreenTextureId",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_BACKEND_GETSCREENTEXTUREID_DESCRIPTION"
             },
             {
                 "accessor": "protected",

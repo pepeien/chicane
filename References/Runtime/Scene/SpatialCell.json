@@ -1,0 +1,65 @@
+{
+    "title": "SceneSpatialCell",
+    "filename": "SpatialCell",
+    "path": "Runtime/Scene/SpatialCell",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/SpatialCell.hpp",
+        "namespace": "Chicane::SceneSpatialCell",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "min",
+                "description": "CHICANE_SCENESPATIALCELL_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "max",
+                "description": "CHICANE_SCENESPATIALCELL_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "objects",
+                "description": "CHICANE_SCENESPATIALCELL_OBJECTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCENESPATIALCELL_DESCRIPTION"
+    },
+    "children": []
+}

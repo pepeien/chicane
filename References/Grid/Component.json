@@ -288,6 +288,98 @@
             },
             {
                 "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDepth",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getDrawPosition",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETDRAWPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getTransformPivot",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETTRANSFORMPIVOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -662,47 +754,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETDRAGGING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "tick",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDelta"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_TICK_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refresh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1991,23 +2042,6 @@
             },
             {
                 "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getDepth",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETDEPTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
@@ -2465,40 +2499,6 @@
             },
             {
                 "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "getDrawPosition",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETDRAWPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "getTransformPivot",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETTRANSFORMPIVOT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -2903,6 +2903,62 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_CANPLAYANIMATION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StyleKeyframe::List",
+                    "suffix": "*",
+                    "path": "Grid/Style/Keyframe",
+                    "templates": []
+                },
+                "name": "findKeyframes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_FINDKEYFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "Drift::Clip",
+                    "suffix": "",
+                    "path": "Drift/Clip",
+                    "templates": []
+                },
+                "name": "makeAnimationClip",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleKeyframe::List",
+                            "suffix": "&",
+                            "path": "Grid/Style/Keyframe",
+                            "templates": []
+                        },
+                        "name": "inKeyframes"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_MAKEANIMATIONCLIP_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -3337,62 +3393,6 @@
             },
             {
                 "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "const ",
-                    "name": "StyleKeyframe::List",
-                    "suffix": "*",
-                    "path": "Grid/Style/Keyframe",
-                    "templates": []
-                },
-                "name": "findKeyframes",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_FINDKEYFRAMES_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "Drift::Clip",
-                    "suffix": "",
-                    "path": "Drift/Clip",
-                    "templates": []
-                },
-                "name": "makeAnimationClip",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "StyleKeyframe::List",
-                            "suffix": "&",
-                            "path": "Grid/Style/Keyframe",
-                            "templates": []
-                        },
-                        "name": "inKeyframes"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_MAKEANIMATIONCLIP_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -3771,9 +3771,7 @@
                 },
                 "name": "rebuildFlatChildren",
                 "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REBUILDFLATCHILDREN_DESCRIPTION"
             }
         ],
@@ -4053,32 +4051,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Style",
-                    "suffix": "",
-                    "path": "Grid/Style",
-                    "templates": []
-                },
-                "name": "m_styleBase",
-                "description": "CHICANE_GRID_COMPONENT_M_STYLEBASE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasStyleBase",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASSTYLEBASE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "StyleFile::Variables",
                     "suffix": "",
                     "path": "Grid/Style/File",
@@ -4242,19 +4214,6 @@
                 },
                 "name": "m_flatChildren",
                 "description": "CHICANE_GRID_COMPONENT_M_FLATCHILDREN_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsFlatDirty",
-                "description": "CHICANE_GRID_COMPONENT_M_BISFLATDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "protected",

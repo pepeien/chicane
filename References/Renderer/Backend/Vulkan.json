@@ -44,6 +44,23 @@
         "functions": [
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "getScreenTextureId",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETSCREENTEXTUREID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -97,23 +114,6 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_GETVKSCISSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "getScreenTextureId",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_VULKANBACKEND_GETSCREENTEXTUREID_DESCRIPTION"
             },
             {
                 "accessor": "public",

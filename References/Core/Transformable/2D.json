@@ -71,6 +71,21 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTransformChanged",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORMABLE2D_ONTRANSFORMCHANGED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -85,21 +100,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_TRANSFORMABLE2D_ONTRANSFORM_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onTransformChanged",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORMABLE2D_ONTRANSFORMCHANGED_DESCRIPTION"
             }
         ],
         "members": [

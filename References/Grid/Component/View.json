@@ -80,6 +80,32 @@
         "functions": [
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -172,32 +198,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_VIEW_FOCUSON_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "tick",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDelta"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_TICK_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -63,6 +63,21 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APAWN_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -94,21 +109,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_APAWN_ONCONTROLEDEATTACHMENT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onLoad",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APAWN_ONLOAD_DESCRIPTION"
             },
             {
                 "accessor": "protected",

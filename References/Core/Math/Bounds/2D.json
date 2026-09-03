@@ -30,6 +30,24 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Bounds2D",
+                    "suffix": "&",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "unconstrained",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOUNDS2D_UNCONSTRAINED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "bool",
                     "suffix": "",
@@ -282,24 +300,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOUNDS2D_TRANSFORM_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Bounds2D",
-                    "suffix": "&",
-                    "path": "Core/Math/Bounds/2D",
-                    "templates": []
-                },
-                "name": "unconstrained",
-                "parameters": [],
-                "modifiers": [
-                    "static",
-                    "inline"
-                ],
-                "description": "CHICANE_BOUNDS2D_UNCONSTRAINED_DESCRIPTION"
             }
         ],
         "members": [
