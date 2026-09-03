@@ -414,78 +414,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refreshSplitters",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_DOCK_REFRESHSPLITTERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "refreshDrop",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_DOCK_REFRESHDROP_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "clearSplitters",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_DOCK_CLEARSPLITTERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hitSplitter",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inLocation"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DockPanel",
-                            "suffix": "*&",
-                            "path": "Grid/Component/Dock/Panel",
-                            "templates": []
-                        },
-                        "name": "outPanel"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCK_HITSPLITTER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -530,12 +462,50 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hitResize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockPanel",
+                            "suffix": "*&",
+                            "path": "Grid/Component/Dock/Panel",
+                            "templates": []
+                        },
+                        "name": "outPanel"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_HITRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Bounds2D",
                     "suffix": "",
                     "path": "Core/Math/Bounds/2D",
                     "templates": []
                 },
-                "name": "getSplitterBounds",
+                "name": "getGapBounds",
                 "parameters": [
                     {
                         "type": {
@@ -551,7 +521,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_DOCK_GETSPLITTERBOUNDS_DESCRIPTION"
+                "description": "CHICANE_GRID_DOCK_GETGAPBOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -700,6 +670,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_DOCK_APPLYRESIZECURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshResizeCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCK_REFRESHRESIZECURSOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -861,6 +857,44 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_DOCK_PICKDROPSIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resolveGap",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLeftover"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_RESOLVEGAP_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1103,22 +1137,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "SPLITTER_THICKNESS",
-                "description": "CHICANE_GRID_DOCK_SPLITTER_THICKNESS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "HANDLE_THICKNESS",
                 "description": "CHICANE_GRID_DOCK_HANDLE_THICKNESS_DESCRIPTION"
             },
@@ -1197,27 +1215,6 @@
                 },
                 "name": "m_regions",
                 "description": "CHICANE_GRID_DOCK_M_REGIONS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "DockSplitter",
-                            "suffix": "*",
-                            "path": "Grid/Component/Dock/Splitter",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_splitters",
-                "description": "CHICANE_GRID_DOCK_M_SPLITTERS_DESCRIPTION"
             },
             {
                 "accessor": "private",

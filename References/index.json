@@ -2723,24 +2723,24 @@
                                     "members": []
                                 },
                                 "children": []
-                            },
-                            {
-                                "title": "DockSplitter",
-                                "filename": "Splitter",
-                                "path": "Grid/Component/Dock/Splitter",
-                                "source": {
-                                    "header": "Includes/Chicane/Grid/Component/Dock/Splitter.hpp",
-                                    "namespace": "Chicane::Grid::DockSplitter",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Icon",
+                        "filename": "Icon",
+                        "path": "Grid/Component/Icon",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Icon.hpp",
+                            "namespace": "Chicane::Grid::Icon",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
                     },
                     {
                         "title": "Image",

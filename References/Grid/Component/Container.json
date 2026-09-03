@@ -33,10 +33,52 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_CONTAINER_CONTAINER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Container",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inTag"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_CONTAINER_CONTAINER_DESCRIPTION"
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyBackgroundPrimitive",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_CONTAINER_APPLYBACKGROUNDPRIMITIVE_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

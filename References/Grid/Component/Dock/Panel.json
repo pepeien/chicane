@@ -172,6 +172,49 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isGrabbable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCKPANEL_ISGRABBABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setGrabbable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCKPANEL_SETGRABBABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "hasAssignedHandle",
                 "parameters": [],
                 "modifiers": [
@@ -820,6 +863,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "IS_GRABBABLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_DOCKPANEL_IS_GRABBABLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "HANDLE_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_DOCKPANEL_HANDLE_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -1044,6 +1103,19 @@
                 },
                 "name": "m_bResizable",
                 "description": "CHICANE_GRID_DOCKPANEL_M_BRESIZABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bGrabbable",
+                "description": "CHICANE_GRID_DOCKPANEL_M_BGRABBABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",

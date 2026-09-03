@@ -34,8 +34,8 @@
                     "path": "Core/Math/Bounds/2D",
                     "templates": []
                 },
-                "name": "splitter",
-                "description": "CHICANE_GRID_DOCKREGION_SPLITTER_DESCRIPTION"
+                "name": "gap",
+                "description": "CHICANE_GRID_DOCKREGION_GAP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -47,8 +47,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bHasSplitter",
-                "description": "CHICANE_GRID_DOCKREGION_BHASSPLITTER_DESCRIPTION"
+                "name": "bCanResize",
+                "description": "CHICANE_GRID_DOCKREGION_BCANRESIZE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_DOCKREGION_DESCRIPTION"
