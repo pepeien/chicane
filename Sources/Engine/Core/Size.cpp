@@ -1,5 +1,6 @@
 #include "Chicane/Core/Size.hpp"
 
+#include <cctype>
 #include <math.h>
 
 namespace Chicane
@@ -77,6 +78,52 @@ namespace Chicane
         return m_textParser(inValue);
     }
 
+    String Size::extractCalculationBody(const String& inValue) const
+    {
+        const std::size_t keyword = inValue.find(CALCULATION_KEYWORD);
+        if (keyword == String::npos)
+        {
+            return String::empty();
+        }
+
+        std::size_t open = keyword;
+        while (open < inValue.size() && inValue.at(open) != FUNCTION_PARAMS_OPENING)
+        {
+            open++;
+        }
+
+        if (open >= inValue.size() || inValue.at(open) != FUNCTION_PARAMS_OPENING)
+        {
+            return String::empty();
+        }
+
+        std::uint32_t depth = 0;
+        for (std::size_t i = open; i < inValue.size(); i++)
+        {
+            const char character = inValue.at(i);
+
+            if (character == FUNCTION_PARAMS_OPENING)
+            {
+                depth++;
+
+                continue;
+            }
+
+            if (character != FUNCTION_PARAMS_CLOSING)
+            {
+                continue;
+            }
+
+            depth--;
+            if (depth == 0)
+            {
+                return inValue.substr(open + 1, i - open - 1).trim();
+            }
+        }
+
+        return inValue.substr(open + 1).trim();
+    }
+
     float Size::parseCalculation(const String& inValue, SizeDirection inDirection) const
     {
         if (!inValue.startsWith(CALCULATION_KEYWORD))
@@ -84,9 +131,13 @@ namespace Chicane
             return 0.0f;
         }
 
-        const String operation = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
+        const String operation = extractCalculationBody(inValue);
+        if (operation.isEmpty())
+        {
+            return 0.0f;
+        }
 
-        std::uint32_t parathesisCount = 0;
+        std::uint32_t parenthesisCount = 0;
 
         for (std::uint32_t i = 0; i < operation.size(); i++)
         {
@@ -94,21 +145,47 @@ namespace Chicane
 
             if (character == FUNCTION_PARAMS_OPENING)
             {
-                parathesisCount++;
+                parenthesisCount++;
 
                 continue;
             }
 
             if (character == FUNCTION_PARAMS_CLOSING)
             {
-                parathesisCount--;
+                if (parenthesisCount > 0)
+                {
+                    parenthesisCount--;
+                }
 
                 continue;
             }
 
             if (std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character) ==
                     CALCULATION_OPERATORS.end() ||
-                parathesisCount > 0)
+                parenthesisCount > 0)
+            {
+                continue;
+            }
+
+            bool bUnary = true;
+            for (std::uint32_t j = i; j > 0;)
+            {
+                j--;
+
+                const char previous = operation.at(j);
+                if (std::isspace(static_cast<unsigned char>(previous)))
+                {
+                    continue;
+                }
+
+                bUnary = previous == FUNCTION_PARAMS_OPENING ||
+                         previous == CALCULATION_OPERATOR_SUM || previous == CALCULATION_OPERATOR_SUB ||
+                         previous == CALCULATION_OPERATOR_MUL || previous == CALCULATION_OPERATOR_DIV;
+
+                break;
+            }
+
+            if (bUnary)
             {
                 continue;
             }
@@ -139,7 +216,7 @@ namespace Chicane
             break;
         }
 
-        return 0.0f;
+        return parse(operation, inDirection);
     }
 
     float Size::parseEM(const String& inValue) const
