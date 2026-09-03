@@ -32,7 +32,7 @@ namespace Editor
         createInfo.window.icon    = "Assets/Editor/Icon.png";
         createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::WindowedBorderless;
-        createInfo.window.backend = Chicane::WindowBackend::Vulkan;
+        createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
         // Setup
         createInfo.onSetup = [this]()

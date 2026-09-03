@@ -1507,8 +1507,9 @@ namespace Chicane
             m_intrinsic.x = parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)), view.width);
             m_intrinsic.y = parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)), view.height);
 
-            std::size_t index = 0;
-            SvgPaint    root  = applyNode(m_sourceNode, SvgPaint(current), current);
+            const std::size_t shapeCount = m_shapes.size();
+            std::size_t       index      = 0;
+            SvgPaint          root       = applyNode(m_sourceNode, SvgPaint(current), current);
 
             std::function<void(const pugi::xml_node&, const SvgPaint&)> walk;
             walk = [&](const pugi::xml_node& inNode, const SvgPaint& inPaint)
@@ -1641,6 +1642,11 @@ namespace Chicane
 
             walk(m_sourceNode, root);
 
+            if (m_shapes.size() != shapeCount)
+            {
+                markFlatDirty();
+            }
+
             for (std::size_t i = index; i < m_shapes.size(); i++)
             {
                 m_shapes.at(i)->clear();
@@ -1678,7 +1684,6 @@ namespace Chicane
                 shape->setStyleFile(m_styleFile);
 
                 m_shapes.push_back(shape);
-                markFlatDirty();
             }
 
             return m_shapes.at(inIndex);

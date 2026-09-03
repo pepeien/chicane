@@ -191,24 +191,6 @@ namespace Chicane
         {
             m_instances.clear();
             m_instances.emplace(static_cast<int>(std::round(m_data.getWeight())), m_data);
-
-            if (!m_data.isVariable())
-            {
-                return;
-            }
-
-            const int min = static_cast<int>(std::ceil(m_data.getWeightMin()));
-            const int max = static_cast<int>(std::floor(m_data.getWeightMax()));
-
-            for (int weight = 100; weight <= 900; weight += 100)
-            {
-                if (weight < min || weight > max || m_instances.find(weight) != m_instances.end())
-                {
-                    continue;
-                }
-
-                m_instances.emplace(weight, parseData(m_raw, static_cast<float>(weight)));
-            }
         }
 
         FontFamily Font::parseData(const FontRaw& inValue) const

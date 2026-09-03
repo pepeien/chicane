@@ -245,7 +245,6 @@ namespace Chicane
                 glyph->setStyleFile(m_styleFile);
 
                 m_glyphs.push_back(glyph);
-                markFlatDirty();
             }
 
             return m_glyphs.at(inIndex);
@@ -311,6 +310,7 @@ namespace Chicane
             m_layoutSignature = signature;
             m_parsedText      = value;
 
+            const std::size_t      glyphCount = m_glyphs.size();
             const Box::FontFamily& fontFamily = m_font->getData(m_style.font.weight.get());
             float                  ascender   = 0.0f;
             float                  descender  = 0.0f;
@@ -374,6 +374,11 @@ namespace Chicane
             for (std::size_t i = glyphIndex; i < m_glyphs.size(); ++i)
             {
                 m_glyphs.at(i)->clear();
+            }
+
+            if (m_glyphs.size() != glyphCount)
+            {
+                markFlatDirty();
             }
 
             m_contentSize = {maxWidth, lineCount * lineHeight};

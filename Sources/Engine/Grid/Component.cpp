@@ -1890,6 +1890,7 @@ namespace Chicane
                 return;
             }
 
+            bool bAdopted = false;
             for (const auto& child : inNode.children())
             {
                 if (isContentSlot(child))
@@ -1905,15 +1906,24 @@ namespace Chicane
                     continue;
                 }
 
-                addChild(component);
+                if (adoptChild(component))
+                {
+                    bAdopted = true;
+                }
+            }
+
+            if (bAdopted)
+            {
+                markFlatDirty();
+                markLayoutDirty();
             }
         }
 
-        void Component::addChild(Component* inComponent, std::size_t inIndex)
+        bool Component::adoptChild(Component* inComponent, std::size_t inIndex)
         {
             if (!canAdopt(inComponent))
             {
-                return;
+                return false;
             }
 
             inComponent->setRoot(m_root);
@@ -1930,6 +1940,17 @@ namespace Chicane
             }
 
             onAdopted(inComponent);
+
+            return true;
+        }
+
+        void Component::addChild(Component* inComponent, std::size_t inIndex)
+        {
+            if (!adoptChild(inComponent, inIndex))
+            {
+                return;
+            }
+
             markFlatDirty();
             markLayoutDirty();
         }

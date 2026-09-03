@@ -333,6 +333,7 @@ namespace Chicane
             std::vector<String> splitMethodParams(const String& inValue) const;
 
             bool isCulledByAncestor() const;
+            bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void rebuildFlatChildren();
 
         protected:
