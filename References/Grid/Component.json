@@ -415,6 +415,23 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isCulled",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISCULLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "canAdopt",
                 "parameters": [
                     {
@@ -559,6 +576,16 @@
                             "templates": []
                         },
                         "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -585,6 +612,16 @@
                             "templates": []
                         },
                         "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -611,6 +648,16 @@
                             "templates": []
                         },
                         "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -1213,6 +1260,62 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "matchesCompiledSelector",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleCompiledSelector",
+                            "suffix": "&",
+                            "path": "Grid/Style/Selector/Compiled",
+                            "templates": []
+                        },
+                        "name": "inSelector"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_MATCHESCOMPILEDSELECTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "matchesCompiledPart",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleSelectorPart",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset/Part",
+                            "templates": []
+                        },
+                        "name": "inPart"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_MATCHESCOMPILEDPART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ReflectionFieldAccessor",
                     "suffix": "",
                     "path": "Core/Reflection/Type/Field/Acessor",
@@ -1490,28 +1593,78 @@
             },
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
+                    "templates": []
                 },
-                "name": "getChildrenFlat",
+                "name": "markFlatDirty",
                 "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_MARKFLATDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markStyleDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_MARKSTYLEDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markLayoutDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_MARKLAYOUTDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markStyleDirtySubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_MARKSTYLEDIRTYSUBTREE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markLayoutDirtySubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_MARKLAYOUTDIRTYSUBTREE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3035,6 +3188,31 @@
             },
             {
                 "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -3563,6 +3741,40 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_SPLITMETHODPARAMS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isCulledByAncestor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ISCULLEDBYANCESTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildFlatChildren",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_REBUILDFLATCHILDREN_DESCRIPTION"
             }
         ],
         "members": [
@@ -4015,6 +4227,40 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_flatChildren",
+                "description": "CHICANE_GRID_COMPONENT_M_FLATCHILDREN_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsFlatDirty",
+                "description": "CHICANE_GRID_COMPONENT_M_BISFLATDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -4074,6 +4320,32 @@
                 },
                 "name": "m_scratch",
                 "description": "CHICANE_GRID_COMPONENT_M_SCRATCH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_layoutParentWidth",
+                "description": "CHICANE_GRID_COMPONENT_M_LAYOUTPARENTWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_layoutParentHeight",
+                "description": "CHICANE_GRID_COMPONENT_M_LAYOUTPARENTHEIGHT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4197,8 +4469,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bHovered",
-                "description": "CHICANE_GRID_COMPONENT_M_BHOVERED_DESCRIPTION"
+                "name": "m_bIsHovered",
+                "description": "CHICANE_GRID_COMPONENT_M_BISHOVERED_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4210,8 +4482,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bFocused",
-                "description": "CHICANE_GRID_COMPONENT_M_BFOCUSED_DESCRIPTION"
+                "name": "m_bIsFocused",
+                "description": "CHICANE_GRID_COMPONENT_M_BISFOCUSED_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4223,8 +4495,47 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bDragging",
-                "description": "CHICANE_GRID_COMPONENT_M_BDRAGGING_DESCRIPTION"
+                "name": "m_bIsDragging",
+                "description": "CHICANE_GRID_COMPONENT_M_BISDRAGGING_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsStyleDirty",
+                "description": "CHICANE_GRID_COMPONENT_M_BISSTYLEDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsLayoutDirty",
+                "description": "CHICANE_GRID_COMPONENT_M_BISLAYOUTDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsCulled",
+                "description": "CHICANE_GRID_COMPONENT_M_BISCULLED_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"

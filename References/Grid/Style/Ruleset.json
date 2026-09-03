@@ -172,6 +172,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "compileSelectors",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLERULESET_COMPILESELECTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "addProperties",
                 "parameters": [
                     {
@@ -279,6 +294,27 @@
                 },
                 "name": "properties",
                 "description": "CHICANE_GRID_STYLERULESET_PROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleCompiledSelector",
+                            "suffix": "",
+                            "path": "Grid/Style/Selector/Compiled",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "compiled",
+                "description": "CHICANE_GRID_STYLERULESET_COMPILED_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLERULESET_DESCRIPTION"

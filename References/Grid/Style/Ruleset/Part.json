@@ -1,0 +1,104 @@
+{
+    "title": "StyleSelectorPart",
+    "filename": "Part",
+    "path": "Grid/Style/Ruleset/Part",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Ruleset/Part.hpp",
+        "namespace": "Chicane::Grid::StyleSelectorPart",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanHover",
+                "description": "CHICANE_GRID_STYLESELECTORPART_BCANHOVER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanFocus",
+                "description": "CHICANE_GRID_STYLESELECTORPART_BCANFOCUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanDrag",
+                "description": "CHICANE_GRID_STYLESELECTORPART_BCANDRAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "tag",
+                "description": "CHICANE_GRID_STYLESELECTORPART_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_GRID_STYLESELECTORPART_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "classes",
+                "description": "CHICANE_GRID_STYLESELECTORPART_CLASSES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLESELECTORPART_DESCRIPTION"
+    },
+    "children": []
+}
