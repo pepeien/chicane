@@ -11,25 +11,20 @@
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
 
+#include "Chicane/Grid/Component/Button.hpp"
 #include "Chicane/Grid/Component/Dock/Drop.hpp"
 #include "Chicane/Grid/Component/Dock/Handle.hpp"
-#include "Chicane/Grid/Component/Dock/Splitter.hpp"
 #include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace
-        {
-            const Color::Rgba kSplitterColor(0, 0, 0, 90);
-            const Color::Rgba kDropColor(11, 153, 125, 90);
-        }
+        const Color::Rgba kDropColor(11, 153, 125, 90);
 
         Dock::Dock(const pugi::xml_node& inNode)
             : Component(inNode),
               m_regions({}),
-              m_splitters({}),
               m_drop(new DockDrop()),
               m_resize({}),
               m_drag({})
@@ -41,8 +36,6 @@ namespace Chicane
 
         Dock::~Dock()
         {
-            clearSplitters();
-
             delete m_drop;
             m_drop = nullptr;
         }
@@ -77,7 +70,7 @@ namespace Chicane
                 }
 
                 DockPanel* panel = nullptr;
-                if (hitSplitter(event.location, panel))
+                if (hitResize(event.location, panel))
                 {
                     beginResize(panel, event.location);
 
@@ -112,6 +105,8 @@ namespace Chicane
                     return true;
                 }
 
+                refreshResizeCursor(event.location);
+
                 return false;
             }
 
@@ -122,23 +117,12 @@ namespace Chicane
         {
             Component::tick(inDeltaTime);
 
-            refreshSplitters();
             refreshDrop();
         }
 
         std::vector<Component*> Dock::getChildrenFlat() const
         {
             std::vector<Component*> result = Component::getChildrenFlat();
-
-            for (DockSplitter* splitter : m_splitters)
-            {
-                if (!splitter)
-                {
-                    continue;
-                }
-
-                result.push_back(splitter);
-            }
 
             if (m_drop)
             {
@@ -265,65 +249,56 @@ namespace Chicane
         {
             const DockSide side   = inPanel->getSide();
             const float    extent = resolveExtent(inPanel, outRemaining, inContent);
-            const float    half   = SPLITTER_THICKNESS * 0.5f;
 
             DockRegion region;
 
             switch (side)
             {
             case DockSide::Left: {
+                const float leftover = std::max(0.0f, outRemaining.right - (outRemaining.left + extent));
+                const float gap      = resolveGap(side, leftover);
+
                 region.box.set(outRemaining.top, outRemaining.left, outRemaining.bottom, outRemaining.left + extent);
-                region.splitter.set(
-                    outRemaining.top,
-                    std::max(outRemaining.left, region.box.right - half),
-                    outRemaining.bottom,
-                    std::min(outRemaining.right, region.box.right + half)
-                );
-                region.bHasSplitter = inPanel->isResizable();
-                outRemaining.left   = region.box.right;
+                region.gap.set(outRemaining.top, region.box.right, outRemaining.bottom, region.box.right + gap);
+                region.bCanResize = inPanel->isResizable() && gap > 0.0f;
+                outRemaining.left = region.box.right + gap;
 
                 break;
             }
 
             case DockSide::Right: {
+                const float leftover = std::max(0.0f, (outRemaining.right - extent) - outRemaining.left);
+                const float gap      = resolveGap(side, leftover);
+
                 region.box.set(outRemaining.top, outRemaining.right - extent, outRemaining.bottom, outRemaining.right);
-                region.splitter.set(
-                    outRemaining.top,
-                    std::max(outRemaining.left, region.box.left - half),
-                    outRemaining.bottom,
-                    std::min(outRemaining.right, region.box.left + half)
-                );
-                region.bHasSplitter = inPanel->isResizable();
-                outRemaining.right  = region.box.left;
+                region.gap.set(outRemaining.top, region.box.left - gap, outRemaining.bottom, region.box.left);
+                region.bCanResize  = inPanel->isResizable() && gap > 0.0f;
+                outRemaining.right = region.box.left - gap;
 
                 break;
             }
 
             case DockSide::Top: {
+                const float leftover = std::max(0.0f, outRemaining.bottom - (outRemaining.top + extent));
+                const float gap      = resolveGap(side, leftover);
+
                 region.box.set(outRemaining.top, outRemaining.left, outRemaining.top + extent, outRemaining.right);
-                region.splitter.set(
-                    std::max(outRemaining.top, region.box.bottom - half),
-                    outRemaining.left,
-                    std::min(outRemaining.bottom, region.box.bottom + half),
-                    outRemaining.right
-                );
-                region.bHasSplitter = inPanel->isResizable();
-                outRemaining.top    = region.box.bottom;
+                region.gap.set(region.box.bottom, outRemaining.left, region.box.bottom + gap, outRemaining.right);
+                region.bCanResize = inPanel->isResizable() && gap > 0.0f;
+                outRemaining.top  = region.box.bottom + gap;
 
                 break;
             }
 
             case DockSide::Bottom: {
+                const float leftover = std::max(0.0f, (outRemaining.bottom - extent) - outRemaining.top);
+                const float gap      = resolveGap(side, leftover);
+
                 region.box
                     .set(outRemaining.bottom - extent, outRemaining.left, outRemaining.bottom, outRemaining.right);
-                region.splitter.set(
-                    std::max(outRemaining.top, region.box.top - half),
-                    outRemaining.left,
-                    std::min(outRemaining.bottom, region.box.top + half),
-                    outRemaining.right
-                );
-                region.bHasSplitter = inPanel->isResizable();
-                outRemaining.bottom = region.box.top;
+                region.gap.set(region.box.top - gap, outRemaining.left, region.box.top, outRemaining.right);
+                region.bCanResize   = inPanel->isResizable() && gap > 0.0f;
+                outRemaining.bottom = region.box.top - gap;
 
                 break;
             }
@@ -345,21 +320,26 @@ namespace Chicane
             const float width   = inRemaining.right - inRemaining.left;
             const float height  = inRemaining.bottom - inRemaining.top;
             const bool  bSplitX = width >= height;
-            const float slice   = (bSplitX ? width : height) / static_cast<float>(inPanels.size());
+            const float gap     = std::max(0.0f, bSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
+            const float usable  = std::max(
+                0.0f, (bSplitX ? width : height) - gap * static_cast<float>(inPanels.size() > 0 ? inPanels.size() - 1 : 0)
+            );
+            const float slice = usable / static_cast<float>(inPanels.size());
 
             for (std::size_t i = 0; i < inPanels.size(); ++i)
             {
                 DockRegion region;
+                const float offset = (slice + gap) * static_cast<float>(i);
 
                 if (bSplitX)
                 {
-                    const float left  = inRemaining.left + slice * static_cast<float>(i);
+                    const float left  = inRemaining.left + offset;
                     const float right = (i + 1 == inPanels.size()) ? inRemaining.right : left + slice;
                     region.box.set(inRemaining.top, left, inRemaining.bottom, right);
                 }
                 else
                 {
-                    const float top    = inRemaining.top + slice * static_cast<float>(i);
+                    const float top    = inRemaining.top + offset;
                     const float bottom = (i + 1 == inPanels.size()) ? inRemaining.bottom : top + slice;
                     region.box.set(top, inRemaining.left, bottom, inRemaining.right);
                 }
@@ -393,66 +373,6 @@ namespace Chicane
             m_regions.insert_or_assign(inPanel, region);
         }
 
-        void Dock::refreshSplitters()
-        {
-            std::vector<const DockPanel*> panels;
-            panels.reserve(m_regions.size());
-
-            for (Component* child : m_children)
-            {
-                DockPanel* panel = asPanel(child);
-                if (!panel)
-                {
-                    continue;
-                }
-
-                const DockRegion* region = findRegion(panel);
-                if (!region || !region->bHasSplitter)
-                {
-                    continue;
-                }
-
-                panels.push_back(panel);
-            }
-
-            while (m_splitters.size() > panels.size())
-            {
-                delete m_splitters.back();
-                m_splitters.pop_back();
-            }
-
-            while (m_splitters.size() < panels.size())
-            {
-                DockSplitter* splitter = new DockSplitter();
-                splitter->setRoot(m_root);
-                splitter->setParent(this);
-                splitter->setStyleFile(m_styleFile);
-                m_splitters.push_back(splitter);
-            }
-
-            for (std::size_t i = 0; i < panels.size(); ++i)
-            {
-                const DockRegion* region = findRegion(panels.at(i));
-                if (!region)
-                {
-                    m_splitters.at(i)->hide();
-
-                    continue;
-                }
-
-                const WindowCursor cursor =
-                    isHorizontal(panels.at(i)->getSide()) ? WindowCursor::EwResize : WindowCursor::NsResize;
-
-                Bounds2D box = region->splitter;
-                box.left += m_style.insetLeft();
-                box.right += m_style.insetLeft();
-                box.top += m_style.insetTop();
-                box.bottom += m_style.insetTop();
-
-                m_splitters.at(i)->configure(box, kSplitterColor, cursor, static_cast<float>(i) * 0.01f);
-            }
-        }
-
         void Dock::refreshDrop()
         {
             if (!m_drop)
@@ -480,52 +400,20 @@ namespace Chicane
             m_drop->configure(box, kDropColor);
         }
 
-        void Dock::clearSplitters()
-        {
-            for (DockSplitter* splitter : m_splitters)
-            {
-                delete splitter;
-            }
-
-            m_splitters.clear();
-        }
-
-        bool Dock::hitSplitter(const Vec2& inLocation, DockPanel*& outPanel) const
-        {
-            outPanel = nullptr;
-
-            for (Component* child : m_children)
-            {
-                DockPanel* panel = asPanel(child);
-                if (!panel)
-                {
-                    continue;
-                }
-
-                const DockRegion* region = findRegion(panel);
-                if (!region || !region->bHasSplitter)
-                {
-                    continue;
-                }
-
-                if (!getSplitterBounds(*region).contains(inLocation))
-                {
-                    continue;
-                }
-
-                outPanel = panel;
-
-                return true;
-            }
-
-            return false;
-        }
-
         bool Dock::hitHandle(const Vec2& inLocation, DockPanel*& outPanel) const
         {
             outPanel = nullptr;
 
             Component* node = getHitAt(inLocation);
+            if (node && node->getTag().equals(Button::TAG_ID))
+            {
+                DockPanel* panel = DockPanel::findFrom(node);
+                if (!panel || !panel->isAssignedHandle(node))
+                {
+                    return false;
+                }
+            }
+
             while (node && node != this)
             {
                 DockPanel* panel     = DockPanel::findFrom(node);
@@ -533,7 +421,7 @@ namespace Chicane
                 const bool bOverlay  = node->getTag().equals(DockHandle::TAG_ID);
                 if (bAssigned || bOverlay)
                 {
-                    if (panel && panel->getParent() == this && panel->isDisplayable() &&
+                    if (panel && panel->isGrabbable() && panel->getParent() == this && panel->isDisplayable() &&
                         (bAssigned || !panel->hasAssignedHandle()))
                     {
                         outPanel = panel;
@@ -553,11 +441,42 @@ namespace Chicane
             return false;
         }
 
-        Bounds2D Dock::getSplitterBounds(const DockRegion& inRegion) const
+        bool Dock::hitResize(const Vec2& inLocation, DockPanel*& outPanel) const
+        {
+            outPanel = nullptr;
+
+            for (Component* child : m_children)
+            {
+                DockPanel* panel = asPanel(child);
+                if (!panel)
+                {
+                    continue;
+                }
+
+                const DockRegion* region = findRegion(panel);
+                if (!region || !region->bCanResize)
+                {
+                    continue;
+                }
+
+                if (!getGapBounds(*region).contains(inLocation))
+                {
+                    continue;
+                }
+
+                outPanel = panel;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        Bounds2D Dock::getGapBounds(const DockRegion& inRegion) const
         {
             const Vec2 origin = getDrawPosition();
 
-            Bounds2D result = inRegion.splitter;
+            Bounds2D result = inRegion.gap;
             result.left += origin.x + m_style.insetLeft();
             result.right += origin.x + m_style.insetLeft();
             result.top += origin.y + m_style.insetTop();
@@ -708,6 +627,22 @@ namespace Chicane
 
             m_style.cursor.setRaw(Style::CURSOR_TYPE_NS_RESIZE);
             m_style.cursor.set(WindowCursor::NsResize);
+        }
+
+        void Dock::refreshResizeCursor(const Vec2& inLocation)
+        {
+            DockPanel* panel = nullptr;
+            if (hitResize(inLocation, panel))
+            {
+                applyResizeCursor(panel->getSide());
+
+                return;
+            }
+
+            if (m_style.cursor.get() == WindowCursor::EwResize || m_style.cursor.get() == WindowCursor::NsResize)
+            {
+                clearCursor();
+            }
         }
 
         void Dock::beginDrag(DockPanel* inPanel, const Vec2& inLocation)
@@ -877,6 +812,39 @@ namespace Chicane
             consider(bottom, bandY, DockSide::Bottom);
 
             return side;
+        }
+
+        float Dock::resolveGap(DockSide inSide, float inLeftover) const
+        {
+            float gap = 0.0f;
+
+            switch (inSide)
+            {
+            case DockSide::Left:
+                gap = m_style.gap.left.get();
+
+                break;
+
+            case DockSide::Right:
+                gap = m_style.gap.right.get();
+
+                break;
+
+            case DockSide::Top:
+                gap = m_style.gap.top.get();
+
+                break;
+
+            case DockSide::Bottom:
+                gap = m_style.gap.bottom.get();
+
+                break;
+
+            default:
+                return 0.0f;
+            }
+
+            return std::clamp(gap, 0.0f, std::max(0.0f, inLeftover));
         }
 
         float Dock::resolveExtent(DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent) const

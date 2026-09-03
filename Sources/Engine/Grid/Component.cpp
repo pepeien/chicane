@@ -1514,16 +1514,14 @@ namespace Chicane
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                if (ancestor->getStyle().isClippingOverflow() &&
+                    !ancestor->getDrawBounds().containsRounded(
+                        inLocation,
+                        ancestor->getStyle().radius.horizontal(),
+                        ancestor->getStyle().radius.vertical()
+                    ))
                 {
-                    if (scrollable->isClippingOverflow() && !ancestor->getDrawBounds().containsRounded(
-                                                                inLocation,
-                                                                ancestor->getStyle().radius.horizontal(),
-                                                                ancestor->getStyle().radius.vertical()
-                                                            ))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
                 if (ancestor->isRoot())
@@ -2021,12 +2019,9 @@ namespace Chicane
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                if (ancestor->getStyle().isClippingOverflow())
                 {
-                    if (scrollable->isClippingOverflow())
-                    {
-                        clip = clip.intersect(ancestor->getDrawBounds());
-                    }
+                    clip = clip.intersect(ancestor->getDrawBounds());
                 }
 
                 if (ancestor->isRoot())
@@ -2063,32 +2058,29 @@ namespace Chicane
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
+                if (ancestor->getStyle().isClippingOverflow() && !ancestor->getStyle().radius.isZero())
                 {
-                    if (scrollable->isClippingOverflow() && !ancestor->getStyle().radius.isZero())
+                    const Bounds2D box     = ancestor->getDrawBounds();
+                    const Vec4     radiusX = ancestor->getStyle().radius.horizontal();
+                    const Vec4     radiusY = ancestor->getStyle().radius.vertical();
+                    const Vec4     clip    = Vec4(box.left, box.top, box.right, box.bottom);
+
+                    if (filled == 0)
                     {
-                        const Bounds2D box     = ancestor->getDrawBounds();
-                        const Vec4     radiusX = ancestor->getStyle().radius.horizontal();
-                        const Vec4     radiusY = ancestor->getStyle().radius.vertical();
-                        const Vec4     clip    = Vec4(box.left, box.top, box.right, box.bottom);
-
-                        if (filled == 0)
-                        {
-                            outFirst        = clip;
-                            outFirstRadiusX = radiusX;
-                            outFirstRadiusY = radiusY;
-                        }
-                        else
-                        {
-                            outSecond        = clip;
-                            outSecondRadiusX = radiusX;
-                            outSecondRadiusY = radiusY;
-
-                            break;
-                        }
-
-                        filled++;
+                        outFirst        = clip;
+                        outFirstRadiusX = radiusX;
+                        outFirstRadiusY = radiusY;
                     }
+                    else
+                    {
+                        outSecond        = clip;
+                        outSecondRadiusX = radiusX;
+                        outSecondRadiusY = radiusY;
+
+                        break;
+                    }
+
+                    filled++;
                 }
 
                 if (ancestor->isRoot())

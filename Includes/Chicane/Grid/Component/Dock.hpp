@@ -23,7 +23,6 @@ namespace Chicane
     namespace Grid
     {
         class DockDrop;
-        class DockSplitter;
 
         CH_TYPE(Manual)
         class CHICANE_GRID Dock : public Component
@@ -33,7 +32,6 @@ namespace Chicane
             static constexpr inline const char* TAG_ID = "Dock";
 
             // Properties
-            static constexpr inline float       SPLITTER_THICKNESS = 2.0f;
             static constexpr inline float       HANDLE_THICKNESS   = 10.0f;
             static constexpr inline float       DRAG_THRESHOLD     = 6.0f;
             static constexpr inline float       DROP_BAND_MIN      = 36.0f;
@@ -65,13 +63,11 @@ namespace Chicane
             void claim(DockPanel* inPanel, Bounds2D& outRemaining, const Vec2& inContent);
             void assignFill(const std::vector<DockPanel*>& inPanels, const Bounds2D& inRemaining);
             void assignFloat(DockPanel* inPanel);
-            void refreshSplitters();
             void refreshDrop();
-            void clearSplitters();
 
-            bool hitSplitter(const Vec2& inLocation, DockPanel*& outPanel) const;
             bool hitHandle(const Vec2& inLocation, DockPanel*& outPanel) const;
-            Bounds2D getSplitterBounds(const DockRegion& inRegion) const;
+            bool hitResize(const Vec2& inLocation, DockPanel*& outPanel) const;
+            Bounds2D getGapBounds(const DockRegion& inRegion) const;
             Bounds2D getContentBounds() const;
             Bounds2D getDropPreview(DockSide inSide) const;
 
@@ -79,6 +75,7 @@ namespace Chicane
             void updateResize(const Vec2& inLocation);
             void endResize();
             void applyResizeCursor(DockSide inSide);
+            void refreshResizeCursor(const Vec2& inLocation);
 
             void beginDrag(DockPanel* inPanel, const Vec2& inLocation);
             void updateDrag(const Vec2& inLocation);
@@ -88,6 +85,7 @@ namespace Chicane
             void raise(DockPanel* inPanel);
             DockSide pickDropSide(const Vec2& inLocation) const;
 
+            float resolveGap(DockSide inSide, float inLeftover) const;
             float resolveExtent(DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent) const;
             float resolveLimit(
                 const String& inValue, SizeDirection inDirection, const Vec2& inContent, float inFallback
@@ -98,7 +96,6 @@ namespace Chicane
 
         private:
             std::unordered_map<const DockPanel*, DockRegion> m_regions;
-            std::vector<DockSplitter*>                       m_splitters;
             DockDrop*                                        m_drop;
             DockResize                                       m_resize;
             DockDrag                                         m_drag;

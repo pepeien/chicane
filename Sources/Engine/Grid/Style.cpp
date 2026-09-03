@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Style.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <cmath>
 #include <cstdlib>
 #include <utility>
@@ -2021,10 +2022,51 @@ namespace Chicane
 
             String value = inValue.trim();
 
-            if (value.startsWith(VARIABLE_KEYWORD))
+            String expanded;
+            for (std::size_t i = 0; i < value.size();)
             {
-                value = parseText(m_parent->getStyleVariable(value.substr(1)));
+                if (value.at(i) != VARIABLE_KEYWORD)
+                {
+                    expanded.append(value.at(i));
+                    i++;
+
+                    continue;
+                }
+
+                std::size_t end = i + 1;
+                while (end < value.size())
+                {
+                    const char character = value.at(end);
+                    if (!std::isalnum(static_cast<unsigned char>(character)) && character != '_' && character != '-')
+                    {
+                        break;
+                    }
+
+                    end++;
+                }
+
+                if (end == i + 1)
+                {
+                    expanded.append(VARIABLE_KEYWORD);
+                    i++;
+
+                    continue;
+                }
+
+                const String resolved = m_parent->getStyleVariable(value.substr(i + 1, end - i - 1));
+                if (resolved.isEmpty())
+                {
+                    expanded.append(value.substr(i, end - i));
+                    i = end;
+
+                    continue;
+                }
+
+                expanded.append(parseText(resolved));
+                i = end;
             }
+
+            value = expanded.trim();
 
             if (value.startsWith(REFERENCE_KEYWORD))
             {

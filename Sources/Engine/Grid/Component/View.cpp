@@ -17,7 +17,7 @@ namespace Chicane
     namespace Grid
     {
         View::View()
-            : Component(TAG_ID),
+            : Container(TAG_ID),
               m_path(""),
               m_hovered(nullptr),
               m_focused(nullptr),
@@ -41,7 +41,7 @@ namespace Chicane
         {
             pump();
 
-            Component::tick(inDelta);
+            Container::tick(inDelta);
 
             m_pointer.store(resolvePointer(), std::memory_order_relaxed);
         }
@@ -209,7 +209,26 @@ namespace Chicane
             if (inEvent.type == WindowEventType::MouseWheel)
             {
                 Input::MouseWheelEvent event = *static_cast<Input::MouseWheelEvent*>(inEvent.data);
-                bubbleEvent(inEvent, event.location);
+                if (bubbleEvent(inEvent, event.location))
+                {
+                    return;
+                }
+
+                Component* node = m_hovered;
+                while (node && node != this)
+                {
+                    if (node->onEvent(inEvent))
+                    {
+                        return;
+                    }
+
+                    if (node->isRoot())
+                    {
+                        break;
+                    }
+
+                    node = node->getParent();
+                }
             }
 
             if (inEvent.type == WindowEventType::KeyDown || inEvent.type == WindowEventType::KeyUp ||

@@ -1,11 +1,24 @@
 #include "Chicane/Grid/Component/Container.reflected.hpp"
 
+#include "Chicane/Core/Math/Vertex.hpp"
+
 namespace Chicane
 {
     namespace Grid
     {
         Container::Container(const pugi::xml_node& inNode)
             : Scrollable(inNode)
+        {
+            applyBackgroundPrimitive();
+        }
+
+        Container::Container(const String& inTag)
+            : Scrollable(inTag)
+        {
+            applyBackgroundPrimitive();
+        }
+
+        void Container::applyBackgroundPrimitive()
         {
             Primitive primitive;
             primitive.indices = {0, 1, 2, 2, 3, 0};

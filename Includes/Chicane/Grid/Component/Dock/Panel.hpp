@@ -8,6 +8,7 @@
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
 #include "Chicane/Grid/Component/Dock/Side.hpp"
+#include "Chicane/Grid/Component/Scrollable.hpp"
 
 namespace Chicane
 {
@@ -18,7 +19,7 @@ namespace Chicane
         struct DockRegion;
 
         CH_TYPE(Manual)
-        class CHICANE_GRID DockPanel : public Component
+        class CHICANE_GRID DockPanel : public Scrollable
         {
         public:
             // Tag
@@ -30,6 +31,7 @@ namespace Chicane
             static constexpr inline const char* MIN_SIZE_ATTRIBUTE_NAME     = "min-size";
             static constexpr inline const char* MAX_SIZE_ATTRIBUTE_NAME     = "max-size";
             static constexpr inline const char* IS_RESIZABLE_ATTRIBUTE_NAME = "isResizable";
+            static constexpr inline const char* IS_GRABBABLE_ATTRIBUTE_NAME = "isGrabbable";
             static constexpr inline const char* HANDLE_ATTRIBUTE_NAME       = "handle";
 
             static constexpr inline const char* SIDE_TYPE_FILL   = "fill";
@@ -55,6 +57,8 @@ namespace Chicane
             bool isFill() const;
             bool isFloating() const;
             bool isResizable() const;
+            bool isGrabbable() const;
+            void setGrabbable(bool inValue);
             bool hasAssignedHandle() const;
             bool isAssignedHandle(const Component* inComponent) const;
 
@@ -102,6 +106,7 @@ namespace Chicane
             String      m_maxSize;
             String      m_handleId;
             bool        m_bResizable;
+            bool        m_bGrabbable;
             float       m_extent;
             Vec2        m_floatPosition;
             Vec2        m_floatSize;

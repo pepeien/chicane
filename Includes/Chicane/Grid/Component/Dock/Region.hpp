@@ -11,9 +11,9 @@ namespace Chicane
         struct CHICANE_GRID DockRegion
         {
         public:
-            Bounds2D box          = {};
-            Bounds2D splitter     = {};
-            bool     bHasSplitter = false;
+            Bounds2D box        = {};
+            Bounds2D gap        = {};
+            bool     bCanResize = false;
         };
     }
 }

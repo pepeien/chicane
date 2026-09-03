@@ -17,13 +17,14 @@ namespace Chicane
         }
 
         DockPanel::DockPanel(const pugi::xml_node& inNode)
-            : Component(inNode),
+            : Scrollable(inNode),
               m_side(DockSide::Fill),
               m_size(String::empty()),
               m_minSize(String::empty()),
               m_maxSize(String::empty()),
               m_handleId(String::empty()),
               m_bResizable(true),
+              m_bGrabbable(true),
               m_extent(-1.0f),
               m_floatPosition(Vec2::Zero()),
               m_floatSize(Vec2::Zero()),
@@ -64,6 +65,19 @@ namespace Chicane
         bool DockPanel::isResizable() const
         {
             return m_bResizable && !isFill() && !isFloating();
+        }
+
+        bool DockPanel::isGrabbable() const
+        {
+            return m_bGrabbable;
+        }
+
+        void DockPanel::setGrabbable(bool inValue)
+        {
+            m_bGrabbable                              = inValue;
+            m_attributes[IS_GRABBABLE_ATTRIBUTE_NAME] = inValue ? "true" : "false";
+
+            refreshHandle();
         }
 
         const String& DockPanel::getHandleId() const
@@ -266,7 +280,7 @@ namespace Chicane
             m_handle->setStyleFile(m_styleFile);
 
             const Vec2& size = getSize();
-            if (!isDisplayable() || size.x <= 0.0f || size.y <= 0.0f || hasAssignedHandle())
+            if (!isDisplayable() || !isGrabbable() || size.x <= 0.0f || size.y <= 0.0f || hasAssignedHandle())
             {
                 m_handle->hide();
 
@@ -284,8 +298,9 @@ namespace Chicane
             m_size       = parseText(getAttribute(SIZE_ATTRIBUTE_NAME)).trim();
             m_minSize    = parseText(getAttribute(MIN_SIZE_ATTRIBUTE_NAME)).trim();
             m_maxSize    = parseText(getAttribute(MAX_SIZE_ATTRIBUTE_NAME)).trim();
-            m_handleId   = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
-            m_bResizable = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
+            m_handleId    = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
+            m_bResizable  = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
+            m_bGrabbable  = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
         }
 
         DockSide DockPanel::parseSide(const String& inValue) const

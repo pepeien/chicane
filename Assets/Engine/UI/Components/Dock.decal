@@ -5,6 +5,10 @@ Dock {
 DockPanel {
     position: absolute;
     overflow: hidden;
+
+    &.--closed {
+        display: none;
+    }
 }
 
 DockHandle {

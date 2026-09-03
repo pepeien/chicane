@@ -669,7 +669,13 @@ namespace Chicane
 
         const Vec2& viewSize = inView->getSize();
 
-        for (Grid::Component* component : inView->getChildrenFlat())
+        std::vector<Grid::Component*> components;
+        components.push_back(inView.get());
+
+        const std::vector<Grid::Component*> children = inView->getChildrenFlat();
+        components.insert(components.end(), children.begin(), children.end());
+
+        for (Grid::Component* component : components)
         {
             if (!component->isDrawable())
             {
@@ -679,6 +685,7 @@ namespace Chicane
             const Bounds2D clip = component->getOverflowClip();
             Bounds2D       draw = component->getDrawBounds();
             const float    blur = component->getFilterBlur();
+
             if (blur > 0.0f)
             {
                 const float halo = blur * 3.0f;
