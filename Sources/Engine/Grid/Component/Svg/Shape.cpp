@@ -12,7 +12,7 @@ namespace Chicane
 
         bool SvgShape::isDrawable() const
         {
-            if (!hasParent() || !m_parent->isDisplayable())
+            if (!hasParent() || !m_parent->isDisplayable() || m_parent->isCulled())
             {
                 return false;
             }

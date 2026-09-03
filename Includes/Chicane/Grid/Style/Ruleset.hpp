@@ -6,6 +6,8 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Style/Ruleset/Part.hpp"
+#include "Chicane/Grid/Style/Selector/Compiled.hpp"
 
 namespace Chicane
 {
@@ -47,13 +49,15 @@ namespace Chicane
             bool isEmpty() const;
 
             void addSelectors(const String& inValue);
+            void compileSelectors();
 
             void addProperties(const String& inValue);
             void addProperties(const Properties& inProperties);
 
         public:
-            Selectors  selectors;
-            Properties properties;
+            Selectors                          selectors;
+            Properties                         properties;
+            std::vector<StyleCompiledSelector> compiled;
         };
     }
 }

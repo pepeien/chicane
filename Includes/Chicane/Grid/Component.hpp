@@ -109,6 +109,9 @@ namespace Chicane
             virtual void refreshSize();
             virtual void refreshPosition();
 
+            // Children
+            virtual std::vector<Component*> getChildrenFlat() const;
+
         public:
             // Checkers
             bool isRoot() const;
@@ -118,6 +121,7 @@ namespace Chicane
             bool isHovered() const;
             bool isFocused() const;
             bool isDragging() const;
+            bool isCulled() const;
 
             bool canAdopt(Component* inComponent) const;
 
@@ -130,9 +134,9 @@ namespace Chicane
             void drag();
             void endDrag();
 
-            void setHovered(bool inValue);
-            void setFocused(bool inValue);
-            void setDragging(bool inValue);
+            void setHovered(bool inValue, bool bInvalidateSubtree = true);
+            void setFocused(bool inValue, bool bInvalidateSubtree = true);
+            void setDragging(bool inValue, bool bInvalidateSubtree = true);
 
             // Lifecycle Events
             virtual void tick(float inDelta);
@@ -188,6 +192,8 @@ namespace Chicane
 
             bool hasLocalSelector(const String& inValue) const;
             bool hasSelector(const String& inValue) const;
+            bool matchesCompiledSelector(const StyleCompiledSelector& inSelector) const;
+            bool matchesCompiledPart(const StyleSelectorPart& inPart) const;
 
             // Reference
             ReflectionFieldAccessor getField(const String& inId) const;
@@ -209,7 +215,11 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
-            virtual std::vector<Component*> getChildrenFlat() const;
+            void markFlatDirty();
+            void markStyleDirty();
+            void markLayoutDirty();
+            void markStyleDirtySubtree();
+            void markLayoutDirtySubtree();
             Component* getHitAt(const Vec2& inLocation) const;
             bool containsPoint(const Vec2& inLocation) const;
             bool broadcastEvent(const WindowEvent& inEvent);
@@ -329,6 +339,9 @@ namespace Chicane
             void populateMethodParams(ReflectionTypeMethod& outMethod, const String& inSignature) const;
             std::vector<String> splitMethodParams(const String& inValue) const;
 
+            bool isCulledByAncestor() const;
+            void rebuildFlatChildren() const;
+
         protected:
             // Properties
             String                                                m_tag;
@@ -358,6 +371,8 @@ namespace Chicane
             Component*                                            m_root;
             Component*                                            m_parent;
             std::vector<Component*>                               m_children;
+            mutable std::vector<Component*>                       m_flatChildren;
+            mutable bool                                          m_bIsFlatDirty;
 
             // Position
             Vec2                                                  m_size;
@@ -365,6 +380,8 @@ namespace Chicane
             Vec2                                                  m_offset;
             Vec2                                                  m_cursor;
             float                                                 m_scratch;
+            float                                                 m_layoutParentWidth;
+            float                                                 m_layoutParentHeight;
 
             // Draw
             Primitive                                             m_primitive;
@@ -379,9 +396,12 @@ namespace Chicane
             String                                                m_forVariable;
             std::any                                              m_forSource;
             bool                                                  m_bSkipForDirective;
-            bool                                                  m_bHovered;
-            bool                                                  m_bFocused;
-            bool                                                  m_bDragging;
+            bool                                                  m_bIsHovered;
+            bool                                                  m_bIsFocused;
+            bool                                                  m_bIsDragging;
+            bool                                                  m_bIsStyleDirty;
+            bool                                                  m_bIsLayoutDirty;
+            bool                                                  m_bIsCulled;
         };
     }
 }

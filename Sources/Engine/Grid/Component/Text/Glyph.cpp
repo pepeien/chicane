@@ -15,7 +15,8 @@ namespace Chicane
 
         bool TextGlyph::isDrawable() const
         {
-            if (!hasParent() || !m_parent->isDisplayable() || m_glyph == nullptr || m_glyph->curves.empty())
+            if (!hasParent() || !m_parent->isDisplayable() || m_parent->isCulled() || m_glyph == nullptr ||
+                m_glyph->curves.empty())
             {
                 return false;
             }

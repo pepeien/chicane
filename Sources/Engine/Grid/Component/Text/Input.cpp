@@ -10,40 +10,37 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        bool hasModifier(Input::KeyboardButtonModifier inValue, Input::KeyboardButtonModifier inFlag)
         {
-            bool hasModifier(Input::KeyboardButtonModifier inValue, Input::KeyboardButtonModifier inFlag)
+            return (static_cast<std::uint16_t>(inValue) & static_cast<std::uint16_t>(inFlag)) != 0;
+        }
+
+        String characterFromKey(const Input::KeyboardEvent& inEvent)
+        {
+            if (hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Ctrl) ||
+                hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Alt) ||
+                hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Gui))
             {
-                return (static_cast<std::uint16_t>(inValue) & static_cast<std::uint16_t>(inFlag)) != 0;
+                return String::empty();
             }
 
-            String characterFromKey(const Input::KeyboardEvent& inEvent)
+            if (inEvent.key < 32 || inEvent.key > 126)
             {
-                if (hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Ctrl) ||
-                    hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Alt) ||
-                    hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Gui))
-                {
-                    return String::empty();
-                }
-
-                if (inEvent.key < 32 || inEvent.key > 126)
-                {
-                    return String::empty();
-                }
-
-                char character = static_cast<char>(inEvent.key);
-                if (character >= 'a' && character <= 'z')
-                {
-                    const bool bShift = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Shift);
-                    const bool bCaps  = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Caps);
-                    if (bShift != bCaps)
-                    {
-                        character = static_cast<char>(character - 32);
-                    }
-                }
-
-                return String(character);
+                return String::empty();
             }
+
+            char character = static_cast<char>(inEvent.key);
+            if (character >= 'a' && character <= 'z')
+            {
+                const bool bShift = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Shift);
+                const bool bCaps  = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Caps);
+                if (bShift != bCaps)
+                {
+                    character = static_cast<char>(character - 32);
+                }
+            }
+
+            return String(character);
         }
 
         TextInput::TextInput(const pugi::xml_node& inNode)

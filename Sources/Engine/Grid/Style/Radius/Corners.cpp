@@ -8,56 +8,53 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        void assignCorners(
+            const std::vector<String>& inValues,
+            String&                    outTopLeft,
+            String&                    outTopRight,
+            String&                    outBottomRight,
+            String&                    outBottomLeft
+        )
         {
-            void assignCorners(
-                const std::vector<String>& inValues,
-                String&                    outTopLeft,
-                String&                    outTopRight,
-                String&                    outBottomRight,
-                String&                    outBottomLeft
-            )
+            if (inValues.empty())
             {
-                if (inValues.empty())
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (inValues.size() == 1)
-                {
-                    outTopLeft     = inValues.at(0);
-                    outTopRight    = inValues.at(0);
-                    outBottomRight = inValues.at(0);
-                    outBottomLeft  = inValues.at(0);
+            if (inValues.size() == 1)
+            {
+                outTopLeft     = inValues.at(0);
+                outTopRight    = inValues.at(0);
+                outBottomRight = inValues.at(0);
+                outBottomLeft  = inValues.at(0);
 
-                    return;
-                }
+                return;
+            }
 
-                if (inValues.size() == 2)
-                {
-                    outTopLeft     = inValues.at(0);
-                    outBottomRight = inValues.at(0);
-                    outTopRight    = inValues.at(1);
-                    outBottomLeft  = inValues.at(1);
+            if (inValues.size() == 2)
+            {
+                outTopLeft     = inValues.at(0);
+                outBottomRight = inValues.at(0);
+                outTopRight    = inValues.at(1);
+                outBottomLeft  = inValues.at(1);
 
-                    return;
-                }
+                return;
+            }
 
-                if (inValues.size() == 3)
-                {
-                    outTopLeft     = inValues.at(0);
-                    outTopRight    = inValues.at(1);
-                    outBottomLeft  = inValues.at(1);
-                    outBottomRight = inValues.at(2);
-
-                    return;
-                }
-
+            if (inValues.size() == 3)
+            {
                 outTopLeft     = inValues.at(0);
                 outTopRight    = inValues.at(1);
+                outBottomLeft  = inValues.at(1);
                 outBottomRight = inValues.at(2);
-                outBottomLeft  = inValues.at(3);
+
+                return;
             }
+
+            outTopLeft     = inValues.at(0);
+            outTopRight    = inValues.at(1);
+            outBottomRight = inValues.at(2);
+            outBottomLeft  = inValues.at(3);
         }
 
         void StyleRadiusCorners::parseWith(

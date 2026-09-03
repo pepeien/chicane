@@ -9,46 +9,43 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        bool splitRadiusSides(const String& inValue, String& outHorizontal, String& outVertical)
         {
-            bool splitRadiusSides(const String& inValue, String& outHorizontal, String& outVertical)
+            std::uint32_t parenthesisCount = 0;
+
+            for (std::uint32_t i = 0; i < inValue.size(); i++)
             {
-                std::uint32_t parenthesisCount = 0;
+                const char character = inValue.at(i);
 
-                for (std::uint32_t i = 0; i < inValue.size(); i++)
+                if (character == METHOD_PARAMS_OPENING)
                 {
-                    const char character = inValue.at(i);
+                    parenthesisCount++;
 
-                    if (character == METHOD_PARAMS_OPENING)
-                    {
-                        parenthesisCount++;
-
-                        continue;
-                    }
-
-                    if (character == METHOD_PARAMS_CLOSING)
-                    {
-                        parenthesisCount--;
-
-                        continue;
-                    }
-
-                    if (character != Style::RADIUS_SEPARATOR || parenthesisCount > 0)
-                    {
-                        continue;
-                    }
-
-                    outHorizontal = inValue.substr(0, i).trim();
-                    outVertical   = inValue.substr(i + 1).trim();
-
-                    return true;
+                    continue;
                 }
 
-                outHorizontal = inValue.trim();
-                outVertical   = String::empty();
+                if (character == METHOD_PARAMS_CLOSING)
+                {
+                    parenthesisCount--;
 
-                return false;
+                    continue;
+                }
+
+                if (character != Style::RADIUS_SEPARATOR || parenthesisCount > 0)
+                {
+                    continue;
+                }
+
+                outHorizontal = inValue.substr(0, i).trim();
+                outVertical   = inValue.substr(i + 1).trim();
+
+                return true;
             }
+
+            outHorizontal = inValue.trim();
+            outVertical   = String::empty();
+
+            return false;
         }
 
         StyleRadius::StyleRadius()

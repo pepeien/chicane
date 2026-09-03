@@ -49,7 +49,7 @@ namespace Editor
         }
 
         itemName  = item->name;
-        itemPath  = item->path.toString();
+        itemPath  = item->path.lexicallyNormal().toString();
         isFolder  = item->type == Chicane::FileSystem::ItemType::Folder;
         isFile    = item->type == Chicane::FileSystem::ItemType::File;
         typeClass = isFolder ? "folder" : "file";

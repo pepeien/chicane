@@ -13,11 +13,8 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
-        {
-            const Color::Rgba kScrollBarTrackColor(0, 0, 0, 110);
-            const Color::Rgba kScrollBarThumbColor(210, 210, 210, 210);
-        }
+        const Color::Rgba kScrollBarTrackColor(0, 0, 0, 110);
+        const Color::Rgba kScrollBarThumbColor(210, 210, 210, 210);
 
         Scrollable::Scrollable(const pugi::xml_node& inNode)
             : Component(inNode),
@@ -505,11 +502,13 @@ namespace Chicane
             if (!inBar.trackBar)
             {
                 inBar.trackBar = makePart();
+                markFlatDirty();
             }
 
             if (!inBar.thumbBar)
             {
                 inBar.thumbBar = makePart();
+                markFlatDirty();
             }
         }
 

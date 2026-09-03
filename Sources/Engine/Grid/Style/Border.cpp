@@ -6,60 +6,57 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        float paintedWidth(float inWidth, StyleBorderType inType)
         {
-            float paintedWidth(float inWidth, StyleBorderType inType)
+            if (inType == StyleBorderType::None)
             {
-                if (inType == StyleBorderType::None)
-                {
-                    return 0.0f;
-                }
-
-                return std::max(0.0f, inWidth);
+                return 0.0f;
             }
 
-            template <typename T>
-            void assignOneliner(
-                const std::vector<String>& inValues,
-                StyleProperty<T>&          outTop,
-                StyleProperty<T>&          outRight,
-                StyleProperty<T>&          outBottom,
-                StyleProperty<T>&          outLeft
-            )
+            return std::max(0.0f, inWidth);
+        }
+
+        template <typename T>
+        void assignOneliner(
+            const std::vector<String>& inValues,
+            StyleProperty<T>&          outTop,
+            StyleProperty<T>&          outRight,
+            StyleProperty<T>&          outBottom,
+            StyleProperty<T>&          outLeft
+        )
+        {
+            if (inValues.empty())
             {
-                if (inValues.empty())
-                {
-                    return;
-                }
-
-                String top    = inValues.at(0);
-                String right  = top;
-                String bottom = top;
-                String left   = top;
-
-                if (inValues.size() == 2)
-                {
-                    right = inValues.at(1);
-                    left  = right;
-                }
-                else if (inValues.size() == 3)
-                {
-                    right  = inValues.at(1);
-                    bottom = inValues.at(2);
-                    left   = right;
-                }
-                else if (inValues.size() >= 4)
-                {
-                    right  = inValues.at(1);
-                    bottom = inValues.at(2);
-                    left   = inValues.at(3);
-                }
-
-                outTop.setRaw(top.trim());
-                outRight.setRaw(right.trim());
-                outBottom.setRaw(bottom.trim());
-                outLeft.setRaw(left.trim());
+                return;
             }
+
+            String top    = inValues.at(0);
+            String right  = top;
+            String bottom = top;
+            String left   = top;
+
+            if (inValues.size() == 2)
+            {
+                right = inValues.at(1);
+                left  = right;
+            }
+            else if (inValues.size() == 3)
+            {
+                right  = inValues.at(1);
+                bottom = inValues.at(2);
+                left   = right;
+            }
+            else if (inValues.size() >= 4)
+            {
+                right  = inValues.at(1);
+                bottom = inValues.at(2);
+                left   = inValues.at(3);
+            }
+
+            outTop.setRaw(top.trim());
+            outRight.setRaw(right.trim());
+            outBottom.setRaw(bottom.trim());
+            outLeft.setRaw(left.trim());
         }
 
         StyleBorder::StyleBorder()

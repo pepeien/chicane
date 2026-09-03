@@ -153,7 +153,13 @@ namespace Chicane
                 return;
             }
 
-            m_rulesets.push_back(inValue);
+            StyleRuleset ruleset = inValue;
+            if (ruleset.compiled.empty())
+            {
+                ruleset.compileSelectors();
+            }
+
+            m_rulesets.push_back(ruleset);
         }
 
         bool StyleFile::hasKeyframes(const String& inName) const

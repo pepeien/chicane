@@ -4,58 +4,56 @@
 #include <limits>
 
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Size.hpp"
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        const Box::FontGlyph& resolveGlyph(const Box::FontFamily& inFamily, char32_t inCode)
         {
-            const Box::FontGlyph& resolveGlyph(const Box::FontFamily& inFamily, char32_t inCode)
+            if (inFamily.hasGlyph(inCode))
             {
-                if (inFamily.hasGlyph(inCode))
-                {
-                    return inFamily.getGlyph(inCode);
-                }
-
-                if (inFamily.hasGlyph(U'?'))
-                {
-                    return inFamily.getGlyph(U'?');
-                }
-
-                const Box::FontFamily::Glyphs& glyphs = inFamily.getGlyphs();
-                if (!glyphs.empty())
-                {
-                    return glyphs.begin()->second;
-                }
-
-                return Box::FontGlyph::empty();
+                return inFamily.getGlyph(inCode);
             }
 
-            void getFontMetrics(const Box::FontFamily& inFamily, float& outAscender, float& outDescender)
+            if (inFamily.hasGlyph(U'?'))
             {
-                outAscender  = inFamily.getAscender();
-                outDescender = inFamily.getDescender();
-
-                if (outAscender != 0.0f || outDescender != 0.0f)
-                {
-                    return;
-                }
-
-                const Box::FontFamily::Glyphs& glyphs = inFamily.getGlyphs();
-                if (glyphs.empty())
-                {
-                    outAscender  = 1.0f;
-                    outDescender = 0.0f;
-
-                    return;
-                }
-
-                const Box::FontGlyph& reference = glyphs.begin()->second;
-                outAscender                     = reference.ascender;
-                outDescender                    = reference.descender;
+                return inFamily.getGlyph(U'?');
             }
+
+            const Box::FontFamily::Glyphs& glyphs = inFamily.getGlyphs();
+            if (!glyphs.empty())
+            {
+                return glyphs.begin()->second;
+            }
+
+            return Box::FontGlyph::empty();
+        }
+
+        void getFontMetrics(const Box::FontFamily& inFamily, float& outAscender, float& outDescender)
+        {
+            outAscender  = inFamily.getAscender();
+            outDescender = inFamily.getDescender();
+
+            if (outAscender != 0.0f || outDescender != 0.0f)
+            {
+                return;
+            }
+
+            const Box::FontFamily::Glyphs& glyphs = inFamily.getGlyphs();
+            if (glyphs.empty())
+            {
+                outAscender  = 1.0f;
+                outDescender = 0.0f;
+
+                return;
+            }
+
+            const Box::FontGlyph& reference = glyphs.begin()->second;
+            outAscender                     = reference.ascender;
+            outDescender                    = reference.descender;
         }
 
         Text::Text(const pugi::xml_node& inNode)
@@ -115,6 +113,11 @@ namespace Chicane
         {
             Component::refresh();
 
+            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            {
+                return;
+            }
+
             syncGlyphs();
         }
 
@@ -137,7 +140,7 @@ namespace Chicane
 
         void Text::onRefresh()
         {
-            if (!isDisplayable())
+            if (!isDisplayable() || m_bIsCulled)
             {
                 return;
             }
@@ -242,6 +245,7 @@ namespace Chicane
                 glyph->setStyleFile(m_styleFile);
 
                 m_glyphs.push_back(glyph);
+                markFlatDirty();
             }
 
             return m_glyphs.at(inIndex);
@@ -254,12 +258,28 @@ namespace Chicane
                 return;
             }
 
+            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            if (!bWidthAuto || !bHeightAuto)
+            {
+                Component::refreshSize();
+            }
+
             applyContentSize();
         }
 
         void Text::applyContentSize()
         {
-            setSize(m_contentSize.x, m_contentSize.y);
+            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            if (!bWidthAuto && !bHeightAuto)
+            {
+                return;
+            }
+
+            setSize(bWidthAuto ? m_contentSize.x : m_size.x, bHeightAuto ? m_contentSize.y : m_size.y);
         }
 
         void Text::refreshText()
@@ -357,8 +377,20 @@ namespace Chicane
             }
 
             m_contentSize = {maxWidth, lineCount * lineHeight};
-            m_style.width.set(m_contentSize.x);
-            m_style.height.set(m_contentSize.y);
+
+            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            if (bWidthAuto)
+            {
+                m_style.width.set(m_contentSize.x);
+            }
+
+            if (bHeightAuto)
+            {
+                m_style.height.set(m_contentSize.y);
+            }
+
             applyContentSize();
         }
 

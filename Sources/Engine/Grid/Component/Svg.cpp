@@ -8,6 +8,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #ifndef M_PI
@@ -30,1274 +32,1318 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        constexpr int   kBezierSegments = 8;
+        constexpr float kMinLength      = 1.0e-5f;
+        constexpr float kKappa          = 0.5522847498f;
+
+        String tagName(const pugi::xml_node& inNode)
         {
-            constexpr int   kBezierSegments = 8;
-            constexpr float kMinLength      = 1.0e-5f;
-            constexpr float kKappa          = 0.5522847498f;
+            String            name  = inNode.name();
+            const std::size_t split = name.lastOf(':');
 
-            String tagName(const pugi::xml_node& inNode)
+            if (split != String::npos)
             {
-                String            name  = inNode.name();
-                const std::size_t split = name.lastOf(':');
-
-                if (split != String::npos)
-                {
-                    name = name.substr(split + 1);
-                }
-
-                name = name.toLower();
-
-                if (name.startsWith("svg") && name.size() > 3)
-                {
-                    name = name.substr(3);
-                }
-
-                if (name.equals("group"))
-                {
-                    return "g";
-                }
-
-                return name;
+                name = name.substr(split + 1);
             }
 
-            String attribute(const pugi::xml_node& inNode, const char* inName)
+            name = name.toLower();
+
+            if (name.startsWith("svg") && name.size() > 3)
             {
-                const pugi::xml_attribute found = inNode.attribute(inName);
-
-                if (!found.empty())
-                {
-                    return found.as_string();
-                }
-
-                const String target = String(inName).toLower();
-
-                for (pugi::xml_attribute attr : inNode.attributes())
-                {
-                    if (!String(attr.name()).toLower().equals(target))
-                    {
-                        continue;
-                    }
-
-                    return attr.as_string();
-                }
-
-                return "";
+                name = name.substr(3);
             }
 
-            float parseNumber(const String& inValue, float inFallback = 0.0f)
+            if (name.equals("group"))
             {
-                if (inValue.isEmpty())
-                {
-                    return inFallback;
-                }
-
-                return std::strtof(inValue.toChar(), nullptr);
+                return "g";
             }
 
-            Color::Rgba withOpacity(Color::Rgba inColor, float inOpacity)
-            {
-                inColor.a = static_cast<std::uint8_t>(
-                    std::clamp(static_cast<float>(inColor.a) * std::clamp(inOpacity, 0.0f, 1.0f), 0.0f, 255.0f) + 0.5f
-                );
+            return name;
+        }
 
-                return inColor;
+        String attribute(const pugi::xml_node& inNode, const char* inName)
+        {
+            const pugi::xml_attribute found = inNode.attribute(inName);
+
+            if (!found.empty())
+            {
+                return found.as_string();
             }
 
-            bool parsePaint(const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled)
+            const String target = String(inName).toLower();
+
+            for (pugi::xml_attribute attr : inNode.attributes())
             {
-                const String value = inValue.trim();
-
-                if (value.isEmpty() || value.equals("inherit"))
+                if (!String(attr.name()).toLower().equals(target))
                 {
-                    return false;
+                    continue;
                 }
 
-                if (value.equals("none", "transparent") || value.startsWith("url("))
-                {
-                    outEnabled = false;
-                    outColor   = Color::toRgba(Color::TEXT_COLOR_TRANSPARENT);
+                return attr.as_string();
+            }
 
-                    return true;
-                }
+            return "";
+        }
 
-                outEnabled = true;
-                outColor   = value.equals("currentColor", "currentcolor") ? inCurrent : Color::toRgba(value);
+        float parseNumber(const String& inValue, float inFallback = 0.0f)
+        {
+            if (inValue.isEmpty())
+            {
+                return inFallback;
+            }
+
+            return std::strtof(inValue.toChar(), nullptr);
+        }
+
+        Color::Rgba withOpacity(Color::Rgba inColor, float inOpacity)
+        {
+            inColor.a = static_cast<std::uint8_t>(
+                std::clamp(static_cast<float>(inColor.a) * std::clamp(inOpacity, 0.0f, 1.0f), 0.0f, 255.0f) + 0.5f
+            );
+
+            return inColor;
+        }
+
+        bool parsePaint(const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled)
+        {
+            const String value = inValue.trim();
+
+            if (value.isEmpty() || value.equals("inherit"))
+            {
+                return false;
+            }
+
+            if (value.equals("none", "transparent") || value.startsWith("url("))
+            {
+                outEnabled = false;
+                outColor   = Color::toRgba(Color::TEXT_COLOR_TRANSPARENT);
 
                 return true;
             }
 
-            void parseStyle(const String& inStyle, const Color::Rgba& inCurrent, SvgPaint& outPaint)
+            outEnabled = true;
+            outColor   = value.equals("currentColor", "currentcolor") ? inCurrent : Color::toRgba(value);
+
+            return true;
+        }
+
+        void parseStyle(const String& inStyle, const Color::Rgba& inCurrent, SvgPaint& outPaint)
+        {
+            for (const String& block : inStyle.split(';'))
             {
-                for (const String& block : inStyle.split(';'))
+                const std::size_t split = block.firstOf(':');
+
+                if (split == String::npos)
                 {
-                    const std::size_t split = block.firstOf(':');
-
-                    if (split == String::npos)
-                    {
-                        continue;
-                    }
-
-                    const String key   = block.substr(0, split).trim().toLower();
-                    const String value = block.substr(split + 1).trim();
-
-                    if (key.equals(SvgPaint::FILL_ATTRIBUTE_NAME))
-                    {
-                        parsePaint(value, inCurrent, outPaint.fill, outPaint.bIsFillEnabled);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::STROKE_ATTRIBUTE_NAME))
-                    {
-                        parsePaint(value, inCurrent, outPaint.stroke, outPaint.bIsStrokeEnabled);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME))
-                    {
-                        outPaint.strokeWidth = parseNumber(value, outPaint.strokeWidth);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME))
-                    {
-                        outPaint.lineCap = SvgPaint::parseLineCap(value);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME))
-                    {
-                        outPaint.lineJoin = SvgPaint::parseLineJoin(value);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::OPACITY_ATTRIBUTE_NAME))
-                    {
-                        outPaint.opacity = parseNumber(value, outPaint.opacity);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME))
-                    {
-                        outPaint.fillOpacity = parseNumber(value, outPaint.fillOpacity);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME))
-                    {
-                        outPaint.strokeOpacity = parseNumber(value, outPaint.strokeOpacity);
-
-                        continue;
-                    }
-
-                    if (key.equals(SvgPaint::FILL_RULE_ATTRIBUTE_NAME))
-                    {
-                        outPaint.bIsEvenOdd = value.toLower().equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
-                    }
-                }
-            }
-
-            Mat3 parseTransform(const String& inValue)
-            {
-                Mat3       result(1.0f);
-                SvgScanner scanner(inValue);
-
-                while (!scanner.done())
-                {
-                    scanner.skip();
-
-                    const char* start = scanner.p;
-
-                    while (scanner.p < scanner.end && std::isalpha(static_cast<unsigned char>(*scanner.p)))
-                    {
-                        scanner.p++;
-                    }
-
-                    const String name = String(start, scanner.p).toLower();
-
-                    scanner.skip();
-
-                    if (scanner.p < scanner.end && *scanner.p == '(')
-                    {
-                        scanner.p++;
-                    }
-
-                    std::vector<float> params;
-
-                    while (scanner.hasNumber())
-                    {
-                        params.push_back(scanner.number());
-                    }
-
-                    scanner.skip();
-
-                    if (scanner.p < scanner.end && *scanner.p == ')')
-                    {
-                        scanner.p++;
-                    }
-
-                    Mat3 local(1.0f);
-
-                    if (name.equals("matrix") && params.size() >= 6)
-                    {
-                        local[0] = glm::vec3(params[0], params[1], 0.0f);
-                        local[1] = glm::vec3(params[2], params[3], 0.0f);
-                        local[2] = glm::vec3(params[4], params[5], 1.0f);
-                    }
-                    else if (name.equals("translate") && !params.empty())
-                    {
-                        local[2] = glm::vec3(params[0], params.size() > 1 ? params[1] : 0.0f, 1.0f);
-                    }
-                    else if (name.equals("scale") && !params.empty())
-                    {
-                        const float sx = params[0];
-                        const float sy = params.size() > 1 ? params[1] : sx;
-                        local[0][0]    = sx;
-                        local[1][1]    = sy;
-                    }
-                    else if (name.equals("rotate") && !params.empty())
-                    {
-                        const float angle = params[0] * static_cast<float>(M_PI) / 180.0f;
-                        const float cosA  = std::cos(angle);
-                        const float sinA  = std::sin(angle);
-                        Mat3        rotate(1.0f);
-                        rotate[0] = Vec3(cosA, sinA, 0.0f);
-                        rotate[1] = Vec3(-sinA, cosA, 0.0f);
-
-                        if (params.size() >= 3)
-                        {
-                            Mat3 to(1.0f);
-                            Mat3 from(1.0f);
-                            to[2]   = Vec3(params[1], params[2], 1.0f);
-                            from[2] = Vec3(-params[1], -params[2], 1.0f);
-                            local   = to * rotate * from;
-                        }
-                        else
-                        {
-                            local = rotate;
-                        }
-                    }
-                    else if (name.equals("skewx") && !params.empty())
-                    {
-                        local[1][0] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
-                    }
-                    else if (name.equals("skewy") && !params.empty())
-                    {
-                        local[0][1] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
-                    }
-
-                    result = local * result;
+                    continue;
                 }
 
-                return result;
+                const String key   = block.substr(0, split).trim().toLower();
+                const String value = block.substr(split + 1).trim();
+
+                if (key.equals(SvgPaint::FILL_ATTRIBUTE_NAME))
+                {
+                    parsePaint(value, inCurrent, outPaint.fill, outPaint.bIsFillEnabled);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::STROKE_ATTRIBUTE_NAME))
+                {
+                    parsePaint(value, inCurrent, outPaint.stroke, outPaint.bIsStrokeEnabled);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME))
+                {
+                    outPaint.strokeWidth = parseNumber(value, outPaint.strokeWidth);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME))
+                {
+                    outPaint.lineCap = SvgPaint::parseLineCap(value);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME))
+                {
+                    outPaint.lineJoin = SvgPaint::parseLineJoin(value);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::OPACITY_ATTRIBUTE_NAME))
+                {
+                    outPaint.opacity = parseNumber(value, outPaint.opacity);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME))
+                {
+                    outPaint.fillOpacity = parseNumber(value, outPaint.fillOpacity);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME))
+                {
+                    outPaint.strokeOpacity = parseNumber(value, outPaint.strokeOpacity);
+
+                    continue;
+                }
+
+                if (key.equals(SvgPaint::FILL_RULE_ATTRIBUTE_NAME))
+                {
+                    outPaint.bIsEvenOdd = value.toLower().equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
+                }
+            }
+        }
+
+        Mat3 parseTransform(const String& inValue)
+        {
+            Mat3       result(1.0f);
+            SvgScanner scanner(inValue);
+
+            while (!scanner.done())
+            {
+                scanner.skip();
+
+                const char* start = scanner.p;
+
+                while (scanner.p < scanner.end && std::isalpha(static_cast<unsigned char>(*scanner.p)))
+                {
+                    scanner.p++;
+                }
+
+                const String name = String(start, scanner.p).toLower();
+
+                scanner.skip();
+
+                if (scanner.p < scanner.end && *scanner.p == '(')
+                {
+                    scanner.p++;
+                }
+
+                std::vector<float> params;
+
+                while (scanner.hasNumber())
+                {
+                    params.push_back(scanner.number());
+                }
+
+                scanner.skip();
+
+                if (scanner.p < scanner.end && *scanner.p == ')')
+                {
+                    scanner.p++;
+                }
+
+                Mat3 local(1.0f);
+
+                if (name.equals("matrix") && params.size() >= 6)
+                {
+                    local[0] = glm::vec3(params[0], params[1], 0.0f);
+                    local[1] = glm::vec3(params[2], params[3], 0.0f);
+                    local[2] = glm::vec3(params[4], params[5], 1.0f);
+                }
+                else if (name.equals("translate") && !params.empty())
+                {
+                    local[2] = glm::vec3(params[0], params.size() > 1 ? params[1] : 0.0f, 1.0f);
+                }
+                else if (name.equals("scale") && !params.empty())
+                {
+                    const float sx = params[0];
+                    const float sy = params.size() > 1 ? params[1] : sx;
+                    local[0][0]    = sx;
+                    local[1][1]    = sy;
+                }
+                else if (name.equals("rotate") && !params.empty())
+                {
+                    const float angle = params[0] * static_cast<float>(M_PI) / 180.0f;
+                    const float cosA  = std::cos(angle);
+                    const float sinA  = std::sin(angle);
+                    Mat3        rotate(1.0f);
+                    rotate[0] = Vec3(cosA, sinA, 0.0f);
+                    rotate[1] = Vec3(-sinA, cosA, 0.0f);
+
+                    if (params.size() >= 3)
+                    {
+                        Mat3 to(1.0f);
+                        Mat3 from(1.0f);
+                        to[2]   = Vec3(params[1], params[2], 1.0f);
+                        from[2] = Vec3(-params[1], -params[2], 1.0f);
+                        local   = to * rotate * from;
+                    }
+                    else
+                    {
+                        local = rotate;
+                    }
+                }
+                else if (name.equals("skewx") && !params.empty())
+                {
+                    local[1][0] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
+                }
+                else if (name.equals("skewy") && !params.empty())
+                {
+                    local[0][1] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
+                }
+
+                result = local * result;
             }
 
-            SvgPaint applyNode(const pugi::xml_node& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
-            {
-                SvgPaint    paint            = inParent;
-                const float inheritedOpacity = inParent.opacity;
-                paint.opacity                = SvgPaint::OPACITY_DEFAULT_VALUE;
+            return result;
+        }
 
-                parsePaint(
-                    attribute(inNode, SvgPaint::FILL_ATTRIBUTE_NAME),
-                    inCurrent,
-                    paint.fill,
-                    paint.bIsFillEnabled
+        SvgPaint applyNode(const pugi::xml_node& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
+        {
+            SvgPaint    paint            = inParent;
+            const float inheritedOpacity = inParent.opacity;
+            paint.opacity                = SvgPaint::OPACITY_DEFAULT_VALUE;
+
+            parsePaint(attribute(inNode, SvgPaint::FILL_ATTRIBUTE_NAME), inCurrent, paint.fill, paint.bIsFillEnabled);
+            parsePaint(
+                attribute(inNode, SvgPaint::STROKE_ATTRIBUTE_NAME),
+                inCurrent,
+                paint.stroke,
+                paint.bIsStrokeEnabled
+            );
+
+            const String strokeWidth = attribute(inNode, SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME);
+            if (!strokeWidth.isEmpty())
+            {
+                paint.strokeWidth = parseNumber(strokeWidth, paint.strokeWidth);
+            }
+
+            const String strokeLinecap = attribute(inNode, SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME);
+            if (!strokeLinecap.isEmpty())
+            {
+                paint.lineCap = SvgPaint::parseLineCap(strokeLinecap);
+            }
+
+            const String strokeLinejoin = attribute(inNode, SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME);
+            if (!strokeLinejoin.isEmpty())
+            {
+                paint.lineJoin = SvgPaint::parseLineJoin(strokeLinejoin);
+            }
+
+            const String opacity = attribute(inNode, SvgPaint::OPACITY_ATTRIBUTE_NAME);
+            if (!opacity.isEmpty())
+            {
+                paint.opacity = parseNumber(opacity, SvgPaint::OPACITY_DEFAULT_VALUE);
+            }
+
+            const String fillOpacity = attribute(inNode, SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME);
+            if (!fillOpacity.isEmpty())
+            {
+                paint.fillOpacity = parseNumber(fillOpacity, paint.fillOpacity);
+            }
+
+            const String strokeOpacity = attribute(inNode, SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME);
+            if (!strokeOpacity.isEmpty())
+            {
+                paint.strokeOpacity = parseNumber(strokeOpacity, paint.strokeOpacity);
+            }
+
+            const String fillRule = attribute(inNode, SvgPaint::FILL_RULE_ATTRIBUTE_NAME).toLower();
+            if (!fillRule.isEmpty())
+            {
+                paint.bIsEvenOdd = fillRule.equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
+            }
+
+            const String transform = attribute(inNode, SvgPaint::TRANSFORM_ATTRIBUTE_NAME);
+            if (!transform.isEmpty())
+            {
+                paint.transform = parseTransform(transform) * paint.transform;
+            }
+
+            parseStyle(attribute(inNode, SvgPaint::STYLE_ATTRIBUTE_NAME), inCurrent, paint);
+
+            paint.opacity *= inheritedOpacity;
+
+            return paint;
+        }
+
+        Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
+        {
+            const glm::vec3 mapped = static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, 1.0f);
+
+            return {mapped.x, mapped.y};
+        }
+
+        Vec2 toLocal(const Vec2& inPoint, const SvgViewBox& inView)
+        {
+            const float extent = std::max(inView.width, inView.height);
+
+            if (extent <= 0.0f)
+            {
+                return Vec2::Zero();
+            }
+
+            const float localX = ((inPoint.x - inView.x) - (inView.width * 0.5f)) / extent;
+            const float localY = ((inPoint.y - inView.y) - (inView.height * 0.5f)) / extent;
+
+            return {localX, -localY};
+        }
+
+        SvgViewBox parseViewBox(const String& inValue)
+        {
+            SvgViewBox result;
+            SvgScanner scanner(inValue);
+
+            if (scanner.hasNumber())
+            {
+                result.x = scanner.number();
+            }
+            if (scanner.hasNumber())
+            {
+                result.y = scanner.number();
+            }
+            if (scanner.hasNumber())
+            {
+                result.width = scanner.number();
+            }
+            if (scanner.hasNumber())
+            {
+                result.height = scanner.number();
+            }
+
+            return result;
+        }
+
+        Primitive toPrimitive(const Vertex::Positions& inPositions, const Vertex::Indices& inIndices)
+        {
+            Primitive primitive;
+            primitive.indices = inIndices;
+
+            for (const Vertex::Position& position : inPositions)
+            {
+                Vertex vertex;
+                vertex.position = position;
+                vertex.uv.x     = position.x + 0.5f;
+                vertex.uv.y     = position.y + 0.5f;
+                primitive.vertices.push_back(vertex);
+            }
+
+            return primitive;
+        }
+
+        void addArc(
+            Curve&      outCurve,
+            const Vec2& inFrom,
+            float       inRx,
+            float       inRy,
+            float       inXAngle,
+            bool        inLarge,
+            bool        inSweep,
+            const Vec2& inTo
+        )
+        {
+            if (std::fabs(inRx) < kMinLength || std::fabs(inRy) < kMinLength)
+            {
+                outCurve.addPoint(inTo);
+
+                return;
+            }
+
+            float rx = std::fabs(inRx);
+            float ry = std::fabs(inRy);
+
+            const float xAngle = inXAngle * static_cast<float>(M_PI) / 180.0f;
+            const float cosA   = std::cos(xAngle);
+            const float sinA   = std::sin(xAngle);
+
+            const float dx  = (inFrom.x - inTo.x) * 0.5f;
+            const float dy  = (inFrom.y - inTo.y) * 0.5f;
+            const float x1p = (cosA * dx) + (sinA * dy);
+            const float y1p = (-sinA * dx) + (cosA * dy);
+
+            const float lambda = ((x1p * x1p) / (rx * rx)) + ((y1p * y1p) / (ry * ry));
+
+            if (lambda > 1.0f)
+            {
+                const float scale = std::sqrt(lambda);
+                rx *= scale;
+                ry *= scale;
+            }
+
+            const float rx2  = rx * rx;
+            const float ry2  = ry * ry;
+            const float x1p2 = x1p * x1p;
+            const float y1p2 = y1p * y1p;
+            const float den  = (rx2 * y1p2) + (ry2 * x1p2);
+            float c = den <= 0.0f ? 0.0f : std::sqrt(std::max(0.0f, ((rx2 * ry2) - (rx2 * y1p2) - (ry2 * x1p2)) / den));
+
+            if (inLarge == inSweep)
+            {
+                c = -c;
+            }
+
+            const float cxp = c * ((rx * y1p) / ry);
+            const float cyp = c * -((ry * x1p) / rx);
+            const float cx  = (cosA * cxp) - (sinA * cyp) + ((inFrom.x + inTo.x) * 0.5f);
+            const float cy  = (sinA * cxp) + (cosA * cyp) + ((inFrom.y + inTo.y) * 0.5f);
+
+            auto vectorAngle = [](float inUx, float inUy, float inVx, float inVy)
+            {
+                const float norm  = std::sqrt(((inUx * inUx) + (inUy * inUy)) * ((inVx * inVx) + (inVy * inVy)));
+                const float value = norm <= 0.0f ? 1.0f : std::clamp((inUx * inVx + inUy * inVy) / norm, -1.0f, 1.0f);
+                float       angle = std::acos(value);
+
+                if ((inUx * inVy - inUy * inVx) < 0.0f)
+                {
+                    angle = -angle;
+                }
+
+                return angle;
+            };
+
+            const float theta1 = vectorAngle(1.0f, 0.0f, (x1p - cxp) / rx, (y1p - cyp) / ry);
+            float       dTheta = vectorAngle((x1p - cxp) / rx, (y1p - cyp) / ry, (-x1p - cxp) / rx, (-y1p - cyp) / ry);
+
+            if (!inSweep && dTheta > 0.0f)
+            {
+                dTheta -= 2.0f * static_cast<float>(M_PI);
+            }
+
+            if (inSweep && dTheta < 0.0f)
+            {
+                dTheta += 2.0f * static_cast<float>(M_PI);
+            }
+
+            const int segments =
+                std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / (static_cast<float>(M_PI) * 0.5f))));
+            const float delta = dTheta / static_cast<float>(segments);
+
+            for (int i = 0; i < segments; i++)
+            {
+                const float t1   = theta1 + (delta * static_cast<float>(i));
+                const float t2   = t1 + delta;
+                const float half = (t2 - t1) * 0.5f;
+                const float alpha =
+                    (std::sin(t2 - t1) * (std::sqrt(4.0f + (3.0f * std::tan(half) * std::tan(half))) - 1.0f)) / 3.0f;
+
+                const Vec2 p1 = {
+                    cx + (rx * std::cos(t1) * cosA) - (ry * std::sin(t1) * sinA),
+                    cy + (rx * std::cos(t1) * sinA) + (ry * std::sin(t1) * cosA)
+                };
+                const Vec2 p2 = {
+                    cx + (rx * std::cos(t2) * cosA) - (ry * std::sin(t2) * sinA),
+                    cy + (rx * std::cos(t2) * sinA) + (ry * std::sin(t2) * cosA)
+                };
+                const Vec2 d1 = {
+                    (-rx * std::sin(t1) * cosA) - (ry * std::cos(t1) * sinA),
+                    (-rx * std::sin(t1) * sinA) + (ry * std::cos(t1) * cosA)
+                };
+                const Vec2 d2 = {
+                    (-rx * std::sin(t2) * cosA) - (ry * std::cos(t2) * sinA),
+                    (-rx * std::sin(t2) * sinA) + (ry * std::cos(t2) * cosA)
+                };
+
+                if (i == 0 && outCurve.isEmpty())
+                {
+                    outCurve.addPoint(p1);
+                }
+
+                outCurve.addBezierPoint(
+                    {p1.x + (alpha * d1.x), p1.y + (alpha * d1.y)},
+                    {p2.x - (alpha * d2.x), p2.y - (alpha * d2.y)},
+                    p2
                 );
-                parsePaint(
-                    attribute(inNode, SvgPaint::STROKE_ATTRIBUTE_NAME),
-                    inCurrent,
-                    paint.stroke,
-                    paint.bIsStrokeEnabled
-                );
-
-                const String strokeWidth = attribute(inNode, SvgPaint::STROKE_WIDTH_ATTRIBUTE_NAME);
-                if (!strokeWidth.isEmpty())
-                {
-                    paint.strokeWidth = parseNumber(strokeWidth, paint.strokeWidth);
-                }
-
-                const String strokeLinecap = attribute(inNode, SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME);
-                if (!strokeLinecap.isEmpty())
-                {
-                    paint.lineCap = SvgPaint::parseLineCap(strokeLinecap);
-                }
-
-                const String strokeLinejoin = attribute(inNode, SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME);
-                if (!strokeLinejoin.isEmpty())
-                {
-                    paint.lineJoin = SvgPaint::parseLineJoin(strokeLinejoin);
-                }
-
-                const String opacity = attribute(inNode, SvgPaint::OPACITY_ATTRIBUTE_NAME);
-                if (!opacity.isEmpty())
-                {
-                    paint.opacity = parseNumber(opacity, SvgPaint::OPACITY_DEFAULT_VALUE);
-                }
-
-                const String fillOpacity = attribute(inNode, SvgPaint::FILL_OPACITY_ATTRIBUTE_NAME);
-                if (!fillOpacity.isEmpty())
-                {
-                    paint.fillOpacity = parseNumber(fillOpacity, paint.fillOpacity);
-                }
-
-                const String strokeOpacity = attribute(inNode, SvgPaint::STROKE_OPACITY_ATTRIBUTE_NAME);
-                if (!strokeOpacity.isEmpty())
-                {
-                    paint.strokeOpacity = parseNumber(strokeOpacity, paint.strokeOpacity);
-                }
-
-                const String fillRule = attribute(inNode, SvgPaint::FILL_RULE_ATTRIBUTE_NAME).toLower();
-                if (!fillRule.isEmpty())
-                {
-                    paint.bIsEvenOdd = fillRule.equals(SvgPaint::FILL_RULE_TYPE_EVENODD);
-                }
-
-                const String transform = attribute(inNode, SvgPaint::TRANSFORM_ATTRIBUTE_NAME);
-                if (!transform.isEmpty())
-                {
-                    paint.transform = parseTransform(transform) * paint.transform;
-                }
-
-                parseStyle(attribute(inNode, SvgPaint::STYLE_ATTRIBUTE_NAME), inCurrent, paint);
-
-                paint.opacity *= inheritedOpacity;
-
-                return paint;
             }
+        }
 
-            Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
+        std::vector<Curve> parsePath(const String& inValue)
+        {
+            std::vector<Curve> contours;
+            SvgScanner         scanner(inValue);
+
+            Curve curve;
+            curve.setSegmentCount(kBezierSegments);
+
+            Vec2 current   = Vec2::Zero();
+            Vec2 start     = Vec2::Zero();
+            Vec2 lastCubic = Vec2::Zero();
+            Vec2 lastQuad  = Vec2::Zero();
+            char command   = 0;
+            bool hasCubic  = false;
+            bool hasQuad   = false;
+
+            auto flush = [&]()
             {
-                const glm::vec3 mapped = static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, 1.0f);
-
-                return {mapped.x, mapped.y};
-            }
-
-            Vec2 toLocal(const Vec2& inPoint, const SvgViewBox& inView)
-            {
-                const float extent = std::max(inView.width, inView.height);
-
-                if (extent <= 0.0f)
+                if (curve.getPoints().size() < 2)
                 {
-                    return Vec2::Zero();
-                }
-
-                const float localX = ((inPoint.x - inView.x) - (inView.width * 0.5f)) / extent;
-                const float localY = ((inPoint.y - inView.y) - (inView.height * 0.5f)) / extent;
-
-                return {localX, -localY};
-            }
-
-            SvgViewBox parseViewBox(const String& inValue)
-            {
-                SvgViewBox result;
-                SvgScanner scanner(inValue);
-
-                if (scanner.hasNumber())
-                {
-                    result.x = scanner.number();
-                }
-                if (scanner.hasNumber())
-                {
-                    result.y = scanner.number();
-                }
-                if (scanner.hasNumber())
-                {
-                    result.width = scanner.number();
-                }
-                if (scanner.hasNumber())
-                {
-                    result.height = scanner.number();
-                }
-
-                return result;
-            }
-
-            Primitive toPrimitive(const Vertex::Positions& inPositions, const Vertex::Indices& inIndices)
-            {
-                Primitive primitive;
-                primitive.indices = inIndices;
-
-                for (const Vertex::Position& position : inPositions)
-                {
-                    Vertex vertex;
-                    vertex.position = position;
-                    vertex.uv.x     = position.x + 0.5f;
-                    vertex.uv.y     = position.y + 0.5f;
-                    primitive.vertices.push_back(vertex);
-                }
-
-                return primitive;
-            }
-
-            void addArc(
-                Curve&      outCurve,
-                const Vec2& inFrom,
-                float       inRx,
-                float       inRy,
-                float       inXAngle,
-                bool        inLarge,
-                bool        inSweep,
-                const Vec2& inTo
-            )
-            {
-                if (std::fabs(inRx) < kMinLength || std::fabs(inRy) < kMinLength)
-                {
-                    outCurve.addPoint(inTo);
+                    curve = Curve();
+                    curve.setSegmentCount(kBezierSegments);
 
                     return;
                 }
 
-                float rx = std::fabs(inRx);
-                float ry = std::fabs(inRy);
-
-                const float xAngle = inXAngle * static_cast<float>(M_PI) / 180.0f;
-                const float cosA   = std::cos(xAngle);
-                const float sinA   = std::sin(xAngle);
-
-                const float dx  = (inFrom.x - inTo.x) * 0.5f;
-                const float dy  = (inFrom.y - inTo.y) * 0.5f;
-                const float x1p = (cosA * dx) + (sinA * dy);
-                const float y1p = (-sinA * dx) + (cosA * dy);
-
-                const float lambda = ((x1p * x1p) / (rx * rx)) + ((y1p * y1p) / (ry * ry));
-
-                if (lambda > 1.0f)
-                {
-                    const float scale = std::sqrt(lambda);
-                    rx *= scale;
-                    ry *= scale;
-                }
-
-                const float rx2  = rx * rx;
-                const float ry2  = ry * ry;
-                const float x1p2 = x1p * x1p;
-                const float y1p2 = y1p * y1p;
-                const float den  = (rx2 * y1p2) + (ry2 * x1p2);
-                float       c =
-                    den <= 0.0f ? 0.0f : std::sqrt(std::max(0.0f, ((rx2 * ry2) - (rx2 * y1p2) - (ry2 * x1p2)) / den));
-
-                if (inLarge == inSweep)
-                {
-                    c = -c;
-                }
-
-                const float cxp = c * ((rx * y1p) / ry);
-                const float cyp = c * -((ry * x1p) / rx);
-                const float cx  = (cosA * cxp) - (sinA * cyp) + ((inFrom.x + inTo.x) * 0.5f);
-                const float cy  = (sinA * cxp) + (cosA * cyp) + ((inFrom.y + inTo.y) * 0.5f);
-
-                auto vectorAngle = [](float inUx, float inUy, float inVx, float inVy)
-                {
-                    const float norm = std::sqrt(((inUx * inUx) + (inUy * inUy)) * ((inVx * inVx) + (inVy * inVy)));
-                    const float value =
-                        norm <= 0.0f ? 1.0f : std::clamp((inUx * inVx + inUy * inVy) / norm, -1.0f, 1.0f);
-                    float angle = std::acos(value);
-
-                    if ((inUx * inVy - inUy * inVx) < 0.0f)
-                    {
-                        angle = -angle;
-                    }
-
-                    return angle;
-                };
-
-                const float theta1 = vectorAngle(1.0f, 0.0f, (x1p - cxp) / rx, (y1p - cyp) / ry);
-                float dTheta = vectorAngle((x1p - cxp) / rx, (y1p - cyp) / ry, (-x1p - cxp) / rx, (-y1p - cyp) / ry);
-
-                if (!inSweep && dTheta > 0.0f)
-                {
-                    dTheta -= 2.0f * static_cast<float>(M_PI);
-                }
-
-                if (inSweep && dTheta < 0.0f)
-                {
-                    dTheta += 2.0f * static_cast<float>(M_PI);
-                }
-
-                const int segments =
-                    std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / (static_cast<float>(M_PI) * 0.5f))));
-                const float delta = dTheta / static_cast<float>(segments);
-
-                for (int i = 0; i < segments; i++)
-                {
-                    const float t1   = theta1 + (delta * static_cast<float>(i));
-                    const float t2   = t1 + delta;
-                    const float half = (t2 - t1) * 0.5f;
-                    const float alpha =
-                        (std::sin(t2 - t1) * (std::sqrt(4.0f + (3.0f * std::tan(half) * std::tan(half))) - 1.0f)) /
-                        3.0f;
-
-                    const Vec2 p1 = {
-                        cx + (rx * std::cos(t1) * cosA) - (ry * std::sin(t1) * sinA),
-                        cy + (rx * std::cos(t1) * sinA) + (ry * std::sin(t1) * cosA)
-                    };
-                    const Vec2 p2 = {
-                        cx + (rx * std::cos(t2) * cosA) - (ry * std::sin(t2) * sinA),
-                        cy + (rx * std::cos(t2) * sinA) + (ry * std::sin(t2) * cosA)
-                    };
-                    const Vec2 d1 = {
-                        (-rx * std::sin(t1) * cosA) - (ry * std::cos(t1) * sinA),
-                        (-rx * std::sin(t1) * sinA) + (ry * std::cos(t1) * cosA)
-                    };
-                    const Vec2 d2 = {
-                        (-rx * std::sin(t2) * cosA) - (ry * std::cos(t2) * sinA),
-                        (-rx * std::sin(t2) * sinA) + (ry * std::cos(t2) * cosA)
-                    };
-
-                    if (i == 0 && outCurve.isEmpty())
-                    {
-                        outCurve.addPoint(p1);
-                    }
-
-                    outCurve.addBezierPoint(
-                        {p1.x + (alpha * d1.x), p1.y + (alpha * d1.y)},
-                        {p2.x - (alpha * d2.x), p2.y - (alpha * d2.y)},
-                        p2
-                    );
-                }
-            }
-
-            std::vector<Curve> parsePath(const String& inValue)
-            {
-                std::vector<Curve> contours;
-                SvgScanner         scanner(inValue);
-
-                Curve curve;
+                contours.push_back(curve);
+                curve = Curve();
                 curve.setSegmentCount(kBezierSegments);
+            };
 
-                Vec2 current   = Vec2::Zero();
-                Vec2 start     = Vec2::Zero();
-                Vec2 lastCubic = Vec2::Zero();
-                Vec2 lastQuad  = Vec2::Zero();
-                char command   = 0;
-                bool hasCubic  = false;
-                bool hasQuad   = false;
+            while (!scanner.done())
+            {
+                const char next = scanner.command();
 
-                auto flush = [&]()
+                if (next != 0)
                 {
-                    if (curve.getPoints().size() < 2)
-                    {
-                        curve = Curve();
-                        curve.setSegmentCount(kBezierSegments);
-
-                        return;
-                    }
-
-                    contours.push_back(curve);
-                    curve = Curve();
-                    curve.setSegmentCount(kBezierSegments);
-                };
-
-                while (!scanner.done())
-                {
-                    const char next = scanner.command();
-
-                    if (next != 0)
-                    {
-                        command = next;
-                    }
-
-                    if (command == 0)
-                    {
-                        if (scanner.hasNumber())
-                        {
-                            scanner.number();
-
-                            continue;
-                        }
-
-                        break;
-                    }
-
-                    const bool relative = std::islower(static_cast<unsigned char>(command));
-                    const char type     = static_cast<char>(std::toupper(static_cast<unsigned char>(command)));
-
-                    auto readPoint = [&](const Vec2& inOrigin) -> Vec2
-                    {
-                        const float x = scanner.number();
-                        const float y = scanner.number();
-
-                        return relative ? Vec2(inOrigin.x + x, inOrigin.y + y) : Vec2(x, y);
-                    };
-
-                    if (type == 'M')
-                    {
-                        flush();
-                        current = readPoint(current);
-                        start   = current;
-                        curve.addPoint(current);
-                        hasCubic = false;
-                        hasQuad  = false;
-                        command  = relative ? 'l' : 'L';
-
-                        while (scanner.hasNumber())
-                        {
-                            current = readPoint(current);
-                            curve.addPoint(current);
-                        }
-
-                        continue;
-                    }
-
-                    if (curve.isEmpty())
-                    {
-                        curve.addPoint(current);
-                    }
-
-                    if (type == 'Z')
-                    {
-                        curve.addPoint(start);
-                        current  = start;
-                        hasCubic = false;
-                        hasQuad  = false;
-                        flush();
-
-                        continue;
-                    }
-
-                    if (type == 'L')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            current = readPoint(current);
-                            curve.addPoint(current);
-                        }
-
-                        hasCubic = false;
-                        hasQuad  = false;
-
-                        continue;
-                    }
-
-                    if (type == 'H')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const float x = scanner.number();
-                            current.x     = relative ? current.x + x : x;
-                            curve.addPoint(current);
-                        }
-
-                        hasCubic = false;
-                        hasQuad  = false;
-
-                        continue;
-                    }
-
-                    if (type == 'V')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const float y = scanner.number();
-                            current.y     = relative ? current.y + y : y;
-                            curve.addPoint(current);
-                        }
-
-                        hasCubic = false;
-                        hasQuad  = false;
-
-                        continue;
-                    }
-
-                    if (type == 'C')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const Vec2 controlA = readPoint(current);
-                            const Vec2 controlB = readPoint(current);
-                            const Vec2 point    = readPoint(current);
-                            curve.addBezierPoint(controlA, controlB, point);
-                            lastCubic = controlB;
-                            current   = point;
-                            hasCubic  = true;
-                            hasQuad   = false;
-                        }
-
-                        continue;
-                    }
-
-                    if (type == 'S')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const Vec2 controlA =
-                                hasCubic ? Vec2((2.0f * current.x) - lastCubic.x, (2.0f * current.y) - lastCubic.y)
-                                         : current;
-                            const Vec2 controlB = readPoint(current);
-                            const Vec2 point    = readPoint(current);
-                            curve.addBezierPoint(controlA, controlB, point);
-                            lastCubic = controlB;
-                            current   = point;
-                            hasCubic  = true;
-                            hasQuad   = false;
-                        }
-
-                        continue;
-                    }
-
-                    if (type == 'Q')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const Vec2 control = readPoint(current);
-                            const Vec2 point   = readPoint(current);
-                            curve.addQuadraticPoint(control, point);
-                            lastQuad = control;
-                            current  = point;
-                            hasQuad  = true;
-                            hasCubic = false;
-                        }
-
-                        continue;
-                    }
-
-                    if (type == 'T')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const Vec2 control =
-                                hasQuad ? Vec2((2.0f * current.x) - lastQuad.x, (2.0f * current.y) - lastQuad.y)
-                                        : current;
-                            const Vec2 point = readPoint(current);
-                            curve.addQuadraticPoint(control, point);
-                            lastQuad = control;
-                            current  = point;
-                            hasQuad  = true;
-                            hasCubic = false;
-                        }
-
-                        continue;
-                    }
-
-                    if (type == 'A')
-                    {
-                        while (scanner.hasNumber())
-                        {
-                            const float rx    = scanner.number();
-                            const float ry    = scanner.number();
-                            const float angle = scanner.number();
-                            const bool  large = scanner.flag();
-                            const bool  sweep = scanner.flag();
-                            const Vec2  point = readPoint(current);
-                            addArc(curve, current, rx, ry, angle, large, sweep, point);
-                            current  = point;
-                            hasCubic = false;
-                            hasQuad  = false;
-                        }
-                    }
+                    command = next;
                 }
 
-                flush();
+                if (command == 0)
+                {
+                    if (scanner.hasNumber())
+                    {
+                        scanner.number();
 
-                return contours;
-            }
+                        continue;
+                    }
 
-            std::vector<Vec2> parsePoints(const String& inValue)
-            {
-                std::vector<Vec2> points;
-                SvgScanner        scanner(inValue);
+                    break;
+                }
 
-                while (scanner.hasNumber())
+                const bool relative = std::islower(static_cast<unsigned char>(command));
+                const char type     = static_cast<char>(std::toupper(static_cast<unsigned char>(command)));
+
+                auto readPoint = [&](const Vec2& inOrigin) -> Vec2
                 {
                     const float x = scanner.number();
+                    const float y = scanner.number();
 
-                    if (!scanner.hasNumber())
+                    return relative ? Vec2(inOrigin.x + x, inOrigin.y + y) : Vec2(x, y);
+                };
+
+                if (type == 'M')
+                {
+                    flush();
+                    current = readPoint(current);
+                    start   = current;
+                    curve.addPoint(current);
+                    hasCubic = false;
+                    hasQuad  = false;
+                    command  = relative ? 'l' : 'L';
+
+                    while (scanner.hasNumber())
                     {
-                        break;
+                        current = readPoint(current);
+                        curve.addPoint(current);
                     }
 
-                    points.push_back({x, scanner.number()});
+                    continue;
                 }
 
-                return points;
+                if (curve.isEmpty())
+                {
+                    curve.addPoint(current);
+                }
+
+                if (type == 'Z')
+                {
+                    curve.addPoint(start);
+                    current  = start;
+                    hasCubic = false;
+                    hasQuad  = false;
+                    flush();
+
+                    continue;
+                }
+
+                if (type == 'L')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        current = readPoint(current);
+                        curve.addPoint(current);
+                    }
+
+                    hasCubic = false;
+                    hasQuad  = false;
+
+                    continue;
+                }
+
+                if (type == 'H')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const float x = scanner.number();
+                        current.x     = relative ? current.x + x : x;
+                        curve.addPoint(current);
+                    }
+
+                    hasCubic = false;
+                    hasQuad  = false;
+
+                    continue;
+                }
+
+                if (type == 'V')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const float y = scanner.number();
+                        current.y     = relative ? current.y + y : y;
+                        curve.addPoint(current);
+                    }
+
+                    hasCubic = false;
+                    hasQuad  = false;
+
+                    continue;
+                }
+
+                if (type == 'C')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const Vec2 controlA = readPoint(current);
+                        const Vec2 controlB = readPoint(current);
+                        const Vec2 point    = readPoint(current);
+                        curve.addBezierPoint(controlA, controlB, point);
+                        lastCubic = controlB;
+                        current   = point;
+                        hasCubic  = true;
+                        hasQuad   = false;
+                    }
+
+                    continue;
+                }
+
+                if (type == 'S')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const Vec2 controlA =
+                            hasCubic ? Vec2((2.0f * current.x) - lastCubic.x, (2.0f * current.y) - lastCubic.y)
+                                     : current;
+                        const Vec2 controlB = readPoint(current);
+                        const Vec2 point    = readPoint(current);
+                        curve.addBezierPoint(controlA, controlB, point);
+                        lastCubic = controlB;
+                        current   = point;
+                        hasCubic  = true;
+                        hasQuad   = false;
+                    }
+
+                    continue;
+                }
+
+                if (type == 'Q')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const Vec2 control = readPoint(current);
+                        const Vec2 point   = readPoint(current);
+                        curve.addQuadraticPoint(control, point);
+                        lastQuad = control;
+                        current  = point;
+                        hasQuad  = true;
+                        hasCubic = false;
+                    }
+
+                    continue;
+                }
+
+                if (type == 'T')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const Vec2 control =
+                            hasQuad ? Vec2((2.0f * current.x) - lastQuad.x, (2.0f * current.y) - lastQuad.y) : current;
+                        const Vec2 point = readPoint(current);
+                        curve.addQuadraticPoint(control, point);
+                        lastQuad = control;
+                        current  = point;
+                        hasQuad  = true;
+                        hasCubic = false;
+                    }
+
+                    continue;
+                }
+
+                if (type == 'A')
+                {
+                    while (scanner.hasNumber())
+                    {
+                        const float rx    = scanner.number();
+                        const float ry    = scanner.number();
+                        const float angle = scanner.number();
+                        const bool  large = scanner.flag();
+                        const bool  sweep = scanner.flag();
+                        const Vec2  point = readPoint(current);
+                        addArc(curve, current, rx, ry, angle, large, sweep, point);
+                        current  = point;
+                        hasCubic = false;
+                        hasQuad  = false;
+                    }
+                }
             }
 
-            Curve makeEllipse(float inCx, float inCy, float inRx, float inRy)
+            flush();
+
+            return contours;
+        }
+
+        std::vector<Vec2> parsePoints(const String& inValue)
+        {
+            std::vector<Vec2> points;
+            SvgScanner        scanner(inValue);
+
+            while (scanner.hasNumber())
             {
-                Curve curve;
-                curve.setSegmentCount(kBezierSegments);
-                curve.addPoint({inCx + inRx, inCy});
-                curve.addBezierPoint(
-                    {inCx + inRx, inCy + (kKappa * inRy)},
-                    {inCx + (kKappa * inRx), inCy + inRy},
-                    {inCx, inCy + inRy}
-                );
-                curve.addBezierPoint(
-                    {inCx - (kKappa * inRx), inCy + inRy},
-                    {inCx - inRx, inCy + (kKappa * inRy)},
-                    {inCx - inRx, inCy}
-                );
-                curve.addBezierPoint(
-                    {inCx - inRx, inCy - (kKappa * inRy)},
-                    {inCx - (kKappa * inRx), inCy - inRy},
-                    {inCx, inCy - inRy}
-                );
-                curve.addBezierPoint(
-                    {inCx + (kKappa * inRx), inCy - inRy},
-                    {inCx + inRx, inCy - (kKappa * inRy)},
-                    {inCx + inRx, inCy}
-                );
+                const float x = scanner.number();
+
+                if (!scanner.hasNumber())
+                {
+                    break;
+                }
+
+                points.push_back({x, scanner.number()});
+            }
+
+            return points;
+        }
+
+        Curve makeEllipse(float inCx, float inCy, float inRx, float inRy)
+        {
+            Curve curve;
+            curve.setSegmentCount(kBezierSegments);
+            curve.addPoint({inCx + inRx, inCy});
+            curve.addBezierPoint(
+                {inCx + inRx, inCy + (kKappa * inRy)},
+                {inCx + (kKappa * inRx), inCy + inRy},
+                {inCx, inCy + inRy}
+            );
+            curve.addBezierPoint(
+                {inCx - (kKappa * inRx), inCy + inRy},
+                {inCx - inRx, inCy + (kKappa * inRy)},
+                {inCx - inRx, inCy}
+            );
+            curve.addBezierPoint(
+                {inCx - inRx, inCy - (kKappa * inRy)},
+                {inCx - (kKappa * inRx), inCy - inRy},
+                {inCx, inCy - inRy}
+            );
+            curve.addBezierPoint(
+                {inCx + (kKappa * inRx), inCy - inRy},
+                {inCx + inRx, inCy - (kKappa * inRy)},
+                {inCx + inRx, inCy}
+            );
+
+            return curve;
+        }
+
+        Curve makeRect(float inX, float inY, float inWidth, float inHeight, float inRx, float inRy)
+        {
+            Curve curve;
+            curve.setSegmentCount(kBezierSegments);
+
+            float rx = std::max(0.0f, inRx);
+            float ry = std::max(0.0f, inRy);
+
+            if (rx <= 0.0f && ry > 0.0f)
+            {
+                rx = ry;
+            }
+
+            if (ry <= 0.0f && rx > 0.0f)
+            {
+                ry = rx;
+            }
+
+            rx = std::min(rx, inWidth * 0.5f);
+            ry = std::min(ry, inHeight * 0.5f);
+
+            if (rx <= 0.0f || ry <= 0.0f)
+            {
+                curve.addPoint({inX, inY});
+                curve.addPoint({inX + inWidth, inY});
+                curve.addPoint({inX + inWidth, inY + inHeight});
+                curve.addPoint({inX, inY + inHeight});
+                curve.addPoint({inX, inY});
 
                 return curve;
             }
 
-            Curve makeRect(float inX, float inY, float inWidth, float inHeight, float inRx, float inRy)
+            const float kx = kKappa * rx;
+            const float ky = kKappa * ry;
+
+            curve.addPoint({inX + rx, inY});
+            curve.addPoint({inX + inWidth - rx, inY});
+            curve.addBezierPoint(
+                {inX + inWidth - rx + kx, inY},
+                {inX + inWidth, inY + ry - ky},
+                {inX + inWidth, inY + ry}
+            );
+            curve.addPoint({inX + inWidth, inY + inHeight - ry});
+            curve.addBezierPoint(
+                {inX + inWidth, inY + inHeight - ry + ky},
+                {inX + inWidth - rx + kx, inY + inHeight},
+                {inX + inWidth - rx, inY + inHeight}
+            );
+            curve.addPoint({inX + rx, inY + inHeight});
+            curve.addBezierPoint(
+                {inX + rx - kx, inY + inHeight},
+                {inX, inY + inHeight - ry + ky},
+                {inX, inY + inHeight - ry}
+            );
+            curve.addPoint({inX, inY + ry});
+            curve.addBezierPoint({inX, inY + ry - ky}, {inX + rx - kx, inY}, {inX + rx, inY});
+
+            return curve;
+        }
+
+        Curve::List toLocalContours(
+            const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
+        {
+            Curve::List result;
+
+            for (const Curve& contour : inContours)
             {
-                Curve curve;
-                curve.setSegmentCount(kBezierSegments);
+                Curve local;
 
-                float rx = std::max(0.0f, inRx);
-                float ry = std::max(0.0f, inRy);
-
-                if (rx <= 0.0f && ry > 0.0f)
+                for (const Vec2& point : contour.getPoints())
                 {
-                    rx = ry;
+                    local.addPoint(toLocal(transformPoint(inPaint.transform, point), inView));
                 }
 
-                if (ry <= 0.0f && rx > 0.0f)
+                if (local.getPoints().size() >= 2)
                 {
-                    ry = rx;
+                    result.push_back(local);
                 }
-
-                rx = std::min(rx, inWidth * 0.5f);
-                ry = std::min(ry, inHeight * 0.5f);
-
-                if (rx <= 0.0f || ry <= 0.0f)
-                {
-                    curve.addPoint({inX, inY});
-                    curve.addPoint({inX + inWidth, inY});
-                    curve.addPoint({inX + inWidth, inY + inHeight});
-                    curve.addPoint({inX, inY + inHeight});
-                    curve.addPoint({inX, inY});
-
-                    return curve;
-                }
-
-                const float kx = kKappa * rx;
-                const float ky = kKappa * ry;
-
-                curve.addPoint({inX + rx, inY});
-                curve.addPoint({inX + inWidth - rx, inY});
-                curve.addBezierPoint(
-                    {inX + inWidth - rx + kx, inY},
-                    {inX + inWidth, inY + ry - ky},
-                    {inX + inWidth, inY + ry}
-                );
-                curve.addPoint({inX + inWidth, inY + inHeight - ry});
-                curve.addBezierPoint(
-                    {inX + inWidth, inY + inHeight - ry + ky},
-                    {inX + inWidth - rx + kx, inY + inHeight},
-                    {inX + inWidth - rx, inY + inHeight}
-                );
-                curve.addPoint({inX + rx, inY + inHeight});
-                curve.addBezierPoint(
-                    {inX + rx - kx, inY + inHeight},
-                    {inX, inY + inHeight - ry + ky},
-                    {inX, inY + inHeight - ry}
-                );
-                curve.addPoint({inX, inY + ry});
-                curve.addBezierPoint({inX, inY + ry - ky}, {inX + rx - kx, inY}, {inX + rx, inY});
-
-                return curve;
             }
 
-            Curve::List toLocalContours(
-                const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
-            )
+            return result;
+        }
+
+        Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        {
+            const Curve::List local = toLocalContours(inContours, inPaint, inView);
+
+            Contour mesh;
+            mesh.triangulate(local, inPaint.bIsEvenOdd);
+
+            return toPrimitive(mesh.getPositions(), mesh.getIndices());
+        }
+
+        String makeGeometryKey(
+            const char* inKind, const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
+        {
+            String key = inKind;
+            key.append('|');
+            key.append(
+                String::sprint(
+                    "%.3f,%.3f,%.3f,%.3f|%.3f|%d|",
+                    inView.x,
+                    inView.y,
+                    inView.width,
+                    inView.height,
+                    inPaint.strokeWidth,
+                    inPaint.bIsEvenOdd ? 1 : 0
+                )
+            );
+
+            for (const Curve& contour : inContours)
             {
-                Curve::List result;
-
-                for (const Curve& contour : inContours)
+                for (const Vec2& point : contour.getPoints())
                 {
-                    Curve local;
-
-                    for (const Vec2& point : contour.getPoints())
-                    {
-                        local.addPoint(toLocal(transformPoint(inPaint.transform, point), inView));
-                    }
-
-                    if (local.getPoints().size() >= 2)
-                    {
-                        result.push_back(local);
-                    }
+                    key.append(String::sprint("%.3f,%.3f;", point.x, point.y));
                 }
 
-                return result;
+                key.append('#');
             }
 
-            Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+            return key;
+        }
+
+        const Primitive& cachedFill(
+            const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
+        {
+            static std::unordered_map<std::string, Primitive> cache;
+
+            const String key   = makeGeometryKey("fill", inContours, inPaint, inView);
+            const auto   found = cache.find(key.toStandard());
+            if (found != cache.end())
             {
-                const Curve::List local = toLocalContours(inContours, inPaint, inView);
-
-                Contour mesh;
-                mesh.triangulate(local, inPaint.bIsEvenOdd);
-
-                return toPrimitive(mesh.getPositions(), mesh.getIndices());
+                return found->second;
             }
 
-            Primitive buildStroke(
-                const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
-            )
+            return cache.emplace(key.toStandard(), buildFill(inContours, inPaint, inView)).first->second;
+        }
+
+        Primitive buildStroke(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        {
+            Primitive primitive;
+
+            if (inPaint.strokeWidth <= 0.0f)
             {
-                Primitive primitive;
+                return primitive;
+            }
 
-                if (inPaint.strokeWidth <= 0.0f)
+            const float scaleX = std::sqrt(
+                (inPaint.transform[0][0] * inPaint.transform[0][0]) +
+                (inPaint.transform[0][1] * inPaint.transform[0][1])
+            );
+            const float scaleY = std::sqrt(
+                (inPaint.transform[1][0] * inPaint.transform[1][0]) +
+                (inPaint.transform[1][1] * inPaint.transform[1][1])
+            );
+            const float half = inPaint.strokeWidth * 0.5f * ((scaleX + scaleY) * 0.5f);
+
+            if (half <= 0.0f)
+            {
+                return primitive;
+            }
+
+            auto vecLength = [](const Vec2& inValue) -> float
+            { return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y)); };
+
+            auto scaleVec = [](const Vec2& inValue, float inScale) -> Vec2
+            { return Vec2(inValue.x * inScale, inValue.y * inScale); };
+
+            auto push = [&](const Vec2& inPoint)
+            {
+                Vertex vertex;
+                vertex.position.x = inPoint.x;
+                vertex.position.y = inPoint.y;
+                vertex.uv.x       = inPoint.x + 0.5f;
+                vertex.uv.y       = inPoint.y + 0.5f;
+                primitive.vertices.push_back(vertex);
+            };
+
+            auto emitTriangle = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC)
+            {
+                const std::uint32_t index = static_cast<std::uint32_t>(primitive.vertices.size());
+
+                push(toLocal(inA, inView));
+                push(toLocal(inB, inView));
+                push(toLocal(inC, inView));
+
+                primitive.indices.push_back(index);
+                primitive.indices.push_back(index + 1);
+                primitive.indices.push_back(index + 2);
+            };
+
+            auto emitQuad = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC, const Vec2& inD)
+            {
+                emitTriangle(inA, inB, inC);
+                emitTriangle(inA, inC, inD);
+            };
+
+            auto sideNormal = [&](const Vec2& inDelta) -> Vec2
+            {
+                const float length = vecLength(inDelta);
+
+                if (length < kMinLength)
                 {
-                    return primitive;
+                    return Vec2::Zero();
                 }
 
-                const float scaleX = std::sqrt(
-                    (inPaint.transform[0][0] * inPaint.transform[0][0]) +
-                    (inPaint.transform[0][1] * inPaint.transform[0][1])
-                );
-                const float scaleY = std::sqrt(
-                    (inPaint.transform[1][0] * inPaint.transform[1][0]) +
-                    (inPaint.transform[1][1] * inPaint.transform[1][1])
-                );
-                const float half = inPaint.strokeWidth * 0.5f * ((scaleX + scaleY) * 0.5f);
+                return Vec2(-inDelta.y / length, inDelta.x / length);
+            };
 
-                if (half <= 0.0f)
+            auto emitCap = [&](const Vec2& inCenter, const Vec2& inOutbound, const Vec2& inNormal)
+            {
+                if (inPaint.lineCap == SvgLineCap::Butt)
                 {
-                    return primitive;
+                    return;
                 }
 
-                auto vecLength = [](const Vec2& inValue) -> float
-                { return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y)); };
+                const Vec2 left  = inCenter + scaleVec(inNormal, half);
+                const Vec2 right = inCenter - scaleVec(inNormal, half);
 
-                auto scaleVec = [](const Vec2& inValue, float inScale) -> Vec2
-                { return Vec2(inValue.x * inScale, inValue.y * inScale); };
-
-                auto push = [&](const Vec2& inPoint)
+                if (inPaint.lineCap == SvgLineCap::Square)
                 {
-                    Vertex vertex;
-                    vertex.position.x = inPoint.x;
-                    vertex.position.y = inPoint.y;
-                    vertex.uv.x       = inPoint.x + 0.5f;
-                    vertex.uv.y       = inPoint.y + 0.5f;
-                    primitive.vertices.push_back(vertex);
-                };
+                    const Vec2 extend = scaleVec(inOutbound, half);
 
-                auto emitTriangle = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC)
+                    emitQuad(left, left + extend, right + extend, right);
+
+                    return;
+                }
+
+                Vec2 prev = right;
+
+                for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
                 {
-                    const std::uint32_t index = static_cast<std::uint32_t>(primitive.vertices.size());
+                    const float angle =
+                        static_cast<float>(M_PI) * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                    const Vec2 curr = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
+                                      scaleVec(inOutbound, std::sin(angle) * half);
 
-                    push(toLocal(inA, inView));
-                    push(toLocal(inB, inView));
-                    push(toLocal(inC, inView));
+                    emitTriangle(inCenter, prev, curr);
 
-                    primitive.indices.push_back(index);
-                    primitive.indices.push_back(index + 1);
-                    primitive.indices.push_back(index + 2);
-                };
+                    prev = curr;
+                }
+            };
 
-                auto emitQuad = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC, const Vec2& inD)
+            auto unitVec = [&](const Vec2& inValue) -> Vec2
+            {
+                const float length = vecLength(inValue);
+
+                if (length < kMinLength)
                 {
-                    emitTriangle(inA, inB, inC);
-                    emitTriangle(inA, inC, inD);
-                };
+                    return Vec2::Zero();
+                }
 
-                auto sideNormal = [&](const Vec2& inDelta) -> Vec2
+                return Vec2(inValue.x / length, inValue.y / length);
+            };
+
+            auto emitJoin = [&](const Vec2& inCenter, const Vec2& inIncoming, const Vec2& inOutgoing)
+            {
+                if (inPaint.lineJoin == SvgLineJoin::Miter)
                 {
-                    const float length = vecLength(inDelta);
+                    return;
+                }
 
-                    if (length < kMinLength)
-                    {
-                        return Vec2::Zero();
-                    }
+                const Vec2  inDir  = unitVec(inIncoming);
+                const Vec2  outDir = unitVec(inOutgoing);
+                const float cross  = (inDir.x * outDir.y) - (inDir.y * outDir.x);
 
-                    return Vec2(-inDelta.y / length, inDelta.x / length);
-                };
-
-                auto emitCap = [&](const Vec2& inCenter, const Vec2& inOutbound, const Vec2& inNormal)
+                if (std::fabs(cross) < SvgPaint::STROKE_JOIN_MIN_LENGTH)
                 {
-                    if (inPaint.lineCap == SvgLineCap::Butt)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    const Vec2 left  = inCenter + scaleVec(inNormal, half);
-                    const Vec2 right = inCenter - scaleVec(inNormal, half);
+                const Vec2 inN         = sideNormal(inIncoming);
+                const Vec2 outN        = sideNormal(inOutgoing);
+                const bool bIsLeftTurn = cross > 0.0f;
+                const Vec2 from        = bIsLeftTurn ? Vec2(-inN.x, -inN.y) : inN;
+                const Vec2 to          = bIsLeftTurn ? Vec2(-outN.x, -outN.y) : outN;
+                const Vec2 fromP       = inCenter + scaleVec(from, half);
+                const Vec2 toP         = inCenter + scaleVec(to, half);
 
-                    if (inPaint.lineCap == SvgLineCap::Square)
-                    {
-                        const Vec2 extend = scaleVec(inOutbound, half);
-
-                        emitQuad(left, left + extend, right + extend, right);
-
-                        return;
-                    }
-
-                    Vec2 prev = right;
-
-                    for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
-                    {
-                        const float angle =
-                            static_cast<float>(M_PI) * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
-                        const Vec2 curr = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
-                                          scaleVec(inOutbound, std::sin(angle) * half);
-
-                        emitTriangle(inCenter, prev, curr);
-
-                        prev = curr;
-                    }
-                };
-
-                auto unitVec = [&](const Vec2& inValue) -> Vec2
+                if (inPaint.lineJoin == SvgLineJoin::Bevel)
                 {
-                    const float length = vecLength(inValue);
+                    emitTriangle(inCenter, fromP, toP);
 
-                    if (length < kMinLength)
-                    {
-                        return Vec2::Zero();
-                    }
+                    return;
+                }
 
-                    return Vec2(inValue.x / length, inValue.y / length);
-                };
+                const float pi    = static_cast<float>(M_PI);
+                const float twoPi = pi * 2.0f;
+                float       start = std::atan2(from.y, from.x);
+                float       delta = std::atan2(to.y, to.x) - start;
 
-                auto emitJoin = [&](const Vec2& inCenter, const Vec2& inIncoming, const Vec2& inOutgoing)
+                while (delta > pi)
                 {
-                    if (inPaint.lineJoin == SvgLineJoin::Miter)
-                    {
-                        return;
-                    }
+                    delta -= twoPi;
+                }
 
-                    const Vec2  inDir  = unitVec(inIncoming);
-                    const Vec2  outDir = unitVec(inOutgoing);
-                    const float cross  = (inDir.x * outDir.y) - (inDir.y * outDir.x);
-
-                    if (std::fabs(cross) < SvgPaint::STROKE_JOIN_MIN_LENGTH)
-                    {
-                        return;
-                    }
-
-                    const Vec2 inN         = sideNormal(inIncoming);
-                    const Vec2 outN        = sideNormal(inOutgoing);
-                    const bool bIsLeftTurn = cross > 0.0f;
-                    const Vec2 from        = bIsLeftTurn ? Vec2(-inN.x, -inN.y) : inN;
-                    const Vec2 to          = bIsLeftTurn ? Vec2(-outN.x, -outN.y) : outN;
-                    const Vec2 fromP       = inCenter + scaleVec(from, half);
-                    const Vec2 toP         = inCenter + scaleVec(to, half);
-
-                    if (inPaint.lineJoin == SvgLineJoin::Bevel)
-                    {
-                        emitTriangle(inCenter, fromP, toP);
-
-                        return;
-                    }
-
-                    const float pi    = static_cast<float>(M_PI);
-                    const float twoPi = pi * 2.0f;
-                    float       start = std::atan2(from.y, from.x);
-                    float       delta = std::atan2(to.y, to.x) - start;
-
-                    while (delta > pi)
-                    {
-                        delta -= twoPi;
-                    }
-
-                    while (delta < -pi)
-                    {
-                        delta += twoPi;
-                    }
-
-                    const float stepSize = pi / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
-                    const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
-                    Vec2        prev     = fromP;
-
-                    for (int i = 1; i <= steps; i++)
-                    {
-                        const float t    = static_cast<float>(i) / static_cast<float>(steps);
-                        const float a    = start + (delta * t);
-                        const Vec2  curr = inCenter + Vec2(std::cos(a) * half, std::sin(a) * half);
-
-                        emitTriangle(inCenter, prev, curr);
-
-                        prev = curr;
-                    }
-                };
-
-                for (const Curve& contour : inContours)
+                while (delta < -pi)
                 {
-                    std::vector<Vec2> points;
+                    delta += twoPi;
+                }
 
-                    for (const Vec2& point : contour.getPoints())
-                    {
-                        const Vec2 mapped = transformPoint(inPaint.transform, point);
+                const float stepSize = pi / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
+                const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
+                Vec2        prev     = fromP;
 
-                        if (!points.empty() && vecLength(mapped - points.back()) < kMinLength)
-                        {
-                            continue;
-                        }
+                for (int i = 1; i <= steps; i++)
+                {
+                    const float t    = static_cast<float>(i) / static_cast<float>(steps);
+                    const float a    = start + (delta * t);
+                    const Vec2  curr = inCenter + Vec2(std::cos(a) * half, std::sin(a) * half);
 
-                        points.push_back(mapped);
-                    }
+                    emitTriangle(inCenter, prev, curr);
 
-                    bool bIsClosed = false;
+                    prev = curr;
+                }
+            };
 
-                    if (points.size() >= 3 && vecLength(points.front() - points.back()) < kMinLength)
-                    {
-                        points.pop_back();
-                        bIsClosed = true;
-                    }
+            for (const Curve& contour : inContours)
+            {
+                std::vector<Vec2> points;
 
-                    if (points.size() < 2)
+                for (const Vec2& point : contour.getPoints())
+                {
+                    const Vec2 mapped = transformPoint(inPaint.transform, point);
+
+                    if (!points.empty() && vecLength(mapped - points.back()) < kMinLength)
                     {
                         continue;
                     }
 
-                    const std::size_t count = points.size();
+                    points.push_back(mapped);
+                }
 
-                    if (inPaint.lineJoin == SvgLineJoin::Miter)
+                bool bIsClosed = false;
+
+                if (points.size() >= 3 && vecLength(points.front() - points.back()) < kMinLength)
+                {
+                    points.pop_back();
+                    bIsClosed = true;
+                }
+
+                if (points.size() < 2)
+                {
+                    continue;
+                }
+
+                const std::size_t count = points.size();
+
+                if (inPaint.lineJoin == SvgLineJoin::Miter)
+                {
+                    std::vector<Vec2> left(count);
+                    std::vector<Vec2> right(count);
+
+                    for (std::size_t i = 0; i < count; i++)
                     {
-                        std::vector<Vec2> left(count);
-                        std::vector<Vec2> right(count);
+                        Vec2 normal;
 
-                        for (std::size_t i = 0; i < count; i++)
+                        if (!bIsClosed && i == 0)
                         {
-                            Vec2 normal;
+                            normal = sideNormal(points.at(1) - points.at(0));
+                        }
+                        else if (!bIsClosed && i + 1 == count)
+                        {
+                            normal = sideNormal(points.at(i) - points.at(i - 1));
+                        }
+                        else
+                        {
+                            const Vec2  prev       = points.at((i + count - 1) % count);
+                            const Vec2  next       = points.at((i + 1) % count);
+                            const Vec2  inN        = sideNormal(points.at(i) - prev);
+                            const Vec2  outN       = sideNormal(next - points.at(i));
+                            Vec2        join       = inN + outN;
+                            const float joinLength = vecLength(join);
 
-                            if (!bIsClosed && i == 0)
+                            if (joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH)
                             {
-                                normal = sideNormal(points.at(1) - points.at(0));
-                            }
-                            else if (!bIsClosed && i + 1 == count)
-                            {
-                                normal = sideNormal(points.at(i) - points.at(i - 1));
+                                normal = inN;
                             }
                             else
                             {
-                                const Vec2  prev       = points.at((i + count - 1) % count);
-                                const Vec2  next       = points.at((i + 1) % count);
-                                const Vec2  inN        = sideNormal(points.at(i) - prev);
-                                const Vec2  outN       = sideNormal(next - points.at(i));
-                                Vec2        join       = inN + outN;
-                                const float joinLength = vecLength(join);
+                                join.x /= joinLength;
+                                join.y /= joinLength;
 
-                                if (joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH)
+                                const float cosine = std::clamp(
+                                    join.x * inN.x + join.y * inN.y,
+                                    SvgPaint::STROKE_MITER_COSINE_MIN,
+                                    SvgPaint::STROKE_MITER_COSINE_MAX
+                                );
+
+                                if ((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT)
                                 {
                                     normal = inN;
                                 }
                                 else
                                 {
-                                    join.x /= joinLength;
-                                    join.y /= joinLength;
-
-                                    const float cosine = std::clamp(
-                                        join.x * inN.x + join.y * inN.y,
-                                        SvgPaint::STROKE_MITER_COSINE_MIN,
-                                        SvgPaint::STROKE_MITER_COSINE_MAX
-                                    );
-
-                                    if ((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT)
-                                    {
-                                        normal = inN;
-                                    }
-                                    else
-                                    {
-                                        normal = scaleVec(join, 1.0f / cosine);
-                                    }
+                                    normal = scaleVec(join, 1.0f / cosine);
                                 }
                             }
-
-                            left.at(i)  = points.at(i) + scaleVec(normal, half);
-                            right.at(i) = points.at(i) - scaleVec(normal, half);
                         }
 
-                        for (std::size_t i = 1; i < count; i++)
-                        {
-                            emitQuad(left.at(i - 1), left.at(i), right.at(i), right.at(i - 1));
-                        }
-
-                        if (bIsClosed)
-                        {
-                            emitQuad(left.back(), left.front(), right.front(), right.back());
-                        }
+                        left.at(i)  = points.at(i) + scaleVec(normal, half);
+                        right.at(i) = points.at(i) - scaleVec(normal, half);
                     }
-                    else
+
+                    for (std::size_t i = 1; i < count; i++)
                     {
-                        auto emitSegment = [&](const Vec2& inStart, const Vec2& inEnd)
-                        {
-                            const Vec2 normal = scaleVec(sideNormal(inEnd - inStart), half);
-
-                            emitQuad(inStart + normal, inEnd + normal, inEnd - normal, inStart - normal);
-                        };
-
-                        for (std::size_t i = 1; i < count; i++)
-                        {
-                            emitSegment(points.at(i - 1), points.at(i));
-                        }
-
-                        for (std::size_t i = 1; i + 1 < count; i++)
-                        {
-                            emitJoin(points.at(i), points.at(i) - points.at(i - 1), points.at(i + 1) - points.at(i));
-                        }
-
-                        if (bIsClosed)
-                        {
-                            emitSegment(points.back(), points.front());
-                            emitJoin(points.front(), points.front() - points.back(), points.at(1) - points.front());
-                            emitJoin(
-                                points.back(),
-                                points.back() - points.at(count - 2),
-                                points.front() - points.back()
-                            );
-                        }
+                        emitQuad(left.at(i - 1), left.at(i), right.at(i), right.at(i - 1));
                     }
 
                     if (bIsClosed)
                     {
-                        continue;
+                        emitQuad(left.back(), left.front(), right.front(), right.back());
+                    }
+                }
+                else
+                {
+                    auto emitSegment = [&](const Vec2& inStart, const Vec2& inEnd)
+                    {
+                        const Vec2 normal = scaleVec(sideNormal(inEnd - inStart), half);
+
+                        emitQuad(inStart + normal, inEnd + normal, inEnd - normal, inStart - normal);
+                    };
+
+                    for (std::size_t i = 1; i < count; i++)
+                    {
+                        emitSegment(points.at(i - 1), points.at(i));
                     }
 
-                    const Vec2  startDir = points.at(1) - points.front();
-                    const Vec2  endDir   = points.back() - points.at(count - 2);
-                    const float startLen = vecLength(startDir);
-                    const float endLen   = vecLength(endDir);
-                    const Vec2  startOut =
-                        startLen >= kMinLength ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
-                    const Vec2 endOut =
-                        endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
+                    for (std::size_t i = 1; i + 1 < count; i++)
+                    {
+                        emitJoin(points.at(i), points.at(i) - points.at(i - 1), points.at(i + 1) - points.at(i));
+                    }
 
-                    emitCap(points.front(), startOut, sideNormal(startDir));
-                    emitCap(points.back(), endOut, sideNormal(endDir));
+                    if (bIsClosed)
+                    {
+                        emitSegment(points.back(), points.front());
+                        emitJoin(points.front(), points.front() - points.back(), points.at(1) - points.front());
+                        emitJoin(points.back(), points.back() - points.at(count - 2), points.front() - points.back());
+                    }
                 }
 
-                return primitive;
+                if (bIsClosed)
+                {
+                    continue;
+                }
+
+                const Vec2  startDir = points.at(1) - points.front();
+                const Vec2  endDir   = points.back() - points.at(count - 2);
+                const float startLen = vecLength(startDir);
+                const float endLen   = vecLength(endDir);
+                const Vec2  startOut =
+                    startLen >= kMinLength ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
+                const Vec2 endOut = endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
+
+                emitCap(points.front(), startOut, sideNormal(startDir));
+                emitCap(points.back(), endOut, sideNormal(endDir));
             }
 
-            bool skipSubtree(const String& inTag)
+            return primitive;
+        }
+
+        const Primitive& cachedStroke(
+            const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
+        {
+            static std::unordered_map<std::string, Primitive> cache;
+
+            const String key   = makeGeometryKey("stroke", inContours, inPaint, inView);
+            const auto   found = cache.find(key.toStandard());
+            if (found != cache.end())
             {
-                return inTag.equals(
-                    "defs",
-                    "clippath",
-                    "mask",
-                    "lineargradient",
-                    "radialgradient",
-                    "style",
-                    "title",
-                    "desc",
-                    "symbol",
-                    "use",
-                    "filter",
-                    "marker"
-                );
+                return found->second;
             }
 
-            bool hidden(const pugi::xml_node& inNode)
-            {
-                const String display    = attribute(inNode, "display").toLower();
-                const String visibility = attribute(inNode, "visibility").toLower();
+            return cache.emplace(key.toStandard(), buildStroke(inContours, inPaint, inView)).first->second;
+        }
 
-                return display.equals("none") || visibility.equals("hidden");
-            }
+        bool skipSubtree(const String& inTag)
+        {
+            return inTag.equals(
+                "defs",
+                "clippath",
+                "mask",
+                "lineargradient",
+                "radialgradient",
+                "style",
+                "title",
+                "desc",
+                "symbol",
+                "use",
+                "filter",
+                "marker"
+            );
+        }
+
+        bool hidden(const pugi::xml_node& inNode)
+        {
+            const String display    = attribute(inNode, "display").toLower();
+            const String visibility = attribute(inNode, "visibility").toLower();
+
+            return display.equals("none") || visibility.equals("hidden");
         }
 
         Svg::Svg(const pugi::xml_node& inNode)
@@ -1327,7 +1373,7 @@ namespace Chicane
         {
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
             {
                 return;
             }
@@ -1354,7 +1400,7 @@ namespace Chicane
 
         void Svg::onRefresh()
         {
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
             {
                 return;
             }
@@ -1420,7 +1466,7 @@ namespace Chicane
 
         void Svg::rebuildShapes()
         {
-            const Color::Rgba current = m_style.foregroundColor.get();
+            const Color::Rgba current   = m_style.foregroundColor.get();
             const String      signature = String::sprint(
                 "%d,%d,%d,%d",
                 static_cast<int>(current.r),
@@ -1564,7 +1610,7 @@ namespace Chicane
                     if (paint.bIsFillEnabled &&
                         Color::isVisible(withOpacity(paint.fill, paint.fillOpacity * paint.opacity)))
                     {
-                        const Primitive primitive = buildFill(contours, paint, view);
+                        const Primitive& primitive = cachedFill(contours, paint, view);
 
                         if (!primitive.isEmpty())
                         {
@@ -1579,7 +1625,7 @@ namespace Chicane
                     if (paint.bIsStrokeEnabled && paint.strokeWidth > 0.0f &&
                         Color::isVisible(withOpacity(paint.stroke, paint.strokeOpacity * paint.opacity)))
                     {
-                        const Primitive primitive = buildStroke(contours, paint, view);
+                        const Primitive& primitive = cachedStroke(contours, paint, view);
 
                         if (!primitive.isEmpty())
                         {
@@ -1632,6 +1678,7 @@ namespace Chicane
                 shape->setStyleFile(m_styleFile);
 
                 m_shapes.push_back(shape);
+                markFlatDirty();
             }
 
             return m_shapes.at(inIndex);

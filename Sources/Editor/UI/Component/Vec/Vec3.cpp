@@ -6,39 +6,36 @@
 
 namespace Editor
 {
-    namespace
+    Chicane::SpatialTransform* asSpatial(const Chicane::ReflectionFieldAccessor& inAccessor, void* inInstance)
     {
-        Chicane::SpatialTransform* asSpatial(const Chicane::ReflectionFieldAccessor& inAccessor, void* inInstance)
+        if (!inInstance)
         {
-            if (!inInstance)
-            {
-                return nullptr;
-            }
-
-            const Chicane::String name = inAccessor.getName();
-            if (!name.equals("translation", "rotation", "scale"))
-            {
-                return nullptr;
-            }
-
-            if (inAccessor.boundInstance != nullptr)
-            {
-                return reinterpret_cast<Chicane::SpatialTransform*>(const_cast<void*>(inAccessor.boundInstance));
-            }
-
-            if (!inAccessor.bNeedsDeref)
-            {
-                return nullptr;
-            }
-
-            void* pointee = *reinterpret_cast<void**>(static_cast<char*>(inInstance) + inAccessor.offset);
-            if (!pointee)
-            {
-                return nullptr;
-            }
-
-            return reinterpret_cast<Chicane::SpatialTransform*>(pointee);
+            return nullptr;
         }
+
+        const Chicane::String name = inAccessor.getName();
+        if (!name.equals("translation", "rotation", "scale"))
+        {
+            return nullptr;
+        }
+
+        if (inAccessor.boundInstance != nullptr)
+        {
+            return reinterpret_cast<Chicane::SpatialTransform*>(const_cast<void*>(inAccessor.boundInstance));
+        }
+
+        if (!inAccessor.bNeedsDeref)
+        {
+            return nullptr;
+        }
+
+        void* pointee = *reinterpret_cast<void**>(static_cast<char*>(inInstance) + inAccessor.offset);
+        if (!pointee)
+        {
+            return nullptr;
+        }
+
+        return reinterpret_cast<Chicane::SpatialTransform*>(pointee);
     }
 
     Vec3::Vec3(const pugi::xml_node& inNode)

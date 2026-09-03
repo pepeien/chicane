@@ -63,7 +63,12 @@ namespace Chicane
             std::vector<Component*> contenders;
             for (Component* child : getChildrenFlat())
             {
-                if (!child->isDrawable())
+                if (!child->isDisplayable())
+                {
+                    continue;
+                }
+
+                if (!child->getDrawBounds().contains(inLocation))
                 {
                     continue;
                 }
@@ -359,6 +364,30 @@ namespace Chicane
             {
                 ViewInputQueueEvent& slot = queue.events[read];
 
+                if (slot.type == WindowEventType::MouseMotion)
+                {
+                    std::size_t peek           = (read + 1) % ViewInputQueue::CAPACITY;
+                    bool        bHasLaterMotion = false;
+                    while (peek != write)
+                    {
+                        if (queue.events[peek].type == WindowEventType::MouseMotion)
+                        {
+                            bHasLaterMotion = true;
+
+                            break;
+                        }
+
+                        peek = (peek + 1) % ViewInputQueue::CAPACITY;
+                    }
+
+                    if (bHasLaterMotion)
+                    {
+                        read = (read + 1) % ViewInputQueue::CAPACITY;
+
+                        continue;
+                    }
+                }
+
                 WindowEvent event;
                 event.type = slot.type;
 
@@ -432,6 +461,11 @@ namespace Chicane
         {
             Component* hit = (inComponent == this) ? nullptr : inComponent;
 
+            if (m_hovered == hit)
+            {
+                return;
+            }
+
             std::vector<Component*> next;
             Component*              node = hit;
             while (node && node != this)
@@ -460,6 +494,9 @@ namespace Chicane
                 node = node->getParent();
             }
 
+            Component* previousDeepest = previous.empty() ? nullptr : previous.front();
+            Component* nextDeepest     = next.empty() ? nullptr : next.front();
+
             for (Component* candidate : previous)
             {
                 bool bKeep = false;
@@ -475,13 +512,15 @@ namespace Chicane
 
                 if (!bKeep)
                 {
-                    candidate->setHovered(false);
+                    // Only the old leaf needs subtree invalidation (`:hover .child`).
+                    // Ancestors self-invalidate so hovering a panel doesn't restyle every descendant.
+                    candidate->setHovered(false, candidate == previousDeepest);
                 }
             }
 
             for (auto it = next.rbegin(); it != next.rend(); ++it)
             {
-                (*it)->setHovered(true);
+                (*it)->setHovered(true, *it == nextDeepest);
             }
 
             m_hovered = hit;
@@ -546,6 +585,9 @@ namespace Chicane
                 node = node->getParent();
             }
 
+            Component* previousDeepest = previous.empty() ? nullptr : previous.front();
+            Component* nextDeepest     = next.empty() ? nullptr : next.front();
+
             for (Component* candidate : previous)
             {
                 bool bKeep = false;
@@ -561,13 +603,13 @@ namespace Chicane
 
                 if (!bKeep)
                 {
-                    candidate->setDragging(false);
+                    candidate->setDragging(false, candidate == previousDeepest);
                 }
             }
 
             for (auto it = next.rbegin(); it != next.rend(); ++it)
             {
-                (*it)->setDragging(true);
+                (*it)->setDragging(true, *it == nextDeepest);
             }
 
             m_dragging = hit;

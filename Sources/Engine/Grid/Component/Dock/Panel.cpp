@@ -11,10 +11,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace
-        {
-            const Color::Rgba kHandleColor(0, 0, 0, 70);
-        }
+        const Color::Rgba kHandleColor(0, 0, 0, 70);
 
         DockPanel::DockPanel(const pugi::xml_node& inNode)
             : Scrollable(inNode),
@@ -298,9 +295,9 @@ namespace Chicane
             m_size       = parseText(getAttribute(SIZE_ATTRIBUTE_NAME)).trim();
             m_minSize    = parseText(getAttribute(MIN_SIZE_ATTRIBUTE_NAME)).trim();
             m_maxSize    = parseText(getAttribute(MAX_SIZE_ATTRIBUTE_NAME)).trim();
-            m_handleId    = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
-            m_bResizable  = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
-            m_bGrabbable  = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
+            m_handleId   = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
+            m_bResizable = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
+            m_bGrabbable = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
         }
 
         DockSide DockPanel::parseSide(const String& inValue) const

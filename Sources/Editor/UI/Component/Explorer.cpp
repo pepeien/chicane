@@ -16,24 +16,21 @@
 
 namespace Editor
 {
-    namespace
-    {
-        constexpr float kIconSizeMinEm = 4.5f;
-        constexpr float kIconSizeMaxEm = 10.5f;
-        constexpr float kTreeIndentEm  = 0.85f;
+    constexpr float kIconSizeMinEm = 4.5f;
+    constexpr float kIconSizeMaxEm = 10.5f;
+    constexpr float kTreeIndentEm  = 0.85f;
 
-        const Chicane::String kLayoutHorizontal = "horizontal";
-        const Chicane::String kLayoutVertical   = "vertical";
-        const Chicane::String kSortMatch        = "match";
-        const Chicane::String kSortName         = "name";
-        const Chicane::String kStateActive      = "active";
-        const Chicane::String kStateIdle        = "idle";
-        const Chicane::String kExpandLeaf       = "leaf";
-        const Chicane::String kExpandCollapsed  = "collapsed";
-        const Chicane::String kExpandExpanded   = "expanded";
-        const Chicane::String kSelected         = "selected";
-        const Chicane::String kSliderId         = "explorerIconSize";
-    }
+    const Chicane::String kLayoutHorizontal = "horizontal";
+    const Chicane::String kLayoutVertical   = "vertical";
+    const Chicane::String kSortMatch        = "match";
+    const Chicane::String kSortName         = "name";
+    const Chicane::String kStateActive      = "active";
+    const Chicane::String kStateIdle        = "idle";
+    const Chicane::String kExpandLeaf       = "leaf";
+    const Chicane::String kExpandCollapsed  = "collapsed";
+    const Chicane::String kExpandExpanded   = "expanded";
+    const Chicane::String kSelected         = "selected";
+    const Chicane::String kSliderId         = "explorerIconSize";
 
     Explorer::Explorer(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
@@ -66,7 +63,7 @@ namespace Editor
 
         load("Assets/Editor/UI/Components/Explorer.grid", "Assets/Editor/UI/Components/Explorer.decal");
 
-        m_rootFolder   = Chicane::FileSystem::Item(Chicane::FileSystem::ItemType::Folder, ".");
+        m_rootFolder = Chicane::FileSystem::Item(Chicane::FileSystem::ItemType::Folder, ".");
         ensureListed(m_rootFolder);
         explorerFolder = m_rootFolder;
 
@@ -110,11 +107,8 @@ namespace Editor
 
             if (event.clicks >= 2)
             {
-                for (
-                    Chicane::Grid::Component* node = getHitAt(event.location);
-                    node != nullptr && node != this;
-                    node = node->getParent()
-                )
+                for (Chicane::Grid::Component* node = getHitAt(event.location); node != nullptr && node != this;
+                     node                           = node->getParent())
                 {
                     ExplorerItem* tile = dynamic_cast<ExplorerItem*>(node);
                     if (!tile || !tile->isFolder || tile->itemPath.isEmpty())
@@ -222,6 +216,8 @@ namespace Editor
             return;
         }
 
+        inPath = toPathKey(Chicane::FileSystem::Path(inPath));
+
         Chicane::FileSystem::Item* found = findFolder(m_rootFolder, inPath);
         if (!found)
         {
@@ -244,6 +240,8 @@ namespace Editor
         {
             return;
         }
+
+        inPath = toPathKey(Chicane::FileSystem::Path(inPath));
 
         Chicane::FileSystem::Item* found = findFolder(m_rootFolder, inPath);
         if (!found)
@@ -443,9 +441,10 @@ namespace Editor
 
     void Explorer::setIconSizeFactor(float inFactor)
     {
-        m_iconSizeFactor  = std::clamp(inFactor, 0.0f, 1.0f);
-        iconSizePercent   = m_iconSizeFactor * 100.0f;
-        iconSize          = Chicane::String::sprint("%.2fem", kIconSizeMinEm + m_iconSizeFactor * (kIconSizeMaxEm - kIconSizeMinEm));
+        m_iconSizeFactor = std::clamp(inFactor, 0.0f, 1.0f);
+        iconSizePercent  = m_iconSizeFactor * 100.0f;
+        iconSize =
+            Chicane::String::sprint("%.2fem", kIconSizeMinEm + m_iconSizeFactor * (kIconSizeMaxEm - kIconSizeMinEm));
     }
 
     void Explorer::applyIconSizeAt(const Chicane::Vec2& inLocation)
@@ -516,8 +515,7 @@ namespace Editor
 
     bool Explorer::handleWheel(const Chicane::WindowEvent& inEvent)
     {
-        const Chicane::Input::MouseWheelEvent event =
-            *static_cast<Chicane::Input::MouseWheelEvent*>(inEvent.data);
+        const Chicane::Input::MouseWheelEvent event = *static_cast<Chicane::Input::MouseWheelEvent*>(inEvent.data);
 
         Chicane::Vec2 location = event.location;
         if (location.x == 0.0f && location.y == 0.0f)
@@ -555,8 +553,7 @@ namespace Editor
     }
 
     const Chicane::FileSystem::Item* Explorer::findFolder(
-        const Chicane::FileSystem::Item& inRoot,
-        const Chicane::String&           inPath
+        const Chicane::FileSystem::Item& inRoot, const Chicane::String& inPath
     ) const
     {
         if (toPathKey(inRoot.path).equals(inPath))
@@ -575,10 +572,7 @@ namespace Editor
         return nullptr;
     }
 
-    Chicane::FileSystem::Item* Explorer::findFolder(
-        Chicane::FileSystem::Item& inRoot,
-        const Chicane::String&     inPath
-    )
+    Chicane::FileSystem::Item* Explorer::findFolder(Chicane::FileSystem::Item& inRoot, const Chicane::String& inPath)
     {
         return const_cast<Chicane::FileSystem::Item*>(
             findFolder(static_cast<const Chicane::FileSystem::Item&>(inRoot), inPath)

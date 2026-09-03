@@ -2,16 +2,13 @@
 
 namespace Chicane
 {
-    namespace
+    Vec2 rotate(const Vec2& inValue, float inDegrees)
     {
-        Vec2 rotate(const Vec2& inValue, float inDegrees)
-        {
-            const float radians = glm::radians(inDegrees);
-            const float cosine  = glm::cos(radians);
-            const float sine    = glm::sin(radians);
+        const float radians = glm::radians(inDegrees);
+        const float cosine  = glm::cos(radians);
+        const float sine    = glm::sin(radians);
 
-            return Vec2((inValue.x * cosine) - (inValue.y * sine), (inValue.x * sine) + (inValue.y * cosine));
-        }
+        return Vec2((inValue.x * cosine) - (inValue.y * sine), (inValue.x * sine) + (inValue.y * cosine));
     }
 
     SpatialTransform2D::SpatialTransform2D()

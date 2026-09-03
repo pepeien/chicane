@@ -266,11 +266,15 @@ namespace Chicane
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
+              m_flatChildren({}),
+              m_bIsFlatDirty(true),
               m_size(Vec2::Zero()),
               m_scale(Vec2::Zero()),
               m_offset(Vec2::Zero()),
               m_cursor(Vec2::Zero()),
               m_scratch(0.0f),
+              m_layoutParentWidth(-1.0f),
+              m_layoutParentHeight(-1.0f),
               m_primitive({}),
               m_attributes({}),
               m_sourceNode(),
@@ -278,9 +282,12 @@ namespace Chicane
               m_forVariable(String::empty()),
               m_forSource({}),
               m_bSkipForDirective(false),
-              m_bHovered(false),
-              m_bFocused(false),
-              m_bDragging(false)
+              m_bIsHovered(false),
+              m_bIsFocused(false),
+              m_bIsDragging(false),
+              m_bIsStyleDirty(true),
+              m_bIsLayoutDirty(true),
+              m_bIsCulled(false)
         {
             m_style.setParent(this);
             m_styleBase.setParent(this);
@@ -307,21 +314,9 @@ namespace Chicane
             return isDisplayable();
         }
 
-        const ReflectionTypeInfo* Component::findImported(const String& inSelector) const
-        {
-            if (inSelector.isEmpty())
-            {
-                return nullptr;
-            }
-
-            const auto found = m_imports.find(inSelector);
-
-            return found != m_imports.end() ? found->second : nullptr;
-        }
-
         bool Component::isDrawable() const
         {
-            return isDisplayable() && isVisible() && isSolid() && hasPrimitive();
+            return isDisplayable() && isVisible() && isSolid() && hasPrimitive() && !m_bIsCulled;
         }
 
         bool Component::isFocusable() const
@@ -329,49 +324,9 @@ namespace Chicane
             return false;
         }
 
-        void Component::tick(float inDeltaTime)
+        bool Component::onEvent(const WindowEvent&)
         {
-            m_animationDelta = inDeltaTime;
-
-            refresh();
-
-            m_animationDelta = 0.0f;
-
-            if (m_style.isDisplay(StyleDisplay::None))
-            {
-                return;
-            }
-
-            onTick(inDeltaTime);
-
-            for (std::size_t i = 0; i < m_children.size(); i++)
-            {
-                m_children.at(i)->tick(inDeltaTime);
-            }
-
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
-
-            addSize(m_style.insetHorizontal(), bIsHeightAuto ? m_style.insetVertical() : 0.0f);
-        }
-
-        void Component::refresh()
-        {
-            refreshClassName();
-            refreshStyle();
-            refreshDirectives();
-
-            if (m_style.isDisplay(StyleDisplay::None))
-            {
-                return;
-            }
-
-            tickAnimation(m_style, m_animationDelta);
-
-            onRefresh();
-
-            refreshSize();
-            refreshPosition();
-            refreshBounds();
+            return false;
         }
 
         void Component::refreshStyleRuleset()
@@ -439,26 +394,52 @@ namespace Chicane
                         continue;
                     }
 
-                    for (const String& selector : source.selectors)
+                    bool bMatched = false;
+
+                    if (!source.compiled.empty())
                     {
-                        if (!hasSelector(selector.trim()))
+                        for (const StyleCompiledSelector& selector : source.compiled)
                         {
-                            continue;
-                        }
-
-                        for (const auto& [key, value] : source.properties)
-                        {
-                            if (key.startsWith(Style::VARIABLE_KEYWORD))
+                            if (!matchesCompiledSelector(selector))
                             {
-                                m_styleVariables[key.substr(1)] = value;
-
                                 continue;
                             }
 
-                            properties[key] = value;
+                            bMatched = true;
+
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        for (const String& selector : source.selectors)
+                        {
+                            if (!hasSelector(selector.trim()))
+                            {
+                                continue;
+                            }
+
+                            bMatched = true;
+
+                            break;
+                        }
+                    }
+
+                    if (!bMatched)
+                    {
+                        continue;
+                    }
+
+                    for (const auto& [key, value] : source.properties)
+                    {
+                        if (key.startsWith(Style::VARIABLE_KEYWORD))
+                        {
+                            m_styleVariables[key.substr(1)] = value;
+
+                            continue;
                         }
 
-                        break;
+                        properties[key] = value;
                     }
                 }
             }
@@ -468,13 +449,267 @@ namespace Chicane
                 addStyleProperties(properties);
             }
 
-            if (!m_bHovered && !m_bFocused && !m_bDragging)
+            if (!m_bIsHovered && !m_bIsFocused && !m_bIsDragging)
             {
                 m_styleBase.copyValuesFrom(m_style);
                 m_bHasStyleBase = true;
             }
 
             m_style.restore();
+        }
+
+        void Component::refreshSize()
+        {
+            if (isRoot())
+            {
+                return;
+            }
+
+            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            float width  = m_style.width.get();
+            float height = m_style.height.get();
+
+            if (bIsWidthAuto || bIsHeightAuto)
+            {
+                const Vec2 content = getChildrenContentSize();
+
+                if (bIsWidthAuto)
+                {
+                    const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
+                                                m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
+                                                !m_style.isPosition(StylePosition::Absolute);
+                    const bool bHasAutoHorizontalMargin =
+                        m_style.margin.left.isRaw(Size::AUTO_KEYWORD) || m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+
+                    if (bIsFlexRowItem || bHasAutoHorizontalMargin || !hasParent())
+                    {
+                        width = content.x;
+                    }
+                    else
+                    {
+                        const Component* box       = getContainingBlock();
+                        const Style&     boxStyle  = box->getStyle();
+                        const float      available = box->getSize().x - boxStyle.insetHorizontal();
+                        const float      horizontalMargin =
+                            (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
+                            (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
+
+                        width = std::max(0.0f, available - horizontalMargin - m_style.insetHorizontal());
+                    }
+                }
+
+                if (bIsHeightAuto)
+                {
+                    height = content.y;
+                }
+            }
+
+            setSize(width, height);
+        }
+
+        void Component::refreshPosition()
+        {
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
+            setPosition(0.0f, 0.0f);
+
+            float marginLeft   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get();
+            float marginRight  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get();
+            float marginTop    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.top.get();
+            float marginBottom = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.bottom.get();
+
+            const Vec2 startPadding(m_style.insetLeft(), m_style.insetTop());
+
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            const float usedWidth  = m_size.x + m_style.insetHorizontal();
+            const float usedHeight = m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
+
+            if (hasParent() && !isRoot())
+            {
+                const Component* box = m_style.isPosition(StylePosition::Absolute) ? getContainingBlock() : m_parent;
+                const Style&     boxStyle    = box->getStyle();
+                const Style&     parentStyle = m_parent->getStyle();
+                const Vec2       available   = {
+                    std::max(0.0f, box->getSize().x - boxStyle.insetHorizontal()),
+                    std::max(0.0f, box->getSize().y - boxStyle.insetVertical())
+                };
+
+                const bool bLeftAuto     = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
+                const bool bRightAuto    = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
+                const bool bTopAuto      = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
+                const bool bBottomAuto   = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
+                const bool bParentCenter = parentStyle.align.get() == StyleAlignment::Center;
+
+                float leftoverW = available.x - usedWidth - marginLeft - marginRight;
+
+                if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
+                    parentStyle.flex.direction.get() == StyleFlexDirection::Row)
+                {
+                    leftoverW = m_parent->getPosition().x + parentStyle.insetLeft() + m_parent->getSize().x -
+                                m_parent->getCursor().x - usedWidth - marginLeft - marginRight;
+                }
+
+                if (leftoverW > 0.0f)
+                {
+                    if (bParentCenter || (bLeftAuto && bRightAuto))
+                    {
+                        marginLeft  = leftoverW * 0.5f;
+                        marginRight = leftoverW * 0.5f;
+                    }
+                    else if (bLeftAuto)
+                    {
+                        marginLeft = leftoverW;
+                    }
+                    else if (bRightAuto)
+                    {
+                        marginRight = leftoverW;
+                    }
+                }
+
+                const bool bParentHeightAuto =
+                    parentStyle.height.getRaw().isEmpty() || parentStyle.height.isRaw(Size::AUTO_KEYWORD);
+
+                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
+                                              parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;
+
+                if (bCanAutoVertical && (bParentCenter || bTopAuto || bBottomAuto))
+                {
+                    float leftoverH = available.y - usedHeight - marginTop - marginBottom;
+
+                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex))
+                    {
+                        leftoverH = m_parent->getPosition().y + parentStyle.insetTop() + m_parent->getSize().y -
+                                    m_parent->getCursor().y - usedHeight - marginTop - marginBottom;
+                    }
+
+                    if (leftoverH > 0.0f)
+                    {
+                        if (bParentCenter || (bTopAuto && bBottomAuto))
+                        {
+                            marginTop    = leftoverH * 0.5f;
+                            marginBottom = leftoverH * 0.5f;
+                        }
+                        else if (bTopAuto)
+                        {
+                            marginTop = leftoverH;
+                        }
+                        else if (bBottomAuto)
+                        {
+                            marginBottom = leftoverH;
+                        }
+                    }
+                }
+            }
+
+            if (isRoot() || m_style.isPosition(StylePosition::Absolute))
+            {
+                Vec2 origin = Vec2::Zero();
+
+                if (!isRoot() && hasParent())
+                {
+                    const Component* containingBlock = getContainingBlock();
+                    origin.x = containingBlock->getPosition().x + containingBlock->getStyle().insetLeft();
+                    origin.y = containingBlock->getPosition().y + containingBlock->getStyle().insetTop();
+                }
+
+                setPosition(origin.x + marginLeft, origin.y + marginTop);
+                addCursor(startPadding);
+
+                return;
+            }
+
+            const Style& parentStyle = m_parent->getStyle();
+            const Vec2   available   = {
+                std::max(0.0f, m_parent->getSize().x - parentStyle.insetHorizontal()),
+                std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
+            };
+
+            switch (parentStyle.display.get())
+            {
+            case StyleDisplay::Flex: {
+                const bool bIsRow   = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
+                const bool bCanWrap = parentStyle.flex.wrap.get() == StyleFlexWrap::Wrap;
+
+                const float mainGap  = bIsRow ? parentStyle.gap.left.get() : parentStyle.gap.top.get();
+                const float crossGap = bIsRow ? parentStyle.gap.top.get() : parentStyle.gap.left.get();
+
+                const float itemMain =
+                    bIsRow ? (usedWidth + marginLeft + marginRight) : (usedHeight + marginTop + marginBottom);
+                const float itemCross =
+                    bIsRow ? (usedHeight + marginTop + marginBottom) : (usedWidth + marginLeft + marginRight);
+
+                const float lineStart    = bIsRow ? (m_parent->getPosition().x + parentStyle.insetLeft())
+                                                  : (m_parent->getPosition().y + parentStyle.insetTop());
+                const float lineLimit    = bIsRow ? (lineStart + available.x) : (lineStart + available.y);
+                float       cursorMain   = bIsRow ? m_parent->getCursor().x : m_parent->getCursor().y;
+                const bool  bLineStarted = cursorMain > lineStart;
+
+                if (bLineStarted)
+                {
+                    if (bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit)
+                    {
+                        if (bIsRow)
+                        {
+                            m_parent->setCursor(lineStart, m_parent->getCursor().y + m_parent->m_scratch + crossGap);
+                        }
+                        else
+                        {
+                            m_parent->setCursor(m_parent->getCursor().x + m_parent->m_scratch + crossGap, lineStart);
+                        }
+
+                        m_parent->m_scratch = 0.0f;
+                    }
+                    else if (bIsRow)
+                    {
+                        m_parent->addCursor(mainGap, 0.0f);
+                    }
+                    else
+                    {
+                        m_parent->addCursor(0.0f, mainGap);
+                    }
+                }
+
+                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
+                addCursor(startPadding);
+
+                m_parent->m_scratch = std::max(m_parent->m_scratch, itemCross);
+
+                if (bIsRow)
+                {
+                    m_parent->addCursor(marginLeft + usedWidth + marginRight, 0.0f);
+                }
+                else
+                {
+                    m_parent->addCursor(0.0f, marginTop + usedHeight + marginBottom);
+                }
+
+                break;
+            }
+
+            default:
+                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
+                addCursor(startPadding);
+
+                m_parent->addCursor(0.0f, m_size.y + marginBottom);
+
+                break;
+            }
+        }
+
+        std::vector<Component*> Component::getChildrenFlat() const
+        {
+            if (m_bIsFlatDirty)
+            {
+                rebuildFlatChildren();
+            }
+
+            return m_flatChildren;
         }
 
         bool Component::isRoot() const
@@ -509,17 +744,22 @@ namespace Chicane
 
         bool Component::isHovered() const
         {
-            return m_bHovered;
+            return m_bIsHovered;
         }
 
         bool Component::isFocused() const
         {
-            return m_bFocused;
+            return m_bIsFocused;
         }
 
         bool Component::isDragging() const
         {
-            return m_bDragging;
+            return m_bIsDragging;
+        }
+
+        bool Component::isCulled() const
+        {
+            return m_bIsCulled;
         }
 
         bool Component::canAdopt(Component* inComponent) const
@@ -576,16 +816,23 @@ namespace Chicane
             getMethod(getAttribute(ON_DRAG_END_ATTRIBUTE_NAME)).invoke();
         }
 
-        void Component::setHovered(bool inValue)
+        void Component::setHovered(bool inValue, bool bInvalidateSubtree)
         {
-            if (m_bHovered == inValue)
+            if (m_bIsHovered == inValue)
             {
                 return;
             }
 
-            m_bHovered = inValue;
+            m_bIsHovered = inValue;
 
-            refreshStyleSubtree();
+            if (bInvalidateSubtree)
+            {
+                markStyleDirtySubtree();
+            }
+            else
+            {
+                markStyleDirty();
+            }
 
             if (inValue)
             {
@@ -597,16 +844,23 @@ namespace Chicane
             leave();
         }
 
-        void Component::setFocused(bool inValue)
+        void Component::setFocused(bool inValue, bool bInvalidateSubtree)
         {
-            if (m_bFocused == inValue)
+            if (m_bIsFocused == inValue)
             {
                 return;
             }
 
-            m_bFocused = inValue;
+            m_bIsFocused = inValue;
 
-            refreshStyleSubtree();
+            if (bInvalidateSubtree)
+            {
+                markStyleDirtySubtree();
+            }
+            else
+            {
+                markStyleDirty();
+            }
 
             if (inValue)
             {
@@ -618,16 +872,23 @@ namespace Chicane
             blur();
         }
 
-        void Component::setDragging(bool inValue)
+        void Component::setDragging(bool inValue, bool bInvalidateSubtree)
         {
-            if (m_bDragging == inValue)
+            if (m_bIsDragging == inValue)
             {
                 return;
             }
 
-            m_bDragging = inValue;
+            m_bIsDragging = inValue;
 
-            refreshStyleSubtree();
+            if (bInvalidateSubtree)
+            {
+                markStyleDirtySubtree();
+            }
+            else
+            {
+                markStyleDirty();
+            }
 
             if (inValue)
             {
@@ -637,6 +898,89 @@ namespace Chicane
             }
 
             endDrag();
+        }
+
+        void Component::tick(float inDeltaTime)
+        {
+            m_animationDelta = inDeltaTime;
+
+            refresh();
+
+            m_animationDelta = 0.0f;
+
+            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            {
+                return;
+            }
+
+            onTick(inDeltaTime);
+
+            for (std::size_t i = 0; i < m_children.size(); i++)
+            {
+                m_children.at(i)->tick(inDeltaTime);
+            }
+
+            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+
+            addSize(m_style.insetHorizontal(), bIsHeightAuto ? m_style.insetVertical() : 0.0f);
+        }
+
+        void Component::refresh()
+        {
+            refreshClassName();
+
+            if (m_bIsStyleDirty)
+            {
+                refreshStyleRuleset();
+                m_bIsStyleDirty = false;
+            }
+
+            float parentWidth  = 0.0f;
+            float parentHeight = 0.0f;
+            if (hasParent() && !isRoot())
+            {
+                parentWidth  = m_parent->getSize().x;
+                parentHeight = m_parent->getSize().y;
+            }
+
+            const bool bParentSizeChanged = parentWidth != m_layoutParentWidth || parentHeight != m_layoutParentHeight;
+            if (bParentSizeChanged)
+            {
+                m_bIsLayoutDirty     = true;
+                m_layoutParentWidth  = parentWidth;
+                m_layoutParentHeight = parentHeight;
+            }
+
+            refreshStyle();
+            refreshDirectives();
+
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                m_bIsCulled = false;
+
+                return;
+            }
+
+            refreshSize();
+            refreshPosition();
+            refreshBounds();
+            m_bIsLayoutDirty = false;
+
+            const bool bWasCulled = m_bIsCulled;
+            m_bIsCulled           = isCulledByAncestor();
+            if (m_bIsCulled)
+            {
+                return;
+            }
+
+            if (bWasCulled)
+            {
+                m_bIsStyleDirty = true;
+            }
+
+            tickAnimation(m_style, m_animationDelta);
+
+            onRefresh();
         }
 
         const String& Component::getTag() const
@@ -651,9 +995,15 @@ namespace Chicane
 
         void Component::setId(const String& inValue)
         {
+            if (m_id.equals(inValue))
+            {
+                return;
+            }
+
             m_id = inValue;
 
-            refreshStyleRuleset();
+            markStyleDirty();
+            markLayoutDirty();
         }
 
         Component::ClassList Component::getClassList() const
@@ -692,9 +1042,15 @@ namespace Chicane
 
         void Component::setClassName(const String& inValue)
         {
+            if (m_className.equals(inValue))
+            {
+                return;
+            }
+
             m_className = inValue;
 
-            refreshStyleSubtree();
+            markStyleDirtySubtree();
+            markLayoutDirtySubtree();
         }
 
         void Component::refreshDirectives()
@@ -737,6 +1093,62 @@ namespace Chicane
             }
 
             return found->second;
+        }
+
+        bool Component::hasStyleFile() const
+        {
+            return m_styleFile != nullptr;
+        }
+
+        const StyleFile* Component::getStyleFile() const
+        {
+            return m_styleFile;
+        }
+
+        void Component::setStyleFile(StyleFile* inSource)
+        {
+            m_styleFile = inSource;
+
+            refreshStyleRuleset();
+
+            for (Component* child : m_children)
+            {
+                child->setStyleFile(child->m_bOwnsStyle ? child->m_styleFile : inSource);
+            }
+        }
+
+        void Component::importStyleFile(const FileSystem::Path& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return;
+            }
+
+            if (!m_styles)
+            {
+                m_styles = std::make_unique<StyleFile>();
+            }
+
+            m_styles->parse(inValue);
+            m_bOwnsStyle = true;
+            setStyleFile(m_styles.get());
+        }
+
+        void Component::addStyleRuleset(const StyleRuleset::List& inSources)
+        {
+            if (!hasStyleFile())
+            {
+                return;
+            }
+
+            m_styleFile->addRuleset(inSources);
+
+            refreshStyleRuleset();
+        }
+
+        void Component::addStyleProperties(const StyleRuleset::Properties& inSource)
+        {
+            m_style.setProperties(inSource);
         }
 
         const Style& Component::getStyle() const
@@ -788,6 +1200,41 @@ namespace Chicane
             return blur;
         }
 
+        const String& Component::getStyleVariable(const String& inName) const
+        {
+            const auto found = m_styleVariables.find(inName);
+            if (found != m_styleVariables.end())
+            {
+                return found->second;
+            }
+
+            if (hasStyleFile())
+            {
+                const String& value = m_styleFile->getVariable(inName);
+                if (!value.isEmpty())
+                {
+                    return value;
+                }
+            }
+
+            if (hasParent() && !isRoot())
+            {
+                return m_parent->getStyleVariable(inName);
+            }
+
+            return String::empty();
+        }
+
+        void Component::refreshStyleSubtree()
+        {
+            refreshStyleRuleset();
+
+            for (Component* child : m_children)
+            {
+                child->refreshStyleSubtree();
+            }
+        }
+
         bool Component::hasLocalSelector(const String& inValue) const
         {
             if (inValue.isEmpty())
@@ -833,17 +1280,17 @@ namespace Chicane
                 value = value.substr(0, at) + value.substr(at + std::strlen(token));
             }
 
-            if (bHover && !m_bHovered)
+            if (bHover && !m_bIsHovered)
             {
                 return false;
             }
 
-            if (bFocus && !m_bFocused)
+            if (bFocus && !m_bIsFocused)
             {
                 return false;
             }
 
-            if (bDrag && !m_bDragging)
+            if (bDrag && !m_bIsDragging)
             {
                 return false;
             }
@@ -982,122 +1429,84 @@ namespace Chicane
             return index < 0;
         }
 
-        bool Component::hasStyleFile() const
+        bool Component::matchesCompiledSelector(const StyleCompiledSelector& inSelector) const
         {
-            return m_styleFile != nullptr;
-        }
-
-        const StyleFile* Component::getStyleFile() const
-        {
-            return m_styleFile;
-        }
-
-        void Component::setStyleFile(StyleFile* inSource)
-        {
-            m_styleFile = inSource;
-
-            refreshStyleRuleset();
-
-            for (Component* child : m_children)
+            if (inSelector.chain.empty())
             {
-                child->setStyleFile(child->m_bOwnsStyle ? child->m_styleFile : inSource);
-            }
-        }
-
-        void Component::importStyleFile(const FileSystem::Path& inValue)
-        {
-            if (inValue.isEmpty())
-            {
-                return;
+                return false;
             }
 
-            if (!m_styles)
+            if (!matchesCompiledPart(inSelector.chain.back()))
             {
-                m_styles = std::make_unique<StyleFile>();
+                return false;
             }
 
-            m_styles->parse(inValue);
-            m_bOwnsStyle = true;
-            setStyleFile(m_styles.get());
-        }
-
-        void Component::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)
-        {
-            if (!inStyle.isEmpty())
+            if (inSelector.chain.size() == 1)
             {
-                importStyleFile(inStyle);
+                return true;
             }
 
-            if (inTemplate.isEmpty())
+            if (!hasParent())
             {
-                return;
+                return false;
             }
 
-            thread_local std::vector<String> loading;
+            Component* ancestor = getParent();
+            int        index    = static_cast<int>(inSelector.chain.size()) - 2;
 
-            const String source = inTemplate.toString();
-            for (const String& path : loading)
+            while (ancestor && index >= 0)
             {
-                if (path.equals(source))
+                if (ancestor->matchesCompiledPart(inSelector.chain[static_cast<std::size_t>(index)]))
                 {
-                    throw std::runtime_error("Cyclic Grid component include [" + source + "]");
+                    index--;
+                }
+
+                ancestor = ancestor->getParent();
+            }
+
+            return index < 0;
+        }
+
+        bool Component::matchesCompiledPart(const StyleSelectorPart& inPart) const
+        {
+            if (inPart.bCanHover && !m_bIsHovered)
+            {
+                return false;
+            }
+
+            if (inPart.bCanFocus && !m_bIsFocused)
+            {
+                return false;
+            }
+
+            if (inPart.bCanDrag && !m_bIsDragging)
+            {
+                return false;
+            }
+
+            if (!inPart.tag.isEmpty() && !inPart.tag.equals(getTag()))
+            {
+                return false;
+            }
+
+            if (!inPart.id.isEmpty() && !inPart.id.equals(Style::ID_SELECTOR + getId()))
+            {
+                return false;
+            }
+
+            if (!inPart.classes.empty())
+            {
+                const ClassList classList = getClassList();
+                for (const String& className : inPart.classes)
+                {
+                    if (classList.find(className) == classList.end())
+                    {
+                        return false;
+                    }
                 }
             }
 
-            Loading guard(loading, source);
-
-            pugi::xml_document document = Xml::load(inTemplate);
-            if (document.empty() || document.children().empty())
-            {
-                throw std::runtime_error("UI document " + source + " does not have any components");
-            }
-
-            const pugi::xml_node root = document.first_child();
-            if (!(root.parent() == root.root() && !root.next_sibling()))
-            {
-                throw std::runtime_error("UI document root element must not have any siblings");
-            }
-
-            std::vector<Component*> projected = m_children;
-            m_children.clear();
-
-            Scope      scope(this);
-            Projection projection(projected);
-
-            if (String(root.name()).equals(getTag()))
-            {
-                m_sourceNode = m_sourceDocument.append_copy(root);
-                m_attributes = Xml::getAttributes(m_sourceNode);
-                setId(getAttribute(ID_ATTRIBUTE_NAME));
-                setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
-                addChildren(root);
-            }
-            else if (Component* wrapper = create(root))
-            {
-                addChild(wrapper);
-            }
-
-            for (Component* child : projected)
-            {
-                addChild(child);
-            }
-        }
-
-        void Component::addStyleRuleset(const StyleRuleset::List& inSources)
-        {
-            if (!hasStyleFile())
-            {
-                return;
-            }
-
-            m_styleFile->addRuleset(inSources);
-
-            refreshStyleRuleset();
-        }
-
-        void Component::addStyleProperties(const StyleRuleset::Properties& inSource)
-        {
-            m_style.setProperties(inSource);
+            return true;
         }
 
         ReflectionFieldAccessor Component::getField(const String& inId) const
@@ -1171,156 +1580,6 @@ namespace Chicane
             return getMethod(inValue, this);
         }
 
-        ReflectionTypeMethod Component::getMethod(const String& inValue, const Component* inParamContext) const
-        {
-            String signature = inValue.trim();
-
-            if (isReference(signature))
-            {
-                signature = signature.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
-            }
-
-            if (!isMethod(signature))
-            {
-                return {};
-            }
-
-            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-            {
-                const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
-
-                if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
-                {
-                    ReflectionTypeMethod result(method);
-                    result.bind(const_cast<Component*>(this));
-
-                    if (inParamContext)
-                    {
-                        inParamContext->populateMethodParams(result, signature);
-                    }
-
-                    return result;
-                }
-            }
-
-            if (!hasParent())
-            {
-                return {};
-            }
-
-            return m_parent->getMethod(inValue, inParamContext);
-        }
-
-        void Component::populateMethodParams(ReflectionTypeMethod& outMethod, const String& inSignature) const
-        {
-            const std::size_t open  = inSignature.firstOf(METHOD_PARAMS_OPENING);
-            const std::size_t close = inSignature.lastOf(METHOD_PARAMS_CLOSING);
-
-            if (open == String::npos || close == String::npos || close <= open)
-            {
-                return;
-            }
-
-            const String paramsRaw = inSignature.substr(open + 1, close - open - 1).trim();
-            if (paramsRaw.isEmpty())
-            {
-                return;
-            }
-
-            const ReflectionTypeMethodInfo* info       = outMethod.getInfo();
-            std::size_t                     paramIndex = 0;
-
-            for (const String& rawParam : splitMethodParams(paramsRaw))
-            {
-                const String param = rawParam.trim();
-                if (param.isEmpty())
-                {
-                    continue;
-                }
-
-                const String expected =
-                    info && paramIndex < info->paramTypes.size() ? info->paramTypes.at(paramIndex) : String::empty();
-                paramIndex++;
-
-                if ((param.startsWith("\"") && param.endsWith("\"")) || (param.startsWith("'") && param.endsWith("'")))
-                {
-                    outMethod.addParam(param.substr(1, param.size() - 2));
-
-                    continue;
-                }
-
-                ReflectionFieldAccessor accessor = getField(param);
-                if (!accessor.isValid() && hasParent())
-                {
-                    accessor = m_parent->getField(param);
-                }
-
-                if (accessor.isValid())
-                {
-                    const void* instance =
-                        accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
-
-                    if (expected.endsWith('*'))
-                    {
-                        outMethod.addParam(const_cast<void*>(static_cast<const void*>(accessor.address(instance))));
-
-                        continue;
-                    }
-
-                    outMethod.addParam(accessor.toString(instance));
-
-                    continue;
-                }
-
-                outMethod.addParam(param);
-            }
-        }
-
-        std::vector<String> Component::splitMethodParams(const String& inValue) const
-        {
-            std::vector<String> result;
-
-            std::size_t   start            = 0;
-            std::uint32_t parenthesisCount = 0;
-
-            for (std::size_t i = 0; i < inValue.size(); i++)
-            {
-                const char character = inValue.at(i);
-
-                if (character == METHOD_PARAMS_OPENING)
-                {
-                    parenthesisCount++;
-
-                    continue;
-                }
-
-                if (character == METHOD_PARAMS_CLOSING)
-                {
-                    if (parenthesisCount > 0)
-                    {
-                        parenthesisCount--;
-                    }
-
-                    continue;
-                }
-
-                if (character != METHOD_PARAMS_SEPARATOR || parenthesisCount > 0)
-                {
-                    continue;
-                }
-
-                result.push_back(inValue.substr(start, i - start));
-                start = i + 1;
-            }
-
-            if (start <= inValue.size())
-            {
-                result.push_back(inValue.substr(start));
-            }
-
-            return result;
-        }
-
         bool Component::hasRoot() const
         {
             return m_root != nullptr;
@@ -1356,6 +1615,18 @@ namespace Chicane
             return isRoot() ? nullptr : m_parent;
         }
 
+        void Component::setParent(Component* inComponent)
+        {
+            if (inComponent == this)
+            {
+                return;
+            }
+
+            m_parent = inComponent;
+
+            onAdoption(inComponent);
+        }
+
         const Component* Component::getContainingBlock() const
         {
             if (isRoot() || !hasParent())
@@ -1377,18 +1648,6 @@ namespace Chicane
             }
 
             return hasRoot() ? m_root : this;
-        }
-
-        void Component::setParent(Component* inComponent)
-        {
-            if (inComponent == this)
-            {
-                return;
-            }
-
-            m_parent = inComponent;
-
-            onAdoption(inComponent);
         }
 
         bool Component::hasNeighbours() const
@@ -1448,25 +1707,49 @@ namespace Chicane
             return m_children;
         }
 
-        std::vector<Component*> Component::getChildrenFlat() const
+        void Component::markFlatDirty()
         {
-            std::vector<Component*>       result;
-            const std::vector<Component*> children = m_children;
+            m_bIsFlatDirty = true;
 
-            for (Component* child : children)
+            for (Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
             {
-                if (!child || child == this)
+                ancestor->m_bIsFlatDirty = true;
+
+                if (ancestor->isRoot())
                 {
-                    continue;
+                    break;
                 }
-
-                result.push_back(child);
-
-                std::vector<Component*> sub = child->getChildrenFlat();
-                result.insert(result.end(), sub.begin(), sub.end());
             }
+        }
 
-            return result;
+        void Component::markStyleDirty()
+        {
+            m_bIsStyleDirty = true;
+        }
+
+        void Component::markLayoutDirty()
+        {
+            m_bIsLayoutDirty = true;
+        }
+
+        void Component::markStyleDirtySubtree()
+        {
+            m_bIsStyleDirty = true;
+
+            for (Component* child : m_children)
+            {
+                child->markStyleDirtySubtree();
+            }
+        }
+
+        void Component::markLayoutDirtySubtree()
+        {
+            m_bIsLayoutDirty = true;
+
+            for (Component* child : m_children)
+            {
+                child->markLayoutDirtySubtree();
+            }
         }
 
         Component* Component::getHitAt(const Vec2& inLocation) const
@@ -1475,7 +1758,17 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
-                if (!child->isDisplayable() || !child->containsPoint(inLocation))
+                if (!child->isDisplayable())
+                {
+                    continue;
+                }
+
+                if (!child->getDrawBounds().contains(inLocation))
+                {
+                    continue;
+                }
+
+                if (!child->containsPoint(inLocation))
                 {
                     continue;
                 }
@@ -1492,6 +1785,11 @@ namespace Chicane
         bool Component::containsPoint(const Vec2& inLocation) const
         {
             if (!isDisplayable())
+            {
+                return false;
+            }
+
+            if (!getDrawBounds().contains(inLocation))
             {
                 return false;
             }
@@ -1524,12 +1822,11 @@ namespace Chicane
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
-                if (ancestor->getStyle().isClippingOverflow() &&
-                    !ancestor->getDrawBounds().containsRounded(
-                        inLocation,
-                        ancestor->getStyle().radius.horizontal(),
-                        ancestor->getStyle().radius.vertical()
-                    ))
+                if (ancestor->getStyle().isClippingOverflow() && !ancestor->getDrawBounds().containsRounded(
+                                                                     inLocation,
+                                                                     ancestor->getStyle().radius.horizontal(),
+                                                                     ancestor->getStyle().radius.vertical()
+                                                                 ))
                 {
                     return false;
                 }
@@ -1579,11 +1876,6 @@ namespace Chicane
             return false;
         }
 
-        bool Component::onEvent(const WindowEvent&)
-        {
-            return false;
-        }
-
         void Component::addChildren(const pugi::xml_node& inNode)
         {
             if (inNode.empty())
@@ -1610,39 +1902,6 @@ namespace Chicane
             }
         }
 
-        void Component::addProjectedContent(const pugi::xml_node& inSlot)
-        {
-            if (!g_projected || g_projected->empty())
-            {
-                return;
-            }
-
-            const pugi::xml_attribute attribute = Xml::getAttribute(CONTENT_SELECT_ATTRIBUTE_NAME, inSlot);
-            const String select = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
-
-            std::vector<Component*> leftover;
-            leftover.reserve(g_projected->size());
-
-            for (Component* child : *g_projected)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                if (select.isEmpty() || child->hasLocalSelector(select))
-                {
-                    addChild(child);
-
-                    continue;
-                }
-
-                leftover.push_back(child);
-            }
-
-            *g_projected = std::move(leftover);
-        }
-
         void Component::addChild(Component* inComponent, std::size_t inIndex)
         {
             if (!canAdopt(inComponent))
@@ -1664,6 +1923,8 @@ namespace Chicane
             }
 
             onAdopted(inComponent);
+            markFlatDirty();
+            markLayoutDirty();
         }
 
         void Component::removeChild(Component* inComponent)
@@ -1687,6 +1948,8 @@ namespace Chicane
             }
 
             delete inComponent;
+            markFlatDirty();
+            markLayoutDirty();
         }
 
         Vec2 Component::getChildrenContentSizeBlock() const
@@ -2122,313 +2385,6 @@ namespace Chicane
             m_primitive = inPrimitive;
         }
 
-        void Component::refreshClassName()
-        {
-            const auto found = m_attributes.find(CLASS_ATTRIBUTE_NAME);
-            if (found == m_attributes.end())
-            {
-                return;
-            }
-
-            const String className = parseText(found->second);
-            if (className.equals(m_className))
-            {
-                return;
-            }
-
-            setClassName(className);
-        }
-
-        void Component::refreshStyle()
-        {
-            m_style.refresh();
-        }
-
-        const String& Component::getStyleVariable(const String& inName) const
-        {
-            const auto found = m_styleVariables.find(inName);
-            if (found != m_styleVariables.end())
-            {
-                return found->second;
-            }
-
-            if (hasStyleFile())
-            {
-                const String& value = m_styleFile->getVariable(inName);
-                if (!value.isEmpty())
-                {
-                    return value;
-                }
-            }
-
-            if (hasParent() && !isRoot())
-            {
-                return m_parent->getStyleVariable(inName);
-            }
-
-            return String::empty();
-        }
-
-        void Component::refreshStyleSubtree()
-        {
-            refreshStyleRuleset();
-
-            for (Component* child : m_children)
-            {
-                child->refreshStyleSubtree();
-            }
-        }
-
-        void Component::refreshSize()
-        {
-            if (isRoot())
-            {
-                return;
-            }
-
-            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
-
-            float width  = m_style.width.get();
-            float height = m_style.height.get();
-
-            if (bIsWidthAuto || bIsHeightAuto)
-            {
-                const Vec2 content = getChildrenContentSize();
-
-                if (bIsWidthAuto)
-                {
-                    const bool bIsFlexRowItem = hasParent() && m_parent->getStyle().isDisplay(StyleDisplay::Flex) &&
-                                                m_parent->getStyle().flex.direction.get() == StyleFlexDirection::Row &&
-                                                !m_style.isPosition(StylePosition::Absolute);
-                    const bool bHasAutoHorizontalMargin =
-                        m_style.margin.left.isRaw(Size::AUTO_KEYWORD) || m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
-
-                    if (bIsFlexRowItem || bHasAutoHorizontalMargin || !hasParent())
-                    {
-                        width = content.x;
-                    }
-                    else
-                    {
-                        const Component* box       = getContainingBlock();
-                        const Style&     boxStyle  = box->getStyle();
-                        const float      available = box->getSize().x - boxStyle.insetHorizontal();
-                        const float      horizontalMargin =
-                            (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
-                            (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
-
-                        width = std::max(0.0f, available - horizontalMargin - m_style.insetHorizontal());
-                    }
-                }
-
-                if (bIsHeightAuto)
-                {
-                    height = content.y;
-                }
-            }
-
-            setSize(width, height);
-        }
-
-        void Component::refreshPosition()
-        {
-            if (m_style.isDisplay(StyleDisplay::None))
-            {
-                return;
-            }
-
-            setPosition(0.0f, 0.0f);
-
-            float marginLeft   = m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get();
-            float marginRight  = m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get();
-            float marginTop    = m_style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.top.get();
-            float marginBottom = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.bottom.get();
-
-            const Vec2 startPadding(m_style.insetLeft(), m_style.insetTop());
-
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
-
-            const float usedWidth  = m_size.x + m_style.insetHorizontal();
-            const float usedHeight = m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
-
-            if (hasParent() && !isRoot())
-            {
-                const Component* box = m_style.isPosition(StylePosition::Absolute) ? getContainingBlock() : m_parent;
-                const Style&     boxStyle    = box->getStyle();
-                const Style&     parentStyle = m_parent->getStyle();
-                const Vec2       available   = {
-                    std::max(0.0f, box->getSize().x - boxStyle.insetHorizontal()),
-                    std::max(0.0f, box->getSize().y - boxStyle.insetVertical())
-                };
-
-                const bool bLeftAuto     = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
-                const bool bRightAuto    = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
-                const bool bTopAuto      = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
-                const bool bBottomAuto   = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
-                const bool bParentCenter = parentStyle.align.get() == StyleAlignment::Center;
-
-                float leftoverW = available.x - usedWidth - marginLeft - marginRight;
-
-                if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
-                    parentStyle.flex.direction.get() == StyleFlexDirection::Row)
-                {
-                    leftoverW = m_parent->getPosition().x + parentStyle.insetLeft() + m_parent->getSize().x -
-                                m_parent->getCursor().x - usedWidth - marginLeft - marginRight;
-                }
-
-                if (leftoverW > 0.0f)
-                {
-                    if (bParentCenter || (bLeftAuto && bRightAuto))
-                    {
-                        marginLeft  = leftoverW * 0.5f;
-                        marginRight = leftoverW * 0.5f;
-                    }
-                    else if (bLeftAuto)
-                    {
-                        marginLeft = leftoverW;
-                    }
-                    else if (bRightAuto)
-                    {
-                        marginRight = leftoverW;
-                    }
-                }
-
-                const bool bParentHeightAuto =
-                    parentStyle.height.getRaw().isEmpty() || parentStyle.height.isRaw(Size::AUTO_KEYWORD);
-
-                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
-                                              parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;
-
-                if (bCanAutoVertical && (bParentCenter || bTopAuto || bBottomAuto))
-                {
-                    float leftoverH = available.y - usedHeight - marginTop - marginBottom;
-
-                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex))
-                    {
-                        leftoverH = m_parent->getPosition().y + parentStyle.insetTop() + m_parent->getSize().y -
-                                    m_parent->getCursor().y - usedHeight - marginTop - marginBottom;
-                    }
-
-                    if (leftoverH > 0.0f)
-                    {
-                        if (bParentCenter || (bTopAuto && bBottomAuto))
-                        {
-                            marginTop    = leftoverH * 0.5f;
-                            marginBottom = leftoverH * 0.5f;
-                        }
-                        else if (bTopAuto)
-                        {
-                            marginTop = leftoverH;
-                        }
-                        else if (bBottomAuto)
-                        {
-                            marginBottom = leftoverH;
-                        }
-                    }
-                }
-            }
-
-            if (isRoot() || m_style.isPosition(StylePosition::Absolute))
-            {
-                Vec2 origin = Vec2::Zero();
-
-                if (!isRoot() && hasParent())
-                {
-                    const Component* containingBlock = getContainingBlock();
-                    origin.x = containingBlock->getPosition().x + containingBlock->getStyle().insetLeft();
-                    origin.y = containingBlock->getPosition().y + containingBlock->getStyle().insetTop();
-                }
-
-                setPosition(origin.x + marginLeft, origin.y + marginTop);
-                addCursor(startPadding);
-
-                return;
-            }
-
-            const Style& parentStyle = m_parent->getStyle();
-            const Vec2   available   = {
-                std::max(0.0f, m_parent->getSize().x - parentStyle.insetHorizontal()),
-                std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
-            };
-
-            switch (parentStyle.display.get())
-            {
-            case StyleDisplay::Flex: {
-                const bool bIsRow   = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
-                const bool bCanWrap = parentStyle.flex.wrap.get() == StyleFlexWrap::Wrap;
-
-                const float mainGap  = bIsRow ? parentStyle.gap.left.get() : parentStyle.gap.top.get();
-                const float crossGap = bIsRow ? parentStyle.gap.top.get() : parentStyle.gap.left.get();
-
-                const float itemMain =
-                    bIsRow ? (usedWidth + marginLeft + marginRight) : (usedHeight + marginTop + marginBottom);
-                const float itemCross =
-                    bIsRow ? (usedHeight + marginTop + marginBottom) : (usedWidth + marginLeft + marginRight);
-
-                const float lineStart    = bIsRow ? (m_parent->getPosition().x + parentStyle.insetLeft())
-                                                  : (m_parent->getPosition().y + parentStyle.insetTop());
-                const float lineLimit    = bIsRow ? (lineStart + available.x) : (lineStart + available.y);
-                float       cursorMain   = bIsRow ? m_parent->getCursor().x : m_parent->getCursor().y;
-                const bool  bLineStarted = cursorMain > lineStart;
-
-                if (bLineStarted)
-                {
-                    if (bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit)
-                    {
-                        if (bIsRow)
-                        {
-                            m_parent->setCursor(lineStart, m_parent->getCursor().y + m_parent->m_scratch + crossGap);
-                        }
-                        else
-                        {
-                            m_parent->setCursor(m_parent->getCursor().x + m_parent->m_scratch + crossGap, lineStart);
-                        }
-
-                        m_parent->m_scratch = 0.0f;
-                    }
-                    else if (bIsRow)
-                    {
-                        m_parent->addCursor(mainGap, 0.0f);
-                    }
-                    else
-                    {
-                        m_parent->addCursor(0.0f, mainGap);
-                    }
-                }
-
-                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
-                addCursor(startPadding);
-
-                m_parent->m_scratch = std::max(m_parent->m_scratch, itemCross);
-
-                if (bIsRow)
-                {
-                    m_parent->addCursor(marginLeft + usedWidth + marginRight, 0.0f);
-                }
-                else
-                {
-                    m_parent->addCursor(0.0f, marginTop + usedHeight + marginBottom);
-                }
-
-                break;
-            }
-
-            default:
-                setPosition(m_parent->getCursor() + Vec2(marginLeft, marginTop));
-                addCursor(startPadding);
-
-                m_parent->addCursor(0.0f, m_size.y + marginBottom);
-
-                break;
-            }
-        }
-
-        void Component::refreshBounds()
-        {
-            m_bounds.set(0.0f, 0.0f, m_size.y, m_size.x);
-            m_bounds.transform(getMatrix());
-        }
-
         String Component::parseText(const String& inValue) const
         {
             if (inValue.isEmpty() || !isReference(inValue))
@@ -2471,6 +2427,231 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        void Component::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)
+        {
+            if (!inStyle.isEmpty())
+            {
+                importStyleFile(inStyle);
+            }
+
+            if (inTemplate.isEmpty())
+            {
+                return;
+            }
+
+            thread_local std::vector<String> loading;
+
+            const String source = inTemplate.toString();
+            for (const String& path : loading)
+            {
+                if (path.equals(source))
+                {
+                    throw std::runtime_error("Cyclic Grid component include [" + source + "]");
+                }
+            }
+
+            Loading guard(loading, source);
+
+            pugi::xml_document document = Xml::load(inTemplate);
+            if (document.empty() || document.children().empty())
+            {
+                throw std::runtime_error("UI document " + source + " does not have any components");
+            }
+
+            const pugi::xml_node root = document.first_child();
+            if (!(root.parent() == root.root() && !root.next_sibling()))
+            {
+                throw std::runtime_error("UI document root element must not have any siblings");
+            }
+
+            std::vector<Component*> projected = m_children;
+            m_children.clear();
+
+            Scope      scope(this);
+            Projection projection(projected);
+
+            if (String(root.name()).equals(getTag()))
+            {
+                m_sourceNode = m_sourceDocument.append_copy(root);
+                m_attributes = Xml::getAttributes(m_sourceNode);
+                setId(getAttribute(ID_ATTRIBUTE_NAME));
+                setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
+                addChildren(root);
+            }
+            else if (Component* wrapper = create(root))
+            {
+                addChild(wrapper);
+            }
+
+            for (Component* child : projected)
+            {
+                addChild(child);
+            }
+        }
+
+        void Component::addProjectedContent(const pugi::xml_node& inSlot)
+        {
+            if (!g_projected || g_projected->empty())
+            {
+                return;
+            }
+
+            const pugi::xml_attribute attribute = Xml::getAttribute(CONTENT_SELECT_ATTRIBUTE_NAME, inSlot);
+            const String select = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
+
+            std::vector<Component*> leftover;
+            leftover.reserve(g_projected->size());
+
+            for (Component* child : *g_projected)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                if (select.isEmpty() || child->hasLocalSelector(select))
+                {
+                    addChild(child);
+
+                    continue;
+                }
+
+                leftover.push_back(child);
+            }
+
+            *g_projected = std::move(leftover);
+        }
+
+        void Component::refreshClassName()
+        {
+            const auto found = m_attributes.find(CLASS_ATTRIBUTE_NAME);
+            if (found == m_attributes.end())
+            {
+                return;
+            }
+
+            const String className = parseText(found->second);
+            if (className.equals(m_className))
+            {
+                return;
+            }
+
+            setClassName(className);
+        }
+
+        void Component::refreshStyle()
+        {
+            m_style.refresh();
+        }
+
+        void Component::refreshBounds()
+        {
+            m_bounds.set(0.0f, 0.0f, m_size.y, m_size.x);
+            m_bounds.transform(getMatrix());
+        }
+
+        const StyleKeyframe::List* Component::findKeyframes(const String& inName) const
+        {
+            std::vector<StyleFile*> files;
+
+            auto addFile = [&](StyleFile* inFile)
+            {
+                if (!inFile)
+                {
+                    return;
+                }
+
+                if (std::find(files.begin(), files.end(), inFile) != files.end())
+                {
+                    return;
+                }
+
+                files.push_back(inFile);
+            };
+
+            std::vector<StyleFile*> ancestors;
+            for (const Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
+            {
+                addFile(ancestor->m_styleFile);
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+            }
+
+            for (auto iterator = ancestors.rbegin(); iterator != ancestors.rend(); ++iterator)
+            {
+                addFile(*iterator);
+            }
+
+            addFile(m_styleFile);
+
+            if (m_bOwnsStyle)
+            {
+                addFile(m_styles.get());
+            }
+
+            for (auto iterator = files.rbegin(); iterator != files.rend(); ++iterator)
+            {
+                if ((*iterator)->hasKeyframes(inName))
+                {
+                    return &(*iterator)->getKeyframes(inName);
+                }
+            }
+
+            return nullptr;
+        }
+
+        Drift::Clip Component::makeAnimationClip(const StyleKeyframe::List& inKeyframes) const
+        {
+            Drift::Clip clip(m_style.animation.name);
+            clip.duration   = m_style.animation.duration;
+            clip.iterations = m_style.animation.iterations;
+            clip.loop       = m_style.animation.bAlternate
+                                  ? Drift::Loop::PingPong
+                                  : (m_style.animation.iterations == 1 ? Drift::Loop::Once : Drift::Loop::Repeat);
+
+            std::unordered_map<String, Drift::Track> tracks;
+
+            for (const StyleKeyframe& frame : inKeyframes)
+            {
+                Style snapshot;
+                snapshot.setParent(this);
+                snapshot.setProperties(frame.properties);
+                snapshot.refresh();
+
+                const float time = frame.offset * clip.duration;
+
+                for (const auto& [name, value] : frame.properties)
+                {
+                    const std::vector<float> parsed = snapshot.extractAnimatedProperty(name);
+
+                    if (parsed.empty())
+                    {
+                        continue;
+                    }
+
+                    auto found = tracks.find(name);
+
+                    if (found == tracks.end())
+                    {
+                        tracks.insert({name, Drift::Track(name)});
+                        found = tracks.find(name);
+                    }
+
+                    found->second.addKeyframe(time, parsed, m_style.animation.easing);
+                }
+            }
+
+            for (const auto& [name, track] : tracks)
+            {
+                clip.addTrack(track);
+            }
+
+            return clip;
         }
 
         bool Component::isReference(const String& inValue) const
@@ -2604,6 +2785,18 @@ namespace Chicane
             return clone;
         }
 
+        const ReflectionTypeInfo* Component::findImported(const String& inSelector) const
+        {
+            if (inSelector.isEmpty())
+            {
+                return nullptr;
+            }
+
+            const auto found = m_imports.find(inSelector);
+
+            return found != m_imports.end() ? found->second : nullptr;
+        }
+
         void Component::syncForLoop(
             const String& inVariableId, const ReflectionFieldAccessor& inAccessor, const void* inInstance
         )
@@ -2682,9 +2875,13 @@ namespace Chicane
 
                 if (bWasHidden)
                 {
-                    instance->refreshStyleRuleset();
+                    instance->markStyleDirtySubtree();
+                    instance->markLayoutDirtySubtree();
                 }
             }
+
+            parent->markLayoutDirty();
+            parent->markFlatDirty();
         }
 
         bool Component::isMethod(const String& inValue) const
@@ -2700,106 +2897,198 @@ namespace Chicane
             return bHasOpening && bHasClosing;
         }
 
-        const StyleKeyframe::List* Component::findKeyframes(const String& inName) const
+        ReflectionTypeMethod Component::getMethod(const String& inValue, const Component* inParamContext) const
         {
-            std::vector<StyleFile*> files;
+            String signature = inValue.trim();
 
-            auto addFile = [&](StyleFile* inFile)
+            if (isReference(signature))
             {
-                if (!inFile)
-                {
-                    return;
-                }
-
-                if (std::find(files.begin(), files.end(), inFile) != files.end())
-                {
-                    return;
-                }
-
-                files.push_back(inFile);
-            };
-
-            std::vector<StyleFile*> ancestors;
-            for (const Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
-            {
-                addFile(ancestor->m_styleFile);
-
-                if (ancestor->isRoot())
-                {
-                    break;
-                }
+                signature = signature.getBetween(REFERENCE_VALUE_OPENING, REFERENCE_VALUE_CLOSING).trim();
             }
 
-            for (auto iterator = ancestors.rbegin(); iterator != ancestors.rend(); ++iterator)
+            if (!isMethod(signature))
             {
-                addFile(*iterator);
+                return {};
             }
 
-            addFile(m_styleFile);
-
-            if (m_bOwnsStyle)
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
             {
-                addFile(m_styles.get());
-            }
+                const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
 
-            for (auto iterator = files.rbegin(); iterator != files.rend(); ++iterator)
-            {
-                if ((*iterator)->hasKeyframes(inName))
+                if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
                 {
-                    return &(*iterator)->getKeyframes(inName);
+                    ReflectionTypeMethod result(method);
+                    result.bind(const_cast<Component*>(this));
+
+                    if (inParamContext)
+                    {
+                        inParamContext->populateMethodParams(result, signature);
+                    }
+
+                    return result;
                 }
             }
 
-            return nullptr;
+            if (!hasParent())
+            {
+                return {};
+            }
+
+            return m_parent->getMethod(inValue, inParamContext);
         }
 
-        Drift::Clip Component::makeAnimationClip(const StyleKeyframe::List& inKeyframes) const
+        void Component::populateMethodParams(ReflectionTypeMethod& outMethod, const String& inSignature) const
         {
-            Drift::Clip clip(m_style.animation.name);
-            clip.duration   = m_style.animation.duration;
-            clip.iterations = m_style.animation.iterations;
-            clip.loop       = m_style.animation.bAlternate
-                                  ? Drift::Loop::PingPong
-                                  : (m_style.animation.iterations == 1 ? Drift::Loop::Once : Drift::Loop::Repeat);
+            const std::size_t open  = inSignature.firstOf(METHOD_PARAMS_OPENING);
+            const std::size_t close = inSignature.lastOf(METHOD_PARAMS_CLOSING);
 
-            std::unordered_map<String, Drift::Track> tracks;
-
-            for (const StyleKeyframe& frame : inKeyframes)
+            if (open == String::npos || close == String::npos || close <= open)
             {
-                Style snapshot;
-                snapshot.setParent(this);
-                snapshot.setProperties(frame.properties);
-                snapshot.refresh();
+                return;
+            }
 
-                const float time = frame.offset * clip.duration;
+            const String paramsRaw = inSignature.substr(open + 1, close - open - 1).trim();
+            if (paramsRaw.isEmpty())
+            {
+                return;
+            }
 
-                for (const auto& [name, value] : frame.properties)
+            const ReflectionTypeMethodInfo* info       = outMethod.getInfo();
+            std::size_t                     paramIndex = 0;
+
+            for (const String& rawParam : splitMethodParams(paramsRaw))
+            {
+                const String param = rawParam.trim();
+                if (param.isEmpty())
                 {
-                    const std::vector<float> parsed = snapshot.extractAnimatedProperty(name);
+                    continue;
+                }
 
-                    if (parsed.empty())
+                const String expected =
+                    info && paramIndex < info->paramTypes.size() ? info->paramTypes.at(paramIndex) : String::empty();
+                paramIndex++;
+
+                if ((param.startsWith("\"") && param.endsWith("\"")) || (param.startsWith("'") && param.endsWith("'")))
+                {
+                    outMethod.addParam(param.substr(1, param.size() - 2));
+
+                    continue;
+                }
+
+                ReflectionFieldAccessor accessor = getField(param);
+                if (!accessor.isValid() && hasParent())
+                {
+                    accessor = m_parent->getField(param);
+                }
+
+                if (accessor.isValid())
+                {
+                    const void* instance =
+                        accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+
+                    if (expected.endsWith('*'))
                     {
+                        outMethod.addParam(const_cast<void*>(static_cast<const void*>(accessor.address(instance))));
+
                         continue;
                     }
 
-                    auto found = tracks.find(name);
+                    outMethod.addParam(accessor.toString(instance));
 
-                    if (found == tracks.end())
+                    continue;
+                }
+
+                outMethod.addParam(param);
+            }
+        }
+
+        std::vector<String> Component::splitMethodParams(const String& inValue) const
+        {
+            std::vector<String> result;
+
+            std::size_t   start            = 0;
+            std::uint32_t parenthesisCount = 0;
+
+            for (std::size_t i = 0; i < inValue.size(); i++)
+            {
+                const char character = inValue.at(i);
+
+                if (character == METHOD_PARAMS_OPENING)
+                {
+                    parenthesisCount++;
+
+                    continue;
+                }
+
+                if (character == METHOD_PARAMS_CLOSING)
+                {
+                    if (parenthesisCount > 0)
                     {
-                        tracks.insert({name, Drift::Track(name)});
-                        found = tracks.find(name);
+                        parenthesisCount--;
                     }
 
-                    found->second.addKeyframe(time, parsed, m_style.animation.easing);
+                    continue;
                 }
+
+                if (character != METHOD_PARAMS_SEPARATOR || parenthesisCount > 0)
+                {
+                    continue;
+                }
+
+                result.push_back(inValue.substr(start, i - start));
+                start = i + 1;
             }
 
-            for (const auto& [name, track] : tracks)
+            if (start <= inValue.size())
             {
-                clip.addTrack(track);
+                result.push_back(inValue.substr(start));
             }
 
-            return clip;
+            return result;
+        }
+
+        bool Component::isCulledByAncestor() const
+        {
+            if (m_size.x <= 0.0f || m_size.y <= 0.0f)
+            {
+                return false;
+            }
+
+            const Bounds2D clip = getOverflowClip();
+            if (clip.isEmpty())
+            {
+                return true;
+            }
+
+            Bounds2D    draw = getDrawBounds();
+            const float pad  = std::max(m_size.x, m_size.y) + 64.0f;
+            draw.left -= pad;
+            draw.top -= pad;
+            draw.right += pad;
+            draw.bottom += pad;
+
+            return !draw.overlaps(clip);
+        }
+
+        void Component::rebuildFlatChildren() const
+        {
+            m_flatChildren.clear();
+            m_flatChildren.reserve(m_children.size() * 2);
+
+            for (Component* child : m_children)
+            {
+                if (!child || child == this)
+                {
+                    continue;
+                }
+
+                m_flatChildren.push_back(child);
+
+                const std::vector<Component*> sub = child->getChildrenFlat();
+                m_flatChildren.insert(m_flatChildren.end(), sub.begin(), sub.end());
+            }
+
+            m_bIsFlatDirty = false;
         }
     }
 }
