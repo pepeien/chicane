@@ -10,6 +10,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 #include "Chicane/Grid/Component/View/InputQueue.hpp"
 
 namespace Chicane
@@ -17,7 +18,7 @@ namespace Chicane
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID View : public Component
+        class CHICANE_GRID View : public Container
         {
         public:
             // Tag
