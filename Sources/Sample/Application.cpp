@@ -12,7 +12,6 @@ Application::Application()
 
     // Window
     createInfo.window.title   = "Chicane Sample";
-    createInfo.window.size    = Chicane::Vec<2, std::uint32_t>(1600, 900);
     createInfo.window.display = 0;
     createInfo.window.type    = Chicane::WindowType::Windowed;
     createInfo.window.backend = Chicane::WindowBackend::Vulkan;
