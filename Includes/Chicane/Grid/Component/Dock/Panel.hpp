@@ -45,11 +45,21 @@ namespace Chicane
             static constexpr inline const char* DEFAULT_SIZE     = "25%";
             static constexpr inline const char* DEFAULT_MIN_SIZE = "4em";
 
+            static DockPanel* findFrom(Component* inComponent);
+
         public:
             CH_CONSTRUCTOR()
             DockPanel(const pugi::xml_node& inNode);
 
             ~DockPanel() override;
+
+        public:
+            std::vector<Component*> getChildrenFlat() const override;
+
+        protected:
+            void onRefresh() override;
+            void refreshSize() override;
+            void refreshPosition() override;
 
         public:
             DockSide getSide() const;
@@ -61,8 +71,6 @@ namespace Chicane
             void setGrabbable(bool inValue);
             bool hasAssignedHandle() const;
             bool isAssignedHandle(const Component* inComponent) const;
-
-            static DockPanel* findFrom(Component* inComponent);
 
             const String& getHandleId() const;
             Component* findAssignedHandle() const;
@@ -82,12 +90,6 @@ namespace Chicane
             void setFloatSize(const Vec2& inValue);
 
             DockHandle* getHandle() const;
-            std::vector<Component*> getChildrenFlat() const override;
-
-        protected:
-            void onRefresh() override;
-            void refreshSize() override;
-            void refreshPosition() override;
 
         private:
             friend class Dock;

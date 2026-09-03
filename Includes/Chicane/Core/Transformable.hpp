@@ -14,10 +14,10 @@ namespace Chicane
         Transformable();
 
     protected:
-        inline virtual void onTransform() { return; }
+        void onRefresh() override;
 
     protected:
-        void onRefresh() override;
+        inline virtual void onTransform() { return; }
 
     public:
         // Bounds

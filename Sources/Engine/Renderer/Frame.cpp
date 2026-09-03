@@ -133,20 +133,6 @@ namespace Chicane
 
         const DrawPoly3DInstance::List& Frame::getInstances3D() const
         {
-            if (!m_b3DInstancesDirty)
-            {
-                return m_3DInstancesFlat;
-            }
-
-            m_3DInstancesFlat.clear();
-
-            for (const auto& [id, instance] : m_3DInstances)
-            {
-                m_3DInstancesFlat.insert(m_3DInstancesFlat.end(), instance.begin(), instance.end());
-            }
-
-            m_b3DInstancesDirty = false;
-
             return m_3DInstancesFlat;
         }
 
@@ -158,7 +144,7 @@ namespace Chicane
             }
 
             m_3DInstances[inId].push_back(inInstance);
-            m_b3DInstancesDirty = true;
+            rebuildInstances3D();
         }
 
         const DrawSkyInstance& Frame::getSkyInstance() const
@@ -236,7 +222,16 @@ namespace Chicane
             m_polys[DrawPolyType::e3D].clear();
             m_3DInstances.clear();
             m_3DInstancesFlat.clear();
-            m_b3DInstancesDirty = true;
+        }
+
+        void Frame::rebuildInstances3D()
+        {
+            m_3DInstancesFlat.clear();
+
+            for (const auto& [id, instance] : m_3DInstances)
+            {
+                m_3DInstancesFlat.insert(m_3DInstancesFlat.end(), instance.begin(), instance.end());
+            }
         }
     }
 }

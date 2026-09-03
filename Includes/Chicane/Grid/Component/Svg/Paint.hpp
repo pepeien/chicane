@@ -49,12 +49,12 @@ namespace Chicane
             static constexpr inline const char* STYLE_ATTRIBUTE_NAME     = "style";
 
         public:
-            SvgPaint();
-            SvgPaint(const Color::Rgba& inColor);
-
-        public:
             static SvgLineCap parseLineCap(const String& inValue);
             static SvgLineJoin parseLineJoin(const String& inValue);
+
+        public:
+            SvgPaint();
+            SvgPaint(const Color::Rgba& inColor);
 
         public:
             bool        bIsStrokeEnabled;

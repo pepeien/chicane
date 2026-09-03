@@ -32,9 +32,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        constexpr int   kBezierSegments = 8;
-        constexpr float kMinLength      = 1.0e-5f;
-        constexpr float kKappa          = 0.5522847498f;
+        constexpr int   BEZIER_SEGMENTS = 8;
+        constexpr float MIN_LENGTH      = 1.0e-5f;
+        constexpr float KAPPA          = 0.5522847498f;
 
         String tagName(const pugi::xml_node& inNode)
         {
@@ -443,7 +443,7 @@ namespace Chicane
             const Vec2& inTo
         )
         {
-            if (std::fabs(inRx) < kMinLength || std::fabs(inRy) < kMinLength)
+            if (std::fabs(inRx) < MIN_LENGTH || std::fabs(inRy) < MIN_LENGTH)
             {
                 outCurve.addPoint(inTo);
 
@@ -563,7 +563,7 @@ namespace Chicane
             SvgScanner         scanner(inValue);
 
             Curve curve;
-            curve.setSegmentCount(kBezierSegments);
+            curve.setSegmentCount(BEZIER_SEGMENTS);
 
             Vec2 current   = Vec2::Zero();
             Vec2 start     = Vec2::Zero();
@@ -578,14 +578,14 @@ namespace Chicane
                 if (curve.getPoints().size() < 2)
                 {
                     curve = Curve();
-                    curve.setSegmentCount(kBezierSegments);
+                    curve.setSegmentCount(BEZIER_SEGMENTS);
 
                     return;
                 }
 
                 contours.push_back(curve);
                 curve = Curve();
-                curve.setSegmentCount(kBezierSegments);
+                curve.setSegmentCount(BEZIER_SEGMENTS);
             };
 
             while (!scanner.done())
@@ -814,26 +814,26 @@ namespace Chicane
         Curve makeEllipse(float inCx, float inCy, float inRx, float inRy)
         {
             Curve curve;
-            curve.setSegmentCount(kBezierSegments);
+            curve.setSegmentCount(BEZIER_SEGMENTS);
             curve.addPoint({inCx + inRx, inCy});
             curve.addBezierPoint(
-                {inCx + inRx, inCy + (kKappa * inRy)},
-                {inCx + (kKappa * inRx), inCy + inRy},
+                {inCx + inRx, inCy + (KAPPA * inRy)},
+                {inCx + (KAPPA * inRx), inCy + inRy},
                 {inCx, inCy + inRy}
             );
             curve.addBezierPoint(
-                {inCx - (kKappa * inRx), inCy + inRy},
-                {inCx - inRx, inCy + (kKappa * inRy)},
+                {inCx - (KAPPA * inRx), inCy + inRy},
+                {inCx - inRx, inCy + (KAPPA * inRy)},
                 {inCx - inRx, inCy}
             );
             curve.addBezierPoint(
-                {inCx - inRx, inCy - (kKappa * inRy)},
-                {inCx - (kKappa * inRx), inCy - inRy},
+                {inCx - inRx, inCy - (KAPPA * inRy)},
+                {inCx - (KAPPA * inRx), inCy - inRy},
                 {inCx, inCy - inRy}
             );
             curve.addBezierPoint(
-                {inCx + (kKappa * inRx), inCy - inRy},
-                {inCx + inRx, inCy - (kKappa * inRy)},
+                {inCx + (KAPPA * inRx), inCy - inRy},
+                {inCx + inRx, inCy - (KAPPA * inRy)},
                 {inCx + inRx, inCy}
             );
 
@@ -843,7 +843,7 @@ namespace Chicane
         Curve makeRect(float inX, float inY, float inWidth, float inHeight, float inRx, float inRy)
         {
             Curve curve;
-            curve.setSegmentCount(kBezierSegments);
+            curve.setSegmentCount(BEZIER_SEGMENTS);
 
             float rx = std::max(0.0f, inRx);
             float ry = std::max(0.0f, inRy);
@@ -872,8 +872,8 @@ namespace Chicane
                 return curve;
             }
 
-            const float kx = kKappa * rx;
-            const float ky = kKappa * ry;
+            const float kx = KAPPA * rx;
+            const float ky = KAPPA * ry;
 
             curve.addPoint({inX + rx, inY});
             curve.addPoint({inX + inWidth - rx, inY});
@@ -1044,7 +1044,7 @@ namespace Chicane
             {
                 const float length = vecLength(inDelta);
 
-                if (length < kMinLength)
+                if (length < MIN_LENGTH)
                 {
                     return Vec2::Zero();
                 }
@@ -1090,7 +1090,7 @@ namespace Chicane
             {
                 const float length = vecLength(inValue);
 
-                if (length < kMinLength)
+                if (length < MIN_LENGTH)
                 {
                     return Vec2::Zero();
                 }
@@ -1168,7 +1168,7 @@ namespace Chicane
                 {
                     const Vec2 mapped = transformPoint(inPaint.transform, point);
 
-                    if (!points.empty() && vecLength(mapped - points.back()) < kMinLength)
+                    if (!points.empty() && vecLength(mapped - points.back()) < MIN_LENGTH)
                     {
                         continue;
                     }
@@ -1178,7 +1178,7 @@ namespace Chicane
 
                 bool bIsClosed = false;
 
-                if (points.size() >= 3 && vecLength(points.front() - points.back()) < kMinLength)
+                if (points.size() >= 3 && vecLength(points.front() - points.back()) < MIN_LENGTH)
                 {
                     points.pop_back();
                     bIsClosed = true;
@@ -1294,8 +1294,8 @@ namespace Chicane
                 const float startLen = vecLength(startDir);
                 const float endLen   = vecLength(endDir);
                 const Vec2  startOut =
-                    startLen >= kMinLength ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
-                const Vec2 endOut = endLen >= kMinLength ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
+                    startLen >= MIN_LENGTH ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
+                const Vec2 endOut = endLen >= MIN_LENGTH ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
 
                 emitCap(points.front(), startOut, sideNormal(startDir));
                 emitCap(points.back(), endOut, sideNormal(endDir));

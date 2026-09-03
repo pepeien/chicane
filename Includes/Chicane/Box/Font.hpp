@@ -47,15 +47,16 @@ namespace Chicane
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();
+            void rebuildInstances();
 
             FontFamily parseData(const FontRaw& inValue) const;
             FontFamily parseData(const FontRaw& inValue, float inWeight) const;
 
         private:
-            FontVendor                                  m_vendor;
-            FontRaw                                     m_raw;
-            FontFamily                                  m_data;
-            mutable std::unordered_map<int, FontFamily> m_instances;
+            FontVendor                          m_vendor;
+            FontRaw                             m_raw;
+            FontFamily                          m_data;
+            std::unordered_map<int, FontFamily> m_instances;
         };
     }
 }

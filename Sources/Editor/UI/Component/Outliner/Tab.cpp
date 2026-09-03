@@ -1,7 +1,5 @@
 #include "Editor/UI/Component/Outliner/Tab.reflected.hpp"
 
-#include <Chicane/Core/Log.hpp>
-
 namespace Editor
 {
     OutlinerTab::OutlinerTab(const pugi::xml_node& inNode)
@@ -21,7 +19,8 @@ namespace Editor
 
     void OutlinerTab::onDropdownClick()
     {
-        contentVisibility = contentVisibility.equals("visible") ? "hidden" : "visible";
+        contentVisibility =
+            contentVisibility.equals(VISILITY_STATUS_VISIBLE) ? VISILITY_STATUS_HIDDEN : VISILITY_STATUS_VISIBLE;
     }
 
     void OutlinerTab::refreshLabel()

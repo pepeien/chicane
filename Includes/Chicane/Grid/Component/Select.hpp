@@ -34,14 +34,8 @@ namespace Chicane
 
         public:
             bool isFocusable() const override;
-
             bool onEvent(const WindowEvent& inEvent) override;
             void tick(float inDeltaTime) override;
-
-        public:
-            std::vector<SelectOption*> getOptions() const;
-            std::vector<SelectOption*> getVisibleOptions() const;
-            bool isHighlighted(const SelectOption* inOption) const;
 
         protected:
             void onTick(float inDeltaTime) override;
@@ -61,6 +55,11 @@ namespace Chicane
             CH_FUNCTION()
             void choose(String inValue);
 
+        public:
+            std::vector<SelectOption*> getOptions() const;
+            std::vector<SelectOption*> getVisibleOptions() const;
+            bool isHighlighted(const SelectOption* inOption) const;
+
             void pick(SelectOption* inOption);
 
         private:
@@ -76,10 +75,8 @@ namespace Chicane
         public:
             CH_FIELD()
             String value;
-
             CH_FIELD()
             String label;
-
             CH_FIELD()
             String placeholder;
 

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <unordered_map>
 
 #include "Chicane/Box/Font/TrueType.hpp"
@@ -88,6 +89,11 @@ namespace Chicane
 
         const FontFamily& Font::getData(float inWeight) const
         {
+            if (m_instances.empty())
+            {
+                return m_data;
+            }
+
             if (!m_data.isVariable())
             {
                 return m_data;
@@ -102,12 +108,19 @@ namespace Chicane
                 return found->second;
             }
 
-            FontFamily instance = parseData(m_raw, static_cast<float>(key));
-            const auto inserted = m_instances.emplace(key, std::move(instance));
+            const FontFamily* nearest = &m_data;
+            int               delta   = std::numeric_limits<int>::max();
+            for (const auto& [instanceKey, instance] : m_instances)
+            {
+                const int distance = std::abs(instanceKey - key);
+                if (distance < delta)
+                {
+                    delta   = distance;
+                    nearest = &instance;
+                }
+            }
 
-            notify(this);
-
-            return inserted.first->second;
+            return *nearest;
         }
 
         void Font::setData(const FileSystem::Path& inFilepath)
@@ -130,8 +143,8 @@ namespace Chicane
 
             m_raw  = inData;
             m_data = parseData(inData);
-            m_instances.clear();
-            m_instances.emplace(static_cast<int>(std::round(m_data.getWeight())), m_data);
+            rebuildInstances();
+            notify(this);
         }
 
         std::vector<const FontFamily*> Font::getInstances() const
@@ -171,8 +184,31 @@ namespace Chicane
 
             m_raw  = Base64::decodeToUnsigned(getXML().text().as_string());
             m_data = parseData(m_raw);
+            rebuildInstances();
+        }
+
+        void Font::rebuildInstances()
+        {
             m_instances.clear();
             m_instances.emplace(static_cast<int>(std::round(m_data.getWeight())), m_data);
+
+            if (!m_data.isVariable())
+            {
+                return;
+            }
+
+            const int min = static_cast<int>(std::ceil(m_data.getWeightMin()));
+            const int max = static_cast<int>(std::floor(m_data.getWeightMax()));
+
+            for (int weight = 100; weight <= 900; weight += 100)
+            {
+                if (weight < min || weight > max || m_instances.find(weight) != m_instances.end())
+                {
+                    continue;
+                }
+
+                m_instances.emplace(weight, parseData(m_raw, static_cast<float>(weight)));
+            }
         }
 
         FontFamily Font::parseData(const FontRaw& inValue) const

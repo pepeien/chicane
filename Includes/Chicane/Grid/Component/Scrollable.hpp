@@ -24,6 +24,7 @@ namespace Chicane
             bool onEvent(const WindowEvent& inEvent) override;
             std::vector<Component*> getChildrenFlat() const override;
 
+        public:
             const Vec2& getScroll() const;
             Vec2 getScrollMax() const;
             void addScroll(const Vec2& inValue);
@@ -31,12 +32,14 @@ namespace Chicane
             void setScroll(const Vec2& inValue);
             void setScroll(float inX, float inY);
 
+            void setVirtualContentSize(const Vec2& inValue);
+            void clearVirtualContentSize();
+
             bool isClippingOverflow() const;
 
             bool canScroll() const;
             bool canScrollX() const;
             bool canScrollY() const;
-
             bool hasScrollBar() const;
 
         protected:
@@ -44,13 +47,13 @@ namespace Chicane
             void beginScrollBarDrag(const Vec2& inLocation);
             void updateScrollBarDrag(const Vec2& inLocation);
             void endScrollBarDrag();
+            bool isDragging() const;
 
             Bounds2D getScrollBarXTrack() const;
             Bounds2D getScrollBarXThumb() const;
             Bounds2D getScrollBarYTrack() const;
             Bounds2D getScrollBarYThumb() const;
 
-            bool isDragging() const;
             bool handleWheel(const Vec2& inDelta);
 
             void clampScroll();
@@ -61,7 +64,11 @@ namespace Chicane
             );
 
         protected:
-            Vec2                m_currentPosition;
+            Vec2 m_currentPosition;
+
+            Vec2 m_virtualContentSize;
+            bool m_bHasVirtualContent;
+
             ScrollBarProperties m_horizontalBar;
             ScrollBarProperties m_verticalBar;
         };

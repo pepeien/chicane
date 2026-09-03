@@ -10,16 +10,16 @@
 
 namespace Chicane
 {
-    static constexpr float       kMinLength              = 1.0e-12f;
-    static constexpr float       kSnapRelative           = 1.0e-6f;
-    static constexpr float       kConvexAreaRelative     = 1.0e-8f;
-    static constexpr float       kDegenerateAreaRelative = 1.0e-12f;
-    static constexpr float       kTessExtent             = 1024.0f;
-    static constexpr std::size_t kMinPolygonVertices     = 3;
-    static constexpr std::size_t kMaxFanVertices         = 4;
-    static constexpr int         kTessPolygonSize        = 3;
-    static constexpr int         kTessVertexSize         = 2;
-    static constexpr TESSreal    kTessNormal[3]          = {0.0f, 0.0f, 1.0f};
+    static constexpr float       MIN_LENGTH              = 1.0e-12f;
+    static constexpr float       SNAP_RELATIVE           = 1.0e-6f;
+    static constexpr float       CONVEX_AREA_RELATIVE     = 1.0e-8f;
+    static constexpr float       DEGENERATE_AREA_RELATIVE = 1.0e-12f;
+    static constexpr float       TESS_EXTENT             = 1024.0f;
+    static constexpr std::size_t MIN_POLYGON_VERTICES     = 3;
+    static constexpr std::size_t MAX_FAN_VERTICES         = 4;
+    static constexpr int         TESS_POLYGON_SIZE        = 3;
+    static constexpr int         TESS_VERTEX_SIZE         = 2;
+    static constexpr TESSreal    TESS_NORMAL[3]          = {0.0f, 0.0f, 1.0f};
 
     using ContourPoint  = std::array<float, 2>;
     using ContourPoints = std::vector<ContourPoint>;
@@ -62,7 +62,7 @@ namespace Chicane
         }
 
         const float extent = contourExtent(inPoints);
-        const float snap   = std::max(extent * kSnapRelative, kMinLength);
+        const float snap   = std::max(extent * SNAP_RELATIVE, MIN_LENGTH);
         const float snap2  = snap * snap;
 
         auto tooClose = [snap2](const ContourPoint& inLeft, const ContourPoint& inRight)
@@ -93,13 +93,13 @@ namespace Chicane
 
     static bool isConvexContour(const ContourPoints& inPoints)
     {
-        if (inPoints.size() < kMinPolygonVertices)
+        if (inPoints.size() < MIN_POLYGON_VERTICES)
         {
             return false;
         }
 
         const float       extent  = contourExtent(inPoints);
-        const float       minArea = std::max(extent * extent * kConvexAreaRelative, kMinLength);
+        const float       minArea = std::max(extent * extent * CONVEX_AREA_RELATIVE, MIN_LENGTH);
         const std::size_t count   = inPoints.size();
         int               sign    = 0;
 
@@ -128,7 +128,7 @@ namespace Chicane
     static void emitFan(const ContourPoints& inPoints, Vertex::Positions& outPositions, Vertex::Indices& outIndices)
     {
         const float         extent  = contourExtent(inPoints);
-        const float         minArea = std::max(extent * extent * kDegenerateAreaRelative, kMinLength);
+        const float         minArea = std::max(extent * extent * DEGENERATE_AREA_RELATIVE, MIN_LENGTH);
         const std::uint32_t base    = static_cast<std::uint32_t>(outPositions.size());
         const std::uint32_t count   = static_cast<std::uint32_t>(inPoints.size());
 
@@ -189,7 +189,7 @@ namespace Chicane
 
             points = normalizeContour(points);
 
-            if (points.size() < kMinPolygonVertices)
+            if (points.size() < MIN_POLYGON_VERTICES)
             {
                 continue;
             }
@@ -221,7 +221,7 @@ namespace Chicane
             return;
         }
 
-        if (contours.size() == 1 && contours.front().size() <= kMaxFanVertices && isConvexContour(contours.front()))
+        if (contours.size() == 1 && contours.front().size() <= MAX_FAN_VERTICES && isConvexContour(contours.front()))
         {
             emitFan(contours.front(), m_positions, m_indices);
 
@@ -230,12 +230,12 @@ namespace Chicane
 
         const float extent = std::max(maxX - minX, maxY - minY);
 
-        if (extent <= kMinLength)
+        if (extent <= MIN_LENGTH)
         {
             return;
         }
 
-        const float scale = kTessExtent / extent;
+        const float scale = TESS_EXTENT / extent;
 
         TESStesselator* tess = tessNewTess(nullptr);
 
@@ -257,20 +257,20 @@ namespace Chicane
 
             tessAddContour(
                 tess,
-                kTessVertexSize,
+                TESS_VERTEX_SIZE,
                 flat.data(),
-                static_cast<int>(sizeof(float) * kTessVertexSize),
+                static_cast<int>(sizeof(float) * TESS_VERTEX_SIZE),
                 static_cast<int>(contour.size())
             );
         }
 
         const int winding = bInEvenOdd ? TESS_WINDING_ODD : TESS_WINDING_NONZERO;
 
-        if (!tessTesselate(tess, winding, TESS_POLYGONS, kTessPolygonSize, kTessVertexSize, kTessNormal))
+        if (!tessTesselate(tess, winding, TESS_POLYGONS, TESS_POLYGON_SIZE, TESS_VERTEX_SIZE, TESS_NORMAL))
         {
             tessDeleteTess(tess);
 
-            if (contours.size() == 1 && contours.front().size() <= kMaxFanVertices)
+            if (contours.size() == 1 && contours.front().size() <= MAX_FAN_VERTICES)
             {
                 emitFan(contours.front(), m_positions, m_indices);
             }
@@ -283,7 +283,7 @@ namespace Chicane
         const int    nverts  = tessGetVertexCount(tess);
         const int    nelems  = tessGetElementCount(tess);
         const float  inv     = 1.0f / scale;
-        const float  minArea = std::max(extent * extent * kDegenerateAreaRelative, kMinLength);
+        const float  minArea = std::max(extent * extent * DEGENERATE_AREA_RELATIVE, MIN_LENGTH);
 
         for (int i = 0; i < nverts; ++i)
         {

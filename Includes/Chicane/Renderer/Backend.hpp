@@ -51,6 +51,8 @@ namespace Chicane
             virtual void onRender(const Frame& inFrame);
             virtual void onEndRender();
 
+            virtual Draw::Id getScreenTextureId() const;
+
         public:
             // Renderer
             const Instance* getRenderer() const;
@@ -131,9 +133,6 @@ namespace Chicane
 
             // Telemetry
             float getGpuDelta() const;
-
-            // Target
-            virtual Draw::Id getScreenTextureId() const;
 
         protected:
             bool isScreenComposited(const Frame& inFrame) const;

@@ -255,8 +255,6 @@ namespace Chicane
               m_directives({}),
               m_variables({}),
               m_style({}),
-              m_styleBase({}),
-              m_bHasStyleBase(false),
               m_styleVariables({}),
               m_styleFile(nullptr),
               m_styles(nullptr),
@@ -267,7 +265,6 @@ namespace Chicane
               m_parent(nullptr),
               m_children({}),
               m_flatChildren({}),
-              m_bIsFlatDirty(true),
               m_size(Vec2::Zero()),
               m_scale(Vec2::Zero()),
               m_offset(Vec2::Zero()),
@@ -290,7 +287,6 @@ namespace Chicane
               m_bIsCulled(false)
         {
             m_style.setParent(this);
-            m_styleBase.setParent(this);
         }
 
         Component::~Component()
@@ -447,12 +443,6 @@ namespace Chicane
             if (!properties.empty())
             {
                 addStyleProperties(properties);
-            }
-
-            if (!m_bIsHovered && !m_bIsFocused && !m_bIsDragging)
-            {
-                m_styleBase.copyValuesFrom(m_style);
-                m_bHasStyleBase = true;
             }
 
             m_style.restore();
@@ -704,11 +694,6 @@ namespace Chicane
 
         std::vector<Component*> Component::getChildrenFlat() const
         {
-            if (m_bIsFlatDirty)
-            {
-                rebuildFlatChildren();
-            }
-
             return m_flatChildren;
         }
 
@@ -927,14 +912,6 @@ namespace Chicane
 
         void Component::refresh()
         {
-            refreshClassName();
-
-            if (m_bIsStyleDirty)
-            {
-                refreshStyleRuleset();
-                m_bIsStyleDirty = false;
-            }
-
             float parentWidth  = 0.0f;
             float parentHeight = 0.0f;
             if (hasParent() && !isRoot())
@@ -951,8 +928,23 @@ namespace Chicane
                 m_layoutParentHeight = parentHeight;
             }
 
-            refreshStyle();
-            refreshDirectives();
+            // Culled nodes still reflow (flex cursor / wrap), but last frame's parsed
+            // style is valid until the node, its style, or its parent size changes.
+            const bool bSkipStyle = m_bIsCulled && !m_bIsStyleDirty && !bParentSizeChanged;
+
+            if (!bSkipStyle)
+            {
+                refreshClassName();
+
+                if (m_bIsStyleDirty)
+                {
+                    refreshStyleRuleset();
+                    m_bIsStyleDirty = false;
+                }
+
+                refreshStyle();
+                refreshDirectives();
+            }
 
             if (m_style.isDisplay(StyleDisplay::None))
             {
@@ -975,7 +967,16 @@ namespace Chicane
 
             if (bWasCulled)
             {
-                m_bIsStyleDirty = true;
+                refreshClassName();
+
+                if (m_bIsStyleDirty)
+                {
+                    refreshStyleRuleset();
+                    m_bIsStyleDirty = false;
+                }
+
+                refreshStyle();
+                refreshDirectives();
             }
 
             tickAnimation(m_style, m_animationDelta);
@@ -1709,11 +1710,11 @@ namespace Chicane
 
         void Component::markFlatDirty()
         {
-            m_bIsFlatDirty = true;
+            rebuildFlatChildren();
 
             for (Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
             {
-                ancestor->m_bIsFlatDirty = true;
+                ancestor->rebuildFlatChildren();
 
                 if (ancestor->isRoot())
                 {
@@ -1758,6 +1759,12 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
+                // Cheapest rejection first: everything below walks ancestors or builds a paint matrix.
+                if (child->isCulled())
+                {
+                    continue;
+                }
+
                 if (!child->isDisplayable())
                 {
                     continue;
@@ -2814,6 +2821,8 @@ namespace Chicane
                 m_forInstances.push_back(this);
             }
 
+            bool bMutated = false;
+
             while (m_forInstances.size() < count)
             {
                 Component* instance = cloneTemplate();
@@ -2830,6 +2839,7 @@ namespace Chicane
 
                 parent->addChild(instance, index);
                 m_forInstances.push_back(instance);
+                bMutated = true;
             }
 
             while (m_forInstances.size() > std::max(count, static_cast<std::size_t>(1)))
@@ -2845,6 +2855,8 @@ namespace Chicane
                 }
 
                 parent->removeChild(extra);
+
+                bMutated = true;
             }
 
             for (std::size_t i = 0; i < m_forInstances.size(); ++i)
@@ -2877,11 +2889,15 @@ namespace Chicane
                 {
                     instance->markStyleDirtySubtree();
                     instance->markLayoutDirtySubtree();
+                    bMutated = true;
                 }
             }
 
-            parent->markLayoutDirty();
-            parent->markFlatDirty();
+            if (bMutated)
+            {
+                parent->markLayoutDirty();
+                parent->markFlatDirty();
+            }
         }
 
         bool Component::isMethod(const String& inValue) const
@@ -3070,7 +3086,7 @@ namespace Chicane
             return !draw.overlaps(clip);
         }
 
-        void Component::rebuildFlatChildren() const
+        void Component::rebuildFlatChildren()
         {
             m_flatChildren.clear();
             m_flatChildren.reserve(m_children.size() * 2);
@@ -3087,8 +3103,6 @@ namespace Chicane
                 const std::vector<Component*> sub = child->getChildrenFlat();
                 m_flatChildren.insert(m_flatChildren.end(), sub.begin(), sub.end());
             }
-
-            m_bIsFlatDirty = false;
         }
     }
 }

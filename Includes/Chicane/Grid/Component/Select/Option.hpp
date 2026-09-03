@@ -27,12 +27,12 @@ namespace Chicane
             CH_CONSTRUCTOR()
             SelectOption(const pugi::xml_node& inNode);
 
-        public:
-            String getLabel() const;
-
         protected:
             void onRefresh() override;
             void onClick() override;
+
+        public:
+            String getLabel() const;
 
         private:
             void ensureText(const String& inText);

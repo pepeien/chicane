@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        constexpr std::size_t kInvalidHighlight = static_cast<std::size_t>(-1);
+        constexpr std::size_t INVALID_HIGHLIGHT = static_cast<std::size_t>(-1);
 
         Select::Select(const pugi::xml_node& inNode)
             : Container(inNode),
@@ -19,7 +19,7 @@ namespace Chicane
               isOpen(false),
               items({}),
               m_bEdited(false),
-              m_highlighted(kInvalidHighlight)
+              m_highlighted(INVALID_HIGHLIGHT)
         {
             load("Assets/Engine/UI/Components/Select.grid", "Assets/Engine/UI/Components/Select.decal");
         }
@@ -136,7 +136,7 @@ namespace Chicane
 
         bool Select::isHighlighted(const SelectOption* inOption) const
         {
-            if (!inOption || m_highlighted == kInvalidHighlight)
+            if (!inOption || m_highlighted == INVALID_HIGHLIGHT)
             {
                 return false;
             }
@@ -208,7 +208,7 @@ namespace Chicane
             }
 
             isOpen        = false;
-            m_highlighted = kInvalidHighlight;
+            m_highlighted = INVALID_HIGHLIGHT;
 
             refreshStyleSubtree();
         }
@@ -347,7 +347,7 @@ namespace Chicane
         {
             if (!isOpen)
             {
-                m_highlighted = kInvalidHighlight;
+                m_highlighted = INVALID_HIGHLIGHT;
 
                 return;
             }
@@ -355,7 +355,7 @@ namespace Chicane
             const std::vector<SelectOption*> options = getVisibleOptions();
             if (options.empty())
             {
-                m_highlighted = kInvalidHighlight;
+                m_highlighted = INVALID_HIGHLIGHT;
 
                 return;
             }
@@ -432,13 +432,13 @@ namespace Chicane
             const std::vector<SelectOption*> options = getVisibleOptions();
             if (options.empty())
             {
-                m_highlighted = kInvalidHighlight;
+                m_highlighted = INVALID_HIGHLIGHT;
 
                 return;
             }
 
             const int count = static_cast<int>(options.size());
-            int       next  = m_highlighted == kInvalidHighlight ? 0 : static_cast<int>(m_highlighted) + inDelta;
+            int       next  = m_highlighted == INVALID_HIGHLIGHT ? 0 : static_cast<int>(m_highlighted) + inDelta;
 
             while (next < 0)
             {

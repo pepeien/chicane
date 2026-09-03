@@ -13,6 +13,10 @@ namespace Editor
         // Attributes
         static constexpr inline const char* LABEL_ATTRIBUTE_NAME = "label";
 
+        // Values
+        static constexpr inline const char* VISILITY_STATUS_HIDDEN  = "hidden";
+        static constexpr inline const char* VISILITY_STATUS_VISIBLE = "visible";
+
     public:
         CH_CONSTRUCTOR()
         OutlinerTab(const pugi::xml_node& inNode);

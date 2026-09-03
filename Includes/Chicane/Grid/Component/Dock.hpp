@@ -48,10 +48,11 @@ namespace Chicane
             void tick(float inDeltaTime) override;
             std::vector<Component*> getChildrenFlat() const override;
 
-            const DockRegion* findRegion(const DockPanel* inPanel) const;
-
         protected:
             void refreshSize() override;
+
+        public:
+            const DockRegion* findRegion(const DockPanel* inPanel) const;
 
         private:
             DockPanel* asPanel(Component* inComponent) const;

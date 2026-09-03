@@ -17,11 +17,11 @@ namespace Chicane
     public:
         CView();
 
-    public:
-        inline virtual void onResize(const Vec<2, std::uint32_t>& inValue) { return; }
-
     protected:
         void onTransform() override;
+
+    public:
+        inline virtual void onResize(const Vec<2, std::uint32_t>& inValue) { return; }
 
     public:
         // Frustum

@@ -489,10 +489,10 @@ namespace Chicane
         int maxY = static_cast<int>(std::floor(max.y / SPATIAL_CELL_SIZE));
         int maxZ = static_cast<int>(std::floor(max.z / SPATIAL_CELL_SIZE));
 
-        static constexpr int kMaxSpan = 32;
-        maxX                          = std::min(maxX, minX + kMaxSpan);
-        maxY                          = std::min(maxY, minY + kMaxSpan);
-        maxZ                          = std::min(maxZ, minZ + kMaxSpan);
+        static constexpr int MAX_SPAN = 32;
+        maxX                          = std::min(maxX, minX + MAX_SPAN);
+        maxY                          = std::min(maxY, minY + MAX_SPAN);
+        maxZ                          = std::min(maxZ, minZ + MAX_SPAN);
 
         outKeys.reserve(
             static_cast<std::size_t>(maxX - minX + 1) * static_cast<std::size_t>(maxY - minY + 1) *
@@ -513,7 +513,7 @@ namespace Chicane
 
     void Scene::insertIntoCell(Object* inObject, std::uint64_t inKey)
     {
-        SpatialCell& cell = m_cells[inKey];
+        SceneSpatialCell& cell = m_cells[inKey];
 
         if (cell.objects.empty())
         {

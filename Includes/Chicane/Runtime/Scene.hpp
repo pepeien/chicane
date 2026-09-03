@@ -13,6 +13,7 @@
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
+#include "Chicane/Runtime/Scene/SpatialCell.hpp"
 
 constexpr inline float LINE_TRACE_STEP_SIZE = 0.1f;
 constexpr inline float SPATIAL_CELL_SIZE    = 64.0f;
@@ -348,13 +349,6 @@ namespace Chicane
         String makeUniqueId(const String& inBase) const;
         void ensureUniqueId(const String& inId, const Object* inIgnored) const;
 
-        struct SpatialCell
-        {
-            Vec3                 min     = Vec3::Zero();
-            Vec3                 max     = Vec3::Zero();
-            std::vector<Object*> objects = {};
-        };
-
         bool                                                         m_bIsLoaded;
 
         std::size_t                                                  m_actorCount;
@@ -365,7 +359,7 @@ namespace Chicane
         std::unordered_map<std::type_index, std::vector<Component*>> m_components;
         ComponentsObservable                                         m_componentsObservable;
 
-        std::unordered_map<std::uint64_t, SpatialCell>               m_cells;
+        std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
     };
 }

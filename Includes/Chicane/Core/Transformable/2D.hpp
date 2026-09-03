@@ -14,9 +14,10 @@ namespace Chicane
         Transformable2D();
 
     protected:
-        inline virtual void onTransform() { return; }
-
         void onTransformChanged() override;
+
+    protected:
+        inline virtual void onTransform() { return; }
 
     public:
         const Bounds2D& getBounds() const;

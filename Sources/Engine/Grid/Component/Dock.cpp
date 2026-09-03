@@ -20,7 +20,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        const Color::Rgba kDropColor(11, 153, 125, 90);
+        const Color::Rgba DROP_COLOR(11, 153, 125, 90);
 
         Dock::Dock(const pugi::xml_node& inNode)
             : Component(inNode),
@@ -397,7 +397,7 @@ namespace Chicane
             box.top += m_style.insetTop();
             box.bottom += m_style.insetTop();
 
-            m_drop->configure(box, kDropColor);
+            m_drop->configure(box, DROP_COLOR);
         }
 
         bool Dock::hitHandle(const Vec2& inLocation, DockPanel*& outPanel) const

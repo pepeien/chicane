@@ -25,6 +25,10 @@ namespace Chicane
             using ColorParser = StyleProperty<Color::Rgba>::Parser;
             using TypeParser  = StyleProperty<StyleBorderType>::Parser;
 
+        private:
+            static bool isTypeToken(const String& inValue);
+            static bool isColorToken(const String& inValue);
+
         public:
             StyleBorder();
 
@@ -52,9 +56,6 @@ namespace Chicane
             );
             void applyTypeOneliner(const String& inValue);
             void applyColorOneliner(const String& inValue);
-
-            static bool isTypeToken(const String& inValue);
-            static bool isColorToken(const String& inValue);
 
         public:
             StyleCorners                   width;

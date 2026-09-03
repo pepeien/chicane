@@ -23,6 +23,9 @@ namespace Chicane
                 return result;
             }
 
+        private:
+            static std::uint64_t kerningKey(char32_t inLeft, char32_t inRight);
+
         public:
             FontFamily();
 
@@ -59,9 +62,6 @@ namespace Chicane
 
             void addGlyph(const Glyphs& inValue);
             void addGlyph(const FontGlyph& inValue);
-
-        private:
-            static std::uint64_t kerningKey(char32_t inLeft, char32_t inRight);
 
         private:
             String   m_name;

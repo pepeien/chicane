@@ -26,6 +26,9 @@ namespace Chicane
             OpenGLBackend();
             ~OpenGLBackend();
 
+        public:
+            Draw::Id getScreenTextureId() const override;
+
         protected:
             // Lifecycle
             void onInit() override;
@@ -72,7 +75,6 @@ namespace Chicane
             // Target
             void bindTarget() const;
             std::uint32_t getTargetColor() const;
-            Draw::Id getScreenTextureId() const override;
 
         private:
             // OpenGL

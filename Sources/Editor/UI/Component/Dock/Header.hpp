@@ -40,7 +40,6 @@ namespace Editor
     public:
         CH_FIELD()
         Chicane::String label;
-
         CH_FIELD()
         Chicane::String pinState;
     };

@@ -2,7 +2,7 @@
 
 #include <Chicane/Core/FileSystem/Item.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
-#include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
+#include <Chicane/Grid/Style.hpp>
 
 namespace Editor
 {
@@ -13,9 +13,37 @@ namespace Editor
           typeClass("file"),
           selectionState("idle"),
           itemName(Chicane::String::empty()),
-          itemPath(Chicane::String::empty())
+          itemPath(Chicane::String::empty()),
+          m_item(nullptr),
+          m_boundIndex(-1),
+          m_slot(Chicane::Vec2::Zero())
     {
         load("Assets/Editor/UI/Components/Explorer/Item.grid", "Assets/Editor/UI/Components/Explorer/Item.decal");
+    }
+
+    void ExplorerItem::bind(const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot)
+    {
+        m_item       = inItem;
+        m_boundIndex = inIndex;
+        m_slot       = inSlot;
+        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
+
+        refreshState();
+    }
+
+    void ExplorerItem::unbind()
+    {
+        m_item       = nullptr;
+        m_boundIndex = -1;
+        m_slot       = Chicane::Vec2::Zero();
+        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
+
+        refreshState();
+    }
+
+    int ExplorerItem::boundIndex() const
+    {
+        return m_boundIndex;
     }
 
     void ExplorerItem::onTick(float inDeltaTime)
@@ -23,6 +51,24 @@ namespace Editor
         Chicane::Grid::Button::onTick(inDeltaTime);
 
         refreshState();
+    }
+
+    void ExplorerItem::refreshPosition()
+    {
+        if (m_boundIndex < 0 || !hasParent())
+        {
+            return;
+        }
+
+        m_style.position.setRaw(Chicane::Grid::Style::POSITION_TYPE_ABSOLUTE);
+
+        const Chicane::Grid::Component* parent      = getParent();
+        const Chicane::Grid::Style&     parentStyle = parent->getStyle();
+        setPosition(
+            parent->getPosition().x + parentStyle.insetLeft() + m_slot.x,
+            parent->getPosition().y + parentStyle.insetTop() + m_slot.y
+        );
+        addCursor(m_style.insetLeft(), m_style.insetTop());
     }
 
     void ExplorerItem::refreshState()
@@ -34,28 +80,19 @@ namespace Editor
         itemName       = Chicane::String::empty();
         itemPath       = Chicane::String::empty();
 
-        const Chicane::ReflectionFieldAccessor accessor = getField("child");
-        if (!accessor.isValid())
+        if (!m_item)
         {
             return;
         }
 
-        const void* instance =
-            accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
-        const Chicane::FileSystem::Item* item = accessor.getValue<Chicane::FileSystem::Item>(instance);
-        if (!item)
-        {
-            return;
-        }
-
-        itemName  = item->name;
-        itemPath  = item->path.lexicallyNormal().toString();
-        isFolder  = item->type == Chicane::FileSystem::ItemType::Folder;
-        isFile    = item->type == Chicane::FileSystem::ItemType::File;
+        itemName  = m_item->name;
+        itemPath  = m_item->path.lexicallyNormal().toString();
+        isFolder  = m_item->type == Chicane::FileSystem::ItemType::Folder;
+        isFile    = m_item->type == Chicane::FileSystem::ItemType::File;
         typeClass = isFolder ? "folder" : "file";
 
         const Chicane::String selected = parseText("{{ selectedAssetName }}");
-        if (!selected.isEmpty() && selected.equals(item->name))
+        if (!selected.isEmpty() && selected.equals(m_item->name))
         {
             selectionState = "selected";
         }

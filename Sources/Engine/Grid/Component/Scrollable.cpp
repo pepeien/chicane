@@ -13,12 +13,14 @@ namespace Chicane
 {
     namespace Grid
     {
-        const Color::Rgba kScrollBarTrackColor(0, 0, 0, 110);
-        const Color::Rgba kScrollBarThumbColor(210, 210, 210, 210);
+        const Color::Rgba SCROLL_BAR_TRACK_COLOR(0, 0, 0, 110);
+        const Color::Rgba SCROLL_BAR_THUMB_COLOR(210, 210, 210, 210);
 
         Scrollable::Scrollable(const pugi::xml_node& inNode)
             : Component(inNode),
               m_currentPosition(Vec2::Zero()),
+              m_virtualContentSize(Vec2::Zero()),
+              m_bHasVirtualContent(false),
               m_horizontalBar({}),
               m_verticalBar({})
         {}
@@ -26,6 +28,8 @@ namespace Chicane
         Scrollable::Scrollable(const String& inTag)
             : Component(inTag),
               m_currentPosition(Vec2::Zero()),
+              m_virtualContentSize(Vec2::Zero()),
+              m_bHasVirtualContent(false),
               m_horizontalBar({}),
               m_verticalBar({})
         {}
@@ -146,12 +150,24 @@ namespace Chicane
 
         Vec2 Scrollable::getScrollMax() const
         {
-            const Vec2 content = getChildrenContentSize();
+            const Vec2 content = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
 
             return Vec2(
                 std::max(0.0f, content.x + m_style.insetHorizontal() - m_size.x),
                 std::max(0.0f, content.y + m_style.insetVertical() - m_size.y)
             );
+        }
+
+        void Scrollable::setVirtualContentSize(const Vec2& inValue)
+        {
+            m_virtualContentSize = inValue;
+            m_bHasVirtualContent = true;
+        }
+
+        void Scrollable::clearVirtualContentSize()
+        {
+            m_virtualContentSize = Vec2::Zero();
+            m_bHasVirtualContent = false;
         }
 
         void Scrollable::addScroll(const Vec2& inValue)
@@ -466,8 +482,8 @@ namespace Chicane
 
             if (m_verticalBar.bIsVisible)
             {
-                syncScrollBarPart(m_verticalBar.trackBar, m_verticalBar.track, kScrollBarTrackColor, 0.0f);
-                syncScrollBarPart(m_verticalBar.thumbBar, m_verticalBar.thumb, kScrollBarThumbColor, 0.1f);
+                syncScrollBarPart(m_verticalBar.trackBar, m_verticalBar.track, SCROLL_BAR_TRACK_COLOR, 0.0f);
+                syncScrollBarPart(m_verticalBar.thumbBar, m_verticalBar.thumb, SCROLL_BAR_THUMB_COLOR, 0.1f);
             }
             else if (m_verticalBar.trackBar)
             {
@@ -477,8 +493,8 @@ namespace Chicane
 
             if (m_horizontalBar.bIsVisible)
             {
-                syncScrollBarPart(m_horizontalBar.trackBar, m_horizontalBar.track, kScrollBarTrackColor, 0.0f);
-                syncScrollBarPart(m_horizontalBar.thumbBar, m_horizontalBar.thumb, kScrollBarThumbColor, 0.1f);
+                syncScrollBarPart(m_horizontalBar.trackBar, m_horizontalBar.track, SCROLL_BAR_TRACK_COLOR, 0.0f);
+                syncScrollBarPart(m_horizontalBar.thumbBar, m_horizontalBar.thumb, SCROLL_BAR_THUMB_COLOR, 0.1f);
             }
             else if (m_horizontalBar.trackBar)
             {

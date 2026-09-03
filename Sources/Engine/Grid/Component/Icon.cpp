@@ -1,12 +1,37 @@
 #include "Chicane/Grid/Component/Icon.reflected.hpp"
 
 #include <cctype>
+#include <memory>
 #include <stdexcept>
+#include <unordered_map>
 
 namespace Chicane
 {
     namespace Grid
     {
+        static pugi::xml_node findSource(const FileSystem::Path& inPath)
+        {
+            static std::unordered_map<std::string, std::unique_ptr<pugi::xml_document>> cache;
+
+            const std::string key   = inPath.toString().toStandard();
+            auto              found = cache.find(key);
+
+            if (found == cache.end())
+            {
+                if (!inPath.exists())
+                {
+                    throw std::runtime_error("Icon source does not exist [" + inPath.toString() + "]");
+                }
+
+                std::unique_ptr<pugi::xml_document> document = std::make_unique<pugi::xml_document>();
+                *document                                    = Xml::load(inPath);
+
+                found = cache.emplace(key, std::move(document)).first;
+            }
+
+            return found->second->first_child();
+        }
+
         Icon::Icon(const pugi::xml_node& inNode)
             : Svg(inNode)
         {
@@ -83,13 +108,7 @@ namespace Chicane
 
         void Icon::applySource(const FileSystem::Path& inPath, const pugi::xml_node& inUsage)
         {
-            if (!inPath.exists())
-            {
-                throw std::runtime_error("Icon source does not exist [" + inPath.toString() + "]");
-            }
-
-            pugi::xml_document   document = Xml::load(inPath);
-            const pugi::xml_node root     = document.first_child();
+            const pugi::xml_node root = findSource(inPath);
             if (root.empty())
             {
                 throw std::runtime_error("Icon source does not have a root [" + inPath.toString() + "]");

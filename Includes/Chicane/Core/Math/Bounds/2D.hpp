@@ -9,20 +9,20 @@ namespace Chicane
 {
     struct CHICANE_CORE Bounds2D
     {
-    public:
-        Bounds2D();
+        public:
+            static inline const Bounds2D& unconstrained()
+            {
+                static Bounds2D result = {};
+                result.top             = -1.0e9f;
+                result.bottom          = 1.0e9f;
+                result.left            = -1.0e9f;
+                result.right           = 1.0e9f;
 
-    public:
-        static inline const Bounds2D& unconstrained()
-        {
-            static Bounds2D result = {};
-            result.top             = -1.0e9f;
-            result.bottom          = 1.0e9f;
-            result.left            = -1.0e9f;
-            result.right           = 1.0e9f;
+                return result;
+            }
 
-            return result;
-        }
+        public:
+            Bounds2D();
 
     public:
         bool contains(const Vec2& inPoint) const;

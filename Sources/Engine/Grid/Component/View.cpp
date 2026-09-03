@@ -63,6 +63,11 @@ namespace Chicane
             std::vector<Component*> contenders;
             for (Component* child : getChildrenFlat())
             {
+                if (child->isCulled())
+                {
+                    continue;
+                }
+
                 if (!child->isDisplayable())
                 {
                     continue;
@@ -366,7 +371,7 @@ namespace Chicane
 
                 if (slot.type == WindowEventType::MouseMotion)
                 {
-                    std::size_t peek           = (read + 1) % ViewInputQueue::CAPACITY;
+                    std::size_t peek            = (read + 1) % ViewInputQueue::CAPACITY;
                     bool        bHasLaterMotion = false;
                     while (peek != write)
                     {
@@ -494,33 +499,47 @@ namespace Chicane
                 node = node->getParent();
             }
 
-            Component* previousDeepest = previous.empty() ? nullptr : previous.front();
-            Component* nextDeepest     = next.empty() ? nullptr : next.front();
+            // Chains are leaf-first. Shared ancestors stay hovered and must not
+            // restyle their whole tree. The shallowest node that left or entered
+            // owns descendant selectors (`:hover .child`), including siblings of
+            // the pointer leaf — those never rematch if only the leaf is dirtied.
+            auto contains = [](const std::vector<Component*>& inChain, Component* inNode)
+            {
+                return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end();
+            };
+
+            Component* shallowestLeave = nullptr;
+            for (Component* candidate : previous)
+            {
+                if (!contains(next, candidate))
+                {
+                    shallowestLeave = candidate;
+                }
+            }
 
             for (Component* candidate : previous)
             {
-                bool bKeep = false;
-                for (Component* kept : next)
+                if (!contains(next, candidate))
                 {
-                    if (kept == candidate)
-                    {
-                        bKeep = true;
-
-                        break;
-                    }
+                    candidate->setHovered(false, candidate == shallowestLeave);
                 }
+            }
 
-                if (!bKeep)
+            Component* shallowestEnter = nullptr;
+            for (Component* candidate : next)
+            {
+                if (!contains(previous, candidate))
                 {
-                    // Only the old leaf needs subtree invalidation (`:hover .child`).
-                    // Ancestors self-invalidate so hovering a panel doesn't restyle every descendant.
-                    candidate->setHovered(false, candidate == previousDeepest);
+                    shallowestEnter = candidate;
                 }
             }
 
             for (auto it = next.rbegin(); it != next.rend(); ++it)
             {
-                (*it)->setHovered(true, *it == nextDeepest);
+                if (!contains(previous, *it))
+                {
+                    (*it)->setHovered(true, *it == shallowestEnter);
+                }
             }
 
             m_hovered = hit;
@@ -585,31 +604,43 @@ namespace Chicane
                 node = node->getParent();
             }
 
-            Component* previousDeepest = previous.empty() ? nullptr : previous.front();
-            Component* nextDeepest     = next.empty() ? nullptr : next.front();
+            auto contains = [](const std::vector<Component*>& inChain, Component* inNode)
+            {
+                return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end();
+            };
+
+            Component* shallowestLeave = nullptr;
+            for (Component* candidate : previous)
+            {
+                if (!contains(next, candidate))
+                {
+                    shallowestLeave = candidate;
+                }
+            }
 
             for (Component* candidate : previous)
             {
-                bool bKeep = false;
-                for (Component* kept : next)
+                if (!contains(next, candidate))
                 {
-                    if (kept == candidate)
-                    {
-                        bKeep = true;
-
-                        break;
-                    }
+                    candidate->setDragging(false, candidate == shallowestLeave);
                 }
+            }
 
-                if (!bKeep)
+            Component* shallowestEnter = nullptr;
+            for (Component* candidate : next)
+            {
+                if (!contains(previous, candidate))
                 {
-                    candidate->setDragging(false, candidate == previousDeepest);
+                    shallowestEnter = candidate;
                 }
             }
 
             for (auto it = next.rbegin(); it != next.rend(); ++it)
             {
-                (*it)->setDragging(true, *it == nextDeepest);
+                if (!contains(previous, *it))
+                {
+                    (*it)->setDragging(true, *it == shallowestEnter);
+                }
             }
 
             m_dragging = hit;

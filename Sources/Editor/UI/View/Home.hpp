@@ -29,7 +29,6 @@ namespace Editor
 
         CH_FIELD()
         bool bIsItemSelected;
-
         CH_FIELD()
         Chicane::Object* selectedItem;
 

@@ -37,16 +37,14 @@ namespace Chicane
             ~View() override;
 
         public:
-            // Window
+            void tick(float inDelta) override;
+
+        public:
             void post(const WindowEvent& inEvent);
             WindowCursor getPointer() const;
             void clearInteraction(Component* inComponent);
             void focusOn(Component* inComponent);
 
-            // Lifecycle
-            void tick(float inDelta) override;
-
-            // Children
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
 
             // Styling

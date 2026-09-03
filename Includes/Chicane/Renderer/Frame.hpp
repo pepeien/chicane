@@ -51,6 +51,7 @@ namespace Chicane
 
             void refresh3DDraws();
             void reset3DDraws();
+            void rebuildInstances3D();
 
         protected:
             // View
@@ -64,9 +65,8 @@ namespace Chicane
             DrawPoly::List                   m_2DBatches = {};
 
             // Instances
-            DrawPoly3DInstance::Map          m_3DInstances       = {};
-            mutable DrawPoly3DInstance::List m_3DInstancesFlat   = {};
-            mutable bool                     m_b3DInstancesDirty = true;
+            DrawPoly3DInstance::Map  m_3DInstances     = {};
+            DrawPoly3DInstance::List m_3DInstancesFlat = {};
             DrawPoly2DInstance::List         m_2DInstances       = {};
             DrawSkyInstance                  m_skyInstance       = {};
         };

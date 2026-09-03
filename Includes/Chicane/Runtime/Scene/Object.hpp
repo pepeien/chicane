@@ -20,25 +20,27 @@ namespace Chicane
         virtual ~Object();
 
     protected:
+        void onRefresh() override;
+
+    protected:
         inline virtual void onLoad() { return; }
         inline virtual void onUnload() { return; }
         inline virtual void onTick(float inDeltaTime) { return; }
 
-    protected:
-        void onRefresh() override;
-
     public:
         CH_FUNCTION()
         bool canTick() const;
-        void setCanTick(bool inCanTick);
-        void tick(float inDeltaTime);
 
         CH_FUNCTION()
         const String& getId() const;
-        void setId(const String& inId);
 
         CH_FUNCTION()
         String getTypeName() const;
+
+    public:
+        void setCanTick(bool inCanTick);
+        void tick(float inDeltaTime);
+        void setId(const String& inId);
 
     protected:
         template <typename T = Scene>

@@ -12,16 +12,16 @@ namespace Chicane
         using Clock = std::chrono::steady_clock;
         using Point = std::chrono::time_point<Clock>;
 
-    public:
-        Time(const Clock::duration& inDuration);
-        Time(const Point& inDuration);
-        Time();
+        public:
+            static float miliseconds(Clock::duration inDuration);
+            static float seconds(Clock::duration inTime);
+            static float minutes(Clock::duration inTime);
+            static float hours(Clock::duration inTime);
 
-    public:
-        static float miliseconds(Clock::duration inDuration);
-        static float seconds(Clock::duration inTime);
-        static float minutes(Clock::duration inTime);
-        static float hours(Clock::duration inTime);
+        public:
+            Time(const Clock::duration& inDuration);
+            Time(const Point& inDuration);
+            Time();
 
     public:
         float miliseconds() const;

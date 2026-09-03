@@ -27,12 +27,7 @@
                 </Button>
             </Container>
             <Container id="explorerGrid" class="explorer__grid">
-                <Container class="explorer__grid__content --{{ layout }}">
-                    <ExplorerItem
-                        dir:for="child : gridItems"
-                        class="--{{ layout }}"
-                        onClick="{{ onActivateItem(child.name) }}"
-                    />
+                <Container id="explorerGridContent" class="explorer__grid__content --{{ layout }}">
                 </Container>
             </Container>
             <Container class="explorer__footer">

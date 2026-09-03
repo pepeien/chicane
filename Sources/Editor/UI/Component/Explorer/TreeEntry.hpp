@@ -19,16 +19,13 @@ namespace Editor
     public:
         CH_FIELD()
         Chicane::String name;
-
         CH_FIELD()
         Chicane::String path;
-
         CH_FIELD()
         Chicane::String indent;
 
         CH_FIELD()
         Chicane::String expandState;
-
         CH_FIELD()
         Chicane::String selectedState;
     };

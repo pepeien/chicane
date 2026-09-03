@@ -33,6 +33,9 @@ namespace Chicane
         friend Application;
 
     public:
+        static Window* getCurrent();
+
+    public:
         Window();
         ~Window();
 
@@ -68,8 +71,6 @@ namespace Chicane
         void destroyInstance();
 
         // Status
-        static Window* getCurrent();
-
         bool isFocused() const;
         void switchFocus();
         void focus();

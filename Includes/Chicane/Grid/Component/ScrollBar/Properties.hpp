@@ -38,8 +38,10 @@ namespace Chicane
             bool       bIsVisible  = false;
             bool       bIsDragging = false;
             float      grab        = 0.0f;
+
             Bounds2D   track       = {};
             Bounds2D   thumb       = {};
+
             ScrollBar* trackBar    = nullptr;
             ScrollBar* thumbBar    = nullptr;
         };

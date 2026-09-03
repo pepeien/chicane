@@ -5,5 +5,5 @@
         <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tile__glyph --folder"/>
         <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__tile__glyph --file"/>
     </Container>
-    <Text class="explorer__tile__name">{{ child.name }}</Text>
+    <Text class="explorer__tile__name">{{ itemName }}</Text>
 </Button>

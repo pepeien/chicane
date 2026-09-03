@@ -19,11 +19,11 @@ namespace Chicane
         APawn();
 
     protected:
-        virtual void onControlAttachment() { return; }
-        virtual void onControleDeattachment() { return; }
+        void onLoad() override;
 
     protected:
-        void onLoad() override;
+        virtual void onControlAttachment() { return; }
+        virtual void onControleDeattachment() { return; }
 
     public:
         bool isControlled() const;

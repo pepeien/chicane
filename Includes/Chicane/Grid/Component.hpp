@@ -78,14 +78,18 @@ namespace Chicane
 
         protected:
             bool canPlayAnimation() const override;
+            const StyleKeyframe::List* findKeyframes(const String& inName) const override;
+            Drift::Clip makeAnimationClip(const StyleKeyframe::List& inKeyframes) const override;
 
         public:
-            // Status
             virtual bool isDrawable() const;
             virtual bool isFocusable() const;
-
-            // Events
             virtual bool onEvent(const WindowEvent& inEvent);
+            virtual void tick(float inDelta);
+            virtual void refresh();
+            virtual float getDepth() const;
+            virtual Vec2 getDrawPosition() const;
+            virtual Vec2 getTransformPivot() const;
 
         protected:
             // Lifescycle Events
@@ -137,10 +141,6 @@ namespace Chicane
             void setHovered(bool inValue, bool bInvalidateSubtree = true);
             void setFocused(bool inValue, bool bInvalidateSubtree = true);
             void setDragging(bool inValue, bool bInvalidateSubtree = true);
-
-            // Lifecycle Events
-            virtual void tick(float inDelta);
-            virtual void refresh();
 
             // Properties
             const String& getTag() const;
@@ -235,8 +235,6 @@ namespace Chicane
             Vec2 getChildIntrinsicSize(const Component* inChild) const;
 
             // Positioning
-            virtual float getDepth() const;
-
             const Vec2& getSize() const;
             void addSize(const Vec2& inValue);
             void addSize(float inWidth, float inHeight);
@@ -258,8 +256,6 @@ namespace Chicane
             void setPosition(const Vec2& inValue);
             void setPosition(float inX, float inY);
 
-            virtual Vec2 getDrawPosition() const;
-            virtual Vec2 getTransformPivot() const;
             Mat3 getPaintMatrix() const;
 
             const Vec2& getCursor() const;
@@ -319,9 +315,6 @@ namespace Chicane
             void refreshStyle();
             void refreshBounds();
 
-            const StyleKeyframe::List* findKeyframes(const String& inName) const override;
-            Drift::Clip makeAnimationClip(const StyleKeyframe::List& inKeyframes) const override;
-
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
             String parseMethod(const String& inValue) const;
@@ -340,7 +333,7 @@ namespace Chicane
             std::vector<String> splitMethodParams(const String& inValue) const;
 
             bool isCulledByAncestor() const;
-            void rebuildFlatChildren() const;
+            void rebuildFlatChildren();
 
         protected:
             // Properties
@@ -356,8 +349,6 @@ namespace Chicane
 
             // Style
             Style                                                 m_style;
-            Style                                                 m_styleBase;
-            bool                                                  m_bHasStyleBase;
             StyleFile::Variables                                  m_styleVariables;
             StyleFile*                                            m_styleFile;
             std::unique_ptr<StyleFile>                            m_styles;
@@ -371,8 +362,7 @@ namespace Chicane
             Component*                                            m_root;
             Component*                                            m_parent;
             std::vector<Component*>                               m_children;
-            mutable std::vector<Component*>                       m_flatChildren;
-            mutable bool                                          m_bIsFlatDirty;
+            std::vector<Component*>                               m_flatChildren;
 
             // Position
             Vec2                                                  m_size;

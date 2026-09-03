@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        const Color::Rgba kHandleColor(0, 0, 0, 70);
+        const Color::Rgba HANDLE_COLOR(0, 0, 0, 70);
 
         DockPanel::DockPanel(const pugi::xml_node& inNode)
             : Scrollable(inNode),
@@ -286,7 +286,7 @@ namespace Chicane
 
             Bounds2D box;
             box.set(0.0f, 0.0f, std::min(Dock::HANDLE_THICKNESS, size.y), size.x);
-            m_handle->configure(box, kHandleColor);
+            m_handle->configure(box, HANDLE_COLOR);
         }
 
         void DockPanel::refreshAttributes()

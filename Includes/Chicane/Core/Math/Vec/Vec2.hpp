@@ -10,24 +10,24 @@ namespace Chicane
     CH_TYPE(Automatic)
     struct CHICANE_CORE Vec2
     {
-    public:
-        template <typename... A>
-        inline constexpr Vec2(A... args)
-        {
-            glm::vec2 value(std::forward<A>(args)...);
+        public:
+            inline static constexpr Vec2 Zero() { return Vec2(0.0f); }
 
-            x = value.x;
-            y = value.y;
-        }
+            inline static constexpr Vec2 One() { return Vec2(1.0f); }
 
-    public:
-        inline static constexpr Vec2 Zero() { return Vec2(0.0f); }
+            inline static constexpr Vec2 Right() { return Vec2(1.0f, 0.0f); }
 
-        inline static constexpr Vec2 One() { return Vec2(1.0f); }
+            inline static constexpr Vec2 Up() { return Vec2(0.0f, 1.0f); }
 
-        inline static constexpr Vec2 Right() { return Vec2(1.0f, 0.0f); }
+        public:
+            template <typename... A>
+            inline constexpr Vec2(A... args)
+            {
+                glm::vec2 value(std::forward<A>(args)...);
 
-        inline static constexpr Vec2 Up() { return Vec2(0.0f, 1.0f); }
+                x = value.x;
+                y = value.y;
+            }
 
     public:
         // Conversion
