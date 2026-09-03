@@ -1,0 +1,5 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgCircle cx="128" cy="104" r="72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+    <SvgLine x1="128" y1="176" x2="128" y2="232" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+</Svg>

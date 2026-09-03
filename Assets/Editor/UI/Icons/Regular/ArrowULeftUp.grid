@@ -1,0 +1,5 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgPolyline points="136 80 88 32 40 80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+    <SvgPath d="M200,80v88a56,56,0,0,1-56,56h0a56,56,0,0,1-56-56V32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+</Svg>

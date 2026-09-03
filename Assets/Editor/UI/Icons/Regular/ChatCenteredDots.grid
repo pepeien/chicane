@@ -1,0 +1,7 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgCircle cx="128" cy="120" r="12"/>
+    <SvgCircle cx="84" cy="120" r="12"/>
+    <SvgCircle cx="172" cy="120" r="12"/>
+    <SvgPath d="M105.07,192l16,28a8,8,0,0,0,13.9,0l16-28H216a8,8,0,0,0,8-8V56a8,8,0,0,0-8-8H40a8,8,0,0,0-8,8V184a8,8,0,0,0,8,8Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+</Svg>

@@ -1,0 +1,7 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgCircle cx="128" cy="128" r="96" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="16"/>
+    <SvgCircle cx="128" cy="128" r="12"/>
+    <SvgCircle cx="128" cy="84" r="12"/>
+    <SvgCircle cx="128" cy="172" r="12"/>
+</Svg>

@@ -1,0 +1,10 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgPolyline points="224 208 32 208 32 48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+    <SvgCircle cx="132" cy="148" r="12"/>
+    <SvgCircle cx="108" cy="92" r="12"/>
+    <SvgCircle cx="76" cy="164" r="12"/>
+    <SvgCircle cx="172" cy="116" r="12"/>
+    <SvgCircle cx="196" cy="76" r="12"/>
+    <SvgCircle cx="188" cy="164" r="12"/>
+</Svg>
