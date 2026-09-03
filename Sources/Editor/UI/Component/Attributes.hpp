@@ -6,10 +6,10 @@
 namespace Editor
 {
     CH_TYPE(Manual)
-    class Outliner : public Chicane::Grid::Container
+    class Attributes : public Chicane::Grid::Container
     {
     public:
         CH_CONSTRUCTOR()
-        Outliner(const pugi::xml_node& inNode);
+        Attributes(const pugi::xml_node& inNode);
     };
 }

@@ -1,0 +1,33 @@
+$attributesHeaderHeight: 1.65em;
+
+.attributes {
+    width: 100%;
+    height: 100%;
+
+    &__content {
+        width: 100%;
+        height: calc(100% - $attributesHeaderHeight);
+        padding: 0.5em;
+        overflow: hidden;
+    }
+
+    &__transforms {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+    }
+
+    &__transform {
+        display: flex;
+        flex-direction: row;
+        gap: 1em;
+
+        &__label {
+            width: 6em;
+        }
+
+        Vec3 {
+            margin-left: auto;
+        }
+    }
+}

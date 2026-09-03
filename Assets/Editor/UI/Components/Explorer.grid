@@ -1,15 +1,69 @@
 <Container class="explorer">
-    <Container id="explorerHeader" class="explorer__header">
-        <Text>/</Text>
-        <Button dir:for="folder : getFolderLocations()" class="explorer__header__location">
-            <Text>{{ folder }}</Text>
-            <Text>/</Text>
-        </Button>
-    </Container>
-    <Container class="explorer__items">
-        <ExplorerItem
-            dir:for="child : explorerFolder.children"
-            onClick="{{ onOutlinerSwitch(child.name) }}"
-        />
+    <DockHeader id="explorerHeader" label="Asset Explorer" />
+    <Container class="explorer__body">
+        <Container id="explorerTree" class="explorer__tree">
+            <Button
+                dir:for="entry : treeEntries"
+                class="explorer__tree__item --{{ entry.selectedState }}"
+                onClick="{{ onSelectFolder(entry.path) }}"
+            >
+                <Container class="explorer__tree__indent" />
+                <Button class="explorer__tree__caret --{{ entry.expandState }}" onClick="{{ onToggleFolder(entry.path) }}">
+                    <Icon source="Assets/Editor/UI/Icons/Regular" name="CaretRight" class="explorer__tree__caret__icon"/>
+                </Button>
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tree__icon"/>
+                <Text class="explorer__tree__name">{{ entry.name }}</Text>
+            </Button>
+        </Container>
+        <Container id="explorerMain" class="explorer__main">
+            <Container class="explorer__toolbar">
+                <Container class="explorer__search">
+                    <Icon source="Assets/Editor/UI/Icons/Regular" name="MagnifyingGlass" class="explorer__search__icon"/>
+                    <TextInput value="{{ searchQuery }}" onInput="{{ onSearch() }}"/>
+                </Container>
+                <Button class="explorer__filter" onClick="{{ onToggleFilter() }}">
+                    <Icon source="Assets/Editor/UI/Icons/Fill" name="Funnel" class="explorer__filter__icon"/>
+                    <Text>{{ filterLabel }}</Text>
+                </Button>
+            </Container>
+            <Container id="explorerGrid" class="explorer__grid">
+                <Container class="explorer__grid__content --{{ layout }}">
+                    <ExplorerItem
+                        dir:for="child : gridItems"
+                        class="--{{ layout }}"
+                        onClick="{{ onActivateItem(child.name) }}"
+                    />
+                </Container>
+            </Container>
+            <Container class="explorer__footer">
+                <Container class="explorer__footer__group">
+                    <Text class="explorer__footer__label">Layout</Text>
+                    <Button class="explorer__toggle --{{ layoutHorizontalState }}" onClick="{{ onLayoutHorizontal() }}">
+                        <Text>Horizontal</Text>
+                    </Button>
+                    <Button class="explorer__toggle --{{ layoutVerticalState }}" onClick="{{ onLayoutVertical() }}">
+                        <Text>Vertical</Text>
+                    </Button>
+                </Container>
+                <Container class="explorer__footer__group --grow">
+                    <Text class="explorer__footer__label">Icon Size</Text>
+                    <Container id="explorerIconSize" class="explorer__slider">
+                        <Container class="explorer__slider__track">
+                            <Container class="explorer__slider__fill" />
+                        </Container>
+                        <Container class="explorer__slider__thumb" />
+                    </Container>
+                </Container>
+                <Container class="explorer__footer__group">
+                    <Text class="explorer__footer__label">Sort By</Text>
+                    <Button class="explorer__toggle --{{ sortMatchState }}" onClick="{{ onSortMatch() }}">
+                        <Text>Best Match</Text>
+                    </Button>
+                    <Button class="explorer__toggle --{{ sortNameState }}" onClick="{{ onSortName() }}">
+                        <Text>A-Z</Text>
+                    </Button>
+                </Container>
+            </Container>
+        </Container>
     </Container>
 </Container>

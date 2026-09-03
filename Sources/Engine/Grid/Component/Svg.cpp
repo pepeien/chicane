@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
-#include <sstream>
 #include <vector>
 
 #ifndef M_PI
@@ -1328,6 +1327,11 @@ namespace Chicane
         {
             Component::refresh();
 
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
             syncShapes();
         }
 
@@ -1350,6 +1354,11 @@ namespace Chicane
 
         void Svg::onRefresh()
         {
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
             applySizeAttributes();
             rebuildShapes();
         }
@@ -1411,16 +1420,16 @@ namespace Chicane
 
         void Svg::rebuildShapes()
         {
-            std::stringstream stream;
-            m_sourceNode.print(stream, "", pugi::format_raw);
-
             const Color::Rgba current = m_style.foregroundColor.get();
-            const String signature    = String(stream.str()) + "|" + std::to_string(static_cast<int>(current.r)) + "," +
-                                     std::to_string(static_cast<int>(current.g)) + "," +
-                                     std::to_string(static_cast<int>(current.b)) + "," +
-                                     std::to_string(static_cast<int>(current.a));
+            const String      signature = String::sprint(
+                "%d,%d,%d,%d",
+                static_cast<int>(current.r),
+                static_cast<int>(current.g),
+                static_cast<int>(current.b),
+                static_cast<int>(current.a)
+            );
 
-            if (signature.equals(m_signature))
+            if (!m_shapes.empty() && signature.equals(m_signature))
             {
                 return;
             }

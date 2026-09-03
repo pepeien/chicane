@@ -1,0 +1,63 @@
+$dockHeaderHeight: 1.65em;
+
+.dock-header {
+    width: calc(100% - 0.8em);
+    height: $dockHeaderHeight;
+    display: flex;
+    flex-direction: row;
+    padding: 0 0.35em;
+    background-color: #2e2e2e;
+    border: 1px solid #1a1a1a;
+    cursor: grab;
+
+    &.--pinned {
+        cursor: default;
+    }
+
+    Text {
+        color: #c8c8c8;
+    }
+
+    &__label {
+        font-size: 0.72em;
+        margin: auto 0;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        margin-left: auto;
+    }
+
+    &__action {
+        width: 1.35em;
+        height: 100%;
+        display: flex;
+        alignment: center;
+        background-color: transparent;
+        cursor: pointer;
+
+        &__icon {
+            width: 0.72em;
+            height: 0.72em;
+            margin: auto;
+            color: #c8c8c8;
+            transform-origin: center;
+
+            &.--pin {
+                rotate: -45deg;
+            }
+        }
+
+        &:hover {
+            background-color: #3a3a3a;
+        }
+
+        &.--pinned {
+            .dock-header__action__icon.--pin {
+                rotate: 0deg;
+            }
+        }
+    }
+}

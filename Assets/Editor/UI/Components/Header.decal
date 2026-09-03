@@ -13,16 +13,16 @@
     }
 
     Logo {
-        width: 1.7em;
-        height: 1.7em;
+        width: 3em;
+        height: 3em;
         margin: auto 0 auto 0.25em;
     }
 
     &__menus {
         display: flex;
-        height: 1.1em;
+        height: 1.2em;
         overflow: visible;
-        margin: auto 0;
+        margin-top: 0.35em;
     }
 
     Text {
@@ -46,7 +46,7 @@
     &__controls {
         display: flex;
         gap: 0.2em;
-        height: 100%;
+        height: 2em;
         margin-left: auto;
     }
 

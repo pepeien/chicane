@@ -20,11 +20,6 @@ namespace Chicane
 
                 break;
 
-            case ItemType::Folder:
-                children = ls(path.lexicallyNormal(), 1);
-
-                break;
-
             default:
                 break;
             }

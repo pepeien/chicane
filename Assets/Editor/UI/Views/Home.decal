@@ -1,4 +1,5 @@
-$headerSize: 2em;
+$headerSize: 3.5em;
+$footerHeight: 22em;
 
 .--light {
     $--green: #0b997d;
@@ -23,56 +24,87 @@ $headerSize: 2em;
 }
 
 .home {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    background-color: $--white;
+
     Header {
         width: 100%;
         height: $headerSize;
         overflow: visible;
     }
 
-    Dock {
+    &__content {
         width: 100%;
-        height: calc(100% - $headerSize);
-    }
+        height: calc(100% - $footerHeight);
+        gap: 0.25em;
+        border-radius: 5px;
 
-    Viewport {
-        width: 100%;
-        height: 100%;
-    }
+        Telemetry {
+            position: absolute;
+            padding: 0.2em;
+        }
 
-    Telemetry {
-        position: absolute;
-        padding: 0.2em;
-    }
+        Viewport {
+            width: 100%;
+            height: 100%;
+        }
 
-    Outliner {
-        width: 100%;
-        height: 100%;
-
-        .outliner {
+        Outliner {
+            width: 100%;
+            height: 100%;
             transition: background-color 300ms ease-in-out;
             background-color: $--white;
 
             Text {
                 color: $--black;
             }
+
+            .dock-header Text {
+                color: #c8c8c8;
+            }
         }
-    }
 
-    Explorer {
-        width: 100%;
-        height: 100%;
-
-        .explorer {
+        Attributes {
+            width: 100%;
+            height: 100%;
             transition: background-color 300ms ease-in-out;
             background-color: $--white;
 
             Text {
                 color: $--black;
             }
+
+            .dock-header Text {
+                color: #c8c8c8;
+            }
         }
     }
 
-    Button:hover {
-        cursor: pointer;
+    &__footer {
+        width: 100%;
+        height: $footerHeight;
+        gap: 0.25em;
+        border-radius: 5px;
+
+        Explorer {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            .explorer {
+                transition: background-color 300ms ease-in-out;
+                background-color: $--white;
+
+                Text {
+                    color: $--black;
+                }
+            }
+
+            .dock-header Text {
+                color: #c8c8c8;
+            }
+        }
     }
 }

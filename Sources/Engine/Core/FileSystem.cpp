@@ -25,16 +25,19 @@ namespace Chicane
                 return {};
             }
 
-            if (inDepth > 1)
-            {
-                return {};
-            }
+            const std::uint32_t depth = inDepth == 0 ? 1 : inDepth;
 
             std::vector<Item> result;
 
             for (const auto& entry : std::filesystem::directory_iterator(inDir))
             {
-                result.push_back(Item(entry.is_directory() ? ItemType::Folder : ItemType::File, entry.path()));
+                Item item(entry.is_directory() ? ItemType::Folder : ItemType::File, entry.path());
+                if (item.type == ItemType::Folder && depth > 1)
+                {
+                    item.children = ls(item.path, depth - 1);
+                }
+
+                result.push_back(item);
             }
 
             return result;

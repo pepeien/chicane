@@ -7,6 +7,7 @@
 #include "Editor/Actor/Item.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
 #include "Editor/UI/Component/Header.hpp"
+#include "Editor/UI/Component/Attributes.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
@@ -15,10 +16,13 @@ namespace Editor
     HomeView::HomeView()
         : Chicane::Grid::View(),
           outlinerActors({}),
+          bIsItemSelected(false),
+          selectedItem(nullptr),
           theme("dark")
     {
         import <Explorer>();
         import <Header>();
+        import <Attributes>();
         import <Outliner>();
         import <Telemetry>();
 
@@ -30,6 +34,7 @@ namespace Editor
                 if (!inScene)
                 {
                     outlinerActors.clear();
+                    onItemSelection(nullptr);
 
                     return;
                 }
@@ -39,6 +44,21 @@ namespace Editor
                     {
                         outlinerActors.clear();
                         outlinerActors = inActors;
+
+                        if (!selectedItem)
+                        {
+                            return;
+                        }
+
+                        for (Chicane::Actor* actor : outlinerActors)
+                        {
+                            if (actor == selectedItem)
+                            {
+                                return;
+                            }
+                        }
+
+                        onItemSelection(nullptr);
                     }
                 );
             }
@@ -82,5 +102,11 @@ namespace Editor
     void HomeView::onThemeSwitch(Chicane::String inValue)
     {
         theme = inValue;
+    }
+
+    void HomeView::onItemSelection(Chicane::Object* inItem)
+    {
+        selectedItem    = !inItem ? nullptr : inItem;
+        bIsItemSelected = selectedItem != nullptr;
     }
 }

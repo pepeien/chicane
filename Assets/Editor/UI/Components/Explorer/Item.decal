@@ -1,23 +1,88 @@
-.explorer__item {
+.explorer__tile {
+    width: ref(iconSize);
+    height: ref(iconSize);
     display: flex;
-    height: 5.5em;
-    width: 10em;
-    background-color: $--green;
-    overflow: auto;
-    transition: background-color 200ms ease-in-out;
+    flex-direction: column;
+    gap: 0.25em;
+    background-color: transparent;
+    cursor: pointer;
+    overflow: hidden;
 
-    Text {
-        color: $--white;
-        margin: auto;
-        transition: color 200ms ease-in-out;
+    &__preview {
+        width: 100%;
+        height: calc(100% - 1.35em);
+        position: relative;
+        display: flex;
+        background-color: $--dark-grey;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: background-color 300ms ease-in-out;
     }
 
-    &:hover {
-        cursor: pointer;
-        background-color: $--white;
+    &__badge {
+        position: absolute;
+        width: 0.7em;
+        height: 0.7em;
+        margin: 0.25em;
+        color: #ffffff;
+        z-index: 2;
+    }
 
-        Text {
-           color: $--black; 
+    &__glyph {
+        width: 42%;
+        height: 42%;
+        margin: auto;
+        color: #d8d8d8;
+
+        &.--folder {
+            color: #f3f3f3;
         }
+    }
+
+    &__name {
+        width: 100%;
+        height: 1.1em;
+        font-size: 0.68em;
+        color: $--black;
+        overflow: hidden;
+    }
+
+    &.--selected .explorer__tile__preview {
+        background-color: $--light-grey;
+    }
+
+    &.--vertical {
+        width: 100%;
+        height: 2.5em;
+        flex-direction: row;
+        gap: 0.45em;
+
+        .explorer__tile__preview {
+            width: 2.2em;
+            height: 2.2em;
+            margin: auto 0;
+        }
+
+        .explorer__tile__glyph {
+            width: 1.15em;
+            height: 1.15em;
+        }
+
+        .explorer__tile__badge {
+            width: 0.55em;
+            height: 0.55em;
+            margin: 0.15em;
+        }
+
+        .explorer__tile__name {
+            width: calc(100% - 2.65em);
+            height: auto;
+            margin: auto 0;
+            font-size: 0.75em;
+        }
+    }
+
+    &:hover .explorer__tile__preview {
+        background-color: $--light-grey;
     }
 }

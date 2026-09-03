@@ -1,14 +1,19 @@
 <View path="home" class="home --{{ theme }}">
     <Header />
-    <Dock>
-        <DockPanel>
+    <Dock class="home__content">
+        <DockPanel isGrabbable="false">
             <Telemetry />
             <Viewport />
         </DockPanel>
-        <DockPanel side="right" size="25%" handle="outlinerTab">
+        <DockPanel side="left" size="15%" handle="outlinerHeader">
             <Outliner />
         </DockPanel>
-        <DockPanel side="bottom" size="30%" handle="explorerHeader">
+        <DockPanel side="right" size="20%" handle="attributesHeader">
+            <Attributes />
+        </DockPanel>
+    </Dock>
+    <Dock class="home__footer">
+        <DockPanel size="100%" handle="explorerHeader">
             <Explorer />
         </DockPanel>
     </Dock>

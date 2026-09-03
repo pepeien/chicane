@@ -337,6 +337,11 @@ namespace Chicane
 
             m_animationDelta = 0.0f;
 
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
             onTick(inDeltaTime);
 
             for (std::size_t i = 0; i < m_children.size(); i++)
@@ -354,6 +359,11 @@ namespace Chicane
             refreshClassName();
             refreshStyle();
             refreshDirectives();
+
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
 
             tickAnimation(m_style, m_animationDelta);
 
@@ -2666,8 +2676,14 @@ namespace Chicane
                 }
 
                 instance->addVariable(inVariableId, element);
+
+                const bool bWasHidden = instance->getStyle().isDisplay(StyleDisplay::None);
                 instance->m_style.display.set(StyleDisplay::Flex);
-                instance->refreshStyleRuleset();
+
+                if (bWasHidden)
+                {
+                    instance->refreshStyleRuleset();
+                }
             }
         }
 

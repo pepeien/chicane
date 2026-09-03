@@ -1,3 +1,9 @@
-<Button class="explorer__item">
-    <Text>{{ child.name }}</Text>
+<Button class="explorer__tile --{{ typeClass }} --{{ layout }} --{{ selectionState }}">
+    <Container class="explorer__tile__preview">
+        <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Regular" name="Folder" class="explorer__tile__badge"/>
+        <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Regular" name="File" class="explorer__tile__badge"/>
+        <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tile__glyph --folder"/>
+        <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__tile__glyph --file"/>
+    </Container>
+    <Text class="explorer__tile__name">{{ child.name }}</Text>
 </Button>

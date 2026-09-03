@@ -5,24 +5,14 @@
     </Container>
     <Container class="header__controls">
         <Button class="header__control" onClick="{{ onMinimize() }}">
-            <Svg class="header__control__icon" viewBox="0 0 12 12">
-                <SvgLine x1="2" y1="6" x2="10" y2="6" fill="none" stroke="currentColor" stroke-width="0.75"/>
-            </Svg>
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="Minus" class="header__control__icon"/>
         </Button>
         <Button class="header__control --{{ maximizeState }}" onClick="{{ onMaximize() }}">
-            <Svg class="header__control__icon --maximize" viewBox="0 0 12 12">
-                <SvgRect x="2.5" y="2.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1"/>
-            </Svg>
-            <Svg class="header__control__icon --restore" viewBox="0 0 12 12">
-                <SvgPath d="M4 2.75 H9.25 V8" fill="none" stroke="currentColor" stroke-width="1"/>
-                <SvgRect x="2.75" y="4" width="5.5" height="5.5" fill="none" stroke="currentColor" stroke-width="1"/>
-            </Svg>
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="Square" class="header__control__icon --maximize"/>
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="Copy" class="header__control__icon --restore"/>
         </Button>
         <Button class="header__control --close" onClick="{{ onClose() }}">
-            <Svg class="header__control__icon" viewBox="0 0 12 12">
-                <SvgLine x1="3" y1="3" x2="9" y2="9" fill="none" stroke="currentColor" stroke-width="1"/>
-                <SvgLine x1="9" y1="3" x2="3" y2="9" fill="none" stroke="currentColor" stroke-width="1"/>
-            </Svg>
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="X" class="header__control__icon"/>
         </Button>
     </Container>
 </Container>

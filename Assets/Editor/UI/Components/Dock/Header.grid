@@ -1,0 +1,11 @@
+<Container class="dock-header --{{ pinState }}">
+    <Text class="dock-header__label">{{ label }}</Text>
+    <Container class="dock-header__actions">
+        <Button class="dock-header__action --{{ pinState }}" onClick="{{ onPin() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="PushPin" class="dock-header__action__icon --pin"/>
+        </Button>
+        <Button class="dock-header__action --close" onClick="{{ onClose() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="X" class="dock-header__action__icon"/>
+        </Button>
+    </Container>
+</Container>
