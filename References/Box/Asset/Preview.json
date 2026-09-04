@@ -86,16 +86,6 @@
                     },
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
                             "prefix": "",
                             "name": "AssetType",
                             "suffix": "",
@@ -149,16 +139,6 @@
                             "templates": []
                         },
                         "name": "inAsset"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
                     },
                     {
                         "type": {
@@ -219,16 +199,6 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
                             "name": "FontFamily",
                             "suffix": "&",
                             "path": "Box/Font/Family",
@@ -285,16 +255,6 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -345,16 +305,6 @@
                             "templates": []
                         },
                         "name": "inAsset"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
                     },
                     {
                         "type": {
@@ -424,16 +374,6 @@
                     },
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
                             "prefix": "",
                             "name": "AssetType",
                             "suffix": "",
@@ -479,16 +419,6 @@
                             "templates": []
                         },
                         "name": "inAsset"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
                     },
                     {
                         "type": {
@@ -747,19 +677,6 @@
                 },
                 "name": "path",
                 "description": "CHICANE_BOX_ASSETPREVIEW_PATH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "id",
-                "description": "CHICANE_BOX_ASSETPREVIEW_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
