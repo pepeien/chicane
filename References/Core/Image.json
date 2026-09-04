@@ -495,6 +495,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Raw",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "encode",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_IMAGE_ENCODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",

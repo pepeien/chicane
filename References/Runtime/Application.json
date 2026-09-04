@@ -824,6 +824,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "uploadPreviewTextures",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_UPLOADPREVIEWTEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initScene",
                 "parameters": [],
                 "modifiers": [],

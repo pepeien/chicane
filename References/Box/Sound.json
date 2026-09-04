@@ -156,6 +156,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_SOUND_FETCHDATAFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bakePreview",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_BAKEPREVIEW_DESCRIPTION"
             }
         ],
         "members": [

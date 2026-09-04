@@ -387,6 +387,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_TEXTURE_REBUILDFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bakePreview",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_BAKEPREVIEW_DESCRIPTION"
             }
         ],
         "members": [

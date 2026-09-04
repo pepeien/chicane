@@ -118,6 +118,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshLoad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_IMAGE_REFRESHLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshPlaybackRate",
                 "parameters": [],
                 "modifiers": [],
@@ -211,6 +226,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "LOAD_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_IMAGE_LOAD_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "PLAYBACK_RATE_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_IMAGE_PLAYBACK_RATE_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -271,6 +302,45 @@
                 },
                 "name": "playbackRate",
                 "description": "CHICANE_GRID_IMAGE_PLAYBACKRATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::AssetLoad",
+                    "suffix": "",
+                    "path": "Box/Asset/Load",
+                    "templates": []
+                },
+                "name": "m_load",
+                "description": "CHICANE_GRID_IMAGE_M_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Chicane::Image::Instance",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "m_previewImage",
+                "description": "CHICANE_GRID_IMAGE_M_PREVIEWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_previewId",
+                "description": "CHICANE_GRID_IMAGE_M_PREVIEWID_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -1,0 +1,51 @@
+{
+    "title": "AssetLoad",
+    "filename": "Load",
+    "path": "Box/Asset/Load",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Load.hpp",
+        "namespace": "Chicane::Box::AssetLoad",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Header",
+                "description": "CHICANE_BOX_ASSETLOAD_HEADER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Preview",
+                "description": "CHICANE_BOX_ASSETLOAD_PREVIEW_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Full",
+                "description": "CHICANE_BOX_ASSETLOAD_FULL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_ASSETLOAD_DESCRIPTION"
+    },
+    "children": []
+}

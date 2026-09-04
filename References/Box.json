@@ -223,6 +223,44 @@
                 "description": "CHICANE_BOX_ASSETSUBSCRIPTION_DESCRIPTION"
             },
             {
+                "name": "PreviewObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "AssetPreview",
+                            "suffix": "*",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_PREVIEWOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "PreviewSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "AssetPreview",
+                            "suffix": "*",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_PREVIEWSUBSCRIPTION_DESCRIPTION"
+            },
+            {
                 "name": "FontRaw",
                 "type": {
                     "prefix": "",
@@ -510,6 +548,125 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "AssetPreview",
+                    "suffix": "*",
+                    "path": "Box/Asset/Preview",
+                    "templates": []
+                },
+                "name": "findPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FINDPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "AssetPreview",
+                    "suffix": "*",
+                    "path": "Box/Asset/Preview",
+                    "templates": []
+                },
+                "name": "loadPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_LOADPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "embedPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_EMBEDPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "requestPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_REQUESTPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pumpPreview",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_PUMPPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "AssetSubscription",
                     "suffix": "",
@@ -551,6 +708,80 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_WATCH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "PreviewSubscription",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "watchPreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "PreviewSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "PreviewSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "PreviewSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_WATCHPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AssetHeader",
+                    "suffix": "",
+                    "path": "Box/Asset/Header",
+                    "templates": []
+                },
+                "name": "peek",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_PEEK_DESCRIPTION"
             }
         ],
         "members": [],

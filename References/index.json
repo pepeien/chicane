@@ -46,6 +46,38 @@
                         "children": []
                     },
                     {
+                        "title": "AssetLoad",
+                        "filename": "Load",
+                        "path": "Box/Asset/Load",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Load.hpp",
+                            "namespace": "Chicane::Box::AssetLoad",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "AssetPreview",
+                        "filename": "Preview",
+                        "path": "Box/Asset/Preview",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Preview.hpp",
+                            "namespace": "Chicane::Box::AssetPreview",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "AssetReference",
                         "filename": "Reference",
                         "path": "Box/Asset/Reference",
