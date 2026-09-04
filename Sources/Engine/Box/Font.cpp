@@ -213,13 +213,13 @@ namespace Chicane
             }
 
             const std::unique_ptr<AssetPreview> preview =
-                AssetPreview::createFromFont(getFilepath(), getId(), m_data, label);
+                AssetPreview::createFromFont(getFilepath(), m_data, label);
             if (!preview || !preview->image)
             {
                 return;
             }
 
-            AssetPreview::write(getXML(), getId(), AssetType::Font, *preview->image);
+            AssetPreview::write(getXML(), AssetType::Font, *preview->image);
         }
 
         FontFamily Font::parseData(const FontRaw& inValue) const

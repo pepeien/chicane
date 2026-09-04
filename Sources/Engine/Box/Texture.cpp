@@ -187,7 +187,7 @@ namespace Chicane
                 return;
             }
 
-            AssetPreview::write(getXML(), getId(), AssetType::Texture, *m_data);
+            AssetPreview::write(getXML(), AssetType::Texture, *m_data);
         }
     }
 }

@@ -38,33 +38,28 @@ namespace Chicane
             static String textureIdOf(const FileSystem::Path& inAsset);
 
             static std::unique_ptr<AssetPreview> create(
-                const FileSystem::Path& inAsset, const String& inId, AssetType inType, const Image& inImage
+                const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
             );
             static std::unique_ptr<AssetPreview> createFromGeometry(
                 const FileSystem::Path& inAsset,
-                const String&           inId,
                 const Vertex::List&     inVertices,
                 const Vertex::Indices&  inIndices
             );
             static std::unique_ptr<AssetPreview> createFromFont(
-                const FileSystem::Path& inAsset, const String& inId, const FontFamily& inFamily, const String& inLabel
+                const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel
             );
             static std::unique_ptr<AssetPreview> createFromSound(
                 const FileSystem::Path&             inAsset,
-                const String&                       inId,
                 const std::vector<unsigned char>&   inData
             );
             static std::unique_ptr<AssetPreview> createFromSky(
                 const FileSystem::Path&                 inAsset,
-                const String&                           inId,
                 const Vertex::List&                     inVertices,
                 const Vertex::Indices&                  inIndices,
                 const std::vector<Image::Instance>&     inFaces
             );
-            static bool write(pugi::xml_node inRoot, const String& inId, AssetType inType, const Image& inImage);
-            static bool bake(
-                const FileSystem::Path& inAsset, const String& inId, AssetType inType, const Image& inImage
-            );
+            static bool write(pugi::xml_node inRoot, AssetType inType, const Image& inImage);
+            static bool bake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage);
             static std::unique_ptr<AssetPreview> read(const FileSystem::Path& inAsset);
             static std::unique_ptr<AssetPreview> read(const pugi::xml_node& inRoot);
 
@@ -76,7 +71,6 @@ namespace Chicane
 
         public:
             FileSystem::Path path;
-            String           id;
             AssetType        type = AssetType::Undefined;
             Image::Instance  image;
         };

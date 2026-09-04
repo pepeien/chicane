@@ -60,7 +60,7 @@ namespace Chicane
         const QuatFloat  worldRot         = absoluteRotation * relativeRotation;
 
         Vec3 localOffset   = m_relative.getTranslation() * m_absolute.getScale();
-        Vec3 rotatedOffset = absoluteRotation * static_cast<glm::vec3>(localOffset);
+        Vec3 rotatedOffset = absoluteRotation * localOffset;
 
         rotation.set(worldRot);
         translation = m_absolute.getTranslation() + rotatedOffset;

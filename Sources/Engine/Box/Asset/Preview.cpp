@@ -9,7 +9,6 @@
 #include <limits>
 #include <vector>
 
-#include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 
 #include "Chicane/Core/Base64.hpp"
@@ -83,7 +82,6 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->id = Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inNode).as_string();
             result->type =
                 AssetHeader::getTypeFromTag(Xml::getAttribute(AssetPreview::TYPE_ATTRIBUTE_NAME, inNode).as_string());
             result->image = image;
@@ -100,10 +98,7 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::create(
-            const FileSystem::Path& inAsset,
-            const String&           inId,
-            AssetType               inType,
-            const Image&            inImage
+            const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
         )
         {
             if (inImage.getPixels() == nullptr || inImage.getWidth() <= 0 || inImage.getHeight() <= 0)
@@ -118,7 +113,6 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->id                           = inId;
             result->type                         = inType;
             result->image = std::make_shared<Image>(pixels.data(), SIZE, SIZE, CHANNELS, CHANNELS);
 
@@ -252,7 +246,6 @@ namespace Chicane
 
         std::unique_ptr<AssetPreview> rasterPreview(
             const FileSystem::Path&             inAsset,
-            const String&                       inId,
             AssetType                           inType,
             Vertex::List                        inVertices,
             Vertex::Indices                     inIndices,
@@ -460,7 +453,6 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->id                           = inId;
             result->type                         = inType;
             result->image                        = std::make_shared<Image>(
                 pixels.data(),
@@ -474,31 +466,24 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
-            const FileSystem::Path& inAsset,
-            const String&           inId,
-            const Vertex::List&     inVertices,
-            const Vertex::Indices&  inIndices
+            const FileSystem::Path& inAsset, const Vertex::List& inVertices, const Vertex::Indices& inIndices
         )
         {
-            return rasterPreview(inAsset, inId, AssetType::Mesh, inVertices, inIndices, {});
+            return rasterPreview(inAsset, AssetType::Mesh, inVertices, inIndices, {});
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromSky(
             const FileSystem::Path&             inAsset,
-            const String&                       inId,
             const Vertex::List&                 inVertices,
             const Vertex::Indices&              inIndices,
             const std::vector<Image::Instance>& inFaces
         )
         {
-            return rasterPreview(inAsset, inId, AssetType::Sky, inVertices, inIndices, inFaces);
+            return rasterPreview(inAsset, AssetType::Sky, inVertices, inIndices, inFaces);
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromFont(
-            const FileSystem::Path& inAsset,
-            const String&           inId,
-            const FontFamily&       inFamily,
-            const String&           inLabel
+            const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel
         )
         {
             if (inAsset.isEmpty())
@@ -517,7 +502,7 @@ namespace Chicane
             }
             if (label.isEmpty())
             {
-                label = inId;
+                label = inAsset.stem().toString();
             }
 
             struct Point
@@ -736,7 +721,6 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->id                           = inId;
             result->type                         = AssetType::Font;
             result->image = std::make_shared<Image>(pixels.data(), SIZE, SIZE, CHANNELS, CHANNELS);
 
@@ -744,9 +728,7 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromSound(
-            const FileSystem::Path&           inAsset,
-            const String&                     inId,
-            const std::vector<unsigned char>& inData
+            const FileSystem::Path& inAsset, const std::vector<unsigned char>& inData
         )
         {
             if (inData.empty())
@@ -936,26 +918,20 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->id                           = inId;
             result->type                         = AssetType::Sound;
             result->image = std::make_shared<Image>(pixels.data(), SIZE, SIZE, CHANNELS, CHANNELS);
 
             return result;
         }
 
-        bool AssetPreview::write(
-            pugi::xml_node inRoot,
-            const String&  inId,
-            AssetType      inType,
-            const Image&   inImage
-        )
+        bool AssetPreview::write(pugi::xml_node inRoot, AssetType inType, const Image& inImage)
         {
             if (inRoot.empty())
             {
                 return false;
             }
 
-            const std::unique_ptr<AssetPreview> preview = create(FileSystem::Path(), inId, inType, inImage);
+            const std::unique_ptr<AssetPreview> preview = create(FileSystem::Path(), inType, inImage);
             if (!preview || !preview->image || !preview->image->getPixels())
             {
                 return false;
@@ -973,7 +949,6 @@ namespace Chicane
                 return false;
             }
 
-            Xml::addAttribute(node, Asset::ID_ATTRIBUTE_NAME, preview->id);
             Xml::addAttribute(node, TYPE_ATTRIBUTE_NAME, AssetHeader::getTypeTag(inType));
             Xml::addAttribute(node, WIDTH_ATTRIBUTE_NAME, String(std::to_string(preview->image->getWidth())));
             Xml::addAttribute(node, HEIGHT_ATTRIBUTE_NAME, String(std::to_string(preview->image->getHeight())));
@@ -989,12 +964,7 @@ namespace Chicane
             return true;
         }
 
-        bool AssetPreview::bake(
-            const FileSystem::Path& inAsset,
-            const String&           inId,
-            AssetType               inType,
-            const Image&            inImage
-        )
+        bool AssetPreview::bake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage)
         {
             if (inAsset.isEmpty() || !FileSystem::exists(inAsset))
             {
@@ -1005,7 +975,7 @@ namespace Chicane
             {
                 pugi::xml_document document = Xml::load(inAsset);
                 pugi::xml_node     root     = document.first_child();
-                if (root.empty() || !write(root, inId, inType, inImage))
+                if (root.empty() || !write(root, inType, inImage))
                 {
                     return false;
                 }

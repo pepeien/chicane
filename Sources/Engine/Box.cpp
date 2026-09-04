@@ -91,82 +91,14 @@ namespace Chicane
             }
         }
 
-        bool loadCubemapFaces(const FileSystem::Path& inTexture, std::vector<Image::Instance>& outFaces)
+        std::unique_ptr<AssetPreview> decodeTexturePreview(const FileSystem::Path& inFilePath, bool)
         {
-            static const char* faces[] = {"Right", "Left", "Front", "Back", "Up", "Down"};
-
-            const String stem = inTexture.stem().toString().toLower();
-            bool         isFace = false;
-            for (const char* face : faces)
-            {
-                if (stem.equals(String(face).toLower()))
-                {
-                    isFace = true;
-
-                    break;
-                }
-            }
-
-            if (!isFace)
-            {
-                return false;
-            }
-
-            const FileSystem::Path directory = inTexture.parent();
-            const String           extension = inTexture.extension().toString();
-            outFaces.assign(6, nullptr);
-
-            int found = 0;
-            for (int i = 0; i < 6; i++)
-            {
-                FileSystem::Path sibling = directory / (String(faces[i]) + extension);
-                outFaces[static_cast<std::size_t>(i)] = loadTextureImage(sibling);
-                if (outFaces[static_cast<std::size_t>(i)])
-                {
-                    found++;
-                }
-            }
-
-            if (found < 6)
-            {
-                outFaces.clear();
-
-                return false;
-            }
-
-            return true;
-        }
-
-        std::unique_ptr<AssetPreview> decodeTexturePreview(const FileSystem::Path& inFilePath, bool inUseStored)
-        {
-            if (inUseStored)
-            {
-                if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
-                {
-                    return preview;
-                }
-            }
-
             if (!FileSystem::exists(inFilePath))
             {
                 return nullptr;
             }
 
-            std::vector<Image::Instance> faces = {};
-            if (loadCubemapFaces(inFilePath, faces))
-            {
-                const Texture texture(inFilePath);
-                std::unique_ptr<AssetPreview> preview =
-                    AssetPreview::createFromSky(inFilePath, texture.getId(), {}, {}, faces);
-                if (preview)
-                {
-                    preview->type = AssetType::Texture;
-
-                    return preview;
-                }
-            }
-
-            const Texture      texture(inFilePath);
+            const Texture texture(inFilePath);
             Image::Reference data = texture.getData();
             if (data.expired())
             {
@@ -179,7 +111,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            return AssetPreview::create(inFilePath, texture.getId(), AssetType::Texture, *image);
+            return AssetPreview::create(inFilePath, AssetType::Texture, *image);
         }
 
         std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inUseStored = true)
@@ -242,7 +174,7 @@ namespace Chicane
                     appendGeometry(selected, vertices, indices);
                 }
 
-                return AssetPreview::createFromGeometry(inFilePath, mesh.getId(), vertices, indices);
+                return AssetPreview::createFromGeometry(inFilePath, vertices, indices);
             }
 
             case AssetType::Model:
@@ -269,7 +201,7 @@ namespace Chicane
                 appendGeometry(model.getData(), vertices, indices);
 
                 std::unique_ptr<AssetPreview> preview =
-                    AssetPreview::createFromGeometry(inFilePath, model.getId(), vertices, indices);
+                    AssetPreview::createFromGeometry(inFilePath, vertices, indices);
                 if (preview)
                 {
                     preview->type = AssetType::Model;
@@ -298,7 +230,7 @@ namespace Chicane
 
                 const Sound sound(inFilePath);
 
-                return AssetPreview::createFromSound(inFilePath, sound.getId(), sound.getData());
+                return AssetPreview::createFromSound(inFilePath, sound.getData());
             }
 
             case AssetType::Font:
@@ -331,7 +263,7 @@ namespace Chicane
                     label = font.getId();
                 }
 
-                return AssetPreview::createFromFont(inFilePath, font.getId(), family, label);
+                return AssetPreview::createFromFont(inFilePath, family, label);
             }
 
             case AssetType::Sky:
@@ -385,7 +317,7 @@ namespace Chicane
                 }
 
                 std::unique_ptr<AssetPreview> preview =
-                    AssetPreview::createFromSky(inFilePath, sky.getId(), vertices, indices, faces);
+                    AssetPreview::createFromSky(inFilePath, vertices, indices, faces);
                 if (preview)
                 {
                     preview->type = AssetType::Sky;
@@ -863,7 +795,7 @@ namespace Chicane
                     return false;
                 }
 
-                return AssetPreview::bake(inFilePath, preview->id, preview->type, *preview->image);
+                return AssetPreview::bake(inFilePath, preview->type, *preview->image);
             }
             catch (...)
             {

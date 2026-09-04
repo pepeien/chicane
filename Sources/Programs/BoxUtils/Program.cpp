@@ -218,12 +218,7 @@ void Program::createMesh(
     Chicane::Box::Texture texture(textures.at(0));
     if (Chicane::Image::Instance data = texture.getData().lock())
     {
-        if (Chicane::Box::AssetPreview::write(
-                texture.getXML(),
-                texture.getId(),
-                Chicane::Box::AssetType::Texture,
-                *data
-            ))
+        if (Chicane::Box::AssetPreview::write(texture.getXML(), Chicane::Box::AssetType::Texture, *data))
         {
             texture.saveXML();
         }
@@ -263,16 +258,11 @@ void Program::createMesh(
     }
 
     if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
-            Chicane::Box::AssetPreview::createFromGeometry(output, inId, vertices, indices))
+            Chicane::Box::AssetPreview::createFromGeometry(output, vertices, indices))
     {
         if (preview->image)
         {
-            Chicane::Box::AssetPreview::write(
-                asset.getXML(),
-                inId,
-                Chicane::Box::AssetType::Mesh,
-                *preview->image
-            );
+            Chicane::Box::AssetPreview::write(asset.getXML(), Chicane::Box::AssetType::Mesh, *preview->image);
         }
     }
 
@@ -401,12 +391,7 @@ void Program::createSky(
         if (Chicane::Image::Instance data = texture.getData().lock())
         {
             faces.push_back(data);
-            if (Chicane::Box::AssetPreview::write(
-                    texture.getXML(),
-                    texture.getId(),
-                    Chicane::Box::AssetType::Texture,
-                    *data
-                ))
+            if (Chicane::Box::AssetPreview::write(texture.getXML(), Chicane::Box::AssetType::Texture, *data))
             {
                 texture.saveXML();
             }
@@ -414,16 +399,11 @@ void Program::createSky(
     }
 
     if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
-            Chicane::Box::AssetPreview::createFromSky(output, inId, vertices, indices, faces))
+            Chicane::Box::AssetPreview::createFromSky(output, vertices, indices, faces))
     {
         if (preview->image)
         {
-            Chicane::Box::AssetPreview::write(
-                asset.getXML(),
-                inId,
-                Chicane::Box::AssetType::Sky,
-                *preview->image
-            );
+            Chicane::Box::AssetPreview::write(asset.getXML(), Chicane::Box::AssetType::Sky, *preview->image);
         }
     }
 

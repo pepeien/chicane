@@ -203,13 +203,13 @@ namespace Chicane
             }
 
             const std::unique_ptr<AssetPreview> preview =
-                AssetPreview::createFromGeometry(getFilepath(), getId(), vertices, indices);
+                AssetPreview::createFromGeometry(getFilepath(), vertices, indices);
             if (!preview || !preview->image)
             {
                 return;
             }
 
-            AssetPreview::write(getXML(), getId(), AssetType::Model, *preview->image);
+            AssetPreview::write(getXML(), AssetType::Model, *preview->image);
         }
 
         ModelParsed::Map Model::parseData(const ModelRaw& inValue) const
