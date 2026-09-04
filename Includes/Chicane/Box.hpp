@@ -17,6 +17,8 @@
     #define CHICANE_BOX
 #endif
 
+#include "Chicane/Box/Asset/Load.hpp"
+
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
@@ -26,8 +28,12 @@ namespace Chicane
 {
     namespace Box
     {
-        using AssetObservable   = EventObservable<const class Asset*>;
-        using AssetSubscription = EventSubscription<const class Asset*>;
+        class AssetPreview;
+
+        using AssetObservable     = EventObservable<const class Asset*>;
+        using AssetSubscription   = EventSubscription<const class Asset*>;
+        using PreviewObservable   = EventObservable<const AssetPreview*>;
+        using PreviewSubscription = EventSubscription<const AssetPreview*>;
 
         CHICANE_BOX std::vector<const class Asset*> getById(const String& inId);
         template <typename T>
@@ -55,10 +61,21 @@ namespace Chicane
             return static_cast<const T*>(load(inFilePath));
         }
 
+        CHICANE_BOX const AssetPreview* findPreview(const FileSystem::Path& inFilePath);
+        CHICANE_BOX const AssetPreview* loadPreview(const FileSystem::Path& inFilePath);
+        CHICANE_BOX bool embedPreview(const FileSystem::Path& inFilePath);
+        CHICANE_BOX void requestPreview(const FileSystem::Path& inFilePath);
+        CHICANE_BOX void pumpPreview();
+
         CHICANE_BOX AssetSubscription watch(
             AssetSubscription::NextCallback     inNext,
             AssetSubscription::ErrorCallback    inError    = nullptr,
             AssetSubscription::CompleteCallback inComplete = nullptr
+        );
+        CHICANE_BOX PreviewSubscription watchPreview(
+            PreviewSubscription::NextCallback     inNext,
+            PreviewSubscription::ErrorCallback    inError    = nullptr,
+            PreviewSubscription::CompleteCallback inComplete = nullptr
         );
     }
 }

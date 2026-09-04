@@ -141,6 +141,67 @@ namespace Chicane
             return m_xml.first_child();
         }
 
+        String Asset::getPayload() const
+        {
+            const pugi::xml_node root = getXML();
+            if (root.empty())
+            {
+                return "";
+            }
+
+            const pugi::xml_node value = root.child(VALUE_TAG);
+            if (!value.empty())
+            {
+                return value.text().as_string();
+            }
+
+            for (pugi::xml_node child = root.first_child(); child; child = child.next_sibling())
+            {
+                if (child.type() != pugi::node_pcdata && child.type() != pugi::node_cdata)
+                {
+                    continue;
+                }
+
+                const String text = child.value();
+                if (text.trim().isEmpty())
+                {
+                    continue;
+                }
+
+                return text;
+            }
+
+            return "";
+        }
+
+        bool Asset::setPayload(const String& inData)
+        {
+            pugi::xml_node root = getXML();
+            if (root.empty())
+            {
+                return false;
+            }
+
+            for (pugi::xml_node child = root.first_child(); child;)
+            {
+                pugi::xml_node next = child.next_sibling();
+                if (child.type() == pugi::node_pcdata || child.type() == pugi::node_cdata)
+                {
+                    root.remove_child(child);
+                }
+
+                child = next;
+            }
+
+            pugi::xml_node value = root.child(VALUE_TAG);
+            if (value.empty())
+            {
+                value = root.append_child(VALUE_TAG);
+            }
+
+            return value.text().set(inData.toChar());
+        }
+
         void Asset::createXML(const FileSystem::Path& inFilepath)
         {
             if (inFilepath.isEmpty() || !m_xml.children().empty())

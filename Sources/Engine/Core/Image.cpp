@@ -3,6 +3,7 @@
 #include <fstream>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <algorithm>
@@ -17,6 +18,77 @@
 
 #include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/Log.hpp"
+
+namespace
+{
+    void appendU32(std::vector<unsigned char>& outValue, std::uint32_t inValue)
+    {
+        outValue.push_back(static_cast<unsigned char>((inValue >> 24) & 0xFF));
+        outValue.push_back(static_cast<unsigned char>((inValue >> 16) & 0xFF));
+        outValue.push_back(static_cast<unsigned char>((inValue >> 8) & 0xFF));
+        outValue.push_back(static_cast<unsigned char>(inValue & 0xFF));
+    }
+
+    std::uint32_t crc32(const unsigned char* inData, std::size_t inSize)
+    {
+        std::uint32_t crc = 0xFFFFFFFFu;
+
+        for (std::size_t i = 0; i < inSize; i++)
+        {
+            crc ^= inData[i];
+
+            for (int bit = 0; bit < 8; bit++)
+            {
+                const std::uint32_t mask = static_cast<std::uint32_t>(-(static_cast<int>(crc & 1u)));
+                crc                      = (crc >> 1) ^ (0xEDB88320u & mask);
+            }
+        }
+
+        return crc ^ 0xFFFFFFFFu;
+    }
+
+    std::uint32_t adler32(const unsigned char* inData, std::size_t inSize)
+    {
+        std::uint32_t a = 1;
+        std::uint32_t b = 0;
+
+        for (std::size_t i = 0; i < inSize; i++)
+        {
+            a += inData[i];
+            if (a >= 65521)
+            {
+                a -= 65521;
+            }
+
+            b += a;
+            if (b >= 65521)
+            {
+                b -= 65521;
+            }
+        }
+
+        return (b << 16) | a;
+    }
+
+    void appendChunk(
+        std::vector<unsigned char>& outValue,
+        const char*                 inType,
+        const unsigned char*        inData,
+        std::size_t                 inSize
+    )
+    {
+        appendU32(outValue, static_cast<std::uint32_t>(inSize));
+
+        const std::size_t crcStart = outValue.size();
+        outValue.insert(outValue.end(), inType, inType + 4);
+        if (inData != nullptr && inSize > 0)
+        {
+            outValue.insert(outValue.end(), inData, inData + inSize);
+        }
+
+        appendU32(outValue, crc32(outValue.data() + crcStart, 4 + inSize));
+    }
+}
 
 namespace Chicane
 {
@@ -86,6 +158,11 @@ namespace Chicane
             throw std::runtime_error(
                 "Failed to open [" + inLocation.toString() + "] image (" + String(stbi_failure_reason()) + ")"
             );
+        }
+
+        if (m_format > 0)
+        {
+            m_channel = m_format;
         }
 
         m_frameCount = 1;
@@ -169,6 +246,11 @@ namespace Chicane
         if (!m_pixels)
         {
             throw std::runtime_error("Failed to parse image data (" + String(stbi_failure_reason()) + ")");
+        }
+
+        if (m_format > 0)
+        {
+            m_channel = m_format;
         }
 
         m_frameCount = 1;
@@ -307,9 +389,71 @@ namespace Chicane
                 d[0] = s[0];
                 d[1] = srcChannel > 1 ? s[1] : s[0];
                 d[2] = srcChannel > 2 ? s[2] : s[0];
-                d[3] = 255;
+                d[3] = srcChannel > 3 ? s[3] : 255;
             }
         }
+    }
+
+    Image::Raw Image::encode() const
+    {
+        const Pixels pixels = getPixels();
+        if (pixels == nullptr || m_width <= 0 || m_height <= 0 || m_channel <= 0)
+        {
+            return {};
+        }
+
+        const int         channels = m_channel;
+        const std::size_t rowBytes = static_cast<std::size_t>(m_width) * static_cast<std::size_t>(channels);
+        std::vector<unsigned char> raw(static_cast<std::size_t>(m_height) * (rowBytes + 1));
+
+        for (int y = 0; y < m_height; y++)
+        {
+            const std::size_t offset = static_cast<std::size_t>(y) * (rowBytes + 1);
+            raw[offset]              = 0;
+            std::memcpy(raw.data() + offset + 1, pixels + static_cast<std::size_t>(y) * rowBytes, rowBytes);
+        }
+
+        std::vector<unsigned char> zlib;
+        zlib.push_back(0x78);
+        zlib.push_back(0x01);
+
+        std::size_t pos = 0;
+        while (pos < raw.size())
+        {
+            const std::size_t block = std::min<std::size_t>(65535, raw.size() - pos);
+            zlib.push_back(pos + block >= raw.size() ? 0x01 : 0x00);
+            zlib.push_back(static_cast<unsigned char>(block & 0xFF));
+            zlib.push_back(static_cast<unsigned char>((block >> 8) & 0xFF));
+
+            const std::uint16_t nlen = static_cast<std::uint16_t>(~static_cast<std::uint16_t>(block));
+            zlib.push_back(static_cast<unsigned char>(nlen & 0xFF));
+            zlib.push_back(static_cast<unsigned char>((nlen >> 8) & 0xFF));
+            zlib.insert(zlib.end(), raw.begin() + static_cast<std::ptrdiff_t>(pos), raw.begin() + static_cast<std::ptrdiff_t>(pos + block));
+            pos += block;
+        }
+
+        appendU32(zlib, adler32(raw.data(), raw.size()));
+
+        Raw png;
+        const unsigned char signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+        png.insert(png.end(), signature, signature + 8);
+
+        unsigned char ihdr[13] = {};
+        ihdr[0]                = static_cast<unsigned char>((m_width >> 24) & 0xFF);
+        ihdr[1]                = static_cast<unsigned char>((m_width >> 16) & 0xFF);
+        ihdr[2]                = static_cast<unsigned char>((m_width >> 8) & 0xFF);
+        ihdr[3]                = static_cast<unsigned char>(m_width & 0xFF);
+        ihdr[4]                = static_cast<unsigned char>((m_height >> 24) & 0xFF);
+        ihdr[5]                = static_cast<unsigned char>((m_height >> 16) & 0xFF);
+        ihdr[6]                = static_cast<unsigned char>((m_height >> 8) & 0xFF);
+        ihdr[7]                = static_cast<unsigned char>(m_height & 0xFF);
+        ihdr[8]                = 8;
+        ihdr[9]                = channels == 4 ? 6 : (channels == 3 ? 2 : (channels == 2 ? 4 : 0));
+        appendChunk(png, "IHDR", ihdr, sizeof(ihdr));
+        appendChunk(png, "IDAT", zlib.data(), zlib.size());
+        appendChunk(png, "IEND", nullptr, 0);
+
+        return png;
     }
 
     std::uint32_t Image::getMemorySize() const

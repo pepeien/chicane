@@ -5,6 +5,7 @@
 #include <limits>
 #include <unordered_map>
 
+#include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Font/TrueType.hpp"
 
 #include "Chicane/Core/Base64.hpp"
@@ -136,7 +137,7 @@ namespace Chicane
 
         void Font::setData(const FontRaw& inData)
         {
-            if (!getXML().text().set(Base64::encode(inData).toChar()))
+            if (!setPayload(Base64::encode(inData)))
             {
                 throw std::runtime_error("Failed to save the font [" + m_header.filepath.toString() + "] data");
             }
@@ -144,6 +145,7 @@ namespace Chicane
             m_raw  = inData;
             m_data = parseData(inData);
             rebuildInstances();
+            bakePreview();
             notify(this);
         }
 
@@ -182,7 +184,7 @@ namespace Chicane
                 return;
             }
 
-            m_raw  = Base64::decodeToUnsigned(getXML().text().as_string());
+            m_raw  = Base64::decodeToUnsigned(getPayload());
             m_data = parseData(m_raw);
             rebuildInstances();
         }
@@ -191,6 +193,33 @@ namespace Chicane
         {
             m_instances.clear();
             m_instances.emplace(static_cast<int>(std::round(m_data.getWeight())), m_data);
+        }
+
+        void Font::bakePreview()
+        {
+            if (getFilepath().isEmpty())
+            {
+                return;
+            }
+
+            String label = m_data.getFamily();
+            if (label.isEmpty())
+            {
+                label = m_data.getName();
+            }
+            if (label.isEmpty())
+            {
+                label = getId();
+            }
+
+            const std::unique_ptr<AssetPreview> preview =
+                AssetPreview::createFromFont(getFilepath(), getId(), m_data, label);
+            if (!preview || !preview->image)
+            {
+                return;
+            }
+
+            AssetPreview::write(getXML(), getId(), AssetType::Font, *preview->image);
         }
 
         FontFamily Font::parseData(const FontRaw& inValue) const

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
 
@@ -25,7 +26,16 @@ namespace Chicane
         void Mesh::setGroups(const std::vector<MeshGroup>& inGroups)
         {
             pugi::xml_node root = getXML();
-            root.remove_children();
+            for (pugi::xml_node child = root.first_child(); child;)
+            {
+                pugi::xml_node next = child.next_sibling();
+                if (!String(child.name()).equals(AssetPreview::TAG))
+                {
+                    root.remove_child(child);
+                }
+
+                child = next;
+            }
 
             for (const MeshGroup& group : inGroups)
             {

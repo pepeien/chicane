@@ -2,9 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <mutex>
 #include <typeinfo>
+#include <vector>
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -26,6 +30,15 @@
 
 namespace Chicane
 {
+    struct PreviewUpload
+    {
+        String          reference;
+        Image::Instance image;
+    };
+
+    static std::mutex                  g_previewUploadsMutex = {};
+    static std::vector<PreviewUpload>  g_previewUploads      = {};
+
     Application& Application::getInstance()
     {
         static Application instance;
@@ -92,10 +105,39 @@ namespace Chicane
 
     void Application::render()
     {
+        uploadPreviewTextures();
         renderScene();
         renderUI();
 
         m_renderer->render();
+    }
+
+    void Application::uploadPreviewTextures()
+    {
+        if (!m_renderer)
+        {
+            return;
+        }
+
+        std::vector<PreviewUpload> pending;
+        {
+            std::lock_guard<std::mutex> lock(g_previewUploadsMutex);
+            pending.swap(g_previewUploads);
+        }
+
+        for (const PreviewUpload& upload : pending)
+        {
+            if (!upload.image)
+            {
+                continue;
+            }
+
+            Renderer::DrawTextureData data;
+            data.reference = upload.reference;
+            data.image     = upload.image;
+
+            m_renderer->loadTexture(data);
+        }
     }
 
     const ApplicationTelemetry& Application::getTelemetry() const
@@ -282,7 +324,7 @@ namespace Chicane
                     {
                         Renderer::DrawTextureData data;
                         data.reference = texture->getFrameId(i);
-                        data.image     = texture->getFrame(i);
+                        data.image     = texture->getFrame(i).lock();
 
                         m_renderer->loadTexture(data);
                     }
@@ -327,6 +369,19 @@ namespace Chicane
 
                     return;
                 }
+            }
+        );
+
+        Box::watchPreview(
+            [](const Box::AssetPreview* inPreview)
+            {
+                if (!inPreview || !inPreview->image)
+                {
+                    return;
+                }
+
+                std::lock_guard<std::mutex> lock(g_previewUploadsMutex);
+                g_previewUploads.push_back({inPreview->textureId(), inPreview->image});
             }
         );
 
@@ -586,6 +641,8 @@ namespace Chicane
     {
         while (m_bIsRunning)
         {
+            Box::pumpPreview();
+
             std::shared_ptr<Grid::View> view = getView();
 
             if (!view)

@@ -25,7 +25,7 @@ namespace Chicane
             }
 
         public:
-            Image::Reference image;
+            Image::Instance image;
         };
     }
 }

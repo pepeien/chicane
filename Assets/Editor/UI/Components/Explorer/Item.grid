@@ -3,7 +3,8 @@
         <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Regular" name="Folder" class="explorer__tile__badge"/>
         <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Regular" name="File" class="explorer__tile__badge"/>
         <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tile__glyph --folder"/>
-        <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__tile__glyph --file"/>
+        <Icon dir:if="{{ showFileGlyph }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__tile__glyph --file"/>
+        <Image dir:if="{{ hasPreview }}" src="{{ itemPath }}" load="Preview" class="explorer__tile__image"/>
     </Container>
     <Text class="explorer__tile__name">{{ itemName }}</Text>
 </Button>

@@ -39,5 +39,14 @@ namespace Chicane
             String           id;
             AssetType        type;
         };
+
+        inline AssetHeader peek(const FileSystem::Path& inFilepath)
+        {
+            AssetHeader header;
+            header.filepath = inFilepath;
+            header.type     = AssetHeader::getTypeFromExtension(inFilepath);
+
+            return header;
+        }
     }
 }

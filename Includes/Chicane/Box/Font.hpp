@@ -48,6 +48,7 @@ namespace Chicane
             void fetchVendorFromXML();
             void fetchDataFromXML();
             void rebuildInstances();
+            void bakePreview();
 
             FontFamily parseData(const FontRaw& inValue) const;
             FontFamily parseData(const FontRaw& inValue, float inWeight) const;

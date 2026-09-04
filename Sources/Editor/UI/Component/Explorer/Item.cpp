@@ -1,8 +1,14 @@
 #include "Editor/UI/Component/Explorer/Item.reflected.hpp"
 
+#include <Chicane/Box.hpp>
+#include <Chicane/Box/Asset/Header.hpp>
+#include <Chicane/Box/Asset/Preview.hpp>
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Core/FileSystem/Item.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
 #include <Chicane/Grid/Style.hpp>
+#include <Chicane/Renderer/Draw.hpp>
+#include <Chicane/Runtime/Application.hpp>
 
 namespace Editor
 {
@@ -10,6 +16,8 @@ namespace Editor
         : Chicane::Grid::Button(inNode),
           isFolder(false),
           isFile(true),
+          hasPreview(false),
+          showFileGlyph(true),
           typeClass("file"),
           selectionState("idle"),
           itemName(Chicane::String::empty()),
@@ -76,6 +84,8 @@ namespace Editor
         selectionState = "idle";
         isFolder       = false;
         isFile         = true;
+        hasPreview     = false;
+        showFileGlyph  = true;
         typeClass      = "file";
         itemName       = Chicane::String::empty();
         itemPath       = Chicane::String::empty();
@@ -90,6 +100,24 @@ namespace Editor
         isFolder  = m_item->type == Chicane::FileSystem::ItemType::Folder;
         isFile    = m_item->type == Chicane::FileSystem::ItemType::File;
         typeClass = isFolder ? "folder" : "file";
+
+        if (isFile)
+        {
+            if (Chicane::Box::AssetHeader::isFileAsset(m_item->path))
+            {
+                Chicane::Box::requestPreview(m_item->path);
+
+                if (const Chicane::Box::AssetPreview* preview = Chicane::Box::findPreview(m_item->path))
+                {
+                    Chicane::Application& application = Chicane::Application::getInstance();
+                    hasPreview = application.hasRenderer() &&
+                                 application.getRenderer()->findTexture(preview->textureId()) >
+                                     Chicane::Renderer::Draw::InvalidId;
+                }
+            }
+        }
+
+        showFileGlyph = isFile && !hasPreview;
 
         const Chicane::String selected = parseText("{{ selectedAssetName }}");
         if (!selected.isEmpty() && selected.equals(m_item->name))

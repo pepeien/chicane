@@ -1,5 +1,7 @@
 #include "Chicane/Box/Sound.hpp"
 
+#include "Chicane/Box/Asset/Preview.hpp"
+
 #include "Chicane/Core/Base64.hpp"
 
 namespace Chicane
@@ -30,12 +32,13 @@ namespace Chicane
 
         void Sound::setData(const Raw& inData)
         {
-            if (!getXML().text().set(Base64::encode(inData).toChar()))
+            if (!setPayload(Base64::encode(inData)))
             {
                 throw std::runtime_error("Failed to save the sound [" + m_header.filepath.toString() + "] data");
             }
 
             m_data = inData;
+            bakePreview();
         }
 
         void Sound::fetchDataFromXML()
@@ -45,7 +48,24 @@ namespace Chicane
                 return;
             }
 
-            m_data = Base64::decodeToUnsigned(getXML().text().as_string());
+            m_data = Base64::decodeToUnsigned(getPayload());
+        }
+
+        void Sound::bakePreview()
+        {
+            if (getFilepath().isEmpty() || m_data.empty())
+            {
+                return;
+            }
+
+            const std::unique_ptr<AssetPreview> preview =
+                AssetPreview::createFromSound(getFilepath(), getId(), m_data);
+            if (!preview || !preview->image)
+            {
+                return;
+            }
+
+            AssetPreview::write(getXML(), getId(), AssetType::Sound, *preview->image);
         }
     }
 }

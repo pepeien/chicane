@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Model/Wavefront.hpp"
 
 #include "Chicane/Core/Base64.hpp"
@@ -100,12 +101,13 @@ namespace Chicane
 
         void Model::setData(const ModelRaw& inData)
         {
-            if (!getXML().text().set(Base64::encode(inData).toChar()))
+            if (!setPayload(Base64::encode(inData)))
             {
                 throw std::runtime_error("Failed to save the model [" + m_header.filepath.toString() + "] data");
             }
 
             m_data = parseData(inData);
+            bakePreview();
         }
 
         const ModelParsed& Model::getModel(const String& inId) const
@@ -161,7 +163,53 @@ namespace Chicane
                 return;
             }
 
-            m_data = parseData(Base64::decodeToUnsigned(getXML().text().as_string()));
+            m_data = parseData(Base64::decodeToUnsigned(getPayload()));
+        }
+
+        void Model::bakePreview()
+        {
+            if (getFilepath().isEmpty() || m_data.empty())
+            {
+                return;
+            }
+
+            Vertex::List    vertices = {};
+            Vertex::Indices indices  = {};
+            for (const auto& entry : m_data)
+            {
+                const ModelParsed& data = entry.second;
+                if (data.vertices.empty())
+                {
+                    continue;
+                }
+
+                const Vertex::Index base = static_cast<Vertex::Index>(vertices.size());
+                vertices.insert(vertices.end(), data.vertices.begin(), data.vertices.end());
+
+                if (data.indices.empty())
+                {
+                    for (Vertex::Index i = 0; i < static_cast<Vertex::Index>(data.vertices.size()); i++)
+                    {
+                        indices.push_back(base + i);
+                    }
+
+                    continue;
+                }
+
+                for (const Vertex::Index index : data.indices)
+                {
+                    indices.push_back(base + index);
+                }
+            }
+
+            const std::unique_ptr<AssetPreview> preview =
+                AssetPreview::createFromGeometry(getFilepath(), getId(), vertices, indices);
+            if (!preview || !preview->image)
+            {
+                return;
+            }
+
+            AssetPreview::write(getXML(), getId(), AssetType::Model, *preview->image);
         }
 
         ModelParsed::Map Model::parseData(const ModelRaw& inValue) const

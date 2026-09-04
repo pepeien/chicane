@@ -40,6 +40,7 @@ namespace Chicane
         const Pixels getPixels() const;
         const Pixels getPixels(int inFrame) const;
         void blit(Pixels outPixels, int outWidth, int outHeight, int inFrame = 0) const;
+        Raw encode() const;
 
         std::uint32_t getMemorySize() const;
 

@@ -23,14 +23,30 @@ namespace Chicane
 
             const FileSystem::Path path = std::filesystem::absolute(inFilepath);
 
-            if (!inDocument.save_file(
-                    path.toChar(),
-                    "    ",
-                    pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
-                ))
+            struct Writer : pugi::xml_writer
             {
-                throw std::runtime_error("Failed to save the XML [ " + path.toString() + " ]");
+                std::string data;
+
+                void write(const void* inData, size_t inSize) override
+                {
+                    data.append(static_cast<const char*>(inData), inSize);
+                }
+            };
+
+            Writer writer;
+            inDocument.save(
+                writer,
+                "    ",
+                pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
+            );
+
+            const std::size_t close = writer.data.rfind("</");
+            if (close != std::string::npos && close > 0 && writer.data[close - 1] != '\n')
+            {
+                writer.data.insert(close, 1, '\n');
             }
+
+            FileSystem::write(writer.data, path);
         }
 
         pugi::xml_document load(const FileSystem::Path& inFilepath)

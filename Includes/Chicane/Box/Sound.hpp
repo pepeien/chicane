@@ -27,6 +27,7 @@ namespace Chicane
 
         private:
             void fetchDataFromXML();
+            void bakePreview();
 
         private:
             Raw m_data;

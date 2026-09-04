@@ -48,6 +48,7 @@ namespace Chicane
             void fetchVendorFromXML();
             void fetchDataFromXML();
             void rebuildFrames();
+            void bakePreview();
 
         private:
             ImageVendor                  m_vendor;

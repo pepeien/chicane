@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Load.hpp"
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Reflection.hpp"
@@ -21,6 +22,7 @@ namespace Chicane
 
             // Attributes
             static constexpr inline const char* SRC_ATTRIBUTE_NAME           = "src";
+            static constexpr inline const char* LOAD_ATTRIBUTE_NAME          = "load";
             static constexpr inline const char* PLAYBACK_RATE_ATTRIBUTE_NAME = "playback-rate";
 
             static constexpr inline float       GIF_MAX_FPS      = 24.0f;
@@ -37,6 +39,7 @@ namespace Chicane
 
         private:
             void refreshSource();
+            void refreshLoad();
             void refreshPlaybackRate();
             void bindFrame();
             void advanceFrame(float inDeltaTime);
@@ -49,9 +52,12 @@ namespace Chicane
             float playbackRate;
 
         private:
-            const Box::Texture* m_texture;
-            std::size_t         m_frame;
-            float               m_elapsed;
+            Box::AssetLoad           m_load;
+            Chicane::Image::Instance m_previewImage;
+            String                   m_previewId;
+            const Box::Texture*      m_texture;
+            std::size_t              m_frame;
+            float                    m_elapsed;
         };
     }
 }

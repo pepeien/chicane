@@ -43,6 +43,7 @@ namespace Chicane
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();
+            void bakePreview();
 
             ModelParsed::Map parseData(const ModelRaw& inValue) const;
             ModelParsed::Map normalizeData(const ModelParsed::Map& inValue) const;

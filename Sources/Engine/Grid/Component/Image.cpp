@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdlib>
 
+#include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Core/Size.hpp"
 
 namespace Chicane
@@ -14,6 +15,9 @@ namespace Chicane
             : Container(inNode),
               src(""),
               playbackRate(1.0f),
+              m_load(Box::AssetLoad::Full),
+              m_previewImage(nullptr),
+              m_previewId(""),
               m_texture(nullptr),
               m_frame(0),
               m_elapsed(0.0f)
@@ -45,12 +49,12 @@ namespace Chicane
 
             Container::refreshSize();
 
-            if (!m_texture)
+            Chicane::Image::Instance frame = m_previewImage;
+            if (!frame && m_texture)
             {
-                return;
+                frame = m_texture->getData().lock();
             }
 
-            const auto frame = m_texture->getData().lock();
             if (!frame || frame->getWidth() <= 0 || frame->getHeight() <= 0)
             {
                 return;
@@ -82,21 +86,49 @@ namespace Chicane
 
         void Image::refreshSource()
         {
+            refreshLoad();
+
             const String parsed = parseText(getAttribute(SRC_ATTRIBUTE_NAME)).trim();
             if (!parsed.equals(src))
             {
-                src       = parsed;
-                m_texture = nullptr;
-                m_frame   = 0;
-                m_elapsed = 0.0f;
+                src            = parsed;
+                m_previewImage = nullptr;
+                m_previewId    = "";
+                m_texture      = nullptr;
+                m_frame        = 0;
+                m_elapsed      = 0.0f;
             }
 
             if (src.isEmpty())
             {
-                m_texture = nullptr;
+                m_previewImage = nullptr;
+                m_previewId    = "";
+                m_texture      = nullptr;
 
                 return;
             }
+
+            if (m_load == Box::AssetLoad::Preview)
+            {
+                m_texture = nullptr;
+                Box::requestPreview(src);
+
+                if (const Box::AssetPreview* preview = Box::findPreview(src))
+                {
+                    m_previewImage = preview->image;
+                    m_previewId    = preview->textureId();
+                }
+                else
+                {
+                    m_previewImage = nullptr;
+                    m_previewId    = "";
+                }
+
+                return;
+            }
+
+            m_previewImage = nullptr;
+            m_previewId    = "";
 
             if (m_texture)
             {
@@ -111,6 +143,26 @@ namespace Chicane
             {
                 m_texture = Box::getById<Box::Texture>(src);
             }
+        }
+
+        void Image::refreshLoad()
+        {
+            const String parsed = parseText(getAttribute(LOAD_ATTRIBUTE_NAME)).trim();
+            if (parsed.equals("Preview", "preview"))
+            {
+                m_load = Box::AssetLoad::Preview;
+
+                return;
+            }
+
+            if (parsed.equals("Header", "header"))
+            {
+                m_load = Box::AssetLoad::Header;
+
+                return;
+            }
+
+            m_load = Box::AssetLoad::Full;
         }
 
         void Image::refreshPlaybackRate()
@@ -128,6 +180,13 @@ namespace Chicane
 
         void Image::bindFrame()
         {
+            if (m_previewImage)
+            {
+                m_style.background.image.setRaw(m_previewId);
+
+                return;
+            }
+
             if (!m_texture)
             {
                 m_style.background.image.setRaw("");
@@ -140,7 +199,7 @@ namespace Chicane
 
         void Image::advanceFrame(float inDeltaTime)
         {
-            if (!m_texture || m_texture->getFrameCount() <= 1 || playbackRate == 0.0f)
+            if (m_previewImage || !m_texture || m_texture->getFrameCount() <= 1 || playbackRate == 0.0f)
             {
                 return;
             }

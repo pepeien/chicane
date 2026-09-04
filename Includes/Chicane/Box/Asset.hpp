@@ -13,7 +13,8 @@ namespace Chicane
         class CHICANE_BOX Asset
         {
         public:
-            static constexpr inline const char*         TAG = "Asset";
+            static constexpr inline const char*         TAG       = "Asset";
+            static constexpr inline const char*         VALUE_TAG = "Value";
 
             static constexpr inline const std::uint32_t CURRENT_VERSION = 1;
 
@@ -44,6 +45,8 @@ namespace Chicane
             void setType(AssetType inType);
 
             pugi::xml_node getXML() const;
+            String getPayload() const;
+            bool setPayload(const String& inData);
             void saveXML();
 
         protected:

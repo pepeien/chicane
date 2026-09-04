@@ -97,7 +97,7 @@ namespace Chicane
                     continue;
                 }
 
-                if (const Image::Instance image = texture.image.lock())
+                if (const Image::Instance& image = texture.image)
                 {
                     const void* pixels = image->getPixels();
 

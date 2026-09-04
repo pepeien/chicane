@@ -38,6 +38,10 @@ namespace Editor
         CH_FIELD()
         bool isFile;
         CH_FIELD()
+        bool hasPreview;
+        CH_FIELD()
+        bool showFileGlyph;
+        CH_FIELD()
         Chicane::String typeClass;
 
         CH_FIELD()

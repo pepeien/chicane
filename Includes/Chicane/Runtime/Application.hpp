@@ -146,6 +146,7 @@ namespace Chicane
 
         // Lifecycle
         void render();
+        void uploadPreviewTextures();
 
         // Scene
         void initScene();

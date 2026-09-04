@@ -1,8 +1,15 @@
 #include "Program.hpp"
 
+#include <filesystem>
+#include <iostream>
+#include <memory>
 #include <unordered_map>
 
+#include <Chicane/Box.hpp>
 #include <Chicane/Box/Asset/Header.hpp>
+#include <Chicane/Box/Asset/Preview.hpp>
+#include <Chicane/Core/Image.hpp>
+#include <Chicane/Core/Math/Vertex.hpp>
 #include <Chicane/Box/Font.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
@@ -14,13 +21,13 @@ Program::Program()
     : Chicane::Program("Box Utils")
 {
     Chicane::ProgramOptionSetting idOption;
-    idOption.bIsRequired = true;
+    idOption.bIsRequired = false;
     idOption.name        = ID_OPTION_NAME;
     idOption.description = ID_OPTION_DESCRIPTION;
     addOption(idOption);
 
     Chicane::ProgramOptionSetting typeOption;
-    typeOption.bIsRequired = true;
+    typeOption.bIsRequired = false;
     typeOption.name        = TYPE_OPTION_NAME;
     typeOption.description = TYPE_OPTION_DESCRIPTION;
     typeOption.validValues = Chicane::Box::AssetHeader::getTypeTags();
@@ -31,15 +38,38 @@ Program::Program()
     outputOption.name        = OUTPUT_OPTION_NAME;
     outputOption.description = OUTPUT_OPTION_DESCRIPTION;
     addOption(outputOption);
+
+    Chicane::ProgramOptionSetting bakeOption;
+    bakeOption.bIsRequired = false;
+    bakeOption.name        = BAKE_OPTION_NAME;
+    bakeOption.description = BAKE_OPTION_DESCRIPTION;
+    addOption(bakeOption);
 }
 
 void Program::onExec(const Chicane::ProgramParam& inParam)
 {
-    const Chicane::String&                    id = inParam.getOption(ID_OPTION_NAME)->getValue();
+    const Chicane::String& bake = inParam.getOption(BAKE_OPTION_NAME)->getValue();
+    if (!bake.isEmpty())
+    {
+        bakePreviews(bake);
+
+        return;
+    }
+
+    const Chicane::ProgramOption* idOption   = inParam.getOption(ID_OPTION_NAME);
+    const Chicane::ProgramOption* typeOption = inParam.getOption(TYPE_OPTION_NAME);
+    if (!idOption || idOption->getValue().isEmpty() || !typeOption || typeOption->getValue().isEmpty())
+    {
+        showHelp();
+
+        return;
+    }
+
+    const Chicane::String&                    id = idOption->getValue();
     const Chicane::FileSystem::Path&          output(inParam.getOption(OUTPUT_OPTION_NAME)->getValue());
     const Chicane::ProgramParam::Positionals& sources = inParam.getPositionals();
 
-    switch (Chicane::Box::AssetHeader::getTypeFromTag(inParam.getOption(TYPE_OPTION_NAME)->getValue()))
+    switch (Chicane::Box::AssetHeader::getTypeFromTag(typeOption->getValue()))
     {
     case Chicane::Box::AssetType::Font:
         createFont(id, sources, output);
@@ -186,6 +216,18 @@ void Program::createMesh(
     }
 
     Chicane::Box::Texture texture(textures.at(0));
+    if (Chicane::Image::Instance data = texture.getData().lock())
+    {
+        if (Chicane::Box::AssetPreview::write(
+                texture.getXML(),
+                texture.getId(),
+                Chicane::Box::AssetType::Texture,
+                *data
+            ))
+        {
+            texture.saveXML();
+        }
+    }
 
     for (const auto& [reference, data] : modelGroups)
     {
@@ -195,6 +237,43 @@ void Program::createMesh(
         group.setTexture(texture.getFilepath(), texture.getId());
 
         asset.appendGroup(group);
+    }
+
+    Chicane::Vertex::List    vertices = {};
+    Chicane::Vertex::Indices indices  = {};
+    for (const auto& [reference, data] : modelGroups)
+    {
+        const Chicane::Vertex::Index base = static_cast<Chicane::Vertex::Index>(vertices.size());
+        vertices.insert(vertices.end(), data.vertices.begin(), data.vertices.end());
+
+        if (data.indices.empty())
+        {
+            for (Chicane::Vertex::Index i = 0; i < static_cast<Chicane::Vertex::Index>(data.vertices.size()); i++)
+            {
+                indices.push_back(base + i);
+            }
+
+            continue;
+        }
+
+        for (const Chicane::Vertex::Index index : data.indices)
+        {
+            indices.push_back(base + index);
+        }
+    }
+
+    if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
+            Chicane::Box::AssetPreview::createFromGeometry(output, inId, vertices, indices))
+    {
+        if (preview->image)
+        {
+            Chicane::Box::AssetPreview::write(
+                asset.getXML(),
+                inId,
+                Chicane::Box::AssetType::Mesh,
+                *preview->image
+            );
+        }
     }
 
     asset.saveXML();
@@ -308,6 +387,46 @@ void Program::createSky(
 
     asset.setModel(model.getFilepath(), modelGroups.begin()->first);
     asset.addTexture(textures);
+
+    Chicane::Vertex::List    vertices = {};
+    Chicane::Vertex::Indices indices  = {};
+    const Chicane::Box::ModelParsed& parsed = modelGroups.begin()->second;
+    vertices = parsed.vertices;
+    indices  = parsed.indices;
+
+    std::vector<Chicane::Image::Instance> faces = {};
+    for (const Chicane::FileSystem::Path& path : textures)
+    {
+        Chicane::Box::Texture texture(path);
+        if (Chicane::Image::Instance data = texture.getData().lock())
+        {
+            faces.push_back(data);
+            if (Chicane::Box::AssetPreview::write(
+                    texture.getXML(),
+                    texture.getId(),
+                    Chicane::Box::AssetType::Texture,
+                    *data
+                ))
+            {
+                texture.saveXML();
+            }
+        }
+    }
+
+    if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
+            Chicane::Box::AssetPreview::createFromSky(output, inId, vertices, indices, faces))
+    {
+        if (preview->image)
+        {
+            Chicane::Box::AssetPreview::write(
+                asset.getXML(),
+                inId,
+                Chicane::Box::AssetType::Sky,
+                *preview->image
+            );
+        }
+    }
+
     asset.saveXML();
 }
 
@@ -377,4 +496,47 @@ void Program::createSound(
     asset.setId(inId);
     asset.setData(source);
     asset.saveXML();
+}
+
+void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
+{
+    const Chicane::FileSystem::Path root = inRoot.isEmpty() ? Chicane::FileSystem::Path("Assets") : inRoot;
+    if (!Chicane::FileSystem::exists(root))
+    {
+        throw std::runtime_error("Bake path does not exist");
+    }
+
+    auto bakeOne = [](const Chicane::FileSystem::Path& inPath)
+    {
+        if (!Chicane::Box::AssetHeader::isFileAsset(inPath))
+        {
+            return;
+        }
+
+        if (Chicane::Box::embedPreview(inPath))
+        {
+            std::cout << "Preview " << inPath.toString() << std::endl;
+
+            return;
+        }
+
+        std::cerr << "Failed " << inPath.toString() << std::endl;
+    };
+
+    if (root.isFile())
+    {
+        bakeOne(root);
+
+        return;
+    }
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(root.toStandard()))
+    {
+        if (!entry.is_regular_file())
+        {
+            continue;
+        }
+
+        bakeOne(Chicane::FileSystem::Path(entry.path()));
+    }
 }

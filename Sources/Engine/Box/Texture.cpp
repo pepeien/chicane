@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Chicane/Box/Asset/Preview.hpp"
+
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -70,13 +72,14 @@ namespace Chicane
 
         void Texture::setData(const Image::Raw& inData)
         {
-            if (!getXML().text().set(Base64::encode(inData).toChar()))
+            if (!setPayload(Base64::encode(inData)))
             {
                 throw std::runtime_error("Failed to save the texture [" + m_header.filepath.toString() + "] data");
             }
 
             m_data.reset(new Image(inData, m_vendor));
             rebuildFrames();
+            bakePreview();
         }
 
         std::size_t Texture::getFrameCount() const
@@ -137,7 +140,7 @@ namespace Chicane
                 return;
             }
 
-            m_data.reset(new Image(Base64::decodeToUnsigned(getXML().text().as_string()), m_vendor));
+            m_data.reset(new Image(Base64::decodeToUnsigned(getPayload()), m_vendor));
             rebuildFrames();
         }
 
@@ -175,6 +178,16 @@ namespace Chicane
             }
 
             m_data = m_frames.front();
+        }
+
+        void Texture::bakePreview()
+        {
+            if (isEmpty() || getFilepath().isEmpty() || !m_data)
+            {
+                return;
+            }
+
+            AssetPreview::write(getXML(), getId(), AssetType::Texture, *m_data);
         }
     }
 }
