@@ -6,8 +6,6 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
-#include "Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp"
-#include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 
 namespace Chicane
@@ -27,7 +25,6 @@ namespace Chicane
 
                 lights.clear();
                 meshes.clear();
-                lines.clear();
             }
 
         public:
@@ -40,9 +37,6 @@ namespace Chicane
 
             // Mesh
             DrawPoly3DCommandMesh::List meshes = {};
-
-            // Line
-            DrawPoly3DCommandLine::List lines = {};
         };
     }
 }

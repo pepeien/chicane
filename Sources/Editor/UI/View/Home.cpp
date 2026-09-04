@@ -5,6 +5,7 @@
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/Actor/Item.hpp"
+#include "Editor/Scene.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
 #include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Attributes.hpp"
@@ -108,5 +109,10 @@ namespace Editor
     {
         selectedItem    = !inItem ? nullptr : inItem;
         bIsItemSelected = selectedItem != nullptr;
+
+        if (std::shared_ptr<Scene> scene = Chicane::Application::getInstance().getScene<Scene>())
+        {
+            scene->setSelection(selectedItem);
+        }
     }
 }

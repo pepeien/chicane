@@ -5,6 +5,7 @@
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Rotator.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Reflection.hpp"
 
@@ -19,6 +20,9 @@ namespace Chicane
     public:
         const Mat4& getMatrix() const;
         void setTransform(const Transform& inTransform);
+
+        bool toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition) const;
+        Vec2 toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const;
 
         // Translation
         const Vec3& getTranslation() const;

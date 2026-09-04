@@ -577,16 +577,6 @@ namespace Chicane
         {
             m_renderer->drawPoly(mesh.model, mesh.instance);
         }
-
-        for (const Renderer::DrawPoly3DCommandLine& line : command.lines)
-        {
-            Renderer::DrawPolyData data;
-            data.mode     = Renderer::DrawPolyMode::Line;
-            data.indices  = line.polygon.indices;
-            data.vertices = line.polygon.vertices;
-
-            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data), line.instance);
-        }
     }
 
     void Application::initUI()

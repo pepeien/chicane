@@ -1,0 +1,18 @@
+<Asset version="1" id="Gizmo_Scale">
+    <Group id="X">
+        <Model source="Assets/Editor/Models/Gizmo/Scale.bmdl">Gizmo_Scale_X</Model>
+        <Texture source="Assets/Engine/Textures/Color/Red.btex">Color_Red</Texture>
+    </Group>
+    <Group id="Y">
+        <Model source="Assets/Editor/Models/Gizmo/Scale.bmdl">Gizmo_Scale_Y</Model>
+        <Texture source="Assets/Engine/Textures/Color/Green.btex">Color_Green</Texture>
+    </Group>
+    <Group id="Z">
+        <Model source="Assets/Editor/Models/Gizmo/Scale.bmdl">Gizmo_Scale_Z</Model>
+        <Texture source="Assets/Engine/Textures/Color/Blue.btex">Color_Blue</Texture>
+    </Group>
+    <Group id="Center">
+        <Model source="Assets/Editor/Models/Gizmo/Scale.bmdl">Gizmo_Scale_Center</Model>
+        <Texture source="Assets/Engine/Textures/Color/White.btex">Color_White</Texture>
+    </Group>
+</Asset>

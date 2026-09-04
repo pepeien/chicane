@@ -15,6 +15,18 @@ namespace Chicane
         return m_matrix;
     }
 
+    bool Transform::toPosition(
+        const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition
+    ) const
+    {
+        return m_matrix.toPosition(inView, inProjection, inViewport, outPosition);
+    }
+
+    Vec2 Transform::toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const
+    {
+        return m_matrix.toPosition(inView, inProjection, inViewport);
+    }
+
     void Transform::setTransform(const Transform& inTransform)
     {
         translation = inTransform.translation;
