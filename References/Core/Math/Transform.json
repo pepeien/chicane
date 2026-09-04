@@ -73,6 +73,112 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toPosition",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat4",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat4",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        "name": "inProjection"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "outPosition"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_TOPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "toPosition",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat4",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat4",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        "name": "inProjection"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_TOPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",

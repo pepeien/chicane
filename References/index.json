@@ -5126,22 +5126,6 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "DrawPoly3DCommandLine",
-                                                "filename": "Line",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Line",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandLine",
-                                                    "types": [],
-                                                    "enums": [],
-                                                    "constructors": [],
-                                                    "destructors": [],
-                                                    "functions": [],
-                                                    "members": []
-                                                },
-                                                "children": []
-                                            },
-                                            {
                                                 "title": "DrawPoly3DCommandMesh",
                                                 "filename": "Mesh",
                                                 "path": "Renderer/Draw/Poly/3D/Command/Mesh",

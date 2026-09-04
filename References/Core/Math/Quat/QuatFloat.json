@@ -39,7 +39,101 @@
             }
         ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "fromAxis",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inAxis"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAngle"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_QUATFLOAT_FROMAXIS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "normalize",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_QUATFLOAT_NORMALIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "operator*",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_QUATFLOAT_OPERATOR*_DESCRIPTION"
+            }
+        ],
         "members": [],
         "description": "CHICANE_QUATFLOAT_DESCRIPTION"
     },

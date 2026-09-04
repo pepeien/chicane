@@ -100,19 +100,6 @@
                 },
                 "name": "meshes",
                 "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_MESHES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "DrawPoly3DCommandLine::List",
-                    "suffix": "",
-                    "path": "Renderer/Draw/Poly/3D/Command/Line",
-                    "templates": []
-                },
-                "name": "lines",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LINES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_DESCRIPTION"
