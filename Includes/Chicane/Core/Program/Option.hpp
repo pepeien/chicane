@@ -22,7 +22,7 @@ namespace Chicane
         bool isValueValid() const;
 
         bool isRequired() const;
-        void setIsRequired(bool bInValue);
+        void setIsRequired(bool inValue);
 
         bool isName(const String& inValue) const;
         const String& getName() const;

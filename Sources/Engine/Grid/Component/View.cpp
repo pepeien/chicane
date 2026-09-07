@@ -499,14 +499,8 @@ namespace Chicane
                 node = node->getParent();
             }
 
-            // Chains are leaf-first. Shared ancestors stay hovered and must not
-            // restyle their whole tree. The shallowest node that left or entered
-            // owns descendant selectors (`:hover .child`), including siblings of
-            // the pointer leaf — those never rematch if only the leaf is dirtied.
             auto contains = [](const std::vector<Component*>& inChain, Component* inNode)
-            {
-                return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end();
-            };
+            { return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end(); };
 
             Component* shallowestLeave = nullptr;
             for (Component* candidate : previous)
@@ -605,9 +599,7 @@ namespace Chicane
             }
 
             auto contains = [](const std::vector<Component*>& inChain, Component* inNode)
-            {
-                return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end();
-            };
+            { return std::find(inChain.begin(), inChain.end(), inNode) != inChain.end(); };
 
             Component* shallowestLeave = nullptr;
             for (Component* candidate : previous)

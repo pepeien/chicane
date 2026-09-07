@@ -158,7 +158,7 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(m_text) && !m_bLaidOutThisFrame && !m_layoutSignature.isEmpty())
+            if (!isReference(m_text) && !m_bIsLaidOutThisFrame && !m_layoutSignature.isEmpty())
             {
                 return;
             }
@@ -232,11 +232,12 @@ namespace Chicane
                     continue;
                 }
 
-                const Vec2 size   = glyph->getSize();
-                const Vec2 offset = glyph->getOffset();
+                const Vec2 size     = glyph->getSize();
+                const Vec2 offset   = glyph->getOffset();
+                const Vec2 relative = glyph->getRelative();
                 const Vec2 center(
-                    padding.x + glyph->getRelativeX() + (size.x * 0.5f) + offset.x,
-                    padding.y + glyph->getRelativeY() + (size.y * 0.5f) - offset.y
+                    padding.x + relative.x + (size.x * 0.5f) + offset.x,
+                    padding.y + relative.y + (size.y * 0.5f) - offset.y
                 );
                 const Vec2 half(scale.x * 0.5f, scale.y * 0.5f);
 
@@ -277,10 +278,10 @@ namespace Chicane
                 return;
             }
 
-            const bool bWidthAuto  = m_style.width.isAuto();
-            const bool bHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
 
-            if (!bWidthAuto || !bHeightAuto)
+            if (!bIsWidthAuto || !bIsHeightAuto)
             {
                 Component::refreshSize();
             }
@@ -290,15 +291,15 @@ namespace Chicane
 
         void Text::applyContentSize()
         {
-            const bool bWidthAuto  = m_style.width.isAuto();
-            const bool bHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
 
-            if (!bWidthAuto && !bHeightAuto)
+            if (!bIsWidthAuto && !bIsHeightAuto)
             {
                 return;
             }
 
-            setSize(bWidthAuto ? m_contentSize.x : m_size.x, bHeightAuto ? m_contentSize.y : m_size.y);
+            setSize(bIsWidthAuto ? m_contentSize.x : m_size.x, bIsHeightAuto ? m_contentSize.y : m_size.y);
         }
 
         void Text::refreshPosition()
@@ -344,7 +345,7 @@ namespace Chicane
             const float                 lineHeight = (ascender - descender) * fontSize;
             const std::vector<char32_t> codepoints = value.toUnicode();
 
-            float       cursorX      = 0.0f;
+            Vec2        cursor       = Vec2::Zero();
             float       maxWidth     = 0.0f;
             std::size_t lineCount    = 1;
             std::size_t glyphIndex   = 0;
@@ -357,8 +358,8 @@ namespace Chicane
 
                 if (codepoint == U'\n')
                 {
-                    maxWidth = std::max(maxWidth, cursorX);
-                    cursorX  = 0.0f;
+                    maxWidth = std::max(maxWidth, cursor.x);
+                    cursor.x = 0.0f;
                     lineCount++;
                     hasPrevious = false;
 
@@ -374,8 +375,10 @@ namespace Chicane
 
                 if (hasPrevious)
                 {
-                    cursorX += fontFamily.getKerning(previousCode, codepoint) * fontSize;
+                    cursor.x += fontFamily.getKerning(previousCode, codepoint) * fontSize;
                 }
+
+                cursor.y = (lineCount - 1) * lineHeight;
 
                 TextGlyph* textGlyph = acquireGlyph(glyphIndex++);
                 textGlyph->configure(
@@ -383,13 +386,12 @@ namespace Chicane
                     fontSize,
                     letterSpacing,
                     color,
-                    cursorX,
-                    (lineCount - 1) * lineHeight,
+                    cursor,
                     ascender
                 );
 
-                cursorX += textGlyph->getAdvance();
-                maxWidth = std::max(maxWidth, cursorX);
+                cursor.x += textGlyph->getAdvance();
+                maxWidth = std::max(maxWidth, cursor.x);
 
                 previousCode = codepoint;
                 hasPrevious  = true;
@@ -407,15 +409,15 @@ namespace Chicane
 
             m_contentSize = {maxWidth, lineCount * lineHeight};
 
-            const bool bWidthAuto  = m_style.width.isAuto();
-            const bool bHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
 
-            if (bWidthAuto)
+            if (bIsWidthAuto)
             {
                 m_style.width.value.set(m_contentSize.x);
             }
 
-            if (bHeightAuto)
+            if (bIsHeightAuto)
             {
                 m_style.height.value.set(m_contentSize.y);
             }

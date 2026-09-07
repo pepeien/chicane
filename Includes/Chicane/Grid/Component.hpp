@@ -47,9 +47,11 @@ namespace Chicane
             using Variables  = std::unordered_map<String, ReflectionFieldAccessor>;
 
         public:
+            // Directive
             static constexpr inline const char* IF_DIRECTIVE_KEYWORD  = "dir:if";
             static constexpr inline const char* FOR_DIRECTIVE_KEYWORD = "dir:for";
 
+            // Property
             static constexpr inline const char* CONTENT_TAG_ID                = "Content";
             static constexpr inline const char* CONTENT_SELECT_ATTRIBUTE_NAME = "select";
 
@@ -141,9 +143,9 @@ namespace Chicane
             void drag();
             void endDrag();
 
-            void setHovered(bool inValue, bool bInvalidateSubtree = true);
-            void setFocused(bool inValue, bool bInvalidateSubtree = true);
-            void setDragging(bool inValue, bool bInvalidateSubtree = true);
+            void setHovered(bool inValue, bool bShouldInvalidateSubtree = true);
+            void setFocused(bool inValue, bool bShouldInvalidateSubtree = true);
+            void setDragging(bool inValue, bool bShouldInvalidateSubtree = true);
 
             // Properties
             const String& getTag() const;
@@ -369,7 +371,7 @@ namespace Chicane
             StyleFile::Variables                                  m_styleVariables;
             StyleFile*                                            m_styleFile;
             std::unique_ptr<StyleFile>                            m_styles;
-            bool                                                  m_bOwnsStyle;
+            bool                                                  m_bHasOwnStyle;
 
             // Imports
             std::unordered_map<String, const ReflectionTypeInfo*> m_imports;
@@ -387,8 +389,7 @@ namespace Chicane
             Vec2                                                  m_offset;
             Vec2                                                  m_cursor;
             float                                                 m_scratch;
-            float                                                 m_layoutParentWidth;
-            float                                                 m_layoutParentHeight;
+            Vec2                                                  m_layoutParentSize;
             float                                                 m_layoutParentFontSize;
 
             // Draw
@@ -403,21 +404,21 @@ namespace Chicane
             std::vector<Component*>                               m_forInstances;
             String                                                m_forVariable;
             std::any                                              m_forSource;
-            bool                                                  m_bSkipForDirective;
+            bool                                                  m_bShouldSkipForDirective;
             bool                                                  m_bIsHovered;
             bool                                                  m_bIsFocused;
             bool                                                  m_bIsDragging;
             bool                                                  m_bIsStyleDirty;
             bool                                                  m_bIsLayoutDirty;
             bool                                                  m_bIsCulled;
-            bool                                                  m_bLaidOutThisFrame;
-            bool                                                  m_bInsetsApplied;
-            bool                                                  m_bClassHasBinding;
-            bool                                                  m_bStyleHasBinding;
+            bool                                                  m_bIsLaidOutThisFrame;
+            bool                                                  m_bHasInsetsApplied;
+            bool                                                  m_bHasClassBinding;
+            bool                                                  m_bHasStyleBinding;
             String                                                m_styleBindingSource;
             String                                                m_styleBindingResolved;
             bool                                                  m_bHasIfDirective;
-            mutable bool                                          m_bDrawCacheValid;
+            mutable bool                                          m_bIsDrawCacheValid;
             mutable bool                                          m_bHasDrawPosition;
             mutable Vec2                                          m_cachedDrawPosition;
             mutable Mat3                                          m_cachedPaintMatrix;

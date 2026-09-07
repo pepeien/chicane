@@ -111,12 +111,12 @@ namespace Chicane
             return AssetPreview::create(inFilePath, AssetType::Texture, *image);
         }
 
-        std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inUseStored)
+        std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inShouldUseStored)
         {
             switch (AssetHeader::getTypeFromExtension(inFilePath))
             {
             case AssetType::Texture:
-                return decodeTexturePreview(inFilePath, inUseStored);
+                return decodeTexturePreview(inFilePath, inShouldUseStored);
 
             case AssetType::Mesh:
             {
@@ -125,7 +125,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (inUseStored)
+                if (inShouldUseStored)
                 {
                     if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
                     {
@@ -181,7 +181,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (inUseStored)
+                if (inShouldUseStored)
                 {
                     if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
                     {
@@ -214,7 +214,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (inUseStored)
+                if (inShouldUseStored)
                 {
                     if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
                     {
@@ -237,7 +237,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (inUseStored)
+                if (inShouldUseStored)
                 {
                     if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
                     {
@@ -270,7 +270,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (inUseStored)
+                if (inShouldUseStored)
                 {
                     if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
                     {
@@ -586,9 +586,9 @@ namespace Chicane
                     continue;
                 }
 
-                const bool bCovers =
+                const bool bDoesCover =
                     data.isVariable() && inWeight >= data.getWeightMin() && inWeight <= data.getWeightMax();
-                const float delta = bCovers ? 0.0f : std::fabs(data.getWeight() - inWeight);
+                const float delta = bDoesCover ? 0.0f : std::fabs(data.getWeight() - inWeight);
 
                 if (!result || delta < bestDelta ||
                     (delta == bestDelta && result->getData().isVariable() && !data.isVariable()))

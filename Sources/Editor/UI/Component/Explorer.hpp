@@ -141,7 +141,7 @@ namespace Editor
         ExplorerFilter m_filter;
 
         float         m_iconSizeFactor;
-        bool          m_bSizing;
+        bool          m_bIsSizing;
         Chicane::Vec2 m_pointer;
 
         std::vector<ExplorerItem*> m_tiles;

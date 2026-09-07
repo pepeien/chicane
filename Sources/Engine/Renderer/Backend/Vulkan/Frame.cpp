@@ -84,7 +84,7 @@ namespace Chicane
             );
         }
 
-        void VulkanFrame::flushTarget(bool bInPresentToWindow)
+        void VulkanFrame::flushTarget(bool bInShouldPresentToWindow)
         {
             vk::ImageSubresourceRange range;
             range.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -123,7 +123,7 @@ namespace Chicane
                 before
             );
 
-            if (bInPresentToWindow)
+            if (bInShouldPresentToWindow)
             {
                 vk::ImageCopy region;
                 region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;

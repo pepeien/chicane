@@ -2,6 +2,6 @@
     <Button class="header-menu__control" onClick="{{ onActivate() }}">
         <Text class="header-menu__label">{{ label }}</Text>
         <Text dir:if="{{ bHasShortcut }}" class="header-menu__shortcut">{{ shortcut }}</Text>
-        <Icon dir:if="{{ bShowChevron }}" source="Assets/Editor/UI/Icons/Regular" name="CaretRight" class="header-menu__chevron"/>
+        <Icon dir:if="{{ bShouldShowChevron }}" source="Assets/Editor/UI/Icons/Regular" name="CaretRight" class="header-menu__chevron"/>
     </Button>
 </Container>

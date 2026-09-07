@@ -17,7 +17,7 @@ namespace Chicane
             DockPanel* panel   = nullptr;
             Vec2       cursor  = Vec2::Zero();
             Vec2       grab    = Vec2::Zero();
-            bool       bActive = false;
+            bool       bIsActive = false;
             DockSide   drop    = DockSide::Float;
         };
     }

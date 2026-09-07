@@ -10,11 +10,11 @@ namespace Chicane
               delay(0.0f),
               iterations(1),
               easing(Drift::EasingCurve::ease()),
-              bReverse(false),
-              bAlternate(false),
-              bPaused(false),
-              bFillForwards(false),
-              bFillBackwards(false)
+              bIsReverse(false),
+              bIsAlternate(false),
+              bIsPaused(false),
+              bShouldFillForwards(false),
+              bShouldFillBackwards(false)
         {}
     }
 }

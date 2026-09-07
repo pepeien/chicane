@@ -87,7 +87,7 @@ namespace Chicane
             std::vector<String> items;
 
         private:
-            bool        m_bEdited;
+            bool        m_bIsEdited;
             std::size_t m_highlighted;
         };
     }

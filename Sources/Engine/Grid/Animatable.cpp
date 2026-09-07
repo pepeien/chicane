@@ -94,8 +94,6 @@ namespace Chicane
 
                 if (sameValues(from, to))
                 {
-                    // Live computed values follow the tween. Stopping here would
-                    // kill an in-flight transition after the first frame.
                     if (!m_animator.hasTween(name))
                     {
                         continue;
@@ -103,17 +101,13 @@ namespace Chicane
                 }
                 else
                 {
-                    const bool bPercentBasis =
-                        (name.equals(Style::TRANSFORM_ATTRIBUTE_NAME) &&
-                         outStyle.transform.getRaw().contains('%') &&
+                    const bool bHasPercentBasis =
+                        (name.equals(Style::TRANSFORM_ATTRIBUTE_NAME) && outStyle.transform.getRaw().contains('%') &&
                          outStyle.transform.getRaw().equals(m_lastTransformRaw)) ||
-                        (name.equals(Style::TRANSLATE_ATTRIBUTE_NAME) &&
-                         outStyle.translate.getRaw().contains('%') &&
+                        (name.equals(Style::TRANSLATE_ATTRIBUTE_NAME) && outStyle.translate.getRaw().contains('%') &&
                          outStyle.translate.getRaw().equals(m_lastTranslateRaw));
 
-                    // translateY(-100%) tracks the box. Hover rematch/layout must
-                    // not restart transition: transform when only the % basis moved.
-                    if (bPercentBasis && !m_animator.hasTween(name))
+                    if (bHasPercentBasis && !m_animator.hasTween(name))
                     {
                         continue;
                     }
@@ -143,12 +137,12 @@ namespace Chicane
                     {
                         player->setDelay(outStyle.animation.delay);
                         player->setDirection(
-                            outStyle.animation.bReverse ? Drift::Direction::Reverse : Drift::Direction::Forward
+                            outStyle.animation.bIsReverse ? Drift::Direction::Reverse : Drift::Direction::Forward
                         );
-                        player->setFillForwards(outStyle.animation.bFillForwards);
-                        player->setFillBackwards(outStyle.animation.bFillBackwards);
+                        player->setFillForwards(outStyle.animation.bShouldFillForwards);
+                        player->setFillBackwards(outStyle.animation.bShouldFillBackwards);
 
-                        if (outStyle.animation.bPaused)
+                        if (outStyle.animation.bIsPaused)
                         {
                             player->pause();
                         }
@@ -159,7 +153,7 @@ namespace Chicane
             }
             else if (Drift::Player* player = m_animator.getPlayer("style"))
             {
-                if (outStyle.animation.bPaused)
+                if (outStyle.animation.bIsPaused)
                 {
                     player->pause();
                 }
@@ -183,12 +177,12 @@ namespace Chicane
 
             if (const Drift::Player* player = m_animator.getPlayer("style"))
             {
-                const bool bWaiting = player->isWaiting();
-                const bool bActive  = player->isPlaying() || player->isPaused();
-                const bool bFilled  = player->isFinished() && player->fillsForwards();
-                const bool bBack    = bWaiting && player->fillsBackwards();
+                const bool bIsWaiting = player->isWaiting();
+                const bool bIsActive  = player->isPlaying() || player->isPaused();
+                const bool bIsFilled  = player->isFinished() && player->fillsForwards();
+                const bool bIsBack    = bIsWaiting && player->fillsBackwards();
 
-                if ((!bWaiting && (bActive || bFilled)) || bBack)
+                if ((!bIsWaiting && (bIsActive || bIsFilled)) || bIsBack)
                 {
                     for (const Drift::Track& track : player->getClip().tracks)
                     {

@@ -16,9 +16,9 @@ namespace Chicane
               m_iteration(0),
               m_direction(Direction::Forward),
               m_status(Status::Stopped),
-              m_bFillBackwards(false),
-              m_bFillForwards(false),
-              m_bFinished(false),
+              m_bShouldFillBackwards(false),
+              m_bShouldFillForwards(false),
+              m_bIsFinished(false),
               m_onComplete()
         {}
 
@@ -35,7 +35,7 @@ namespace Chicane
             }
 
             m_status    = Status::Playing;
-            m_bFinished = false;
+            m_bIsFinished = false;
         }
 
         void Player::pause()
@@ -60,7 +60,7 @@ namespace Chicane
             m_elapsed        = 0.0f;
             m_remainingDelay = std::max(0.0f, m_delay);
             m_iteration      = 0;
-            m_bFinished      = false;
+            m_bIsFinished      = false;
         }
 
         void Player::tick(float inDeltaTime)
@@ -102,10 +102,10 @@ namespace Chicane
             {
                 m_iteration++;
 
-                const bool bInfinite = m_clip.iterations <= 0;
-                const bool bOnce     = m_clip.loop == Loop::Once || (!bInfinite && m_iteration >= m_clip.iterations);
+                const bool bIsInfinite = m_clip.iterations <= 0;
+                const bool bIsOnce     = m_clip.loop == Loop::Once || (!bIsInfinite && m_iteration >= m_clip.iterations);
 
-                if (bOnce)
+                if (bIsOnce)
                 {
                     m_elapsed = duration;
 
@@ -145,7 +145,7 @@ namespace Chicane
 
         bool Player::isFinished() const
         {
-            return m_bFinished;
+            return m_bIsFinished;
         }
 
         Status Player::getStatus() const
@@ -201,22 +201,22 @@ namespace Chicane
 
         void Player::setFillBackwards(bool inValue)
         {
-            m_bFillBackwards = inValue;
+            m_bShouldFillBackwards = inValue;
         }
 
         bool Player::fillsBackwards() const
         {
-            return m_bFillBackwards;
+            return m_bShouldFillBackwards;
         }
 
         void Player::setFillForwards(bool inValue)
         {
-            m_bFillForwards = inValue;
+            m_bShouldFillForwards = inValue;
         }
 
         bool Player::fillsForwards() const
         {
-            return m_bFillForwards;
+            return m_bShouldFillForwards;
         }
 
         float Player::getElapsed() const
@@ -257,13 +257,13 @@ namespace Chicane
 
         void Player::finish()
         {
-            if (m_bFinished)
+            if (m_bIsFinished)
             {
                 return;
             }
 
             m_status    = Status::Stopped;
-            m_bFinished = true;
+            m_bIsFinished = true;
 
             m_onComplete.next();
         }
@@ -274,7 +274,7 @@ namespace Chicane
 
             if (isWaiting())
             {
-                return m_bFillBackwards ? (m_direction == Direction::Reverse ? duration : 0.0f) : 0.0f;
+                return m_bShouldFillBackwards ? (m_direction == Direction::Reverse ? duration : 0.0f) : 0.0f;
             }
 
             const float elapsed = std::clamp(m_elapsed, 0.0f, duration);

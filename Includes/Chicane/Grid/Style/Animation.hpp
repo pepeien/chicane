@@ -21,11 +21,11 @@ namespace Chicane
             float              delay;
             int                iterations;
             Drift::EasingCurve easing;
-            bool               bReverse;
-            bool               bAlternate;
-            bool               bPaused;
-            bool               bFillForwards;
-            bool               bFillBackwards;
+            bool               bIsReverse;
+            bool               bIsAlternate;
+            bool               bIsPaused;
+            bool               bShouldFillForwards;
+            bool               bShouldFillBackwards;
         };
     }
 }

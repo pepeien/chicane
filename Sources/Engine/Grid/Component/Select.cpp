@@ -18,7 +18,7 @@ namespace Chicane
               placeholder(String::empty()),
               isOpen(false),
               items({}),
-              m_bEdited(false),
+              m_bIsEdited(false),
               m_highlighted(INVALID_HIGHLIGHT)
         {
             load("Assets/Engine/UI/Components/Select.grid", "Assets/Engine/UI/Components/Select.decal");
@@ -216,7 +216,7 @@ namespace Chicane
         void Select::choose(String inValue)
         {
             value     = inValue;
-            m_bEdited = true;
+            m_bIsEdited = true;
 
             refreshLabel();
             commit();
@@ -248,7 +248,7 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(raw) && m_bEdited)
+            if (!isReference(raw) && m_bIsEdited)
             {
                 return;
             }

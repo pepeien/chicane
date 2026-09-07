@@ -583,7 +583,7 @@ namespace Chicane
             return m_screenTextureId;
         }
 
-        void OpenGLBackend::presentTarget(bool inPresentToWindow) const
+        void OpenGLBackend::presentTarget(bool inShouldPresentToWindow) const
         {
             if (m_targetFramebuffer == 0)
             {
@@ -593,7 +593,7 @@ namespace Chicane
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             glDrawBuffer(GL_BACK);
 
-            if (inPresentToWindow)
+            if (inShouldPresentToWindow)
             {
                 glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
                 glReadBuffer(GL_COLOR_ATTACHMENT0);

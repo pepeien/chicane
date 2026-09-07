@@ -7,7 +7,7 @@ namespace Editor
     HeaderMenu::HeaderMenu(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
           bIsOpen(false),
-          bShowChevron(false),
+          bShouldShowChevron(false),
           bHasShortcut(false),
           label(Chicane::String::empty()),
           shortcut(Chicane::String::empty()),
@@ -256,7 +256,7 @@ namespace Editor
     {
         const HeaderMenuItem* item = getItem();
 
-        bShowChevron = isNested() && item && !item->children.empty();
+        bShouldShowChevron = isNested() && item && !item->children.empty();
         bHasShortcut = item && !item->shortcut.isEmpty();
         label        = item ? item->label : Chicane::String::empty();
         shortcut     = item ? item->shortcut : Chicane::String::empty();

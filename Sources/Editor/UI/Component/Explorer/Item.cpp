@@ -17,7 +17,7 @@ namespace Editor
           isFolder(false),
           isFile(true),
           hasPreview(false),
-          showFileGlyph(true),
+          shouldShowFileGlyph(true),
           typeClass("file"),
           selectionState("idle"),
           itemName(Chicane::String::empty()),
@@ -30,19 +30,19 @@ namespace Editor
     }
 
     void ExplorerItem::bind(
-        const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inRestyle
+        const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inShouldRestyle
     )
     {
         if (
-            !inRestyle && m_item == inItem && m_boundIndex == inIndex && m_slot.x == inSlot.x && m_slot.y == inSlot.y
+            !inShouldRestyle && m_item == inItem && m_boundIndex == inIndex && m_slot.x == inSlot.x && m_slot.y == inSlot.y
         )
         {
             return;
         }
 
-        const bool            bPreview     = hasPreview;
-        const bool            bFolder      = isFolder;
-        const bool            bShowGlyph   = showFileGlyph;
+        const bool            bHasPreview     = hasPreview;
+        const bool            bIsFolder      = isFolder;
+        const bool            bShouldShowGlyph   = shouldShowFileGlyph;
         const Chicane::String previousType = typeClass;
 
         m_item       = inItem;
@@ -56,7 +56,7 @@ namespace Editor
         m_bIsCulled = false;
 
         if (
-            inRestyle || bPreview != hasPreview || bFolder != isFolder || bShowGlyph != showFileGlyph ||
+            inShouldRestyle || bHasPreview != hasPreview || bIsFolder != isFolder || bShouldShowGlyph != shouldShowFileGlyph ||
             !previousType.equals(typeClass)
         )
         {
@@ -89,11 +89,11 @@ namespace Editor
             return;
         }
 
-        const bool            bPreview   = hasPreview;
+        const bool            bHasPreview   = hasPreview;
         const Chicane::String previous   = selectionState;
         refreshState();
 
-        if (bPreview != hasPreview || !previous.equals(selectionState))
+        if (bHasPreview != hasPreview || !previous.equals(selectionState))
         {
             markStyleDirtySubtree();
         }
@@ -123,7 +123,7 @@ namespace Editor
         isFolder       = false;
         isFile         = true;
         hasPreview     = false;
-        showFileGlyph  = true;
+        shouldShowFileGlyph  = true;
         typeClass      = "file";
         itemName       = Chicane::String::empty();
         itemPath       = Chicane::String::empty();
@@ -155,7 +155,7 @@ namespace Editor
             }
         }
 
-        showFileGlyph = isFile && !hasPreview;
+        shouldShowFileGlyph = isFile && !hasPreview;
 
         const Chicane::String selected = parseText("{{ selectedAssetName }}");
         if (!selected.isEmpty() && selected.equals(m_item->name))

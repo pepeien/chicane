@@ -29,7 +29,7 @@ namespace Chicane
               m_screenTextureId(Draw::InvalidId),
               m_timestampQueryPool(nullptr),
               m_timestampPeriod(1.0f),
-              m_bTimestampsEnabled(false),
+              m_bIsTimestampsEnabled(false),
               m_timestampSubmitted({})
         {}
 
@@ -165,7 +165,7 @@ namespace Chicane
                 throw std::runtime_error("Queue submit failed");
             }
 
-            if (m_bTimestampsEnabled)
+            if (m_bIsTimestampsEnabled)
             {
                 m_timestampSubmitted[m_currentFrameIndex] = true;
             }
@@ -399,7 +399,7 @@ namespace Chicane
 
         void VulkanBackend::buildTimestampQueries()
         {
-            m_bTimestampsEnabled = false;
+            m_bIsTimestampsEnabled = false;
             m_timestampSubmitted.assign(frames.size(), false);
 
             if (frames.empty())
@@ -429,7 +429,7 @@ namespace Chicane
             createInfo.queryCount = static_cast<std::uint32_t>(frames.size() * 2U);
 
             m_timestampQueryPool = logicalDevice.createQueryPool(createInfo);
-            m_bTimestampsEnabled = true;
+            m_bIsTimestampsEnabled = true;
         }
 
         void VulkanBackend::destroyTimestampQueries()
@@ -440,13 +440,13 @@ namespace Chicane
                 m_timestampQueryPool = nullptr;
             }
 
-            m_bTimestampsEnabled = false;
+            m_bIsTimestampsEnabled = false;
             m_timestampSubmitted.clear();
         }
 
         void VulkanBackend::resolveGpuTimestamp(std::uint32_t inFrameIndex)
         {
-            if (!m_bTimestampsEnabled || !m_timestampSubmitted[inFrameIndex])
+            if (!m_bIsTimestampsEnabled || !m_timestampSubmitted[inFrameIndex])
             {
                 return;
             }
@@ -473,7 +473,7 @@ namespace Chicane
 
         void VulkanBackend::writeGpuTimestampStart(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex)
         {
-            if (!m_bTimestampsEnabled)
+            if (!m_bIsTimestampsEnabled)
             {
                 return;
             }
@@ -485,7 +485,7 @@ namespace Chicane
 
         void VulkanBackend::writeGpuTimestampEnd(const vk::CommandBuffer& inCommandBuffer, std::uint32_t inFrameIndex)
         {
-            if (!m_bTimestampsEnabled)
+            if (!m_bIsTimestampsEnabled)
             {
                 return;
             }

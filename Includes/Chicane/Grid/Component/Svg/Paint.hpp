@@ -15,6 +15,14 @@ namespace Chicane
         struct CHICANE_GRID SvgPaint
         {
         public:
+            // Paint
+            static constexpr inline const char* PAINT_INHERIT     = "inherit";
+            static constexpr inline const char* PAINT_NONE        = "none";
+            static constexpr inline const char* PAINT_TRANSPARENT = "transparent";
+            static constexpr inline const char* PAINT_CURRENT     = "currentColor";
+            static constexpr inline const char* PAINT_CURRENT_ALT = "currentcolor";
+            static constexpr inline const char* PAINT_URL_PREFIX  = "url(";
+
             // Fill
             static constexpr inline const char* FILL_ATTRIBUTE_NAME         = "fill";
             static constexpr inline const char* FILL_OPACITY_ATTRIBUTE_NAME = "fill-opacity";

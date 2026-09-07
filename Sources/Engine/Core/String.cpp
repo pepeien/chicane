@@ -150,11 +150,11 @@ namespace Chicane
             if (at(i) == '&' && i + 3 < size() && at(i + 1) == '#')
             {
                 size_t j   = i + 2;
-                bool   hex = false;
+                bool   bIsHex = false;
 
                 if (j < size() && (at(j) == 'x' || at(j) == 'X'))
                 {
-                    hex = true;
+                    bIsHex = true;
                     j++;
                 }
 
@@ -170,7 +170,7 @@ namespace Chicane
                     try
                     {
                         std::string num       = toStandard().substr(start, j - start);
-                        char32_t    codepoint = (char32_t)std::stoul(num, nullptr, hex ? 16 : 10);
+                        char32_t    codepoint = (char32_t)std::stoul(num, nullptr, bIsHex ? 16 : 10);
 
                         result.push_back(codepoint);
 

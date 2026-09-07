@@ -13,6 +13,7 @@ namespace Chicane
         class CHICANE_GRID SvgShape : public Component
         {
         public:
+            // Tag
             static constexpr inline const char* TAG_ID = "SvgShape";
 
         public:

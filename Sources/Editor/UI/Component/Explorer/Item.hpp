@@ -26,7 +26,7 @@ namespace Editor
 
     public:
         void bind(
-            const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inRestyle = false
+            const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inShouldRestyle = false
         );
         void unbind();
         int  boundIndex() const;
@@ -42,7 +42,7 @@ namespace Editor
         CH_FIELD()
         bool hasPreview;
         CH_FIELD()
-        bool showFileGlyph;
+        bool shouldShowFileGlyph;
         CH_FIELD()
         Chicane::String typeClass;
 

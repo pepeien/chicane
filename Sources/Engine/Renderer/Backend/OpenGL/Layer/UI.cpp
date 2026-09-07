@@ -145,7 +145,7 @@ namespace Chicane
             {
                 std::uint32_t       runStart    = draw.instanceStart;
                 std::uint32_t       runCount    = 0;
-                bool                runBackdrop = false;
+                bool                bHasRunBackdrop = false;
                 const std::uint32_t instanceEnd = draw.instanceStart + draw.instanceCount;
 
                 auto flush = [&]()
@@ -155,7 +155,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (runBackdrop)
+                    if (bHasRunBackdrop)
                     {
                         glMemoryBarrier(GL_FRAMEBUFFER_BARRIER_BIT);
                         copyBackdrop(viewport);
@@ -169,23 +169,23 @@ namespace Chicane
 
                 for (std::uint32_t i = draw.instanceStart; i < instanceEnd; i++)
                 {
-                    const bool backdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
+                    const bool bHasBackdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
 
                     if (runCount == 0)
                     {
-                        runStart    = i;
-                        runBackdrop = backdrop;
-                        runCount    = 1;
+                        runStart        = i;
+                        bHasRunBackdrop = bHasBackdrop;
+                        runCount        = 1;
 
                         continue;
                     }
 
-                    if (backdrop != runBackdrop || backdrop)
+                    if (bHasBackdrop != bHasRunBackdrop || bHasBackdrop)
                     {
                         flush();
-                        runStart    = i;
-                        runBackdrop = backdrop;
-                        runCount    = 1;
+                        runStart        = i;
+                        bHasRunBackdrop = bHasBackdrop;
+                        runCount        = 1;
 
                         continue;
                     }

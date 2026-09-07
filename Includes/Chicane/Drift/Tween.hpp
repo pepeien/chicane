@@ -84,7 +84,7 @@ namespace Chicane
             Loop               m_loop;
             Status             m_status;
             EasingCurve        m_easing;
-            bool               m_bFinished;
+            bool               m_bIsFinished;
             CompleteObservable m_onComplete;
         };
     }

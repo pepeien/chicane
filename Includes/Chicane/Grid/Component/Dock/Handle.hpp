@@ -14,6 +14,7 @@ namespace Chicane
         class CHICANE_GRID DockHandle : public Component
         {
         public:
+            // Tag
             static constexpr inline const char* TAG_ID = "DockHandle";
 
         public:

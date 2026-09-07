@@ -48,14 +48,14 @@ namespace Chicane
         // Addition
         inline Vec2& operator+=(Vec2 inValue)
         {
-            x += static_cast<float>(inValue.x);
-            y += static_cast<float>(inValue.y);
+            x += inValue.x;
+            y += inValue.y;
 
             return *this;
         }
 
         template <typename T>
-        inline Vec2 operator+(T inScalar)
+        inline Vec2& operator+=(T inScalar)
         {
             x += static_cast<float>(inScalar);
             y += static_cast<float>(inScalar);
@@ -63,34 +63,31 @@ namespace Chicane
             return *this;
         }
 
-        friend inline Vec2 operator+(Vec2 inLeft, Vec2 inRight)
-        {
-            return Vec2(inLeft.x + inRight.x, inLeft.y + inRight.y);
-        }
+        friend inline Vec2 operator+(Vec2 inLeft, Vec2 inRight) { return inLeft += inRight; }
 
         template <typename T>
         friend inline Vec2 operator+(Vec2 inValue, T inScalar)
         {
-            return Vec2(inValue.x + inScalar, inValue.y + inScalar);
+            return inValue += inScalar;
         }
 
         template <typename T>
         friend inline Vec2 operator+(T inScalar, Vec2 inValue)
         {
-            return Vec2(inValue.x + inScalar, inValue.y + inScalar);
+            return inValue += inScalar;
         }
 
         // Substraction
         inline Vec2& operator-=(Vec2 inValue)
         {
-            x -= static_cast<float>(inValue.x);
-            y -= static_cast<float>(inValue.y);
+            x -= inValue.x;
+            y -= inValue.y;
 
             return *this;
         }
 
         template <typename T>
-        inline Vec2 operator-(T inScalar)
+        inline Vec2& operator-=(T inScalar)
         {
             x -= static_cast<float>(inScalar);
             y -= static_cast<float>(inScalar);
@@ -98,28 +95,25 @@ namespace Chicane
             return *this;
         }
 
-        friend inline Vec2 operator-(Vec2 inLeft, const Vec2 inRight)
-        {
-            return Vec2(inLeft.x - inRight.x, inLeft.y - inRight.y);
-        }
+        friend inline Vec2 operator-(Vec2 inLeft, Vec2 inRight) { return inLeft -= inRight; }
 
         template <typename T>
         friend inline Vec2 operator-(Vec2 inValue, T inScalar)
         {
-            return Vec2(inValue.x - inScalar, inValue.y - inScalar);
+            return inValue -= inScalar;
         }
 
         template <typename T>
         friend inline Vec2 operator-(T inScalar, Vec2 inValue)
         {
-            return Vec2(inValue.x - inScalar, inValue.y - inScalar);
+            return inValue -= inScalar;
         }
 
         // Multiplication
         inline Vec2& operator*=(Vec2 inValue)
         {
-            x *= static_cast<float>(inValue.x);
-            y *= static_cast<float>(inValue.y);
+            x *= inValue.x;
+            y *= inValue.y;
 
             return *this;
         }
@@ -133,30 +127,18 @@ namespace Chicane
             return *this;
         }
 
-        template <typename T>
-        inline Vec2 operator*(T inScalar)
-        {
-            x *= static_cast<float>(inScalar);
-            y *= static_cast<float>(inScalar);
-
-            return *this;
-        }
-
-        friend inline Vec2 operator*(Vec2 inLeft, Vec2 inRight)
-        {
-            return Vec2(inLeft.x * inRight.x, inLeft.y * inRight.y);
-        }
+        friend inline Vec2 operator*(Vec2 inLeft, Vec2 inRight) { return inLeft *= inRight; }
 
         template <typename T>
         friend inline Vec2 operator*(Vec2 inValue, T inScalar)
         {
-            return Vec2(inValue.x * inScalar, inValue.y * inScalar);
+            return inValue *= inScalar;
         }
 
         template <typename T>
         friend inline Vec2 operator*(T inScalar, Vec2 inValue)
         {
-            return Vec2(inValue.x * inScalar, inValue.y * inScalar);
+            return inValue *= inScalar;
         }
 
     public:

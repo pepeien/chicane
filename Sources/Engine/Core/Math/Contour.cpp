@@ -10,51 +10,35 @@
 
 namespace Chicane
 {
-    static constexpr float       MIN_LENGTH              = 1.0e-12f;
-    static constexpr float       SNAP_RELATIVE           = 1.0e-6f;
-    static constexpr float       CONVEX_AREA_RELATIVE     = 1.0e-8f;
-    static constexpr float       DEGENERATE_AREA_RELATIVE = 1.0e-12f;
-    static constexpr float       TESS_EXTENT             = 1024.0f;
-    static constexpr std::size_t MIN_POLYGON_VERTICES     = 3;
-    static constexpr std::size_t MAX_FAN_VERTICES         = 4;
-    static constexpr int         TESS_POLYGON_SIZE        = 3;
-    static constexpr int         TESS_VERTEX_SIZE         = 2;
-    static constexpr TESSreal    TESS_NORMAL[3]          = {0.0f, 0.0f, 1.0f};
-
-    using ContourPoint  = std::array<float, 2>;
-    using ContourPoints = std::vector<ContourPoint>;
-
-    static float signedArea(const ContourPoint& inA, const ContourPoint& inB, const ContourPoint& inC)
+    static float signedArea(const Contour::Point& inA, const Contour::Point& inB, const Contour::Point& inC)
     {
         return ((inB[0] - inA[0]) * (inC[1] - inA[1])) - ((inC[0] - inA[0]) * (inB[1] - inA[1]));
     }
 
-    static float contourExtent(const ContourPoints& inPoints)
+    static float contourExtent(const Contour::Points& inPoints)
     {
         if (inPoints.empty())
         {
             return 0.0f;
         }
 
-        float minX = inPoints.front()[0];
-        float minY = inPoints.front()[1];
-        float maxX = minX;
-        float maxY = minY;
+        Vec2 min(inPoints.front()[0], inPoints.front()[1]);
+        Vec2 max = min;
 
-        for (const ContourPoint& point : inPoints)
+        for (const Contour::Point& point : inPoints)
         {
-            minX = std::min(minX, point[0]);
-            minY = std::min(minY, point[1]);
-            maxX = std::max(maxX, point[0]);
-            maxY = std::max(maxY, point[1]);
+            min.x = std::min(min.x, point[0]);
+            min.y = std::min(min.y, point[1]);
+            max.x = std::max(max.x, point[0]);
+            max.y = std::max(max.y, point[1]);
         }
 
-        return std::max(maxX - minX, maxY - minY);
+        return std::max(max.x - min.x, max.y - min.y);
     }
 
-    static ContourPoints normalizeContour(const ContourPoints& inPoints)
+    static Contour::Points normalizeContour(const Contour::Points& inPoints)
     {
-        ContourPoints clean;
+        Contour::Points clean;
 
         if (inPoints.empty())
         {
@@ -62,10 +46,10 @@ namespace Chicane
         }
 
         const float extent = contourExtent(inPoints);
-        const float snap   = std::max(extent * SNAP_RELATIVE, MIN_LENGTH);
+        const float snap   = std::max(extent * Contour::SNAP_RELATIVE, Contour::MIN_LENGTH);
         const float snap2  = snap * snap;
 
-        auto tooClose = [snap2](const ContourPoint& inLeft, const ContourPoint& inRight)
+        auto tooClose = [snap2](const Contour::Point& inLeft, const Contour::Point& inRight)
         {
             const float dx = inLeft[0] - inRight[0];
             const float dy = inLeft[1] - inRight[1];
@@ -73,7 +57,7 @@ namespace Chicane
             return ((dx * dx) + (dy * dy)) <= snap2;
         };
 
-        for (const ContourPoint& point : inPoints)
+        for (const Contour::Point& point : inPoints)
         {
             if (!clean.empty() && tooClose(clean.back(), point))
             {
@@ -91,15 +75,15 @@ namespace Chicane
         return clean;
     }
 
-    static bool isConvexContour(const ContourPoints& inPoints)
+    static bool isConvexContour(const Contour::Points& inPoints)
     {
-        if (inPoints.size() < MIN_POLYGON_VERTICES)
+        if (inPoints.size() < Contour::MIN_POLYGON_VERTICES)
         {
             return false;
         }
 
         const float       extent  = contourExtent(inPoints);
-        const float       minArea = std::max(extent * extent * CONVEX_AREA_RELATIVE, MIN_LENGTH);
+        const float       minArea = std::max(extent * extent * Contour::CONVEX_AREA_RELATIVE, Contour::MIN_LENGTH);
         const std::size_t count   = inPoints.size();
         int               sign    = 0;
 
@@ -125,14 +109,14 @@ namespace Chicane
         return sign != 0;
     }
 
-    static void emitFan(const ContourPoints& inPoints, Vertex::Positions& outPositions, Vertex::Indices& outIndices)
+    static void emitFan(const Contour::Points& inPoints, Vertex::Positions& outPositions, Vertex::Indices& outIndices)
     {
-        const float         extent  = contourExtent(inPoints);
-        const float         minArea = std::max(extent * extent * DEGENERATE_AREA_RELATIVE, MIN_LENGTH);
-        const std::uint32_t base    = static_cast<std::uint32_t>(outPositions.size());
-        const std::uint32_t count   = static_cast<std::uint32_t>(inPoints.size());
+        const float extent        = contourExtent(inPoints);
+        const float minArea       = std::max(extent * extent * Contour::DEGENERATE_AREA_RELATIVE, Contour::MIN_LENGTH);
+        const std::uint32_t base  = static_cast<std::uint32_t>(outPositions.size());
+        const std::uint32_t count = static_cast<std::uint32_t>(inPoints.size());
 
-        for (const ContourPoint& point : inPoints)
+        for (const Contour::Point& point : inPoints)
         {
             outPositions.push_back({point[0], point[1], 0.0f});
         }
@@ -155,7 +139,7 @@ namespace Chicane
           m_indices({})
     {}
 
-    void Contour::triangulate(const Curve::List& inCurves, bool bInEvenOdd)
+    void Contour::triangulate(const Curve::List& inCurves, bool bInIsEvenOdd)
     {
         m_positions.clear();
         m_indices.clear();
@@ -165,13 +149,11 @@ namespace Chicane
             return;
         }
 
-        std::vector<ContourPoints> contours;
+        std::vector<Points> contours;
 
-        float minX       = 0.0f;
-        float minY       = 0.0f;
-        float maxX       = 0.0f;
-        float maxY       = 0.0f;
-        bool  bHasBounds = false;
+        Vec2 min       = Vec2::Zero();
+        Vec2 max       = Vec2::Zero();
+        bool bHasBounds = false;
 
         for (const Curve& curve : inCurves)
         {
@@ -180,7 +162,7 @@ namespace Chicane
                 continue;
             }
 
-            ContourPoints points;
+            Points points;
 
             for (const Vec2& point : curve.getPoints())
             {
@@ -194,23 +176,21 @@ namespace Chicane
                 continue;
             }
 
-            for (const ContourPoint& point : points)
+            for (const Point& point : points)
             {
                 if (!bHasBounds)
                 {
-                    minX       = point[0];
-                    minY       = point[1];
-                    maxX       = point[0];
-                    maxY       = point[1];
+                    min        = Vec2(point[0], point[1]);
+                    max        = min;
                     bHasBounds = true;
 
                     continue;
                 }
 
-                minX = std::min(minX, point[0]);
-                minY = std::min(minY, point[1]);
-                maxX = std::max(maxX, point[0]);
-                maxY = std::max(maxY, point[1]);
+                min.x = std::min(min.x, point[0]);
+                min.y = std::min(min.y, point[1]);
+                max.x = std::max(max.x, point[0]);
+                max.y = std::max(max.y, point[1]);
             }
 
             contours.push_back(std::move(points));
@@ -228,7 +208,7 @@ namespace Chicane
             return;
         }
 
-        const float extent = std::max(maxX - minX, maxY - minY);
+        const float extent = std::max(max.x - min.x, max.y - min.y);
 
         if (extent <= MIN_LENGTH)
         {
@@ -244,15 +224,15 @@ namespace Chicane
             return;
         }
 
-        for (const ContourPoints& contour : contours)
+        for (const Points& contour : contours)
         {
             std::vector<float> flat;
             flat.reserve(contour.size() * 2);
 
-            for (const ContourPoint& point : contour)
+            for (const Point& point : contour)
             {
-                flat.push_back((point[0] - minX) * scale);
-                flat.push_back((point[1] - minY) * scale);
+                flat.push_back((point[0] - min.x) * scale);
+                flat.push_back((point[1] - min.y) * scale);
             }
 
             tessAddContour(
@@ -264,7 +244,7 @@ namespace Chicane
             );
         }
 
-        const int winding = bInEvenOdd ? TESS_WINDING_ODD : TESS_WINDING_NONZERO;
+        const int winding = bInIsEvenOdd ? TESS_WINDING_ODD : TESS_WINDING_NONZERO;
 
         if (!tessTesselate(tess, winding, TESS_POLYGONS, TESS_POLYGON_SIZE, TESS_VERTEX_SIZE, TESS_NORMAL))
         {
@@ -287,7 +267,7 @@ namespace Chicane
 
         for (int i = 0; i < nverts; ++i)
         {
-            m_positions.push_back({(verts[i * 2] * inv) + minX, (verts[i * 2 + 1] * inv) + minY, 0.0f});
+            m_positions.push_back({(verts[i * 2] * inv) + min.x, (verts[i * 2 + 1] * inv) + min.y, 0.0f});
         }
 
         for (int i = 0; i < nelems; ++i)

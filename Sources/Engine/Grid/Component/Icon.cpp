@@ -55,22 +55,22 @@ namespace Chicane
         String Icon::toCamelCase(const String& inValue) const
         {
             String result;
-            bool   bCapitalize = true;
+            bool   bShouldCapitalize = true;
 
             for (std::size_t i = 0; i < inValue.size(); i++)
             {
                 const char character = inValue.at(i);
                 if (character == '-' || character == '_' || character == ' ')
                 {
-                    bCapitalize = true;
+                    bShouldCapitalize = true;
 
                     continue;
                 }
 
-                if (bCapitalize)
+                if (bShouldCapitalize)
                 {
                     result += static_cast<char>(std::toupper(static_cast<unsigned char>(character)));
-                    bCapitalize = false;
+                    bShouldCapitalize = false;
 
                     continue;
                 }

@@ -1,10 +1,7 @@
 #pragma once
 
-#include <condition_variable>
 #include <memory>
 #include <mutex>
-#include <queue>
-#include <thread>
 #include <unordered_set>
 #include <vector>
 
@@ -23,25 +20,19 @@ namespace Chicane
             static PreviewService& instance();
 
         public:
-            PreviewService();
-            ~PreviewService();
+            PreviewService() = default;
 
         public:
             void enqueue(const FileSystem::Path& inFilePath);
             void drain(std::vector<std::unique_ptr<AssetPreview>>& outReady);
 
         private:
-            void start();
-            void loop();
+            void finish(const FileSystem::Path& inFilePath, std::unique_ptr<AssetPreview> inPreview);
 
         private:
             std::mutex                                 m_mutex;
-            std::condition_variable                    m_readySignal;
-            std::queue<FileSystem::Path>               m_pending;
             std::unordered_set<FileSystem::Path>       m_inFlight;
             std::vector<std::unique_ptr<AssetPreview>> m_ready;
-            std::thread                                m_worker;
-            bool                                       m_bRunning;
         };
     }
 }

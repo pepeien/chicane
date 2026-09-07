@@ -32,9 +32,15 @@ namespace Chicane
 {
     namespace Grid
     {
-        constexpr int   BEZIER_SEGMENTS = 8;
-        constexpr float MIN_LENGTH      = 1.0e-5f;
-        constexpr float KAPPA          = 0.5522847498f;
+        float degreesToRadians(float inDegrees)
+        {
+            return inDegrees * Svg::DEG_TO_RAD;
+        }
+
+        Vec2 reflectControl(const Vec2& inCurrent, const Vec2& inLast)
+        {
+            return (inCurrent * Svg::CONTROL_REFLECT) - inLast;
+        }
 
         String tagName(const pugi::xml_node& inNode)
         {
@@ -48,14 +54,14 @@ namespace Chicane
 
             name = name.toLower();
 
-            if (name.startsWith("svg") && name.size() > 3)
+            if (name.startsWith(Svg::NAMESPACE_PREFIX) && name.size() > Svg::NAMESPACE_PREFIX_LENGTH)
             {
-                name = name.substr(3);
+                name = name.substr(Svg::NAMESPACE_PREFIX_LENGTH);
             }
 
-            if (name.equals("group"))
+            if (name.equals(Svg::GROUP_ALIAS))
             {
-                return "g";
+                return Svg::GROUP_TAG;
             }
 
             return name;
@@ -98,7 +104,8 @@ namespace Chicane
         Color::Rgba withOpacity(Color::Rgba inColor, float inOpacity)
         {
             inColor.a = static_cast<std::uint8_t>(
-                std::clamp(static_cast<float>(inColor.a) * std::clamp(inOpacity, 0.0f, 1.0f), 0.0f, 255.0f) + 0.5f
+                std::clamp(static_cast<float>(inColor.a) * std::clamp(inOpacity, 0.0f, 1.0f), 0.0f, Svg::CHANNEL_MAX) +
+                Svg::HALF
             );
 
             return inColor;
@@ -108,12 +115,13 @@ namespace Chicane
         {
             const String value = inValue.trim();
 
-            if (value.isEmpty() || value.equals("inherit"))
+            if (value.isEmpty() || value.equals(SvgPaint::PAINT_INHERIT))
             {
                 return false;
             }
 
-            if (value.equals("none", "transparent") || value.startsWith("url("))
+            if (value.equals(SvgPaint::PAINT_NONE, SvgPaint::PAINT_TRANSPARENT) ||
+                value.startsWith(SvgPaint::PAINT_URL_PREFIX))
             {
                 outEnabled = false;
                 outColor   = Color::toRgba(Color::TEXT_COLOR_TRANSPARENT);
@@ -122,7 +130,8 @@ namespace Chicane
             }
 
             outEnabled = true;
-            outColor   = value.equals("currentColor", "currentcolor") ? inCurrent : Color::toRgba(value);
+            outColor =
+                value.equals(SvgPaint::PAINT_CURRENT, SvgPaint::PAINT_CURRENT_ALT) ? inCurrent : Color::toRgba(value);
 
             return true;
         }
@@ -245,38 +254,39 @@ namespace Chicane
 
                 Mat3 local(1.0f);
 
-                if (name.equals("matrix") && params.size() >= 6)
+                if (name.equals(Svg::TRANSFORM_MATRIX) && params.size() >= Svg::MATRIX_PARAM_COUNT)
                 {
                     local[0] = glm::vec3(params[0], params[1], 0.0f);
                     local[1] = glm::vec3(params[2], params[3], 0.0f);
-                    local[2] = glm::vec3(params[4], params[5], 1.0f);
+                    local[2] = glm::vec3(params[4], params[5], Svg::HOMOGENEOUS);
                 }
-                else if (name.equals("translate") && !params.empty())
+                else if (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty())
                 {
-                    local[2] = glm::vec3(params[0], params.size() > 1 ? params[1] : 0.0f, 1.0f);
+                    const Vec2 offset(params[0], params.size() > 1 ? params[1] : 0.0f);
+                    local[2] = glm::vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
                 }
-                else if (name.equals("scale") && !params.empty())
+                else if (name.equals(Svg::TRANSFORM_SCALE) && !params.empty())
                 {
-                    const float sx = params[0];
-                    const float sy = params.size() > 1 ? params[1] : sx;
-                    local[0][0]    = sx;
-                    local[1][1]    = sy;
+                    const Vec2 scale(params[0], params.size() > 1 ? params[1] : params[0]);
+                    local[0][0] = scale.x;
+                    local[1][1] = scale.y;
                 }
-                else if (name.equals("rotate") && !params.empty())
+                else if (name.equals(Svg::TRANSFORM_ROTATE) && !params.empty())
                 {
-                    const float angle = params[0] * static_cast<float>(M_PI) / 180.0f;
+                    const float angle = degreesToRadians(params[0]);
                     const float cosA  = std::cos(angle);
                     const float sinA  = std::sin(angle);
                     Mat3        rotate(1.0f);
                     rotate[0] = Vec3(cosA, sinA, 0.0f);
                     rotate[1] = Vec3(-sinA, cosA, 0.0f);
 
-                    if (params.size() >= 3)
+                    if (params.size() >= Svg::ROTATE_ORIGIN_PARAM_COUNT)
                     {
-                        Mat3 to(1.0f);
-                        Mat3 from(1.0f);
-                        to[2]   = Vec3(params[1], params[2], 1.0f);
-                        from[2] = Vec3(-params[1], -params[2], 1.0f);
+                        const Vec2 origin(params[1], params[2]);
+                        Mat3       to(1.0f);
+                        Mat3       from(1.0f);
+                        to[2]   = Vec3(origin.x, origin.y, Svg::HOMOGENEOUS);
+                        from[2] = Vec3(-origin.x, -origin.y, Svg::HOMOGENEOUS);
                         local   = to * rotate * from;
                     }
                     else
@@ -284,13 +294,13 @@ namespace Chicane
                         local = rotate;
                     }
                 }
-                else if (name.equals("skewx") && !params.empty())
+                else if (name.equals(Svg::TRANSFORM_SKEW_X) && !params.empty())
                 {
-                    local[1][0] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
+                    local[1][0] = std::tan(degreesToRadians(params[0]));
                 }
-                else if (name.equals("skewy") && !params.empty())
+                else if (name.equals(Svg::TRANSFORM_SKEW_Y) && !params.empty())
                 {
-                    local[0][1] = std::tan(params[0] * static_cast<float>(M_PI) / 180.0f);
+                    local[0][1] = std::tan(degreesToRadians(params[0]));
                 }
 
                 result = local * result;
@@ -370,24 +380,24 @@ namespace Chicane
 
         Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
         {
-            const glm::vec3 mapped = static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, 1.0f);
+            const glm::vec3 mapped =
+                static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
 
             return {mapped.x, mapped.y};
         }
 
         Vec2 toLocal(const Vec2& inPoint, const SvgViewBox& inView)
         {
-            const float extent = std::max(inView.width, inView.height);
+            const float extent = std::max(inView.size.x, inView.size.y);
 
             if (extent <= 0.0f)
             {
                 return Vec2::Zero();
             }
 
-            const float localX = ((inPoint.x - inView.x) - (inView.width * 0.5f)) / extent;
-            const float localY = ((inPoint.y - inView.y) - (inView.height * 0.5f)) / extent;
+            const Vec2 local = ((inPoint - inView.origin) - (Svg::HALF * inView.size)) * (1.0f / extent);
 
-            return {localX, -localY};
+            return {local.x, -local.y};
         }
 
         SvgViewBox parseViewBox(const String& inValue)
@@ -397,19 +407,19 @@ namespace Chicane
 
             if (scanner.hasNumber())
             {
-                result.x = scanner.number();
+                result.origin.x = scanner.number();
             }
             if (scanner.hasNumber())
             {
-                result.y = scanner.number();
+                result.origin.y = scanner.number();
             }
             if (scanner.hasNumber())
             {
-                result.width = scanner.number();
+                result.size.x = scanner.number();
             }
             if (scanner.hasNumber())
             {
-                result.height = scanner.number();
+                result.size.y = scanner.number();
             }
 
             return result;
@@ -424,8 +434,7 @@ namespace Chicane
             {
                 Vertex vertex;
                 vertex.position = position;
-                vertex.uv.x     = position.x + 0.5f;
-                vertex.uv.y     = position.y + 0.5f;
+                vertex.uv       = Vec2(position.x, position.y) + Svg::HALF;
                 primitive.vertices.push_back(vertex);
             }
 
@@ -435,66 +444,67 @@ namespace Chicane
         void addArc(
             Curve&      outCurve,
             const Vec2& inFrom,
-            float       inRx,
-            float       inRy,
+            const Vec2& inRadius,
             float       inXAngle,
-            bool        inLarge,
-            bool        inSweep,
+            bool        inIsLarge,
+            bool        inIsSweep,
             const Vec2& inTo
         )
         {
-            if (std::fabs(inRx) < MIN_LENGTH || std::fabs(inRy) < MIN_LENGTH)
+            if (std::fabs(inRadius.x) < Svg::MIN_LENGTH || std::fabs(inRadius.y) < Svg::MIN_LENGTH)
             {
                 outCurve.addPoint(inTo);
 
                 return;
             }
 
-            float rx = std::fabs(inRx);
-            float ry = std::fabs(inRy);
+            Vec2 radius(std::fabs(inRadius.x), std::fabs(inRadius.y));
 
-            const float xAngle = inXAngle * static_cast<float>(M_PI) / 180.0f;
+            const float xAngle = degreesToRadians(inXAngle);
             const float cosA   = std::cos(xAngle);
             const float sinA   = std::sin(xAngle);
 
-            const float dx  = (inFrom.x - inTo.x) * 0.5f;
-            const float dy  = (inFrom.y - inTo.y) * 0.5f;
-            const float x1p = (cosA * dx) + (sinA * dy);
-            const float y1p = (-sinA * dx) + (cosA * dy);
+            const Vec2 delta  = Svg::HALF * (inFrom - inTo);
+            const Vec2 primed = Vec2((cosA * delta.x) + (sinA * delta.y), (-sinA * delta.x) + (cosA * delta.y));
 
-            const float lambda = ((x1p * x1p) / (rx * rx)) + ((y1p * y1p) / (ry * ry));
+            const float lambda =
+                ((primed.x * primed.x) / (radius.x * radius.x)) + ((primed.y * primed.y) / (radius.y * radius.y));
 
             if (lambda > 1.0f)
             {
-                const float scale = std::sqrt(lambda);
-                rx *= scale;
-                ry *= scale;
+                radius *= std::sqrt(lambda);
             }
 
-            const float rx2  = rx * rx;
-            const float ry2  = ry * ry;
-            const float x1p2 = x1p * x1p;
-            const float y1p2 = y1p * y1p;
-            const float den  = (rx2 * y1p2) + (ry2 * x1p2);
-            float c = den <= 0.0f ? 0.0f : std::sqrt(std::max(0.0f, ((rx2 * ry2) - (rx2 * y1p2) - (ry2 * x1p2)) / den));
+            const Vec2  radiusSq = radius * radius;
+            const Vec2  primedSq = primed * primed;
+            const float den      = (radiusSq.x * primedSq.y) + (radiusSq.y * primedSq.x);
+            float       c        = 0.0f;
+            if (den > 0.0f)
+            {
+                const float num = (radiusSq.x * radiusSq.y) - (radiusSq.x * primedSq.y) - (radiusSq.y * primedSq.x);
+                c               = std::sqrt(std::max(0.0f, num / den));
+            }
 
-            if (inLarge == inSweep)
+            if (inIsLarge == inIsSweep)
             {
                 c = -c;
             }
 
-            const float cxp = c * ((rx * y1p) / ry);
-            const float cyp = c * -((ry * x1p) / rx);
-            const float cx  = (cosA * cxp) - (sinA * cyp) + ((inFrom.x + inTo.x) * 0.5f);
-            const float cy  = (sinA * cxp) + (cosA * cyp) + ((inFrom.y + inTo.y) * 0.5f);
+            const Vec2 centerPrime(c * ((radius.x * primed.y) / radius.y), c * -((radius.y * primed.x) / radius.x));
+            const Vec2 mid = Svg::HALF * (inFrom + inTo);
+            const Vec2 center(
+                (cosA * centerPrime.x) - (sinA * centerPrime.y) + mid.x,
+                (sinA * centerPrime.x) + (cosA * centerPrime.y) + mid.y
+            );
 
-            auto vectorAngle = [](float inUx, float inUy, float inVx, float inVy)
+            auto vectorAngle = [](const Vec2& inU, const Vec2& inV)
             {
-                const float norm  = std::sqrt(((inUx * inUx) + (inUy * inUy)) * ((inVx * inVx) + (inVy * inVy)));
-                const float value = norm <= 0.0f ? 1.0f : std::clamp((inUx * inVx + inUy * inVy) / norm, -1.0f, 1.0f);
-                float       angle = std::acos(value);
+                const float norm = std::sqrt(((inU.x * inU.x) + (inU.y * inU.y)) * ((inV.x * inV.x) + (inV.y * inV.y)));
+                const float value =
+                    norm <= 0.0f ? 1.0f : std::clamp(((inU.x * inV.x) + (inU.y * inV.y)) / norm, -1.0f, 1.0f);
+                float angle = std::acos(value);
 
-                if ((inUx * inVy - inUy * inVx) < 0.0f)
+                if (((inU.x * inV.y) - (inU.y * inV.x)) < 0.0f)
                 {
                     angle = -angle;
                 }
@@ -502,46 +512,51 @@ namespace Chicane
                 return angle;
             };
 
-            const float theta1 = vectorAngle(1.0f, 0.0f, (x1p - cxp) / rx, (y1p - cyp) / ry);
-            float       dTheta = vectorAngle((x1p - cxp) / rx, (y1p - cyp) / ry, (-x1p - cxp) / rx, (-y1p - cyp) / ry);
+            const Vec2 startDir((primed.x - centerPrime.x) / radius.x, (primed.y - centerPrime.y) / radius.y);
+            const Vec2 endDir((-primed.x - centerPrime.x) / radius.x, (-primed.y - centerPrime.y) / radius.y);
 
-            if (!inSweep && dTheta > 0.0f)
+            const float theta1 = vectorAngle(Vec2(1.0f, 0.0f), startDir);
+            float       dTheta = vectorAngle(startDir, endDir);
+
+            if (!inIsSweep && dTheta > 0.0f)
             {
-                dTheta -= 2.0f * static_cast<float>(M_PI);
+                dTheta -= Svg::TWO_PI;
             }
 
-            if (inSweep && dTheta < 0.0f)
+            if (inIsSweep && dTheta < 0.0f)
             {
-                dTheta += 2.0f * static_cast<float>(M_PI);
+                dTheta += Svg::TWO_PI;
             }
 
-            const int segments =
-                std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / (static_cast<float>(M_PI) * 0.5f))));
-            const float delta = dTheta / static_cast<float>(segments);
+            const int   segments = std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / Svg::HALF_PI)));
+            const float deltaT   = dTheta / static_cast<float>(segments);
 
             for (int i = 0; i < segments; i++)
             {
-                const float t1   = theta1 + (delta * static_cast<float>(i));
-                const float t2   = t1 + delta;
-                const float half = (t2 - t1) * 0.5f;
+                const float t1   = theta1 + (deltaT * static_cast<float>(i));
+                const float t2   = t1 + deltaT;
+                const float half = (t2 - t1) * Svg::HALF;
                 const float alpha =
-                    (std::sin(t2 - t1) * (std::sqrt(4.0f + (3.0f * std::tan(half) * std::tan(half))) - 1.0f)) / 3.0f;
+                    (std::sin(t2 - t1) *
+                     (std::sqrt(Svg::ARC_CUBIC_OFFSET + (Svg::ARC_CUBIC_SCALE * std::tan(half) * std::tan(half))) -
+                      1.0f)) /
+                    Svg::ARC_CUBIC_SCALE;
 
                 const Vec2 p1 = {
-                    cx + (rx * std::cos(t1) * cosA) - (ry * std::sin(t1) * sinA),
-                    cy + (rx * std::cos(t1) * sinA) + (ry * std::sin(t1) * cosA)
+                    center.x + (radius.x * std::cos(t1) * cosA) - (radius.y * std::sin(t1) * sinA),
+                    center.y + (radius.x * std::cos(t1) * sinA) + (radius.y * std::sin(t1) * cosA)
                 };
                 const Vec2 p2 = {
-                    cx + (rx * std::cos(t2) * cosA) - (ry * std::sin(t2) * sinA),
-                    cy + (rx * std::cos(t2) * sinA) + (ry * std::sin(t2) * cosA)
+                    center.x + (radius.x * std::cos(t2) * cosA) - (radius.y * std::sin(t2) * sinA),
+                    center.y + (radius.x * std::cos(t2) * sinA) + (radius.y * std::sin(t2) * cosA)
                 };
                 const Vec2 d1 = {
-                    (-rx * std::sin(t1) * cosA) - (ry * std::cos(t1) * sinA),
-                    (-rx * std::sin(t1) * sinA) + (ry * std::cos(t1) * cosA)
+                    (-radius.x * std::sin(t1) * cosA) - (radius.y * std::cos(t1) * sinA),
+                    (-radius.x * std::sin(t1) * sinA) + (radius.y * std::cos(t1) * cosA)
                 };
                 const Vec2 d2 = {
-                    (-rx * std::sin(t2) * cosA) - (ry * std::cos(t2) * sinA),
-                    (-rx * std::sin(t2) * sinA) + (ry * std::cos(t2) * cosA)
+                    (-radius.x * std::sin(t2) * cosA) - (radius.y * std::cos(t2) * sinA),
+                    (-radius.x * std::sin(t2) * sinA) + (radius.y * std::cos(t2) * cosA)
                 };
 
                 if (i == 0 && outCurve.isEmpty())
@@ -549,11 +564,7 @@ namespace Chicane
                     outCurve.addPoint(p1);
                 }
 
-                outCurve.addBezierPoint(
-                    {p1.x + (alpha * d1.x), p1.y + (alpha * d1.y)},
-                    {p2.x - (alpha * d2.x), p2.y - (alpha * d2.y)},
-                    p2
-                );
+                outCurve.addBezierPoint(p1 + (alpha * d1), p2 - (alpha * d2), p2);
             }
         }
 
@@ -563,7 +574,7 @@ namespace Chicane
             SvgScanner         scanner(inValue);
 
             Curve curve;
-            curve.setSegmentCount(BEZIER_SEGMENTS);
+            curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
 
             Vec2 current   = Vec2::Zero();
             Vec2 start     = Vec2::Zero();
@@ -575,17 +586,17 @@ namespace Chicane
 
             auto flush = [&]()
             {
-                if (curve.getPoints().size() < 2)
+                if (curve.getPoints().size() < Svg::MIN_CONTOUR_POINTS)
                 {
                     curve = Curve();
-                    curve.setSegmentCount(BEZIER_SEGMENTS);
+                    curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
 
                     return;
                 }
 
                 contours.push_back(curve);
                 curve = Curve();
-                curve.setSegmentCount(BEZIER_SEGMENTS);
+                curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
             };
 
             while (!scanner.done())
@@ -609,15 +620,16 @@ namespace Chicane
                     break;
                 }
 
-                const bool relative = std::islower(static_cast<unsigned char>(command));
-                const char type     = static_cast<char>(std::toupper(static_cast<unsigned char>(command)));
+                const bool bIsRelative = std::islower(static_cast<unsigned char>(command));
+                const char type        = static_cast<char>(std::toupper(static_cast<unsigned char>(command)));
 
                 auto readPoint = [&](const Vec2& inOrigin) -> Vec2
                 {
                     const float x = scanner.number();
                     const float y = scanner.number();
+                    const Vec2  point(x, y);
 
-                    return relative ? Vec2(inOrigin.x + x, inOrigin.y + y) : Vec2(x, y);
+                    return bIsRelative ? inOrigin + point : point;
                 };
 
                 if (type == 'M')
@@ -628,7 +640,7 @@ namespace Chicane
                     curve.addPoint(current);
                     hasCubic = false;
                     hasQuad  = false;
-                    command  = relative ? 'l' : 'L';
+                    command  = bIsRelative ? 'l' : 'L';
 
                     while (scanner.hasNumber())
                     {
@@ -674,7 +686,7 @@ namespace Chicane
                     while (scanner.hasNumber())
                     {
                         const float x = scanner.number();
-                        current.x     = relative ? current.x + x : x;
+                        current.x     = bIsRelative ? current.x + x : x;
                         curve.addPoint(current);
                     }
 
@@ -689,7 +701,7 @@ namespace Chicane
                     while (scanner.hasNumber())
                     {
                         const float y = scanner.number();
-                        current.y     = relative ? current.y + y : y;
+                        current.y     = bIsRelative ? current.y + y : y;
                         curve.addPoint(current);
                     }
 
@@ -720,9 +732,7 @@ namespace Chicane
                 {
                     while (scanner.hasNumber())
                     {
-                        const Vec2 controlA =
-                            hasCubic ? Vec2((2.0f * current.x) - lastCubic.x, (2.0f * current.y) - lastCubic.y)
-                                     : current;
+                        const Vec2 controlA = hasCubic ? reflectControl(current, lastCubic) : current;
                         const Vec2 controlB = readPoint(current);
                         const Vec2 point    = readPoint(current);
                         curve.addBezierPoint(controlA, controlB, point);
@@ -755,9 +765,8 @@ namespace Chicane
                 {
                     while (scanner.hasNumber())
                     {
-                        const Vec2 control =
-                            hasQuad ? Vec2((2.0f * current.x) - lastQuad.x, (2.0f * current.y) - lastQuad.y) : current;
-                        const Vec2 point = readPoint(current);
+                        const Vec2 control = hasQuad ? reflectControl(current, lastQuad) : current;
+                        const Vec2 point   = readPoint(current);
                         curve.addQuadraticPoint(control, point);
                         lastQuad = control;
                         current  = point;
@@ -772,13 +781,14 @@ namespace Chicane
                 {
                     while (scanner.hasNumber())
                     {
-                        const float rx    = scanner.number();
-                        const float ry    = scanner.number();
-                        const float angle = scanner.number();
-                        const bool  large = scanner.flag();
-                        const bool  sweep = scanner.flag();
-                        const Vec2  point = readPoint(current);
-                        addArc(curve, current, rx, ry, angle, large, sweep, point);
+                        Vec2 radius;
+                        radius.x             = scanner.number();
+                        radius.y             = scanner.number();
+                        const float angle    = scanner.number();
+                        const bool  bIsLarge = scanner.flag();
+                        const bool  bIsSweep = scanner.flag();
+                        const Vec2  point    = readPoint(current);
+                        addArc(curve, current, radius, angle, bIsLarge, bIsSweep, point);
                         current  = point;
                         hasCubic = false;
                         hasQuad  = false;
@@ -805,97 +815,104 @@ namespace Chicane
                     break;
                 }
 
-                points.push_back({x, scanner.number()});
+                points.push_back(Vec2(x, scanner.number()));
             }
 
             return points;
         }
 
-        Curve makeEllipse(float inCx, float inCy, float inRx, float inRy)
+        Curve makeEllipse(const Vec2& inCenter, const Vec2& inRadius)
         {
+            const Vec2 kappa = Svg::KAPPA * inRadius;
+
             Curve curve;
-            curve.setSegmentCount(BEZIER_SEGMENTS);
-            curve.addPoint({inCx + inRx, inCy});
+            curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
+            curve.addPoint({inCenter.x + inRadius.x, inCenter.y});
             curve.addBezierPoint(
-                {inCx + inRx, inCy + (KAPPA * inRy)},
-                {inCx + (KAPPA * inRx), inCy + inRy},
-                {inCx, inCy + inRy}
+                {inCenter.x + inRadius.x, inCenter.y + kappa.y},
+                {inCenter.x + kappa.x, inCenter.y + inRadius.y},
+                {inCenter.x, inCenter.y + inRadius.y}
             );
             curve.addBezierPoint(
-                {inCx - (KAPPA * inRx), inCy + inRy},
-                {inCx - inRx, inCy + (KAPPA * inRy)},
-                {inCx - inRx, inCy}
+                {inCenter.x - kappa.x, inCenter.y + inRadius.y},
+                {inCenter.x - inRadius.x, inCenter.y + kappa.y},
+                {inCenter.x - inRadius.x, inCenter.y}
             );
             curve.addBezierPoint(
-                {inCx - inRx, inCy - (KAPPA * inRy)},
-                {inCx - (KAPPA * inRx), inCy - inRy},
-                {inCx, inCy - inRy}
+                {inCenter.x - inRadius.x, inCenter.y - kappa.y},
+                {inCenter.x - kappa.x, inCenter.y - inRadius.y},
+                {inCenter.x, inCenter.y - inRadius.y}
             );
             curve.addBezierPoint(
-                {inCx + (KAPPA * inRx), inCy - inRy},
-                {inCx + inRx, inCy - (KAPPA * inRy)},
-                {inCx + inRx, inCy}
+                {inCenter.x + kappa.x, inCenter.y - inRadius.y},
+                {inCenter.x + inRadius.x, inCenter.y - kappa.y},
+                {inCenter.x + inRadius.x, inCenter.y}
             );
 
             return curve;
         }
 
-        Curve makeRect(float inX, float inY, float inWidth, float inHeight, float inRx, float inRy)
+        Curve makeRect(const Vec2& inOrigin, const Vec2& inSize, const Vec2& inRadius)
         {
             Curve curve;
-            curve.setSegmentCount(BEZIER_SEGMENTS);
+            curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
 
-            float rx = std::max(0.0f, inRx);
-            float ry = std::max(0.0f, inRy);
+            Vec2 radius(std::max(0.0f, inRadius.x), std::max(0.0f, inRadius.y));
 
-            if (rx <= 0.0f && ry > 0.0f)
+            if (radius.x <= 0.0f && radius.y > 0.0f)
             {
-                rx = ry;
+                radius.x = radius.y;
             }
 
-            if (ry <= 0.0f && rx > 0.0f)
+            if (radius.y <= 0.0f && radius.x > 0.0f)
             {
-                ry = rx;
+                radius.y = radius.x;
             }
 
-            rx = std::min(rx, inWidth * 0.5f);
-            ry = std::min(ry, inHeight * 0.5f);
+            const Vec2 halfSize = Svg::HALF * inSize;
+            radius.x            = std::min(radius.x, halfSize.x);
+            radius.y            = std::min(radius.y, halfSize.y);
 
-            if (rx <= 0.0f || ry <= 0.0f)
+            const Vec2 end = inOrigin + inSize;
+
+            if (radius.x <= 0.0f || radius.y <= 0.0f)
             {
-                curve.addPoint({inX, inY});
-                curve.addPoint({inX + inWidth, inY});
-                curve.addPoint({inX + inWidth, inY + inHeight});
-                curve.addPoint({inX, inY + inHeight});
-                curve.addPoint({inX, inY});
+                curve.addPoint(inOrigin);
+                curve.addPoint({end.x, inOrigin.y});
+                curve.addPoint(end);
+                curve.addPoint({inOrigin.x, end.y});
+                curve.addPoint(inOrigin);
 
                 return curve;
             }
 
-            const float kx = KAPPA * rx;
-            const float ky = KAPPA * ry;
+            const Vec2 kappa = Svg::KAPPA * radius;
 
-            curve.addPoint({inX + rx, inY});
-            curve.addPoint({inX + inWidth - rx, inY});
+            curve.addPoint({inOrigin.x + radius.x, inOrigin.y});
+            curve.addPoint({end.x - radius.x, inOrigin.y});
             curve.addBezierPoint(
-                {inX + inWidth - rx + kx, inY},
-                {inX + inWidth, inY + ry - ky},
-                {inX + inWidth, inY + ry}
+                {end.x - radius.x + kappa.x, inOrigin.y},
+                {end.x, inOrigin.y + radius.y - kappa.y},
+                {end.x, inOrigin.y + radius.y}
             );
-            curve.addPoint({inX + inWidth, inY + inHeight - ry});
+            curve.addPoint({end.x, end.y - radius.y});
             curve.addBezierPoint(
-                {inX + inWidth, inY + inHeight - ry + ky},
-                {inX + inWidth - rx + kx, inY + inHeight},
-                {inX + inWidth - rx, inY + inHeight}
+                {end.x, end.y - radius.y + kappa.y},
+                {end.x - radius.x + kappa.x, end.y},
+                {end.x - radius.x, end.y}
             );
-            curve.addPoint({inX + rx, inY + inHeight});
+            curve.addPoint({inOrigin.x + radius.x, end.y});
             curve.addBezierPoint(
-                {inX + rx - kx, inY + inHeight},
-                {inX, inY + inHeight - ry + ky},
-                {inX, inY + inHeight - ry}
+                {inOrigin.x + radius.x - kappa.x, end.y},
+                {inOrigin.x, end.y - radius.y + kappa.y},
+                {inOrigin.x, end.y - radius.y}
             );
-            curve.addPoint({inX, inY + ry});
-            curve.addBezierPoint({inX, inY + ry - ky}, {inX + rx - kx, inY}, {inX + rx, inY});
+            curve.addPoint({inOrigin.x, inOrigin.y + radius.y});
+            curve.addBezierPoint(
+                {inOrigin.x, inOrigin.y + radius.y - kappa.y},
+                {inOrigin.x + radius.x - kappa.x, inOrigin.y},
+                {inOrigin.x + radius.x, inOrigin.y}
+            );
 
             return curve;
         }
@@ -915,7 +932,7 @@ namespace Chicane
                     local.addPoint(toLocal(transformPoint(inPaint.transform, point), inView));
                 }
 
-                if (local.getPoints().size() >= 2)
+                if (local.getPoints().size() >= Svg::MIN_CONTOUR_POINTS)
                 {
                     result.push_back(local);
                 }
@@ -943,10 +960,10 @@ namespace Chicane
             key.append(
                 String::sprint(
                     "%.3f,%.3f,%.3f,%.3f|%.3f|%d|",
-                    inView.x,
-                    inView.y,
-                    inView.width,
-                    inView.height,
+                    inView.origin.x,
+                    inView.origin.y,
+                    inView.size.x,
+                    inView.size.y,
                     inPaint.strokeWidth,
                     inPaint.bIsEvenOdd ? 1 : 0
                 )
@@ -990,15 +1007,17 @@ namespace Chicane
                 return primitive;
             }
 
-            const float scaleX = std::sqrt(
-                (inPaint.transform[0][0] * inPaint.transform[0][0]) +
-                (inPaint.transform[0][1] * inPaint.transform[0][1])
+            const Vec2 scale(
+                std::sqrt(
+                    (inPaint.transform[0][0] * inPaint.transform[0][0]) +
+                    (inPaint.transform[0][1] * inPaint.transform[0][1])
+                ),
+                std::sqrt(
+                    (inPaint.transform[1][0] * inPaint.transform[1][0]) +
+                    (inPaint.transform[1][1] * inPaint.transform[1][1])
+                )
             );
-            const float scaleY = std::sqrt(
-                (inPaint.transform[1][0] * inPaint.transform[1][0]) +
-                (inPaint.transform[1][1] * inPaint.transform[1][1])
-            );
-            const float half = inPaint.strokeWidth * 0.5f * ((scaleX + scaleY) * 0.5f);
+            const float half = inPaint.strokeWidth * Svg::HALF * ((scale.x + scale.y) * Svg::HALF);
 
             if (half <= 0.0f)
             {
@@ -1016,8 +1035,7 @@ namespace Chicane
                 Vertex vertex;
                 vertex.position.x = inPoint.x;
                 vertex.position.y = inPoint.y;
-                vertex.uv.x       = inPoint.x + 0.5f;
-                vertex.uv.y       = inPoint.y + 0.5f;
+                vertex.uv         = inPoint + Svg::HALF;
                 primitive.vertices.push_back(vertex);
             };
 
@@ -1044,7 +1062,7 @@ namespace Chicane
             {
                 const float length = vecLength(inDelta);
 
-                if (length < MIN_LENGTH)
+                if (length < Svg::MIN_LENGTH)
                 {
                     return Vec2::Zero();
                 }
@@ -1075,9 +1093,8 @@ namespace Chicane
 
                 for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
                 {
-                    const float angle =
-                        static_cast<float>(M_PI) * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
-                    const Vec2 curr = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
+                    const float angle = Svg::PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                    const Vec2  curr  = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
                                       scaleVec(inOutbound, std::sin(angle) * half);
 
                     emitTriangle(inCenter, prev, curr);
@@ -1090,7 +1107,7 @@ namespace Chicane
             {
                 const float length = vecLength(inValue);
 
-                if (length < MIN_LENGTH)
+                if (length < Svg::MIN_LENGTH)
                 {
                     return Vec2::Zero();
                 }
@@ -1129,22 +1146,20 @@ namespace Chicane
                     return;
                 }
 
-                const float pi    = static_cast<float>(M_PI);
-                const float twoPi = pi * 2.0f;
-                float       start = std::atan2(from.y, from.x);
-                float       delta = std::atan2(to.y, to.x) - start;
+                float start = std::atan2(from.y, from.x);
+                float delta = std::atan2(to.y, to.x) - start;
 
-                while (delta > pi)
+                while (delta > Svg::PI)
                 {
-                    delta -= twoPi;
+                    delta -= Svg::TWO_PI;
                 }
 
-                while (delta < -pi)
+                while (delta < -Svg::PI)
                 {
-                    delta += twoPi;
+                    delta += Svg::TWO_PI;
                 }
 
-                const float stepSize = pi / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
+                const float stepSize = Svg::PI / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
                 const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
                 Vec2        prev     = fromP;
 
@@ -1168,7 +1183,7 @@ namespace Chicane
                 {
                     const Vec2 mapped = transformPoint(inPaint.transform, point);
 
-                    if (!points.empty() && vecLength(mapped - points.back()) < MIN_LENGTH)
+                    if (!points.empty() && vecLength(mapped - points.back()) < Svg::MIN_LENGTH)
                     {
                         continue;
                     }
@@ -1178,13 +1193,14 @@ namespace Chicane
 
                 bool bIsClosed = false;
 
-                if (points.size() >= 3 && vecLength(points.front() - points.back()) < MIN_LENGTH)
+                if (points.size() >= Svg::MIN_CLOSED_POINTS &&
+                    vecLength(points.front() - points.back()) < Svg::MIN_LENGTH)
                 {
                     points.pop_back();
                     bIsClosed = true;
                 }
 
-                if (points.size() < 2)
+                if (points.size() < Svg::MIN_CONTOUR_POINTS)
                 {
                     continue;
                 }
@@ -1294,8 +1310,9 @@ namespace Chicane
                 const float startLen = vecLength(startDir);
                 const float endLen   = vecLength(endDir);
                 const Vec2  startOut =
-                    startLen >= MIN_LENGTH ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
-                const Vec2 endOut = endLen >= MIN_LENGTH ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
+                    startLen >= Svg::MIN_LENGTH ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
+                const Vec2 endOut =
+                    endLen >= Svg::MIN_LENGTH ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
 
                 emitCap(points.front(), startOut, sideNormal(startDir));
                 emitCap(points.back(), endOut, sideNormal(endDir));
@@ -1340,10 +1357,10 @@ namespace Chicane
 
         bool hidden(const pugi::xml_node& inNode)
         {
-            const String display    = attribute(inNode, "display").toLower();
-            const String visibility = attribute(inNode, "visibility").toLower();
+            const String display    = attribute(inNode, Svg::DISPLAY_ATTRIBUTE_NAME).toLower();
+            const String visibility = attribute(inNode, Svg::VISIBILITY_ATTRIBUTE_NAME).toLower();
 
-            return display.equals("none") || visibility.equals("hidden");
+            return display.equals(Svg::DISPLAY_NONE) || visibility.equals(Svg::VISIBILITY_HIDDEN);
         }
 
         Svg::Svg(const pugi::xml_node& inNode)
@@ -1353,7 +1370,7 @@ namespace Chicane
               m_signature(""),
               m_syncedSize(Vec2::Zero()),
               m_syncedPosition(Vec2::Zero()),
-              m_syncedScale(-1.0f),
+              m_syncedScale(UNSYNCED_SCALE),
               m_shapes({})
         {
             while (!m_children.empty())
@@ -1383,15 +1400,13 @@ namespace Chicane
 
             const Vec2& size   = getSize();
             const Vec2& origin = getPosition();
-            const float extent = std::max(m_viewBox.width, m_viewBox.height);
-            const float fit    = std::min(
-                m_viewBox.width > 0.0f ? size.x / m_viewBox.width : 0.0f,
-                m_viewBox.height > 0.0f ? size.y / m_viewBox.height : 0.0f
+            const Vec2  fit(
+                m_viewBox.size.x > 0.0f ? size.x / m_viewBox.size.x : 0.0f,
+                m_viewBox.size.y > 0.0f ? size.y / m_viewBox.size.y : 0.0f
             );
-            const float scale = extent * fit;
+            const float scale = std::max(m_viewBox.size.x, m_viewBox.size.y) * std::min(fit.x, fit.y);
 
-            if (size.x == m_syncedSize.x && size.y == m_syncedSize.y && origin.x == m_syncedPosition.x &&
-                origin.y == m_syncedPosition.y && scale == m_syncedScale)
+            if (size == m_syncedSize && origin == m_syncedPosition && scale == m_syncedScale)
             {
                 return;
             }
@@ -1440,7 +1455,7 @@ namespace Chicane
                 return;
             }
 
-            if (!m_bLaidOutThisFrame && !m_shapes.empty())
+            if (!m_bIsLaidOutThisFrame && !m_shapes.empty())
             {
                 rebuildShapes();
 
@@ -1456,7 +1471,7 @@ namespace Chicane
             Component::refreshPosition();
 
             const Vec2& origin = getPosition();
-            if (origin.x == m_syncedPosition.x && origin.y == m_syncedPosition.y && !m_shapes.empty())
+            if (origin == m_syncedPosition && !m_shapes.empty())
             {
                 return;
             }
@@ -1477,24 +1492,22 @@ namespace Chicane
                 return;
             }
 
-            float width  = m_size.x;
-            float height = m_size.y;
+            Vec2 size = m_size;
 
             if (bIsWidthAuto && bIsHeightAuto)
             {
-                width  = m_intrinsic.x;
-                height = m_intrinsic.y;
+                size = m_intrinsic;
             }
             else if (bIsWidthAuto && m_intrinsic.y > 0.0f)
             {
-                width = height * (m_intrinsic.x / m_intrinsic.y);
+                size.x = size.y * (m_intrinsic.x / m_intrinsic.y);
             }
             else if (bIsHeightAuto && m_intrinsic.x > 0.0f)
             {
-                height = width * (m_intrinsic.y / m_intrinsic.x);
+                size.y = size.x * (m_intrinsic.y / m_intrinsic.x);
             }
 
-            setSize(width, height);
+            setSize(size);
         }
 
         void Svg::applySizeAttributes()
@@ -1539,8 +1552,8 @@ namespace Chicane
             m_signature = signature;
 
             SvgViewBox view;
-            view.width  = parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)));
-            view.height = parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)));
+            view.size.x = parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)));
+            view.size.y = parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)));
 
             const String viewBoxValue = parseText(attribute(m_sourceNode, VIEWBOX_ATTRIBUTE_NAME)).trim();
 
@@ -1549,19 +1562,21 @@ namespace Chicane
                 view = parseViewBox(viewBoxValue);
             }
 
-            if (view.width <= 0.0f)
+            if (view.size.x <= 0.0f)
             {
-                view.width = 300.0f;
+                view.size.x = SvgViewBox::DEFAULT_WIDTH;
             }
 
-            if (view.height <= 0.0f)
+            if (view.size.y <= 0.0f)
             {
-                view.height = 150.0f;
+                view.size.y = SvgViewBox::DEFAULT_HEIGHT;
             }
 
-            m_viewBox     = view;
-            m_intrinsic.x = parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)), view.width);
-            m_intrinsic.y = parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)), view.height);
+            m_viewBox   = view;
+            m_intrinsic = Vec2(
+                parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)), view.size.x),
+                parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)), view.size.y)
+            );
 
             const std::size_t shapeCount = m_shapes.size();
             std::size_t       index      = 0;
@@ -1585,7 +1600,7 @@ namespace Chicane
                         continue;
                     }
 
-                    if (tag.equals("g", "svg", "a"))
+                    if (tag.equals(GROUP_TAG, SVG_TAG, ANCHOR_TAG))
                     {
                         walk(child, paint);
 
@@ -1594,63 +1609,76 @@ namespace Chicane
 
                     std::vector<Curve> contours;
 
-                    if (tag.equals("path"))
+                    if (tag.equals(PATH_TAG))
                     {
-                        contours = parsePath(parseText(attribute(child, "d")));
+                        contours = parsePath(parseText(attribute(child, D_ATTRIBUTE_NAME)));
                     }
-                    else if (tag.equals("circle"))
+                    else if (tag.equals(CIRCLE_TAG))
                     {
+                        const float radius = parseNumber(parseText(attribute(child, R_ATTRIBUTE_NAME)));
                         contours.push_back(makeEllipse(
-                            parseNumber(parseText(attribute(child, "cx"))),
-                            parseNumber(parseText(attribute(child, "cy"))),
-                            parseNumber(parseText(attribute(child, "r"))),
-                            parseNumber(parseText(attribute(child, "r")))
+                            Vec2(
+                                parseNumber(parseText(attribute(child, CX_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, CY_ATTRIBUTE_NAME)))
+                            ),
+                            Vec2(radius, radius)
                         ));
                     }
-                    else if (tag.equals("ellipse"))
+                    else if (tag.equals(ELLIPSE_TAG))
                     {
                         contours.push_back(makeEllipse(
-                            parseNumber(parseText(attribute(child, "cx"))),
-                            parseNumber(parseText(attribute(child, "cy"))),
-                            parseNumber(parseText(attribute(child, "rx"))),
-                            parseNumber(parseText(attribute(child, "ry")))
+                            Vec2(
+                                parseNumber(parseText(attribute(child, CX_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, CY_ATTRIBUTE_NAME)))
+                            ),
+                            Vec2(
+                                parseNumber(parseText(attribute(child, RX_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, RY_ATTRIBUTE_NAME)))
+                            )
                         ));
                     }
-                    else if (tag.equals("rect"))
+                    else if (tag.equals(RECT_TAG))
                     {
                         contours.push_back(makeRect(
-                            parseNumber(parseText(attribute(child, "x"))),
-                            parseNumber(parseText(attribute(child, "y"))),
-                            parseNumber(parseText(attribute(child, "width"))),
-                            parseNumber(parseText(attribute(child, "height"))),
-                            parseNumber(parseText(attribute(child, "rx"))),
-                            parseNumber(parseText(attribute(child, "ry")))
+                            Vec2(
+                                parseNumber(parseText(attribute(child, X_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, Y_ATTRIBUTE_NAME)))
+                            ),
+                            Vec2(
+                                parseNumber(parseText(attribute(child, WIDTH_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, HEIGHT_ATTRIBUTE_NAME)))
+                            ),
+                            Vec2(
+                                parseNumber(parseText(attribute(child, RX_ATTRIBUTE_NAME))),
+                                parseNumber(parseText(attribute(child, RY_ATTRIBUTE_NAME)))
+                            )
                         ));
                     }
-                    else if (tag.equals("line"))
+                    else if (tag.equals(LINE_TAG))
                     {
                         Curve line;
-                        line.addPoint(
-                            {parseNumber(parseText(attribute(child, "x1"))),
-                             parseNumber(parseText(attribute(child, "y1")))}
-                        );
-                        line.addPoint(
-                            {parseNumber(parseText(attribute(child, "x2"))),
-                             parseNumber(parseText(attribute(child, "y2")))}
-                        );
+                        line.addPoint(Vec2(
+                            parseNumber(parseText(attribute(child, X1_ATTRIBUTE_NAME))),
+                            parseNumber(parseText(attribute(child, Y1_ATTRIBUTE_NAME)))
+                        ));
+                        line.addPoint(Vec2(
+                            parseNumber(parseText(attribute(child, X2_ATTRIBUTE_NAME))),
+                            parseNumber(parseText(attribute(child, Y2_ATTRIBUTE_NAME)))
+                        ));
                         contours.push_back(line);
                     }
-                    else if (tag.equals("polyline", "polygon"))
+                    else if (tag.equals(POLYLINE_TAG, POLYGON_TAG))
                     {
                         Curve                   poly;
-                        const std::vector<Vec2> points = parsePoints(parseText(attribute(child, "points")));
+                        const std::vector<Vec2> points =
+                            parsePoints(parseText(attribute(child, POINTS_ATTRIBUTE_NAME)));
 
                         for (const Vec2& point : points)
                         {
                             poly.addPoint(point);
                         }
 
-                        if (tag.equals("polygon") && !points.empty())
+                        if (tag.equals(POLYGON_TAG) && !points.empty())
                         {
                             poly.addPoint(points.front());
                         }
@@ -1711,13 +1739,12 @@ namespace Chicane
 
         void Svg::syncShapes()
         {
-            const Vec2& size   = getSize();
-            const float extent = std::max(m_viewBox.width, m_viewBox.height);
-            const float fit    = std::min(
-                m_viewBox.width > 0.0f ? size.x / m_viewBox.width : 0.0f,
-                m_viewBox.height > 0.0f ? size.y / m_viewBox.height : 0.0f
+            const Vec2& size = getSize();
+            const Vec2  fit(
+                m_viewBox.size.x > 0.0f ? size.x / m_viewBox.size.x : 0.0f,
+                m_viewBox.size.y > 0.0f ? size.y / m_viewBox.size.y : 0.0f
             );
-            const float scale = extent * fit;
+            const float scale = std::max(m_viewBox.size.x, m_viewBox.size.y) * std::min(fit.x, fit.y);
 
             for (SvgShape* shape : m_shapes)
             {

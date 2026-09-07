@@ -119,22 +119,22 @@ namespace Chicane
             beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
             beginInfo.pClearValues             = m_clear.data();
 
-            bool inPass = false;
+            bool bIsPass = false;
 
             auto endPass = [&]()
             {
-                if (!inPass)
+                if (!bIsPass)
                 {
                     return;
                 }
 
                 commandBuffer.endRenderPass();
-                inPass = false;
+                bIsPass = false;
             };
 
             auto beginPass = [&]()
             {
-                if (inPass)
+                if (bIsPass)
                 {
                     return;
                 }
@@ -160,7 +160,7 @@ namespace Chicane
                 commandBuffer.setViewport(0, 1, &viewport);
                 commandBuffer.setScissor(0, 1, &scissor);
 
-                inPass = true;
+                bIsPass = true;
             };
 
             const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
@@ -169,7 +169,7 @@ namespace Chicane
             {
                 std::uint32_t       runStart    = draw.instanceStart;
                 std::uint32_t       runCount    = 0;
-                bool                runBackdrop = false;
+                bool                bHasRunBackdrop = false;
                 const std::uint32_t instanceEnd = draw.instanceStart + draw.instanceCount;
 
                 auto flush = [&]()
@@ -179,7 +179,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (runBackdrop)
+                    if (bHasRunBackdrop)
                     {
                         endPass();
                         copyBackdrop(frame, frameIndex);
@@ -192,23 +192,23 @@ namespace Chicane
 
                 for (std::uint32_t i = draw.instanceStart; i < instanceEnd; i++)
                 {
-                    const bool backdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
+                    const bool bHasBackdrop = i < instances.size() && instances.at(i).backdropBlur > 0.0f;
 
                     if (runCount == 0)
                     {
-                        runStart    = i;
-                        runBackdrop = backdrop;
-                        runCount    = 1;
+                        runStart        = i;
+                        bHasRunBackdrop = bHasBackdrop;
+                        runCount        = 1;
 
                         continue;
                     }
 
-                    if (backdrop != runBackdrop || backdrop)
+                    if (bHasBackdrop != bHasRunBackdrop || bHasBackdrop)
                     {
                         flush();
-                        runStart    = i;
-                        runBackdrop = backdrop;
-                        runCount    = 1;
+                        runStart        = i;
+                        bHasRunBackdrop = bHasBackdrop;
+                        runCount        = 1;
 
                         continue;
                     }

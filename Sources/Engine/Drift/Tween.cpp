@@ -19,7 +19,7 @@ namespace Chicane
               m_loop(Loop::Once),
               m_status(Status::Stopped),
               m_easing(EasingCurve::ease()),
-              m_bFinished(false),
+              m_bIsFinished(false),
               m_onComplete()
         {}
 
@@ -36,7 +36,7 @@ namespace Chicane
             }
 
             m_status    = Status::Playing;
-            m_bFinished = false;
+            m_bIsFinished = false;
         }
 
         void Tween::pause()
@@ -59,7 +59,7 @@ namespace Chicane
         void Tween::reset()
         {
             m_elapsed   = -std::max(0.0f, m_delay);
-            m_bFinished = false;
+            m_bIsFinished = false;
         }
 
         void Tween::tick(float inDeltaTime)
@@ -123,7 +123,7 @@ namespace Chicane
 
         bool Tween::isFinished() const
         {
-            return m_bFinished;
+            return m_bIsFinished;
         }
 
         bool Tween::hasStarted() const
@@ -252,13 +252,13 @@ namespace Chicane
 
         void Tween::finish()
         {
-            if (m_bFinished)
+            if (m_bIsFinished)
             {
                 return;
             }
 
             m_status    = Status::Stopped;
-            m_bFinished = true;
+            m_bIsFinished = true;
 
             m_onComplete.next();
         }

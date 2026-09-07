@@ -53,8 +53,8 @@ namespace Chicane
             float caretX;
 
         private:
-            bool   m_bEdited;
-            bool   m_bReplaceOnInput;
+            bool   m_bIsEdited;
+            bool   m_bShouldReplaceOnInput;
             String m_pendingText;
         };
     }

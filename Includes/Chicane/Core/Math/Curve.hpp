@@ -13,6 +13,7 @@ namespace Chicane
     public:
         using List = std::vector<Curve>;
 
+    public:
         static constexpr inline float         FLATNESS  = 0.35f;
         static constexpr inline std::uint32_t MAX_DEPTH = 8;
 

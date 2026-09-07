@@ -68,7 +68,7 @@ namespace Editor
           m_listedPaths({}),
           m_filter(ExplorerFilter::All),
           m_iconSizeFactor(0.4f),
-          m_bSizing(false),
+          m_bIsSizing(false),
           m_pointer(Chicane::Vec2::Zero()),
           m_tiles({}),
           m_gridContent(nullptr),
@@ -98,9 +98,9 @@ namespace Editor
     {
         if (inEvent.type == Chicane::WindowEventType::MouseButtonUp)
         {
-            if (m_bSizing)
+            if (m_bIsSizing)
             {
-                m_bSizing = false;
+                m_bIsSizing = false;
 
                 return true;
             }
@@ -120,7 +120,7 @@ namespace Editor
             Chicane::Grid::Component* slider = findSlider();
             if (slider && slider->containsPoint(event.location))
             {
-                m_bSizing = true;
+                m_bIsSizing = true;
                 applyIconSizeAt(event.location);
 
                 return true;
@@ -159,7 +159,7 @@ namespace Editor
                 *static_cast<Chicane::Input::MouseMotionEvent*>(inEvent.data);
             m_pointer = event.location;
 
-            if (!m_bSizing)
+            if (!m_bIsSizing)
             {
                 return Chicane::Grid::Container::onEvent(inEvent);
             }
@@ -375,7 +375,7 @@ namespace Editor
             entry.selectedState = entry.path.equals(selectedFolderPath) ? SELECTED : STATE_IDLE;
 
             const bool bHasChildren = hasChildFolders(folder);
-            const bool bExpanded    = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
+            const bool bIsExpanded    = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
 
             if (!bHasChildren)
             {
@@ -383,12 +383,12 @@ namespace Editor
             }
             else
             {
-                entry.expandState = bExpanded ? EXPAND_EXPANDED : EXPAND_COLLAPSED;
+                entry.expandState = bIsExpanded ? EXPAND_EXPANDED : EXPAND_COLLAPSED;
             }
 
             treeEntries.push_back(entry);
 
-            if (bHasChildren && bExpanded)
+            if (bHasChildren && bIsExpanded)
             {
                 appendTreeFolders(folder.children, inDepth + 1);
             }
@@ -445,15 +445,15 @@ namespace Editor
 
     void Explorer::refreshToggleStates()
     {
-        const bool bHorizontal = layout.equals(LAYOUT_HORIZONTAL);
+        const bool bIsHorizontal = layout.equals(LAYOUT_HORIZONTAL);
 
-        layoutHorizontalState = bHorizontal ? STATE_ACTIVE : STATE_IDLE;
-        layoutVerticalState   = bHorizontal ? STATE_IDLE : STATE_ACTIVE;
+        layoutHorizontalState = bIsHorizontal ? STATE_ACTIVE : STATE_IDLE;
+        layoutVerticalState   = bIsHorizontal ? STATE_IDLE : STATE_ACTIVE;
 
-        const bool bMatch = sortBy.equals(SORT_MATCH);
+        const bool bIsMatch = sortBy.equals(SORT_MATCH);
 
-        sortMatchState = bMatch ? STATE_ACTIVE : STATE_IDLE;
-        sortNameState  = bMatch ? STATE_IDLE : STATE_ACTIVE;
+        sortMatchState = bIsMatch ? STATE_ACTIVE : STATE_IDLE;
+        sortNameState  = bIsMatch ? STATE_IDLE : STATE_ACTIVE;
     }
 
     void Explorer::refreshFilterLabel()
@@ -611,43 +611,44 @@ namespace Editor
         const bool  bIsVertical       = layout.equals(LAYOUT_VERTICAL);
         const bool  bHasLayoutChanged = !layout.equals(m_gridLayout);
         const auto& style             = content->getStyle();
-        const Chicane::Vec2 inner     = content->getContentSize();
-        const float available         = std::max(0.0f, inner.x);
-        const float viewH             = std::max(0.0f, inner.y);
+        const Chicane::Vec2 inner = content->getContentSize();
+        const Chicane::Vec2 view(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
         const float em     = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
         const float iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
-        const bool  bIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
-        const float gapX   = bIsVertical ? 0.0f : GRID_GAP_EM * em;
-        const float gapY   = (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em;
-        const float cellW  = bIsVertical ? std::max(available, 1.0f) : iconEm * em;
-        const float cellH  = bIsVertical ? LIST_ROW_EM * em : cellW;
+        const bool  bHasIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
+        const Chicane::Vec2 gap(
+            bIsVertical ? 0.0f : GRID_GAP_EM * em, (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em
+        );
+        const Chicane::Vec2 cell(
+            bIsVertical ? std::max(view.x, 1.0f) : iconEm * em, bIsVertical ? LIST_ROW_EM * em : (iconEm * em)
+        );
 
         m_gridLayout = layout;
         m_gridIconEm = iconEm;
 
-        const float strideX = std::max(cellW + gapX, 1.0f);
-        const float strideY = std::max(cellH + gapY, 1.0f);
+        const Chicane::Vec2 stride(std::max(cell.x + gap.x, 1.0f), std::max(cell.y + gap.y, 1.0f));
 
         std::size_t columns = 1;
-        if (!bIsVertical && available > 0.0f)
+        if (!bIsVertical && view.x > 0.0f)
         {
-            columns = std::max(static_cast<std::size_t>(1), static_cast<std::size_t>(available / strideX));
+            columns = std::max(static_cast<std::size_t>(1), static_cast<std::size_t>(view.x / stride.x));
         }
 
         const std::size_t rows = (count + columns - 1) / columns;
-        const float       contentW =
-            bIsVertical ? available : (columns * cellW + (columns > 0 ? (columns - 1) * gapX : 0.0f));
-        const float contentH = rows * cellH + (rows > 0 ? (rows - 1) * gapY : 0.0f);
+        const Chicane::Vec2 contentSize(
+            bIsVertical ? view.x : (columns * cell.x + (columns > 0 ? (columns - 1) * gap.x : 0.0f)),
+            rows * cell.y + (rows > 0 ? (rows - 1) * gap.y : 0.0f)
+        );
 
         if (scrollable)
         {
-            scrollable->setVirtualContentSize(Chicane::Vec2(std::max(contentW, available), contentH));
+            scrollable->setVirtualContentSize(Chicane::Vec2(std::max(contentSize.x, view.x), contentSize.y));
             scrollable->setScroll(bHasLayoutChanged ? Chicane::Vec2::Zero() : scrollable->getScroll());
         }
 
         const float scrollY  = scrollable ? scrollable->getScroll().y : 0.0f;
-        int         firstRow = static_cast<int>(std::floor(scrollY / strideY)) - TILE_OVERSCAN_ROWS;
-        int         lastRow  = static_cast<int>(std::floor((scrollY + viewH) / strideY)) + TILE_OVERSCAN_ROWS;
+        int         firstRow = static_cast<int>(std::floor(scrollY / stride.y)) - TILE_OVERSCAN_ROWS;
+        int         lastRow  = static_cast<int>(std::floor((scrollY + view.y) / stride.y)) + TILE_OVERSCAN_ROWS;
         const int   maxRow   = static_cast<int>(rows == 0 ? 0 : rows - 1);
 
         firstRow = std::max(0, firstRow);
@@ -677,12 +678,12 @@ namespace Editor
             const std::size_t   column    = dataIndex % columns;
             const std::size_t   row       = dataIndex / columns;
             const Chicane::Vec2 slot =
-                bIsVertical ? Chicane::Vec2(0.0f, static_cast<float>(row) * strideY)
-                            : Chicane::Vec2(static_cast<float>(column) * strideX, static_cast<float>(row) * strideY);
+                bIsVertical ? Chicane::Vec2(0.0f, static_cast<float>(row) * stride.y)
+                            : Chicane::Vec2(static_cast<float>(column) * stride.x, static_cast<float>(row) * stride.y);
 
-            const bool bRebind =
-                bHasLayoutChanged || bIconSizeChanged || tile->boundIndex() != static_cast<int>(dataIndex);
-            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot, bRebind);
+            const bool bShouldRebind =
+                bHasLayoutChanged || bHasIconSizeChanged || tile->boundIndex() != static_cast<int>(dataIndex);
+            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot, bShouldRebind);
         }
     }
 

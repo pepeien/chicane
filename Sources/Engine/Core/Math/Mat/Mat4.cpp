@@ -26,11 +26,10 @@ namespace Chicane
         }
 
         const float inverseW = 1.0f / clip.w;
-        const float ndcX     = clip.x * inverseW;
-        const float ndcY     = clip.y * inverseW;
+        const Vec2  ndc(clip.x * inverseW, clip.y * inverseW);
 
-        outPosition.x = (ndcX * 0.5f + 0.5f) * inViewport.x;
-        outPosition.y = (0.5f - ndcY * 0.5f) * inViewport.y;
+        outPosition.x = (ndc.x * 0.5f + 0.5f) * inViewport.x;
+        outPosition.y = (0.5f - ndc.y * 0.5f) * inViewport.y;
 
         return clip.w > 0.0f;
     }
@@ -82,12 +81,11 @@ namespace Chicane
             return false;
         }
 
-        const float ndcX = (inPosition.x / inViewport.x) * 2.0f - 1.0f;
-        const float ndcY = 1.0f - (inPosition.y / inViewport.y) * 2.0f;
+        const Vec2 ndc((inPosition.x / inViewport.x) * 2.0f - 1.0f, 1.0f - (inPosition.y / inViewport.y) * 2.0f);
 
         const Mat4 inverse  = (inProjection * inView).inverse();
-        const Vec4 nearClip = inverse * Vec4(ndcX, ndcY, -1.0f, 1.0f);
-        const Vec4 farClip  = inverse * Vec4(ndcX, ndcY, 1.0f, 1.0f);
+        const Vec4 nearClip = inverse * Vec4(ndc.x, ndc.y, -1.0f, 1.0f);
+        const Vec4 farClip  = inverse * Vec4(ndc.x, ndc.y, 1.0f, 1.0f);
 
         if (std::fabs(nearClip.w) < FLT_EPSILON || std::fabs(farClip.w) < FLT_EPSILON)
         {

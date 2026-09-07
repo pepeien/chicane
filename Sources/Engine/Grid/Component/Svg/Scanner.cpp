@@ -64,14 +64,14 @@ namespace Chicane
                 return false;
             }
 
-            const bool value = *p == '1';
+            const bool bIsOne = *p == '1';
 
             if (*p == '0' || *p == '1')
             {
                 p++;
             }
 
-            return value;
+            return bIsOne;
         }
 
         char SvgScanner::command()

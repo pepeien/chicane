@@ -48,7 +48,7 @@ namespace Chicane
 
             Component::tick(inDelta);
 
-            if (!m_bLaidOutThisFrame && previous.x == m_currentPosition.x && previous.y == m_currentPosition.y)
+            if (!m_bIsLaidOutThisFrame && previous.x == m_currentPosition.x && previous.y == m_currentPosition.y)
             {
                 return;
             }

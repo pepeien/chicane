@@ -27,7 +27,7 @@ namespace Chicane
         {
             Container::onRefresh();
 
-            if (!m_bLaidOutThisFrame && !src.isEmpty() &&
+            if (!m_bIsLaidOutThisFrame && !src.isEmpty() &&
                 !(m_load == Box::AssetLoad::Preview && !m_previewImage))
             {
                 return;
@@ -42,16 +42,16 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
-            const bool bSrcBound       = isReference(getAttribute(SRC_ATTRIBUTE_NAME));
-            const bool bWaitingPreview = m_load == Box::AssetLoad::Preview && !src.isEmpty() && !m_previewImage;
-            const bool bAnimated = m_texture && m_texture->getFrameCount() > 1 && playbackRate != 0.0f;
+            const bool bIsSrcBound       = isReference(getAttribute(SRC_ATTRIBUTE_NAME));
+            const bool bIsWaitingPreview = m_load == Box::AssetLoad::Preview && !src.isEmpty() && !m_previewImage;
+            const bool bIsAnimated = m_texture && m_texture->getFrameCount() > 1 && playbackRate != 0.0f;
 
-            if (bSrcBound || bWaitingPreview)
+            if (bIsSrcBound || bIsWaitingPreview)
             {
                 refreshSource();
             }
 
-            if (bAnimated)
+            if (bIsAnimated)
             {
                 if (isReference(getAttribute(PLAYBACK_RATE_ATTRIBUTE_NAME)))
                 {
@@ -64,7 +64,7 @@ namespace Chicane
                 return;
             }
 
-            if (bSrcBound || bWaitingPreview)
+            if (bIsSrcBound || bIsWaitingPreview)
             {
                 bindFrame();
             }

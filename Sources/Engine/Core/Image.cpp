@@ -18,6 +18,7 @@
 
 #include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 
 namespace
 {
@@ -518,8 +519,7 @@ namespace Chicane
         const int pixelCount = getFrameStride();
         const int frameCount = std::max(1, getFrameCount());
 
-        const float cx = (m_width - 1) * 0.5f;
-        const float cy = (m_height - 1) * 0.5f;
+        const Vec2 center((m_width - 1) * 0.5f, (m_height - 1) * 0.5f);
 
         for (int frame = 0; frame < frameCount; frame++)
         {
@@ -528,25 +528,24 @@ namespace Chicane
 
             for (int y = 0; y < m_height; y++)
             {
-                float dy = y - cy;
+                const float dy = y - center.y;
 
                 for (int x = 0; x < m_width; x++)
                 {
-                    float dx = x - cx;
+                    const Vec2 delta(x - center.x, dy);
+                    Vec2       source(
+                        cosA * delta.x + sinA * delta.y + center.x, -sinA * delta.x + cosA * delta.y + center.y
+                    );
 
-                    float srcX = cosA * dx + sinA * dy + cx;
-                    float srcY = -sinA * dx + cosA * dy + cy;
+                    source.x = std::clamp(source.x, 0.0f, (float)(m_width - 1));
+                    source.y = std::clamp(source.y, 0.0f, (float)(m_height - 1));
 
-                    srcX = std::clamp(srcX, 0.0f, (float)(m_width - 1));
-                    srcY = std::clamp(srcY, 0.0f, (float)(m_height - 1));
-
-                    int x0 = (int)srcX;
-                    int y0 = (int)srcY;
+                    int x0 = (int)source.x;
+                    int y0 = (int)source.y;
                     int x1 = std::min(x0 + 1, m_width - 1);
                     int y1 = std::min(y0 + 1, m_height - 1);
 
-                    float tx = srcX - x0;
-                    float ty = srcY - y0;
+                    const Vec2 t(source.x - x0, source.y - y0);
 
                     unsigned char* dst = pixels + m_channel * (y * m_width + x);
 
@@ -557,8 +556,8 @@ namespace Chicane
 
                     for (int c = 0; c < m_channel; c++)
                     {
-                        float v = (1 - tx) * (1 - ty) * p00[c] + tx * (1 - ty) * p10[c] + (1 - tx) * ty * p01[c] +
-                                  tx * ty * p11[c];
+                        float v = (1 - t.x) * (1 - t.y) * p00[c] + t.x * (1 - t.y) * p10[c] + (1 - t.x) * t.y * p01[c] +
+                                  t.x * t.y * p11[c];
 
                         dst[c] = (unsigned char)(v + 0.5f);
                     }

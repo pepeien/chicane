@@ -82,9 +82,9 @@ namespace Chicane
             int                m_iteration;
             Direction          m_direction;
             Status             m_status;
-            bool               m_bFillBackwards;
-            bool               m_bFillForwards;
-            bool               m_bFinished;
+            bool               m_bShouldFillBackwards;
+            bool               m_bShouldFillForwards;
+            bool               m_bIsFinished;
             CompleteObservable m_onComplete;
         };
     }

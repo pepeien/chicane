@@ -9,8 +9,7 @@ namespace Chicane
               m_glyph(nullptr),
               m_advance(0.0f),
               m_dilation(0.0f),
-              m_relativeX(0.0f),
-              m_relativeY(0.0f)
+              m_relative(Vec2::Zero())
         {}
 
         bool TextGlyph::isDrawable() const
@@ -82,8 +81,7 @@ namespace Chicane
             float                 inFontSize,
             float                 inLetterSpacing,
             const Color::Rgba&    inColor,
-            float                 inPenX,
-            float                 inLineTop,
+            const Vec2&           inRelative,
             float                 inAscender
         )
         {
@@ -118,9 +116,8 @@ namespace Chicane
             m_style.width.value.set(advance);
             m_style.height.value.set(height);
 
-            m_advance   = advance;
-            m_relativeX = inPenX;
-            m_relativeY = inLineTop;
+            m_advance  = advance;
+            m_relative = inRelative;
 
             refreshPrimitive();
         }
@@ -130,23 +127,17 @@ namespace Chicane
             return m_advance;
         }
 
-        float TextGlyph::getRelativeX() const
+        const Vec2& TextGlyph::getRelative() const
         {
-            return m_relativeX;
-        }
-
-        float TextGlyph::getRelativeY() const
-        {
-            return m_relativeY;
+            return m_relative;
         }
 
         void TextGlyph::clear()
         {
-            m_glyph     = nullptr;
-            m_advance   = 0.0f;
-            m_dilation  = 0.0f;
-            m_relativeX = 0.0f;
-            m_relativeY = 0.0f;
+            m_glyph    = nullptr;
+            m_advance  = 0.0f;
+            m_dilation = 0.0f;
+            m_relative = Vec2::Zero();
 
             clearPrimitive();
             setSize(0.0f, 0.0f);
@@ -162,10 +153,7 @@ namespace Chicane
             const Component* parent      = getParent();
             const Style&     parentStyle = parent->getStyle();
 
-            setPosition(
-                parent->getPosition().x + parentStyle.insetLeft() + m_relativeX,
-                parent->getPosition().y + parentStyle.insetTop() + m_relativeY
-            );
+            setPosition(parent->getPosition() + Vec2(parentStyle.insetLeft(), parentStyle.insetTop()) + m_relative);
 
             refreshBounds();
         }

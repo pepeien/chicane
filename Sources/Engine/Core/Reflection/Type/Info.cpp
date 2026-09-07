@@ -68,7 +68,7 @@ namespace Chicane
         const ReflectionTypeInfo*  currentType    = this;
         std::size_t                offset         = 0;
         std::size_t                ptrOffset      = 0;
-        bool                       crossedPointer = false;
+        bool                       bHasCrossedPointer = false;
         const ReflectionFieldInfo* field          = nullptr;
 
         for (std::size_t i = 0; i < parts.size(); ++i)
@@ -81,7 +81,7 @@ namespace Chicane
                 return {};
             }
 
-            if (crossedPointer)
+            if (bHasCrossedPointer)
             {
                 ptrOffset += currentField->offset;
             }
@@ -99,9 +99,9 @@ namespace Chicane
                     return {};
                 }
 
-                if (currentField->bIsPointer && !crossedPointer)
+                if (currentField->bIsPointer && !bHasCrossedPointer)
                 {
-                    crossedPointer = true;
+                    bHasCrossedPointer = true;
                 }
 
                 currentType = ReflectionTypeRegistry::getInstance().find(currentField->typeIndex.value());
@@ -120,7 +120,7 @@ namespace Chicane
             field->names,
             field->typeName,
             field->typeIndex,
-            crossedPointer,
+            bHasCrossedPointer,
             field->bIsIterable,
             field->elementIndex,
             field->iterable,

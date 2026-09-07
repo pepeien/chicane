@@ -32,9 +32,9 @@ namespace Chicane
             char character = static_cast<char>(inEvent.key);
             if (character >= 'a' && character <= 'z')
             {
-                const bool bShift = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Shift);
-                const bool bCaps  = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Caps);
-                if (bShift != bCaps)
+                const bool bHasShift = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Shift);
+                const bool bHasCaps  = hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Caps);
+                if (bHasShift != bHasCaps)
                 {
                     character = static_cast<char>(character - 32);
                 }
@@ -47,8 +47,8 @@ namespace Chicane
             : Text(inNode),
               value(String::empty()),
               caretX(0.0f),
-              m_bEdited(false),
-              m_bReplaceOnInput(false),
+              m_bIsEdited(false),
+              m_bShouldReplaceOnInput(false),
               m_pendingText(String::empty())
         {
             load("Assets/Engine/UI/Components/Text/Input.grid", "Assets/Engine/UI/Components/Text/Input.decal");
@@ -158,7 +158,7 @@ namespace Chicane
 
         void TextInput::onFocus()
         {
-            m_bReplaceOnInput = true;
+            m_bShouldReplaceOnInput = true;
             setTextInputActive(true);
             refreshStyleSubtree();
         }
@@ -186,7 +186,7 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(raw) && m_bEdited)
+            if (!isReference(raw) && m_bIsEdited)
             {
                 return;
             }
@@ -201,14 +201,14 @@ namespace Chicane
                 return;
             }
 
-            if (m_bReplaceOnInput)
+            if (m_bShouldReplaceOnInput)
             {
                 value             = String::empty();
-                m_bReplaceOnInput = false;
+                m_bShouldReplaceOnInput = false;
             }
 
             value.append(inText);
-            m_bEdited = true;
+            m_bIsEdited = true;
             setText(value);
 
             commit();
@@ -217,11 +217,11 @@ namespace Chicane
 
         void TextInput::erase()
         {
-            if (m_bReplaceOnInput)
+            if (m_bShouldReplaceOnInput)
             {
                 value             = String::empty();
-                m_bReplaceOnInput = false;
-                m_bEdited         = true;
+                m_bShouldReplaceOnInput = false;
+                m_bIsEdited         = true;
                 setText(value);
 
                 commit();
@@ -246,7 +246,7 @@ namespace Chicane
                 }
             } while (!value.isEmpty());
 
-            m_bEdited = true;
+            m_bIsEdited = true;
             setText(value);
 
             commit();

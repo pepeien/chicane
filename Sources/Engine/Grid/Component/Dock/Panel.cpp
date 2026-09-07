@@ -20,8 +20,8 @@ namespace Chicane
               m_minSize(String::empty()),
               m_maxSize(String::empty()),
               m_handleId(String::empty()),
-              m_bResizable(true),
-              m_bGrabbable(true),
+              m_bIsResizable(true),
+              m_bIsGrabbable(true),
               m_extent(-1.0f),
               m_floatPosition(Vec2::Zero()),
               m_floatSize(Vec2::Zero()),
@@ -61,17 +61,17 @@ namespace Chicane
 
         bool DockPanel::isResizable() const
         {
-            return m_bResizable && !isFill() && !isFloating();
+            return m_bIsResizable && !isFill() && !isFloating();
         }
 
         bool DockPanel::isGrabbable() const
         {
-            return m_bGrabbable;
+            return m_bIsGrabbable;
         }
 
         void DockPanel::setGrabbable(bool inValue)
         {
-            m_bGrabbable                              = inValue;
+            m_bIsGrabbable = inValue;
             m_attributes[IS_GRABBABLE_ATTRIBUTE_NAME] = inValue ? "true" : "false";
 
             refreshHandle();
@@ -296,8 +296,8 @@ namespace Chicane
             m_minSize    = parseText(getAttribute(MIN_SIZE_ATTRIBUTE_NAME)).trim();
             m_maxSize    = parseText(getAttribute(MAX_SIZE_ATTRIBUTE_NAME)).trim();
             m_handleId   = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
-            m_bResizable = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
-            m_bGrabbable = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
+            m_bIsResizable = parseFlag(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME), !isFill() && !isFloating());
+            m_bIsGrabbable = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
         }
 
         DockSide DockPanel::parseSide(const String& inValue) const

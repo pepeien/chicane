@@ -158,7 +158,7 @@ namespace Chicane
             {
                 applyResizeCursor(m_resize.panel->getSide());
             }
-            else if (m_drag.panel && m_drag.bActive)
+            else if (m_drag.panel && m_drag.bIsActive)
             {
                 applyDragCursor();
             }
@@ -319,10 +319,10 @@ namespace Chicane
 
             const float width   = inRemaining.right - inRemaining.left;
             const float height  = inRemaining.bottom - inRemaining.top;
-            const bool  bSplitX = width >= height;
-            const float gap     = std::max(0.0f, bSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
+            const bool  bShouldSplitX = width >= height;
+            const float gap     = std::max(0.0f, bShouldSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
             const float usable  = std::max(
-                0.0f, (bSplitX ? width : height) - gap * static_cast<float>(inPanels.size() > 0 ? inPanels.size() - 1 : 0)
+                0.0f, (bShouldSplitX ? width : height) - gap * static_cast<float>(inPanels.size() > 0 ? inPanels.size() - 1 : 0)
             );
             const float slice = usable / static_cast<float>(inPanels.size());
 
@@ -331,7 +331,7 @@ namespace Chicane
                 DockRegion region;
                 const float offset = (slice + gap) * static_cast<float>(i);
 
-                if (bSplitX)
+                if (bShouldSplitX)
                 {
                     const float left  = inRemaining.left + offset;
                     const float right = (i + 1 == inPanels.size()) ? inRemaining.right : left + slice;
@@ -384,7 +384,7 @@ namespace Chicane
             m_drop->setParent(this);
             m_drop->setStyleFile(m_styleFile);
 
-            if (!m_drag.panel || !m_drag.bActive || m_drag.drop == DockSide::Float)
+            if (!m_drag.panel || !m_drag.bIsActive || m_drag.drop == DockSide::Float)
             {
                 m_drop->hide();
 
@@ -417,12 +417,12 @@ namespace Chicane
             while (node && node != this)
             {
                 DockPanel* panel     = DockPanel::findFrom(node);
-                const bool bAssigned = panel && panel->isAssignedHandle(node);
-                const bool bOverlay  = node->getTag().equals(DockHandle::TAG_ID);
-                if (bAssigned || bOverlay)
+                const bool bIsAssigned = panel && panel->isAssignedHandle(node);
+                const bool bIsOverlay  = node->getTag().equals(DockHandle::TAG_ID);
+                if (bIsAssigned || bIsOverlay)
                 {
                     if (panel && panel->isGrabbable() && panel->getParent() == this && panel->isDisplayable() &&
-                        (bAssigned || !panel->hasAssignedHandle()))
+                        (bIsAssigned || !panel->hasAssignedHandle()))
                     {
                         outPanel = panel;
 
@@ -507,8 +507,10 @@ namespace Chicane
                 std::max(0.0f, m_size.y - m_style.insetVertical())
             );
 
-            const float bandX = std::max(DROP_BAND_MIN, content.x * DROP_BAND_RATIO);
-            const float bandY = std::max(DROP_BAND_MIN, content.y * DROP_BAND_RATIO);
+            const Vec2 band(
+                std::max(DROP_BAND_MIN, content.x * DROP_BAND_RATIO),
+                std::max(DROP_BAND_MIN, content.y * DROP_BAND_RATIO)
+            );
 
             Bounds2D result;
             result.set(0.0f, 0.0f, content.y, content.x);
@@ -516,30 +518,30 @@ namespace Chicane
             switch (inSide)
             {
             case DockSide::Left:
-                result.right = std::min(content.x, bandX);
+                result.right = std::min(content.x, band.x);
 
                 break;
 
             case DockSide::Right:
-                result.left = std::max(0.0f, content.x - bandX);
+                result.left = std::max(0.0f, content.x - band.x);
 
                 break;
 
             case DockSide::Top:
-                result.bottom = std::min(content.y, bandY);
+                result.bottom = std::min(content.y, band.y);
 
                 break;
 
             case DockSide::Bottom:
-                result.top = std::max(0.0f, content.y - bandY);
+                result.top = std::max(0.0f, content.y - band.y);
 
                 break;
 
             case DockSide::Fill:
-                result.left += bandX * 0.5f;
-                result.right -= bandX * 0.5f;
-                result.top += bandY * 0.5f;
-                result.bottom -= bandY * 0.5f;
+                result.left += band.x * 0.5f;
+                result.right -= band.x * 0.5f;
+                result.top += band.y * 0.5f;
+                result.bottom -= band.y * 0.5f;
 
                 break;
 
@@ -655,10 +657,10 @@ namespace Chicane
             m_drag.panel   = inPanel;
             m_drag.cursor  = inLocation;
             m_drag.grab    = inLocation - inPanel->getDrawPosition();
-            m_drag.bActive = inPanel->isFloating();
+            m_drag.bIsActive = inPanel->isFloating();
             m_drag.drop    = inPanel->getSide();
 
-            if (m_drag.bActive)
+            if (m_drag.bIsActive)
             {
                 applyDragCursor();
             }
@@ -671,7 +673,7 @@ namespace Chicane
                 return;
             }
 
-            if (!m_drag.bActive)
+            if (!m_drag.bIsActive)
             {
                 const float dx = inLocation.x - m_drag.cursor.x;
                 const float dy = inLocation.y - m_drag.cursor.y;
@@ -681,7 +683,7 @@ namespace Chicane
                     return;
                 }
 
-                m_drag.bActive = true;
+                m_drag.bIsActive = true;
                 m_drag.panel->setSide(DockSide::Float);
                 m_drag.panel->clearExtent();
                 raise(m_drag.panel);
@@ -720,7 +722,7 @@ namespace Chicane
 
         void Dock::endDrag()
         {
-            if (m_drag.panel && m_drag.bActive)
+            if (m_drag.panel && m_drag.bIsActive)
             {
                 if (m_drag.drop == DockSide::Float)
                 {
@@ -782,10 +784,10 @@ namespace Chicane
                 return DockSide::Float;
             }
 
-            const float width  = content.right - content.left;
-            const float height = content.bottom - content.top;
-            const float bandX  = std::max(DROP_BAND_MIN, width * DROP_BAND_RATIO);
-            const float bandY  = std::max(DROP_BAND_MIN, height * DROP_BAND_RATIO);
+            const Vec2 size(content.right - content.left, content.bottom - content.top);
+            const Vec2 band(
+                std::max(DROP_BAND_MIN, size.x * DROP_BAND_RATIO), std::max(DROP_BAND_MIN, size.y * DROP_BAND_RATIO)
+            );
 
             const float left   = inLocation.x - content.left;
             const float right  = content.right - inLocation.x;
@@ -806,10 +808,10 @@ namespace Chicane
                 side = inSide;
             };
 
-            consider(left, bandX, DockSide::Left);
-            consider(right, bandX, DockSide::Right);
-            consider(top, bandY, DockSide::Top);
-            consider(bottom, bandY, DockSide::Bottom);
+            consider(left, band.x, DockSide::Left);
+            consider(right, band.x, DockSide::Right);
+            consider(top, band.y, DockSide::Top);
+            consider(bottom, band.y, DockSide::Bottom);
 
             return side;
         }

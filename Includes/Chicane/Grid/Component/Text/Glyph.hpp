@@ -13,7 +13,10 @@ namespace Chicane
         class CHICANE_GRID TextGlyph : public Component
         {
         public:
-            static constexpr inline const char* TAG_ID        = "Glyph";
+            // Tag
+            static constexpr inline const char* TAG_ID = "Glyph";
+
+            // Values
             static constexpr inline const char* QUAD_ID       = "Glyph_Quad";
             static constexpr inline const float QUAD_DILATION = 1.0f;
 
@@ -33,13 +36,11 @@ namespace Chicane
                 float                 inFontSize,
                 float                 inLetterSpacing,
                 const Color::Rgba&    inColor,
-                float                 inPenX,
-                float                 inLineTop,
+                const Vec2&           inRelative,
                 float                 inAscender
             );
             float getAdvance() const;
-            float getRelativeX() const;
-            float getRelativeY() const;
+            const Vec2& getRelative() const;
 
             void clear();
             void syncPosition();
@@ -48,8 +49,7 @@ namespace Chicane
             const Box::FontGlyph* m_glyph;
             float                 m_advance;
             float                 m_dilation;
-            float                 m_relativeX;
-            float                 m_relativeY;
+            Vec2                  m_relative;
         };
     }
 }

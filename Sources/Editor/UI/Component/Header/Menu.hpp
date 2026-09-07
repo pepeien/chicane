@@ -66,7 +66,7 @@ namespace Editor
         CH_FIELD()
         bool bIsOpen;
         CH_FIELD()
-        bool bShowChevron;
+        bool bShouldShowChevron;
         CH_FIELD()
         bool bHasShortcut;
 

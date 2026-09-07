@@ -136,7 +136,7 @@ namespace Chicane
             // GPU timing
             vk::QueryPool              m_timestampQueryPool;
             float                      m_timestampPeriod;
-            bool                       m_bTimestampsEnabled;
+            bool                       m_bIsTimestampsEnabled;
             std::vector<bool>          m_timestampSubmitted;
         };
     }

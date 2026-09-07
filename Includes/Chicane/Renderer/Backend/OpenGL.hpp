@@ -89,7 +89,7 @@ namespace Chicane
 
             void buildTarget();
             void destroyTarget();
-            void presentTarget(bool inPresentToWindow) const;
+            void presentTarget(bool inShouldPresentToWindow) const;
             void captureScreenTarget();
 
             // GPU timing

@@ -107,8 +107,8 @@ namespace Chicane
             String      m_minSize;
             String      m_maxSize;
             String      m_handleId;
-            bool        m_bResizable;
-            bool        m_bGrabbable;
+            bool        m_bIsResizable;
+            bool        m_bIsGrabbable;
             float       m_extent;
             Vec2        m_floatPosition;
             Vec2        m_floatSize;

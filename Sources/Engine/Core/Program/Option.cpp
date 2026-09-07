@@ -22,9 +22,9 @@ namespace Chicane
         return m_bIsRequired;
     }
 
-    void ProgramOption::setIsRequired(bool bInIsValue)
+    void ProgramOption::setIsRequired(bool inValue)
     {
-        m_bIsRequired = bInIsValue;
+        m_bIsRequired = inValue;
     }
 
     bool ProgramOption::isName(const String& inValue) const

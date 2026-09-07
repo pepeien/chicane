@@ -30,7 +30,7 @@ namespace Chicane
             void wait();
             void reset();
             void begin(const Frame& inFrame, const VulkanSwapchainImage& inImage);
-            void flushTarget(bool bInPresentToWindow);
+            void flushTarget(bool bInShouldPresentToWindow);
             void end();
             void destroy();
 

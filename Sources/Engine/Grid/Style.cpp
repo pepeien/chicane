@@ -617,9 +617,9 @@ namespace Chicane
                 return false;
             }
 
-            const bool bRow = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
+            const bool bIsRow = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
 
-            return inDirection == SizeDirection::Horizontal ? bRow : !bRow;
+            return inDirection == SizeDirection::Horizontal ? bIsRow : !bIsRow;
         }
 
         float Style::preservedFillPercent(float inParsed, float inLaidOut) const
@@ -1875,13 +1875,12 @@ namespace Chicane
 
         Vec2 Style::parseTransformOrigin(const String& inValue, const Vec2& inBox) const
         {
-            const String value   = parseText(inValue).trim();
-            const float  centerX = inBox.x * 0.5f;
-            const float  centerY = inBox.y * 0.5f;
+            const String value  = parseText(inValue).trim();
+            const Vec2   center = inBox * 0.5f;
 
             if (value.isEmpty())
             {
-                return {centerX, centerY};
+                return center;
             }
 
             std::vector<String> tokens;
@@ -1898,7 +1897,7 @@ namespace Chicane
 
             if (tokens.empty())
             {
-                return {centerX, centerY};
+                return center;
             }
 
             auto isLeft   = [](const String& inToken) { return inToken.equals(TRANSFORM_ORIGIN_TYPE_LEFT); };
@@ -1916,7 +1915,7 @@ namespace Chicane
 
                 if (isCenter(inToken))
                 {
-                    return inDirection == SizeDirection::Horizontal ? centerX : centerY;
+                    return inDirection == SizeDirection::Horizontal ? center.x : center.y;
                 }
 
                 if (isRight(inToken))
@@ -1938,10 +1937,10 @@ namespace Chicane
 
                 if (isTop(token) || isBottom(token))
                 {
-                    return {centerX, parseAxis(token, SizeDirection::Vertical)};
+                    return {center.x, parseAxis(token, SizeDirection::Vertical)};
                 }
 
-                return {parseAxis(token, SizeDirection::Horizontal), centerY};
+                return {parseAxis(token, SizeDirection::Horizontal), center.y};
             }
 
             String xToken = tokens.at(0);
@@ -2157,9 +2156,9 @@ namespace Chicane
                 const Component* containingBlock = m_parent->getContainingBlock();
                 if (containingBlock && containingBlock != m_parent)
                 {
-                    const bool bAbsolute = m_parent->getStyle().isPosition(StylePosition::Absolute);
+                    const bool bIsAbsolute = m_parent->getStyle().isPosition(StylePosition::Absolute);
                     result.setParent(
-                        bAbsolute ? containingBlock->getContentSize() : percentContainingSize(containingBlock)
+                        bIsAbsolute ? containingBlock->getContentSize() : percentContainingSize(containingBlock)
                     );
                 }
             }
@@ -2474,9 +2473,9 @@ namespace Chicane
             {
                 const String value = inValue.trim().toLower();
 
-                animation.bReverse =
+                animation.bIsReverse =
                     value.equals(ANIMATION_DIRECTION_TYPE_REVERSE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE);
-                animation.bAlternate =
+                animation.bIsAlternate =
                     value.equals(ANIMATION_DIRECTION_TYPE_ALTERNATE, ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE);
             };
 
@@ -2484,8 +2483,8 @@ namespace Chicane
             {
                 const String value = inValue.trim().toLower();
 
-                animation.bFillForwards  = value.equals(ANIMATION_FILL_TYPE_FORWARDS, ANIMATION_FILL_TYPE_BOTH);
-                animation.bFillBackwards = value.equals(ANIMATION_FILL_TYPE_BACKWARDS, ANIMATION_FILL_TYPE_BOTH);
+                animation.bShouldFillForwards  = value.equals(ANIMATION_FILL_TYPE_FORWARDS, ANIMATION_FILL_TYPE_BOTH);
+                animation.bShouldFillBackwards = value.equals(ANIMATION_FILL_TYPE_BACKWARDS, ANIMATION_FILL_TYPE_BOTH);
             };
 
             auto parseIterations = [&](const String& inValue)
@@ -2576,7 +2575,7 @@ namespace Chicane
 
                         if (value.equals(ANIMATION_PLAY_STATE_TYPE_RUNNING, ANIMATION_PLAY_STATE_TYPE_PAUSED))
                         {
-                            animation.bPaused = value.equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
+                            animation.bIsPaused = value.equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
 
                             continue;
                         }
@@ -2632,7 +2631,7 @@ namespace Chicane
 
             if (bHasPlayState)
             {
-                animation.bPaused = inProperties.at(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME)
+                animation.bIsPaused = inProperties.at(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME)
                                         .trim()
                                         .toLower()
                                         .equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
