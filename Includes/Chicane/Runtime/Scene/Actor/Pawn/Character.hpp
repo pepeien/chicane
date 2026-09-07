@@ -2,6 +2,8 @@
 
 #include "Chicane/Core/Reflection.hpp"
 
+#include "Chicane/Core/Time.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
 
@@ -20,5 +22,15 @@ namespace Chicane
         void addPitch(float inValue);
         void addRoll(float inValue);
         void addYaw(float inValue);
+
+    protected:
+        void onInput() override;
+
+    protected:
+        Vec3        m_pendingMove;
+        float       m_pendingStep;
+        Vec3        m_desiredMove;
+        Time::Point m_lastMoveTime;
+        bool        m_bMoving;
     };
 }

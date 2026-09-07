@@ -82,6 +82,11 @@ namespace Chicane
 
         while (m_window->run())
         {
+            if (hasController())
+            {
+                m_controller->repeat();
+            }
+
             render();
 
             m_telemetry.renderer.frame.set(m_renderer ? m_renderer->getGpuDelta() : 0.0f);
@@ -402,6 +407,8 @@ namespace Chicane
 
     void Application::tickScene()
     {
+        m_telemetry.physics.start();
+
         while (m_bIsRunning)
         {
             std::shared_ptr<Scene> scene = getScene();
@@ -413,10 +420,10 @@ namespace Chicane
                 continue;
             }
 
+            Kerb::Engine::getInstance().tick(m_telemetry.physics.frame.delta * 0.001f);
+
             {
                 m_telemetry.scene.start();
-
-                Kerb::Engine::getInstance().tick(m_telemetry.scene.frame.delta);
 
                 scene->tick(m_telemetry.scene.frame.delta);
 
@@ -426,6 +433,9 @@ namespace Chicane
             }
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+            m_telemetry.physics.end();
+            m_telemetry.physics.start();
         }
     }
 
@@ -638,6 +648,7 @@ namespace Chicane
                 snapshotScreenViewport(view);
 
                 buildUICommands(view);
+
                 m_telemetry.ui.end();
             }
 

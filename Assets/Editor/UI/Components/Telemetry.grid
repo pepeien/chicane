@@ -7,6 +7,12 @@
     </Container>
     <Container class="telemetry__group">
         <Container class="telemetry__group__label">
+            <Text>Physics</Text>
+        </Container>
+        <Text>{{ telemetry.physics.frame.rate }} FPS ({{ telemetry.physics.frame.delta }} ms)</Text>
+    </Container>
+    <Container class="telemetry__group">
+        <Container class="telemetry__group__label">
             <Text>UI</Text>
         </Container>
         <Text>{{ telemetry.ui.frame.rate }} FPS ({{ telemetry.ui.frame.delta }} ms)</Text>

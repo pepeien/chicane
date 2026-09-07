@@ -24,6 +24,7 @@ namespace Chicane
     protected:
         virtual void onControlAttachment() { return; }
         virtual void onControleDeattachment() { return; }
+        virtual void onInput() { return; }
 
     public:
         bool isControlled() const;

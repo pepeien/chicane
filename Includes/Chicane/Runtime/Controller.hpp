@@ -55,6 +55,8 @@ namespace Chicane
         void attachTo(APawn* inPawn);
         void deattach();
 
+        void repeat();
+
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
         void bindEvent(Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback);

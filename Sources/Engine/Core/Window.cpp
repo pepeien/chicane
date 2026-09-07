@@ -17,6 +17,8 @@
 namespace Chicane
 {
     static inline const Vec<2, std::uint32_t> VEC2_ZERO(0);
+    static constexpr int                      DEFAULT_WINDOW_WIDTH  = 1200;
+    static constexpr int                      DEFAULT_WINDOW_HEIGHT = 800;
 
     static Window* g_current = nullptr;
 
@@ -76,7 +78,7 @@ namespace Chicane
 
     void Window::init(const WindowSettings& inSettings)
     {
-        m_settings.type = inSettings.type;
+        const bool bMaximize = inSettings.size.x == 0 && inSettings.size.y == 0;
 
         setBackend(inSettings.backend);
         setTitle(inSettings.title);
@@ -84,6 +86,11 @@ namespace Chicane
         setSize(inSettings.size);
         setDisplay(inSettings.display);
         setType(inSettings.type);
+
+        if (bMaximize && inSettings.type != WindowType::Fullscreen)
+        {
+            maximize();
+        }
     }
 
     bool Window::run()
@@ -380,9 +387,12 @@ namespace Chicane
         const std::uint32_t displayWidth  = static_cast<std::uint32_t>(displaySettings->w);
         const std::uint32_t displayHeight = static_cast<std::uint32_t>(displaySettings->h);
 
+        const std::uint32_t defaultWidth  = static_cast<std::uint32_t>(DEFAULT_WINDOW_WIDTH);
+        const std::uint32_t defaultHeight = static_cast<std::uint32_t>(DEFAULT_WINDOW_HEIGHT);
+
         setSize(
-            m_settings.size.x == 0 ? displayWidth : std::min(m_settings.size.x, displayWidth),
-            m_settings.size.y == 0 ? displayHeight : std::min(m_settings.size.y, displayHeight)
+            std::min(m_settings.size.x == 0 ? defaultWidth : m_settings.size.x, displayWidth),
+            std::min(m_settings.size.y == 0 ? defaultHeight : m_settings.size.y, displayHeight)
         );
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
@@ -404,10 +414,13 @@ namespace Chicane
 
         m_settings.type = inType;
 
+        SDL_Window* window = static_cast<SDL_Window*>(m_instance);
+
         switch (inType)
         {
         case WindowType::Windowed:
-            SDL_SetWindowBordered(static_cast<SDL_Window*>(m_instance), true);
+            SDL_SetWindowFullscreen(window, false);
+            SDL_SetWindowBordered(window, true);
 
             if (m_bIsResizable)
             {
@@ -421,7 +434,8 @@ namespace Chicane
             break;
 
         case WindowType::WindowedBorderless:
-            SDL_SetWindowBordered(static_cast<SDL_Window*>(m_instance), false);
+            SDL_SetWindowFullscreen(window, false);
+            SDL_SetWindowBordered(window, false);
 
             if (m_bIsResizable)
             {
@@ -435,7 +449,7 @@ namespace Chicane
             break;
 
         case WindowType::Fullscreen:
-            SDL_SetWindowFullscreen(static_cast<SDL_Window*>(m_instance), true);
+            SDL_SetWindowFullscreen(window, true);
 
             disableResizing();
 

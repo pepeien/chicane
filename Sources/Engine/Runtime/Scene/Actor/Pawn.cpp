@@ -33,6 +33,7 @@ namespace Chicane
             return;
         }
 
+        m_physics->moveTo(getAbsoluteTranslation());
         m_physics->activate();
     }
 

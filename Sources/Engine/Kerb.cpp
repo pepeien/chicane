@@ -28,10 +28,17 @@ namespace Chicane
 
         void shutdown()
         {
+            if (!g_bWasInitialized)
+            {
+                return;
+            }
+
             JPH::UnregisterTypes();
 
             delete JPH::Factory::sInstance;
             JPH::Factory::sInstance = nullptr;
+
+            g_bWasInitialized = false;
         }
     }
 }

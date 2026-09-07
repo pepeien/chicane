@@ -18,6 +18,9 @@ namespace Chicane
         Telemetry scene;
 
         CH_FIELD()
+        Telemetry physics;
+
+        CH_FIELD()
         Telemetry ui;
 
         CH_FIELD()

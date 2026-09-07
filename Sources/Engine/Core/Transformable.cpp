@@ -22,7 +22,7 @@ namespace Chicane
     void Transformable::addBounds(const Bounds3D& inBounds)
     {
         m_bounds.add(inBounds);
-        m_bounds.transform(getMatrix());
+        onRefresh();
     }
 
     const Vec3& Transformable::getTop() const

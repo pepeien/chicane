@@ -86,6 +86,20 @@ namespace Chicane
         m_pawnObservable.next(nullptr);
     }
 
+    void Controller::repeat()
+    {
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_mouseButtonEvents.repeat();
+        m_keyboardKeyEvents.repeat();
+        m_gamepadButtonEvents.repeat();
+
+        m_pawn->onInput();
+    }
+
     void Controller::bindEvent(Input::MouseMotionEventCallback inEvent)
     {
         m_mouseMotionEvents.bind(inEvent);
@@ -203,6 +217,11 @@ namespace Chicane
             return;
         }
 
+        if (event.bIsRepeating)
+        {
+            return;
+        }
+
         m_keyboardKeyEvents.exec(event.button, event.status);
     }
 
@@ -239,10 +258,6 @@ namespace Chicane
                 {
                     return;
                 }
-
-                m_mouseButtonEvents.repeat();
-                m_keyboardKeyEvents.repeat();
-                m_gamepadButtonEvents.repeat();
 
                 switch (inEvent.type)
                 {

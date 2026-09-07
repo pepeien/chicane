@@ -4,6 +4,7 @@ namespace Chicane
 {
     ApplicationTelemetry::ApplicationTelemetry()
         : scene({}),
+          physics({}),
           ui({}),
           renderer({})
     {}
