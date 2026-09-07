@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
@@ -113,6 +115,7 @@ namespace Chicane
             Vec2                   m_syncedSize;
             Vec2                   m_syncedPosition;
             float                  m_syncedScale;
+            std::uint64_t          m_tessVersion;
             std::vector<SvgShape*> m_shapes;
         };
     }

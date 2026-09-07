@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Chicane/Core/FileSystem/Item/Type.reflected.hpp"
+#include "Chicane/Core/FileSystem/Listing/Service.hpp"
 
 namespace Chicane
 {
@@ -41,6 +42,21 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        void requestLs(const Path& inDir)
+        {
+            if (inDir.isEmpty())
+            {
+                return;
+            }
+
+            ListingService::instance().enqueue(inDir.lexicallyNormal());
+        }
+
+        void pumpLs(std::vector<Listing>& outReady)
+        {
+            ListingService::instance().drain(outReady);
         }
 
         String readStringUnsigned(const Path& inFilepath)

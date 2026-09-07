@@ -5,6 +5,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/FileSystem/Listing.hpp"
 #include "Chicane/Core/FileSystem/Path.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -14,6 +15,8 @@ namespace Chicane
     {
         CHICANE_CORE bool exists(const Path& inPath);
         CHICANE_CORE std::vector<Item> ls(const Path& inDir = ".", std::uint32_t inDepth = 0);
+        CHICANE_CORE void requestLs(const Path& inDir);
+        CHICANE_CORE void pumpLs(std::vector<Listing>& outReady);
 
         CHICANE_CORE String readStringUnsigned(const Path& inFilepath);
         CHICANE_CORE std::vector<unsigned char> readUnsigned(const Path& inFilepath);

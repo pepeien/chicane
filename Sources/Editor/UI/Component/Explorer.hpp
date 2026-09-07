@@ -68,6 +68,7 @@ namespace Editor
         void rebuildTree();
         void appendTreeFolders(Chicane::FileSystem::Item::List& inItems, int inDepth);
         void ensureListed(Chicane::FileSystem::Item& inFolder);
+        void pumpListings();
 
         void refreshGrid();
         void syncGridTiles();

@@ -183,6 +183,7 @@ namespace Editor
 
         isSearchEmpty = searchQuery.isEmpty();
 
+        pumpListings();
         syncGridTiles();
     }
 
@@ -732,8 +733,49 @@ namespace Editor
             return;
         }
 
-        inFolder.children = Chicane::FileSystem::ls(inFolder.path, 1);
-        m_listedPaths.insert(key);
+        Chicane::FileSystem::requestLs(inFolder.path);
+    }
+
+    void Explorer::pumpListings()
+    {
+        std::vector<Chicane::FileSystem::Listing> ready;
+        Chicane::FileSystem::pumpLs(ready);
+        if (ready.empty())
+        {
+            return;
+        }
+
+        bool bDidApply = false;
+        for (Chicane::FileSystem::Listing& listing : ready)
+        {
+            const Chicane::String      key    = toPathKey(listing.path);
+            Chicane::FileSystem::Item* folder = findFolder(m_rootFolder, key);
+            if (!folder)
+            {
+                continue;
+            }
+
+            folder->children = std::move(listing.children);
+            m_listedPaths.insert(key.toStandard());
+            bDidApply = true;
+        }
+
+        if (!bDidApply)
+        {
+            return;
+        }
+
+        if (Chicane::FileSystem::Item* displayed = findFolder(m_rootFolder, toPathKey(explorerFolder.path)))
+        {
+            explorerFolder = *displayed;
+        }
+        else
+        {
+            explorerFolder = m_rootFolder;
+        }
+
+        rebuildTree();
+        refreshGrid();
     }
 
     const Chicane::FileSystem::Item* Explorer::findFolder(

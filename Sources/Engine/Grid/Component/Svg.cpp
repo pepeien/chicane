@@ -9,7 +9,6 @@
 #include <cstdlib>
 #include <functional>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #ifndef M_PI
@@ -26,6 +25,7 @@
 
 #include "Chicane/Grid/Component/Svg/Paint.hpp"
 #include "Chicane/Grid/Component/Svg/Scanner.hpp"
+#include "Chicane/Grid/Component/Svg/Tessellation.hpp"
 #include "Chicane/Grid/Component/Svg/ViewBox.hpp"
 
 namespace Chicane
@@ -986,16 +986,24 @@ namespace Chicane
             const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
-            static std::unordered_map<std::string, Primitive> cache;
+            static Primitive empty;
 
-            const String key   = makeGeometryKey("fill", inContours, inPaint, inView);
-            const auto   found = cache.find(key.toStandard());
-            if (found != cache.end())
+            const std::string key = makeGeometryKey("fill", inContours, inPaint, inView).toStandard();
+            SvgTessellation&  tess = SvgTessellation::instance();
+            if (const Primitive* hit = tess.find(key))
             {
-                return found->second;
+                return *hit;
             }
 
-            return cache.emplace(key.toStandard(), buildFill(inContours, inPaint, inView)).first->second;
+            tess.request(
+                key,
+                [inContours, inPaint, inView]()
+                {
+                    return buildFill(inContours, inPaint, inView);
+                }
+            );
+
+            return empty;
         }
 
         Primitive buildStroke(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
@@ -1325,16 +1333,24 @@ namespace Chicane
             const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
-            static std::unordered_map<std::string, Primitive> cache;
+            static Primitive empty;
 
-            const String key   = makeGeometryKey("stroke", inContours, inPaint, inView);
-            const auto   found = cache.find(key.toStandard());
-            if (found != cache.end())
+            const std::string key = makeGeometryKey("stroke", inContours, inPaint, inView).toStandard();
+            SvgTessellation&  tess = SvgTessellation::instance();
+            if (const Primitive* hit = tess.find(key))
             {
-                return found->second;
+                return *hit;
             }
 
-            return cache.emplace(key.toStandard(), buildStroke(inContours, inPaint, inView)).first->second;
+            tess.request(
+                key,
+                [inContours, inPaint, inView]()
+                {
+                    return buildStroke(inContours, inPaint, inView);
+                }
+            );
+
+            return empty;
         }
 
         bool skipSubtree(const String& inTag)
@@ -1371,6 +1387,7 @@ namespace Chicane
               m_syncedSize(Vec2::Zero()),
               m_syncedPosition(Vec2::Zero()),
               m_syncedScale(UNSYNCED_SCALE),
+              m_tessVersion(0),
               m_shapes({})
         {
             while (!m_children.empty())
@@ -1391,6 +1408,15 @@ namespace Chicane
 
         void Svg::refresh()
         {
+            SvgTessellation& tess           = SvgTessellation::instance();
+            bool             bNeedsTessSync = tess.pump();
+            if (bNeedsTessSync || m_tessVersion != tess.generation())
+            {
+                m_tessVersion = tess.generation();
+                m_signature = String::empty();
+                bNeedsTessSync = true;
+            }
+
             Component::refresh();
 
             if (m_style.isDisplay(StyleDisplay::None))
@@ -1406,7 +1432,7 @@ namespace Chicane
             );
             const float scale = std::max(m_viewBox.size.x, m_viewBox.size.y) * std::min(fit.x, fit.y);
 
-            if (size == m_syncedSize && origin == m_syncedPosition && scale == m_syncedScale)
+            if (!bNeedsTessSync && size == m_syncedSize && origin == m_syncedPosition && scale == m_syncedScale)
             {
                 return;
             }
@@ -1544,7 +1570,7 @@ namespace Chicane
                 static_cast<int>(current.a)
             );
 
-            if (!m_shapes.empty() && signature.equals(m_signature))
+            if (signature.equals(m_signature))
             {
                 return;
             }
