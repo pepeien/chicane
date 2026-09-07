@@ -13,7 +13,10 @@
         "members": [
             {
                 "accessor": "public",
-                "modifiers": [],
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
                 "type": {
                     "prefix": "",
                     "name": "float",
@@ -21,47 +24,50 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "x",
-                "description": "CHICANE_GRID_SVGVIEWBOX_X_DESCRIPTION"
+                "name": "DEFAULT_WIDTH",
+                "description": "CHICANE_GRID_SVGVIEWBOX_DEFAULT_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_HEIGHT",
+                "description": "CHICANE_GRID_SVGVIEWBOX_DEFAULT_HEIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Vec2",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "y",
-                "description": "CHICANE_GRID_SVGVIEWBOX_Y_DESCRIPTION"
+                "name": "origin",
+                "description": "CHICANE_GRID_SVGVIEWBOX_ORIGIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Vec2",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "width",
-                "description": "CHICANE_GRID_SVGVIEWBOX_WIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "height",
-                "description": "CHICANE_GRID_SVGVIEWBOX_HEIGHT_DESCRIPTION"
+                "name": "size",
+                "description": "CHICANE_GRID_SVGVIEWBOX_SIZE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_SVGVIEWBOX_DESCRIPTION"

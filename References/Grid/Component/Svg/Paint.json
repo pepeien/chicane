@@ -123,6 +123,102 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "PAINT_INHERIT",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_INHERIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PAINT_NONE",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_NONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PAINT_TRANSPARENT",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_TRANSPARENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PAINT_CURRENT",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_CURRENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PAINT_CURRENT_ALT",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_CURRENT_ALT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PAINT_URL_PREFIX",
+                "description": "CHICANE_GRID_SVGPAINT_PAINT_URL_PREFIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "FILL_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_SVGPAINT_FILL_ATTRIBUTE_NAME_DESCRIPTION"
             },

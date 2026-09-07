@@ -186,11 +186,11 @@
                 "return": {
                     "prefix": "",
                     "name": "Vec2",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "operator+",
+                "name": "operator+=",
                 "parameters": [
                     {
                         "type": {
@@ -206,7 +206,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_VEC2_OPERATOR+_DESCRIPTION"
+                "description": "CHICANE_VEC2_OPERATOR+=_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -242,11 +242,11 @@
                 "return": {
                     "prefix": "",
                     "name": "Vec2",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "operator-",
+                "name": "operator-=",
                 "parameters": [
                     {
                         "type": {
@@ -262,7 +262,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_VEC2_OPERATOR-_DESCRIPTION"
+                "description": "CHICANE_VEC2_OPERATOR-=_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -319,34 +319,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_VEC2_OPERATOR*=_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "operator*",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "T",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inScalar"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_VEC2_OPERATOR*_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -541,7 +513,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const ",
+                            "prefix": "",
                             "name": "Vec2",
                             "suffix": "",
                             "path": "Core/Math/Vec/Vec2",

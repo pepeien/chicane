@@ -1101,8 +1101,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bResizable",
-                "description": "CHICANE_GRID_DOCKPANEL_M_BRESIZABLE_DESCRIPTION"
+                "name": "m_bIsResizable",
+                "description": "CHICANE_GRID_DOCKPANEL_M_BISRESIZABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1114,8 +1114,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bGrabbable",
-                "description": "CHICANE_GRID_DOCKPANEL_M_BGRABBABLE_DESCRIPTION"
+                "name": "m_bIsGrabbable",
+                "description": "CHICANE_GRID_DOCKPANEL_M_BISGRABBABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",

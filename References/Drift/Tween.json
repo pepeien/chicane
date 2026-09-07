@@ -852,8 +852,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bFinished",
-                "description": "CHICANE_DRIFT_TWEEN_M_BFINISHED_DESCRIPTION"
+                "name": "m_bIsFinished",
+                "description": "CHICANE_DRIFT_TWEEN_M_BISFINISHED_DESCRIPTION"
             },
             {
                 "accessor": "private",

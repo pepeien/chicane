@@ -103,7 +103,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInValue"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],

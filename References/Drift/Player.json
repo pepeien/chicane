@@ -759,8 +759,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bFillBackwards",
-                "description": "CHICANE_DRIFT_PLAYER_M_BFILLBACKWARDS_DESCRIPTION"
+                "name": "m_bShouldFillBackwards",
+                "description": "CHICANE_DRIFT_PLAYER_M_BSHOULDFILLBACKWARDS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -772,8 +772,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bFillForwards",
-                "description": "CHICANE_DRIFT_PLAYER_M_BFILLFORWARDS_DESCRIPTION"
+                "name": "m_bShouldFillForwards",
+                "description": "CHICANE_DRIFT_PLAYER_M_BSHOULDFILLFORWARDS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -785,8 +785,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bFinished",
-                "description": "CHICANE_DRIFT_PLAYER_M_BFINISHED_DESCRIPTION"
+                "name": "m_bIsFinished",
+                "description": "CHICANE_DRIFT_PLAYER_M_BISFINISHED_DESCRIPTION"
             },
             {
                 "accessor": "private",

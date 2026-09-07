@@ -792,7 +792,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inPresentToWindow"
+                        "name": "inShouldPresentToWindow"
                     }
                 ],
                 "modifiers": [

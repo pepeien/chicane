@@ -711,7 +711,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInvalidateSubtree"
+                        "name": "bShouldInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -747,7 +747,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInvalidateSubtree"
+                        "name": "bShouldInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -783,7 +783,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInvalidateSubtree"
+                        "name": "bShouldInvalidateSubtree"
                     }
                 ],
                 "modifiers": [],
@@ -4391,8 +4391,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bOwnsStyle",
-                "description": "CHICANE_GRID_COMPONENT_M_BOWNSSTYLE_DESCRIPTION"
+                "name": "m_bHasOwnStyle",
+                "description": "CHICANE_GRID_COMPONENT_M_BHASOWNSTYLE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4573,26 +4573,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Vec2",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "m_layoutParentWidth",
-                "description": "CHICANE_GRID_COMPONENT_M_LAYOUTPARENTWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_layoutParentHeight",
-                "description": "CHICANE_GRID_COMPONENT_M_LAYOUTPARENTHEIGHT_DESCRIPTION"
+                "name": "m_layoutParentSize",
+                "description": "CHICANE_GRID_COMPONENT_M_LAYOUTPARENTSIZE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4716,8 +4703,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bSkipForDirective",
-                "description": "CHICANE_GRID_COMPONENT_M_BSKIPFORDIRECTIVE_DESCRIPTION"
+                "name": "m_bShouldSkipForDirective",
+                "description": "CHICANE_GRID_COMPONENT_M_BSHOULDSKIPFORDIRECTIVE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4807,8 +4794,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bLaidOutThisFrame",
-                "description": "CHICANE_GRID_COMPONENT_M_BLAIDOUTTHISFRAME_DESCRIPTION"
+                "name": "m_bIsLaidOutThisFrame",
+                "description": "CHICANE_GRID_COMPONENT_M_BISLAIDOUTTHISFRAME_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4820,8 +4807,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bInsetsApplied",
-                "description": "CHICANE_GRID_COMPONENT_M_BINSETSAPPLIED_DESCRIPTION"
+                "name": "m_bHasInsetsApplied",
+                "description": "CHICANE_GRID_COMPONENT_M_BHASINSETSAPPLIED_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4833,8 +4820,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bClassHasBinding",
-                "description": "CHICANE_GRID_COMPONENT_M_BCLASSHASBINDING_DESCRIPTION"
+                "name": "m_bHasClassBinding",
+                "description": "CHICANE_GRID_COMPONENT_M_BHASCLASSBINDING_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4846,8 +4833,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bStyleHasBinding",
-                "description": "CHICANE_GRID_COMPONENT_M_BSTYLEHASBINDING_DESCRIPTION"
+                "name": "m_bHasStyleBinding",
+                "description": "CHICANE_GRID_COMPONENT_M_BHASSTYLEBINDING_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4898,8 +4885,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bDrawCacheValid",
-                "description": "CHICANE_GRID_COMPONENT_M_BDRAWCACHEVALID_DESCRIPTION"
+                "name": "m_bIsDrawCacheValid",
+                "description": "CHICANE_GRID_COMPONENT_M_BISDRAWCACHEVALID_DESCRIPTION"
             },
             {
                 "accessor": "protected",

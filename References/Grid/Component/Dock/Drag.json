@@ -60,8 +60,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bActive",
-                "description": "CHICANE_GRID_DOCKDRAG_BACTIVE_DESCRIPTION"
+                "name": "bIsActive",
+                "description": "CHICANE_GRID_DOCKDRAG_BISACTIVE_DESCRIPTION"
             },
             {
                 "accessor": "public",

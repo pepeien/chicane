@@ -1015,8 +1015,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bTimestampsEnabled",
-                "description": "CHICANE_RENDERER_VULKANBACKEND_M_BTIMESTAMPSENABLED_DESCRIPTION"
+                "name": "m_bIsTimestampsEnabled",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_BISTIMESTAMPSENABLED_DESCRIPTION"
             },
             {
                 "accessor": "private",

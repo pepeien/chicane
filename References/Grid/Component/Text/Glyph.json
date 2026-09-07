@@ -97,23 +97,13 @@
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
                             "templates": []
                         },
-                        "name": "inPenX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inLineTop"
+                        "name": "inRelative"
                     },
                     {
                         "type": {
@@ -150,35 +140,18 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "getRelativeX",
+                "name": "getRelative",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_TEXTGLYPH_GETRELATIVEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getRelativeY",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_TEXTGLYPH_GETRELATIVEY_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTGLYPH_GETRELATIVE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -334,26 +307,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Vec2",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "m_relativeX",
-                "description": "CHICANE_GRID_TEXTGLYPH_M_RELATIVEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_relativeY",
-                "description": "CHICANE_GRID_TEXTGLYPH_M_RELATIVEY_DESCRIPTION"
+                "name": "m_relative",
+                "description": "CHICANE_GRID_TEXTGLYPH_M_RELATIVE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_TEXTGLYPH_DESCRIPTION"

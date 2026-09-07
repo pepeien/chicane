@@ -24,23 +24,7 @@
                 "description": "CHICANE_BOX_PREVIEWSERVICE_PREVIEWSERVICE_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~PreviewService",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_PREVIEWSERVICE_~PREVIEWSERVICE_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -137,25 +121,39 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "start",
-                "parameters": [],
+                "name": "finish",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::unique_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "AssetPreview",
+                                    "suffix": "",
+                                    "path": "Box/Asset/Preview",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inPreview"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_PREVIEWSERVICE_START_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "loop",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_PREVIEWSERVICE_LOOP_DESCRIPTION"
+                "description": "CHICANE_BOX_PREVIEWSERVICE_FINISH_DESCRIPTION"
             }
         ],
         "members": [
@@ -171,40 +169,6 @@
                 },
                 "name": "m_mutex",
                 "description": "CHICANE_BOX_PREVIEWSERVICE_M_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::condition_variable",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_readySignal",
-                "description": "CHICANE_BOX_PREVIEWSERVICE_M_READYSIGNAL_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::queue",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "FileSystem::Path",
-                            "suffix": "",
-                            "path": "Core/FileSystem/Path",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_pending",
-                "description": "CHICANE_BOX_PREVIEWSERVICE_M_PENDING_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -255,32 +219,6 @@
                 },
                 "name": "m_ready",
                 "description": "CHICANE_BOX_PREVIEWSERVICE_M_READY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::thread",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_worker",
-                "description": "CHICANE_BOX_PREVIEWSERVICE_M_WORKER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bRunning",
-                "description": "CHICANE_BOX_PREVIEWSERVICE_M_BRUNNING_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_PREVIEWSERVICE_DESCRIPTION"

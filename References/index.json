@@ -2373,6 +2373,22 @@
                 ]
             },
             {
+                "title": "Worker",
+                "filename": "Worker",
+                "path": "Core/Worker",
+                "source": {
+                    "header": "Includes/Chicane/Core/Worker.hpp",
+                    "namespace": "Chicane::Worker",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": []
+                },
+                "children": []
+            },
+            {
                 "title": "Xml",
                 "filename": "Xml",
                 "path": "Core/Xml",

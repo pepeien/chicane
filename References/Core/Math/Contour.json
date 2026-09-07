@@ -5,7 +5,53 @@
     "source": {
         "header": "Includes/Chicane/Core/Math/Contour.hpp",
         "namespace": "Chicane::Contour",
-        "types": [],
+        "types": [
+            {
+                "name": "Point",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_CONTOUR_POINT_DESCRIPTION"
+            },
+            {
+                "name": "Points",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Point",
+                            "suffix": "",
+                            "path": "Core/Math/Contour",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_CONTOUR_POINTS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -56,7 +102,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInEvenOdd"
+                        "name": "bInIsEvenOdd"
                     }
                 ],
                 "modifiers": [],
@@ -98,6 +144,166 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MIN_LENGTH",
+                "description": "CHICANE_CONTOUR_MIN_LENGTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SNAP_RELATIVE",
+                "description": "CHICANE_CONTOUR_SNAP_RELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CONVEX_AREA_RELATIVE",
+                "description": "CHICANE_CONTOUR_CONVEX_AREA_RELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEGENERATE_AREA_RELATIVE",
+                "description": "CHICANE_CONTOUR_DEGENERATE_AREA_RELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TESS_EXTENT",
+                "description": "CHICANE_CONTOUR_TESS_EXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MIN_POLYGON_VERTICES",
+                "description": "CHICANE_CONTOUR_MIN_POLYGON_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_FAN_VERTICES",
+                "description": "CHICANE_CONTOUR_MAX_FAN_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TESS_POLYGON_SIZE",
+                "description": "CHICANE_CONTOUR_TESS_POLYGON_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TESS_VERTEX_SIZE",
+                "description": "CHICANE_CONTOUR_TESS_VERTEX_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TESS_NORMAL",
+                "description": "CHICANE_CONTOUR_TESS_NORMAL_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],

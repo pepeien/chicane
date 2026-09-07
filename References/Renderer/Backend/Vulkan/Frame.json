@@ -142,7 +142,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInPresentToWindow"
+                        "name": "bInShouldPresentToWindow"
                     }
                 ],
                 "modifiers": [],

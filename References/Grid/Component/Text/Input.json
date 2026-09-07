@@ -338,8 +338,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bEdited",
-                "description": "CHICANE_GRID_TEXTINPUT_M_BEDITED_DESCRIPTION"
+                "name": "m_bIsEdited",
+                "description": "CHICANE_GRID_TEXTINPUT_M_BISEDITED_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -351,8 +351,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bReplaceOnInput",
-                "description": "CHICANE_GRID_TEXTINPUT_M_BREPLACEONINPUT_DESCRIPTION"
+                "name": "m_bShouldReplaceOnInput",
+                "description": "CHICANE_GRID_TEXTINPUT_M_BSHOULDREPLACEONINPUT_DESCRIPTION"
             },
             {
                 "accessor": "private",

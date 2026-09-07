@@ -566,6 +566,38 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "OPEN_TAG",
+                "description": "CHICANE_BOX_ASSETPREVIEW_OPEN_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLOSE_TAG",
+                "description": "CHICANE_BOX_ASSETPREVIEW_CLOSE_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TYPE_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_ASSETPREVIEW_TYPE_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -664,6 +696,694 @@
                 },
                 "name": "CACHE_LIMIT",
                 "description": "CHICANE_BOX_ASSETPREVIEW_CACHE_LIMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "BACKGROUND_COLOR",
+                "description": "CHICANE_BOX_ASSETPREVIEW_BACKGROUND_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "FOREGROUND_COLOR",
+                "description": "CHICANE_BOX_ASSETPREVIEW_FOREGROUND_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "CLAY_COLOR",
+                "description": "CHICANE_BOX_ASSETPREVIEW_CLAY_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "AXIS_COLOR",
+                "description": "CHICANE_BOX_ASSETPREVIEW_AXIS_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "VIEW_DIRECTION",
+                "description": "CHICANE_BOX_ASSETPREVIEW_VIEW_DIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "LIGHT_DIRECTION",
+                "description": "CHICANE_BOX_ASSETPREVIEW_LIGHT_DIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GEOMETRY_FIT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_GEOMETRY_FIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GLYPH_FIT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_GLYPH_FIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAVEFORM_HEIGHT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAVEFORM_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHADE_MIN",
+                "description": "CHICANE_BOX_ASSETPREVIEW_SHADE_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHADE_RANGE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_SHADE_RANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPACE_ADVANCE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_SPACE_ADVANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PIXEL_CENTER",
+                "description": "CHICANE_BOX_ASSETPREVIEW_PIXEL_CENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HALF",
+                "description": "CHICANE_BOX_ASSETPREVIEW_HALF_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CHANNEL_MAX",
+                "description": "CHICANE_BOX_ASSETPREVIEW_CHANNEL_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AREA_EPSILON",
+                "description": "CHICANE_BOX_ASSETPREVIEW_AREA_EPSILON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NORMAL_EPSILON",
+                "description": "CHICANE_BOX_ASSETPREVIEW_NORMAL_EPSILON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENT_EPSILON",
+                "description": "CHICANE_BOX_ASSETPREVIEW_EXTENT_EPSILON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAVEFORM_MARGIN",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAVEFORM_MARGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FONT_FALLBACK_COUNT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_FONT_FALLBACK_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PREVIEW_EXTRACT_LIMIT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_PREVIEW_EXTRACT_LIMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PREVIEW_EXTRACT_CHUNK",
+                "description": "CHICANE_BOX_ASSETPREVIEW_PREVIEW_EXTRACT_CHUNK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PNG_HEADER_SIZE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_PNG_HEADER_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "unsigned char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PNG_SIGNATURE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_PNG_SIGNATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_HEADER_SIZE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_HEADER_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_CHUNK_HEADER_SIZE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_CHUNK_HEADER_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_CHUNK_SIZE_OFFSET",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_CHUNK_SIZE_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_FMT_MIN_SIZE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_FMT_MIN_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_FMT_CHANNELS_OFFSET",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_FMT_CHANNELS_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_FMT_BITS_OFFSET",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_FMT_BITS_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_FORMAT_PCM",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_FORMAT_PCM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_FORMAT_FLOAT",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_FORMAT_FLOAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_BITS_PER_BYTE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_BITS_PER_BYTE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_BITS_8",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_BITS_8_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_BITS_16",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_BITS_16_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_BITS_24",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_BITS_24_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_BITS_32",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_BITS_32_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM8_BIAS",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM8_BIAS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM16_SCALE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM16_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM24_SCALE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM24_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM32_SCALE",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM32_SCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM24_SIGN",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM24_SIGN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WAV_PCM24_EXTEND",
+                "description": "CHICANE_BOX_ASSETPREVIEW_WAV_PCM24_EXTEND_DESCRIPTION"
             },
             {
                 "accessor": "public",

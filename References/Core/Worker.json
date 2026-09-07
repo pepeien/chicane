@@ -1,0 +1,230 @@
+{
+    "title": "Worker",
+    "filename": "Worker",
+    "path": "Core/Worker",
+    "source": {
+        "header": "Includes/Chicane/Core/Worker.hpp",
+        "namespace": "Chicane::Worker",
+        "types": [
+            {
+                "name": "Job",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WORKER_JOB_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Worker",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKER_WORKER_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Worker",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKER_~WORKER_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Worker",
+                    "suffix": "&",
+                    "path": "Core/Worker",
+                    "templates": []
+                },
+                "name": "instance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WORKER_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "submit",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WORKER_SUBMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enqueue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WORKER_ENQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKER_LOOP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_WORKER_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::condition_variable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_signal",
+                "description": "CHICANE_WORKER_M_SIGNAL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_pending",
+                "description": "CHICANE_WORKER_M_PENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_thread",
+                "description": "CHICANE_WORKER_M_THREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsRunning",
+                "description": "CHICANE_WORKER_M_BISRUNNING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_WORKER_DESCRIPTION"
+    },
+    "children": []
+}
