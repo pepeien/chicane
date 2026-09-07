@@ -45,8 +45,18 @@ namespace Chicane
 
         void DockPanel::setSide(DockSide inSide)
         {
+            if (m_side == inSide)
+            {
+                return;
+            }
+
             m_side                            = inSide;
             m_attributes[SIDE_ATTRIBUTE_NAME] = toSideString(inSide);
+
+            if (m_parent)
+            {
+                m_parent->markLayoutDirty();
+            }
         }
 
         bool DockPanel::isFill() const
@@ -132,12 +142,33 @@ namespace Chicane
 
         void DockPanel::setExtent(float inValue)
         {
-            m_extent = std::max(0.0f, inValue);
+            const float extent = std::max(0.0f, inValue);
+            if (m_extent == extent)
+            {
+                return;
+            }
+
+            m_extent = extent;
+
+            if (m_parent)
+            {
+                m_parent->markLayoutDirty();
+            }
         }
 
         void DockPanel::clearExtent()
         {
+            if (m_extent < 0.0f)
+            {
+                return;
+            }
+
             m_extent = -1.0f;
+
+            if (m_parent)
+            {
+                m_parent->markLayoutDirty();
+            }
         }
 
         const Vec2& DockPanel::getFloatPosition() const
@@ -147,7 +178,17 @@ namespace Chicane
 
         void DockPanel::setFloatPosition(const Vec2& inValue)
         {
+            if (m_floatPosition.x == inValue.x && m_floatPosition.y == inValue.y)
+            {
+                return;
+            }
+
             m_floatPosition = inValue;
+
+            if (m_parent)
+            {
+                m_parent->markLayoutDirty();
+            }
         }
 
         const Vec2& DockPanel::getFloatSize() const
@@ -157,8 +198,18 @@ namespace Chicane
 
         void DockPanel::setFloatSize(const Vec2& inValue)
         {
-            m_floatSize.x = std::max(0.0f, inValue.x);
-            m_floatSize.y = std::max(0.0f, inValue.y);
+            const Vec2 size(std::max(0.0f, inValue.x), std::max(0.0f, inValue.y));
+            if (m_floatSize.x == size.x && m_floatSize.y == size.y)
+            {
+                return;
+            }
+
+            m_floatSize = size;
+
+            if (m_parent)
+            {
+                m_parent->markLayoutDirty();
+            }
         }
 
         DockHandle* DockPanel::getHandle() const

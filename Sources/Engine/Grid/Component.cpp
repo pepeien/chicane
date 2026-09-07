@@ -116,6 +116,46 @@ namespace Chicane
             return inStyle.isDisplay(StyleDisplay::Flex) && inStyle.flex.wrap.get() == StyleFlexWrap::NoWrap;
         }
 
+        bool hasLayoutTween(const Drift::Animator& inAnimator)
+        {
+            static const std::vector<String> properties = {
+                Style::WIDTH_ATTRIBUTE_NAME,
+                Style::HEIGHT_ATTRIBUTE_NAME,
+                Style::MIN_WIDTH_ATTRIBUTE_NAME,
+                Style::MIN_HEIGHT_ATTRIBUTE_NAME,
+                Style::MAX_WIDTH_ATTRIBUTE_NAME,
+                Style::MAX_HEIGHT_ATTRIBUTE_NAME,
+                Style::FONT_SIZE_ATTRIBUTE_NAME,
+                Style::LETTER_SPACING_ATTRIBUTE_NAME,
+                Style::MARGIN_TOP_ATTRIBUTE_NAME,
+                Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                Style::MARGIN_LEFT_ATTRIBUTE_NAME,
+                Style::MARGIN_RIGHT_ATTRIBUTE_NAME,
+                Style::PADDING_TOP_ATTRIBUTE_NAME,
+                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                Style::PADDING_RIGHT_ATTRIBUTE_NAME,
+                Style::BORDER_TOP_WIDTH_ATTRIBUTE_NAME,
+                Style::BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME,
+                Style::BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME,
+                Style::BORDER_LEFT_WIDTH_ATTRIBUTE_NAME,
+                Style::GAP_TOP_ATTRIBUTE_NAME,
+                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                Style::GAP_LEFT_ATTRIBUTE_NAME,
+                Style::GAP_RIGHT_ATTRIBUTE_NAME
+            };
+
+            for (const String& name : properties)
+            {
+                if (inAnimator.hasTween(name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         Vec2 innerLayoutSize(const Component* inBox)
         {
             if (!inBox)
@@ -1244,9 +1284,25 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsAnimating  = !m_animator.isIdle();
-            const bool bIsAbsolute   = m_style.isPosition(StylePosition::Absolute);
-            const bool bIsFlowLocked = hasParent() && !isRoot() && !bIsParentLaidOut && !bIsAbsolute;
+            const bool bIsAnimating    = !m_animator.isIdle();
+            const bool bIsAbsolute     = m_style.isPosition(StylePosition::Absolute);
+            const bool bIsFlowLocked   = hasParent() && !isRoot() && !bIsParentLaidOut && !bIsAbsolute;
+            const bool bHadLayoutTween = hasLayoutTween(m_animator);
+
+            if (bIsAnimating || bHasStyleRefreshed || !m_bIsAnimationReady)
+            {
+                tickAnimation(m_style, m_animationDelta);
+
+                if (!m_animator.isIdle())
+                {
+                    invalidateDrawCacheSubtree();
+                }
+            }
+
+            if (bHadLayoutTween || hasLayoutTween(m_animator))
+            {
+                m_bIsLayoutDirty = true;
+            }
 
             if (m_bIsLayoutDirty && bIsFlowLocked)
             {
@@ -1296,16 +1352,6 @@ namespace Chicane
             {
                 m_style.transform.refresh();
                 invalidateDrawCache();
-            }
-
-            if (bIsAnimating || bHasStyleRefreshed || m_bIsLaidOutThisFrame || !m_bIsAnimationReady)
-            {
-                tickAnimation(m_style, m_animationDelta);
-
-                if (!m_animator.isIdle())
-                {
-                    invalidateDrawCacheSubtree();
-                }
             }
 
             onRefresh();

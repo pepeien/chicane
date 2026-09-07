@@ -1,7 +1,7 @@
 <Container class="attributes">
     <DockHeader id="attributesHeader" label="Attributes" />
     <Container dir:if="{{ bIsItemSelected }}" class="attributes__content">
-        <OutlinerTab class="attributes__transforms" label="Transform">
+        <AttributesTab class="attributes__transforms" label="Transform">
             <Container class="attributes__transform">
                 <Container class="attributes__transform__label">
                     <Text>Translation</Text>
@@ -20,6 +20,6 @@
                 </Container>
                 <Vec3 value="{{ selectedItem.scale }}" />
             </Container>
-        </OutlinerTab>
+        </AttributesTab>
     </Container>
 </Container>

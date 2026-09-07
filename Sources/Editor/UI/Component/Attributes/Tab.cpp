@@ -1,29 +1,29 @@
-#include "Editor/UI/Component/Outliner/Tab.reflected.hpp"
+#include "Editor/UI/Component/Attributes/Tab.reflected.hpp"
 
 namespace Editor
 {
-    OutlinerTab::OutlinerTab(const pugi::xml_node& inNode)
+    AttributesTab::AttributesTab(const pugi::xml_node& inNode)
         : Chicane::Grid::Component(inNode),
           contentVisibility("hidden"),
           label(Chicane::String::empty())
     {
-        load("Assets/Editor/UI/Components/Outliner/Tab.grid", "Assets/Editor/UI/Components/Outliner/Tab.decal");
+        load("Assets/Editor/UI/Components/Attributes/Tab.grid", "Assets/Editor/UI/Components/Attributes/Tab.decal");
     }
 
-    void OutlinerTab::onTick(float inDeltaTime)
+    void AttributesTab::onTick(float inDeltaTime)
     {
         Chicane::Grid::Component::onTick(inDeltaTime);
 
         refreshLabel();
     }
 
-    void OutlinerTab::onDropdownClick()
+    void AttributesTab::onDropdownClick()
     {
         contentVisibility =
             contentVisibility.equals(VISILITY_STATUS_VISIBLE) ? VISILITY_STATUS_HIDDEN : VISILITY_STATUS_VISIBLE;
     }
 
-    void OutlinerTab::refreshLabel()
+    void AttributesTab::refreshLabel()
     {
         label = parseText(getAttribute(LABEL_ATTRIBUTE_NAME)).trim();
     }

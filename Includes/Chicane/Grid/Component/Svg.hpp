@@ -57,34 +57,30 @@ namespace Chicane
             static constexpr inline const char* DISPLAY_NONE              = "none";
             static constexpr inline const char* VISIBILITY_HIDDEN         = "hidden";
 
-            static constexpr const char*        TRANSFORM_MATRIX    = "matrix";
-            static constexpr const char*        TRANSFORM_TRANSLATE = "translate";
-            static constexpr const char*        TRANSFORM_SCALE     = "scale";
-            static constexpr const char*        TRANSFORM_ROTATE    = "rotate";
-            static constexpr const char*        TRANSFORM_SKEW_X    = "skewx";
-            static constexpr const char*        TRANSFORM_SKEW_Y    = "skewy";
+            static constexpr inline const char* TRANSFORM_MATRIX    = "matrix";
+            static constexpr inline const char* TRANSFORM_TRANSLATE = "translate";
+            static constexpr inline const char* TRANSFORM_SCALE     = "scale";
+            static constexpr inline const char* TRANSFORM_ROTATE    = "rotate";
+            static constexpr inline const char* TRANSFORM_SKEW_X    = "skewx";
+            static constexpr inline const char* TRANSFORM_SKEW_Y    = "skewy";
 
             // Values
             static constexpr inline float       UNSYNCED_SCALE          = -1.0f;
             static constexpr inline int         NAMESPACE_PREFIX_LENGTH = 3;
 
-            static constexpr int                BEZIER_SEGMENTS           = 8;
-            static constexpr int                MATRIX_PARAM_COUNT        = 6;
-            static constexpr int                ROTATE_ORIGIN_PARAM_COUNT = 3;
-            static constexpr int                MIN_CONTOUR_POINTS        = 2;
-            static constexpr int                MIN_CLOSED_POINTS         = 3;
-            static constexpr float              MIN_LENGTH                = 1.0e-5f;
-            static constexpr float              KAPPA                     = 0.5522847498f;
-            static constexpr float              HALF                      = 0.5f;
-            static constexpr float              PI                        = static_cast<float>(M_PI);
-            static constexpr float              TWO_PI                    = PI * 2.0f;
-            static constexpr float              HALF_PI                   = PI * HALF;
-            static constexpr float              DEG_TO_RAD                = PI / 180.0f;
-            static constexpr float              CHANNEL_MAX               = 255.0f;
-            static constexpr float              CONTROL_REFLECT           = 2.0f;
-            static constexpr float              ARC_CUBIC_OFFSET          = 4.0f;
-            static constexpr float              ARC_CUBIC_SCALE           = 3.0f;
-            static constexpr float              HOMOGENEOUS               = 1.0f;
+            static constexpr inline int         BEZIER_SEGMENTS           = 8;
+            static constexpr inline int         MATRIX_PARAM_COUNT        = 6;
+            static constexpr inline int         ROTATE_ORIGIN_PARAM_COUNT = 3;
+            static constexpr inline int         MIN_CONTOUR_POINTS        = 2;
+            static constexpr inline int         MIN_CLOSED_POINTS         = 3;
+            static constexpr inline float       MIN_LENGTH                = 1.0e-5f;
+            static constexpr inline float       KAPPA                     = 0.5522847498f;
+            static constexpr inline float       HALF                      = 0.5f;
+            static constexpr inline float       CHANNEL_MAX               = 255.0f;
+            static constexpr inline float       CONTROL_REFLECT           = 2.0f;
+            static constexpr inline float       ARC_CUBIC_OFFSET          = 4.0f;
+            static constexpr inline float       ARC_CUBIC_SCALE           = 3.0f;
+            static constexpr inline float       HOMOGENEOUS               = 1.0f;
 
         public:
             CH_CONSTRUCTOR()

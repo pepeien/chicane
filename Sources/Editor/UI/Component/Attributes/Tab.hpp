@@ -7,7 +7,7 @@
 namespace Editor
 {
     CH_TYPE(Manual)
-    class OutlinerTab : public Chicane::Grid::Component
+    class AttributesTab : public Chicane::Grid::Component
     {
     public:
         // Attributes
@@ -19,7 +19,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        OutlinerTab(const pugi::xml_node& inNode);
+        AttributesTab(const pugi::xml_node& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

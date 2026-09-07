@@ -30,11 +30,16 @@
 
 namespace Chicane
 {
+    static constexpr inline float PI         = static_cast<float>(M_PI);
+    static constexpr inline float TWO_PI     = PI * 2.0f;
+    static constexpr inline float HALF_PI    = PI * 0.5f;
+    static constexpr inline float DEG_TO_RAD = PI / 180.0f;
+
     namespace Grid
     {
         float degreesToRadians(float inDegrees)
         {
-            return inDegrees * Svg::DEG_TO_RAD;
+            return inDegrees * DEG_TO_RAD;
         }
 
         Vec2 reflectControl(const Vec2& inCurrent, const Vec2& inLast)
@@ -520,15 +525,15 @@ namespace Chicane
 
             if (!inIsSweep && dTheta > 0.0f)
             {
-                dTheta -= Svg::TWO_PI;
+                dTheta -= TWO_PI;
             }
 
             if (inIsSweep && dTheta < 0.0f)
             {
-                dTheta += Svg::TWO_PI;
+                dTheta += TWO_PI;
             }
 
-            const int   segments = std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / Svg::HALF_PI)));
+            const int   segments = std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / HALF_PI)));
             const float deltaT   = dTheta / static_cast<float>(segments);
 
             for (int i = 0; i < segments; i++)
@@ -988,20 +993,14 @@ namespace Chicane
         {
             static Primitive empty;
 
-            const std::string key = makeGeometryKey("fill", inContours, inPaint, inView).toStandard();
+            const std::string key  = makeGeometryKey("fill", inContours, inPaint, inView).toStandard();
             SvgTessellation&  tess = SvgTessellation::instance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
             }
 
-            tess.request(
-                key,
-                [inContours, inPaint, inView]()
-                {
-                    return buildFill(inContours, inPaint, inView);
-                }
-            );
+            tess.request(key, [inContours, inPaint, inView]() { return buildFill(inContours, inPaint, inView); });
 
             return empty;
         }
@@ -1101,9 +1100,9 @@ namespace Chicane
 
                 for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
                 {
-                    const float angle = Svg::PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                    const float angle = PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
                     const Vec2  curr  = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
-                                      scaleVec(inOutbound, std::sin(angle) * half);
+                                        scaleVec(inOutbound, std::sin(angle) * half);
 
                     emitTriangle(inCenter, prev, curr);
 
@@ -1157,17 +1156,17 @@ namespace Chicane
                 float start = std::atan2(from.y, from.x);
                 float delta = std::atan2(to.y, to.x) - start;
 
-                while (delta > Svg::PI)
+                while (delta > PI)
                 {
-                    delta -= Svg::TWO_PI;
+                    delta -= TWO_PI;
                 }
 
-                while (delta < -Svg::PI)
+                while (delta < -PI)
                 {
-                    delta += Svg::TWO_PI;
+                    delta += TWO_PI;
                 }
 
-                const float stepSize = Svg::PI / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
+                const float stepSize = PI / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
                 const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
                 Vec2        prev     = fromP;
 
@@ -1335,20 +1334,14 @@ namespace Chicane
         {
             static Primitive empty;
 
-            const std::string key = makeGeometryKey("stroke", inContours, inPaint, inView).toStandard();
+            const std::string key  = makeGeometryKey("stroke", inContours, inPaint, inView).toStandard();
             SvgTessellation&  tess = SvgTessellation::instance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
             }
 
-            tess.request(
-                key,
-                [inContours, inPaint, inView]()
-                {
-                    return buildStroke(inContours, inPaint, inView);
-                }
-            );
+            tess.request(key, [inContours, inPaint, inView]() { return buildStroke(inContours, inPaint, inView); });
 
             return empty;
         }
@@ -1412,8 +1405,8 @@ namespace Chicane
             bool             bNeedsTessSync = tess.pump();
             if (bNeedsTessSync || m_tessVersion != tess.generation())
             {
-                m_tessVersion = tess.generation();
-                m_signature = String::empty();
+                m_tessVersion  = tess.generation();
+                m_signature    = String::empty();
                 bNeedsTessSync = true;
             }
 
