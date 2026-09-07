@@ -302,6 +302,44 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "parseExpression",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SizeDirection",
+                            "suffix": "",
+                            "path": "Core/Size/Direction",
+                            "templates": []
+                        },
+                        "name": "inDirection"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SIZE_PARSEEXPRESSION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "parseEM",
                 "parameters": [
                     {

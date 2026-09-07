@@ -171,6 +171,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_lastTransformRaw",
+                "description": "CHICANE_GRID_ANIMATABLE_M_LASTTRANSFORMRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_lastTranslateRaw",
+                "description": "CHICANE_GRID_ANIMATABLE_M_LASTTRANSLATERAW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",

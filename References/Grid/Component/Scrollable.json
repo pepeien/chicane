@@ -175,6 +175,40 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getScrollOffset",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SCROLLABLE_GETSCROLLOFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getScrollGeneration",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SCROLLABLE_GETSCROLLGENERATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -772,6 +806,19 @@
                 },
                 "name": "m_currentPosition",
                 "description": "CHICANE_GRID_SCROLLABLE_M_CURRENTPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_scrollGeneration",
+                "description": "CHICANE_GRID_SCROLLABLE_M_SCROLLGENERATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",

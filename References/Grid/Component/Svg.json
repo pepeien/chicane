@@ -94,6 +94,21 @@
                 "description": "CHICANE_GRID_SVG_GETCHILDRENFLAT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invalidateDrawCacheSubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -122,6 +137,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_SVG_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPosition",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_REFRESHPOSITION_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -298,6 +328,45 @@
                 },
                 "name": "m_signature",
                 "description": "CHICANE_GRID_SVG_M_SIGNATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_syncedSize",
+                "description": "CHICANE_GRID_SVG_M_SYNCEDSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "m_syncedPosition",
+                "description": "CHICANE_GRID_SVG_M_SYNCEDPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_syncedScale",
+                "description": "CHICANE_GRID_SVG_M_SYNCEDSCALE_DESCRIPTION"
             },
             {
                 "accessor": "private",

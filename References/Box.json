@@ -782,6 +782,50 @@
                     "inline"
                 ],
                 "description": "CHICANE_BOX_PEEK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetPreview",
+                            "suffix": "",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "decodePreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inUseStored"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_DECODEPREVIEW_DESCRIPTION"
             }
         ],
         "members": [],

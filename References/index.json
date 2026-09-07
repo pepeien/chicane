@@ -75,7 +75,40 @@
                             "functions": [],
                             "members": []
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "PreviewService",
+                                "filename": "Service",
+                                "path": "Box/Asset/Preview/Service",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Asset/Preview/Service.hpp",
+                                    "namespace": "Chicane::Box::PreviewService",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "PreviewUpload",
+                                "filename": "Upload",
+                                "path": "Box/Asset/Preview/Upload",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Asset/Preview/Upload.hpp",
+                                    "namespace": "Chicane::Box::PreviewUpload",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": []
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "AssetReference",
@@ -3620,6 +3653,22 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "StyleSize",
+                        "filename": "Size",
+                        "path": "Grid/Style/Size",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Size.hpp",
+                            "namespace": "Chicane::Grid::StyleSize",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": []
+                        },
+                        "children": []
                     },
                     {
                         "title": "StyleTransform",

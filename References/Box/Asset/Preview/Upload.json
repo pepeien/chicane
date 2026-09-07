@@ -1,0 +1,119 @@
+{
+    "title": "PreviewUpload",
+    "filename": "Upload",
+    "path": "Box/Asset/Preview/Upload",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Preview/Upload.hpp",
+        "namespace": "Chicane::Box::PreviewUpload",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enqueue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image::Instance",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_ENQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drain",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "PreviewUpload",
+                                    "suffix": "",
+                                    "path": "Box/Asset/Preview/Upload",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outPending"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_DRAIN_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "reference",
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_REFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Instance",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_IMAGE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_PREVIEWUPLOAD_DESCRIPTION"
+    },
+    "children": []
+}

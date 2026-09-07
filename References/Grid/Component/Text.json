@@ -73,6 +73,21 @@
                 "type": "override",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invalidateDrawCacheSubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -199,6 +214,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TEXT_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPosition",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESHPOSITION_DESCRIPTION"
             },
             {
                 "accessor": "private",

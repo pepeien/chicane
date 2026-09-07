@@ -1,0 +1,330 @@
+{
+    "title": "StyleSize",
+    "filename": "Size",
+    "path": "Grid/Style/Size",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Size.hpp",
+        "namespace": "Chicane::Grid::StyleSize",
+        "types": [
+            {
+                "name": "Parser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLESIZE_PARSER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLESIZE_STYLESIZE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLESIZE_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleRuleset::Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style/Ruleset",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValueName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inMinName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inMaxName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLESIZE_SETPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Parser",
+                            "suffix": "",
+                            "path": "Grid/Style/Size",
+                            "templates": []
+                        },
+                        "name": "inValueParser"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Parser",
+                            "suffix": "",
+                            "path": "Grid/Style/Size",
+                            "templates": []
+                        },
+                        "name": "inLimitParser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLESIZE_PARSEWITH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copyValue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleSize",
+                            "suffix": "&",
+                            "path": "Grid/Style/Size",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLESIZE_COPYVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isAuto",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLESIZE_ISAUTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasMin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLESIZE_HASMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasMax",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLESIZE_HASMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clamp",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLESIZE_CLAMP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "value",
+                "description": "CHICANE_GRID_STYLESIZE_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "min",
+                "description": "CHICANE_GRID_STYLESIZE_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "max",
+                "description": "CHICANE_GRID_STYLESIZE_MAX_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLESIZE_DESCRIPTION"
+    },
+    "children": []
+}
