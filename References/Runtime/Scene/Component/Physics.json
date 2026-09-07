@@ -595,6 +595,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_actorToBody",
+                "description": "CHICANE_CPHYSICS_M_ACTORTOBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",

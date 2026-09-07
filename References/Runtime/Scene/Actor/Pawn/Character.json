@@ -36,6 +36,78 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setMoveScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ACHARACTER_SETMOVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setMoveInput",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inForward"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inUp"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ACHARACTER_SETMOVEINPUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "move",
                 "parameters": [
                     {
@@ -177,13 +249,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "float",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "",
                     "templates": []
                 },
-                "name": "m_pendingMove",
-                "description": "CHICANE_ACHARACTER_M_PENDINGMOVE_DESCRIPTION"
+                "name": "m_moveScale",
+                "description": "CHICANE_ACHARACTER_M_MOVESCALE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -195,21 +267,34 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_pendingStep",
-                "description": "CHICANE_ACHARACTER_M_PENDINGSTEP_DESCRIPTION"
+                "name": "m_forwardInput",
+                "description": "CHICANE_ACHARACTER_M_FORWARDINPUT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "float",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "",
                     "templates": []
                 },
-                "name": "m_desiredMove",
-                "description": "CHICANE_ACHARACTER_M_DESIREDMOVE_DESCRIPTION"
+                "name": "m_rightInput",
+                "description": "CHICANE_ACHARACTER_M_RIGHTINPUT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_upInput",
+                "description": "CHICANE_ACHARACTER_M_UPINPUT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -221,8 +306,8 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "m_lastMoveTime",
-                "description": "CHICANE_ACHARACTER_M_LASTMOVETIME_DESCRIPTION"
+                "name": "m_lastInputTime",
+                "description": "CHICANE_ACHARACTER_M_LASTINPUTTIME_DESCRIPTION"
             },
             {
                 "accessor": "protected",

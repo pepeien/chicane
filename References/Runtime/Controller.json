@@ -320,6 +320,32 @@
                     {
                         "type": {
                             "prefix": "",
+                            "name": "Input::MouseWheelEventCallback",
+                            "suffix": "",
+                            "path": "Core/Input/Device",
+                            "templates": []
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_BINDEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
                             "name": "Input::KeyboardButton",
                             "suffix": "",
                             "path": "Core/Input/Keyboard/Button",
@@ -658,6 +684,32 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onMouseWheelEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_ONMOUSEWHEELEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onKeyboardButtonEvent",
                 "parameters": [
                     {
@@ -885,6 +937,27 @@
                 },
                 "name": "m_mouseButtonEvents",
                 "description": "CHICANE_CONTROLLER_M_MOUSEBUTTONEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Input::Events",
+                    "suffix": "",
+                    "path": "Core/Input/Event/Events",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Input::MouseWheelEvent",
+                            "suffix": "",
+                            "path": "Core/Input/Mouse/Wheel/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_mouseWheelEvents",
+                "description": "CHICANE_CONTROLLER_M_MOUSEWHEELEVENTS_DESCRIPTION"
             },
             {
                 "accessor": "private",

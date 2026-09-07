@@ -477,6 +477,16 @@
                             "templates": []
                         },
                         "name": "inBody"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInInterpolate"
                     }
                 ],
                 "modifiers": [
