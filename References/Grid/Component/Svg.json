@@ -1237,6 +1237,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_tessVersion",
+                "description": "CHICANE_GRID_SVG_M_TESSVERSION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",

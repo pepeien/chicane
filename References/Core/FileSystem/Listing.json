@@ -1,0 +1,44 @@
+{
+    "title": "Listing",
+    "filename": "Listing",
+    "path": "Core/FileSystem/Listing",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/Listing.hpp",
+        "namespace": "Chicane::FileSystem::Listing",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "path",
+                "description": "CHICANE_FILESYSTEM_LISTING_PATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Item::List",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Item",
+                    "templates": []
+                },
+                "name": "children",
+                "description": "CHICANE_FILESYSTEM_LISTING_CHILDREN_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FILESYSTEM_LISTING_DESCRIPTION"
+    },
+    "children": []
+}

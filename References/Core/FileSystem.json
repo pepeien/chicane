@@ -85,6 +85,66 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "requestLs",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inDir"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_REQUESTLS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pumpLs",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Listing",
+                                    "suffix": "",
+                                    "path": "Core/FileSystem/Listing",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outReady"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_PUMPLS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",

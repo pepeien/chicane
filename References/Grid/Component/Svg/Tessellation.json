@@ -1,0 +1,326 @@
+{
+    "title": "SvgTessellation",
+    "filename": "Tessellation",
+    "path": "Grid/Component/Svg/Tessellation",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Svg/Tessellation.hpp",
+        "namespace": "Chicane::Grid::SvgTessellation",
+        "types": [
+            {
+                "name": "Builder",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Primitive()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_SVGTESSELLATION_BUILDER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SvgTessellation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGTESSELLATION_SVGTESSELLATION_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SvgTessellation",
+                    "suffix": "&",
+                    "path": "Grid/Component/Svg/Tessellation",
+                    "templates": []
+                },
+                "name": "instance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_SVGTESSELLATION_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Primitive",
+                    "suffix": "*",
+                    "path": "Grid/Primitive",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SVGTESSELLATION_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "request",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Builder",
+                            "suffix": "",
+                            "path": "Grid/Component/Svg/Tessellation",
+                            "templates": []
+                        },
+                        "name": "inBuild"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGTESSELLATION_REQUEST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pump",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGTESSELLATION_PUMP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "generation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SVGTESSELLATION_GENERATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "finish",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inKey"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Primitive",
+                            "suffix": "",
+                            "path": "Grid/Primitive",
+                            "templates": []
+                        },
+                        "name": "inPrimitive"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVGTESSELLATION_FINISH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "key",
+                "description": "CHICANE_GRID_SVGTESSELLATION_READY_KEY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Primitive",
+                    "suffix": "",
+                    "path": "Grid/Primitive",
+                    "templates": []
+                },
+                "name": "primitive",
+                "description": "CHICANE_GRID_SVGTESSELLATION_READY_PRIMITIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_GRID_SVGTESSELLATION_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_set",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_inFlight",
+                "description": "CHICANE_GRID_SVGTESSELLATION_M_INFLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Ready",
+                            "suffix": "",
+                            "path": "Grid/Component/Svg/Tessellation",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_ready",
+                "description": "CHICANE_GRID_SVGTESSELLATION_M_READY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Primitive",
+                            "suffix": "",
+                            "path": "Grid/Primitive",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_cache",
+                "description": "CHICANE_GRID_SVGTESSELLATION_M_CACHE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_generation",
+                "description": "CHICANE_GRID_SVGTESSELLATION_M_GENERATION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SVGTESSELLATION_DESCRIPTION"
+    },
+    "children": []
+}

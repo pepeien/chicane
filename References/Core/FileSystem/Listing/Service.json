@@ -1,0 +1,203 @@
+{
+    "title": "ListingService",
+    "filename": "Service",
+    "path": "Core/FileSystem/Listing/Service",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/Listing/Service.hpp",
+        "namespace": "Chicane::FileSystem::ListingService",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ListingService",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_LISTINGSERVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ListingService",
+                    "suffix": "&",
+                    "path": "Core/FileSystem/Listing/Service",
+                    "templates": []
+                },
+                "name": "instance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enqueue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inDir"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_ENQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drain",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Listing",
+                                    "suffix": "",
+                                    "path": "Core/FileSystem/Listing",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outReady"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_DRAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "finish",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inDir"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Item::List",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item",
+                            "templates": []
+                        },
+                        "name": "inChildren"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_FINISH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_set",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_inFlight",
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_INFLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Listing",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Listing",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_ready",
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_READY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_DESCRIPTION"
+    },
+    "children": []
+}
