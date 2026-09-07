@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
+
+#include "Editor/Actor/Character/Navigation.hpp"
 
 namespace Editor
 {
@@ -16,27 +17,8 @@ namespace Editor
         void onLoad() override;
         void onControlAttachment() override;
 
-    public:
-        void look(float inX, float inY);
-
-    protected:
-        // Gamepad
-        void onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent);
-
-        // Mouse
-        void onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent);
-
-        // Keyboard
-        void onMoveForward();
-        void onMoveBackward();
-        void onMoveLeft();
-        void onMoveRight();
-        void onMoveUp();
-        void onMoveDown();
-
-        void onLook(float inX, float inY);
-
     private:
+        Navigation        m_navigation;
         Chicane::CCamera* m_camera;
     };
 }

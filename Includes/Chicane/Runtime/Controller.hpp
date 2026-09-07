@@ -13,6 +13,7 @@
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -60,6 +61,7 @@ namespace Chicane
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
         void bindEvent(Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback);
+        void bindEvent(Input::MouseWheelEventCallback inCallback);
 
         // Keyboard Events
         void bindEvent(Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback);
@@ -80,6 +82,7 @@ namespace Chicane
         // Mouse Events
         void onMouseMotionEvent(void* inEvent);
         void onMouseButtonEvent(void* inEvent);
+        void onMouseWheelEvent(void* inEvent);
 
         // Keyboard Events
         void onKeyboardButtonEvent(void* inEvent);
@@ -106,6 +109,7 @@ namespace Chicane
         // Mouse Events
         Input::Events<Input::MouseMotionEvent>        m_mouseMotionEvents;
         Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;
+        Input::Events<Input::MouseWheelEvent>         m_mouseWheelEvents;
 
         // Keyboard Events
         Input::PressableEvents<Input::KeyboardButton> m_keyboardKeyEvents;

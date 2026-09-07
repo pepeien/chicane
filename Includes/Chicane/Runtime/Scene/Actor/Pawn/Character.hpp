@@ -16,6 +16,8 @@ namespace Chicane
         ACharacter();
 
     public:
+        void setMoveScale(float inScale);
+        void setMoveInput(float inForward, float inRight, float inUp = 0.0f);
         void move(const Vec3& inDirection, float inScale);
         void jump();
 
@@ -27,10 +29,11 @@ namespace Chicane
         void onInput() override;
 
     protected:
-        Vec3        m_pendingMove;
-        float       m_pendingStep;
-        Vec3        m_desiredMove;
-        Time::Point m_lastMoveTime;
+        float       m_moveScale;
+        float       m_forwardInput;
+        float       m_rightInput;
+        float       m_upInput;
+        Time::Point m_lastInputTime;
         bool        m_bMoving;
     };
 }

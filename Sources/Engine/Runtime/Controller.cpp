@@ -14,6 +14,7 @@ namespace Chicane
           m_pawnObservable({}),
           m_mouseMotionEvents({}),
           m_mouseButtonEvents({}),
+          m_mouseWheelEvents({}),
           m_keyboardKeyEvents({}),
           m_gamepadMotionEvents({}),
           m_gamepadButtonEvents({}),
@@ -112,6 +113,11 @@ namespace Chicane
         m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
+    void Controller::bindEvent(Input::MouseWheelEventCallback inEvent)
+    {
+        m_mouseWheelEvents.bind(inEvent);
+    }
+
     void Controller::bindEvent(
         Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inEvent
     )
@@ -206,6 +212,18 @@ namespace Chicane
         }
 
         m_mouseButtonEvents.exec(event.button, event.status);
+    }
+
+    void Controller::onMouseWheelEvent(void* inEvent)
+    {
+        Input::MouseWheelEvent event = *static_cast<Input::MouseWheelEvent*>(inEvent);
+
+        if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
+        {
+            return;
+        }
+
+        m_mouseWheelEvents.exec(event);
     }
 
     void Controller::onKeyboardButtonEvent(void* inEvent)
@@ -310,6 +328,11 @@ namespace Chicane
 
                     break;
 
+                case WindowEventType::MouseWheel:
+                    onMouseWheelEvent(inEvent.data);
+
+                    break;
+
                 default:
                     break;
                 }
@@ -323,6 +346,7 @@ namespace Chicane
     {
         m_mouseMotionEvents.clear();
         m_mouseButtonEvents.clear();
+        m_mouseWheelEvents.clear();
 
         m_keyboardKeyEvents.clear();
 

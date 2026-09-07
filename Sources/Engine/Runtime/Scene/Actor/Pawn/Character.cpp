@@ -1,21 +1,34 @@
 #include "Chicane/Runtime/Scene/Actor/Pawn/Character.reflected.hpp"
 
+#include <algorithm>
 #include <cfloat>
 #include <cmath>
 
 namespace Chicane
 {
-    static constexpr float MOVE_STEP_SECONDS     = 0.016f;
-    static constexpr float MOVE_INPUT_TIMEOUT_MS = 32.0f;
+    static constexpr float MOVE_STEP_SECONDS = 0.016f;
 
     ACharacter::ACharacter()
         : APawn(),
-          m_pendingMove(Vec3::Zero()),
-          m_pendingStep(0.0f),
-          m_desiredMove(Vec3::Zero()),
-          m_lastMoveTime({}),
+          m_moveScale(3.0f),
+          m_forwardInput(0.0f),
+          m_rightInput(0.0f),
+          m_upInput(0.0f),
+          m_lastInputTime(Time::Clock::now()),
           m_bMoving(false)
     {}
+
+    void ACharacter::setMoveScale(float inScale)
+    {
+        m_moveScale = std::max(0.0f, inScale);
+    }
+
+    void ACharacter::setMoveInput(float inForward, float inRight, float inUp)
+    {
+        m_forwardInput = inForward;
+        m_rightInput   = inRight;
+        m_upInput      = inUp;
+    }
 
     void ACharacter::move(const Vec3& inDirection, float inScale)
     {
@@ -26,64 +39,59 @@ namespace Chicane
         }
 
         const Vec3 offset = (inDirection / dirLength) * inScale;
-        m_pendingMove += offset;
-
-        const float step = std::abs(inScale);
-        if (step > m_pendingStep)
-        {
-            m_pendingStep = step;
-        }
+        m_forwardInput += offset.dot(getForward());
+        m_rightInput   += offset.dot(getRight());
+        m_upInput      += offset.dot(getUp());
     }
 
     void ACharacter::onInput()
     {
-        Vec3        offset  = m_pendingMove;
-        const float maxStep = m_pendingStep;
+        Vec3 dir = getForward() * m_forwardInput + getRight() * m_rightInput + getUp() * m_upInput;
 
-        m_pendingMove = Vec3::Zero();
-        m_pendingStep = 0.0f;
-
-        const float length = std::sqrt(offset.dot(offset));
-        if (length > FLT_EPSILON)
+        const float length = std::sqrt(dir.dot(dir));
+        if (length > 1.0f)
         {
-            if (maxStep > 0.0f && length > maxStep)
-            {
-                offset *= maxStep / length;
-            }
-
-            m_desiredMove  = offset;
-            m_lastMoveTime = Time::Clock::now();
+            dir /= length;
         }
 
-        const bool bHasMove =
-            Time::miliseconds(Time::Clock::now() - m_lastMoveTime) <= MOVE_INPUT_TIMEOUT_MS &&
-            std::sqrt(m_desiredMove.dot(m_desiredMove)) > FLT_EPSILON;
+        const bool  bHasMove = std::sqrt(dir.dot(dir)) > FLT_EPSILON;
+        const float speed    = m_moveScale / MOVE_STEP_SECONDS;
 
         if (!m_physics || !m_physics->isActive())
         {
-            if (length > FLT_EPSILON)
+            if (!bHasMove)
             {
-                addAbsoluteTranslation(m_desiredMove);
+                m_lastInputTime = Time::Clock::now();
+
+                return;
+            }
+
+            const Time::Point now = Time::Clock::now();
+            float             dt  = Time::seconds(now - m_lastInputTime);
+            m_lastInputTime       = now;
+            if (dt <= 0.0f || dt > 0.25f)
+            {
+                dt = MOVE_STEP_SECONDS;
+            }
+
+            addAbsoluteTranslation(dir * speed * dt);
+
+            return;
+        }
+
+        if (!bHasMove)
+        {
+            if (m_bMoving)
+            {
+                m_physics->setHorizontalVelocity(Vec3::Zero());
+                m_bMoving = false;
             }
 
             return;
         }
 
-        if (!bHasMove && !m_bMoving)
-        {
-            return;
-        }
-
-        if (bHasMove)
-        {
-            m_physics->setHorizontalVelocity(m_desiredMove / MOVE_STEP_SECONDS);
-            m_bMoving = true;
-        }
-        else
-        {
-            m_physics->setHorizontalVelocity(Vec3::Zero());
-            m_bMoving = false;
-        }
+        m_physics->setHorizontalVelocity(Vec3(dir.x, dir.y, 0.0f) * speed);
+        m_bMoving = true;
     }
 
     void ACharacter::jump()

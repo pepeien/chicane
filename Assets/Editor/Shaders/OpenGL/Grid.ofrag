@@ -26,9 +26,11 @@ void main() {
     vec3 position      = inData.nearPoint + floorDistance * (inData.farPoint - inData.nearPoint);
     vec4 worldPosition = scene.camera.projection * scene.camera.view * vec4(position, 1.0);
 
-    outColor    = GridCalculation(position, 0.5, false);
-    outColor   += GridCalculation(position, 10.0, true);
-    outColor.a *= ComputeGridFade(position, scene.camera.translation.xyz, ComputeGridLinearDepth(worldPosition, scene.camera.clip.x, scene.camera.clip.y));
+    outColor = GridLayer(
+        position,
+        scene.camera.translation.xyz,
+        ComputeGridLinearDepth(worldPosition, scene.camera.clip.x, scene.camera.clip.y)
+    );
 
     gl_FragDepth = ComputeGridDepth(worldPosition);
 }
