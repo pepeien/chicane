@@ -228,6 +228,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "repeat",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_REPEAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "bindEvent",
                 "parameters": [
                     {

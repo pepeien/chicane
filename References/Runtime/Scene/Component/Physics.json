@@ -24,7 +24,23 @@
                 "description": "CHICANE_CPHYSICS_CPHYSICS_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~CPhysics",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_~CPHYSICS_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -140,6 +156,101 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "moveBy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOffset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_MOVEBY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getLinearVelocity",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CPHYSICS_GETLINEARVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setLinearVelocity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inVelocity"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETLINEARVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setHorizontalVelocity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inVelocity"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETHORIZONTALVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "addImpulse",
                 "parameters": [
                     {
@@ -201,6 +312,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onUnload",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONUNLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onTick",
                 "parameters": [
                     {
@@ -249,6 +375,47 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onAttachment",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inParent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONATTACHMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -280,6 +447,94 @@
                     "const"
                 ],
                 "description": "CHICANE_CPHYSICS_HASBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureBody",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ENSUREBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBody",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_DESTROYBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncBody",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SYNCBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncTickState",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SYNCTICKSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Transform",
+                    "suffix": "",
+                    "path": "Core/Math/Transform",
+                    "templates": []
+                },
+                "name": "makeActorTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CPHYSICS_MAKEACTORTRANSFORM_DESCRIPTION"
             }
         ],
         "members": [
@@ -288,13 +543,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "JPH::BodyID",
+                    "name": "Kerb::Body",
                     "suffix": "",
-                    "path": "",
+                    "path": "Kerb/Body",
                     "templates": []
                 },
-                "name": "m_bodyID",
-                "description": "CHICANE_CPHYSICS_M_BODYID_DESCRIPTION"
+                "name": "m_body",
+                "description": "CHICANE_CPHYSICS_M_BODY_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -308,6 +563,45 @@
                 },
                 "name": "m_bodySettings",
                 "description": "CHICANE_CPHYSICS_M_BODYSETTINGS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_syncedScale",
+                "description": "CHICANE_CPHYSICS_M_SYNCEDSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_syncedLocalSize",
+                "description": "CHICANE_CPHYSICS_M_SYNCEDLOCALSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bSyncingBody",
+                "description": "CHICANE_CPHYSICS_M_BSYNCINGBODY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CPHYSICS_DESCRIPTION"

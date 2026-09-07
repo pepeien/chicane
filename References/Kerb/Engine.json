@@ -165,9 +165,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "JPH::BodyID",
+                    "name": "Body",
                     "suffix": "",
-                    "path": "",
+                    "path": "Kerb/Body",
                     "templates": []
                 },
                 "name": "createBody",
@@ -201,12 +201,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     }
                 ],
                 "modifiers": [],
@@ -227,12 +227,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     }
                 ],
                 "modifiers": [],
@@ -253,12 +253,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     }
                 ],
                 "modifiers": [],
@@ -279,12 +279,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     },
                     {
                         "type": {
@@ -315,12 +315,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     },
                     {
                         "type": {
@@ -361,6 +361,106 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBodyLinearVelocity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Body",
+                            "suffix": "",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inBody"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_KERB_ENGINE_GETBODYLINEARVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBodyLinearVelocity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Body",
+                            "suffix": "",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inBody"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inVelocity"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_SETBODYLINEARVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBodyHorizontalVelocity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Body",
+                            "suffix": "",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inBody"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inVelocity"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_SETBODYHORIZONTALVELOCITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Transform",
                     "suffix": "",
                     "path": "Core/Math/Transform",
@@ -371,15 +471,17 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_KERB_ENGINE_GETBODYTRANSFORM_DESCRIPTION"
             },
             {
@@ -397,12 +499,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     },
                     {
                         "type": {
@@ -423,418 +525,31 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::pair",
+                    "name": "BodyPolygon",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vertex::Indices",
-                            "suffix": "",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "Vertex::List",
-                            "suffix": "",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Kerb",
+                    "templates": []
                 },
                 "name": "getBodyPolygon",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "JPH::BodyID",
+                            "name": "Body",
                             "suffix": "",
-                            "path": "",
+                            "path": "Kerb/Body",
                             "templates": []
                         },
-                        "name": "inId"
+                        "name": "inBody"
                     }
                 ],
                 "modifiers": [
                     "const"
                 ],
                 "description": "CHICANE_KERB_ENGINE_GETBODYPOLYGON_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::BodyID",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createDynamicBody",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "BodyCreateInfo",
-                            "suffix": "&",
-                            "path": "Kerb/Body/CreateInfo",
-                            "templates": []
-                        },
-                        "name": "inCreateInfo"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_KERB_ENGINE_CREATEDYNAMICBODY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::BodyID",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createKinematicBody",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "BodyCreateInfo",
-                            "suffix": "&",
-                            "path": "Kerb/Body/CreateInfo",
-                            "templates": []
-                        },
-                        "name": "inCreateInfo"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_KERB_ENGINE_CREATEKINEMATICBODY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::BodyID",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createStaticBody",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "BodyCreateInfo",
-                            "suffix": "&",
-                            "path": "Kerb/Body/CreateInfo",
-                            "templates": []
-                        },
-                        "name": "inCreateInfo"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_KERB_ENGINE_CREATESTATICBODY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::Shape",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "generateShape",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "BodyShape",
-                            "suffix": "",
-                            "path": "Kerb/Body/Shape",
-                            "templates": []
-                        },
-                        "name": "inType"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Bounds3D",
-                            "suffix": "&",
-                            "path": "Core/Math/Bounds/3D",
-                            "templates": []
-                        },
-                        "name": "inBounds"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_GENERATESHAPE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::EMotionType",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "toPhysicsMotionType",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "MotionType",
-                            "suffix": "",
-                            "path": "Kerb/Motion/Type",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOPHYSICSMOTIONTYPE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::Vec3",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "toPhysicsPosition",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Vec3",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOPHYSICSPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::Vec3",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "toPhysicsSize",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Vec3",
-                            "suffix": "",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOPHYSICSSIZE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "JPH::Quat",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "toPhysicsRotation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "QuatFloat",
-                            "suffix": "",
-                            "path": "Core/Math/Quat/QuatFloat",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOPHYSICSROTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "toEnginePosition",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "JPH::Vec3",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOENGINEPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "QuatFloat",
-                    "suffix": "",
-                    "path": "Core/Math/Quat/QuatFloat",
-                    "templates": []
-                },
-                "name": "toEngineRotation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "JPH::Quat",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_KERB_ENGINE_TOENGINEROTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Hash::Value",
-                    "suffix": "",
-                    "path": "Core/Hash",
-                    "templates": []
-                },
-                "name": "hashShape",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::Positions",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inPositions"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::Indices",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inIndices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_KERB_ENGINE_HASHSHAPE_DESCRIPTION"
             }
         ],
         "members": [
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::JobSystemThreadPool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_threadPool",
-                "description": "CHICANE_KERB_ENGINE_M_THREADPOOL_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::TempAllocatorImpl",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_tempAllocator",
-                "description": "CHICANE_KERB_ENGINE_M_TEMPALLOCATOR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::BroadPhaseLayerInterfaceTable",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_broadLayer",
-                "description": "CHICANE_KERB_ENGINE_M_BROADLAYER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::ObjectLayerPairFilterTable",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_objectLayer",
-                "description": "CHICANE_KERB_ENGINE_M_OBJECTLAYER_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -846,77 +561,15 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "JPH::ObjectVsBroadPhaseLayerFilterTable",
+                            "name": "Implementation",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         }
                     ]
                 },
-                "name": "m_objectVsBroadPhaseLayer",
-                "description": "CHICANE_KERB_ENGINE_M_OBJECTVSBROADPHASELAYER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::PhysicsSystem",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_system",
-                "description": "CHICANE_KERB_ENGINE_M_SYSTEM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Hash::Value",
-                            "suffix": "",
-                            "path": "Core/Hash",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "JPH::Ref",
-                            "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "JPH::Shape",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "name": "m_shapes",
-                "description": "CHICANE_KERB_ENGINE_M_SHAPES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "JPH::BodyIDVector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bodies",
-                "description": "CHICANE_KERB_ENGINE_M_BODIES_DESCRIPTION"
+                "name": "m_implementation",
+                "description": "CHICANE_KERB_ENGINE_M_IMPLEMENTATION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_KERB_ENGINE_DESCRIPTION"

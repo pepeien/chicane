@@ -112,6 +112,23 @@
             },
             {
                 "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInput",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_APAWN_ONINPUT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",

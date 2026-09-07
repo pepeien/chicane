@@ -50,6 +50,19 @@
                     "path": "Runtime/Telemetry",
                     "templates": []
                 },
+                "name": "physics",
+                "description": "CHICANE_APPLICATIONTELEMETRY_PHYSICS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
                 "name": "ui",
                 "description": "CHICANE_APPLICATIONTELEMETRY_UI_DESCRIPTION"
             },

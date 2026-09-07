@@ -3,14 +3,220 @@
     "filename": "Body",
     "path": "Kerb/Body",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Kerb/Body.hpp",
+        "namespace": "Chicane::Kerb::Body",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Body",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_BODY_BODY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Body",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_BODY_BODY_DESCRIPTION"
+            }
+        ],
         "destructors": [],
-        "functions": [],
-        "members": []
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Body",
+                    "suffix": "",
+                    "path": "Kerb/Body",
+                    "templates": []
+                },
+                "name": "invalid",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_BODY_INVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_KERB_BODY_ISVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "value",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_KERB_BODY_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Body",
+                            "suffix": "&",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Body",
+                            "suffix": "&",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_BODY_OPERATOR==_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator!=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Body",
+                            "suffix": "&",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Body",
+                            "suffix": "&",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_BODY_OPERATOR!=_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Invalid",
+                "description": "CHICANE_KERB_BODY_INVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_id",
+                "description": "CHICANE_KERB_BODY_M_ID_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_BODY_DESCRIPTION"
     },
     "children": []
 }

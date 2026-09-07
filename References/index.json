@@ -878,12 +878,12 @@
                                 "children": []
                             },
                             {
-                                "title": "PressableEvents",
+                                "title": "Pressed",
                                 "filename": "Pressable",
                                 "path": "Core/Input/Event/Pressable",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
-                                    "namespace": "Chicane::Input::PressableEvents",
+                                    "namespace": "Chicane::Input::PressableEvents::Pressed",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -3791,8 +3791,8 @@
                 "filename": "Body",
                 "path": "Kerb/Body",
                 "source": {
-                    "header": null,
-                    "namespace": null,
+                    "header": "Includes/Chicane/Kerb/Body.hpp",
+                    "namespace": "Chicane::Kerb::Body",
                     "types": [],
                     "enums": [],
                     "constructors": [],

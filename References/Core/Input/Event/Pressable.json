@@ -1,10 +1,10 @@
 {
-    "title": "PressableEvents",
+    "title": "Pressed",
     "filename": "Pressable",
     "path": "Core/Input/Event/Pressable",
     "source": {
         "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
-        "namespace": "Chicane::Input::PressableEvents",
+        "namespace": "Chicane::Input::PressableEvents::Pressed",
         "types": [
             {
                 "name": "Events",
@@ -215,8 +215,8 @@
                 "description": "CHICANE_INPUT_PRESSABLEEVENTS_CLEAR_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "override",
+                "accessor": "private",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -224,12 +224,86 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onTime",
+                "name": "fire",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "B",
+                            "suffix": "",
+                            "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
+                            "templates": []
+                        },
+                        "name": "inButton"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Status",
+                            "suffix": "",
+                            "path": "Core/Input/Status",
+                            "templates": []
+                        },
+                        "name": "inStatus"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_FIRE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "firePressed",
                 "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_PRESSABLEEVENTS_ONTIME_DESCRIPTION"
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_FIREPRESSED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Pressed",
+                            "suffix": "",
+                            "path": "Core/Input/Event/Pressable",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "findPressed",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "B",
+                            "suffix": "",
+                            "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
+                            "templates": []
+                        },
+                        "name": "inButton"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_FINDPRESSED_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -272,6 +346,22 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "REPEAT_INTERVAL_MS",
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_REPEAT_INTERVAL_MS_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
@@ -282,9 +372,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "B",
+                            "name": "Pressed",
                             "suffix": "",
-                            "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
+                            "path": "Core/Input/Event/Pressable",
                             "templates": []
                         }
                     ]
@@ -306,20 +396,33 @@
                 "description": "CHICANE_INPUT_PRESSABLEEVENTS_M_EVENTS_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Timer",
+                    "name": "B",
                     "suffix": "",
-                    "path": "Core/Timer",
+                    "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
                     "templates": []
                 },
-                "name": "m_cooldown",
-                "description": "CHICANE_INPUT_PRESSABLEEVENTS_M_COOLDOWN_DESCRIPTION"
+                "name": "button",
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time::Point",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "lastFire",
+                "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_LASTFIRE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_PRESSABLEEVENTS_DESCRIPTION"
+        "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_DESCRIPTION"
     },
     "children": []
 }

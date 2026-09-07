@@ -154,9 +154,90 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_ACHARACTER_ADDYAW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInput",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ACHARACTER_ONINPUT_DESCRIPTION"
             }
         ],
-        "members": [],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_pendingMove",
+                "description": "CHICANE_ACHARACTER_M_PENDINGMOVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_pendingStep",
+                "description": "CHICANE_ACHARACTER_M_PENDINGSTEP_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_desiredMove",
+                "description": "CHICANE_ACHARACTER_M_DESIREDMOVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time::Point",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "m_lastMoveTime",
+                "description": "CHICANE_ACHARACTER_M_LASTMOVETIME_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bMoving",
+                "description": "CHICANE_ACHARACTER_M_BMOVING_DESCRIPTION"
+            }
+        ],
         "description": "CHICANE_ACHARACTER_DESCRIPTION"
     },
     "children": []
