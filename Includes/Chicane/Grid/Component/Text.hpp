@@ -28,6 +28,7 @@ namespace Chicane
 
         public:
             void refresh() override;
+            void invalidateDrawCacheSubtree() override;
 
             std::vector<Component*> getChildrenFlat() const override;
 
@@ -37,6 +38,7 @@ namespace Chicane
             void onRefresh() override;
 
             void refreshSize() override;
+            void refreshPosition() override;
 
         public:
             const String& getText() const;

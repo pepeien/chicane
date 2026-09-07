@@ -27,6 +27,12 @@ namespace Chicane
         {
             Container::onRefresh();
 
+            if (!m_bLaidOutThisFrame && !src.isEmpty() &&
+                !(m_load == Box::AssetLoad::Preview && !m_previewImage))
+            {
+                return;
+            }
+
             refreshSource();
             refreshPlaybackRate();
             bindFrame();
@@ -36,16 +42,38 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
-            refreshSource();
-            refreshPlaybackRate();
-            advanceFrame(inDeltaTime);
-            bindFrame();
+            const bool bSrcBound       = isReference(getAttribute(SRC_ATTRIBUTE_NAME));
+            const bool bWaitingPreview = m_load == Box::AssetLoad::Preview && !src.isEmpty() && !m_previewImage;
+            const bool bAnimated = m_texture && m_texture->getFrameCount() > 1 && playbackRate != 0.0f;
+
+            if (bSrcBound || bWaitingPreview)
+            {
+                refreshSource();
+            }
+
+            if (bAnimated)
+            {
+                if (isReference(getAttribute(PLAYBACK_RATE_ATTRIBUTE_NAME)))
+                {
+                    refreshPlaybackRate();
+                }
+
+                advanceFrame(inDeltaTime);
+                bindFrame();
+
+                return;
+            }
+
+            if (bSrcBound || bWaitingPreview)
+            {
+                bindFrame();
+            }
         }
 
         void Image::refreshSize()
         {
-            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
 
             Container::refreshSize();
 

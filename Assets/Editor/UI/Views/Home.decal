@@ -37,7 +37,7 @@ $footerHeight: 22em;
 
     &__content {
         width: 100%;
-        height: calc(100% - $footerHeight);
+        height: calc(100% - $headerSize - $footerHeight);
         gap: 0.25em;
         border-radius: 5px;
 

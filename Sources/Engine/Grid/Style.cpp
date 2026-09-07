@@ -24,8 +24,8 @@ namespace Chicane
         Style::Style()
             : display(StyleDisplay::Block),
               zIndex(0.0f),
-              width(0.0f),
-              height(0.0f),
+              width({}),
+              height({}),
               flex({}),
               position(StylePosition::Relative),
               align(StyleAlignment::Start),
@@ -80,9 +80,47 @@ namespace Chicane
 
             zIndex.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
 
-            width.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Horizontal); });
+            width.parseWith(
+                [this](const String& inValue)
+                {
+                    if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Horizontal))
+                    {
+                        const float current = preservedFillPercent(
+                            width.value.get(),
+                            hasParent() ? m_parent->getSize().x : 0.0f
+                        );
 
-            height.parseWith([this](const String& inValue) { return parseSize(inValue, SizeDirection::Vertical); });
+                        if (current > 0.01f)
+                        {
+                            return current;
+                        }
+                    }
+
+                    return parseSize(inValue, SizeDirection::Horizontal);
+                },
+                [this](const String& inValue) { return parseSizeLimit(inValue, SizeDirection::Horizontal); }
+            );
+
+            height.parseWith(
+                [this](const String& inValue)
+                {
+                    if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Vertical))
+                    {
+                        const float current = preservedFillPercent(
+                            height.value.get(),
+                            hasParent() ? m_parent->getSize().y : 0.0f
+                        );
+
+                        if (current > 0.01f)
+                        {
+                            return current;
+                        }
+                    }
+
+                    return parseSize(inValue, SizeDirection::Vertical);
+                },
+                [this](const String& inValue) { return parseSizeLimit(inValue, SizeDirection::Vertical); }
+            );
 
             flex.parseWith(
                 [this](const String& inValue)
@@ -287,23 +325,18 @@ namespace Chicane
                 zIndex.setRaw(inProperties.at(Z_INDEX_ATTRIBUTE_NAME));
             }
 
-            if (inProperties.find(WIDTH_ATTRIBUTE_NAME) != inProperties.end())
-            {
-                width.setRaw(inProperties.at(WIDTH_ATTRIBUTE_NAME));
-            }
-            else
-            {
-                width.setRaw(Size::AUTO_KEYWORD);
-            }
-
-            if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) != inProperties.end())
-            {
-                height.setRaw(inProperties.at(HEIGHT_ATTRIBUTE_NAME));
-            }
-            else
-            {
-                height.setRaw(Size::AUTO_KEYWORD);
-            }
+            width.setProperties(
+                inProperties,
+                WIDTH_ATTRIBUTE_NAME,
+                MIN_WIDTH_ATTRIBUTE_NAME,
+                MAX_WIDTH_ATTRIBUTE_NAME
+            );
+            height.setProperties(
+                inProperties,
+                HEIGHT_ATTRIBUTE_NAME,
+                MIN_HEIGHT_ATTRIBUTE_NAME,
+                MAX_HEIGHT_ATTRIBUTE_NAME
+            );
 
             if (inProperties.find(POSITION_ATTRIBUTE_NAME) != inProperties.end())
             {
@@ -553,6 +586,84 @@ namespace Chicane
             }
         }
 
+        bool Style::isFillPercent(const String& inRaw) const
+        {
+            const String value = inRaw.trim();
+
+            return value.equals("100%") || value.equals("100.0%");
+        }
+
+        bool Style::canKeepFillPercent(SizeDirection inDirection) const
+        {
+            if (!hasParent())
+            {
+                return false;
+            }
+
+            if (isPosition(StylePosition::Absolute) || position.getRaw().equals(POSITION_TYPE_ABSOLUTE))
+            {
+                return false;
+            }
+
+            const Component* layoutParent = m_parent->getParent();
+            if (!layoutParent)
+            {
+                return false;
+            }
+
+            const Style& parentStyle = layoutParent->getStyle();
+            if (!parentStyle.isDisplay(StyleDisplay::Flex) || parentStyle.flex.wrap.get() != StyleFlexWrap::NoWrap)
+            {
+                return false;
+            }
+
+            const bool bRow = parentStyle.flex.direction.get() == StyleFlexDirection::Row;
+
+            return inDirection == SizeDirection::Horizontal ? bRow : !bRow;
+        }
+
+        float Style::preservedFillPercent(float inParsed, float inLaidOut) const
+        {
+            if (inParsed > 0.01f)
+            {
+                return inParsed;
+            }
+
+            if (inLaidOut > 0.01f)
+            {
+                return inLaidOut;
+            }
+
+            return 0.0f;
+        }
+
+        void Style::resolveFillPercent(const Vec2& inRemaining)
+        {
+            if (isFillPercent(width.value.getRaw()))
+            {
+                const float next = std::max(0.0f, inRemaining.x);
+                if (std::abs(width.value.get() - next) > 0.01f)
+                {
+                    width.value.set(next);
+                }
+            }
+
+            if (isFillPercent(height.value.getRaw()))
+            {
+                const float next = std::max(0.0f, inRemaining.y);
+                if (std::abs(height.value.get() - next) > 0.01f)
+                {
+                    height.value.set(next);
+                }
+            }
+        }
+
+        void Style::clampSize(float& outWidth, float& outHeight) const
+        {
+            width.clamp(outWidth);
+            height.clamp(outHeight);
+        }
+
         const Style::Properties& Style::getSnapshot() const
         {
             return m_snapshot;
@@ -596,22 +707,62 @@ namespace Chicane
 
             if (inName.equals(WIDTH_ATTRIBUTE_NAME))
             {
-                if (width.getRaw().isEmpty() || width.isRaw(Size::AUTO_KEYWORD))
+                if (width.isAuto())
                 {
                     return {};
                 }
 
-                return {width.get()};
+                return {width.value.get()};
             }
 
             if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
             {
-                if (height.getRaw().isEmpty() || height.isRaw(Size::AUTO_KEYWORD))
+                if (height.isAuto())
                 {
                     return {};
                 }
 
-                return {height.get()};
+                return {height.value.get()};
+            }
+
+            if (inName.equals(MIN_WIDTH_ATTRIBUTE_NAME))
+            {
+                if (!width.hasMin())
+                {
+                    return {};
+                }
+
+                return {width.min.get()};
+            }
+
+            if (inName.equals(MIN_HEIGHT_ATTRIBUTE_NAME))
+            {
+                if (!height.hasMin())
+                {
+                    return {};
+                }
+
+                return {height.min.get()};
+            }
+
+            if (inName.equals(MAX_WIDTH_ATTRIBUTE_NAME))
+            {
+                if (!width.hasMax())
+                {
+                    return {};
+                }
+
+                return {width.max.get()};
+            }
+
+            if (inName.equals(MAX_HEIGHT_ATTRIBUTE_NAME))
+            {
+                if (!height.hasMax())
+                {
+                    return {};
+                }
+
+                return {height.max.get()};
             }
 
             if (inName.equals(Z_INDEX_ATTRIBUTE_NAME))
@@ -824,14 +975,42 @@ namespace Chicane
 
             if (inName.equals(WIDTH_ATTRIBUTE_NAME))
             {
-                width.set(inValue.at(0));
+                width.value.set(inValue.at(0));
 
                 return;
             }
 
             if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
             {
-                height.set(inValue.at(0));
+                height.value.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MIN_WIDTH_ATTRIBUTE_NAME))
+            {
+                width.min.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MIN_HEIGHT_ATTRIBUTE_NAME))
+            {
+                height.min.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MAX_WIDTH_ATTRIBUTE_NAME))
+            {
+                width.max.set(inValue.at(0));
+
+                return;
+            }
+
+            if (inName.equals(MAX_HEIGHT_ATTRIBUTE_NAME))
+            {
+                height.max.set(inValue.at(0));
 
                 return;
             }
@@ -1434,7 +1613,7 @@ namespace Chicane
 
         Vec2 Style::getTransformOrigin() const
         {
-            return getTransformOrigin(hasParent() ? m_parent->getSize() : Vec2::Zero());
+            return getTransformOrigin(hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
         }
 
         Vec2 Style::getTransformOrigin(const Vec2& inBox) const
@@ -1492,6 +1671,8 @@ namespace Chicane
                 return result;
             }
 
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+
             for (const String& block : splitOneliner(value))
             {
                 const String token = block.trim();
@@ -1508,7 +1689,7 @@ namespace Chicane
                 {
                     if (!args.empty())
                     {
-                        result.translation.x += parseSize(args.at(0).trim(), SizeDirection::Horizontal);
+                        result.translation.x += parseSize(args.at(0).trim(), SizeDirection::Horizontal, &selfBox);
                     }
 
                     continue;
@@ -1518,7 +1699,7 @@ namespace Chicane
                 {
                     if (!args.empty())
                     {
-                        result.translation.y += parseSize(args.at(0).trim(), SizeDirection::Vertical);
+                        result.translation.y += parseSize(args.at(0).trim(), SizeDirection::Vertical, &selfBox);
                     }
 
                     continue;
@@ -1594,8 +1775,10 @@ namespace Chicane
                 return Vec2::Zero();
             }
 
-            const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal);
-            const float y = tokens.size() > 1 ? parseSize(tokens.at(1).trim(), SizeDirection::Vertical) : 0.0f;
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+
+            const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal, &selfBox);
+            const float y = tokens.size() > 1 ? parseSize(tokens.at(1).trim(), SizeDirection::Vertical, &selfBox) : 0.0f;
 
             return {x, y};
         }
@@ -1687,7 +1870,7 @@ namespace Chicane
 
         Vec2 Style::parseTransformOrigin(const String& inValue) const
         {
-            return parseTransformOrigin(inValue, hasParent() ? m_parent->getSize() : Vec2::Zero());
+            return parseTransformOrigin(inValue, hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
         }
 
         Vec2 Style::parseTransformOrigin(const String& inValue, const Vec2& inBox) const
@@ -1911,6 +2094,49 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
+        Vec2 percentContainingSize(const Component* inBox)
+        {
+            if (!inBox)
+            {
+                return Vec2::Zero();
+            }
+
+            Vec2 size = inBox->getContentSize();
+            const Style& style = inBox->getStyle();
+            if (!style.isDisplay(StyleDisplay::Flex) || style.flex.wrap.get() == StyleFlexWrap::Wrap)
+            {
+                return size;
+            }
+
+            std::uint32_t count = 0;
+            for (const Component* child : inBox->getChildren())
+            {
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
+                {
+                    continue;
+                }
+
+                count++;
+            }
+
+            if (count < 2)
+            {
+                return size;
+            }
+
+            const float gaps = static_cast<float>(count - 1);
+            if (style.flex.direction.get() == StyleFlexDirection::Row)
+            {
+                size.x = std::max(0.0f, size.x - gaps * style.gap.left.get());
+            }
+            else
+            {
+                size.y = std::max(0.0f, size.y - gaps * style.gap.top.get());
+            }
+
+            return size;
+        }
+
         float Style::parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox) const
         {
             Size result;
@@ -1931,11 +2157,25 @@ namespace Chicane
                 const Component* containingBlock = m_parent->getContainingBlock();
                 if (containingBlock && containingBlock != m_parent)
                 {
-                    result.setParent(containingBlock->getSize());
+                    const bool bAbsolute = m_parent->getStyle().isPosition(StylePosition::Absolute);
+                    result.setParent(
+                        bAbsolute ? containingBlock->getContentSize() : percentContainingSize(containingBlock)
+                    );
                 }
             }
 
             return result.parse(inValue, inDirection);
+        }
+
+        float Style::parseSizeLimit(const String& inValue, SizeDirection inDirection) const
+        {
+            const String value = parseText(inValue).trim().toLower();
+            if (value.isEmpty() || value.equals(SIZE_LIMIT_TYPE_NONE) || value.equals(Size::AUTO_KEYWORD))
+            {
+                return 0.0f;
+            }
+
+            return std::max(0.0f, parseSize(inValue, inDirection));
         }
 
         float Style::parseWeight(const String& inValue) const
@@ -2001,14 +2241,48 @@ namespace Chicane
 
         String Style::parseReference(const String& inValue) const
         {
-            const std::uint32_t start = inValue.firstOf(METHOD_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.lastOf(METHOD_PARAMS_CLOSING);
+            const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
+            if (open == String::npos)
+            {
+                return inValue;
+            }
+
+            std::uint32_t depth = 0;
+            std::size_t   close = String::npos;
+            for (std::size_t i = open; i < inValue.size(); i++)
+            {
+                const char character = inValue.at(i);
+                if (character == METHOD_PARAMS_OPENING)
+                {
+                    depth++;
+
+                    continue;
+                }
+
+                if (character != METHOD_PARAMS_CLOSING)
+                {
+                    continue;
+                }
+
+                depth--;
+                if (depth == 0)
+                {
+                    close = i;
+
+                    break;
+                }
+            }
+
+            if (close == String::npos)
+            {
+                return inValue;
+            }
 
             String result = "";
             result.append(REFERENCE_VALUE_OPENING);
-            result.append(inValue.substr(start, end - start));
+            result.append(inValue.substr(open + 1, close - open - 1));
             result.append(REFERENCE_VALUE_CLOSING);
-            result.append(inValue.substr(end + 1));
+            result.append(inValue.substr(close + 1));
 
             return result;
         }

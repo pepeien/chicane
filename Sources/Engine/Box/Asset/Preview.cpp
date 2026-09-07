@@ -21,8 +21,7 @@ namespace Chicane
         static constexpr std::size_t PREVIEW_EXTRACT_LIMIT = 512 * 1024;
 
         static std::unique_ptr<AssetPreview> parsePreviewNode(
-            const pugi::xml_node&     inNode,
-            const FileSystem::Path&   inAsset
+            const pugi::xml_node& inNode, const FileSystem::Path& inAsset
         )
         {
             if (inNode.empty() || !String(inNode.name()).equals(AssetPreview::TAG))
@@ -44,8 +43,8 @@ namespace Chicane
             }
 
             Image::Instance image;
-            const bool      isPng = encoded.size() >= 8 && encoded[0] == 137 && encoded[1] == 80 &&
-                               encoded[2] == 78 && encoded[3] == 71;
+            const bool      isPng =
+                encoded.size() >= 8 && encoded[0] == 137 && encoded[1] == 80 && encoded[2] == 78 && encoded[3] == 71;
             if (isPng)
             {
                 try
@@ -133,11 +132,7 @@ namespace Chicane
             outLight = Vec3(0.45f, 0.25f, 0.85f).normalize();
         }
 
-        void sampleCubemap(
-            const std::vector<Image::Instance>& inFaces,
-            const Vec3&                         inDirection,
-            unsigned char*                      outRgba
-        )
+        void sampleCubemap(const std::vector<Image::Instance>& inFaces, const Vec3& inDirection, unsigned char* outRgba)
         {
             outRgba[0] = 36;
             outRgba[1] = 36;
@@ -194,15 +189,15 @@ namespace Chicane
                 return;
             }
 
-            const int             width    = image->getWidth();
-            const int             height   = image->getHeight();
-            const int             channels = std::max(1, image->getChannel());
-            const float           u        = ((sc / ma) + 1.0f) * 0.5f;
-            const float           v        = ((tc / ma) + 1.0f) * 0.5f;
-            const int             x = std::clamp(static_cast<int>(u * static_cast<float>(width - 1)), 0, width - 1);
-            const int             y = std::clamp(static_cast<int>(v * static_cast<float>(height - 1)), 0, height - 1);
-            const Image::Pixels   pixels = image->getPixels();
-            const std::size_t     offset =
+            const int           width    = image->getWidth();
+            const int           height   = image->getHeight();
+            const int           channels = std::max(1, image->getChannel());
+            const float         u        = ((sc / ma) + 1.0f) * 0.5f;
+            const float         v        = ((tc / ma) + 1.0f) * 0.5f;
+            const int           x = std::clamp(static_cast<int>(u * static_cast<float>(width - 1)), 0, width - 1);
+            const int           y = std::clamp(static_cast<int>(v * static_cast<float>(height - 1)), 0, height - 1);
+            const Image::Pixels pixels = image->getPixels();
+            const std::size_t   offset =
                 ((static_cast<std::size_t>(y) * static_cast<std::size_t>(width)) + static_cast<std::size_t>(x)) *
                 static_cast<std::size_t>(channels);
 
@@ -214,16 +209,16 @@ namespace Chicane
 
         void appendUnitCube(Vertex::List& outVertices, Vertex::Indices& outIndices)
         {
-            const Vertex::Index base = static_cast<Vertex::Index>(outVertices.size());
+            const Vertex::Index       base    = static_cast<Vertex::Index>(outVertices.size());
             const std::array<Vec3, 8> corners = {
                 Vec3(-1.0f, -1.0f, -1.0f),
-                Vec3(1.0f,  -1.0f, -1.0f),
-                Vec3(1.0f,  1.0f,  -1.0f),
-                Vec3(-1.0f, 1.0f,  -1.0f),
+                Vec3(1.0f, -1.0f, -1.0f),
+                Vec3(1.0f, 1.0f, -1.0f),
+                Vec3(-1.0f, 1.0f, -1.0f),
                 Vec3(-1.0f, -1.0f, 1.0f),
-                Vec3(1.0f,  -1.0f, 1.0f),
-                Vec3(1.0f,  1.0f,  1.0f),
-                Vec3(-1.0f, 1.0f,  1.0f)
+                Vec3(1.0f, -1.0f, 1.0f),
+                Vec3(1.0f, 1.0f, 1.0f),
+                Vec3(-1.0f, 1.0f, 1.0f)
             };
 
             for (const Vec3& corner : corners)
@@ -233,10 +228,8 @@ namespace Chicane
                 outVertices.push_back(vertex);
             }
 
-            const std::array<Vertex::Index, 36> faces = {
-                1, 2, 6, 1, 6, 5, 0, 4, 7, 0, 7, 3, 3, 7, 6, 3, 6, 2,
-                0, 1, 5, 0, 5, 4, 4, 5, 6, 4, 6, 7, 0, 3, 2, 0, 2, 1
-            };
+            const std::array<Vertex::Index, 36> faces = {1, 2, 6, 1, 6, 5, 0, 4, 7, 0, 7, 3, 3, 7, 6, 3, 6, 2,
+                                                         0, 1, 5, 0, 5, 4, 4, 5, 6, 4, 6, 7, 0, 3, 2, 0, 2, 1};
 
             for (const Vertex::Index index : faces)
             {
@@ -298,19 +291,12 @@ namespace Chicane
             Vec3 light;
             previewCamera(viewDir, right, up, light);
 
-            struct Projected
-            {
-                float x;
-                float y;
-                float z;
-            };
+            float minX = std::numeric_limits<float>::max();
+            float maxX = std::numeric_limits<float>::lowest();
+            float minY = std::numeric_limits<float>::max();
+            float maxY = std::numeric_limits<float>::lowest();
 
-            std::vector<Projected> projected(inVertices.size());
-            float                  minX = std::numeric_limits<float>::max();
-            float                  maxX = std::numeric_limits<float>::lowest();
-            float                  minY = std::numeric_limits<float>::max();
-            float                  maxY = std::numeric_limits<float>::lowest();
-
+            std::vector<Vec3> projected(inVertices.size());
             for (std::size_t i = 0; i < inVertices.size(); i++)
             {
                 const Vec3 offset = inVertices.at(i).position - center;
@@ -331,12 +317,10 @@ namespace Chicane
             const float originX = (static_cast<float>(AssetPreview::SIZE) * 0.5f) - (midX * scale);
             const float originY = (static_cast<float>(AssetPreview::SIZE) * 0.5f) - (midY * scale);
 
-            const std::size_t          pixelCount =
+            const std::size_t pixelCount =
                 static_cast<std::size_t>(AssetPreview::SIZE) * static_cast<std::size_t>(AssetPreview::SIZE);
-            std::vector<unsigned char> pixels(
-                pixelCount * static_cast<std::size_t>(AssetPreview::CHANNELS), 0
-            );
-            std::vector<float> depth(pixelCount, std::numeric_limits<float>::max());
+            std::vector<unsigned char> pixels(pixelCount * static_cast<std::size_t>(AssetPreview::CHANNELS), 0);
+            std::vector<float>         depth(pixelCount, std::numeric_limits<float>::max());
 
             for (std::size_t i = 0; i < pixelCount; i++)
             {
@@ -347,9 +331,7 @@ namespace Chicane
             }
 
             auto edge = [](float ax, float ay, float bx, float by, float cx, float cy)
-            {
-                return ((cx - ax) * (by - ay)) - ((cy - ay) * (bx - ax));
-            };
+            { return ((cx - ax) * (by - ay)) - ((cy - ay) * (bx - ax)); };
 
             for (std::size_t triangle = 0; triangle < triangleCount; triangle++)
             {
@@ -361,9 +343,9 @@ namespace Chicane
                     continue;
                 }
 
-                const Projected& a = projected.at(i0);
-                const Projected& b = projected.at(i1);
-                const Projected& c = projected.at(i2);
+                const Vec3& a = projected.at(i0);
+                const Vec3& b = projected.at(i1);
+                const Vec3& c = projected.at(i2);
 
                 const float ax   = (a.x * scale) + originX;
                 const float ay   = originY + (a.y * scale);
@@ -391,7 +373,7 @@ namespace Chicane
                 }
 
                 normal                    = normal.normalize();
-                const float shade         = 0.22f + (0.78f * std::abs(normal.dot(light)));
+                const float         shade = 0.22f + (0.78f * std::abs(normal.dot(light)));
                 const unsigned char clayR = static_cast<unsigned char>(std::clamp(228.0f * shade, 0.0f, 255.0f));
                 const unsigned char clayG = static_cast<unsigned char>(std::clamp(232.0f * shade, 0.0f, 255.0f));
                 const unsigned char clayB = static_cast<unsigned char>(std::clamp(236.0f * shade, 0.0f, 255.0f));
@@ -416,7 +398,7 @@ namespace Chicane
                             continue;
                         }
 
-                        const float z = ((a.z * w0) + (b.z * w1) + (c.z * w2)) / area;
+                        const float       z = ((a.z * w0) + (b.z * w1) + (c.z * w2)) / area;
                         const std::size_t index =
                             (static_cast<std::size_t>(py) * static_cast<std::size_t>(AssetPreview::SIZE)) +
                             static_cast<std::size_t>(px);
@@ -437,10 +419,9 @@ namespace Chicane
                             continue;
                         }
 
-                        const Vec3 position =
-                            ((inVertices.at(i0).position * w0) + (inVertices.at(i1).position * w1) +
-                             (inVertices.at(i2).position * w2)) /
-                            area;
+                        const Vec3 position = ((inVertices.at(i0).position * w0) + (inVertices.at(i1).position * w1) +
+                                               (inVertices.at(i2).position * w2)) /
+                                              area;
                         unsigned char color[4] = {36, 36, 40, 255};
                         sampleCubemap(inFaces, position, color);
                         pixels[(index * 4) + 0] = color[0];
@@ -505,13 +486,7 @@ namespace Chicane
                 label = inAsset.stem().toString();
             }
 
-            struct Point
-            {
-                float x;
-                float y;
-            };
-
-            auto appendGlyph = [&](std::vector<Point>&         outPoints,
+            auto appendGlyph = [&](std::vector<Vec2>&          outPoints,
                                    std::vector<Vertex::Index>& outIndices,
                                    const FontGlyph&            inGlyph,
                                    float                       inCursor)
@@ -547,9 +522,9 @@ namespace Chicane
 
             auto layout = [&](const std::vector<char32_t>& inCodes)
             {
-                std::vector<Point>         points  = {};
-                std::vector<Vertex::Index> indices = {};
-                float                      cursor  = 0.0f;
+                std::vector<Vec2>          points   = {};
+                std::vector<Vertex::Index> indices  = {};
+                float                      cursor   = 0.0f;
                 char32_t                   previous = 0;
 
                 for (char32_t code : inCodes)
@@ -627,26 +602,24 @@ namespace Chicane
                 return nullptr;
             }
 
-            const std::vector<Point>&         points  = mesh.first;
+            const std::vector<Vec2>&          points  = mesh.first;
             const std::vector<Vertex::Index>& indices = mesh.second;
 
-            float minX = points.front().x;
-            float maxX = minX;
-            float minY = points.front().y;
-            float maxY = minY;
-            for (const Point& point : points)
+            Vec2 min = {points.front().x, points.front().y};
+            Vec2 max = {min.x, min.y};
+            for (const Vec2& point : points)
             {
-                minX = std::min(minX, point.x);
-                maxX = std::max(maxX, point.x);
-                minY = std::min(minY, point.y);
-                maxY = std::max(maxY, point.y);
+                min.x = std::min(min.x, point.x);
+                max.x = std::max(max.x, point.x);
+                min.y = std::min(min.y, point.y);
+                max.y = std::max(max.y, point.y);
             }
 
-            const float spanX = std::max(maxX - minX, 1e-5f);
-            const float spanY = std::max(maxY - minY, 1e-5f);
-            const float scale = (static_cast<float>(SIZE) * 0.78f) / std::max(spanX, spanY);
-            const float midX  = (minX + maxX) * 0.5f;
-            const float midY  = (minY + maxY) * 0.5f;
+            const float spanX   = std::max(max.x - min.x, 1e-5f);
+            const float spanY   = std::max(max.y - min.y, 1e-5f);
+            const float scale   = (static_cast<float>(SIZE) * 0.78f) / std::max(spanX, spanY);
+            const float midX    = (min.x + max.x) * 0.5f;
+            const float midY    = (min.y + max.x) * 0.5f;
             const float originX = (static_cast<float>(SIZE) * 0.5f) - (midX * scale);
             const float originY = (static_cast<float>(SIZE) * 0.5f) - (midY * scale);
 
@@ -662,9 +635,7 @@ namespace Chicane
             }
 
             auto edge = [](float ax, float ay, float bx, float by, float cx, float cy)
-            {
-                return ((cx - ax) * (by - ay)) - ((cy - ay) * (bx - ax));
-            };
+            { return ((cx - ax) * (by - ay)) - ((cy - ay) * (bx - ax)); };
 
             const std::size_t triangleCount = indices.size() / 3;
             for (std::size_t triangle = 0; triangle < triangleCount; triangle++)
@@ -677,12 +648,12 @@ namespace Chicane
                     continue;
                 }
 
-                const float ax = (points.at(i0).x * scale) + originX;
-                const float ay = originY + (points.at(i0).y * scale);
-                const float bx = (points.at(i1).x * scale) + originX;
-                const float by = originY + (points.at(i1).y * scale);
-                const float cx = (points.at(i2).x * scale) + originX;
-                const float cy = originY + (points.at(i2).y * scale);
+                const float ax   = (points.at(i0).x * scale) + originX;
+                const float ay   = originY + (points.at(i0).y * scale);
+                const float bx   = (points.at(i1).x * scale) + originX;
+                const float by   = originY + (points.at(i1).y * scale);
+                const float cx   = (points.at(i2).x * scale) + originX;
+                const float cy   = originY + (points.at(i2).y * scale);
                 const float area = edge(ax, ay, bx, by, cx, cy);
                 if (std::fabs(area) < 1e-5f)
                 {
@@ -737,9 +708,7 @@ namespace Chicane
             }
 
             auto readU16 = [](const unsigned char* inBytes)
-            {
-                return static_cast<std::uint16_t>(inBytes[0] | (static_cast<std::uint16_t>(inBytes[1]) << 8));
-            };
+            { return static_cast<std::uint16_t>(inBytes[0] | (static_cast<std::uint16_t>(inBytes[1]) << 8)); };
             auto readU32 = [](const unsigned char* inBytes)
             {
                 return static_cast<std::uint32_t>(
@@ -748,23 +717,23 @@ namespace Chicane
                 );
             };
 
-            std::vector<float> samples;
-            const unsigned char* bytes  = inData.data();
-            const std::size_t    size   = inData.size();
+            std::vector<float>   samples;
+            const unsigned char* bytes = inData.data();
+            const std::size_t    size  = inData.size();
 
             if (size >= 12 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F' &&
                 bytes[8] == 'W' && bytes[9] == 'A' && bytes[10] == 'V' && bytes[11] == 'E')
             {
-                std::uint16_t format       = 1;
-                std::uint16_t channels     = 1;
-                std::uint16_t bits         = 16;
-                const unsigned char* data  = nullptr;
+                std::uint16_t        format   = 1;
+                std::uint16_t        channels = 1;
+                std::uint16_t        bits     = 16;
+                const unsigned char* data     = nullptr;
                 std::size_t          dataSize = 0;
                 std::size_t          offset   = 12;
 
                 while (offset + 8 <= size)
                 {
-                    const char*       chunkId   = reinterpret_cast<const char*>(bytes + offset);
+                    const char*         chunkId   = reinterpret_cast<const char*>(bytes + offset);
                     const std::uint32_t chunkSize = readU32(bytes + offset + 4);
                     offset += 8;
 
@@ -791,8 +760,8 @@ namespace Chicane
                     offset += chunkSize + (chunkSize & 1);
                 }
 
-                const int bytesPerSample = std::max(1, static_cast<int>(bits / 8));
-                const int frameSize      = std::max(1, static_cast<int>(channels) * bytesPerSample);
+                const int         bytesPerSample = std::max(1, static_cast<int>(bits / 8));
+                const int         frameSize      = std::max(1, static_cast<int>(channels) * bytesPerSample);
                 const std::size_t frames = data && frameSize > 0 ? dataSize / static_cast<std::size_t>(frameSize) : 0;
                 samples.reserve(frames);
 
@@ -825,9 +794,8 @@ namespace Chicane
                         }
                         else if (bits == 24)
                         {
-                            std::int32_t decoded =
-                                sample[0] | (static_cast<std::int32_t>(sample[1]) << 8) |
-                                (static_cast<std::int32_t>(sample[2]) << 16);
+                            std::int32_t decoded = sample[0] | (static_cast<std::int32_t>(sample[1]) << 8) |
+                                                   (static_cast<std::int32_t>(sample[2]) << 16);
                             if ((decoded & 0x800000) != 0)
                             {
                                 decoded |= static_cast<std::int32_t>(0xFF000000);
@@ -837,7 +805,7 @@ namespace Chicane
                         else if (bits == 32)
                         {
                             const std::int32_t decoded = static_cast<std::int32_t>(readU32(sample));
-                            value = static_cast<float>(decoded) / 2147483648.0f;
+                            value                      = static_cast<float>(decoded) / 2147483648.0f;
                         }
 
                         mixed += value;
@@ -875,16 +843,16 @@ namespace Chicane
             const int mid = SIZE / 2;
             for (int x = 12; x < SIZE - 12; x++)
             {
-                const std::size_t index = (static_cast<std::size_t>(mid) * static_cast<std::size_t>(SIZE)) +
-                                          static_cast<std::size_t>(x);
+                const std::size_t index =
+                    (static_cast<std::size_t>(mid) * static_cast<std::size_t>(SIZE)) + static_cast<std::size_t>(x);
                 pixels[(index * 4) + 0] = 58;
                 pixels[(index * 4) + 1] = 58;
                 pixels[(index * 4) + 2] = 64;
             }
 
-            const float   inner      = static_cast<float>(SIZE - 24);
-            const int     maxHeight  = static_cast<int>(static_cast<float>(SIZE) * 0.38f);
-            const std::size_t count  = samples.size();
+            const float       inner     = static_cast<float>(SIZE - 24);
+            const int         maxHeight = static_cast<int>(static_cast<float>(SIZE) * 0.38f);
+            const std::size_t count     = samples.size();
 
             for (int x = 12; x < SIZE - 12; x++)
             {
@@ -892,7 +860,9 @@ namespace Chicane
                 const std::size_t start = static_cast<std::size_t>(t * static_cast<float>(count));
                 const std::size_t end   = std::min(
                     count,
-                    static_cast<std::size_t>(((static_cast<float>(x - 11) / std::max(inner, 1.0f)) * static_cast<float>(count)) + 1.0f)
+                    static_cast<std::size_t>(
+                        ((static_cast<float>(x - 11) / std::max(inner, 1.0f)) * static_cast<float>(count)) + 1.0f
+                    )
                 );
 
                 float peak = 0.0f;
@@ -907,8 +877,8 @@ namespace Chicane
 
                 for (int y = minY; y <= maxY; y++)
                 {
-                    const std::size_t index = (static_cast<std::size_t>(y) * static_cast<std::size_t>(SIZE)) +
-                                              static_cast<std::size_t>(x);
+                    const std::size_t index =
+                        (static_cast<std::size_t>(y) * static_cast<std::size_t>(SIZE)) + static_cast<std::size_t>(x);
                     pixels[(index * 4) + 0] = 236;
                     pixels[(index * 4) + 1] = 236;
                     pixels[(index * 4) + 2] = 240;
@@ -1026,9 +996,13 @@ namespace Chicane
                         continue;
                     }
 
-                    const std::size_t close = end + 10;
+                    const std::size_t  close = end + 10;
                     pugi::xml_document document;
-                    if (!document.load_buffer(buffer.data() + start, close - start, pugi::parse_default | pugi::parse_fragment))
+                    if (!document.load_buffer(
+                            buffer.data() + start,
+                            close - start,
+                            pugi::parse_default | pugi::parse_fragment
+                        ))
                     {
                         return nullptr;
                     }

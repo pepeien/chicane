@@ -1,6 +1,7 @@
 #pragma once
 
 #include <any>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <set>
@@ -90,6 +91,8 @@ namespace Chicane
             virtual float getDepth() const;
             virtual Vec2 getDrawPosition() const;
             virtual Vec2 getTransformPivot() const;
+            virtual Vec2 getScrollOffset() const;
+            virtual std::uint64_t getScrollGeneration() const;
 
         protected:
             // Lifescycle Events
@@ -220,6 +223,8 @@ namespace Chicane
             void markLayoutDirty();
             void markStyleDirtySubtree();
             void markLayoutDirtySubtree();
+            void invalidateDrawCache();
+            virtual void invalidateDrawCacheSubtree();
             Component* getHitAt(const Vec2& inLocation) const;
             bool containsPoint(const Vec2& inLocation) const;
             bool broadcastEvent(const WindowEvent& inEvent);
@@ -236,6 +241,10 @@ namespace Chicane
 
             // Positioning
             const Vec2& getSize() const;
+            Vec2 getContentSize() const;
+            Vec2 getBorderSize() const;
+            Vec2 getRemainingContentSize() const;
+            Vec2 getRemainingContentSize(const Component* inChild) const;
             void addSize(const Vec2& inValue);
             void addSize(float inWidth, float inHeight);
             void setSize(const Vec2& inValue);
@@ -314,6 +323,9 @@ namespace Chicane
             void refreshClassName();
             void refreshStyle();
             void refreshBounds();
+            void resetFlowCursor();
+            void reflowChildPositions();
+            void refreshCullSubtree();
 
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
@@ -335,6 +347,10 @@ namespace Chicane
             bool isCulledByAncestor() const;
             bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void rebuildFlatChildren();
+            void cacheAttributeFlags();
+            bool hideIfDirective();
+            Vec2 computeDrawPosition() const;
+            Mat3 computePaintMatrix() const;
 
         protected:
             // Properties
@@ -373,6 +389,7 @@ namespace Chicane
             float                                                 m_scratch;
             float                                                 m_layoutParentWidth;
             float                                                 m_layoutParentHeight;
+            float                                                 m_layoutParentFontSize;
 
             // Draw
             Primitive                                             m_primitive;
@@ -393,6 +410,19 @@ namespace Chicane
             bool                                                  m_bIsStyleDirty;
             bool                                                  m_bIsLayoutDirty;
             bool                                                  m_bIsCulled;
+            bool                                                  m_bLaidOutThisFrame;
+            bool                                                  m_bInsetsApplied;
+            bool                                                  m_bClassHasBinding;
+            bool                                                  m_bStyleHasBinding;
+            String                                                m_styleBindingSource;
+            String                                                m_styleBindingResolved;
+            bool                                                  m_bHasIfDirective;
+            mutable bool                                          m_bDrawCacheValid;
+            mutable bool                                          m_bHasDrawPosition;
+            mutable Vec2                                          m_cachedDrawPosition;
+            mutable Mat3                                          m_cachedPaintMatrix;
+            mutable Bounds2D                                      m_cachedDrawBounds;
+            mutable Bounds2D                                      m_cachedOverflowClip;
         };
     }
 }

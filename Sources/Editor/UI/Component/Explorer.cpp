@@ -27,7 +27,7 @@ namespace Editor
     constexpr float       GRID_GAP_EM        = 0.55f;
     constexpr float       LIST_GAP_EM        = 0.2f;
     constexpr float       LIST_ROW_EM        = 2.5f;
-    constexpr int         TILE_OVERSCAN_ROWS = 2;
+    constexpr int         TILE_OVERSCAN_ROWS = 6;
     const Chicane::String GRID_CONTENT_ID    = "explorerGridContent";
 
     const Chicane::String LAYOUT_HORIZONTAL = "horizontal";
@@ -72,7 +72,8 @@ namespace Editor
           m_pointer(Chicane::Vec2::Zero()),
           m_tiles({}),
           m_gridContent(nullptr),
-          m_gridLayout(Chicane::String::empty())
+          m_gridLayout(Chicane::String::empty()),
+          m_gridIconEm(-1.0f)
     {
         import <DockHeader>();
         import <ExplorerItem>();
@@ -610,16 +611,19 @@ namespace Editor
         const bool  bIsVertical       = layout.equals(LAYOUT_VERTICAL);
         const bool  bHasLayoutChanged = !layout.equals(m_gridLayout);
         const auto& style             = content->getStyle();
-        const float available         = std::max(0.0f, content->getSize().x - style.insetHorizontal());
-        const float viewH             = std::max(0.0f, content->getSize().y - style.insetVertical());
+        const Chicane::Vec2 inner     = content->getContentSize();
+        const float available         = std::max(0.0f, inner.x);
+        const float viewH             = std::max(0.0f, inner.y);
         const float em     = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
         const float iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
+        const bool  bIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
         const float gapX   = bIsVertical ? 0.0f : GRID_GAP_EM * em;
         const float gapY   = (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em;
         const float cellW  = bIsVertical ? std::max(available, 1.0f) : iconEm * em;
         const float cellH  = bIsVertical ? LIST_ROW_EM * em : cellW;
 
         m_gridLayout = layout;
+        m_gridIconEm = iconEm;
 
         const float strideX = std::max(cellW + gapX, 1.0f);
         const float strideY = std::max(cellH + gapY, 1.0f);
@@ -676,13 +680,9 @@ namespace Editor
                 bIsVertical ? Chicane::Vec2(0.0f, static_cast<float>(row) * strideY)
                             : Chicane::Vec2(static_cast<float>(column) * strideX, static_cast<float>(row) * strideY);
 
-            const bool bRebind = bHasLayoutChanged || tile->boundIndex() != static_cast<int>(dataIndex);
-            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot);
-
-            if (bRebind)
-            {
-                tile->markStyleDirtySubtree();
-            }
+            const bool bRebind =
+                bHasLayoutChanged || bIconSizeChanged || tile->boundIndex() != static_cast<int>(dataIndex);
+            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot, bRebind);
         }
     }
 

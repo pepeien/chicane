@@ -1,15 +1,12 @@
 #include "Chicane/Box.hpp"
 
 #include <cmath>
-#include <condition_variable>
 #include <list>
-#include <mutex>
-#include <queue>
-#include <thread>
-#include <unordered_set>
+#include <unordered_map>
 
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
+#include "Chicane/Box/Asset/Preview/Service.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
@@ -114,7 +111,7 @@ namespace Chicane
             return AssetPreview::create(inFilePath, AssetType::Texture, *image);
         }
 
-        std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inUseStored = true)
+        std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inUseStored)
         {
             switch (AssetHeader::getTypeFromExtension(inFilePath))
             {
@@ -385,118 +382,6 @@ namespace Chicane
 
             return preview;
         }
-
-        struct PreviewService
-        {
-            PreviewService() = default;
-
-            ~PreviewService()
-            {
-                {
-                    std::lock_guard<std::mutex> lock(mutex);
-                    bRunning = false;
-                }
-
-                readySignal.notify_all();
-
-                if (worker.joinable())
-                {
-                    worker.join();
-                }
-            }
-
-            void start()
-            {
-                std::lock_guard<std::mutex> lock(mutex);
-                if (bRunning)
-                {
-                    return;
-                }
-
-                bRunning = true;
-                worker   = std::thread(&PreviewService::loop, this);
-            }
-
-            void enqueue(const FileSystem::Path& inFilePath)
-            {
-                {
-                    std::lock_guard<std::mutex> lock(mutex);
-                    if (inFlight.find(inFilePath) != inFlight.end())
-                    {
-                        return;
-                    }
-
-                    inFlight.insert(inFilePath);
-                    pending.push(inFilePath);
-                }
-
-                start();
-                readySignal.notify_one();
-            }
-
-            void drain(std::vector<std::unique_ptr<AssetPreview>>& outReady)
-            {
-                std::lock_guard<std::mutex> lock(mutex);
-                outReady.swap(ready);
-            }
-
-            std::mutex                                 mutex;
-            std::condition_variable                    readySignal;
-            std::queue<FileSystem::Path>               pending;
-            std::unordered_set<FileSystem::Path>       inFlight;
-            std::vector<std::unique_ptr<AssetPreview>> ready;
-            std::thread                                worker;
-            bool                                       bRunning = false;
-
-            void loop()
-            {
-                while (true)
-                {
-                    FileSystem::Path path;
-
-                    {
-                        std::unique_lock<std::mutex> lock(mutex);
-                        readySignal.wait(
-                            lock,
-                            [this]()
-                            {
-                                return !bRunning || !pending.empty();
-                            }
-                        );
-
-                        if (!bRunning && pending.empty())
-                        {
-                            return;
-                        }
-
-                        path = pending.front();
-                        pending.pop();
-                    }
-
-                    std::unique_ptr<AssetPreview> preview;
-                    try
-                    {
-                        preview = decodePreview(path);
-                    }
-                    catch (...)
-                    {
-                        preview.reset();
-                    }
-
-                    {
-                        std::lock_guard<std::mutex> lock(mutex);
-                        inFlight.erase(path);
-
-                        if (preview)
-                        {
-                            ready.push_back(std::move(preview));
-                        }
-                    }
-                }
-            }
-        };
-
-        static PreviewService g_previewService = {};
 
         bool hasAsset(const FileSystem::Path& inSource)
         {
@@ -842,13 +727,13 @@ namespace Chicane
                 return;
             }
 
-            g_previewService.enqueue(path);
+            PreviewService::instance().enqueue(path);
         }
 
         void pumpPreview()
         {
             std::vector<std::unique_ptr<AssetPreview>> ready;
-            g_previewService.drain(ready);
+            PreviewService::instance().drain(ready);
 
             for (std::unique_ptr<AssetPreview>& preview : ready)
             {

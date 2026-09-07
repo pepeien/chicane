@@ -74,5 +74,7 @@ namespace Chicane
             AssetType        type = AssetType::Undefined;
             Image::Instance  image;
         };
+
+        std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inUseStored = true);
     }
 }

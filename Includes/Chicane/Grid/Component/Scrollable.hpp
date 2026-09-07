@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
@@ -26,6 +28,8 @@ namespace Chicane
 
         public:
             const Vec2& getScroll() const;
+            Vec2 getScrollOffset() const override;
+            std::uint64_t getScrollGeneration() const override;
             Vec2 getScrollMax() const;
             void addScroll(const Vec2& inValue);
             void addScroll(float inX, float inY);
@@ -65,6 +69,7 @@ namespace Chicane
 
         protected:
             Vec2 m_currentPosition;
+            std::uint64_t m_scrollGeneration;
 
             Vec2 m_virtualContentSize;
             bool m_bHasVirtualContent;

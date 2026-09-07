@@ -12,22 +12,25 @@ $attributesHeaderHeight: 1.65em;
     }
 
     &__transforms {
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         gap: 0.25em;
     }
 
     &__transform {
+        width: 100%;
         display: flex;
         flex-direction: row;
-        gap: 1em;
 
         &__label {
-            width: 6em;
+            width: 40%;
+            max-width: 6em;
         }
 
         Vec3 {
-            margin-left: auto;
+            width: 100%;
         }
     }
 }

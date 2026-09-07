@@ -1,6 +1,7 @@
 #include "Chicane/Core/Size.hpp"
 
 #include <cctype>
+#include <cstdint>
 #include <math.h>
 
 namespace Chicane
@@ -33,11 +34,11 @@ namespace Chicane
 
     float Size::parse(const String& inValue, SizeDirection inDirection) const
     {
-        String value = parseText(inValue);
+        const String value = parseText(inValue).trim();
 
         if (value.startsWith(CALCULATION_KEYWORD))
         {
-            return parseCalculation(value, inDirection);
+            return parseExpression(value, inDirection);
         }
 
         if (value.endsWith(EM_UNIT))
@@ -124,99 +125,185 @@ namespace Chicane
         return inValue.substr(open + 1).trim();
     }
 
-    float Size::parseCalculation(const String& inValue, SizeDirection inDirection) const
+    bool isBinaryOperator(const String& inValue, std::uint32_t inIndex)
     {
-        if (!inValue.startsWith(CALCULATION_KEYWORD))
+        for (std::uint32_t j = inIndex; j > 0;)
         {
-            return 0.0f;
-        }
+            j--;
 
-        const String operation = extractCalculationBody(inValue);
-        if (operation.isEmpty())
-        {
-            return 0.0f;
-        }
-
-        std::uint32_t parenthesisCount = 0;
-
-        for (std::uint32_t i = 0; i < operation.size(); i++)
-        {
-            const char character = operation.at(i);
-
-            if (character == FUNCTION_PARAMS_OPENING)
+            const char previous = inValue.at(j);
+            if (std::isspace(static_cast<unsigned char>(previous)))
             {
-                parenthesisCount++;
+                continue;
+            }
+
+            return previous != Size::FUNCTION_PARAMS_OPENING && previous != Size::CALCULATION_OPERATOR_SUM &&
+                   previous != Size::CALCULATION_OPERATOR_SUB && previous != Size::CALCULATION_OPERATOR_MUL &&
+                   previous != Size::CALCULATION_OPERATOR_DIV;
+        }
+
+        return false;
+    }
+
+    bool isSoleCalculation(const String& inValue)
+    {
+        if (!inValue.startsWith(Size::CALCULATION_KEYWORD))
+        {
+            return false;
+        }
+
+        std::size_t open = 0;
+        while (open < inValue.size() && inValue.at(open) != Size::FUNCTION_PARAMS_OPENING)
+        {
+            open++;
+        }
+
+        if (open >= inValue.size())
+        {
+            return false;
+        }
+
+        std::uint32_t depth = 0;
+        for (std::size_t i = open; i < inValue.size(); i++)
+        {
+            const char character = inValue.at(i);
+            if (character == Size::FUNCTION_PARAMS_OPENING)
+            {
+                depth++;
 
                 continue;
             }
+
+            if (character != Size::FUNCTION_PARAMS_CLOSING)
+            {
+                continue;
+            }
+
+            depth--;
+            if (depth == 0)
+            {
+                return inValue.substr(i + 1).trim().isEmpty();
+            }
+        }
+
+        return false;
+    }
+
+    float Size::parseCalculation(const String& inValue, SizeDirection inDirection) const
+    {
+        return parseExpression(extractCalculationBody(inValue), inDirection);
+    }
+
+    float Size::parseExpression(const String& inValue, SizeDirection inDirection) const
+    {
+        const String value = inValue.trim();
+        if (value.isEmpty())
+        {
+            return 0.0f;
+        }
+
+        if (isSoleCalculation(value))
+        {
+            return parseCalculation(value, inDirection);
+        }
+
+        std::int32_t depth = 0;
+        std::int32_t split = -1;
+        char         op    = 0;
+
+        for (std::int32_t i = static_cast<std::int32_t>(value.size()) - 1; i >= 0; i--)
+        {
+            const char character = value.at(static_cast<std::uint32_t>(i));
 
             if (character == FUNCTION_PARAMS_CLOSING)
             {
-                if (parenthesisCount > 0)
+                depth++;
+
+                continue;
+            }
+
+            if (character == FUNCTION_PARAMS_OPENING)
+            {
+                if (depth > 0)
                 {
-                    parenthesisCount--;
+                    depth--;
                 }
 
                 continue;
             }
 
-            if (std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character) ==
-                    CALCULATION_OPERATORS.end() ||
-                parenthesisCount > 0)
+            if (depth == 0 && (character == CALCULATION_OPERATOR_SUM || character == CALCULATION_OPERATOR_SUB) &&
+                isBinaryOperator(value, static_cast<std::uint32_t>(i)))
             {
-                continue;
-            }
-
-            bool bUnary = true;
-            for (std::uint32_t j = i; j > 0;)
-            {
-                j--;
-
-                const char previous = operation.at(j);
-                if (std::isspace(static_cast<unsigned char>(previous)))
-                {
-                    continue;
-                }
-
-                bUnary = previous == FUNCTION_PARAMS_OPENING ||
-                         previous == CALCULATION_OPERATOR_SUM || previous == CALCULATION_OPERATOR_SUB ||
-                         previous == CALCULATION_OPERATOR_MUL || previous == CALCULATION_OPERATOR_DIV;
+                split = i;
+                op    = character;
 
                 break;
             }
+        }
 
-            if (bUnary)
+        if (split < 0)
+        {
+            depth = 0;
+
+            for (std::uint32_t i = 0; i < value.size(); i++)
             {
-                continue;
+                const char character = value.at(i);
+
+                if (character == FUNCTION_PARAMS_OPENING)
+                {
+                    depth++;
+
+                    continue;
+                }
+
+                if (character == FUNCTION_PARAMS_CLOSING)
+                {
+                    if (depth > 0)
+                    {
+                        depth--;
+                    }
+
+                    continue;
+                }
+
+                if (depth == 0 && (character == CALCULATION_OPERATOR_MUL || character == CALCULATION_OPERATOR_DIV))
+                {
+                    split = static_cast<std::int32_t>(i);
+                    op    = character;
+
+                    break;
+                }
             }
+        }
 
-            const float left  = parse(operation.substr(0, i), inDirection);
-            const float right = parse(operation.substr(i + 1), inDirection);
+        if (split >= 0)
+        {
+            const float left  = parseExpression(value.substr(0, static_cast<std::size_t>(split)), inDirection);
+            const float right = parseExpression(value.substr(static_cast<std::size_t>(split) + 1), inDirection);
 
-            if (character == CALCULATION_OPERATOR_SUM)
+            if (op == CALCULATION_OPERATOR_SUM)
             {
                 return left + right;
             }
 
-            if (character == CALCULATION_OPERATOR_SUB)
+            if (op == CALCULATION_OPERATOR_SUB)
             {
                 return left - right;
             }
 
-            if (character == CALCULATION_OPERATOR_MUL)
+            if (op == CALCULATION_OPERATOR_MUL)
             {
                 return left * right;
             }
 
-            if (character == CALCULATION_OPERATOR_DIV)
+            if (op == CALCULATION_OPERATOR_DIV)
             {
-                return left / right;
+                return right == 0.0f ? 0.0f : left / right;
             }
-
-            break;
         }
 
-        return parse(operation, inDirection);
+        return parse(value, inDirection);
     }
 
     float Size::parseEM(const String& inValue) const

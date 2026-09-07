@@ -45,6 +45,7 @@ namespace Chicane
             void stopPlayers();
 
             void stop();
+            bool isIdle() const;
 
         private:
             std::unordered_map<String, Tween>  m_tweens;

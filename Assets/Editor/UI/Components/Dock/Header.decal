@@ -1,7 +1,7 @@
 $dockHeaderHeight: 1.65em;
 
 .dock-header {
-    width: calc(100% - 0.8em);
+    width: 100%;
     height: $dockHeaderHeight;
     display: flex;
     flex-direction: row;

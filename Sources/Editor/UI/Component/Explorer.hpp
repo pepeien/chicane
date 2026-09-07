@@ -147,6 +147,7 @@ namespace Editor
         std::vector<ExplorerItem*> m_tiles;
         Chicane::Grid::Component*  m_gridContent;
         Chicane::String            m_gridLayout;
+        float                      m_gridIconEm;
         pugi::xml_document         m_tileDocument;
     };
 }

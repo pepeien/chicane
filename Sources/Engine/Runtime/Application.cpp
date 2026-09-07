@@ -2,13 +2,13 @@
 
 #include <algorithm>
 #include <cmath>
-#include <mutex>
 #include <typeinfo>
 #include <vector>
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
+#include "Chicane/Box/Asset/Preview/Upload.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -30,15 +30,6 @@
 
 namespace Chicane
 {
-    struct PreviewUpload
-    {
-        String          reference;
-        Image::Instance image;
-    };
-
-    static std::mutex                  g_previewUploadsMutex = {};
-    static std::vector<PreviewUpload>  g_previewUploads      = {};
-
     Application& Application::getInstance()
     {
         static Application instance;
@@ -119,13 +110,10 @@ namespace Chicane
             return;
         }
 
-        std::vector<PreviewUpload> pending;
-        {
-            std::lock_guard<std::mutex> lock(g_previewUploadsMutex);
-            pending.swap(g_previewUploads);
-        }
+        std::vector<Box::PreviewUpload> pending;
+        Box::PreviewUpload::drain(pending);
 
-        for (const PreviewUpload& upload : pending)
+        for (const Box::PreviewUpload& upload : pending)
         {
             if (!upload.image)
             {
@@ -380,8 +368,7 @@ namespace Chicane
                     return;
                 }
 
-                std::lock_guard<std::mutex> lock(g_previewUploadsMutex);
-                g_previewUploads.push_back({inPreview->textureId(), inPreview->image});
+                Box::PreviewUpload::enqueue(inPreview->textureId(), inPreview->image);
             }
         );
 

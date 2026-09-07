@@ -29,14 +29,40 @@ namespace Editor
         load("Assets/Editor/UI/Components/Explorer/Item.grid", "Assets/Editor/UI/Components/Explorer/Item.decal");
     }
 
-    void ExplorerItem::bind(const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot)
+    void ExplorerItem::bind(
+        const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inRestyle
+    )
     {
+        if (
+            !inRestyle && m_item == inItem && m_boundIndex == inIndex && m_slot.x == inSlot.x && m_slot.y == inSlot.y
+        )
+        {
+            return;
+        }
+
+        const bool            bPreview     = hasPreview;
+        const bool            bFolder      = isFolder;
+        const bool            bShowGlyph   = showFileGlyph;
+        const Chicane::String previousType = typeClass;
+
         m_item       = inItem;
         m_boundIndex = inIndex;
         m_slot       = inSlot;
         m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
 
         refreshState();
+        refreshPosition();
+        invalidateDrawCache();
+        m_bIsCulled = false;
+
+        if (
+            inRestyle || bPreview != hasPreview || bFolder != isFolder || bShowGlyph != showFileGlyph ||
+            !previousType.equals(typeClass)
+        )
+        {
+            markStyleDirtySubtree();
+            markLayoutDirty();
+        }
     }
 
     void ExplorerItem::unbind()
@@ -58,7 +84,19 @@ namespace Editor
     {
         Chicane::Grid::Button::onTick(inDeltaTime);
 
+        if (m_boundIndex < 0)
+        {
+            return;
+        }
+
+        const bool            bPreview   = hasPreview;
+        const Chicane::String previous   = selectionState;
         refreshState();
+
+        if (bPreview != hasPreview || !previous.equals(selectionState))
+        {
+            markStyleDirtySubtree();
+        }
     }
 
     void ExplorerItem::refreshPosition()

@@ -35,10 +35,12 @@ namespace Chicane
         public:
             void refresh() override;
             std::vector<Component*> getChildrenFlat() const override;
+            void invalidateDrawCacheSubtree() override;
 
         protected:
             void onRefresh() override;
             void refreshSize() override;
+            void refreshPosition() override;
 
         private:
             void applySizeAttributes();
@@ -50,6 +52,9 @@ namespace Chicane
             Vec2                   m_intrinsic;
             SvgViewBox             m_viewBox;
             String                 m_signature;
+            Vec2                   m_syncedSize;
+            Vec2                   m_syncedPosition;
+            float                  m_syncedScale;
             std::vector<SvgShape*> m_shapes;
         };
     }

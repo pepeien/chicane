@@ -25,7 +25,9 @@ namespace Editor
         void refreshPosition() override;
 
     public:
-        void bind(const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot);
+        void bind(
+            const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inRestyle = false
+        );
         void unbind();
         int  boundIndex() const;
 

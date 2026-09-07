@@ -113,12 +113,25 @@ namespace Chicane
         {
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            if (m_style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
 
             syncGlyphs();
+        }
+
+        void Text::invalidateDrawCacheSubtree()
+        {
+            Scrollable::invalidateDrawCacheSubtree();
+
+            for (TextGlyph* glyph : m_glyphs)
+            {
+                if (glyph)
+                {
+                    glyph->invalidateDrawCache();
+                }
+            }
         }
 
         std::vector<Component*> Text::getChildrenFlat() const
@@ -140,7 +153,12 @@ namespace Chicane
 
         void Text::onRefresh()
         {
-            if (!isDisplayable() || m_bIsCulled)
+            if (!isDisplayable())
+            {
+                return;
+            }
+
+            if (!isReference(m_text) && !m_bLaidOutThisFrame && !m_layoutSignature.isEmpty())
             {
                 return;
             }
@@ -161,7 +179,9 @@ namespace Chicane
                 return;
             }
 
-            m_text = inValue;
+            m_text            = inValue;
+            m_layoutSignature = String::empty();
+            markLayoutDirty();
         }
 
         const Vec2& Text::getContentSize() const
@@ -257,8 +277,8 @@ namespace Chicane
                 return;
             }
 
-            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bWidthAuto  = m_style.width.isAuto();
+            const bool bHeightAuto = m_style.height.isAuto();
 
             if (!bWidthAuto || !bHeightAuto)
             {
@@ -270,8 +290,8 @@ namespace Chicane
 
         void Text::applyContentSize()
         {
-            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bWidthAuto  = m_style.width.isAuto();
+            const bool bHeightAuto = m_style.height.isAuto();
 
             if (!bWidthAuto && !bHeightAuto)
             {
@@ -279,6 +299,12 @@ namespace Chicane
             }
 
             setSize(bWidthAuto ? m_contentSize.x : m_size.x, bHeightAuto ? m_contentSize.y : m_size.y);
+        }
+
+        void Text::refreshPosition()
+        {
+            Component::refreshPosition();
+            syncGlyphs();
         }
 
         void Text::refreshText()
@@ -302,8 +328,6 @@ namespace Chicane
 
             if (signature.equals(m_layoutSignature))
             {
-                applyContentSize();
-
                 return;
             }
 
@@ -383,17 +407,17 @@ namespace Chicane
 
             m_contentSize = {maxWidth, lineCount * lineHeight};
 
-            const bool bWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bWidthAuto  = m_style.width.isAuto();
+            const bool bHeightAuto = m_style.height.isAuto();
 
             if (bWidthAuto)
             {
-                m_style.width.set(m_contentSize.x);
+                m_style.width.value.set(m_contentSize.x);
             }
 
             if (bHeightAuto)
             {
-                m_style.height.set(m_contentSize.y);
+                m_style.height.value.set(m_contentSize.y);
             }
 
             applyContentSize();

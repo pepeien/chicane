@@ -1,9 +1,12 @@
 .vector-3d {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     gap: 0.5em;
 
     &__value {
+        width: 33%;
         display: flex;
         flex-direction: row;
         gap: 0.25em;
@@ -30,8 +33,8 @@
         }
 
         TextInput {
-            width: 4em;
-            height: 1em;
+            width: 100%;
+            height: 100%;
             color: $--black;
         }
     }

@@ -12,6 +12,8 @@ namespace Chicane
             : Transformable2D(),
               m_animator(),
               m_animationClip(String::empty()),
+              m_lastTransformRaw(String::empty()),
+              m_lastTranslateRaw(String::empty()),
               m_animationDelta(0.0f),
               m_bIsAnimationReady(false)
         {}
@@ -20,10 +22,17 @@ namespace Chicane
         {
             const Style::Properties targets = outStyle.extractAnimatedProperties();
 
+            auto rememberResolved = [&outStyle, this]()
+            {
+                m_lastTransformRaw = outStyle.transform.getRaw();
+                m_lastTranslateRaw = outStyle.translate.getRaw();
+            };
+
             if (!m_bIsAnimationReady)
             {
                 outStyle.snapshot();
                 m_bIsAnimationReady = true;
+                rememberResolved();
 
                 return;
             }
@@ -33,6 +42,7 @@ namespace Chicane
                 m_animator.stop();
                 m_animationClip = "";
                 outStyle.snapshot();
+                rememberResolved();
 
                 return;
             }
@@ -84,12 +94,32 @@ namespace Chicane
 
                 if (sameValues(from, to))
                 {
-                    m_animator.stopTween(name);
-
-                    continue;
+                    // Live computed values follow the tween. Stopping here would
+                    // kill an in-flight transition after the first frame.
+                    if (!m_animator.hasTween(name))
+                    {
+                        continue;
+                    }
                 }
+                else
+                {
+                    const bool bPercentBasis =
+                        (name.equals(Style::TRANSFORM_ATTRIBUTE_NAME) &&
+                         outStyle.transform.getRaw().contains('%') &&
+                         outStyle.transform.getRaw().equals(m_lastTransformRaw)) ||
+                        (name.equals(Style::TRANSLATE_ATTRIBUTE_NAME) &&
+                         outStyle.translate.getRaw().contains('%') &&
+                         outStyle.translate.getRaw().equals(m_lastTranslateRaw));
 
-                m_animator.tween(name, from, to, transition->duration, transition->delay, transition->easing);
+                    // translateY(-100%) tracks the box. Hover rematch/layout must
+                    // not restart transition: transform when only the % basis moved.
+                    if (bPercentBasis && !m_animator.hasTween(name))
+                    {
+                        continue;
+                    }
+
+                    m_animator.tween(name, from, to, transition->duration, transition->delay, transition->easing);
+                }
             }
 
             const String animationName = outStyle.animation.name.trim();
@@ -175,6 +205,7 @@ namespace Chicane
             }
 
             outStyle.snapshot();
+            rememberResolved();
         }
     }
 }

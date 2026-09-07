@@ -1351,6 +1351,9 @@ namespace Chicane
               m_intrinsic(Vec2::Zero()),
               m_viewBox({}),
               m_signature(""),
+              m_syncedSize(Vec2::Zero()),
+              m_syncedPosition(Vec2::Zero()),
+              m_syncedScale(-1.0f),
               m_shapes({})
         {
             while (!m_children.empty())
@@ -1373,12 +1376,44 @@ namespace Chicane
         {
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            if (m_style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
 
+            const Vec2& size   = getSize();
+            const Vec2& origin = getPosition();
+            const float extent = std::max(m_viewBox.width, m_viewBox.height);
+            const float fit    = std::min(
+                m_viewBox.width > 0.0f ? size.x / m_viewBox.width : 0.0f,
+                m_viewBox.height > 0.0f ? size.y / m_viewBox.height : 0.0f
+            );
+            const float scale = extent * fit;
+
+            if (size.x == m_syncedSize.x && size.y == m_syncedSize.y && origin.x == m_syncedPosition.x &&
+                origin.y == m_syncedPosition.y && scale == m_syncedScale)
+            {
+                return;
+            }
+
+            m_syncedSize     = size;
+            m_syncedPosition = origin;
+            m_syncedScale    = scale;
+
             syncShapes();
+        }
+
+        void Svg::invalidateDrawCacheSubtree()
+        {
+            Component::invalidateDrawCacheSubtree();
+
+            for (SvgShape* shape : m_shapes)
+            {
+                if (shape)
+                {
+                    shape->invalidateDrawCache();
+                }
+            }
         }
 
         std::vector<Component*> Svg::getChildrenFlat() const
@@ -1400,8 +1435,15 @@ namespace Chicane
 
         void Svg::onRefresh()
         {
-            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            if (m_style.isDisplay(StyleDisplay::None))
             {
+                return;
+            }
+
+            if (!m_bLaidOutThisFrame && !m_shapes.empty())
+            {
+                rebuildShapes();
+
                 return;
             }
 
@@ -1409,10 +1451,24 @@ namespace Chicane
             rebuildShapes();
         }
 
+        void Svg::refreshPosition()
+        {
+            Component::refreshPosition();
+
+            const Vec2& origin = getPosition();
+            if (origin.x == m_syncedPosition.x && origin.y == m_syncedPosition.y && !m_shapes.empty())
+            {
+                return;
+            }
+
+            m_syncedPosition = origin;
+            syncShapes();
+        }
+
         void Svg::refreshSize()
         {
-            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
 
             Component::refreshSize();
 
@@ -1443,23 +1499,23 @@ namespace Chicane
 
         void Svg::applySizeAttributes()
         {
-            if (m_style.width.getRaw().isEmpty())
+            if (m_style.width.value.getRaw().isEmpty())
             {
                 const String width = parseText(getAttribute(WIDTH_ATTRIBUTE_NAME)).trim();
 
                 if (!width.isEmpty())
                 {
-                    m_style.width.setRaw(width);
+                    m_style.width.value.setRaw(width);
                 }
             }
 
-            if (m_style.height.getRaw().isEmpty())
+            if (m_style.height.value.getRaw().isEmpty())
             {
                 const String height = parseText(getAttribute(HEIGHT_ATTRIBUTE_NAME)).trim();
 
                 if (!height.isEmpty())
                 {
-                    m_style.height.setRaw(height);
+                    m_style.height.value.setRaw(height);
                 }
             }
         }

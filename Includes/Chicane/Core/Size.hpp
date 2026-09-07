@@ -54,6 +54,7 @@ namespace Chicane
 
         String extractCalculationBody(const String& inValue) const;
         float parseCalculation(const String& inValue, SizeDirection inDirection) const;
+        float parseExpression(const String& inValue, SizeDirection inDirection) const;
 
         float parseEM(const String& inValue) const;
         float parseEM(float inValue) const;

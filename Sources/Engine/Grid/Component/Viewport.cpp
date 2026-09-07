@@ -24,6 +24,11 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
+            if (!isReference(getAttribute(TARGET_ATTRIBUTE_NAME)) && !target.isEmpty() && !m_bLaidOutThisFrame)
+            {
+                return;
+            }
+
             refreshTarget();
         }
 
@@ -31,11 +36,8 @@ namespace Chicane
         {
             if (hasParent() && m_parent->getTag().equals(DockPanel::TAG_ID))
             {
-                const Style& parentStyle = m_parent->getStyle();
-                setSize(
-                    std::max(0.0f, m_parent->getSize().x - parentStyle.insetHorizontal()),
-                    std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
-                );
+                const Vec2 inner = m_parent->getContentSize();
+                setSize(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
 
                 return;
             }

@@ -28,6 +28,7 @@
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
+#include "Chicane/Grid/Style/Size.hpp"
 #include "Chicane/Grid/Style/Transform.hpp"
 #include "Chicane/Grid/Style/Transition.hpp"
 
@@ -127,8 +128,13 @@ namespace Chicane
             static constexpr inline const char* FLEX_WRAP_TYPE_WRAP      = "wrap";
 
             // Size
-            static constexpr inline const char* WIDTH_ATTRIBUTE_NAME  = "width";
-            static constexpr inline const char* HEIGHT_ATTRIBUTE_NAME = "height";
+            static constexpr inline const char* WIDTH_ATTRIBUTE_NAME      = "width";
+            static constexpr inline const char* HEIGHT_ATTRIBUTE_NAME     = "height";
+            static constexpr inline const char* MIN_WIDTH_ATTRIBUTE_NAME  = "min-width";
+            static constexpr inline const char* MIN_HEIGHT_ATTRIBUTE_NAME = "min-height";
+            static constexpr inline const char* MAX_WIDTH_ATTRIBUTE_NAME  = "max-width";
+            static constexpr inline const char* MAX_HEIGHT_ATTRIBUTE_NAME = "max-height";
+            static constexpr inline const char* SIZE_LIMIT_TYPE_NONE      = "none";
 
             // Position
             static constexpr inline const char* POSITION_ATTRIBUTE_NAME = "position";
@@ -367,6 +373,10 @@ namespace Chicane
                 OPACITY_ATTRIBUTE_NAME,
                 WIDTH_ATTRIBUTE_NAME,
                 HEIGHT_ATTRIBUTE_NAME,
+                MIN_WIDTH_ATTRIBUTE_NAME,
+                MIN_HEIGHT_ATTRIBUTE_NAME,
+                MAX_WIDTH_ATTRIBUTE_NAME,
+                MAX_HEIGHT_ATTRIBUTE_NAME,
                 Z_INDEX_ATTRIBUTE_NAME,
                 FOREGROUND_COLOR_ATTRIBUTE_NAME,
                 BACKGROUND_COLOR_ATTRIBUTE_NAME,
@@ -410,6 +420,9 @@ namespace Chicane
             bool isPosition(StylePosition inValue) const;
             bool isPositioned() const;
             bool isClippingOverflow() const;
+            bool isFillPercent(const String& inRaw) const;
+            void resolveFillPercent(const Vec2& inRemaining);
+            void clampSize(float& outWidth, float& outHeight) const;
 
             float insetLeft() const;
             float insetRight() const;
@@ -442,6 +455,8 @@ namespace Chicane
             void refresh();
 
         private:
+            bool canKeepFillPercent(SizeDirection inDirection) const;
+            float preservedFillPercent(float inParsed, float inLaidOut) const;
             void refreshDisplay();
             void refreshFlex();
             void refreshZIndex();
@@ -478,6 +493,7 @@ namespace Chicane
             Vec2 parseTransformOrigin(const String& inValue) const;
             Vec2 parseTransformOrigin(const String& inValue, const Vec2& inBox) const;
             float parseSize(const String& inValue, SizeDirection inDirection, const Vec2* inBox = nullptr) const;
+            float parseSizeLimit(const String& inValue, SizeDirection inDirection) const;
             float parseWeight(const String& inValue) const;
             String parseReference(const String& inValue) const;
             String parseText(const String& inValue) const;
@@ -491,8 +507,8 @@ namespace Chicane
             StyleProperty<float>          zIndex; // [0.0f, 999.9f]
 
             // Size
-            StyleProperty<float>          width;
-            StyleProperty<float>          height;
+            StyleSize                     width;
+            StyleSize                     height;
 
             // Flex
             StyleFlex                     flex;

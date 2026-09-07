@@ -24,8 +24,8 @@ $explorerSearchFilterWidth: 11.5em;
     }
 
     &__tree {
-        width: calc($explorerTreeWidth - 0.4em);
-        height: calc(100% - 4.5em);
+        width: $explorerTreeWidth;
+        height: 100%;
         display: flex;
         flex-direction: column;
         padding: 0.35em 0.2em;
@@ -37,7 +37,7 @@ $explorerSearchFilterWidth: 11.5em;
         }
 
         &__item {
-            width: calc(100% - 0.5em);
+            width: 100%;
             height: 1.55em;
             display: flex;
             flex-direction: row;
@@ -99,8 +99,8 @@ $explorerSearchFilterWidth: 11.5em;
     }
 
     &__main {
-        width: calc(100% - calc($explorerTreeWidth + 0.8em));
-        height: calc(100% - 0.6em);
+        width: calc(100% - $explorerTreeWidth);
+        height: 100%;
         display: flex;
         flex-direction: column;
         gap: 0.35em;
@@ -116,7 +116,7 @@ $explorerSearchFilterWidth: 11.5em;
     }
 
     &__search {
-        width: calc(100% - calc($explorerSearchFilterWidth + 1.1em));
+        width: calc(100% - $explorerSearchFilterWidth);
         height: 100%;
         display: flex;
         flex-direction: row;
@@ -168,7 +168,7 @@ $explorerSearchFilterWidth: 11.5em;
 
     &__grid {
         width: 100%;
-        height: calc(100% - 9.5em);
+        height: calc(100% - $explorerToolbarHeight - $explorerFooterHeight);
 
         &__content {
             width: 100%;
@@ -199,7 +199,7 @@ $explorerSearchFilterWidth: 11.5em;
     }
 
     &__footer {
-        width: calc(100% - 0.3em);
+        width: 100%;
         height: $explorerFooterHeight;
         display: flex;
         flex-direction: row;
@@ -220,7 +220,7 @@ $explorerSearchFilterWidth: 11.5em;
         &__label {
             font-size: 0.7em;
             margin: auto 0.2em auto 0;
-            color: $--grey;
+            color: $--black;
         }
     }
 

@@ -39,6 +39,149 @@ namespace Chicane
             Component* previous = nullptr;
         };
 
+        struct LayoutMetrics
+        {
+            StyleDisplay       display;
+            StylePosition      position;
+            StyleAlignment     align;
+            StyleFlexDirection flexDir;
+            StyleFlexWrap      flexWrap;
+            String             widthRaw;
+            String             heightRaw;
+            String             minWidthRaw;
+            String             minHeightRaw;
+            String             maxWidthRaw;
+            String             maxHeightRaw;
+            String             marginL;
+            String             marginR;
+            String             marginT;
+            String             marginB;
+            String             paddingL;
+            String             paddingR;
+            String             paddingT;
+            String             paddingB;
+        };
+
+        bool operator==(const LayoutMetrics& inLeft, const LayoutMetrics& inRight)
+        {
+            return inLeft.display == inRight.display && inLeft.position == inRight.position &&
+                   inLeft.align == inRight.align && inLeft.flexDir == inRight.flexDir &&
+                   inLeft.flexWrap == inRight.flexWrap && inLeft.widthRaw.equals(inRight.widthRaw) &&
+                   inLeft.heightRaw.equals(inRight.heightRaw) && inLeft.minWidthRaw.equals(inRight.minWidthRaw) &&
+                   inLeft.minHeightRaw.equals(inRight.minHeightRaw) && inLeft.maxWidthRaw.equals(inRight.maxWidthRaw) &&
+                   inLeft.maxHeightRaw.equals(inRight.maxHeightRaw) && inLeft.marginL.equals(inRight.marginL) &&
+                   inLeft.marginR.equals(inRight.marginR) && inLeft.marginT.equals(inRight.marginT) &&
+                   inLeft.marginB.equals(inRight.marginB) && inLeft.paddingL.equals(inRight.paddingL) &&
+                   inLeft.paddingR.equals(inRight.paddingR) && inLeft.paddingT.equals(inRight.paddingT) &&
+                   inLeft.paddingB.equals(inRight.paddingB);
+        }
+
+        LayoutMetrics captureLayoutMetrics(const Style& inStyle)
+        {
+            return {
+                inStyle.display.get(),
+                inStyle.position.get(),
+                inStyle.align.get(),
+                inStyle.flex.direction.get(),
+                inStyle.flex.wrap.get(),
+                inStyle.width.value.getRaw(),
+                inStyle.height.value.getRaw(),
+                inStyle.width.min.getRaw(),
+                inStyle.height.min.getRaw(),
+                inStyle.width.max.getRaw(),
+                inStyle.height.max.getRaw(),
+                inStyle.margin.left.getRaw(),
+                inStyle.margin.right.getRaw(),
+                inStyle.margin.top.getRaw(),
+                inStyle.margin.bottom.getRaw(),
+                inStyle.padding.left.getRaw(),
+                inStyle.padding.right.getRaw(),
+                inStyle.padding.top.getRaw(),
+                inStyle.padding.bottom.getRaw()
+            };
+        }
+
+        bool isHeightAuto(const Style& inStyle)
+        {
+            return inStyle.height.isAuto();
+        }
+
+        bool isWidthAuto(const Style& inStyle)
+        {
+            return inStyle.width.isAuto();
+        }
+
+        bool isFlexNowrap(const Style& inStyle)
+        {
+            return inStyle.isDisplay(StyleDisplay::Flex) && inStyle.flex.wrap.get() == StyleFlexWrap::NoWrap;
+        }
+
+        Vec2 innerLayoutSize(const Component* inBox)
+        {
+            if (!inBox)
+            {
+                return Vec2::Zero();
+            }
+
+            const Vec2 content = inBox->getContentSize();
+
+            return {
+                std::max(0.0f, content.x),
+                std::max(0.0f, content.y)
+            };
+        }
+
+        String expandStyleBinding(const String& inValue)
+        {
+            const std::size_t ref = inValue.find("ref(");
+            if (ref == String::npos)
+            {
+                return inValue;
+            }
+
+            const std::size_t open = ref + 3;
+
+            std::uint32_t depth = 0;
+            std::size_t   close = String::npos;
+            for (std::size_t i = open; i < inValue.size(); i++)
+            {
+                const char character = inValue.at(i);
+                if (character == METHOD_PARAMS_OPENING)
+                {
+                    depth++;
+
+                    continue;
+                }
+
+                if (character != METHOD_PARAMS_CLOSING)
+                {
+                    continue;
+                }
+
+                depth--;
+                if (depth == 0)
+                {
+                    close = i;
+
+                    break;
+                }
+            }
+
+            if (close == String::npos)
+            {
+                return inValue;
+            }
+
+            String converted;
+            converted.append(inValue.substr(0, ref));
+            converted.append(REFERENCE_VALUE_OPENING);
+            converted.append(inValue.substr(open + 1, close - open - 1));
+            converted.append(REFERENCE_VALUE_CLOSING);
+            converted.append(inValue.substr(close + 1));
+
+            return converted;
+        }
+
         struct Projection
         {
         public:
@@ -124,6 +267,7 @@ namespace Chicane
         {
             m_sourceNode = m_sourceDocument.append_copy(inNode);
             m_attributes = Xml::getAttributes(m_sourceNode);
+            cacheAttributeFlags();
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
@@ -272,6 +416,7 @@ namespace Chicane
               m_scratch(0.0f),
               m_layoutParentWidth(-1.0f),
               m_layoutParentHeight(-1.0f),
+              m_layoutParentFontSize(-1.0f),
               m_primitive({}),
               m_attributes({}),
               m_sourceNode(),
@@ -284,7 +429,20 @@ namespace Chicane
               m_bIsDragging(false),
               m_bIsStyleDirty(true),
               m_bIsLayoutDirty(true),
-              m_bIsCulled(false)
+              m_bIsCulled(false),
+              m_bLaidOutThisFrame(false),
+              m_bInsetsApplied(false),
+              m_bClassHasBinding(false),
+              m_bStyleHasBinding(false),
+              m_styleBindingSource(String::empty()),
+              m_styleBindingResolved(String::empty()),
+              m_bHasIfDirective(false),
+              m_bDrawCacheValid(false),
+              m_bHasDrawPosition(false),
+              m_cachedDrawPosition(Vec2::Zero()),
+              m_cachedPaintMatrix(1.0f),
+              m_cachedDrawBounds({}),
+              m_cachedOverflowClip(Bounds2D::unconstrained())
         {
             m_style.setParent(this);
         }
@@ -445,6 +603,22 @@ namespace Chicane
                 addStyleProperties(properties);
             }
 
+            m_styleBindingSource = {};
+            m_bStyleHasBinding   = false;
+            for (const auto& [key, value] : properties)
+            {
+                if (value.contains("ref(") || isReference(value))
+                {
+                    m_bStyleHasBinding = true;
+                    if (!m_styleBindingSource.isEmpty())
+                    {
+                        m_styleBindingSource.append('\n');
+                    }
+
+                    m_styleBindingSource.append(value);
+                }
+            }
+
             m_style.restore();
         }
 
@@ -455,11 +629,21 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsWidthAuto  = m_style.width.getRaw().isEmpty() || m_style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            if (
+                hasParent() && m_parent->m_bLaidOutThisFrame &&
+                !m_style.isPosition(StylePosition::Absolute) && isFlexNowrap(m_parent->getStyle()) &&
+                (m_style.isFillPercent(m_style.width.value.getRaw()) ||
+                 m_style.isFillPercent(m_style.height.value.getRaw()))
+            )
+            {
+                m_style.resolveFillPercent(m_parent->getRemainingContentSize(this));
+            }
 
-            float width  = m_style.width.get();
-            float height = m_style.height.get();
+            const bool bIsWidthAuto  = m_style.width.isAuto();
+            const bool bIsHeightAuto = m_style.height.isAuto();
+
+            float width  = m_style.width.value.get();
+            float height = m_style.height.value.get();
 
             if (bIsWidthAuto || bIsHeightAuto)
             {
@@ -480,8 +664,7 @@ namespace Chicane
                     else
                     {
                         const Component* box       = getContainingBlock();
-                        const Style&     boxStyle  = box->getStyle();
-                        const float      available = box->getSize().x - boxStyle.insetHorizontal();
+                        const float      available = innerLayoutSize(box).x;
                         const float      horizontalMargin =
                             (m_style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.left.get()) +
                             (m_style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : m_style.margin.right.get());
@@ -496,7 +679,9 @@ namespace Chicane
                 }
             }
 
+            m_style.clampSize(width, height);
             setSize(width, height);
+            m_bInsetsApplied = false;
         }
 
         void Component::refreshPosition()
@@ -515,33 +700,30 @@ namespace Chicane
 
             const Vec2 startPadding(m_style.insetLeft(), m_style.insetTop());
 
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            const Vec2 contentSize = getContentSize();
 
-            const float usedWidth  = m_size.x + m_style.insetHorizontal();
-            const float usedHeight = m_size.y + (bIsHeightAuto ? m_style.insetVertical() : 0.0f);
+            const float usedWidth  = contentSize.x + m_style.insetHorizontal();
+            const float usedHeight = contentSize.y + m_style.insetVertical();
 
             if (hasParent() && !isRoot())
             {
                 const Component* box = m_style.isPosition(StylePosition::Absolute) ? getContainingBlock() : m_parent;
-                const Style&     boxStyle    = box->getStyle();
                 const Style&     parentStyle = m_parent->getStyle();
-                const Vec2       available   = {
-                    std::max(0.0f, box->getSize().x - boxStyle.insetHorizontal()),
-                    std::max(0.0f, box->getSize().y - boxStyle.insetVertical())
-                };
+                const Vec2       available   = innerLayoutSize(box);
 
                 const bool bLeftAuto     = m_style.margin.left.isRaw(Size::AUTO_KEYWORD);
                 const bool bRightAuto    = m_style.margin.right.isRaw(Size::AUTO_KEYWORD);
                 const bool bTopAuto      = m_style.margin.top.isRaw(Size::AUTO_KEYWORD);
                 const bool bBottomAuto   = m_style.margin.bottom.isRaw(Size::AUTO_KEYWORD);
                 const bool bParentCenter = parentStyle.align.get() == StyleAlignment::Center;
+                const bool bParentFlex   = parentStyle.isDisplay(StyleDisplay::Flex);
+                const bool bParentRow    = bParentFlex && parentStyle.flex.direction.get() == StyleFlexDirection::Row;
 
                 float leftoverW = available.x - usedWidth - marginLeft - marginRight;
 
-                if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex) &&
-                    parentStyle.flex.direction.get() == StyleFlexDirection::Row)
+                if (!m_style.isPosition(StylePosition::Absolute) && bParentRow)
                 {
-                    leftoverW = m_parent->getPosition().x + parentStyle.insetLeft() + m_parent->getSize().x -
+                    leftoverW = m_parent->getPosition().x + parentStyle.insetLeft() + innerLayoutSize(m_parent).x -
                                 m_parent->getCursor().x - usedWidth - marginLeft - marginRight;
                 }
 
@@ -562,19 +744,18 @@ namespace Chicane
                     }
                 }
 
-                const bool bParentHeightAuto =
-                    parentStyle.height.getRaw().isEmpty() || parentStyle.height.isRaw(Size::AUTO_KEYWORD);
+                const bool bParentHeightAuto = parentStyle.height.isAuto();
 
-                const bool bCanAutoVertical = m_style.isPosition(StylePosition::Absolute) ||
-                                              parentStyle.isDisplay(StyleDisplay::Flex) || !bParentHeightAuto;
+                const bool bCanAutoVertical =
+                    m_style.isPosition(StylePosition::Absolute) || bParentFlex || !bParentHeightAuto;
 
                 if (bCanAutoVertical && (bParentCenter || bTopAuto || bBottomAuto))
                 {
                     float leftoverH = available.y - usedHeight - marginTop - marginBottom;
 
-                    if (!m_style.isPosition(StylePosition::Absolute) && parentStyle.isDisplay(StyleDisplay::Flex))
+                    if (!m_style.isPosition(StylePosition::Absolute) && bParentFlex && !bParentRow)
                     {
-                        leftoverH = m_parent->getPosition().y + parentStyle.insetTop() + m_parent->getSize().y -
+                        leftoverH = m_parent->getPosition().y + parentStyle.insetTop() + innerLayoutSize(m_parent).y -
                                     m_parent->getCursor().y - usedHeight - marginTop - marginBottom;
                     }
 
@@ -615,10 +796,7 @@ namespace Chicane
             }
 
             const Style& parentStyle = m_parent->getStyle();
-            const Vec2   available   = {
-                std::max(0.0f, m_parent->getSize().x - parentStyle.insetHorizontal()),
-                std::max(0.0f, m_parent->getSize().y - parentStyle.insetVertical())
-            };
+            const Vec2   available   = innerLayoutSize(m_parent);
 
             switch (parentStyle.display.get())
             {
@@ -887,13 +1065,21 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            m_animationDelta = inDeltaTime;
+            m_animationDelta    = inDeltaTime;
+            m_bLaidOutThisFrame = false;
 
             refresh();
 
             m_animationDelta = 0.0f;
 
-            if (m_style.isDisplay(StyleDisplay::None) || m_bIsCulled)
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                return;
+            }
+
+            // Off-screen skip is for idle subtrees. A node that just laid out still
+            // needs children to measure (text/icons) even if the first cull was stale.
+            if (m_bIsCulled && !m_bLaidOutThisFrame && m_animator.isIdle())
             {
                 return;
             }
@@ -905,83 +1091,246 @@ namespace Chicane
                 m_children.at(i)->tick(inDeltaTime);
             }
 
-            const bool bIsHeightAuto = m_style.height.getRaw().isEmpty() || m_style.height.isRaw(Size::AUTO_KEYWORD);
+            if (!m_bLaidOutThisFrame)
+            {
+                return;
+            }
 
-            addSize(m_style.insetHorizontal(), bIsHeightAuto ? m_style.insetVertical() : 0.0f);
+            // Children may have grown during onRefresh (Text glyphs). Re-measure
+            // auto boxes, then re-place children before padding is applied.
+            const bool bIsWidthAuto  = isWidthAuto(m_style);
+            const bool bIsHeightAuto = isHeightAuto(m_style);
+
+            if (bIsWidthAuto || bIsHeightAuto)
+            {
+                const Vec2 previous = getContentSize();
+
+                refreshSize();
+
+                if (
+                    m_parent && (std::abs(previous.x - getContentSize().x) > 0.01f ||
+                                 std::abs(previous.y - getContentSize().y) > 0.01f)
+                )
+                {
+                    m_parent->markLayoutDirty();
+                }
+            }
+
+            reflowChildPositions();
+
+            if (!m_bInsetsApplied)
+            {
+                addSize(
+                    bIsWidthAuto ? m_style.insetHorizontal() : 0.0f,
+                    bIsHeightAuto ? m_style.insetVertical() : 0.0f
+                );
+                m_bInsetsApplied = true;
+            }
+
+            refreshBounds();
+            invalidateDrawCacheSubtree();
+            refreshCullSubtree();
         }
 
         void Component::refresh()
         {
             float parentWidth  = 0.0f;
             float parentHeight = 0.0f;
+            float parentFont   = 0.0f;
+            bool  bParentLaidOut = false;
             if (hasParent() && !isRoot())
             {
-                parentWidth  = m_parent->getSize().x;
-                parentHeight = m_parent->getSize().y;
+                const Vec2 parentContent = m_parent->getContentSize();
+                parentWidth    = parentContent.x;
+                parentHeight   = parentContent.y;
+                parentFont     = m_parent->getStyle().font.size.get();
+                bParentLaidOut = m_parent->m_bLaidOutThisFrame;
             }
 
             const bool bParentSizeChanged = parentWidth != m_layoutParentWidth || parentHeight != m_layoutParentHeight;
             if (bParentSizeChanged)
             {
-                m_bIsLayoutDirty     = true;
                 m_layoutParentWidth  = parentWidth;
                 m_layoutParentHeight = parentHeight;
+
+                // Parent size still includes last frame's post-child insets when that
+                // parent skipped layout. Reflowing against that value (and a stale flex
+                // cursor) collapses the tree. Only react when the parent actually laid out.
+                if (bParentLaidOut || isRoot())
+                {
+                    m_bIsLayoutDirty = true;
+                    m_bIsStyleDirty  = true;
+                }
             }
 
-            // Culled nodes still reflow (flex cursor / wrap), but last frame's parsed
-            // style is valid until the node, its style, or its parent size changes.
-            const bool bSkipStyle = m_bIsCulled && !m_bIsStyleDirty && !bParentSizeChanged;
-
-            if (!bSkipStyle)
+            const bool bParentFontChanged = parentFont != m_layoutParentFontSize;
+            if (bParentFontChanged)
             {
-                refreshClassName();
+                m_layoutParentFontSize = parentFont;
 
-                if (m_bIsStyleDirty)
+                if (bParentLaidOut || isRoot())
                 {
-                    refreshStyleRuleset();
-                    m_bIsStyleDirty = false;
+                    m_bIsStyleDirty  = true;
+                    m_bIsLayoutDirty = true;
+                }
+            }
+
+            if (hideIfDirective())
+            {
+                return;
+            }
+
+            if (bParentLaidOut)
+            {
+                m_bIsLayoutDirty = true;
+            }
+
+            if (!m_bIsLayoutDirty && (isWidthAuto(m_style) || isHeightAuto(m_style)))
+            {
+                for (Component* child : m_children)
+                {
+                    if (child && child->m_bIsLayoutDirty)
+                    {
+                        m_bIsLayoutDirty = true;
+
+                        break;
+                    }
+                }
+            }
+
+            if (m_bStyleHasBinding)
+            {
+                String resolved;
+                for (const String& part : m_styleBindingSource.split('\n'))
+                {
+                    if (part.isEmpty())
+                    {
+                        continue;
+                    }
+
+                    resolved.append(parseText(part.contains("ref(") ? expandStyleBinding(part) : part));
+                    resolved.append('\n');
                 }
 
-                refreshStyle();
-                refreshDirectives();
+                if (!resolved.equals(m_styleBindingResolved))
+                {
+                    m_styleBindingResolved = resolved;
+                    m_bIsStyleDirty        = true;
+                    m_bIsLayoutDirty       = true;
+                }
             }
+
+            if (m_bClassHasBinding || m_bIsStyleDirty)
+            {
+                refreshClassName();
+            }
+
+            const bool bStyleRefreshed = m_bIsStyleDirty;
+
+            if (m_bIsStyleDirty)
+            {
+                const LayoutMetrics before = captureLayoutMetrics(m_style);
+
+                refreshStyleRuleset();
+                m_bIsStyleDirty = false;
+                refreshStyle();
+
+                if (!(before == captureLayoutMetrics(m_style)))
+                {
+                    m_bIsLayoutDirty = true;
+                }
+            }
+            else
+            {
+                const StyleDisplay previousDisplay = m_style.display.get();
+
+                m_style.display.refresh();
+
+                if (previousDisplay != m_style.display.get())
+                {
+                    m_bIsLayoutDirty = true;
+                }
+            }
+
+            refreshDirectives();
 
             if (m_style.isDisplay(StyleDisplay::None))
             {
-                m_bIsCulled = false;
+                m_bIsCulled      = false;
+                m_bIsLayoutDirty = false;
 
                 return;
             }
 
-            refreshSize();
-            refreshPosition();
-            refreshBounds();
-            m_bIsLayoutDirty = false;
+            const bool bAnimating  = !m_animator.isIdle();
+            const bool bIsAbsolute = m_style.isPosition(StylePosition::Absolute);
+            const bool bFlowLocked = hasParent() && !isRoot() && !bParentLaidOut && !bIsAbsolute;
 
-            const bool bWasCulled = m_bIsCulled;
-            m_bIsCulled           = isCulledByAncestor();
-            if (m_bIsCulled)
+            if (m_bIsLayoutDirty && bFlowLocked)
             {
-                return;
-            }
+                // Parent flex cursor is stale. Keep this node's slot and reflow
+                // children inside it so labels can center without collapsing the tree.
+                const Vec2 previousContent = getContentSize();
+                refreshSize();
+                resetFlowCursor();
+                refreshBounds();
+                invalidateDrawCache();
+                m_bIsLayoutDirty    = false;
+                m_bLaidOutThisFrame = true;
 
-            if (bWasCulled)
-            {
-                refreshClassName();
-
-                if (m_bIsStyleDirty)
+                for (Component* child : m_children)
                 {
-                    refreshStyleRuleset();
-                    m_bIsStyleDirty = false;
+                    if (child)
+                    {
+                        child->markLayoutDirty();
+                    }
                 }
 
-                refreshStyle();
-                refreshDirectives();
+                if (
+                    m_parent && (std::abs(previousContent.x - getContentSize().x) > 0.01f ||
+                                 std::abs(previousContent.y - getContentSize().y) > 0.01f)
+                )
+                {
+                    m_parent->markLayoutDirty();
+                }
+            }
+            else if (m_bIsLayoutDirty)
+            {
+                refreshSize();
+                refreshPosition();
+                refreshBounds();
+                invalidateDrawCache();
+                m_bIsLayoutDirty    = false;
+                m_bLaidOutThisFrame = true;
+
+                for (Component* child : m_children)
+                {
+                    if (child)
+                    {
+                        child->markLayoutDirty();
+                    }
+                }
             }
 
-            tickAnimation(m_style, m_animationDelta);
+            if (m_bLaidOutThisFrame && m_animator.isIdle() && m_style.transform.getRaw().contains('%'))
+            {
+                m_style.transform.refresh();
+                invalidateDrawCache();
+            }
+
+            if (bAnimating || bStyleRefreshed || m_bLaidOutThisFrame || !m_bIsAnimationReady)
+            {
+                tickAnimation(m_style, m_animationDelta);
+
+                if (!m_animator.isIdle())
+                {
+                    invalidateDrawCacheSubtree();
+                }
+            }
 
             onRefresh();
+
+            m_bIsCulled = isCulledByAncestor();
         }
 
         const String& Component::getTag() const
@@ -1731,11 +2080,12 @@ namespace Chicane
         void Component::markLayoutDirty()
         {
             m_bIsLayoutDirty = true;
+            invalidateDrawCache();
         }
 
         void Component::markStyleDirtySubtree()
         {
-            m_bIsStyleDirty = true;
+            markStyleDirty();
 
             for (Component* child : m_children)
             {
@@ -1745,12 +2095,80 @@ namespace Chicane
 
         void Component::markLayoutDirtySubtree()
         {
-            m_bIsLayoutDirty = true;
+            markLayoutDirty();
 
             for (Component* child : m_children)
             {
                 child->markLayoutDirtySubtree();
             }
+        }
+
+        void Component::invalidateDrawCache()
+        {
+            m_bDrawCacheValid  = false;
+            m_bHasDrawPosition = false;
+        }
+
+        void Component::invalidateDrawCacheSubtree()
+        {
+            invalidateDrawCache();
+
+            for (Component* child : m_children)
+            {
+                if (child)
+                {
+                    child->invalidateDrawCacheSubtree();
+                }
+            }
+        }
+
+        Vec2 Component::getScrollOffset() const
+        {
+            return Vec2::Zero();
+        }
+
+        std::uint64_t Component::getScrollGeneration() const
+        {
+            return 0;
+        }
+
+        void Component::cacheAttributeFlags()
+        {
+            m_bClassHasBinding = isReference(getAttribute(CLASS_ATTRIBUTE_NAME));
+            m_bHasIfDirective  = !getAttribute(IF_DIRECTIVE_KEYWORD).isEmpty();
+        }
+
+        bool Component::hideIfDirective()
+        {
+            if (!m_bHasIfDirective)
+            {
+                return false;
+            }
+
+            const String& attribute = getAttribute(IF_DIRECTIVE_KEYWORD);
+            if (attribute.isEmpty())
+            {
+                return false;
+            }
+
+            const bool bShow = parseText(attribute).equals("true", "1");
+            if (bShow)
+            {
+                if (m_style.isDisplay(StyleDisplay::None))
+                {
+                    m_bIsStyleDirty  = true;
+                    m_bIsLayoutDirty = true;
+                }
+
+                return false;
+            }
+
+            m_style.display.set(StyleDisplay::None);
+            m_bIsCulled      = false;
+            m_bIsStyleDirty  = false;
+            m_bIsLayoutDirty = false;
+
+            return true;
         }
 
         Component* Component::getHitAt(const Vec2& inLocation) const
@@ -1990,10 +2408,68 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeFlex() const
         {
-            return getChildrenContentSizeFromOrigin(
-                getPosition().x + m_style.insetLeft(),
-                getPosition().y + m_style.insetTop()
-            );
+            const bool  bIsRow     = m_style.flex.direction.get() == StyleFlexDirection::Row;
+            const bool  bCanWrap   = m_style.flex.wrap.get() == StyleFlexWrap::Wrap;
+            const float mainGap    = bIsRow ? m_style.gap.left.get() : m_style.gap.top.get();
+            const float crossGap   = bIsRow ? m_style.gap.top.get() : m_style.gap.left.get();
+            const Vec2  inner      = innerLayoutSize(this);
+            const float innerMain  = bIsRow ? inner.x : inner.y;
+
+            float lineMain     = 0.0f;
+            float lineCross    = 0.0f;
+            float totalMain    = 0.0f;
+            float totalCross   = 0.0f;
+            bool  bLineStarted = false;
+
+            for (const Component* child : m_children)
+            {
+                if (!child || !child->isDisplayable() || child->getStyle().isPosition(StylePosition::Absolute))
+                {
+                    continue;
+                }
+
+                const Style& style = child->getStyle();
+                const Vec2   size  = getChildIntrinsicSize(child);
+                const float  marginLeft =
+                    style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get();
+                const float  marginRight =
+                    style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get();
+                const float  marginTop =
+                    style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get();
+                const float  marginBottom =
+                    style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get();
+
+                const float itemMain  = bIsRow ? (marginLeft + size.x + marginRight)
+                                               : (marginTop + size.y + marginBottom);
+                const float itemCross = bIsRow ? (marginTop + size.y + marginBottom)
+                                               : (marginLeft + size.x + marginRight);
+
+                if (bCanWrap && bLineStarted && innerMain > 0.0f && (lineMain + mainGap + itemMain) > innerMain)
+                {
+                    totalMain    = std::max(totalMain, lineMain);
+                    totalCross   = totalCross > 0.0f ? totalCross + crossGap + lineCross : lineCross;
+                    lineMain     = 0.0f;
+                    lineCross    = 0.0f;
+                    bLineStarted = false;
+                }
+
+                if (bLineStarted)
+                {
+                    lineMain += mainGap;
+                }
+
+                lineMain += itemMain;
+                lineCross      = std::max(lineCross, itemCross);
+                bLineStarted = true;
+            }
+
+            totalMain = std::max(totalMain, lineMain);
+            if (bLineStarted)
+            {
+                totalCross = totalCross > 0.0f ? totalCross + crossGap + lineCross : lineCross;
+            }
+
+            return bIsRow ? Vec2(totalMain, totalCross) : Vec2(totalCross, totalMain);
         }
 
         Vec2 Component::getChildrenContentSizeFromOrigin(float inOriginX, float inOriginY) const
@@ -2034,33 +2510,29 @@ namespace Chicane
 
         Vec2 Component::getChildIntrinsicSize(const Component* inChild) const
         {
-            Vec2         size  = inChild->getSize();
             const Style& style = inChild->getStyle();
+            Vec2         size  = inChild->getContentSize();
 
-            const bool bWidthAuto  = style.width.getRaw().isEmpty() || style.width.isRaw(Size::AUTO_KEYWORD);
-            const bool bHeightAuto = style.height.getRaw().isEmpty() || style.height.isRaw(Size::AUTO_KEYWORD);
+            const bool bWidthAuto  = isWidthAuto(style);
+            const bool bHeightAuto = isHeightAuto(style);
 
-            if (!bWidthAuto && !bHeightAuto)
+            if (bWidthAuto || bHeightAuto)
             {
-                return size;
+                const Vec2 inner = inChild->getChildrenContentSize();
+
+                if (bWidthAuto)
+                {
+                    size.x = std::max(size.x, inner.x);
+                }
+
+                if (bHeightAuto)
+                {
+                    size.y = std::max(size.y, inner.y);
+                }
             }
 
-            const bool bParentFlexRow =
-                m_style.isDisplay(StyleDisplay::Flex) && m_style.flex.direction.get() == StyleFlexDirection::Row;
-            const bool bParentFlexColumn =
-                m_style.isDisplay(StyleDisplay::Flex) && m_style.flex.direction.get() == StyleFlexDirection::Column;
-
-            const Vec2 inner = inChild->getChildrenContentSize();
-
-            if (bWidthAuto && !bParentFlexRow && inner.x > 0.0f)
-            {
-                size.x = inner.x + style.insetHorizontal();
-            }
-
-            if (bHeightAuto && !bParentFlexColumn && inner.y > 0.0f)
-            {
-                size.y = inner.y + style.insetVertical();
-            }
+            size.x += style.insetHorizontal();
+            size.y += style.insetVertical();
 
             return size;
         }
@@ -2080,6 +2552,97 @@ namespace Chicane
             return m_size;
         }
 
+        Vec2 Component::getContentSize() const
+        {
+            Vec2 size = m_size;
+
+            if (!isWidthAuto(m_style) || m_bInsetsApplied)
+            {
+                size.x = std::max(0.0f, size.x - m_style.insetHorizontal());
+            }
+
+            if (!isHeightAuto(m_style) || m_bInsetsApplied)
+            {
+                size.y = std::max(0.0f, size.y - m_style.insetVertical());
+            }
+
+            return size;
+        }
+
+        Vec2 Component::getBorderSize() const
+        {
+            Vec2 size = m_size;
+
+            if (isWidthAuto(m_style) && !m_bInsetsApplied)
+            {
+                size.x += m_style.insetHorizontal();
+            }
+
+            if (isHeightAuto(m_style) && !m_bInsetsApplied)
+            {
+                size.y += m_style.insetVertical();
+            }
+
+            return size;
+        }
+
+        Vec2 Component::getRemainingContentSize() const
+        {
+            return getRemainingContentSize(nullptr);
+        }
+
+        Vec2 Component::getRemainingContentSize(const Component* inChild) const
+        {
+            const Vec2 inner = getContentSize();
+
+            if (!inChild || !isFlexNowrap(m_style))
+            {
+                return inner;
+            }
+
+            const bool  bRow      = m_style.flex.direction.get() == StyleFlexDirection::Row;
+            const float mainGap   = bRow ? m_style.gap.left.get() : m_style.gap.top.get();
+            const float innerMain = bRow ? inner.x : inner.y;
+
+            float used    = 0.0f;
+            bool  bStarted = false;
+
+            for (const Component* sibling : m_children)
+            {
+                if (!sibling || !sibling->isDisplayable() || sibling->getStyle().isPosition(StylePosition::Absolute))
+                {
+                    continue;
+                }
+
+                if (sibling == inChild)
+                {
+                    break;
+                }
+
+                const Style& style = sibling->getStyle();
+                const Vec2   box   = sibling->getBorderSize();
+                const float  marginStart =
+                    bRow ? (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get())
+                         : (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
+                const float marginEnd =
+                    bRow ? (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get())
+                         : (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get());
+                const float itemMain = marginStart + (bRow ? box.x : box.y) + marginEnd;
+
+                if (bStarted)
+                {
+                    used += mainGap;
+                }
+
+                used += itemMain;
+                bStarted = true;
+            }
+
+            const float remainingMain = std::max(0.0f, innerMain - used);
+
+            return bRow ? Vec2(remainingMain, inner.y) : Vec2(inner.x, remainingMain);
+        }
+
         void Component::addSize(const Vec2& inValue)
         {
             addSize(inValue.x, inValue.y);
@@ -2087,7 +2650,17 @@ namespace Chicane
 
         void Component::addSize(float inWidth, float inHeight)
         {
-            setSize(m_size.x + inWidth, m_size.y + inHeight);
+            if (inWidth == 0.0f && inHeight == 0.0f)
+            {
+                return;
+            }
+
+            float width  = m_size.x + inWidth;
+            float height = m_size.y + inHeight;
+            m_style.clampSize(width, height);
+            m_size.x = width;
+            m_size.y = height;
+            invalidateDrawCacheSubtree();
         }
 
         void Component::setSize(const Vec2& inValue)
@@ -2097,8 +2670,20 @@ namespace Chicane
 
         void Component::setSize(float inWidth, float inHeight)
         {
-            m_size.x = inWidth;
-            m_size.y = inHeight;
+            float width  = inWidth;
+            float height = inHeight;
+            m_style.clampSize(width, height);
+
+            if (m_size.x == width && m_size.y == height)
+            {
+                return;
+            }
+
+            m_size.x         = width;
+            m_size.y         = height;
+            m_bInsetsApplied = false;
+            invalidateDrawCache();
+            m_bIsLayoutDirty = true;
         }
 
         const Vec2& Component::getScale() const
@@ -2172,16 +2757,25 @@ namespace Chicane
 
         Vec2 Component::getDrawPosition() const
         {
+            if (!m_bHasDrawPosition)
+            {
+                m_cachedDrawPosition = computeDrawPosition();
+                m_bHasDrawPosition   = true;
+            }
+
+            return m_cachedDrawPosition;
+        }
+
+        Vec2 Component::computeDrawPosition() const
+        {
             Vec2 result = getTranslation();
 
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
-                {
-                    result.x -= scrollable->getScroll().x;
-                    result.y -= scrollable->getScroll().y;
-                }
+                const Vec2 scroll = ancestor->getScrollOffset();
+                result.x -= scroll.x;
+                result.y -= scroll.y;
 
                 if (ancestor->isRoot())
                 {
@@ -2196,17 +2790,28 @@ namespace Chicane
 
         Vec2 Component::getTransformPivot() const
         {
-            return getDrawPosition() + getStyle().getTransformOrigin(getSize());
+            return getDrawPosition() + getStyle().getTransformOrigin(getBorderSize());
         }
 
         Mat3 Component::getPaintMatrix() const
         {
-            std::vector<const Component*> chain;
-            const Component*              node = this;
-
-            while (node)
+            if (!m_bDrawCacheValid)
             {
-                chain.push_back(node);
+                m_cachedPaintMatrix = computePaintMatrix();
+            }
+
+            return m_cachedPaintMatrix;
+        }
+
+        Mat3 Component::computePaintMatrix() const
+        {
+            const Component* chain[64];
+            int              count = 0;
+            const Component* node  = this;
+
+            while (node && count < 64)
+            {
+                chain[count++] = node;
 
                 if (node->isRoot() || !node->hasParent())
                 {
@@ -2218,9 +2823,9 @@ namespace Chicane
 
             Mat3 world(1.0f);
 
-            for (auto it = chain.rbegin(); it != chain.rend(); ++it)
+            for (int i = count - 1; i >= 0; --i)
             {
-                const Component*     component = *it;
+                const Component*     component = chain[i];
                 const StyleTransform xform     = component->getStyle().getTransform();
 
                 if (xform.isIdentity())
@@ -2296,44 +2901,55 @@ namespace Chicane
 
         Bounds2D Component::getDrawBounds() const
         {
-            Bounds2D result;
+            if (!m_bDrawCacheValid)
+            {
+                Bounds2D result;
 
-            const Vec2 position = getDrawPosition();
+                const Vec2 position = getDrawPosition();
 
-            result.left   = position.x;
-            result.top    = position.y;
-            result.right  = position.x + m_size.x;
-            result.bottom = position.y + m_size.y;
+                result.left   = position.x;
+                result.top    = position.y;
+                result.right  = position.x + m_size.x;
+                result.bottom = position.y + m_size.y;
 
-            const Mat3 paint = getPaintMatrix();
+                const Mat3 paint = getPaintMatrix();
 
-            result.set(result.top, result.left, result.bottom, result.right);
-            result.transform(paint);
+                result.set(result.top, result.left, result.bottom, result.right);
+                result.transform(paint);
 
-            return result;
+                m_cachedDrawBounds    = result;
+                m_cachedOverflowClip  = Bounds2D::unconstrained();
+
+                const Component* ancestor = m_parent;
+                while (ancestor && ancestor != this)
+                {
+                    if (ancestor->getStyle().isClippingOverflow())
+                    {
+                        m_cachedOverflowClip = m_cachedOverflowClip.intersect(ancestor->getDrawBounds());
+                    }
+
+                    if (ancestor->isRoot())
+                    {
+                        break;
+                    }
+
+                    ancestor = ancestor->getParent();
+                }
+
+                m_bDrawCacheValid = true;
+            }
+
+            return m_cachedDrawBounds;
         }
 
         Bounds2D Component::getOverflowClip() const
         {
-            Bounds2D clip = Bounds2D::unconstrained();
-
-            const Component* ancestor = m_parent;
-            while (ancestor && ancestor != this)
+            if (!m_bDrawCacheValid)
             {
-                if (ancestor->getStyle().isClippingOverflow())
-                {
-                    clip = clip.intersect(ancestor->getDrawBounds());
-                }
-
-                if (ancestor->isRoot())
-                {
-                    break;
-                }
-
-                ancestor = ancestor->getParent();
+                getDrawBounds();
             }
 
-            return clip;
+            return m_cachedOverflowClip;
         }
 
         void Component::getOverflowRoundClips(
@@ -2504,6 +3120,7 @@ namespace Chicane
             {
                 m_sourceNode = m_sourceDocument.append_copy(root);
                 m_attributes = Xml::getAttributes(m_sourceNode);
+                cacheAttributeFlags();
                 setId(getAttribute(ID_ATTRIBUTE_NAME));
                 setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
                 addChildren(root);
@@ -2578,6 +3195,50 @@ namespace Chicane
         {
             m_bounds.set(0.0f, 0.0f, m_size.y, m_size.x);
             m_bounds.transform(getMatrix());
+        }
+
+        void Component::resetFlowCursor()
+        {
+            setCursor(getPosition().x + m_style.insetLeft(), getPosition().y + m_style.insetTop());
+            m_scratch = 0.0f;
+        }
+
+        void Component::reflowChildPositions()
+        {
+            resetFlowCursor();
+
+            for (Component* child : m_children)
+            {
+                if (!child || child->m_style.isDisplay(StyleDisplay::None))
+                {
+                    continue;
+                }
+
+                child->refreshPosition();
+                child->refreshBounds();
+                child->invalidateDrawCache();
+                child->reflowChildPositions();
+            }
+        }
+
+        void Component::refreshCullSubtree()
+        {
+            if (m_style.isDisplay(StyleDisplay::None))
+            {
+                m_bIsCulled = false;
+
+                return;
+            }
+
+            m_bIsCulled = isCulledByAncestor();
+
+            for (Component* child : m_children)
+            {
+                if (child)
+                {
+                    child->refreshCullSubtree();
+                }
+            }
         }
 
         const StyleKeyframe::List* Component::findKeyframes(const String& inName) const

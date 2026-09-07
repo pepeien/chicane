@@ -5,10 +5,12 @@
     <Telemetry />
     <Text class="score">Score {{ playerScore }} / {{ maxScore }}</Text>
     <Container class="crosshair">
-        <Container class="crosshair__dot"></Container>
-        <Container class="crosshair__top"></Container>
-        <Container class="crosshair__bottom"></Container>
-        <Container class="crosshair__left"></Container>
-        <Container class="crosshair__right"></Container>
+        <Container class="crosshair__origin">
+            <Container class="crosshair__dot"></Container>
+            <Container class="crosshair__top"></Container>
+            <Container class="crosshair__bottom"></Container>
+            <Container class="crosshair__left"></Container>
+            <Container class="crosshair__right"></Container>
+        </Container>
     </Container>
 </View>

@@ -34,6 +34,8 @@ namespace Chicane
         protected:
             Drift::Animator m_animator;
             String          m_animationClip;
+            String          m_lastTransformRaw;
+            String          m_lastTranslateRaw;
             float           m_animationDelta;
             bool            m_bIsAnimationReady;
         };

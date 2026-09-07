@@ -73,15 +73,14 @@ HeaderMenu {
             }
 
             &__control {
-                width: calc(100% - 1.2em);
+                width: 100%;
                 height: auto;
                 padding: 0.35em 0.6em;
                 border: 1px solid transparent;
                 border-radius: 7px;
-                transition: width 100ms ease-in-out, padding-left 200ms ease-in-out, border-color 250ms ease-in-out;
+                transition: padding-left 200ms ease-in-out, border-color 250ms ease-in-out;
 
                 &:hover {
-                    width: calc(100% - 1.4em);
                     padding-left: 0.8em;
                     border-color: $--light-grey;
                     background-color: transparent;

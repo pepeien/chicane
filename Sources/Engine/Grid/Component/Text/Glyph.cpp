@@ -115,8 +115,8 @@ namespace Chicane
                 (height * 0.5f) - ascender + ((min.y + max.y) * 0.5f * scale)
             );
 
-            m_style.width.set(advance);
-            m_style.height.set(height);
+            m_style.width.value.set(advance);
+            m_style.height.value.set(height);
 
             m_advance   = advance;
             m_relativeX = inPenX;

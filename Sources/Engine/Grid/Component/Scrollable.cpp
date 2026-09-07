@@ -19,6 +19,7 @@ namespace Chicane
         Scrollable::Scrollable(const pugi::xml_node& inNode)
             : Component(inNode),
               m_currentPosition(Vec2::Zero()),
+              m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
               m_horizontalBar({}),
@@ -28,6 +29,7 @@ namespace Chicane
         Scrollable::Scrollable(const String& inTag)
             : Component(inTag),
               m_currentPosition(Vec2::Zero()),
+              m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
               m_horizontalBar({}),
@@ -42,9 +44,25 @@ namespace Chicane
 
         void Scrollable::tick(float inDelta)
         {
+            const Vec2 previous = m_currentPosition;
+
             Component::tick(inDelta);
 
+            if (!m_bLaidOutThisFrame && previous.x == m_currentPosition.x && previous.y == m_currentPosition.y)
+            {
+                return;
+            }
+
+            const Vec2 beforeClamp = m_currentPosition;
+
             clampScroll();
+
+            if (m_currentPosition.x != beforeClamp.x || m_currentPosition.y != beforeClamp.y)
+            {
+                ++m_scrollGeneration;
+                invalidateDrawCacheSubtree();
+            }
+
             refreshScrollBars();
         }
 
@@ -148,18 +166,37 @@ namespace Chicane
             return m_currentPosition;
         }
 
+        Vec2 Scrollable::getScrollOffset() const
+        {
+            return m_currentPosition;
+        }
+
+        std::uint64_t Scrollable::getScrollGeneration() const
+        {
+            return m_scrollGeneration;
+        }
+
         Vec2 Scrollable::getScrollMax() const
         {
-            const Vec2 content = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
+            const Vec2  content = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
+            const Vec2  inner   = getContentSize();
+            const float innerW  = std::max(0.0f, inner.x);
+            const float innerH  = std::max(0.0f, inner.y);
+            constexpr float kEpsilon = 1.0f;
 
             return Vec2(
-                std::max(0.0f, content.x + m_style.insetHorizontal() - m_size.x),
-                std::max(0.0f, content.y + m_style.insetVertical() - m_size.y)
+                std::max(0.0f, content.x - innerW - kEpsilon),
+                std::max(0.0f, content.y - innerH - kEpsilon)
             );
         }
 
         void Scrollable::setVirtualContentSize(const Vec2& inValue)
         {
+            if (m_bHasVirtualContent && m_virtualContentSize.x == inValue.x && m_virtualContentSize.y == inValue.y)
+            {
+                return;
+            }
+
             m_virtualContentSize = inValue;
             m_bHasVirtualContent = true;
         }
@@ -187,10 +224,20 @@ namespace Chicane
 
         void Scrollable::setScroll(float inX, float inY)
         {
+            const Vec2 previous = m_currentPosition;
+
             m_currentPosition.x = inX;
             m_currentPosition.y = inY;
 
             clampScroll();
+
+            if (m_currentPosition.x == previous.x && m_currentPosition.y == previous.y)
+            {
+                return;
+            }
+
+            ++m_scrollGeneration;
+            invalidateDrawCacheSubtree();
             refreshScrollBars();
         }
 

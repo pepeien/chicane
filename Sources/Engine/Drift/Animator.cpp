@@ -188,5 +188,10 @@ namespace Chicane
             stopTweens();
             stopPlayers();
         }
+
+        bool Animator::isIdle() const
+        {
+            return m_tweens.empty() && m_players.empty();
+        }
     }
 }
