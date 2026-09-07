@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
@@ -14,6 +16,7 @@ public:
 protected:
     void onLoad() override;
     void onControlAttachment() override;
+    void onInput() override;
 
 private:
     // Gamepad
@@ -26,17 +29,19 @@ private:
     void onRightClick();
 
     // Keyboard
-    void onMoveForward();
-    void onMoveBackward();
-    void onMoveLeft();
-    void onMoveRight();
+    void onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld);
 
     // Actions
     void onShoot();
     void onLook(float inX, float inY);
     void onJump();
+    void refreshMoveInput();
 
 private:
+    std::uint8_t m_moveBits;
+    float   m_padForward;
+    float   m_padRight;
+
     // View
     Chicane::CCamera* m_camera;
 

@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
-
 namespace Chicane
 {
     Scene::Scene()
@@ -72,39 +70,8 @@ namespace Chicane
 
     void Scene::tick(float inDeltaTime)
     {
-        CCamera* camera = nullptr;
-
-        auto cameras = m_components.find(std::type_index(typeid(CCamera)));
-        if (cameras != m_components.end())
-        {
-            for (Component* component : cameras->second)
-            {
-                if (!component->isActive())
-                {
-                    continue;
-                }
-
-                camera = static_cast<CCamera*>(component);
-            }
-        }
-
-        if (!camera)
-        {
-            tickActors(inDeltaTime);
-            tickComponents(inDeltaTime);
-            onTick(inDeltaTime);
-
-            return;
-        }
-
-        std::vector<Object*> visible;
-        forEachInFrustum(camera->getFrustum(), [&visible](Object* inObject) { visible.push_back(inObject); });
-
-        for (Object* object : visible)
-        {
-            object->tick(inDeltaTime);
-        }
-
+        tickActors(inDeltaTime);
+        tickComponents(inDeltaTime);
         onTick(inDeltaTime);
     }
 

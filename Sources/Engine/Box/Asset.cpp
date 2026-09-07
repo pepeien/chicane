@@ -199,7 +199,7 @@ namespace Chicane
                 value = root.append_child(VALUE_TAG);
             }
 
-            return value.text().set(inData.toChar());
+            return value.text().set(inData.toChar(), inData.size());
         }
 
         void Asset::createXML(const FileSystem::Path& inFilepath)

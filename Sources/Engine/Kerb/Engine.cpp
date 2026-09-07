@@ -1,6 +1,7 @@
 #include "Chicane/Kerb/Engine.hpp"
 
 #include <algorithm>
+#include <cstdint>
 #include <mutex>
 #include <unordered_map>
 #include <vector>
@@ -50,7 +51,7 @@ namespace Chicane
         static constexpr std::uint32_t MAX_BODY_PAIRS          = MAX_BODIES;
         static constexpr std::uint32_t MAX_CONTACT_CONSTRAINTS = 10240;
         static constexpr float         FIXED_STEP              = 1.0f / 60.0f;
-        static constexpr int           COLLISION_STEPS         = 2;
+        static constexpr int           COLLISION_STEPS         = 1;
         static constexpr int           MAX_STEPS_PER_TICK      = 4;
 
         JPH::BodyID toId(Body inBody)
@@ -155,6 +156,9 @@ namespace Chicane
             std::vector<JPH::BodyID>                                 ids;
             std::mutex                                               pendingMutex;
             std::vector<PendingWrite>                                pending;
+            std::unordered_map<std::uint32_t, JPH::Vec3>             horizontalWish;
+            std::unordered_map<std::uint32_t, JPH::RVec3>            previousPosition;
+            bool                                                     bBroadPhaseDirty = false;
             float                                                    accumulator;
         };
 
@@ -181,7 +185,7 @@ namespace Chicane
         JPH::RefConst<JPH::Shape> makeCapsule(const Vec3& inSize)
         {
             const float radius     = std::max(0.05f, std::min(inSize.x, inSize.y) * 0.5f);
-            const float halfHeight = std::max(0.0f, inSize.z * 0.5f);
+            const float halfHeight = std::max(0.0f, inSize.z * 0.5f - radius);
 
             const JPH::CapsuleShapeSettings settings(halfHeight, radius);
             const JPH::Shape::ShapeResult   result = settings.Create();
@@ -315,10 +319,7 @@ namespace Chicane
 
                 if (write.kind == PendingWrite::Kind::HorizontalVelocity)
                 {
-                    JPH::Vec3 velocity = interface.GetLinearVelocity(write.id);
-                    velocity.SetX(write.vector.GetX());
-                    velocity.SetZ(write.vector.GetZ());
-                    interface.SetLinearVelocity(write.id, velocity);
+                    horizontalWish[write.id.GetIndexAndSequenceNumber()] = write.vector;
 
                     continue;
                 }
@@ -337,9 +338,40 @@ namespace Chicane
             m_implementation->applyPendingWrites();
             m_implementation->accumulator += std::min(std::max(inDeltaTime, 0.0f), 0.25f);
 
+            if (m_implementation->bBroadPhaseDirty)
+            {
+                m_implementation->system.OptimizeBroadPhase();
+                m_implementation->bBroadPhaseDirty = false;
+            }
+
             int steps = 0;
             while (m_implementation->accumulator >= FIXED_STEP && steps < MAX_STEPS_PER_TICK)
             {
+                JPH::BodyInterface& interface = m_implementation->bodies();
+                for (const JPH::BodyID id : m_implementation->ids)
+                {
+                    if (id.IsInvalid() || !interface.IsAdded(id))
+                    {
+                        continue;
+                    }
+
+                    m_implementation->previousPosition[id.GetIndexAndSequenceNumber()] = interface.GetPosition(id);
+                }
+
+                for (const auto& [key, wish] : m_implementation->horizontalWish)
+                {
+                    const JPH::BodyID id(key);
+                    if (id.IsInvalid() || !interface.IsAdded(id))
+                    {
+                        continue;
+                    }
+
+                    JPH::Vec3 velocity = interface.GetLinearVelocity(id);
+                    velocity.SetX(wish.GetX());
+                    velocity.SetZ(wish.GetZ());
+                    interface.SetLinearVelocity(id, velocity);
+                }
+
                 m_implementation->system.Update(
                     FIXED_STEP, COLLISION_STEPS, &m_implementation->tempAllocator, &m_implementation->threadPool
                 );
@@ -378,14 +410,22 @@ namespace Chicane
             settings.mAllowSleeping                = bIsStatic;
             settings.mAllowDynamicOrKinematic      = !bIsStatic;
             settings.mGravityFactor                = 1.0f;
-            settings.mMotionQuality =
-                bIsStatic ? JPH::EMotionQuality::Discrete : JPH::EMotionQuality::LinearCast;
             settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
             settings.mMassPropertiesOverride.mMass = std::max(0.1f, inCreateInfo.mass);
             if (inCreateInfo.shape == BodyShape::Capsule && !bIsStatic)
             {
-                settings.mAllowedDOFs = JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY |
+                settings.mFriction       = 0.0f;
+                settings.mRestitution    = 0.0f;
+                settings.mLinearDamping  = 0.0f;
+                settings.mAngularDamping = 0.0f;
+                settings.mMotionQuality  = JPH::EMotionQuality::Discrete;
+                settings.mAllowedDOFs    = JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY |
                                         JPH::EAllowedDOFs::TranslationZ;
+            }
+            else
+            {
+                settings.mMotionQuality =
+                    bIsStatic ? JPH::EMotionQuality::Discrete : JPH::EMotionQuality::LinearCast;
             }
 
             JPH::Body* created = m_implementation->bodies().CreateBody(settings);
@@ -412,7 +452,7 @@ namespace Chicane
             if (!interface.IsAdded(id))
             {
                 interface.AddBody(id, JPH::EActivation::Activate);
-                m_implementation->system.OptimizeBroadPhase();
+                m_implementation->bBroadPhaseDirty = true;
 
                 return;
             }
@@ -450,6 +490,8 @@ namespace Chicane
             }
 
             interface.DestroyBody(id);
+            m_implementation->horizontalWish.erase(id.GetIndexAndSequenceNumber());
+            m_implementation->previousPosition.erase(id.GetIndexAndSequenceNumber());
 
             auto& ids = m_implementation->ids;
             ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
@@ -529,7 +571,7 @@ namespace Chicane
             );
         }
 
-        Transform Engine::getBodyTransform(Body inBody) const
+        Transform Engine::getBodyTransform(Body inBody, bool bInInterpolate) const
         {
             const JPH::BodyID id = toId(inBody);
             if (id.IsInvalid() || !m_implementation)
@@ -537,10 +579,22 @@ namespace Chicane
                 return {};
             }
 
-            const JPH::RMat44 transform = m_implementation->bodies().GetWorldTransform(id);
+            const JPH::BodyInterface& interface = m_implementation->bodies();
+            const JPH::RMat44         transform = interface.GetWorldTransform(id);
+            JPH::RVec3                position  = transform.GetTranslation();
+
+            if (bInInterpolate)
+            {
+                const auto found = m_implementation->previousPosition.find(id.GetIndexAndSequenceNumber());
+                if (found != m_implementation->previousPosition.end())
+                {
+                    const float alpha = std::clamp(m_implementation->accumulator / FIXED_STEP, 0.0f, 1.0f);
+                    position          = found->second * (1.0f - alpha) + position * alpha;
+                }
+            }
 
             Transform result;
-            result.setTranslation(Convert::toEnginePosition(JPH::Vec3(transform.GetTranslation())));
+            result.setTranslation(Convert::toEnginePosition(JPH::Vec3(position)));
             result.setRotation(Rotator(Convert::toEngineRotation(transform.GetQuaternion())));
 
             return result;

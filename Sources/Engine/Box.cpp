@@ -88,11 +88,22 @@ namespace Chicane
             }
         }
 
-        std::unique_ptr<AssetPreview> decodeTexturePreview(const FileSystem::Path& inFilePath, bool)
+        std::unique_ptr<AssetPreview> decodeTexturePreview(const FileSystem::Path& inFilePath, bool inShouldUseStored)
         {
             if (!FileSystem::exists(inFilePath))
             {
                 return nullptr;
+            }
+
+            if (inShouldUseStored)
+            {
+                if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                {
+                    preview->path = inFilePath;
+                    preview->type = AssetType::Texture;
+
+                    return preview;
+                }
             }
 
             const Texture texture(inFilePath);

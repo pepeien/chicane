@@ -1,15 +1,25 @@
 #include "Sample/Shooter/Actor/Character.hpp"
 
+#include <cmath>
+#include <cstdint>
+
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Sample/Shooter/Actor/Apple.hpp"
 #include "Sample/Shooter/Game.hpp"
 #include "Sample/Shooter/Scene.hpp"
 
-static constexpr inline const float MOVE_COEFFICIENT = 3.0f;
+static constexpr inline const float         MOVE_COEFFICIENT = 3.0f;
+static constexpr inline const std::uint8_t  MOVE_FORWARD     = 1 << 0;
+static constexpr inline const std::uint8_t  MOVE_BACKWARD    = 1 << 1;
+static constexpr inline const std::uint8_t  MOVE_LEFT        = 1 << 2;
+static constexpr inline const std::uint8_t  MOVE_RIGHT       = 1 << 3;
 
 Character::Character()
     : Chicane::ACharacter(),
+      m_moveBits(0),
+      m_padForward(0.0f),
+      m_padRight(0.0f),
       m_camera(nullptr),
       m_wand(nullptr),
       m_body(nullptr),
@@ -20,9 +30,8 @@ void Character::onLoad()
 {
     Chicane::ACharacter::onLoad();
 
+    setMoveScale(MOVE_COEFFICIENT);
     setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 0.0f));
-
-    enablePhysics();
 
     m_camera = getScene()->createComponent<Chicane::CCamera>();
     m_camera->setId("First Person");
@@ -43,6 +52,8 @@ void Character::onLoad()
     m_body->setMesh("Assets/Sample/Shooter/Meshes/Character/Body.bmsh");
     m_body->activate();
 
+    enablePhysics();
+
     m_victorySound = getScene()->createComponent<Chicane::CSound>();
     m_victorySound->attachTo(this);
     m_victorySound->load("Assets/Sample/Shooter/Sounds/Victory.bsnd");
@@ -59,6 +70,12 @@ void Character::onLoad()
             }
         }
     );
+}
+
+void Character::onInput()
+{
+    refreshMoveInput();
+    Chicane::ACharacter::onInput();
 }
 
 void Character::onControlAttachment()
@@ -78,26 +95,24 @@ void Character::onControlAttachment()
     );
 
     // Keyboard
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::W,
-        Chicane::Input::Status::Pressed,
-        std::bind(&Character::onMoveForward, this)
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::S,
-        Chicane::Input::Status::Pressed,
-        std::bind(&Character::onMoveBackward, this)
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::A,
-        Chicane::Input::Status::Pressed,
-        std::bind(&Character::onMoveLeft, this)
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::D,
-        Chicane::Input::Status::Pressed,
-        std::bind(&Character::onMoveRight, this)
-    );
+    const auto bindMoveKey = [this](Chicane::Input::KeyboardButton inButton)
+    {
+        m_controller->bindEvent(
+            inButton,
+            Chicane::Input::Status::Pressed,
+            [this, inButton]() { onMoveKey(inButton, true); }
+        );
+        m_controller->bindEvent(
+            inButton,
+            Chicane::Input::Status::Released,
+            [this, inButton]() { onMoveKey(inButton, false); }
+        );
+    };
+
+    bindMoveKey(Chicane::Input::KeyboardButton::W);
+    bindMoveKey(Chicane::Input::KeyboardButton::S);
+    bindMoveKey(Chicane::Input::KeyboardButton::A);
+    bindMoveKey(Chicane::Input::KeyboardButton::D);
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::Space,
         Chicane::Input::Status::Released,
@@ -169,39 +184,25 @@ void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
 
 void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent)
 {
-    if (std::abs(inEvent.value) <= 0.3f)
-    {
-        return;
-    }
-
     switch (inEvent.axis)
     {
     case Chicane::Input::GamepadAxis::LeftX:
     case Chicane::Input::GamepadAxis::LeftY:
+    {
+        const float value = std::abs(inEvent.value) <= 0.3f ? 0.0f : inEvent.value;
         if (inEvent.axis == Chicane::Input::GamepadAxis::LeftY)
         {
-            if (inEvent.value < 0.0f)
-            {
-                onMoveForward();
-            }
-            else
-            {
-                onMoveBackward();
-            }
+            m_padForward = -value;
         }
         else
         {
-            if (inEvent.value > 0.0f)
-            {
-                onMoveRight();
-            }
-            else
-            {
-                onMoveLeft();
-            }
+            m_padRight = value;
         }
 
+        refreshMoveInput();
+
         break;
+    }
 
     case Chicane::Input::GamepadAxis::RightX:
     case Chicane::Input::GamepadAxis::RightY:
@@ -241,44 +242,56 @@ void Character::onRightClick()
     Chicane::Application::getInstance().getWindow()->switchFocus();
 }
 
-void Character::onMoveForward()
+void Character::onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld)
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    std::uint8_t bit = 0;
+    switch (inButton)
     {
+    case Chicane::Input::KeyboardButton::W:
+        bit = MOVE_FORWARD;
+        break;
+    case Chicane::Input::KeyboardButton::S:
+        bit = MOVE_BACKWARD;
+        break;
+    case Chicane::Input::KeyboardButton::A:
+        bit = MOVE_LEFT;
+        break;
+    case Chicane::Input::KeyboardButton::D:
+        bit = MOVE_RIGHT;
+        break;
+    default:
         return;
     }
 
-    move(getForward(), MOVE_COEFFICIENT);
+    if (inHeld)
+    {
+        m_moveBits |= bit;
+    }
+    else
+    {
+        m_moveBits &= static_cast<std::uint8_t>(~bit);
+    }
+
+    refreshMoveInput();
 }
 
-void Character::onMoveBackward()
+void Character::refreshMoveInput()
 {
     if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
+        setMoveInput(0.0f, 0.0f);
+
         return;
     }
 
-    move(getForward(), -MOVE_COEFFICIENT);
-}
+    const float forward = ((m_moveBits & MOVE_FORWARD) ? 1.0f : 0.0f) -
+                          ((m_moveBits & MOVE_BACKWARD) ? 1.0f : 0.0f) +
+                          m_padForward;
+    const float right   = ((m_moveBits & MOVE_RIGHT) ? 1.0f : 0.0f) -
+                        ((m_moveBits & MOVE_LEFT) ? 1.0f : 0.0f) +
+                        m_padRight;
 
-void Character::onMoveLeft()
-{
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
-    {
-        return;
-    }
-
-    move(getRight(), -MOVE_COEFFICIENT);
-}
-
-void Character::onMoveRight()
-{
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
-    {
-        return;
-    }
-
-    move(getRight(), MOVE_COEFFICIENT);
+    setMoveInput(forward, right);
 }
 
 void Character::onShoot()

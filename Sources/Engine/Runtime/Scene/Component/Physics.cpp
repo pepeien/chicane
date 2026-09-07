@@ -32,6 +32,7 @@ namespace Chicane
           m_bodySettings({}),
           m_syncedScale(Vec3::One()),
           m_syncedLocalSize(Vec3::Zero()),
+          m_actorToBody(Vec3::Zero()),
           m_bSyncingBody(false)
     {}
 
@@ -71,8 +72,14 @@ namespace Chicane
             return;
         }
 
-        const Transform transform = physics.getBodyTransform(m_body);
-        m_parent->setAbsoluteTranslation(transform.getTranslation());
+        const Transform transform = physics.getBodyTransform(m_body, true);
+        const Vec3      location  = transform.getTranslation() - m_actorToBody;
+        if (!changed(location, m_parent->getAbsoluteTranslation()))
+        {
+            return;
+        }
+
+        m_parent->setAbsoluteTranslation(location);
     }
 
     void CPhysics::onActivation()
@@ -214,6 +221,7 @@ namespace Chicane
         m_bodySettings.bounds = m_parent->getBounds();
         m_syncedScale         = m_parent->getAbsoluteScale();
         m_syncedLocalSize     = localBoundsSize(m_parent->getBounds());
+        m_actorToBody         = m_parent->getBounds().getCenter() - m_parent->getAbsoluteTranslation();
         m_body                = Kerb::Engine::getInstance().createBody(m_bodySettings);
 
         if (!hasBody())

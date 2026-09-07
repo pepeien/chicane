@@ -48,7 +48,7 @@ namespace Chicane
             void setBodyLinearVelocity(Body inBody, const Vec3& inVelocity);
             void setBodyHorizontalVelocity(Body inBody, const Vec3& inVelocity);
 
-            Transform getBodyTransform(Body inBody) const;
+            Transform getBodyTransform(Body inBody, bool bInInterpolate = false) const;
             void setBodyTransform(Body inBody, const Transform& inValue);
 
             BodyPolygon getBodyPolygon(Body inBody) const;

@@ -338,7 +338,7 @@ namespace Chicane
             {
                 const Vec3 offset = inVertices.at(i).position - center;
                 projected[i].x    = offset.dot(right);
-                projected[i].y    = offset.dot(up);
+                projected[i].y    = -offset.dot(up);
                 projected[i].z    = offset.dot(viewDir);
                 min.x             = std::min(min.x, projected[i].x);
                 max.x             = std::max(max.x, projected[i].x);
@@ -933,17 +933,34 @@ namespace Chicane
                 return false;
             }
 
+            const Image& image = *preview->image;
             Xml::addAttribute(node, TYPE_ATTRIBUTE_NAME, AssetHeader::getTypeTag(inType));
-            Xml::addAttribute(node, WIDTH_ATTRIBUTE_NAME, String(std::to_string(preview->image->getWidth())));
-            Xml::addAttribute(node, HEIGHT_ATTRIBUTE_NAME, String(std::to_string(preview->image->getHeight())));
+            Xml::addAttribute(node, WIDTH_ATTRIBUTE_NAME, String(std::to_string(image.getWidth())));
+            Xml::addAttribute(node, HEIGHT_ATTRIBUTE_NAME, String(std::to_string(image.getHeight())));
 
-            const Image::Raw encoded = preview->image->encode();
+            Image::Raw encoded = image.encode();
             if (encoded.empty())
             {
+                const int         width    = image.getWidth();
+                const int         height   = image.getHeight();
+                const int         channels = std::max(1, image.getChannel());
+                const Image::Pixels pixels = image.getPixels();
+                encoded.assign(
+                    pixels,
+                    pixels + (static_cast<std::size_t>(width) * static_cast<std::size_t>(height) *
+                              static_cast<std::size_t>(channels))
+                );
+            }
+
+            const String payload = Base64::encode(encoded);
+            if (payload.isEmpty())
+            {
+                inRoot.remove_child(node);
+
                 return false;
             }
 
-            Xml::addText(node, Base64::encode(encoded));
+            Xml::addText(node, payload);
 
             return true;
         }

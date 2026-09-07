@@ -101,7 +101,7 @@ namespace Chicane
                 return;
             }
 
-            outNode.text().set(inText.toStandard());
+            outNode.text().set(inText.toChar(), inText.size());
         }
     }
 }

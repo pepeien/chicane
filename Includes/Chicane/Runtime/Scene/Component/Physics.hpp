@@ -61,6 +61,7 @@ namespace Chicane
         Kerb::BodyCreateInfo m_bodySettings;
         Vec3                 m_syncedScale;
         Vec3                 m_syncedLocalSize;
+        Vec3                 m_actorToBody;
         bool                 m_bSyncingBody;
     };
 }
