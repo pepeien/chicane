@@ -764,40 +764,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "T",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "templates": []
                 },
-                "name": "traceLine",
+                "name": "trace",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
+                            "prefix": "",
+                            "name": "SceneTraceResponse",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "path": "Runtime/Scene/Trace/Response",
                             "templates": []
                         },
-                        "name": "inOrigin"
+                        "name": "outResponse"
                     },
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Vec3",
+                            "name": "SceneTraceRequest",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
+                            "path": "Runtime/Scene/Trace/Request",
                             "templates": []
                         },
-                        "name": "inDestination"
+                        "name": "inRequest"
                     },
                     {
                         "type": {
@@ -822,7 +814,72 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_SCENE_TRACELINE_DESCRIPTION"
+                "description": "CHICANE_SCENE_TRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "traceMulti",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "SceneTraceResponse",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene/Trace/Response",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outResponses"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "inRequest"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Actor",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Actor",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inIgnoredActors"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_TRACEMULTI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1064,6 +1121,49 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_SCENE_REMOVESPATIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getCellSize",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_GETCELLSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCellSize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_SETCELLSIZE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -1548,6 +1648,19 @@
                 },
                 "name": "m_componentsObservable",
                 "description": "CHICANE_SCENE_M_COMPONENTSOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_cellSize",
+                "description": "CHICANE_SCENE_M_CELLSIZE_DESCRIPTION"
             },
             {
                 "accessor": "private",

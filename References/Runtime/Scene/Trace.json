@@ -1,0 +1,17 @@
+{
+    "title": "Trace",
+    "filename": "Trace",
+    "path": "Runtime/Scene/Trace",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

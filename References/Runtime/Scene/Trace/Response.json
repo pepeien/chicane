@@ -1,0 +1,109 @@
+{
+    "title": "Response",
+    "filename": "Response",
+    "path": "Runtime/Scene/Trace/Response",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/Trace/Response.hpp",
+        "namespace": "Chicane::SceneTraceResponse",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time::Point",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "timestamp",
+                "description": "CHICANE_SCENETRACERESPONSE_TIMESTAMP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "location",
+                "description": "CHICANE_SCENETRACERESPONSE_LOCATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "impactPoint",
+                "description": "CHICANE_SCENETRACERESPONSE_IMPACTPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "distance",
+                "description": "CHICANE_SCENETRACERESPONSE_DISTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "traceStart",
+                "description": "CHICANE_SCENETRACERESPONSE_TRACESTART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "traceEnd",
+                "description": "CHICANE_SCENETRACERESPONSE_TRACEEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Actor",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Actor",
+                    "templates": []
+                },
+                "name": "actor",
+                "description": "CHICANE_SCENETRACERESPONSE_ACTOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCENETRACERESPONSE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -6756,6 +6756,161 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "Trace",
+                        "filename": "Trace",
+                        "path": "Runtime/Scene/Trace",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Request",
+                                "filename": "Request",
+                                "path": "Runtime/Scene/Trace/Request",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Trace/Request.hpp",
+                                    "namespace": "Chicane::SceneTraceRequest",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Response",
+                                "filename": "Response",
+                                "path": "Runtime/Scene/Trace/Response",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Trace/Response.hpp",
+                                    "namespace": "Chicane::SceneTraceResponse",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Shape",
+                                "filename": "Shape",
+                                "path": "Runtime/Scene/Trace/Shape",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Trace/Shape.hpp",
+                                    "namespace": "Chicane::SceneTraceShape",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Cone",
+                                        "filename": "Cone",
+                                        "path": "Runtime/Scene/Trace/Shape/Cone",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Cone.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeCone",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Cylinder",
+                                        "filename": "Cylinder",
+                                        "path": "Runtime/Scene/Trace/Shape/Cylinder",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Cylinder.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeCylinder",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Line",
+                                        "filename": "Line",
+                                        "path": "Runtime/Scene/Trace/Shape/Line",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Line.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeLine",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Rectangle",
+                                        "filename": "Rectangle",
+                                        "path": "Runtime/Scene/Trace/Shape/Rectangle",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Rectangle.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeRectangle",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Utility",
+                                        "filename": "Utility",
+                                        "path": "Runtime/Scene/Trace/Shape/Utility",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Utility.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeUtility",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
