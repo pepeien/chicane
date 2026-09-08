@@ -4,7 +4,7 @@
     "path": "Drift",
     "source": {
         "header": "Includes/Chicane/Drift.hpp",
-        "namespace": null,
+        "namespace": "Chicane::Drift",
         "types": [],
         "enums": [],
         "constructors": [],

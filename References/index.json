@@ -5,7 +5,7 @@
         "path": "Box",
         "source": {
             "header": "Includes/Chicane/Box.hpp",
-            "namespace": "Chicane::Box::watchPreview",
+            "namespace": "Chicane::Box",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -71,7 +71,7 @@
                         "path": "Box/Asset/Header",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Header.hpp",
-                            "namespace": "Chicane::Box::peek",
+                            "namespace": "Chicane::Box::AssetHeader",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -88,7 +88,7 @@
                         "path": "Box/Asset/Preview",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Preview.hpp",
-                            "namespace": "Chicane::Box::decodePreview",
+                            "namespace": "Chicane::Box::AssetPreview",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -262,7 +262,7 @@
                         "path": "Box/Font/Raw",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Raw.hpp",
-                            "namespace": "Chicane::Box::FontRaw",
+                            "namespace": "Chicane::Box",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -279,7 +279,7 @@
                         "path": "Box/Font/TrueType",
                         "source": {
                             "header": "Includes/Chicane/Box/Font/TrueType.hpp",
-                            "namespace": "Chicane::Box::FontTrueType::parse",
+                            "namespace": "Chicane::Box::FontTrueType",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -400,7 +400,7 @@
                         "path": "Box/Model/Raw",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Raw.hpp",
-                            "namespace": "Chicane::Box::ModelRaw",
+                            "namespace": "Chicane::Box",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -417,7 +417,7 @@
                         "path": "Box/Model/Wavefront",
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
-                            "namespace": "Chicane::Box::ModelWavefront::parse",
+                            "namespace": "Chicane::Box::ModelWavefront",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -452,7 +452,7 @@
                         "path": "Box/Sky/Parsed",
                         "source": {
                             "header": "Includes/Chicane/Box/Sky/Parsed.hpp",
-                            "namespace": "Chicane::Box::SkyParsedSides",
+                            "namespace": "Chicane::Box",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -469,7 +469,7 @@
                         "path": "Box/Sky/Raw",
                         "source": {
                             "header": "Includes/Chicane/Box/Sky/Raw.hpp",
-                            "namespace": "Chicane::Box::SkyRawSides",
+                            "namespace": "Chicane::Box",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -541,7 +541,7 @@
         "path": "Core",
         "source": {
             "header": "Includes/Chicane/Core.hpp",
-            "namespace": null,
+            "namespace": "Chicane::Core",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -557,7 +557,7 @@
                 "path": "Core/Base64",
                 "source": {
                     "header": "Includes/Chicane/Core/Base64.hpp",
-                    "namespace": "Chicane::Base64::encode",
+                    "namespace": "Chicane::Base64",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -591,7 +591,7 @@
                 "path": "Core/Color",
                 "source": {
                     "header": "Includes/Chicane/Core/Color.hpp",
-                    "namespace": "Chicane::Color::toRgba",
+                    "namespace": "Chicane::Color",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -660,7 +660,7 @@
                 "path": "Core/FileSystem",
                 "source": {
                     "header": "Includes/Chicane/Core/FileSystem.hpp",
-                    "namespace": "Chicane::FileSystem::write",
+                    "namespace": "Chicane::FileSystem",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -869,7 +869,7 @@
                 "path": "Core/Hash",
                 "source": {
                     "header": "Includes/Chicane/Core/Hash.hpp",
-                    "namespace": "Chicane::Hash::generate",
+                    "namespace": "Chicane::Hash",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -972,7 +972,7 @@
                         "path": "Core/Input/Device",
                         "source": {
                             "header": "Includes/Chicane/Core/Input/Device.hpp",
-                            "namespace": "Chicane::Input::DeviceMap",
+                            "namespace": "Chicane::Input",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -1125,7 +1125,7 @@
                                         "path": "Core/Input/Gamepad/Button/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Gamepad/Button/Event.hpp",
-                                            "namespace": "Chicane::Input::GamepadButtonEventCallback",
+                                            "namespace": "Chicane::Input::GamepadButtonEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1160,7 +1160,7 @@
                                         "path": "Core/Input/Gamepad/Motion/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
-                                            "namespace": "Chicane::Input::GamepadMotionEventCallback",
+                                            "namespace": "Chicane::Input::GamepadMotionEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1197,7 +1197,7 @@
                                 "path": "Core/Input/Keyboard/Event",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-                                    "namespace": "Chicane::Input::KeyboardEventCallback",
+                                    "namespace": "Chicane::Input::KeyboardEvent",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -1283,7 +1283,7 @@
                                         "path": "Core/Input/Mouse/Motion/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseMotionEventCallback",
+                                            "namespace": "Chicane::Input::MouseMotionEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1318,7 +1318,7 @@
                                         "path": "Core/Input/Mouse/Button/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseButtonEventCallback",
+                                            "namespace": "Chicane::Input::MouseButtonEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1353,7 +1353,7 @@
                                         "path": "Core/Input/Mouse/Wheel/Event",
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Wheel/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseWheelEventCallback",
+                                            "namespace": "Chicane::Input::MouseWheelEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1481,7 +1481,7 @@
                 "path": "Core/Log",
                 "source": {
                     "header": "Includes/Chicane/Core/Log.hpp",
-                    "namespace": "Chicane::Log::critical",
+                    "namespace": "Chicane::Log",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -1985,7 +1985,7 @@
                 "path": "Core/Reflection",
                 "source": {
                     "header": "Includes/Chicane/Core/Reflection.hpp",
-                    "namespace": null,
+                    "namespace": "Chicane::Core::Reflection",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2505,7 +2505,7 @@
                 "path": "Core/Window",
                 "source": {
                     "header": "Includes/Chicane/Core/Window.hpp",
-                    "namespace": "Chicane::WindowCursors",
+                    "namespace": "Chicane::Window",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2643,7 +2643,7 @@
                 "path": "Core/Xml",
                 "source": {
                     "header": "Includes/Chicane/Core/Xml.hpp",
-                    "namespace": "Chicane::Xml::addText",
+                    "namespace": "Chicane::Xml",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2662,7 +2662,7 @@
         "path": "Drift",
         "source": {
             "header": "Includes/Chicane/Drift.hpp",
-            "namespace": null,
+            "namespace": "Chicane::Drift",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -2764,7 +2764,7 @@
                 "path": "Drift/Interpolation",
                 "source": {
                     "header": "Includes/Chicane/Drift/Interpolation.hpp",
-                    "namespace": "Chicane::Drift::mix",
+                    "namespace": "Chicane::Drift",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -2885,7 +2885,7 @@
         "path": "Grid",
         "source": {
             "header": "Includes/Chicane/Grid.hpp",
-            "namespace": "Chicane::Grid::ITEM_GETTER_ATTRIBUTE_NAME",
+            "namespace": "Chicane::Grid",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -3661,7 +3661,7 @@
                 "path": "Grid/Style",
                 "source": {
                     "header": "Includes/Chicane/Grid/Style.hpp",
-                    "namespace": "Chicane::Grid::splitOneliner",
+                    "namespace": "Chicane::Grid::Style",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -3677,7 +3677,7 @@
                         "path": "Grid/Style/Alignment",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-                            "namespace": "Chicane::Grid::toAlignment",
+                            "namespace": "Chicane::Grid::StyleAlignment",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4160,7 +4160,7 @@
                         "path": "Grid/Style/Transform",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Transform.hpp",
-                            "namespace": "Chicane::Grid::operator==",
+                            "namespace": "Chicane::Grid::StyleTransform",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4177,7 +4177,7 @@
                         "path": "Grid/Style/Transition",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Transition.hpp",
-                            "namespace": "Chicane::Grid::splitStyleList",
+                            "namespace": "Chicane::Grid::StyleTransition",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4198,7 +4198,7 @@
         "path": "Kerb",
         "source": {
             "header": "Includes/Chicane/Kerb.hpp",
-            "namespace": "Chicane::Kerb::shutdown",
+            "namespace": "Chicane::Kerb",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -4247,7 +4247,7 @@
                         "path": "Kerb/Body/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
-                            "namespace": "Chicane::Kerb::BodyPolygon",
+                            "namespace": "Chicane::Kerb::BodyCreateInfo",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4320,7 +4320,7 @@
         "path": "Renderer",
         "source": {
             "header": "Includes/Chicane/Renderer.hpp",
-            "namespace": "Chicane::Renderer::SHADOW_MAP_HEIGHT",
+            "namespace": "Chicane::Renderer",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -4385,7 +4385,7 @@
                                 "path": "Renderer/Backend/OpenGL/Debug",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/OpenGL/Debug.hpp",
-                                    "namespace": "Chicane::Renderer::OpenGLDebugCallback",
+                                    "namespace": "Chicane::Renderer",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -4576,7 +4576,7 @@
                                 "path": "Renderer/Backend/Vulkan/CommandBuffer",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanCommandBuffer::init",
+                                    "namespace": "Chicane::Renderer::VulkanCommandBuffer",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -4609,7 +4609,7 @@
                                         "path": "Renderer/Backend/Vulkan/CommandBuffer/Pool",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanCommandBufferPool::init",
+                                            "namespace": "Chicane::Renderer::VulkanCommandBufferPool",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4626,7 +4626,7 @@
                                         "path": "Renderer/Backend/Vulkan/CommandBuffer/Worker",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanCommandBufferWorker::endJob",
+                                            "namespace": "Chicane::Renderer::VulkanCommandBufferWorker",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4645,7 +4645,7 @@
                                 "path": "Renderer/Backend/Vulkan/Debug",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Debug.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanDebug::destroyMessenger",
+                                    "namespace": "Chicane::Renderer::VulkanDebug",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -4695,7 +4695,7 @@
                                         "path": "Renderer/Backend/Vulkan/Descriptor/Pool",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanDescriptorPool::init",
+                                            "namespace": "Chicane::Renderer::VulkanDescriptorPool",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4747,7 +4747,7 @@
                                         "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout",
                                         "source": {
                                             "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout::allocate",
+                                            "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4784,7 +4784,7 @@
                                 "path": "Renderer/Backend/Vulkan/Device",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Device.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanDevice::findMemoryTypeIndex",
+                                    "namespace": "Chicane::Renderer::VulkanDevice",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -4941,7 +4941,7 @@
                                 "path": "Renderer/Backend/Vulkan/Image",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanImage::copyBufferToImage",
+                                    "namespace": "Chicane::Renderer::VulkanImage",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5098,7 +5098,7 @@
                                 "path": "Renderer/Backend/Vulkan/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Instance.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanInstance::init",
+                                    "namespace": "Chicane::Renderer::VulkanInstance",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5236,7 +5236,7 @@
                                 "path": "Renderer/Backend/Vulkan/Queue",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanQueue::initPresentQueue",
+                                    "namespace": "Chicane::Renderer::VulkanQueue",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5271,7 +5271,7 @@
                                 "path": "Renderer/Backend/Vulkan/Shader",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Shader.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanShader::initShaderStage",
+                                    "namespace": "Chicane::Renderer::VulkanShader",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5341,7 +5341,7 @@
                                 "path": "Renderer/Backend/Vulkan/Surface",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Surface.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSurface::init",
+                                    "namespace": "Chicane::Renderer::VulkanSurface",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5358,7 +5358,7 @@
                                 "path": "Renderer/Backend/Vulkan/Swapchain",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSwapchain::init",
+                                    "namespace": "Chicane::Renderer::VulkanSwapchain",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5427,7 +5427,7 @@
                                 "path": "Renderer/Backend/Vulkan/Sync",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sync.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanSync::initFence",
+                                    "namespace": "Chicane::Renderer::VulkanSync",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -5479,7 +5479,7 @@
                                 "path": "Renderer/Backend/Vulkan/Vertex",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Backend/Vulkan/Vertex.hpp",
-                                    "namespace": "Chicane::Renderer::VulkanVertex::getAttributeDescriptions",
+                                    "namespace": "Chicane::Renderer::VulkanVertex",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -6124,7 +6124,7 @@
                 "path": "Renderer/Resource",
                 "source": {
                     "header": "Includes/Chicane/Renderer/Resource.hpp",
-                    "namespace": "Chicane::Renderer::ResourceBudget",
+                    "namespace": "Chicane::Renderer::Resource",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -6247,7 +6247,7 @@
         "path": "Runtime",
         "source": {
             "header": "Includes/Chicane/Runtime.hpp",
-            "namespace": null,
+            "namespace": "Chicane::Runtime",
             "types": [],
             "enums": [],
             "constructors": [],
@@ -6662,7 +6662,7 @@
         "path": "Screech",
         "source": {
             "header": "Includes/Chicane/Screech.hpp",
-            "namespace": "Chicane::Screech::getEngine",
+            "namespace": "Chicane::Screech",
             "types": [],
             "enums": [],
             "constructors": [],

@@ -4,7 +4,7 @@
     "path": "Box/Model/Wavefront",
     "source": {
         "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
-        "namespace": "Chicane::Box::ModelWavefront::parse",
+        "namespace": "Chicane::Box::ModelWavefront",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -38,7 +38,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_MODELWAVEFRONT_PARSE_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELWAVEFRONT_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Vertex",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Vertex.hpp",
-        "namespace": "Chicane::Renderer::VulkanVertex::getAttributeDescriptions",
+        "namespace": "Chicane::Renderer::VulkanVertex",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -50,7 +50,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANVERTEX_GETATTRIBUTEDESCRIPTIONS_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANVERTEX_DESCRIPTION"
     },
     "children": []
 }

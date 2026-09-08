@@ -4,7 +4,7 @@
     "path": "Core/Reflection",
     "source": {
         "header": "Includes/Chicane/Core/Reflection.hpp",
-        "namespace": null,
+        "namespace": "Chicane::Core::Reflection",
         "types": [],
         "enums": [],
         "constructors": [],

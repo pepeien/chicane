@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp",
-        "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout::allocate",
+        "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -114,7 +114,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUT_ALLOCATE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUT_DESCRIPTION"
     },
     "children": []
 }

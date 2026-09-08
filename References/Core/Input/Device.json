@@ -4,7 +4,7 @@
     "path": "Core/Input/Device",
     "source": {
         "header": "Includes/Chicane/Core/Input/Device.hpp",
-        "namespace": "Chicane::Input::DeviceMap",
+        "namespace": "Chicane::Input",
         "types": [
             {
                 "name": "DeviceID",
@@ -49,7 +49,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_INPUT_DEVICEMAP_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Runtime",
     "source": {
         "header": "Includes/Chicane/Runtime.hpp",
-        "namespace": null,
+        "namespace": "Chicane::Runtime",
         "types": [],
         "enums": [],
         "constructors": [],

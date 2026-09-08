@@ -4,7 +4,7 @@
     "path": "Screech",
     "source": {
         "header": "Includes/Chicane/Screech.hpp",
-        "namespace": "Chicane::Screech::getEngine",
+        "namespace": "Chicane::Screech",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -57,7 +57,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_SCREECH_GETENGINE_DESCRIPTION"
+        "description": "CHICANE_SCREECH_DESCRIPTION"
     },
     "children": []
 }

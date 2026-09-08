@@ -4,7 +4,7 @@
     "path": "Core/Base64",
     "source": {
         "header": "Includes/Chicane/Core/Base64.hpp",
-        "namespace": "Chicane::Base64::encode",
+        "namespace": "Chicane::Base64",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -352,7 +352,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_BASE64_ENCODE_DESCRIPTION"
+        "description": "CHICANE_BASE64_DESCRIPTION"
     },
     "children": []
 }

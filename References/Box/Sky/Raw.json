@@ -4,7 +4,7 @@
     "path": "Box/Sky/Raw",
     "source": {
         "header": "Includes/Chicane/Box/Sky/Raw.hpp",
-        "namespace": "Chicane::Box::SkyRawSides",
+        "namespace": "Chicane::Box",
         "types": [
             {
                 "name": "SkyRawSides",
@@ -38,7 +38,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

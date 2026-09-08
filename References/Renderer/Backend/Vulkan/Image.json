@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Image",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image.hpp",
-        "namespace": "Chicane::Renderer::VulkanImage::copyBufferToImage",
+        "namespace": "Chicane::Renderer::VulkanImage",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -412,7 +412,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANIMAGE_COPYBUFFERTOIMAGE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANIMAGE_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Box/Font/Raw",
     "source": {
         "header": "Includes/Chicane/Box/Font/Raw.hpp",
-        "namespace": "Chicane::Box::FontRaw",
+        "namespace": "Chicane::Box",
         "types": [
             {
                 "name": "FontRaw",
@@ -31,7 +31,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_FONTRAW_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

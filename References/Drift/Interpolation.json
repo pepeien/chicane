@@ -4,7 +4,7 @@
     "path": "Drift/Interpolation",
     "source": {
         "header": "Includes/Chicane/Drift/Interpolation.hpp",
-        "namespace": "Chicane::Drift::mix",
+        "namespace": "Chicane::Drift",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -322,7 +322,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_DRIFT_MIX_DESCRIPTION"
+        "description": "CHICANE_DRIFT_DESCRIPTION"
     },
     "children": []
 }

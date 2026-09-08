@@ -4,7 +4,7 @@
     "path": "Grid/Style/Transform",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Transform.hpp",
-        "namespace": "Chicane::Grid::operator==",
+        "namespace": "Chicane::Grid::StyleTransform",
         "types": [],
         "enums": [],
         "constructors": [
@@ -123,7 +123,7 @@
                 "description": "CHICANE_GRID_STYLETRANSFORM_SCALE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_OPERATOR==_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

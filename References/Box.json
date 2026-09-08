@@ -4,7 +4,7 @@
     "path": "Box",
     "source": {
         "header": "Includes/Chicane/Box.hpp",
-        "namespace": "Chicane::Box::watchPreview",
+        "namespace": "Chicane::Box",
         "types": [
             {
                 "name": "AssetObservable",
@@ -478,7 +478,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_WATCHPREVIEW_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

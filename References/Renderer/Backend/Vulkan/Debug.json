@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Debug",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Debug.hpp",
-        "namespace": "Chicane::Renderer::VulkanDebug::destroyMessenger",
+        "namespace": "Chicane::Renderer::VulkanDebug",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -104,7 +104,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANDEBUG_DESTROYMESSENGER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANDEBUG_DESCRIPTION"
     },
     "children": []
 }

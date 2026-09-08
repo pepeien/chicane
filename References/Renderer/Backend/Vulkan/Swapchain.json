@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Swapchain",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Swapchain.hpp",
-        "namespace": "Chicane::Renderer::VulkanSwapchain::init",
+        "namespace": "Chicane::Renderer::VulkanSwapchain",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -202,7 +202,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_INIT_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Grid/Style",
     "source": {
         "header": "Includes/Chicane/Grid/Style.hpp",
-        "namespace": "Chicane::Grid::splitOneliner",
+        "namespace": "Chicane::Grid::Style",
         "types": [
             {
                 "name": "Properties",
@@ -5657,7 +5657,7 @@
                 "description": "CHICANE_GRID_STYLE_M_SNAPSHOT_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_SPLITONELINER_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/CommandBuffer/Worker",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp",
-        "namespace": "Chicane::Renderer::VulkanCommandBufferWorker::endJob",
+        "namespace": "Chicane::Renderer::VulkanCommandBufferWorker",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -130,7 +130,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERWORKER_ENDJOB_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERWORKER_DESCRIPTION"
     },
     "children": []
 }

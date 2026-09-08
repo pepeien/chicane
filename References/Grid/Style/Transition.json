@@ -4,7 +4,7 @@
     "path": "Grid/Style/Transition",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Transition.hpp",
-        "namespace": "Chicane::Grid::splitStyleList",
+        "namespace": "Chicane::Grid::StyleTransition",
         "types": [
             {
                 "name": "List",
@@ -239,7 +239,7 @@
                 "description": "CHICANE_GRID_STYLETRANSITION_EASING_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_SPLITSTYLELIST_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Box/Asset/Header",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Header.hpp",
-        "namespace": "Chicane::Box::peek",
+        "namespace": "Chicane::Box::AssetHeader",
         "types": [],
         "enums": [],
         "constructors": [
@@ -392,7 +392,7 @@
                 "description": "CHICANE_BOX_ASSETHEADER_TYPE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_PEEK_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Grid/Style/Alignment",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-        "namespace": "Chicane::Grid::toAlignment",
+        "namespace": "Chicane::Grid::StyleAlignment",
         "types": [],
         "enums": [
             {
@@ -72,7 +72,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_TOALIGNMENT_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

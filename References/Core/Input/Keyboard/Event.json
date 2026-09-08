@@ -4,7 +4,7 @@
     "path": "Core/Input/Keyboard/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-        "namespace": "Chicane::Input::KeyboardEventCallback",
+        "namespace": "Chicane::Input::KeyboardEvent",
         "types": [
             {
                 "name": "KeyboardEventCallback",
@@ -139,7 +139,7 @@
                 "description": "CHICANE_INPUT_KEYBOARDEVENT_KEY_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_KEYBOARDEVENTCALLBACK_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

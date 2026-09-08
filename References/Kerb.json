@@ -4,7 +4,7 @@
     "path": "Kerb",
     "source": {
         "header": "Includes/Chicane/Kerb.hpp",
-        "namespace": "Chicane::Kerb::shutdown",
+        "namespace": "Chicane::Kerb",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -42,7 +42,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_SHUTDOWN_DESCRIPTION"
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

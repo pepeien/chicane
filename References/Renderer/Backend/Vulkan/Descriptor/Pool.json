@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Descriptor/Pool",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp",
-        "namespace": "Chicane::Renderer::VulkanDescriptorPool::init",
+        "namespace": "Chicane::Renderer::VulkanDescriptorPool",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -58,7 +58,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOL_INIT_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOL_DESCRIPTION"
     },
     "children": []
 }

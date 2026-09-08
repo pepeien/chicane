@@ -4,7 +4,7 @@
     "path": "Box/Model/Raw",
     "source": {
         "header": "Includes/Chicane/Box/Model/Raw.hpp",
-        "namespace": "Chicane::Box::ModelRaw",
+        "namespace": "Chicane::Box",
         "types": [
             {
                 "name": "ModelRaw",
@@ -31,7 +31,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_MODELRAW_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

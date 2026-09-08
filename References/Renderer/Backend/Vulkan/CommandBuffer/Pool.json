@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/CommandBuffer/Pool",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp",
-        "namespace": "Chicane::Renderer::VulkanCommandBufferPool::init",
+        "namespace": "Chicane::Renderer::VulkanCommandBufferPool",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -68,7 +68,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERPOOL_INIT_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERPOOL_DESCRIPTION"
     },
     "children": []
 }

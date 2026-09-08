@@ -4,7 +4,7 @@
     "path": "Box/Font/TrueType",
     "source": {
         "header": "Includes/Chicane/Box/Font/TrueType.hpp",
-        "namespace": "Chicane::Box::FontTrueType::parse",
+        "namespace": "Chicane::Box::FontTrueType",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -94,7 +94,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_FONTTRUETYPE_PARSE_DESCRIPTION"
+        "description": "CHICANE_BOX_FONTTRUETYPE_DESCRIPTION"
     },
     "children": []
 }

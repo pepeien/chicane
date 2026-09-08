@@ -4,7 +4,7 @@
     "path": "Core/Input/Mouse/Motion/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
-        "namespace": "Chicane::Input::MouseMotionEventCallback",
+        "namespace": "Chicane::Input::MouseMotionEvent",
         "types": [
             {
                 "name": "MouseMotionEventCallback",
@@ -113,7 +113,7 @@
                 "description": "CHICANE_INPUT_MOUSEMOTIONEVENT_RELATIVELOCATION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_MOUSEMOTIONEVENTCALLBACK_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

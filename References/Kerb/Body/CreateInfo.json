@@ -4,7 +4,7 @@
     "path": "Kerb/Body/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
-        "namespace": "Chicane::Kerb::BodyPolygon",
+        "namespace": "Chicane::Kerb::BodyCreateInfo",
         "types": [
             {
                 "name": "BodyPolygon",
@@ -104,7 +104,7 @@
                 "description": "CHICANE_KERB_BODYCREATEINFO_POLYGON_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_KERB_BODYPOLYGON_DESCRIPTION"
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

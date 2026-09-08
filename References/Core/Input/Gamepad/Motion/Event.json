@@ -4,7 +4,7 @@
     "path": "Core/Input/Gamepad/Motion/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
-        "namespace": "Chicane::Input::GamepadMotionEventCallback",
+        "namespace": "Chicane::Input::GamepadMotionEvent",
         "types": [
             {
                 "name": "GamepadMotionEventCallback",
@@ -100,7 +100,7 @@
                 "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_VALUE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENTCALLBACK_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

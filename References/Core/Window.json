@@ -4,7 +4,7 @@
     "path": "Core/Window",
     "source": {
         "header": "Includes/Chicane/Core/Window.hpp",
-        "namespace": "Chicane::WindowCursors",
+        "namespace": "Chicane::Window",
         "types": [
             {
                 "name": "WindowEventObservable",
@@ -1580,7 +1580,7 @@
                 "description": "CHICANE_WINDOW_M_BACKENDOBSERVABLE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_WINDOWCURSORS_DESCRIPTION"
+        "description": "CHICANE_DESCRIPTION"
     },
     "children": []
 }

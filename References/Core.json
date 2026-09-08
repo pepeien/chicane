@@ -4,7 +4,7 @@
     "path": "Core",
     "source": {
         "header": "Includes/Chicane/Core.hpp",
-        "namespace": null,
+        "namespace": "Chicane::Core",
         "types": [],
         "enums": [],
         "constructors": [],

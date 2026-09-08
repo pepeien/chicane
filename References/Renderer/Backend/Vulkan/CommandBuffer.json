@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/CommandBuffer",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp",
-        "namespace": "Chicane::Renderer::VulkanCommandBuffer::init",
+        "namespace": "Chicane::Renderer::VulkanCommandBuffer",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -92,7 +92,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_INIT_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Grid",
     "source": {
         "header": "Includes/Chicane/Grid.hpp",
-        "namespace": "Chicane::Grid::ITEM_GETTER_ATTRIBUTE_NAME",
+        "namespace": "Chicane::Grid",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -172,7 +172,7 @@
                 "description": "CHICANE_GRID_ITEM_GETTER_ATTRIBUTE_NAME_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_ITEM_GETTER_ATTRIBUTE_NAME_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

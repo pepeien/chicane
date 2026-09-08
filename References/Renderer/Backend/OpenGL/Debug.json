@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/OpenGL/Debug",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/OpenGL/Debug.hpp",
-        "namespace": "Chicane::Renderer::OpenGLDebugCallback",
+        "namespace": "Chicane::Renderer",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -98,7 +98,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_OPENGLDEBUGCALLBACK_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []
 }

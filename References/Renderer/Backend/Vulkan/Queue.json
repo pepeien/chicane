@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/Vulkan/Queue",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue.hpp",
-        "namespace": "Chicane::Renderer::VulkanQueue::initPresentQueue",
+        "namespace": "Chicane::Renderer::VulkanQueue",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -124,7 +124,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANQUEUE_INITPRESENTQUEUE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANQUEUE_DESCRIPTION"
     },
     "children": []
 }

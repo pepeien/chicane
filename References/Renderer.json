@@ -4,7 +4,7 @@
     "path": "Renderer",
     "source": {
         "header": "Includes/Chicane/Renderer.hpp",
-        "namespace": "Chicane::Renderer::SHADOW_MAP_HEIGHT",
+        "namespace": "Chicane::Renderer",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -220,7 +220,7 @@
                 "description": "CHICANE_RENDERER_SHADOW_MAP_HEIGHT_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_SHADOW_MAP_HEIGHT_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []
 }

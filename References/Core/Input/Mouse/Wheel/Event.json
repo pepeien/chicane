@@ -4,7 +4,7 @@
     "path": "Core/Input/Mouse/Wheel/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/Wheel/Event.hpp",
-        "namespace": "Chicane::Input::MouseWheelEventCallback",
+        "namespace": "Chicane::Input::MouseWheelEvent",
         "types": [
             {
                 "name": "MouseWheelEventCallback",
@@ -100,7 +100,7 @@
                 "description": "CHICANE_INPUT_MOUSEWHEELEVENT_LOCATION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_MOUSEWHEELEVENTCALLBACK_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

@@ -4,7 +4,7 @@
     "path": "Box/Sky/Parsed",
     "source": {
         "header": "Includes/Chicane/Box/Sky/Parsed.hpp",
-        "namespace": "Chicane::Box::SkyParsedSides",
+        "namespace": "Chicane::Box",
         "types": [
             {
                 "name": "SkyParsedSide",
@@ -49,7 +49,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }

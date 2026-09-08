@@ -4,7 +4,7 @@
     "path": "Core/Xml",
     "source": {
         "header": "Includes/Chicane/Core/Xml.hpp",
-        "namespace": "Chicane::Xml::addText",
+        "namespace": "Chicane::Xml",
         "types": [
             {
                 "name": "Attributes",
@@ -297,7 +297,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_XML_ADDTEXT_DESCRIPTION"
+        "description": "CHICANE_XML_DESCRIPTION"
     },
     "children": []
 }

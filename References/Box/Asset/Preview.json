@@ -4,7 +4,7 @@
     "path": "Box/Asset/Preview",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Preview.hpp",
-        "namespace": "Chicane::Box::decodePreview",
+        "namespace": "Chicane::Box::AssetPreview",
         "types": [],
         "enums": [],
         "constructors": [
@@ -1469,7 +1469,7 @@
                 "description": "CHICANE_BOX_ASSETPREVIEW_IMAGE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_DECODEPREVIEW_DESCRIPTION"
+        "description": "CHICANE_BOX_DESCRIPTION"
     },
     "children": []
 }
