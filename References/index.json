@@ -2905,22 +2905,6 @@
                         "children": []
                     },
                     {
-                        "title": "ProgressBar",
-                        "filename": "ProgressBar",
-                        "path": "Grid/Component/ProgressBar",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/ProgressBar.hpp",
-                            "namespace": "Chicane::Grid::ProgressBar",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "ScrollBar",
                         "filename": "ScrollBar",
                         "path": "Grid/Component/ScrollBar",
@@ -2968,39 +2952,6 @@
                             "members": []
                         },
                         "children": []
-                    },
-                    {
-                        "title": "Select",
-                        "filename": "Select",
-                        "path": "Grid/Component/Select",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/Select.hpp",
-                            "namespace": "Chicane::Grid::Select",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": []
-                        },
-                        "children": [
-                            {
-                                "title": "SelectOption",
-                                "filename": "Option",
-                                "path": "Grid/Component/Select/Option",
-                                "source": {
-                                    "header": "Includes/Chicane/Grid/Component/Select/Option.hpp",
-                                    "namespace": "Chicane::Grid::SelectOption",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            }
-                        ]
                     },
                     {
                         "title": "Svg",
@@ -3154,22 +3105,6 @@
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Component/Text/Glyph.hpp",
                                     "namespace": "Chicane::Grid::TextGlyph",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": []
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "TextInput",
-                                "filename": "Input",
-                                "path": "Grid/Component/Text/Input",
-                                "source": {
-                                    "header": "Includes/Chicane/Grid/Component/Text/Input.hpp",
-                                    "namespace": "Chicane::Grid::TextInput",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],

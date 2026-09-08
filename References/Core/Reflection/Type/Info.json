@@ -26,6 +26,25 @@
                 "description": "CHICANE_REFLECTIONTYPEINFO_TYPEIDEX_DESCRIPTION"
             },
             {
+                "name": "Names",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_NAMES_DESCRIPTION"
+            },
+            {
                 "name": "Fields",
                 "type": {
                     "prefix": "",
@@ -126,13 +145,13 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
+                            "prefix": "",
+                            "name": "Names",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
                             "templates": []
                         },
-                        "name": "inName"
+                        "name": "inNames"
                     },
                     {
                         "type": {
@@ -206,6 +225,51 @@
         ],
         "destructors": [],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "containsName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_CONTAINSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_GETNAME_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -334,13 +398,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "Names",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Core/Reflection/Type/Info",
                     "templates": []
                 },
-                "name": "name",
-                "description": "CHICANE_REFLECTIONTYPEINFO_NAME_DESCRIPTION"
+                "name": "names",
+                "description": "CHICANE_REFLECTIONTYPEINFO_NAMES_DESCRIPTION"
             },
             {
                 "accessor": "public",
