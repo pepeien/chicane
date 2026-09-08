@@ -1,4 +1,4 @@
-<Container class="explorer">
+<Container class="explorer --{{ orientation }}">
     <DockHeader id="explorerHeader" label="Asset Explorer" />
     <Container class="explorer__body">
         <Container id="explorerTree" class="explorer__tree">
@@ -7,12 +7,9 @@
                 class="explorer__tree__item --{{ entry.selectedState }}"
                 onClick="{{ onSelectFolder(entry.path) }}"
             >
-                <Container class="explorer__tree__indent" />
-                <Button class="explorer__tree__caret --{{ entry.expandState }}" onClick="{{ onToggleFolder(entry.path) }}">
-                    <Icon source="Assets/Editor/UI/Icons/Regular" name="CaretRight" class="explorer__tree__caret__icon"/>
-                </Button>
-                <Icon source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tree__icon"/>
-                <Text class="explorer__tree__name">{{ entry.name }}</Text>
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="CaretDown" class="explorer__tree__item__caret --{{ entry.expandState }}"/>
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__tree__item__icon"/>
+                <Text class="explorer__tree__item__name">{{ entry.name }}</Text>
             </Button>
         </Container>
         <Container id="explorerMain" class="explorer__main">

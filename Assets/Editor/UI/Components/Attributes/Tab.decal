@@ -27,15 +27,15 @@
 
         &__status {
             margin: auto 0 auto auto;
-            rotate: -90deg;
+            transform: rotate(-90deg);
             transform-origin: center;
             width: 1em;
             height: 1em;
             color: white;
-            transition: rotate 260ms ease-in-out;
+            transition: transform 260ms ease-in-out;
 
             &.--visible {
-                rotate: 90deg;
+                transform: rotate(90deg);
             }
         }
     }

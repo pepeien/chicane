@@ -1,5 +1,4 @@
 $headerSize: 3.5em;
-$footerHeight: 22em;
 
 .--light {
     $--green: #0b997d;
@@ -27,6 +26,7 @@ $footerHeight: 22em;
     display: flex;
     flex-direction: column;
     gap: 0.25em;
+    transition: background-color 200ms ease-in-out;
     background-color: $--white;
 
     Header {
@@ -36,10 +36,15 @@ $footerHeight: 22em;
     }
 
     &__content {
-        width: 100%;
-        height: calc(100% - $headerSize - $footerHeight);
-        gap: 0.25em;
-        border-radius: 5px;
+        width: calc(100% - 1em);
+        height: calc(100% - $headerSize - 1.45em);
+        gap: 0.5em;
+        margin: auto;
+
+        DockPanel {
+            border: 1px solid $--light-grey;
+            border-radius: 4px;
+        }
 
         Telemetry {
             position: absolute;
@@ -54,39 +59,20 @@ $footerHeight: 22em;
         Outliner {
             width: 100%;
             height: 100%;
-            transition: background-color 300ms ease-in-out;
-            background-color: $--white;
 
             Text {
                 color: $--black;
-            }
-
-            .dock-header Text {
-                color: #c8c8c8;
             }
         }
 
         Attributes {
             width: 100%;
             height: 100%;
-            transition: background-color 300ms ease-in-out;
-            background-color: $--white;
 
             Text {
                 color: $--black;
             }
-
-            .dock-header Text {
-                color: #c8c8c8;
-            }
         }
-    }
-
-    &__footer {
-        width: 100%;
-        height: $footerHeight;
-        gap: 0.25em;
-        border-radius: 5px;
 
         Explorer {
             width: 100%;
@@ -94,16 +80,9 @@ $footerHeight: 22em;
             overflow: hidden;
 
             .explorer {
-                transition: background-color 300ms ease-in-out;
-                background-color: $--white;
-
                 Text {
                     color: $--black;
                 }
-            }
-
-            .dock-header Text {
-                color: #c8c8c8;
             }
         }
     }

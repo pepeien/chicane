@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
@@ -56,6 +58,8 @@ namespace Chicane
 
     private:
         void setScene(Scene* inScene);
+        void markSpatialDirty();
+        bool consumeSpatialDirty();
 
     protected:
         bool   m_bCanTick;
@@ -64,6 +68,7 @@ namespace Chicane
         String m_id;
 
     private:
-        Scene* m_scene = nullptr;
+        Scene*            m_scene;
+        std::atomic<bool> m_bIsSpatialDirty;
     };
 }

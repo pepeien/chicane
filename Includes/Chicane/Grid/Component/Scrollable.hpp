@@ -30,6 +30,7 @@ namespace Chicane
             const Vec2& getScroll() const;
             Vec2 getScrollOffset() const override;
             std::uint64_t getScrollGeneration() const override;
+            Vec2 getScrollBarGutter() const override;
             Vec2 getScrollMax() const;
             void addScroll(const Vec2& inValue);
             void addScroll(float inX, float inY);
@@ -61,6 +62,9 @@ namespace Chicane
             bool handleWheel(const Vec2& inDelta);
 
             void clampScroll();
+            float scrollBarThickness() const;
+            float scrollBarMargin() const;
+            void refreshScrollBarReservation();
             void refreshScrollBars();
             void ensureScrollBarParts(ScrollBarProperties& inBar);
             void syncScrollBarPart(
@@ -73,6 +77,8 @@ namespace Chicane
 
             Vec2 m_virtualContentSize;
             bool m_bHasVirtualContent;
+            bool m_bReserveHorizontalBar;
+            bool m_bReserveVerticalBar;
 
             ScrollBarProperties m_horizontalBar;
             ScrollBarProperties m_verticalBar;

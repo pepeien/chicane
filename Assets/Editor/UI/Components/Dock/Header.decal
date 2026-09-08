@@ -6,8 +6,7 @@ $dockHeaderHeight: 1.65em;
     display: flex;
     flex-direction: row;
     padding: 0 0.35em;
-    background-color: #2e2e2e;
-    border: 1px solid #1a1a1a;
+    background-color: $--dark-grey;
     cursor: grab;
 
     &.--pinned {
@@ -15,7 +14,7 @@ $dockHeaderHeight: 1.65em;
     }
 
     Text {
-        color: #c8c8c8;
+        color: $--grey;
     }
 
     &__label {
@@ -28,35 +27,41 @@ $dockHeaderHeight: 1.65em;
         flex-direction: row;
         height: 100%;
         margin-left: auto;
+        gap: 0.25em;
+        padding: 0.25em 0;
     }
 
     &__action {
-        width: 1.35em;
+        width: 1.25em;
         height: 100%;
         display: flex;
         alignment: center;
         background-color: transparent;
-        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 100ms ease-in-out;
+        margin: auto 0;
 
         &__icon {
             width: 0.72em;
             height: 0.72em;
             margin: auto;
-            color: #c8c8c8;
+            color: $--grey;
             transform-origin: center;
+            transition: transform 150ms ease-in-out;
 
             &.--pin {
-                rotate: -45deg;
+                transform: rotate(-45deg);
             }
         }
 
         &:hover {
-            background-color: #3a3a3a;
+            cursor: pointer;
+            background-color: $--light-grey;
         }
 
         &.--pinned {
             .dock-header__action__icon.--pin {
-                rotate: 0deg;
+                transform: rotate(0deg);
             }
         }
     }

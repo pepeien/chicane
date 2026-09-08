@@ -72,6 +72,7 @@ namespace Chicane
     {
         tickActors(inDeltaTime);
         tickComponents(inDeltaTime);
+        flushSpatial();
         onTick(inDeltaTime);
     }
 
@@ -363,6 +364,31 @@ namespace Chicane
         m_componentCount = 0;
     }
 
+    void Scene::flushSpatial()
+    {
+        for (auto& [type, actors] : m_actors)
+        {
+            for (Actor* actor : actors)
+            {
+                if (actor && actor->consumeSpatialDirty())
+                {
+                    updateSpatial(actor);
+                }
+            }
+        }
+
+        for (auto& [type, components] : m_components)
+        {
+            for (Component* component : components)
+            {
+                if (component && component->consumeSpatialDirty())
+                {
+                    updateSpatial(component);
+                }
+            }
+        }
+    }
+
     void Scene::updateSpatial(Object* inObject)
     {
         if (!inObject)
@@ -442,9 +468,21 @@ namespace Chicane
         const Vec3&     min    = bounds.getMin().transformed;
         const Vec3&     max    = bounds.getMax().transformed;
 
-        if (min.x > max.x || min.y > max.y || min.z > max.z)
+        const bool bIsInvalid = !std::isfinite(min.x) || !std::isfinite(min.y) || !std::isfinite(min.z) ||
+                                !std::isfinite(max.x) || !std::isfinite(max.y) || !std::isfinite(max.z) ||
+                                min.x > max.x || min.y > max.y || min.z > max.z;
+
+        if (bIsInvalid)
         {
-            outKeys.push_back(makeCellKey(inObject->getTranslation()));
+            const Vec3& translation = inObject->getTranslation();
+            if (!std::isfinite(translation.x) || !std::isfinite(translation.y) || !std::isfinite(translation.z))
+            {
+                outKeys.push_back(makeCellKey(0, 0, 0));
+
+                return;
+            }
+
+            outKeys.push_back(makeCellKey(translation));
 
             return;
         }
@@ -501,6 +539,11 @@ namespace Chicane
             );
             cell.max =
                 Vec3(cell.min.x + SPATIAL_CELL_SIZE, cell.min.y + SPATIAL_CELL_SIZE, cell.min.z + SPATIAL_CELL_SIZE);
+        }
+
+        if (std::find(cell.objects.begin(), cell.objects.end(), inObject) != cell.objects.end())
+        {
+            return;
         }
 
         cell.objects.push_back(inObject);

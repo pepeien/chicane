@@ -5,6 +5,10 @@ $explorerFooterHeight: 2.4em;
 $explorerChromeHeight: 5.25em;
 $explorerTreeWidth: 15em;
 $explorerSearchFilterWidth: 11.5em;
+$explorerPortraitTreeHeight: 11.5em;
+$explorerPortraitToolbarHeight: 4.7em;
+$explorerPortraitFooterHeight: 2.4em;
+$explorerSliderThumb: 0.72em;
 
 .explorer {
     width: 100%;
@@ -19,82 +23,73 @@ $explorerSearchFilterWidth: 11.5em;
         height: calc(100% - $explorerHeaderHeight);
         display: flex;
         flex-direction: row;
-        gap: 0.15em;
         overflow: hidden;
     }
 
     &__tree {
         width: $explorerTreeWidth;
-        height: 100%;
+        height: calc(100% - 0.5em);
         display: flex;
         flex-direction: column;
-        padding: 0.35em 0.2em;
-        overflow: auto;
-
-        &__indent {
-            width: ref(entry.indent);
-            height: 1px;
-        }
+        padding: 0.6em 0.35em;
+        overflow: hidden;
+        overflow-y: auto;
+        gap: 0.25em;
+        border-right: 1px solid $--light-grey;
+        margin: auto 0;
 
         &__item {
-            width: 100%;
+            width: calc(100% - ref(entry.indent));
             height: 1.55em;
             display: flex;
             flex-direction: row;
             gap: 0.2em;
             padding: 0 0.25em;
             background-color: transparent;
-            cursor: pointer;
             border-radius: 3px;
             overflow: hidden;
             transition: background-color 300ms ease-in-out;
+            margin-left: ref(entry.indent);
 
             &:hover {
+                cursor: pointer;
                 background-color: $--light-grey;
             }
 
             &.--selected {
                 background-color: $--light-grey;
             }
-        }
-
-        &__caret {
-            width: 0.9em;
-            height: 0.9em;
-            display: flex;
-            margin: auto 0;
-            background-color: transparent;
-            cursor: pointer;
 
             &__icon {
+                width: 0.95em;
+                height: 0.95em;
+                margin: auto 0;
+                color: $explorerFolder;
+            }
+
+            &__name {
+                font-size: 0.72em;
+                margin: auto 0;
+                color: $--grey;
+            }
+
+            &__caret {
                 width: 0.55em;
                 height: 0.55em;
-                margin: auto;
+                margin: auto 0;
                 color: $--grey;
                 transform-origin: center;
+                transition: transform 200ms ease-in-out;
+
+                &.--expanded {
+                    transform: rotate(180deg);
+                }
+
+                &.--leaf {
+                    opacity: 0;
+                    cursor: default;
+                }
             }
-
-            &.--expanded .explorer__tree__caret__icon {
-                rotate: 90deg;
-            }
-
-            &.--leaf {
-                opacity: 0;
-                cursor: default;
-            }
-        }
-
-        &__icon {
-            width: 0.95em;
-            height: 0.95em;
-            margin: auto 0;
-            color: $explorerFolder;
-        }
-
-        &__name {
-            font-size: 0.72em;
-            margin: auto 0;
-            color: $--black;
         }
     }
 
@@ -267,12 +262,78 @@ $explorerSearchFilterWidth: 11.5em;
 
         &__thumb {
             position: absolute;
-            width: 0.72em;
-            height: 0.72em;
+            width: $explorerSliderThumb;
+            height: $explorerSliderThumb;
             margin-top: 0.24em;
-            margin-left: ref(iconSizePercent)%;
+            margin-left: calc(calc(100% - $explorerSliderThumb) * ref(iconSizePercent) / 100);
             background-color: $--green;
             border-radius: 1em;
+        }
+    }
+
+    &.--portrait {
+        .explorer {
+            &__body {
+                flex-direction: column;
+            }
+
+            &__tree {
+                width: calc(100% - 0.5em);
+                height: $explorerPortraitTreeHeight;
+                border-right: none;
+                border-bottom: 1px solid $--light-grey;
+                margin: 0 auto;
+            }
+
+            &__main {
+                width: 100%;
+                height: calc(100% - $explorerPortraitTreeHeight - 0.15em);
+            }
+
+            &__toolbar {
+                flex-direction: row;
+                height: $explorerToolbarHeight;
+            }
+
+            &__search {
+                width: 60%;
+            }
+
+            &__filter {
+                width: 40%;
+                overflow: hidden;
+            }
+
+            &__grid {
+                height: calc(100% - $explorerPortraitToolbarHeight - $explorerPortraitFooterHeight);
+            }
+
+            &__footer {
+                flex-direction: column;
+                gap: 0.25em;
+                height: $explorerPortraitFooterHeight;
+
+                &__group {
+                    width: 100%;
+                    margin: 0;
+
+                    &.--grow {
+                        width: 100%;
+                    }
+                }
+
+                &__label {
+                    display: none;
+                }
+            }
+
+            &__slider {
+                width: 100%;
+            }
+
+            &__toggle {
+                padding: 0 0.5em;
+            }
         }
     }
 }

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <mutex>
+#include <vector>
+
+#include <Chicane/Core/Math/Bounds/2D.hpp>
 #include <Chicane/Core/Math/Vec/Vec2.hpp>
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/String.hpp>
@@ -24,6 +28,7 @@ namespace Editor
         bool isFocusable() const override;
 
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
+        void tick(float inDeltaTime) override;
 
     protected:
         void onTick(float inDeltaTime) override;
@@ -40,8 +45,11 @@ namespace Editor
         void onClose();
 
     private:
+        bool isControl(const Chicane::Grid::Component* inComponent) const;
         bool isControlHit(const Chicane::Vec2& inLocation) const;
         void closeMenus();
+        void publishMoveHitSnapshot();
+        bool isMoveRegion(int inX, int inY) const;
         void bindMoveHitTest();
         void unbindMoveHitTest();
 
@@ -55,6 +63,9 @@ namespace Editor
         HeaderMenuItem::List menus;
 
     private:
-        void* m_moveWindow;
+        void*                          m_moveWindow;
+        mutable std::mutex             m_moveHitMutex;
+        Chicane::Bounds2D              m_moveBounds;
+        std::vector<Chicane::Bounds2D> m_moveControls;
     };
 }

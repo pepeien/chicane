@@ -18,32 +18,37 @@
 
 namespace Editor
 {
-    constexpr float       ICON_SIZE_MIN_EM = 4.5f;
-    constexpr float       ICON_SIZE_MAX_EM = 10.5f;
-    const Chicane::String SLIDER_ID        = "explorerIconSize";
+    static constexpr float              ICON_SIZE_MIN_EM = 4.5f;
+    static constexpr float              ICON_SIZE_MAX_EM = 10.5f;
+    static constexpr inline const char* SLIDER_ID        = "explorerIconSize";
 
-    constexpr float TREE_INDENT_EM = 0.85f;
+    static constexpr float TREE_INDENT_EM = 0.85f;
 
-    constexpr float       GRID_GAP_EM        = 0.55f;
-    constexpr float       LIST_GAP_EM        = 0.2f;
-    constexpr float       LIST_ROW_EM        = 2.5f;
-    constexpr int         TILE_OVERSCAN_ROWS = 6;
-    const Chicane::String GRID_CONTENT_ID    = "explorerGridContent";
+    static constexpr float              GRID_GAP_EM        = 0.55f;
+    static constexpr float              LIST_GAP_EM        = 0.2f;
+    static constexpr float              LIST_ROW_EM        = 2.5f;
+    static constexpr int                TILE_OVERSCAN_ROWS = 6;
+    static constexpr inline const char* GRID_CONTENT_ID    = "explorerGridContent";
 
-    const Chicane::String LAYOUT_HORIZONTAL = "horizontal";
-    const Chicane::String LAYOUT_VERTICAL   = "vertical";
+    static constexpr inline const char* LAYOUT_HORIZONTAL = "horizontal";
+    static constexpr inline const char* LAYOUT_VERTICAL   = "vertical";
 
-    const Chicane::String SORT_MATCH = "match";
-    const Chicane::String SORT_NAME  = "name";
+    static constexpr inline const char* ORIENTATION_LANDSCAPE = "landscape";
+    static constexpr inline const char* ORIENTATION_PORTRAIT  = "portrait";
+    static constexpr float              PORTRAIT_ENTER_EM     = 32.0f;
+    static constexpr float              PORTRAIT_LEAVE_EM     = 38.0f;
 
-    const Chicane::String STATE_ACTIVE = "active";
-    const Chicane::String STATE_IDLE   = "idle";
+    static constexpr inline const char* SORT_MATCH = "match";
+    static constexpr inline const char* SORT_NAME  = "name";
 
-    const Chicane::String EXPAND_LEAF      = "leaf";
-    const Chicane::String EXPAND_COLLAPSED = "collapsed";
-    const Chicane::String EXPAND_EXPANDED  = "expanded";
+    static constexpr inline const char* STATE_ACTIVE = "active";
+    static constexpr inline const char* STATE_IDLE   = "idle";
 
-    const Chicane::String SELECTED = "selected";
+    static constexpr inline const char* EXPAND_LEAF      = "leaf";
+    static constexpr inline const char* EXPAND_COLLAPSED = "collapsed";
+    static constexpr inline const char* EXPAND_EXPANDED  = "expanded";
+
+    static constexpr inline const char* SELECTED = "selected";
 
     Explorer::Explorer(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
@@ -56,6 +61,7 @@ namespace Editor
           layout(LAYOUT_HORIZONTAL),
           layoutHorizontalState(STATE_ACTIVE),
           layoutVerticalState(STATE_IDLE),
+          orientation(ORIENTATION_LANDSCAPE),
           sortBy(SORT_MATCH),
           sortMatchState(STATE_ACTIVE),
           sortNameState(STATE_IDLE),
@@ -183,6 +189,7 @@ namespace Editor
 
         isSearchEmpty = searchQuery.isEmpty();
 
+        refreshOrientation();
         pumpListings();
         syncGridTiles();
     }
@@ -264,32 +271,6 @@ namespace Editor
         selectedFolderPath = toPathKey(found->path);
         selectedAssetName  = Chicane::String::empty();
 
-        rebuildTree();
-        refreshGrid();
-    }
-
-    void Explorer::onToggleFolder(Chicane::String inPath)
-    {
-        if (inPath.isEmpty())
-        {
-            return;
-        }
-
-        inPath = toPathKey(Chicane::FileSystem::Path(inPath));
-
-        Chicane::FileSystem::Item* found = findFolder(m_rootFolder, inPath);
-        if (!found)
-        {
-            return;
-        }
-
-        ensureListed(*found);
-
-        if (!hasChildFolders(*found))
-        {
-            return;
-        }
-
         const std::string key = inPath.toStandard();
         if (m_expandedPaths.erase(key) == 0)
         {
@@ -297,6 +278,7 @@ namespace Editor
         }
 
         rebuildTree();
+        refreshGrid();
     }
 
     void Explorer::onActivateItem(Chicane::String inName)
@@ -376,7 +358,7 @@ namespace Editor
             entry.selectedState = entry.path.equals(selectedFolderPath) ? SELECTED : STATE_IDLE;
 
             const bool bHasChildren = hasChildFolders(folder);
-            const bool bIsExpanded    = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
+            const bool bIsExpanded  = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
 
             if (!bHasChildren)
             {
@@ -455,6 +437,27 @@ namespace Editor
 
         sortMatchState = bIsMatch ? STATE_ACTIVE : STATE_IDLE;
         sortNameState  = bIsMatch ? STATE_IDLE : STATE_ACTIVE;
+    }
+
+    void Explorer::refreshOrientation()
+    {
+        const Chicane::Vec2 size = getSize();
+        if (size.x <= 1.0f || size.y <= 1.0f)
+        {
+            return;
+        }
+
+        const float em = getStyle().font.size.get() > 0.0f ? getStyle().font.size.get() : Chicane::Box::Font::BASE_SIZE;
+        const float widthEm = size.x / em;
+        const bool  bIsPortrait =
+            orientation.equals(ORIENTATION_PORTRAIT) ? widthEm < PORTRAIT_LEAVE_EM : widthEm < PORTRAIT_ENTER_EM;
+        const Chicane::String next = bIsPortrait ? ORIENTATION_PORTRAIT : ORIENTATION_LANDSCAPE;
+        if (orientation.equals(next))
+        {
+            return;
+        }
+
+        orientation = next;
     }
 
     void Explorer::refreshFilterLabel()
@@ -609,19 +612,18 @@ namespace Editor
             return;
         }
 
-        const bool  bIsVertical       = layout.equals(LAYOUT_VERTICAL);
-        const bool  bHasLayoutChanged = !layout.equals(m_gridLayout);
-        const auto& style             = content->getStyle();
-        const Chicane::Vec2 inner = content->getContentSize();
+        const bool          bIsVertical       = layout.equals(LAYOUT_VERTICAL);
+        const bool          bHasLayoutChanged = !layout.equals(m_gridLayout);
+        const auto&         style             = content->getStyle();
+        const Chicane::Vec2 inner = content->getInnerLayoutSize();
         const Chicane::Vec2 view(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
-        const float em     = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
-        const float iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
-        const bool  bHasIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
-        const Chicane::Vec2 gap(
-            bIsVertical ? 0.0f : GRID_GAP_EM * em, (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em
-        );
+        const float         em = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
+        const float         iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
+        const bool          bHasIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
+        const Chicane::Vec2 gap(bIsVertical ? 0.0f : GRID_GAP_EM * em, (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em);
         const Chicane::Vec2 cell(
-            bIsVertical ? std::max(view.x, 1.0f) : iconEm * em, bIsVertical ? LIST_ROW_EM * em : (iconEm * em)
+            bIsVertical ? std::max(view.x, 1.0f) : iconEm * em,
+            bIsVertical ? LIST_ROW_EM * em : (iconEm * em)
         );
 
         m_gridLayout = layout;
@@ -635,7 +637,7 @@ namespace Editor
             columns = std::max(static_cast<std::size_t>(1), static_cast<std::size_t>(view.x / stride.x));
         }
 
-        const std::size_t rows = (count + columns - 1) / columns;
+        const std::size_t   rows = (count + columns - 1) / columns;
         const Chicane::Vec2 contentSize(
             bIsVertical ? view.x : (columns * cell.x + (columns > 0 ? (columns - 1) * gap.x : 0.0f)),
             rows * cell.y + (rows > 0 ? (rows - 1) * gap.y : 0.0f)

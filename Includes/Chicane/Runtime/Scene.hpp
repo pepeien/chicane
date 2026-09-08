@@ -332,6 +332,7 @@ namespace Chicane
         void tickComponents(float inDeltaTime);
         void deleteComponents();
 
+        void flushSpatial();
         void updateSpatial(Object* inObject);
         void removeSpatial(Object* inObject);
 

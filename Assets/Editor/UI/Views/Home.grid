@@ -11,9 +11,7 @@
         <DockPanel side="right" size="20%" handle="attributesHeader">
             <Attributes />
         </DockPanel>
-    </Dock>
-    <Dock class="home__footer">
-        <DockPanel size="100%" handle="explorerHeader">
+        <DockPanel side="bottom" size="22em" handle="explorerHeader">
             <Explorer />
         </DockPanel>
     </Dock>

@@ -7,8 +7,8 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 #include "Chicane/Grid/Component/Dock/Side.hpp"
-#include "Chicane/Grid/Component/Scrollable.hpp"
 
 namespace Chicane
 {
@@ -19,7 +19,7 @@ namespace Chicane
         struct DockRegion;
 
         CH_TYPE(Manual)
-        class CHICANE_GRID DockPanel : public Scrollable
+        class CHICANE_GRID DockPanel : public Container
         {
         public:
             // Tag

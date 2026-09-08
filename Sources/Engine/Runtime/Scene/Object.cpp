@@ -11,7 +11,8 @@ namespace Chicane
           m_bCanCollide(false),
           m_bCanTick(false),
           m_id(""),
-          m_scene(nullptr)
+          m_scene(nullptr),
+          m_bIsSpatialDirty(true)
     {}
 
     Object::~Object()
@@ -25,11 +26,7 @@ namespace Chicane
     void Object::onRefresh()
     {
         Transformable::onRefresh();
-
-        if (m_scene)
-        {
-            m_scene->updateSpatial(this);
-        }
+        markSpatialDirty();
     }
 
     bool Object::canTick() const
@@ -99,10 +96,16 @@ namespace Chicane
         }
 
         m_scene = inScene;
+        markSpatialDirty();
+    }
 
-        if (m_scene)
-        {
-            m_scene->updateSpatial(this);
-        }
+    void Object::markSpatialDirty()
+    {
+        m_bIsSpatialDirty.store(true, std::memory_order_relaxed);
+    }
+
+    bool Object::consumeSpatialDirty()
+    {
+        return m_bIsSpatialDirty.exchange(false, std::memory_order_acq_rel);
     }
 }

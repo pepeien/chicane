@@ -39,9 +39,9 @@ namespace Chicane
 
         void View::tick(float inDelta)
         {
-            pump();
-
             Container::tick(inDelta);
+
+            pump();
 
             m_pointer.store(resolvePointer(), std::memory_order_relaxed);
         }
@@ -63,11 +63,6 @@ namespace Chicane
             std::vector<Component*> contenders;
             for (Component* child : getChildrenFlat())
             {
-                if (child->isCulled())
-                {
-                    continue;
-                }
-
                 if (!child->isDisplayable())
                 {
                     continue;
@@ -186,9 +181,10 @@ namespace Chicane
             if (inEvent.type == WindowEventType::MouseButtonDown)
             {
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                Component*              hit   = resolveHit(getHitAt(event.location));
+                syncHovered(hit);
                 bubbleEvent(inEvent, event.location);
 
-                Component* hit  = resolveHit(getHitAt(event.location));
                 Component* node = hit;
                 while (node && node != this)
                 {

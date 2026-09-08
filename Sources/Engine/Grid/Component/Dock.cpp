@@ -208,6 +208,37 @@ namespace Chicane
             }
         }
 
+        void Dock::sortEdges(std::vector<DockPanel*>& inOutEdges) const
+        {
+            auto rank = [](DockSide inSide) -> int
+            {
+                switch (inSide)
+                {
+                case DockSide::Top:
+                    return 0;
+
+                case DockSide::Bottom:
+                    return 1;
+
+                case DockSide::Left:
+                    return 2;
+
+                case DockSide::Right:
+                    return 3;
+
+                default:
+                    return 4;
+                }
+            };
+
+            std::stable_sort(
+                inOutEdges.begin(),
+                inOutEdges.end(),
+                [&rank](const DockPanel* inLeft, const DockPanel* inRight)
+                { return rank(inLeft->getSide()) < rank(inRight->getSide()); }
+            );
+        }
+
         void Dock::layout()
         {
             m_regions.clear();
@@ -220,35 +251,39 @@ namespace Chicane
             Bounds2D remaining;
             remaining.set(0.0f, 0.0f, content.y, content.x);
 
+            for (Component* child : m_children)
+            {
+                if (DockPanel* panel = asPanel(child))
+                {
+                    panel->refreshAttributes();
+                }
+            }
+
             std::vector<DockPanel*> edges;
             std::vector<DockPanel*> fills;
             std::vector<DockPanel*> floats;
             collectPanels(edges, fills, floats);
+            sortEdges(edges);
+
+            const bool bHasFill = !fills.empty();
 
             for (DockPanel* panel : edges)
             {
-                panel->refreshAttributes();
-                claim(panel, remaining, content);
-            }
-
-            for (DockPanel* panel : fills)
-            {
-                panel->refreshAttributes();
+                claim(panel, remaining, content, bHasFill);
             }
 
             assignFill(fills, remaining);
 
             for (DockPanel* panel : floats)
             {
-                panel->refreshAttributes();
                 assignFloat(panel);
             }
         }
 
-        void Dock::claim(DockPanel* inPanel, Bounds2D& outRemaining, const Vec2& inContent)
+        void Dock::claim(DockPanel* inPanel, Bounds2D& outRemaining, const Vec2& inContent, bool inHasFill)
         {
             const DockSide side   = inPanel->getSide();
-            const float    extent = resolveExtent(inPanel, outRemaining, inContent);
+            const float    extent = resolveExtent(inPanel, outRemaining, inContent, inHasFill);
 
             DockRegion region;
 
@@ -317,18 +352,20 @@ namespace Chicane
                 return;
             }
 
-            const float width   = inRemaining.right - inRemaining.left;
-            const float height  = inRemaining.bottom - inRemaining.top;
+            const float width         = inRemaining.right - inRemaining.left;
+            const float height        = inRemaining.bottom - inRemaining.top;
             const bool  bShouldSplitX = width >= height;
-            const float gap     = std::max(0.0f, bShouldSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
-            const float usable  = std::max(
-                0.0f, (bShouldSplitX ? width : height) - gap * static_cast<float>(inPanels.size() > 0 ? inPanels.size() - 1 : 0)
+            const float gap           = std::max(0.0f, bShouldSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
+            const float usable        = std::max(
+                0.0f,
+                (bShouldSplitX ? width : height) -
+                    gap * static_cast<float>(inPanels.size() > 0 ? inPanels.size() - 1 : 0)
             );
             const float slice = usable / static_cast<float>(inPanels.size());
 
             for (std::size_t i = 0; i < inPanels.size(); ++i)
             {
-                DockRegion region;
+                DockRegion  region;
                 const float offset = (slice + gap) * static_cast<float>(i);
 
                 if (bShouldSplitX)
@@ -358,12 +395,12 @@ namespace Chicane
 
             if (size.x <= 0.0f)
             {
-                size.x = parseExtent("20em", SizeDirection::Horizontal, m_size);
+                size.x = parseExtent(DEFAULT_WIDTH_SIZE, SizeDirection::Horizontal, m_size);
             }
 
             if (size.y <= 0.0f)
             {
-                size.y = parseExtent("16em", SizeDirection::Vertical, m_size);
+                size.y = parseExtent(DEFAULT_HEIGHT_SIZE, SizeDirection::Vertical, m_size);
             }
 
             const Vec2 position = inPanel->getFloatPosition();
@@ -416,7 +453,7 @@ namespace Chicane
 
             while (node && node != this)
             {
-                DockPanel* panel     = DockPanel::findFrom(node);
+                DockPanel* panel       = DockPanel::findFrom(node);
                 const bool bIsAssigned = panel && panel->isAssignedHandle(node);
                 const bool bIsOverlay  = node->getTag().equals(DockHandle::TAG_ID);
                 if (bIsAssigned || bIsOverlay)
@@ -654,11 +691,11 @@ namespace Chicane
                 return;
             }
 
-            m_drag.panel   = inPanel;
-            m_drag.cursor  = inLocation;
-            m_drag.grab    = inLocation - inPanel->getDrawPosition();
+            m_drag.panel     = inPanel;
+            m_drag.cursor    = inLocation;
+            m_drag.grab      = inLocation - inPanel->getDrawPosition();
             m_drag.bIsActive = inPanel->isFloating();
-            m_drag.drop    = inPanel->getSide();
+            m_drag.drop      = inPanel->getSide();
 
             if (m_drag.bIsActive)
             {
@@ -750,13 +787,11 @@ namespace Chicane
         void Dock::applyDragCursor()
         {
             m_style.cursor.setRaw(Style::CURSOR_TYPE_GRABBING);
-            m_style.cursor.set(WindowCursor::Grabbing);
         }
 
         void Dock::clearCursor()
         {
-            m_style.cursor.setRaw("");
-            m_style.cursor.set(WindowCursor::Default);
+            m_style.cursor.setRaw(Style::CURSOR_TYPE_DEFAULT);
         }
 
         void Dock::raise(DockPanel* inPanel)
@@ -786,7 +821,8 @@ namespace Chicane
 
             const Vec2 size(content.right - content.left, content.bottom - content.top);
             const Vec2 band(
-                std::max(DROP_BAND_MIN, size.x * DROP_BAND_RATIO), std::max(DROP_BAND_MIN, size.y * DROP_BAND_RATIO)
+                std::max(DROP_BAND_MIN, size.x * DROP_BAND_RATIO),
+                std::max(DROP_BAND_MIN, size.y * DROP_BAND_RATIO)
             );
 
             const float left   = inLocation.x - content.left;
@@ -849,11 +885,18 @@ namespace Chicane
             return std::clamp(gap, 0.0f, std::max(0.0f, inLeftover));
         }
 
-        float Dock::resolveExtent(DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent) const
+        float Dock::resolveExtent(
+            DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent, bool inHasFill
+        ) const
         {
             const SizeDirection direction = axisOf(inPanel->getSide());
-            const float         available = isHorizontal(inPanel->getSide()) ? (inRemaining.right - inRemaining.left)
+            float               available = isHorizontal(inPanel->getSide()) ? (inRemaining.right - inRemaining.left)
                                                                              : (inRemaining.bottom - inRemaining.top);
+
+            if (inHasFill)
+            {
+                available = std::max(0.0f, available - parseExtent(DockPanel::DEFAULT_MIN_SIZE, direction, inContent));
+            }
 
             const float minExtent = resolveLimit(
                 inPanel->getMinSizeValue(),

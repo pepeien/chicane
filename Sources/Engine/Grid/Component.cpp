@@ -163,7 +163,7 @@ namespace Chicane
                 return Vec2::Zero();
             }
 
-            const Vec2 content = inBox->getContentSize();
+            const Vec2 content = inBox->getInnerLayoutSize();
 
             return {std::max(0.0f, content.x), std::max(0.0f, content.y)};
         }
@@ -1167,7 +1167,7 @@ namespace Chicane
             bool  bIsParentLaidOut = false;
             if (hasParent() && !isRoot())
             {
-                parentSize       = m_parent->getContentSize();
+                parentSize       = m_parent->getInnerLayoutSize();
                 parentFont       = m_parent->getStyle().font.size.get();
                 bIsParentLaidOut = m_parent->m_bIsLaidOutThisFrame;
             }
@@ -2158,6 +2158,11 @@ namespace Chicane
             return 0;
         }
 
+        Vec2 Component::getScrollBarGutter() const
+        {
+            return Vec2::Zero();
+        }
+
         void Component::cacheAttributeFlags()
         {
             m_bHasClassBinding = isReference(getAttribute(CLASS_ATTRIBUTE_NAME));
@@ -2203,11 +2208,6 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
-                if (child->isCulled())
-                {
-                    continue;
-                }
-
                 if (!child->isDisplayable())
                 {
                     continue;
@@ -2592,6 +2592,14 @@ namespace Chicane
             return size;
         }
 
+        Vec2 Component::getInnerLayoutSize() const
+        {
+            const Vec2 content = getContentSize();
+            const Vec2 gutter  = getScrollBarGutter();
+
+            return Vec2(std::max(0.0f, content.x - gutter.x), std::max(0.0f, content.y - gutter.y));
+        }
+
         Vec2 Component::getBorderSize() const
         {
             Vec2 size = m_size;
@@ -2616,7 +2624,7 @@ namespace Chicane
 
         Vec2 Component::getRemainingContentSize(const Component* inChild) const
         {
-            const Vec2 inner = getContentSize();
+            const Vec2 inner = getInnerLayoutSize();
 
             if (!inChild || !isFlexNowrap(m_style))
             {

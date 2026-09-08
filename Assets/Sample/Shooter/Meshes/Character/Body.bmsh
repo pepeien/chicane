@@ -6,6 +6,6 @@
     </Group>
     <Group id="Body">
         <Model source="Assets/Sample/Shooter/Models/Character.bmdl">Character_Body</Model>
-        <Texture source="Assets/Engine/Textures/Color/Gray.btex">Color_Gray</Texture>
+        <Texture source="Assets/Engine/Textures/Color/Grey.btex">Color_Grey</Texture>
     </Group>
 </Asset>

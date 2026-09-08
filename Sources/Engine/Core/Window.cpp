@@ -51,6 +51,8 @@ namespace Chicane
         {
             emmitError("Error initing the window");
         }
+
+        SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
     }
 
     Window::~Window()

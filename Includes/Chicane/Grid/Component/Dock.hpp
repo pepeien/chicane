@@ -37,6 +37,9 @@ namespace Chicane
             static constexpr inline float       DROP_BAND_MIN    = 36.0f;
             static constexpr inline float       DROP_BAND_RATIO  = 0.22f;
 
+            static constexpr inline const char* DEFAULT_WIDTH_SIZE  = "20em";
+            static constexpr inline const char* DEFAULT_HEIGHT_SIZE = "16em";
+
         public:
             CH_CONSTRUCTOR()
             Dock(const pugi::xml_node& inNode);
@@ -59,9 +62,10 @@ namespace Chicane
             void collectPanels(
                 std::vector<DockPanel*>& outEdges, std::vector<DockPanel*>& outFills, std::vector<DockPanel*>& outFloats
             ) const;
+            void sortEdges(std::vector<DockPanel*>& inOutEdges) const;
 
             void layout();
-            void claim(DockPanel* inPanel, Bounds2D& outRemaining, const Vec2& inContent);
+            void claim(DockPanel* inPanel, Bounds2D& outRemaining, const Vec2& inContent, bool inHasFill);
             void assignFill(const std::vector<DockPanel*>& inPanels, const Bounds2D& inRemaining);
             void assignFloat(DockPanel* inPanel);
             void refreshDrop();
@@ -87,7 +91,9 @@ namespace Chicane
             DockSide pickDropSide(const Vec2& inLocation) const;
 
             float resolveGap(DockSide inSide, float inLeftover) const;
-            float resolveExtent(DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent) const;
+            float resolveExtent(
+                DockPanel* inPanel, const Bounds2D& inRemaining, const Vec2& inContent, bool inHasFill
+            ) const;
             float resolveLimit(
                 const String& inValue, SizeDirection inDirection, const Vec2& inContent, float inFallback
             ) const;

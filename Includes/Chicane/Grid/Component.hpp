@@ -95,6 +95,7 @@ namespace Chicane
             virtual Vec2 getTransformPivot() const;
             virtual Vec2 getScrollOffset() const;
             virtual std::uint64_t getScrollGeneration() const;
+            virtual Vec2 getScrollBarGutter() const;
 
         protected:
             // Lifescycle Events
@@ -244,6 +245,7 @@ namespace Chicane
             // Positioning
             const Vec2& getSize() const;
             Vec2 getContentSize() const;
+            Vec2 getInnerLayoutSize() const;
             Vec2 getBorderSize() const;
             Vec2 getRemainingContentSize() const;
             Vec2 getRemainingContentSize(const Component* inChild) const;

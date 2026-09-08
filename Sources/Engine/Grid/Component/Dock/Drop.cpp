@@ -90,7 +90,10 @@ namespace Chicane
             }
 
             m_depthBias = 0.0f;
+
             m_style.background.color.set(inColor);
+            m_style.radius.x.setAll(BORDER_RADIUS_IN_PX);
+            m_style.radius.y.setAll(BORDER_RADIUS_IN_PX);
 
             const float width  = inBox.right - inBox.left;
             const float height = inBox.bottom - inBox.top;

@@ -15,6 +15,7 @@ namespace Chicane
     {
         const Color::Rgba SCROLL_BAR_TRACK_COLOR(0, 0, 0, 110);
         const Color::Rgba SCROLL_BAR_THUMB_COLOR(210, 210, 210, 210);
+        constexpr float SCROLL_BAR_MARGIN_EM = 0.25f;
 
         Scrollable::Scrollable(const pugi::xml_node& inNode)
             : Component(inNode),
@@ -22,6 +23,8 @@ namespace Chicane
               m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
+              m_bReserveHorizontalBar(false),
+              m_bReserveVerticalBar(false),
               m_horizontalBar({}),
               m_verticalBar({})
         {}
@@ -32,6 +35,8 @@ namespace Chicane
               m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
+              m_bReserveHorizontalBar(false),
+              m_bReserveVerticalBar(false),
               m_horizontalBar({}),
               m_verticalBar({})
         {}
@@ -44,6 +49,8 @@ namespace Chicane
 
         void Scrollable::tick(float inDelta)
         {
+            refreshScrollBarReservation();
+
             const Vec2 previous = m_currentPosition;
 
             Component::tick(inDelta);
@@ -176,10 +183,19 @@ namespace Chicane
             return m_scrollGeneration;
         }
 
+        Vec2 Scrollable::getScrollBarGutter() const
+        {
+            const float slot = scrollBarThickness() + scrollBarMargin();
+
+            return Vec2(
+                m_bReserveVerticalBar ? slot : 0.0f, m_bReserveHorizontalBar ? slot : 0.0f
+            );
+        }
+
         Vec2 Scrollable::getScrollMax() const
         {
             const Vec2  content = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
-            const Vec2  inner   = getContentSize();
+            const Vec2  inner   = getInnerLayoutSize();
             const float innerW  = std::max(0.0f, inner.x);
             const float innerH  = std::max(0.0f, inner.y);
             constexpr float kEpsilon = 1.0f;
@@ -443,6 +459,69 @@ namespace Chicane
             return result;
         }
 
+        float Scrollable::scrollBarThickness() const
+        {
+            return std::max(6.0f, m_style.font.size.get() * 0.45f);
+        }
+
+        float Scrollable::scrollBarMargin() const
+        {
+            return std::max(0.0f, m_style.font.size.get() * SCROLL_BAR_MARGIN_EM);
+        }
+
+        void Scrollable::refreshScrollBarReservation()
+        {
+            const StyleOverflow overflowX = m_style.overflowX.get();
+            const StyleOverflow overflowY = m_style.overflowY.get();
+            const bool canReserveX = overflowX == StyleOverflow::Scroll || overflowX == StyleOverflow::Auto;
+            const bool canReserveY = overflowY == StyleOverflow::Scroll || overflowY == StyleOverflow::Auto;
+
+            if (!canReserveX && !canReserveY)
+            {
+                if (!m_bReserveHorizontalBar && !m_bReserveVerticalBar)
+                {
+                    return;
+                }
+
+                m_bReserveHorizontalBar = false;
+                m_bReserveVerticalBar   = false;
+                markLayoutDirty();
+
+                return;
+            }
+
+            const Vec2 paddingBox = Component::getContentSize();
+            const Vec2 content    = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
+            constexpr float kEpsilon = 1.0f;
+
+            auto needsBar = [kEpsilon](StyleOverflow overflow, float contentSize, float innerSize) -> bool
+            {
+                if (overflow == StyleOverflow::Scroll)
+                {
+                    return true;
+                }
+
+                if (overflow == StyleOverflow::Auto)
+                {
+                    return contentSize > innerSize + kEpsilon;
+                }
+
+                return false;
+            };
+
+            const bool reserveY = canReserveY && needsBar(overflowY, content.y, paddingBox.y);
+            const bool reserveX = canReserveX && needsBar(overflowX, content.x, paddingBox.x);
+
+            if (reserveY == m_bReserveVerticalBar && reserveX == m_bReserveHorizontalBar)
+            {
+                return;
+            }
+
+            m_bReserveVerticalBar   = reserveY;
+            m_bReserveHorizontalBar = reserveX;
+            markLayoutDirty();
+        }
+
         void Scrollable::clampScroll()
         {
             const Vec2 maxScroll = getScrollMax();
@@ -471,49 +550,55 @@ namespace Chicane
             m_horizontalBar.bIsVisible = canScrollX();
             m_verticalBar.bIsVisible   = canScrollY();
 
-            const float thickness = std::max(6.0f, m_style.font.size.get() * 0.45f);
+            const float thickness = scrollBarThickness();
             const float minThumb  = std::max(thickness * 2.0f, 16.0f);
             const Vec2  maxScroll = getScrollMax();
+            const float padLeft   = m_style.insetLeft();
+            const float padRight  = m_style.insetRight();
+            const float padTop    = m_style.insetTop();
+            const float padBottom = m_style.insetBottom();
+            const float innerW    = std::max(0.0f, m_size.x - padLeft - padRight);
+            const float innerH    = std::max(0.0f, m_size.y - padTop - padBottom);
 
             if (m_verticalBar.bIsVisible)
             {
-                const float trackSize = std::max(0.0f, m_size.y - (m_horizontalBar.bIsVisible ? thickness : 0.0f));
-                const float content   = m_size.y + maxScroll.y;
+                const float trackSize = std::max(0.0f, innerH - (m_horizontalBar.bIsVisible ? thickness : 0.0f));
+                const float content   = trackSize + maxScroll.y;
                 const float thumbHi   = trackSize;
                 const float thumbLo   = std::min(minThumb, thumbHi);
-                const float thumbSize = std::clamp(trackSize * (m_size.y / std::max(content, 1.0f)), thumbLo, thumbHi);
+                const float thumbSize = std::clamp(trackSize * (trackSize / std::max(content, 1.0f)), thumbLo, thumbHi);
                 const float travel    = std::max(0.0f, trackSize - thumbSize);
                 const float ratio     = maxScroll.y > 0.0f ? (m_currentPosition.y / maxScroll.y) : 0.0f;
 
-                m_verticalBar.track.left   = std::max(0.0f, m_size.x - thickness);
-                m_verticalBar.track.right  = m_size.x;
-                m_verticalBar.track.top    = 0.0f;
-                m_verticalBar.track.bottom = trackSize;
+                m_verticalBar.track.left   = std::max(padLeft, padLeft + innerW - thickness);
+                m_verticalBar.track.right  = padLeft + innerW;
+                m_verticalBar.track.top    = padTop;
+                m_verticalBar.track.bottom = padTop + trackSize;
 
                 m_verticalBar.thumb.left   = m_verticalBar.track.left;
                 m_verticalBar.thumb.right  = m_verticalBar.track.right;
-                m_verticalBar.thumb.top    = travel * ratio;
+                m_verticalBar.thumb.top    = padTop + travel * ratio;
                 m_verticalBar.thumb.bottom = m_verticalBar.thumb.top + thumbSize;
             }
 
             if (m_horizontalBar.bIsVisible)
             {
-                const float trackSize = std::max(0.0f, m_size.x - (m_verticalBar.bIsVisible ? thickness : 0.0f));
-                const float content   = m_size.x + maxScroll.x;
+                const float trackSize = std::max(0.0f, innerW - (m_verticalBar.bIsVisible ? thickness : 0.0f));
+                const float content   = trackSize + maxScroll.x;
                 const float thumbHi   = trackSize;
                 const float thumbLo   = std::min(minThumb, thumbHi);
-                const float thumbSize = std::clamp(trackSize * (m_size.x / std::max(content, 1.0f)), thumbLo, thumbHi);
+                const float thumbSize = std::clamp(trackSize * (trackSize / std::max(content, 1.0f)), thumbLo, thumbHi);
                 const float travel    = std::max(0.0f, trackSize - thumbSize);
                 const float ratio     = maxScroll.x > 0.0f ? (m_currentPosition.x / maxScroll.x) : 0.0f;
 
-                m_horizontalBar.track.left   = 0.0f;
-                m_horizontalBar.track.right  = trackSize;
-                m_horizontalBar.track.top    = std::max(0.0f, m_size.y - thickness);
-                m_horizontalBar.track.bottom = m_size.y;
+                m_horizontalBar.track.left   = padLeft;
+                m_horizontalBar.track.right  = padLeft + trackSize;
+                m_horizontalBar.track.top    = std::max(padTop, padTop + innerH - thickness);
+                m_horizontalBar.track.bottom = padTop + innerH;
 
                 m_horizontalBar.thumb.top    = m_horizontalBar.track.top;
                 m_horizontalBar.thumb.bottom = m_horizontalBar.track.bottom;
-                m_horizontalBar.thumb.left   = travel * ratio;
+                m_horizontalBar.thumb.left   = padLeft + travel * ratio;
                 m_horizontalBar.thumb.right  = m_horizontalBar.thumb.left + thumbSize;
             }
 

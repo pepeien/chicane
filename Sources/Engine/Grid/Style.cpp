@@ -85,10 +85,8 @@ namespace Chicane
                 {
                     if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Horizontal))
                     {
-                        const float current = preservedFillPercent(
-                            width.value.get(),
-                            hasParent() ? m_parent->getSize().x : 0.0f
-                        );
+                        const float current =
+                            preservedFillPercent(width.value.get(), hasParent() ? m_parent->getSize().x : 0.0f);
 
                         if (current > 0.01f)
                         {
@@ -106,10 +104,8 @@ namespace Chicane
                 {
                     if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Vertical))
                     {
-                        const float current = preservedFillPercent(
-                            height.value.get(),
-                            hasParent() ? m_parent->getSize().y : 0.0f
-                        );
+                        const float current =
+                            preservedFillPercent(height.value.get(), hasParent() ? m_parent->getSize().y : 0.0f);
 
                         if (current > 0.01f)
                         {
@@ -325,12 +321,7 @@ namespace Chicane
                 zIndex.setRaw(inProperties.at(Z_INDEX_ATTRIBUTE_NAME));
             }
 
-            width.setProperties(
-                inProperties,
-                WIDTH_ATTRIBUTE_NAME,
-                MIN_WIDTH_ATTRIBUTE_NAME,
-                MAX_WIDTH_ATTRIBUTE_NAME
-            );
+            width.setProperties(inProperties, WIDTH_ATTRIBUTE_NAME, MIN_WIDTH_ATTRIBUTE_NAME, MAX_WIDTH_ATTRIBUTE_NAME);
             height.setProperties(
                 inProperties,
                 HEIGHT_ATTRIBUTE_NAME,
@@ -1778,7 +1769,8 @@ namespace Chicane
             Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
 
             const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal, &selfBox);
-            const float y = tokens.size() > 1 ? parseSize(tokens.at(1).trim(), SizeDirection::Vertical, &selfBox) : 0.0f;
+            const float y =
+                tokens.size() > 1 ? parseSize(tokens.at(1).trim(), SizeDirection::Vertical, &selfBox) : 0.0f;
 
             return {x, y};
         }
@@ -2100,7 +2092,8 @@ namespace Chicane
                 return Vec2::Zero();
             }
 
-            Vec2 size = inBox->getContentSize();
+            Vec2 size = inBox->getInnerLayoutSize();
+
             const Style& style = inBox->getStyle();
             if (!style.isDisplay(StyleDisplay::Flex) || style.flex.wrap.get() == StyleFlexWrap::Wrap)
             {
@@ -2158,7 +2151,7 @@ namespace Chicane
                 {
                     const bool bIsAbsolute = m_parent->getStyle().isPosition(StylePosition::Absolute);
                     result.setParent(
-                        bIsAbsolute ? containingBlock->getContentSize() : percentContainingSize(containingBlock)
+                        bIsAbsolute ? containingBlock->getInnerLayoutSize() : percentContainingSize(containingBlock)
                     );
                 }
             }
@@ -2632,9 +2625,9 @@ namespace Chicane
             if (bHasPlayState)
             {
                 animation.bIsPaused = inProperties.at(ANIMATION_PLAY_STATE_ATTRIBUTE_NAME)
-                                        .trim()
-                                        .toLower()
-                                        .equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
+                                          .trim()
+                                          .toLower()
+                                          .equals(ANIMATION_PLAY_STATE_TYPE_PAUSED);
             }
         }
 

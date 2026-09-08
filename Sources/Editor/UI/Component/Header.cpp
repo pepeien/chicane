@@ -1,5 +1,7 @@
 #include "Editor/UI/Component/Header.reflected.hpp"
 
+#include <mutex>
+
 #include <Chicane/Core/Input/Keyboard/Button.hpp>
 #include <Chicane/Core/Input/Keyboard/Event.hpp>
 #include <Chicane/Core/Input/Mouse/Button.hpp>
@@ -18,7 +20,10 @@ namespace Editor
         : Chicane::Grid::Container(inNode),
           maximizeState("restored"),
           menus({}),
-          m_moveWindow(nullptr)
+          m_moveWindow(nullptr),
+          m_moveHitMutex(),
+          m_moveBounds({}),
+          m_moveControls({})
     {
         import <Logo>();
         import <HeaderMenu>();
@@ -76,6 +81,13 @@ namespace Editor
         return true;
     }
 
+    void Header::tick(float inDeltaTime)
+    {
+        Chicane::Grid::Container::tick(inDeltaTime);
+
+        publishMoveHitSnapshot();
+    }
+
     void Header::onTick(float inDeltaTime)
     {
         Chicane::Grid::Container::onTick(inDeltaTime);
@@ -115,17 +127,27 @@ namespace Editor
         }
     }
 
+    bool Header::isControl(const Chicane::Grid::Component* inComponent) const
+    {
+        if (!inComponent)
+        {
+            return false;
+        }
+
+        return inComponent->getTag().equals(
+            Chicane::Grid::Button::TAG_ID,
+            Chicane::Grid::Select::TAG_ID,
+            Chicane::Grid::SelectOption::TAG_ID,
+            HeaderMenu::TAG_ID
+        );
+    }
+
     bool Header::isControlHit(const Chicane::Vec2& inLocation) const
     {
         Chicane::Grid::Component* node = getHitAt(inLocation);
         while (node && node != this)
         {
-            if (node->getTag().equals(
-                    Chicane::Grid::Button::TAG_ID,
-                    Chicane::Grid::Select::TAG_ID,
-                    Chicane::Grid::SelectOption::TAG_ID,
-                    HeaderMenu::TAG_ID
-                ))
+            if (isControl(node))
             {
                 return true;
             }
@@ -139,6 +161,60 @@ namespace Editor
         }
 
         return false;
+    }
+
+    void Header::publishMoveHitSnapshot()
+    {
+        Chicane::Bounds2D              bounds;
+        std::vector<Chicane::Bounds2D> controls;
+
+        if (isDisplayable())
+        {
+            bounds = getDrawBounds();
+
+            for (Chicane::Grid::Component* child : getChildrenFlat())
+            {
+                if (!isControl(child) || !child->isDisplayable())
+                {
+                    continue;
+                }
+
+                const Chicane::Bounds2D box = child->getDrawBounds();
+                if (!box.isEmpty())
+                {
+                    controls.push_back(box);
+                }
+            }
+        }
+
+        std::lock_guard<std::mutex> lock(m_moveHitMutex);
+        m_moveBounds   = bounds;
+        m_moveControls = std::move(controls);
+    }
+
+    bool Header::isMoveRegion(int inX, int inY) const
+    {
+        std::unique_lock<std::mutex> lock(m_moveHitMutex, std::try_to_lock);
+        if (!lock.owns_lock())
+        {
+            return false;
+        }
+
+        const Chicane::Vec2 location(static_cast<float>(inX), static_cast<float>(inY));
+        if (m_moveBounds.isEmpty() || !m_moveBounds.contains(location))
+        {
+            return false;
+        }
+
+        for (const Chicane::Bounds2D& box : m_moveControls)
+        {
+            if (box.contains(location))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void Header::closeMenus()
@@ -162,14 +238,7 @@ namespace Editor
 
         m_moveWindow = window->getInstance();
 
-        window->setMoveHitTest(
-            [this](int inX, int inY)
-            {
-                const Chicane::Vec2 location(static_cast<float>(inX), static_cast<float>(inY));
-
-                return containsPoint(location) && !isControlHit(location);
-            }
-        );
+        window->setMoveHitTest([this](int inX, int inY) { return isMoveRegion(inX, inY); });
     }
 
     void Header::unbindMoveHitTest()

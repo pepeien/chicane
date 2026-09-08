@@ -14,7 +14,7 @@ namespace Chicane
         const Color::Rgba HANDLE_COLOR(0, 0, 0, 70);
 
         DockPanel::DockPanel(const pugi::xml_node& inNode)
-            : Scrollable(inNode),
+            : Container(inNode),
               m_side(DockSide::Fill),
               m_size(String::empty()),
               m_minSize(String::empty()),

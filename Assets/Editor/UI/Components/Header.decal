@@ -4,8 +4,6 @@
     flex-direction: row;
     gap: 0.25em;
     overflow: visible;
-    transition: background-color 300ms ease-in-out;
-    background-color: $--white;
 
     &:drag {
         cursor: grabbing;

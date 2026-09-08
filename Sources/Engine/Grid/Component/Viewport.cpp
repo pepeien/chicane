@@ -36,7 +36,7 @@ namespace Chicane
         {
             if (hasParent() && m_parent->getTag().equals(DockPanel::TAG_ID))
             {
-                const Vec2 inner = m_parent->getContentSize();
+                const Vec2 inner = m_parent->getInnerLayoutSize();
                 setSize(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
 
                 return;
