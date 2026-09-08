@@ -1,0 +1,90 @@
+{
+    "title": "Group",
+    "filename": "Group",
+    "path": "Kerb/Collision/Group",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Collision/Group.hpp",
+        "namespace": "Chicane::Kerb::CollisionGroup",
+        "types": [
+            {
+                "name": "Id",
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_KERB_COLLISIONGROUP_ID_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_KERB_COLLISIONGROUP_ISVALID_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "Id",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Group",
+                    "templates": []
+                },
+                "name": "Invalid",
+                "description": "CHICANE_KERB_COLLISIONGROUP_INVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Id",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Group",
+                    "templates": []
+                },
+                "name": "group",
+                "description": "CHICANE_KERB_COLLISIONGROUP_GROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Id",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Group",
+                    "templates": []
+                },
+                "name": "subGroup",
+                "description": "CHICANE_KERB_COLLISIONGROUP_SUBGROUP_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_COLLISIONGROUP_DESCRIPTION"
+    },
+    "children": []
+}

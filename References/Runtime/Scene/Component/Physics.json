@@ -130,6 +130,205 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setMass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMass"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETMASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setMassScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETMASSSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setGravityFactor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFactor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETGRAVITYFACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getGravityFactor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CPHYSICS_GETGRAVITYFACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setObjectLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Kerb::ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETOBJECTLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCollisionPreset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Kerb::CollisionPreset",
+                            "suffix": "",
+                            "path": "Kerb/Collision/Preset",
+                            "templates": []
+                        },
+                        "name": "inPreset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETCOLLISIONPRESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCollisionGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Kerb::CollisionGroup",
+                            "suffix": "&",
+                            "path": "Kerb/Collision/Group",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETCOLLISIONGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSensor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInSensor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SETSENSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "moveTo",
                 "parameters": [
                     {
@@ -488,6 +687,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "rebuildBody",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_REBUILDBODY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "syncBody",
                 "parameters": [],
                 "modifiers": [],
@@ -507,6 +721,36 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_CPHYSICS_SYNCTICKSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncCollisionSettings",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_SYNCCOLLISIONSETTINGS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateCollision",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_UPDATECOLLISION_DESCRIPTION"
             },
             {
                 "accessor": "protected",

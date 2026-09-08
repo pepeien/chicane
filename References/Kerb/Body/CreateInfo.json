@@ -95,6 +95,84 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "massScale",
+                "description": "CHICANE_KERB_BODYCREATEINFO_MASSSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "gravityFactor",
+                "description": "CHICANE_KERB_BODYCREATEINFO_GRAVITYFACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ObjectLayer",
+                    "suffix": "",
+                    "path": "Kerb/Object/Layer",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_KERB_BODYCREATEINFO_LAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CollisionPreset",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Preset",
+                    "templates": []
+                },
+                "name": "preset",
+                "description": "CHICANE_KERB_BODYCREATEINFO_PRESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CollisionGroup",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Group",
+                    "templates": []
+                },
+                "name": "group",
+                "description": "CHICANE_KERB_BODYCREATEINFO_GROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bSensor",
+                "description": "CHICANE_KERB_BODYCREATEINFO_BSENSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "BodyPolygon",
                     "suffix": "",
                     "path": "Kerb/Body/CreateInfo",

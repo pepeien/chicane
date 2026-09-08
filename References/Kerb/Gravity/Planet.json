@@ -1,0 +1,128 @@
+{
+    "title": "Planet",
+    "filename": "Planet",
+    "path": "Kerb/Gravity/Planet",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Gravity/Planet.hpp",
+        "namespace": "Chicane::Kerb::Planet",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mercury",
+                "description": "CHICANE_KERB_PLANET_MERCURY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Venus",
+                "description": "CHICANE_KERB_PLANET_VENUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Earth",
+                "description": "CHICANE_KERB_PLANET_EARTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Moon",
+                "description": "CHICANE_KERB_PLANET_MOON_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mars",
+                "description": "CHICANE_KERB_PLANET_MARS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Jupiter",
+                "description": "CHICANE_KERB_PLANET_JUPITER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Saturn",
+                "description": "CHICANE_KERB_PLANET_SATURN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Uranus",
+                "description": "CHICANE_KERB_PLANET_URANUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Neptune",
+                "description": "CHICANE_KERB_PLANET_NEPTUNE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pluto",
+                "description": "CHICANE_KERB_PLANET_PLUTO_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_KERB_PLANET_DESCRIPTION"
+    },
+    "children": []
+}

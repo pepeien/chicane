@@ -1,0 +1,165 @@
+{
+    "title": "Layer",
+    "filename": "Layer",
+    "path": "Kerb/Object/Layer",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Object/Layer.hpp",
+        "namespace": "Chicane::Kerb::ObjectLayer",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NonMoving",
+                "description": "CHICANE_KERB_OBJECTLAYER_NONMOVING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Moving",
+                "description": "CHICANE_KERB_OBJECTLAYER_MOVING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pawn",
+                "description": "CHICANE_KERB_OBJECTLAYER_PAWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PhysicsBody",
+                "description": "CHICANE_KERB_OBJECTLAYER_PHYSICSBODY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Projectile",
+                "description": "CHICANE_KERB_OBJECTLAYER_PROJECTILE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Trigger",
+                "description": "CHICANE_KERB_OBJECTLAYER_TRIGGER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Debris",
+                "description": "CHICANE_KERB_OBJECTLAYER_DEBRIS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NoCollision",
+                "description": "CHICANE_KERB_OBJECTLAYER_NOCOLLISION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_KERB_OBJECTLAYER_COUNT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Auto",
+                "description": "CHICANE_KERB_OBJECTLAYER_AUTO_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ObjectLayer",
+                    "suffix": "",
+                    "path": "Kerb/Object/Layer",
+                    "templates": []
+                },
+                "name": "resolveObjectLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "MotionType",
+                            "suffix": "",
+                            "path": "Kerb/Motion/Type",
+                            "templates": []
+                        },
+                        "name": "inMotion"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_RESOLVEOBJECTLAYER_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_KERB_DESCRIPTION"
+    },
+    "children": []
+}

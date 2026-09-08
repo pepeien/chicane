@@ -1,0 +1,81 @@
+{
+    "title": "Info",
+    "filename": "Info",
+    "path": "Kerb/Collision/Preset/Info",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Collision/Preset/Info.hpp",
+        "namespace": "Chicane::Kerb::CollisionPresetInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CollisionPresetInfo",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Preset/Info",
+                    "templates": []
+                },
+                "name": "resolveCollisionPreset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CollisionPreset",
+                            "suffix": "",
+                            "path": "Kerb/Collision/Preset",
+                            "templates": []
+                        },
+                        "name": "inPreset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "MotionType",
+                            "suffix": "",
+                            "path": "Kerb/Motion/Type",
+                            "templates": []
+                        },
+                        "name": "inMotion"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_RESOLVECOLLISIONPRESET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ObjectLayer",
+                    "suffix": "",
+                    "path": "Kerb/Object/Layer",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_KERB_COLLISIONPRESETINFO_LAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsSensor",
+                "description": "CHICANE_KERB_COLLISIONPRESETINFO_BISSENSOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_DESCRIPTION"
+    },
+    "children": []
+}

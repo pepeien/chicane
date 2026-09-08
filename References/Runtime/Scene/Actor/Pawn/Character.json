@@ -145,7 +145,18 @@
                     "templates": []
                 },
                 "name": "jump",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSpeed"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_ACHARACTER_JUMP_DESCRIPTION"
             },
@@ -244,6 +255,22 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_JUMP_SPEED",
+                "description": "CHICANE_ACHARACTER_DEFAULT_JUMP_SPEED_DESCRIPTION"
+            },
             {
                 "accessor": "protected",
                 "modifiers": [],

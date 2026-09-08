@@ -1,0 +1,106 @@
+{
+    "title": "CollisionPreset",
+    "filename": "Preset",
+    "path": "Kerb/Collision/Preset",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Collision/Preset.hpp",
+        "namespace": "Chicane::Kerb::CollisionPreset",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Default",
+                "description": "CHICANE_KERB_COLLISIONPRESET_DEFAULT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BlockAll",
+                "description": "CHICANE_KERB_COLLISIONPRESET_BLOCKALL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NoCollision",
+                "description": "CHICANE_KERB_COLLISIONPRESET_NOCOLLISION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pawn",
+                "description": "CHICANE_KERB_COLLISIONPRESET_PAWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PhysicsActor",
+                "description": "CHICANE_KERB_COLLISIONPRESET_PHYSICSACTOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Projectile",
+                "description": "CHICANE_KERB_COLLISIONPRESET_PROJECTILE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OverlapAll",
+                "description": "CHICANE_KERB_COLLISIONPRESET_OVERLAPALL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_KERB_COLLISIONPRESET_DESCRIPTION"
+    },
+    "children": []
+}

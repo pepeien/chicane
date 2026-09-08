@@ -1,0 +1,17 @@
+{
+    "title": "Collision",
+    "filename": "Collision",
+    "path": "Kerb/Collision",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}
