@@ -15,7 +15,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::Header))
     class Header : public Chicane::Grid::Container
     {
     public:

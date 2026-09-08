@@ -1,13 +1,13 @@
-#include "Chicane/Grid/Component/Select/Option.reflected.hpp"
+#include "Chicane/Grid/Component/Input/Select/Option.reflected.hpp"
 
-#include "Chicane/Grid/Component/Select.hpp"
+#include "Chicane/Grid/Component/Input/Select.hpp"
 #include "Chicane/Grid/Component/Text.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        SelectOption::SelectOption(const pugi::xml_node& inNode)
+        InputSelectOption::InputSelectOption(const pugi::xml_node& inNode)
             : Button(inNode),
               value(String::empty())
         {
@@ -15,7 +15,7 @@ namespace Chicane
             refreshValue();
         }
 
-        String SelectOption::getLabel() const
+        String InputSelectOption::getLabel() const
         {
             for (Component* child : getChildren())
             {
@@ -34,7 +34,7 @@ namespace Chicane
             return value;
         }
 
-        void SelectOption::onRefresh()
+        void InputSelectOption::onRefresh()
         {
             Button::onRefresh();
 
@@ -42,15 +42,15 @@ namespace Chicane
             refreshClass();
         }
 
-        void SelectOption::onClick()
+        void InputSelectOption::onClick()
         {
-            if (Select* select = findSelect())
+            if (InputSelect* InputSelect = findInputSelect())
             {
-                select->pick(this);
+                InputSelect->pick(this);
             }
         }
 
-        void SelectOption::ensureText(const String& inText)
+        void InputSelectOption::ensureText(const String& inText)
         {
             if (inText.isEmpty())
             {
@@ -75,7 +75,7 @@ namespace Chicane
             }
         }
 
-        void SelectOption::refreshValue()
+        void InputSelectOption::refreshValue()
         {
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (!raw.isEmpty())
@@ -92,25 +92,25 @@ namespace Chicane
             }
         }
 
-        void SelectOption::refreshClass()
+        void InputSelectOption::refreshClass()
         {
             String className = parseText(getAttribute(CLASS_ATTRIBUTE_NAME)).trim();
 
-            const Select* select = findSelect();
-            if (select)
+            const InputSelect* InputSelect = findInputSelect();
+            if (InputSelect)
             {
                 const String optionValue = value.isEmpty() ? getLabel() : value;
-                if (!optionValue.isEmpty() && optionValue.equals(select->value))
+                if (!optionValue.isEmpty() && optionValue.equals(InputSelect->value))
                 {
                     if (!className.isEmpty())
                     {
                         className.append(' ');
                     }
 
-                    className.append("--selected");
+                    className.append("--InputSelected");
                 }
 
-                if (select->isHighlighted(this))
+                if (InputSelect->isHighlighted(this))
                 {
                     if (!className.isEmpty())
                     {
@@ -127,14 +127,14 @@ namespace Chicane
             }
         }
 
-        Select* SelectOption::findSelect() const
+        InputSelect* InputSelectOption::findInputSelect() const
         {
             Component* node = m_parent;
             while (node)
             {
-                if (node->getTag().equals(Select::TAG_ID))
+                if (node->getTag().equals(InputSelect::TAG_ID))
                 {
-                    return static_cast<Select*>(node);
+                    return static_cast<InputSelect*>(node);
                 }
 
                 if (node->isRoot())

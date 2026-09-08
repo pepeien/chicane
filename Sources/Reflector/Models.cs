@@ -24,12 +24,14 @@ namespace Reflector
     }
     record TypeModel(
         string Kind,
-        string Name,
+        List<string> Names,
         List<ConstructorModel> Constructors,
         List<FunctionModel> Functions,
         List<FieldModel> Fields
     )
     {
         public bool Resolved { get; set; } = false;
+
+        public string Name => Names.FirstOrDefault() ?? "";
     }
 }

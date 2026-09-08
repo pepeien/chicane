@@ -1,9 +1,9 @@
-#include "Chicane/Grid/Component/Select.reflected.hpp"
+#include "Chicane/Grid/Component/Input/Select.reflected.hpp"
 
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 
+#include "Chicane/Grid/Component/Input/Select/Option.hpp"
 #include "Chicane/Grid/Component/Scrollable.hpp"
-#include "Chicane/Grid/Component/Select/Option.hpp"
 
 namespace Chicane
 {
@@ -11,7 +11,7 @@ namespace Chicane
     {
         constexpr std::size_t INVALID_HIGHLIGHT = static_cast<std::size_t>(-1);
 
-        Select::Select(const pugi::xml_node& inNode)
+        InputSelect::InputSelect(const pugi::xml_node& inNode)
             : Container(inNode),
               value(String::empty()),
               label(String::empty()),
@@ -21,15 +21,15 @@ namespace Chicane
               m_bIsEdited(false),
               m_highlighted(INVALID_HIGHLIGHT)
         {
-            load("Assets/Engine/UI/Components/Select.grid", "Assets/Engine/UI/Components/Select.decal");
+            load("Assets/Engine/UI/Components/Input/Select.grid", "Assets/Engine/UI/Components/Input/Select.decal");
         }
 
-        bool Select::isFocusable() const
+        bool InputSelect::isFocusable() const
         {
             return true;
         }
 
-        bool Select::onEvent(const WindowEvent& inEvent)
+        bool InputSelect::onEvent(const WindowEvent& inEvent)
         {
             if (Scrollable::onEvent(inEvent))
             {
@@ -100,28 +100,28 @@ namespace Chicane
             return false;
         }
 
-        std::vector<SelectOption*> Select::getOptions() const
+        std::vector<InputSelectOption*> InputSelect::getOptions() const
         {
-            std::vector<SelectOption*> result;
+            std::vector<InputSelectOption*> result;
 
             for (Component* child : getChildrenFlat())
             {
-                if (!child || !child->getTag().equals(SelectOption::TAG_ID))
+                if (!child || !child->getTag().equals(InputSelectOption::TAG_ID))
                 {
                     continue;
                 }
 
-                result.push_back(static_cast<SelectOption*>(child));
+                result.push_back(static_cast<InputSelectOption*>(child));
             }
 
             return result;
         }
 
-        std::vector<SelectOption*> Select::getVisibleOptions() const
+        std::vector<InputSelectOption*> InputSelect::getVisibleOptions() const
         {
-            std::vector<SelectOption*> result;
+            std::vector<InputSelectOption*> result;
 
-            for (SelectOption* option : getOptions())
+            for (InputSelectOption* option : getOptions())
             {
                 if (!option || !option->isDisplayable())
                 {
@@ -134,14 +134,14 @@ namespace Chicane
             return result;
         }
 
-        bool Select::isHighlighted(const SelectOption* inOption) const
+        bool InputSelect::isHighlighted(const InputSelectOption* inOption) const
         {
             if (!inOption || m_highlighted == INVALID_HIGHLIGHT)
             {
                 return false;
             }
 
-            const std::vector<SelectOption*> options = getVisibleOptions();
+            const std::vector<InputSelectOption*> options = getVisibleOptions();
             if (m_highlighted >= options.size())
             {
                 return false;
@@ -150,7 +150,7 @@ namespace Chicane
             return options.at(m_highlighted) == inOption;
         }
 
-        void Select::tick(float inDeltaTime)
+        void InputSelect::tick(float inDeltaTime)
         {
             Scrollable::tick(inDeltaTime);
 
@@ -158,25 +158,25 @@ namespace Chicane
             refreshHighlight();
         }
 
-        void Select::onTick(float inDeltaTime)
+        void InputSelect::onTick(float inDeltaTime)
         {
             refreshItems();
             refreshValue();
         }
 
-        void Select::onFocus()
+        void InputSelect::onFocus()
         {
             refreshStyleSubtree();
         }
 
-        void Select::onBlur()
+        void InputSelect::onBlur()
         {
             close();
 
             refreshStyleSubtree();
         }
 
-        void Select::toggle()
+        void InputSelect::toggle()
         {
             if (isOpen)
             {
@@ -188,7 +188,7 @@ namespace Chicane
             open();
         }
 
-        void Select::open()
+        void InputSelect::open()
         {
             if (isOpen)
             {
@@ -200,7 +200,7 @@ namespace Chicane
             refreshStyleSubtree();
         }
 
-        void Select::close()
+        void InputSelect::close()
         {
             if (!isOpen)
             {
@@ -213,9 +213,9 @@ namespace Chicane
             refreshStyleSubtree();
         }
 
-        void Select::choose(String inValue)
+        void InputSelect::choose(String inValue)
         {
-            value     = inValue;
+            value       = inValue;
             m_bIsEdited = true;
 
             refreshLabel();
@@ -224,7 +224,7 @@ namespace Chicane
             close();
         }
 
-        void Select::pick(SelectOption* inOption)
+        void InputSelect::pick(InputSelectOption* inOption)
         {
             if (!inOption)
             {
@@ -240,7 +240,7 @@ namespace Chicane
             }
         }
 
-        void Select::refreshValue()
+        void InputSelect::refreshValue()
         {
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (raw.isEmpty() || isOpen)
@@ -256,7 +256,7 @@ namespace Chicane
             value = parseText(raw).trim();
         }
 
-        void Select::refreshItems()
+        void InputSelect::refreshItems()
         {
             const String raw = getAttribute(ITEMS_ATTRIBUTE_NAME);
             if (raw.isEmpty())
@@ -311,12 +311,12 @@ namespace Chicane
             }
         }
 
-        void Select::refreshLabel()
+        void InputSelect::refreshLabel()
         {
             const String raw = getAttribute(PLACEHOLDER_ATTRIBUTE_NAME);
             placeholder      = raw.isEmpty() ? String::empty() : parseText(raw).trim();
 
-            for (SelectOption* option : getOptions())
+            for (InputSelectOption* option : getOptions())
             {
                 if (!option)
                 {
@@ -343,7 +343,7 @@ namespace Chicane
             label = placeholder;
         }
 
-        void Select::refreshHighlight()
+        void InputSelect::refreshHighlight()
         {
             if (!isOpen)
             {
@@ -352,7 +352,7 @@ namespace Chicane
                 return;
             }
 
-            const std::vector<SelectOption*> options = getVisibleOptions();
+            const std::vector<InputSelectOption*> options = getVisibleOptions();
             if (options.empty())
             {
                 m_highlighted = INVALID_HIGHLIGHT;
@@ -367,7 +367,7 @@ namespace Chicane
 
             for (std::size_t i = 0; i < options.size(); ++i)
             {
-                SelectOption* option = options.at(i);
+                InputSelectOption* option = options.at(i);
                 if (!option)
                 {
                     continue;
@@ -385,7 +385,7 @@ namespace Chicane
             m_highlighted = 0;
         }
 
-        void Select::commit()
+        void InputSelect::commit()
         {
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (!isReference(raw) || !hasParent())
@@ -422,14 +422,14 @@ namespace Chicane
             }
         }
 
-        void Select::emitInput()
+        void InputSelect::emitInput()
         {
             getMethod(getAttribute(ON_INPUT_ATTRIBUTE_NAME)).invoke();
         }
 
-        void Select::moveHighlight(int inDelta)
+        void InputSelect::moveHighlight(int inDelta)
         {
-            const std::vector<SelectOption*> options = getVisibleOptions();
+            const std::vector<InputSelectOption*> options = getVisibleOptions();
             if (options.empty())
             {
                 m_highlighted = INVALID_HIGHLIGHT;
@@ -448,9 +448,9 @@ namespace Chicane
             m_highlighted = static_cast<std::size_t>(next % count);
         }
 
-        void Select::chooseHighlighted()
+        void InputSelect::chooseHighlighted()
         {
-            const std::vector<SelectOption*> options = getVisibleOptions();
+            const std::vector<InputSelectOption*> options = getVisibleOptions();
             if (m_highlighted >= options.size())
             {
                 close();

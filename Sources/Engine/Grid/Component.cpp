@@ -260,6 +260,11 @@ namespace Chicane
             const ReflectionTypeInfo* type =
                 ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + tag);
 
+            if (!type)
+            {
+                type = ReflectionTypeRegistry::getInstance().find(tag);
+            }
+
             if (!type && !tag.isEmpty())
             {
                 const String pascal = tag.substr(0, 1).toUpper() + tag.substr(1);

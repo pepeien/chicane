@@ -1,7 +1,7 @@
 <Container class="header">
-    <Logo />
+    <Editor::Logo />
     <Container class="header__menus">
-        <HeaderMenu dir:for="menu : menus" />
+        <Editor::HeaderMenu dir:for="menu : menus" />
     </Container>
     <Container class="header__controls">
         <Button class="header__control" onClick="{{ onMinimize() }}">

@@ -46,13 +46,7 @@ namespace Reflector
 
         static List<string> AnnotationArgs(string annotationValue)
         {
-            string param = GetAnnotationParam(annotationValue);
-            if (string.IsNullOrWhiteSpace(param))
-            {
-                return [];
-            }
-
-            return [.. param.Split(',').Select(s => s.Trim()).Where(s => s.Length > 0)];
+            return MacroArgs.Split(GetAnnotationParam(annotationValue));
         }
 
         static string GetTemplateParam(CXType type)
@@ -174,6 +168,7 @@ namespace Reflector
                 "-fdelayed-template-parsing",
                 "-fparse-all-comments",
                 "-DCH_TYPE(...)=__attribute__((annotate(\"CH_TYPE:\" #__VA_ARGS__)))",
+                "-DCH_CLASS(...)=__attribute__((annotate(\"CH_TYPE:\" #__VA_ARGS__)))",
                 "-DCH_ENUM(...)=__attribute__((annotate(\"CH_ENUM:\" #__VA_ARGS__)))",
                 "-DCH_FIELD(...)=__attribute__((annotate(\"CH_FIELD:\" #__VA_ARGS__)))",
                 "-DCH_FUNCTION(...)=__attribute__((annotate(\"CH_FUNCTION:\" #__VA_ARGS__)))",
@@ -249,30 +244,64 @@ namespace Reflector
             var extent = cursor.Extent;
             var tokens = tu.Tokenize(extent);
 
-            bool open = false;
+            int depth = 0;
+            var parts = new List<string>();
+            var current = new System.Text.StringBuilder();
+
             foreach (var token in tokens)
             {
                 var text = clang.getTokenSpelling(tu, token).CString;
 
                 if (text == "(")
                 {
-                    open = true;
+                    if (depth > 0)
+                    {
+                        current.Append(text);
+                    }
 
+                    depth++;
+                    continue;
+                }
+
+                if (depth == 0)
+                {
                     continue;
                 }
 
                 if (text == ")")
                 {
-                    break;
+                    depth--;
+                    if (depth == 0)
+                    {
+                        string part = current.ToString().Trim();
+                        if (part.Length > 0)
+                        {
+                            parts.Add(part);
+                        }
+
+                        break;
+                    }
+
+                    current.Append(text);
+                    continue;
                 }
 
-                if (open)
+                if (text == "," && depth == 1)
                 {
-                    return new List<string>(text.Trim().Split(','));
+                    string part = current.ToString().Trim();
+                    if (part.Length > 0)
+                    {
+                        parts.Add(part);
+                    }
+
+                    current.Clear();
+                    continue;
                 }
+
+                current.Append(text);
             }
 
-            return [];
+            return parts;
         }
 
         static unsafe void CollectMembers(
@@ -282,7 +311,7 @@ namespace Reflector
             List<FieldModel> fields
         )
         {
-            bool isAutomatic = args.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic));
+            bool isAutomatic = MacroArgs.IsAutomatic(MacroArgs.Parse(args));
             bool isPublic = cursor.Kind == CXCursorKind.CXCursor_StructDecl ||
                             cursor.Kind == CXCursorKind.CXCursor_UnionDecl;
 
@@ -472,12 +501,33 @@ namespace Reflector
 
             var ns = GetNamespace(cursor);
             var kind = cursor.Kind == CXCursorKind.CXCursor_StructDecl ? "struct" : "class";
+            var cppName = (string.IsNullOrWhiteSpace(ns) ? "" : $"{ns}::") + name;
+            var names = new List<string> { cppName };
+            var parsed = MacroArgs.Parse(args);
+
+            foreach (string alias in MacroArgs.Aliases(parsed))
+            {
+                string typeName = alias;
+                if (
+                    !string.IsNullOrWhiteSpace(ns) &&
+                    alias != ns &&
+                    !alias.StartsWith(ns + "::", StringComparison.Ordinal)
+                )
+                {
+                    typeName = $"{ns}::{alias}";
+                }
+
+                if (!names.Contains(typeName))
+                {
+                    names.Add(typeName);
+                }
+            }
 
             var constructors = new List<ConstructorModel>();
             var methods = new List<FunctionModel>();
             var fields = new List<FieldModel>();
 
-            bool isAutomatic = args.Contains(Enum.GetStringValue(AnnotationInclusion.Automatic));
+            bool isAutomatic = MacroArgs.IsAutomatic(parsed);
             bool isPublic = kind == "struct" || kind == "union";
 
             cursor.VisitChildren(
@@ -531,7 +581,7 @@ namespace Reflector
                 default
             );
 
-            return new(kind, (string.IsNullOrWhiteSpace(ns) ? "" : $"{ns}::") + name, constructors, methods, fields);
+            return new(kind, names, constructors, methods, fields);
         }
 
         static unsafe ConstructorModel ParseConstructor(CXCursor cursor)
@@ -607,6 +657,14 @@ namespace Reflector
             else
             {
                 names.Add(cursor.Spelling.CString);
+            }
+
+            foreach (string alias in MacroArgs.Aliases(MacroArgs.Parse(FindAnnotation(cursor, Annotation.Field))))
+            {
+                if (!names.Contains(alias))
+                {
+                    names.Add(alias);
+                }
             }
 
             var canonical = type.CanonicalType;

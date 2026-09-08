@@ -7,7 +7,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual))
     struct ExplorerTreeEntry
     {
     public:

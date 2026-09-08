@@ -3,12 +3,12 @@
     to   { opacity: 0; }
 }
 
-TextInput {
+Input::Text {
     position: relative;
     cursor: text;
     overflow: hidden;
 
-    .text-input__caret {
+    .input-text__caret {
         position: absolute;
         width: 0.1em;
         height: 1em;
@@ -18,7 +18,7 @@ TextInput {
         animation-name: none;
     }
 
-    &:focus .text-input__caret {
+    &:focus .input-text__caret {
         opacity: 1;
         animation: blink 1s ease-in-out infinite alternate;
     }

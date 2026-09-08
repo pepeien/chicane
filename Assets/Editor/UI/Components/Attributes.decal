@@ -29,7 +29,7 @@ $attributesHeaderHeight: 1.65em;
             max-width: 6em;
         }
 
-        Vec3 {
+        Editor::Vec3 {
             width: 100%;
         }
     }

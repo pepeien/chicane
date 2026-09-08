@@ -1,0 +1,38 @@
+Button::Radio {
+    cursor: pointer;
+    overflow: visible;
+}
+
+.button-radio {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4em;
+    overflow: visible;
+
+    &__box {
+        width: 1em;
+        height: 1em;
+        display: flex;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 1em;
+        margin: auto 0;
+        overflow: hidden;
+    }
+
+    &__dot {
+        width: 0.45em;
+        height: 0.45em;
+        margin: auto;
+        border-radius: 1em;
+        opacity: 0;
+        background-color: #ffffff;
+    }
+
+    &.--checked .button-radio__dot {
+        opacity: 1;
+    }
+
+    Text {
+        margin: auto 0;
+    }
+}

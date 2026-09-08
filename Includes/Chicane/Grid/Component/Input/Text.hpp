@@ -10,12 +10,12 @@ namespace Chicane
 {
     namespace Grid
     {
-        CH_TYPE(Manual)
-        class CHICANE_GRID TextInput : public Text
+        CH_TYPE(Type = (Manual), Alias = (Input::Text))
+        class CHICANE_GRID InputText : public Text
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "TextInput";
+            static constexpr inline const char* TAG_ID = "Input::Text";
 
             // Attributes
             static constexpr inline const char* VALUE_ATTRIBUTE_NAME    = "value";
@@ -23,7 +23,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            TextInput(const pugi::xml_node& inNode);
+            InputText(const pugi::xml_node& inNode);
 
         public:
             bool isFocusable() const override;

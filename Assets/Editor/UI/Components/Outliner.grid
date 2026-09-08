@@ -1,5 +1,5 @@
 <Container class="outliner">
-    <DockHeader id="outlinerHeader" label="Outliner" />
+    <Editor::DockHeader id="outlinerHeader" label="Outliner" />
     <Container class="outliner__items">
         <Button
             dir:for="actor : outlinerActors"

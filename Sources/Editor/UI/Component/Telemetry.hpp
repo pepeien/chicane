@@ -7,7 +7,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::Telemetry))
     class Telemetry : public Chicane::Grid::Container
     {
     public:

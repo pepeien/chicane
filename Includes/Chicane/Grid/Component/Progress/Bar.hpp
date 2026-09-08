@@ -9,12 +9,12 @@ namespace Chicane
 {
     namespace Grid
     {
-        CH_TYPE(Manual)
+        CH_TYPE(Type = (Manual), Alias = (Progress::Bar))
         class CHICANE_GRID ProgressBar : public Container
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "ProgressBar";
+            static constexpr inline const char* TAG_ID = "Progress::Bar";
 
             // Attributes
             static constexpr inline const char* PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // [`0.0`, `100.0`]

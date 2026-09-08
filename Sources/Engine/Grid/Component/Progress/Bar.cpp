@@ -1,16 +1,14 @@
-#include "Chicane/Grid/Component/ProgressBar.reflected.hpp"
+#include "Chicane/Grid/Component/Progress/Bar.reflected.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        static int switchfer = 1;
-
         ProgressBar::ProgressBar(const pugi::xml_node& inNode)
             : Container(inNode),
               percentage(0.0f)
         {
-            load("Assets/Engine/UI/Components/ProgressBar.grid", "Assets/Engine/UI/Components/ProgressBar.decal");
+            load("Assets/Engine/UI/Components/Progress/Bar.grid", "Assets/Engine/UI/Components/Progress/Bar.decal");
         }
 
         void ProgressBar::onTick(float inDeltaTime)

@@ -5,7 +5,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::Outliner))
     class Outliner : public Chicane::Grid::Container
     {
     public:

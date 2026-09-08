@@ -311,14 +311,21 @@ namespace Chicane
                     throw std::runtime_error("Grid component is not reflected");
                 }
 
-                String            selector = type->name;
-                const std::size_t split    = selector.lastOf(':');
-                if (split != String::npos)
-                {
-                    selector = selector.substr(split + 1);
-                }
+                const String prefix = "Chicane::Grid::";
 
-                m_imports.insert_or_assign(selector, type);
+                for (const String& name : type->names)
+                {
+                    String selector = name;
+                    if (selector.startsWith(prefix))
+                    {
+                        selector = selector.substr(prefix.size());
+                    }
+
+                    if (!selector.isEmpty())
+                    {
+                        m_imports.insert_or_assign(selector, type);
+                    }
+                }
             }
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});

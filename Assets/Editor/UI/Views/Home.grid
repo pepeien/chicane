@@ -1,18 +1,18 @@
 <View path="home" class="home --{{ theme }}">
-    <Header />
+    <Editor::Header />
     <Dock class="home__content">
         <DockPanel isGrabbable="false">
-            <Telemetry />
+            <Editor::Telemetry />
             <Viewport />
         </DockPanel>
         <DockPanel side="left" size="15%" handle="outlinerHeader">
-            <Outliner />
+            <Editor::Outliner />
         </DockPanel>
         <DockPanel side="right" size="20%" handle="attributesHeader">
-            <Attributes />
+            <Editor::Attributes />
         </DockPanel>
         <DockPanel side="bottom" size="22em" handle="explorerHeader">
-            <Explorer />
+            <Editor::Explorer />
         </DockPanel>
     </Dock>
 </View>

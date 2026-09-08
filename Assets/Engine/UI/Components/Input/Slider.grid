@@ -1,0 +1,6 @@
+<Container class="input-slider">
+    <Container class="input-slider__track">
+        <Container class="input-slider__fill" />
+    </Container>
+    <Container class="input-slider__thumb" />
+</Container>

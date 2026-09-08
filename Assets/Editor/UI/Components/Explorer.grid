@@ -1,5 +1,5 @@
 <Container class="explorer --{{ orientation }}">
-    <DockHeader id="explorerHeader" label="Asset Explorer" />
+    <Editor::DockHeader id="explorerHeader" label="Asset Explorer" />
     <Container class="explorer__body">
         <Container id="explorerTree" class="explorer__tree">
             <Button
@@ -16,7 +16,7 @@
             <Container class="explorer__toolbar">
                 <Container class="explorer__search">
                     <Icon source="Assets/Editor/UI/Icons/Regular" name="MagnifyingGlass" class="explorer__search__icon"/>
-                    <TextInput value="{{ searchQuery }}" onInput="{{ onSearch() }}"/>
+                    <Input::Text value="{{ searchQuery }}" onInput="{{ onSearch() }}"/>
                 </Container>
                 <Button class="explorer__filter" onClick="{{ onToggleFilter() }}">
                     <Icon source="Assets/Editor/UI/Icons/Fill" name="Funnel" class="explorer__filter__icon"/>
@@ -39,12 +39,7 @@
                 </Container>
                 <Container class="explorer__footer__group --grow">
                     <Text class="explorer__footer__label">Icon Size</Text>
-                    <Container id="explorerIconSize" class="explorer__slider">
-                        <Container class="explorer__slider__track">
-                            <Container class="explorer__slider__fill" />
-                        </Container>
-                        <Container class="explorer__slider__thumb" />
-                    </Container>
+                    <Input::Slider id="explorerIconSize" class="explorer__slider" value="{{ iconSizePercent }}" min="0" max="100" onInput="{{ onIconSize() }}" />
                 </Container>
                 <Container class="explorer__footer__group">
                     <Text class="explorer__footer__label">Sort By</Text>

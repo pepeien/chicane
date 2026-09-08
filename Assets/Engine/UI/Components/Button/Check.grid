@@ -1,0 +1,6 @@
+<Container class="button-check --{{ checkState }}">
+    <Container class="button-check__box">
+        <Container class="button-check__tick" />
+    </Container>
+    <Content />
+</Container>

@@ -6,7 +6,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::DockHeader))
     class DockHeader : public Chicane::Grid::Container
     {
     public:

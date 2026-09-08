@@ -25,4 +25,12 @@ namespace Reflector
         [StringValue("Manual")]
         Manual,
     }
+
+    enum AnnotationParam
+    {
+        [StringValue("Type")]
+        Type,
+        [StringValue("Alias")]
+        Alias,
+    }
 }

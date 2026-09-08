@@ -11,21 +11,21 @@ namespace Chicane
 {
     namespace Grid
     {
-        class Select;
+        class InputSelect;
 
-        CH_TYPE(Manual)
-        class CHICANE_GRID SelectOption : public Button
+        CH_TYPE(Type = (Manual), Alias = (Input::Select::Option))
+        class CHICANE_GRID InputSelectOption : public Button
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Option";
+            static constexpr inline const char* TAG_ID = "Input::Select::Option";
 
             // Properties
             static constexpr inline const char* VALUE_ATTRIBUTE_NAME = "value";
 
         public:
             CH_CONSTRUCTOR()
-            SelectOption(const pugi::xml_node& inNode);
+            InputSelectOption(const pugi::xml_node& inNode);
 
         protected:
             void onRefresh() override;
@@ -38,7 +38,7 @@ namespace Chicane
             void ensureText(const String& inText);
             void refreshValue();
             void refreshClass();
-            Select* findSelect() const;
+            InputSelect* findInputSelect() const;
 
         public:
             CH_FIELD()

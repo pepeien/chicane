@@ -18,9 +18,8 @@
 
 namespace Editor
 {
-    static constexpr float              ICON_SIZE_MIN_EM = 4.5f;
-    static constexpr float              ICON_SIZE_MAX_EM = 10.5f;
-    static constexpr inline const char* SLIDER_ID        = "explorerIconSize";
+    static constexpr float ICON_SIZE_MIN_EM = 4.5f;
+    static constexpr float ICON_SIZE_MAX_EM = 10.5f;
 
     static constexpr float TREE_INDENT_EM = 0.85f;
 
@@ -74,7 +73,6 @@ namespace Editor
           m_listedPaths({}),
           m_filter(ExplorerFilter::All),
           m_iconSizeFactor(0.4f),
-          m_bIsSizing(false),
           m_pointer(Chicane::Vec2::Zero()),
           m_tiles({}),
           m_gridContent(nullptr),
@@ -102,18 +100,6 @@ namespace Editor
 
     bool Explorer::onEvent(const Chicane::WindowEvent& inEvent)
     {
-        if (inEvent.type == Chicane::WindowEventType::MouseButtonUp)
-        {
-            if (m_bIsSizing)
-            {
-                m_bIsSizing = false;
-
-                return true;
-            }
-
-            return Chicane::Grid::Container::onEvent(inEvent);
-        }
-
         if (inEvent.type == Chicane::WindowEventType::MouseButtonDown)
         {
             const Chicane::Input::MouseButtonEvent event =
@@ -121,15 +107,6 @@ namespace Editor
             if (event.button != Chicane::Input::MouseButton::Left)
             {
                 return Chicane::Grid::Container::onEvent(inEvent);
-            }
-
-            Chicane::Grid::Component* slider = findSlider();
-            if (slider && slider->containsPoint(event.location))
-            {
-                m_bIsSizing = true;
-                applyIconSizeAt(event.location);
-
-                return true;
             }
 
             if (event.clicks >= 2)
@@ -165,14 +142,7 @@ namespace Editor
                 *static_cast<Chicane::Input::MouseMotionEvent*>(inEvent.data);
             m_pointer = event.location;
 
-            if (!m_bIsSizing)
-            {
-                return Chicane::Grid::Container::onEvent(inEvent);
-            }
-
-            applyIconSizeAt(event.location);
-
-            return true;
+            return Chicane::Grid::Container::onEvent(inEvent);
         }
 
         if (inEvent.type == Chicane::WindowEventType::MouseWheel)
@@ -248,6 +218,11 @@ namespace Editor
 
         refreshToggleStates();
         refreshGrid();
+    }
+
+    void Explorer::onIconSize()
+    {
+        setIconSizeFactor(iconSizePercent / 100.0f);
     }
 
     void Explorer::onSelectFolder(Chicane::String inPath)
@@ -484,37 +459,6 @@ namespace Editor
             "%.2fem",
             ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM)
         );
-    }
-
-    void Explorer::applyIconSizeAt(const Chicane::Vec2& inLocation)
-    {
-        Chicane::Grid::Component* slider = findSlider();
-        if (!slider)
-        {
-            return;
-        }
-
-        const Chicane::Bounds2D& bounds = slider->getBounds();
-        const float              width  = bounds.right - bounds.left;
-        if (width <= 0.0f)
-        {
-            return;
-        }
-
-        setIconSizeFactor((inLocation.x - bounds.left) / width);
-    }
-
-    Chicane::Grid::Component* Explorer::findSlider() const
-    {
-        for (Chicane::Grid::Component* child : getChildrenFlat())
-        {
-            if (child && child->getId().equals(SLIDER_ID))
-            {
-                return child;
-            }
-        }
-
-        return nullptr;
     }
 
     Chicane::Grid::Scrollable* Explorer::findScrollableAt(const Chicane::Vec2& inLocation) const

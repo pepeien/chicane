@@ -1,4 +1,4 @@
-HeaderMenu {
+Editor::HeaderMenu {
     position: relative;
     height: 90%;
 }
@@ -59,7 +59,7 @@ HeaderMenu {
         background-color: $--dark-grey;
         z-index: 99;
 
-        HeaderMenu {
+        Editor::HeaderMenu {
             width: 100%;
             height: auto;
         }

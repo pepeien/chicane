@@ -11,12 +11,12 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::HeaderMenu))
     class HeaderMenu : public Chicane::Grid::Container
     {
     public:
         // Tag
-        static constexpr inline const char* TAG_ID = "HeaderMenu";
+        static constexpr inline const char* TAG_ID = "Editor::HeaderMenu";
 
     public:
         CH_CONSTRUCTOR()

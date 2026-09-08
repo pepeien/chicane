@@ -240,7 +240,10 @@ class Program
 
         foreach (Reflector.TypeModel type in flatTypes)
         {
-            reflectedTypeNames.Add(type.Name);
+            foreach (string name in type.Names)
+            {
+                reflectedTypeNames.Add(name);
+            }
         }
 
         Parallel.ForEach(
@@ -274,7 +277,7 @@ class Program
 
         if (!string.IsNullOrEmpty(typesDir) && !string.IsNullOrEmpty(targetName))
         {
-            WriteReflectedTypeNames(typesDir, targetName, flatTypes.Select(t => t.Name));
+            WriteReflectedTypeNames(typesDir, targetName, flatTypes.SelectMany(t => t.Names));
         }
 
         return 0;

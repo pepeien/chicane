@@ -1,0 +1,37 @@
+Button::Check {
+    cursor: pointer;
+    overflow: visible;
+}
+
+.button-check {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4em;
+    overflow: visible;
+
+    &__box {
+        width: 1em;
+        height: 1em;
+        display: flex;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        margin: auto 0;
+        overflow: hidden;
+    }
+
+    &__tick {
+        width: 50%;
+        height: 50%;
+        margin: auto;
+        opacity: 0;
+        transition: opacity 100ms ease-in-out;
+        background-color: #ffffff;
+    }
+
+    &.--checked .button-check__tick {
+        opacity: 1;
+    }
+
+    Text {
+        margin: auto 0;
+    }
+}

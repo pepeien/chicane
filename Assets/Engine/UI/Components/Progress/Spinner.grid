@@ -1,0 +1,3 @@
+<Container class="progress-spinner --{{ spinState }}">
+    <Container class="progress-spinner__ring" />
+</Container>

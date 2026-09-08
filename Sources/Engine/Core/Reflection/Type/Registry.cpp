@@ -46,6 +46,14 @@ namespace Chicane
             m_indices[inValue.typeIndex.value()] = inValue;
         }
 
-        m_names[inValue.name] = inValue;
+        for (const String& name : inValue.names)
+        {
+            if (name.isEmpty())
+            {
+                continue;
+            }
+
+            m_names[name] = inValue;
+        }
     }
 }

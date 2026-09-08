@@ -1,0 +1,6 @@
+<Container class="button-radio --{{ checkState }}">
+    <Container class="button-radio__box">
+        <Container class="button-radio__dot" />
+    </Container>
+    <Content />
+</Container>

@@ -7,8 +7,8 @@
 #include <Chicane/Core/Input/Mouse/Button.hpp>
 #include <Chicane/Core/Input/Mouse/Button/Event.hpp>
 #include <Chicane/Grid/Component/Button.hpp>
-#include <Chicane/Grid/Component/Select.hpp>
-#include <Chicane/Grid/Component/Select/Option.hpp>
+#include <Chicane/Grid/Component/Input/Select.hpp>
+#include <Chicane/Grid/Component/Input/Select/Option.hpp>
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/UI/Component/Header/Menu.hpp"
@@ -136,8 +136,8 @@ namespace Editor
 
         return inComponent->getTag().equals(
             Chicane::Grid::Button::TAG_ID,
-            Chicane::Grid::Select::TAG_ID,
-            Chicane::Grid::SelectOption::TAG_ID,
+            Chicane::Grid::InputSelect::TAG_ID,
+            Chicane::Grid::InputSelectOption::TAG_ID,
             HeaderMenu::TAG_ID
         );
     }

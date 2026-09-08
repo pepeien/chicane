@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Text/Input.reflected.hpp"
+#include "Chicane/Grid/Component/Input/Text.reflected.hpp"
 
 #include <cstdlib>
 
@@ -43,7 +43,7 @@ namespace Chicane
             return String(character);
         }
 
-        TextInput::TextInput(const pugi::xml_node& inNode)
+        InputText::InputText(const pugi::xml_node& inNode)
             : Text(inNode),
               value(String::empty()),
               caretX(0.0f),
@@ -51,15 +51,15 @@ namespace Chicane
               m_bShouldReplaceOnInput(false),
               m_pendingText(String::empty())
         {
-            load("Assets/Engine/UI/Components/Text/Input.grid", "Assets/Engine/UI/Components/Text/Input.decal");
+            load("Assets/Engine/UI/Components/Input/Text.grid", "Assets/Engine/UI/Components/Input/Text.decal");
         }
 
-        bool TextInput::isFocusable() const
+        bool InputText::isFocusable() const
         {
             return true;
         }
 
-        bool TextInput::onEvent(const WindowEvent& inEvent)
+        bool InputText::onEvent(const WindowEvent& inEvent)
         {
             if (inEvent.type == WindowEventType::WindowFocusLost)
             {
@@ -146,7 +146,7 @@ namespace Chicane
             return true;
         }
 
-        void TextInput::onRefresh()
+        void InputText::onRefresh()
         {
             refreshValue();
             setText(value);
@@ -156,21 +156,21 @@ namespace Chicane
             caretX = getContentSize().x;
         }
 
-        void TextInput::onFocus()
+        void InputText::onFocus()
         {
             m_bShouldReplaceOnInput = true;
             setTextInputActive(true);
             refreshStyleSubtree();
         }
 
-        void TextInput::onBlur()
+        void InputText::onBlur()
         {
             m_pendingText = String::empty();
             setTextInputActive(false);
             refreshStyleSubtree();
         }
 
-        void TextInput::refreshSize()
+        void InputText::refreshSize()
         {
             m_style.width.refresh();
             m_style.height.refresh();
@@ -178,7 +178,7 @@ namespace Chicane
             Component::refreshSize();
         }
 
-        void TextInput::refreshValue()
+        void InputText::refreshValue()
         {
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (raw.isEmpty() || isFocused())
@@ -194,7 +194,7 @@ namespace Chicane
             value = parseText(raw);
         }
 
-        void TextInput::insert(const String& inText)
+        void InputText::insert(const String& inText)
         {
             if (inText.isEmpty() || inText.equals("\n", "\r", "\t"))
             {
@@ -203,7 +203,7 @@ namespace Chicane
 
             if (m_bShouldReplaceOnInput)
             {
-                value             = String::empty();
+                value                   = String::empty();
                 m_bShouldReplaceOnInput = false;
             }
 
@@ -215,13 +215,13 @@ namespace Chicane
             emitInput();
         }
 
-        void TextInput::erase()
+        void InputText::erase()
         {
             if (m_bShouldReplaceOnInput)
             {
-                value             = String::empty();
+                value                   = String::empty();
                 m_bShouldReplaceOnInput = false;
-                m_bIsEdited         = true;
+                m_bIsEdited             = true;
                 setText(value);
 
                 commit();
@@ -253,7 +253,7 @@ namespace Chicane
             emitInput();
         }
 
-        void TextInput::commit()
+        void InputText::commit()
         {
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (!isReference(raw) || !hasParent())
@@ -316,12 +316,12 @@ namespace Chicane
             }
         }
 
-        void TextInput::emitInput()
+        void InputText::emitInput()
         {
             getMethod(getAttribute(ON_INPUT_ATTRIBUTE_NAME)).invoke();
         }
 
-        void TextInput::setTextInputActive(bool inValue)
+        void InputText::setTextInputActive(bool inValue)
         {
             Window* window = Window::getCurrent();
             if (!window)

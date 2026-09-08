@@ -134,7 +134,7 @@ namespace Reflector
 
             sb.AppendLine($"inline Chicane::ReflectionTypeAutoRegister _reg_{safeId}(");
             sb.AppendLine($"\tChicane::ReflectionTypeInfo(");
-            sb.AppendLine($"\t\t\"{t.Name}\",");
+            sb.AppendLine($"\t\t{{{string.Join(" ,", t.Names.Select(n => $"\"{n}\""))}}},");
             sb.AppendLine($"\t\tsizeof({t.Name}),");
             sb.AppendLine($"\t\tstd::type_index(typeid({t.Name})),");
 

@@ -74,13 +74,14 @@ namespace Chicane
             return String::empty();
         }
 
-        const std::size_t split = type->name.lastOf(':');
+        const String&     name  = type->getName();
+        const std::size_t split = name.lastOf(':');
         if (split == String::npos)
         {
-            return type->name;
+            return name;
         }
 
-        return type->name.substr(split + 1);
+        return name.substr(split + 1);
     }
 
     void Object::setScene(Scene* inScene)

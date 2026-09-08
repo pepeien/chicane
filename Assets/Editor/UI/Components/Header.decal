@@ -9,7 +9,7 @@
         cursor: grabbing;
     }
 
-    Logo {
+    Editor::Logo {
         width: 3em;
         height: 3em;
         margin: auto 0 auto 0.25em;
@@ -35,7 +35,7 @@
             background-color: $--dark-grey;
         }
 
-        Option:hover, Option.--active, Option.--selected {
+        Input::Select::Option:hover, Input::Select::Option.--active, Input::Select::Option.--selected {
             background-color: $--light-grey;
         }
     }

@@ -7,7 +7,7 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::Vec3))
     class Vec3 : public Chicane::Grid::Container
     {
     public:

@@ -5,7 +5,7 @@
 #include <Chicane/Grid/Component/Container.hpp>
 #include <Chicane/Runtime/Application/Telemetry.hpp>
 
-CH_TYPE(Manual)
+CH_TYPE(Type = (Manual), Alias = (Sample::Telemetry))
 class Telemetry : public Chicane::Grid::Container
 {
 public:

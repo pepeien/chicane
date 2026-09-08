@@ -128,7 +128,7 @@ $explorerSliderThumb: 0.72em;
             color: $--grey;
         }
 
-        TextInput {
+        Input::Text {
             width: calc(100% - 1.4em);
             height: 1em;
             margin: auto 0;
@@ -182,7 +182,7 @@ $explorerSliderThumb: 0.72em;
         }
     }
 
-    ExplorerItem {
+    Editor::ExplorerItem {
         width: ref(iconSize);
         height: ref(iconSize);
         overflow: hidden;
@@ -242,32 +242,23 @@ $explorerSliderThumb: 0.72em;
     &__slider {
         width: 12em;
         height: 1.2em;
-        position: relative;
         cursor: ew-resize;
 
-        &__track {
-            width: 100%;
-            height: 0.28em;
-            margin: auto 0;
-            background-color: $--light-grey;
-            border-radius: 1em;
-            overflow: hidden;
-        }
+        .input-slider {
+            &__track {
+                background-color: $--light-grey;
+            }
 
-        &__fill {
-            width: ref(iconSizePercent)%;
-            height: 100%;
-            background-color: $--green;
-        }
+            &__fill {
+                background-color: $--green;
+            }
 
-        &__thumb {
-            position: absolute;
-            width: $explorerSliderThumb;
-            height: $explorerSliderThumb;
-            margin-top: 0.24em;
-            margin-left: calc(calc(100% - $explorerSliderThumb) * ref(iconSizePercent) / 100);
-            background-color: $--green;
-            border-radius: 1em;
+            &__thumb {
+                width: $explorerSliderThumb;
+                height: $explorerSliderThumb;
+                margin-top: 0.24em;
+                background-color: $--green;
+            }
         }
     }
 

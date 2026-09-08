@@ -1,25 +1,25 @@
 <Container class="attributes">
-    <DockHeader id="attributesHeader" label="Attributes" />
+    <Editor::DockHeader id="attributesHeader" label="Attributes" />
     <Container dir:if="{{ bIsItemSelected }}" class="attributes__content">
-        <AttributesTab class="attributes__transforms" label="Transform">
+        <Editor::AttributesTab class="attributes__transforms" label="Transform">
             <Container class="attributes__transform">
                 <Container class="attributes__transform__label">
                     <Text>Translation</Text>
                 </Container>
-                <Vec3 value="{{ selectedItem.translation }}" />
+                <Editor::Vec3 value="{{ selectedItem.translation }}" />
             </Container>
             <Container class="attributes__transform">
                 <Container class="attributes__transform__label">
                     <Text>Rotation</Text>
                 </Container>
-                <Vec3 value="{{ selectedItem.rotation }}" />
+                <Editor::Vec3 value="{{ selectedItem.rotation }}" />
             </Container>
             <Container class="attributes__transform">
                 <Container class="attributes__transform__label">
                     <Text>Scale</Text>
                 </Container>
-                <Vec3 value="{{ selectedItem.scale }}" />
+                <Editor::Vec3 value="{{ selectedItem.scale }}" />
             </Container>
-        </AttributesTab>
+        </Editor::AttributesTab>
     </Container>
 </Container>

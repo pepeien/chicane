@@ -1,19 +1,21 @@
 #include "Chicane/Core/Reflection/Type/Info.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
 {
 
     ReflectionTypeInfo::ReflectionTypeInfo(
-        const String&       inName,
+        Names               inNames,
         std::size_t         inSize,
         TypeIdex            inTypeIndex,
         const Constructors& inConstructors,
         const Methods&      inMethods,
         const Fields&       inFields
     )
-        : name(std::move(inName)),
+        : names(std::move(inNames)),
           size(inSize),
           typeIndex(inTypeIndex),
           constructors(std::move(inConstructors)),
@@ -22,13 +24,27 @@ namespace Chicane
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
-        : name(""),
+        : names({}),
           size(0),
           typeIndex(std::nullopt),
           constructors({}),
           methods({}),
           fields({})
     {}
+
+    bool ReflectionTypeInfo::containsName(const String& inValue) const
+    {
+        return std::find_if(
+                   names.begin(),
+                   names.end(),
+                   [&inValue](const String& inName) { return inName.equals(inValue); }
+               ) != names.end();
+    }
+
+    const String& ReflectionTypeInfo::getName() const
+    {
+        return names.empty() ? String::empty() : names.front();
+    }
 
     const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
     {

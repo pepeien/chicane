@@ -14,14 +14,14 @@ namespace Chicane
 {
     namespace Grid
     {
-        class SelectOption;
+        class InputSelectOption;
 
-        CH_TYPE(Manual)
-        class CHICANE_GRID Select : public Container
+        CH_TYPE(Type = (Manual), Alias = (Input::Select))
+        class CHICANE_GRID InputSelect : public Container
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Select";
+            static constexpr inline const char* TAG_ID = "Input::Select";
 
             // Properties
             static constexpr inline const char* VALUE_ATTRIBUTE_NAME       = "value";
@@ -30,7 +30,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Select(const pugi::xml_node& inNode);
+            InputSelect(const pugi::xml_node& inNode);
 
         public:
             bool isFocusable() const override;
@@ -56,11 +56,11 @@ namespace Chicane
             void choose(String inValue);
 
         public:
-            std::vector<SelectOption*> getOptions() const;
-            std::vector<SelectOption*> getVisibleOptions() const;
-            bool isHighlighted(const SelectOption* inOption) const;
+            std::vector<InputSelectOption*> getOptions() const;
+            std::vector<InputSelectOption*> getVisibleOptions() const;
+            bool isHighlighted(const InputSelectOption* inOption) const;
 
-            void pick(SelectOption* inOption);
+            void pick(InputSelectOption* inOption);
 
         private:
             void refreshValue();

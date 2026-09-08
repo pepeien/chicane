@@ -9,12 +9,12 @@
 
 namespace Editor
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::ExplorerItem))
     class ExplorerItem : public Chicane::Grid::Button
     {
     public:
         // Tag
-        static constexpr inline const char* TAG_ID = "ExplorerItem";
+        static constexpr inline const char* TAG_ID = "Editor::ExplorerItem";
 
     public:
         CH_CONSTRUCTOR()
@@ -26,10 +26,13 @@ namespace Editor
 
     public:
         void bind(
-            const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inShouldRestyle = false
+            const Chicane::FileSystem::Item* inItem,
+            int                              inIndex,
+            const Chicane::Vec2&             inSlot,
+            bool                             inShouldRestyle = false
         );
         void unbind();
-        int  boundIndex() const;
+        int boundIndex() const;
 
     private:
         void refreshState();

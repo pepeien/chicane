@@ -20,7 +20,7 @@ namespace Editor
 {
     class ExplorerItem;
 
-    CH_TYPE(Manual)
+    CH_TYPE(Type = (Manual), Alias = (Editor::Explorer))
     class Explorer : public Chicane::Grid::Container
     {
     private:
@@ -57,6 +57,9 @@ namespace Editor
         void onSortName();
 
         CH_FUNCTION()
+        void onIconSize();
+
+        CH_FUNCTION()
         void onSelectFolder(Chicane::String inPath);
 
         CH_FUNCTION()
@@ -79,8 +82,6 @@ namespace Editor
         void refreshFilterLabel();
 
         void setIconSizeFactor(float inFactor);
-        void applyIconSizeAt(const Chicane::Vec2& inLocation);
-        Chicane::Grid::Component* findSlider() const;
 
         Chicane::Grid::Scrollable* findScrollableAt(const Chicane::Vec2& inLocation) const;
         bool handleWheel(const Chicane::WindowEvent& inEvent);
@@ -144,7 +145,6 @@ namespace Editor
         ExplorerFilter m_filter;
 
         float         m_iconSizeFactor;
-        bool          m_bIsSizing;
         Chicane::Vec2 m_pointer;
 
         std::vector<ExplorerItem*> m_tiles;
