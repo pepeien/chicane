@@ -4,7 +4,7 @@
     "path": "Core/FileSystem",
     "source": {
         "header": "Includes/Chicane/Core/FileSystem.hpp",
-        "namespace": "Chicane::FileSystem",
+        "namespace": "Chicane::FileSystem::write",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -386,7 +386,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_FILESYSTEM_DESCRIPTION"
+        "description": "CHICANE_FILESYSTEM_WRITE_DESCRIPTION"
     },
     "children": []
 }

@@ -1,10 +1,10 @@
 {
-    "title": "StyleTransform",
+    "title": "Transform",
     "filename": "Transform",
     "path": "Grid/Style/Transform",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Transform.hpp",
-        "namespace": "Chicane::Grid::StyleTransform",
+        "namespace": "Chicane::Grid::operator==",
         "types": [],
         "enums": [],
         "constructors": [
@@ -42,6 +42,44 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLETRANSFORM_ISIDENTITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleTransform",
+                            "suffix": "&",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleTransform",
+                            "suffix": "&",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR==_DESCRIPTION"
             }
         ],
         "members": [
@@ -85,7 +123,7 @@
                 "description": "CHICANE_GRID_STYLETRANSFORM_SCALE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLETRANSFORM_DESCRIPTION"
+        "description": "CHICANE_GRID_OPERATOR==_DESCRIPTION"
     },
     "children": []
 }

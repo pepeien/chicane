@@ -1,5 +1,5 @@
 {
-    "title": "OpenGLLSceneMesh",
+    "title": "Mesh",
     "filename": "Mesh",
     "path": "Renderer/Backend/OpenGL/Layer/Scene/Mesh",
     "source": {

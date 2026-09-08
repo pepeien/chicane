@@ -1,0 +1,44 @@
+{
+    "title": "Raw",
+    "filename": "Raw",
+    "path": "Box/Sky/Raw",
+    "source": {
+        "header": "Includes/Chicane/Box/Sky/Raw.hpp",
+        "namespace": "Chicane::Box::SkyRawSides",
+        "types": [
+            {
+                "name": "SkyRawSides",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkySide",
+                            "suffix": "",
+                            "path": "Box/Sky/Side",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "AssetReference",
+                            "suffix": "",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
+    },
+    "children": []
+}

@@ -4,7 +4,7 @@
     "path": "Grid/Style",
     "source": {
         "header": "Includes/Chicane/Grid/Style.hpp",
-        "namespace": "Chicane::Grid::Style",
+        "namespace": "Chicane::Grid::splitOneliner",
         "types": [
             {
                 "name": "Properties",
@@ -1645,6 +1645,40 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_STYLE_PARSETEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "splitOneliner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SPLITONELINER_DESCRIPTION"
             }
         ],
         "members": [
@@ -5623,7 +5657,7 @@
                 "description": "CHICANE_GRID_STYLE_M_SNAPSHOT_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLE_DESCRIPTION"
+        "description": "CHICANE_GRID_SPLITONELINER_DESCRIPTION"
     },
     "children": []
 }

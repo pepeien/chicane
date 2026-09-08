@@ -1,5 +1,5 @@
 {
-    "title": "VulkanCommandBufferCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Renderer/Backend/Vulkan/CommandBuffer/CreateInfo",
     "source": {

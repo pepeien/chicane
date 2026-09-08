@@ -1,5 +1,5 @@
 {
-    "title": "VulkanTextureCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Renderer/Backend/Vulkan/Texture/CreateInfo",
     "source": {

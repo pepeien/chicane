@@ -1,5 +1,5 @@
 {
-    "title": "VulkanSwapchainImage",
+    "title": "Image",
     "filename": "Image",
     "path": "Renderer/Backend/Vulkan/Swapchain/Image",
     "source": {

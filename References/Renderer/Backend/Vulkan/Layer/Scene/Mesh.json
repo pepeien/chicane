@@ -1,5 +1,5 @@
 {
-    "title": "VulkanLSceneMesh",
+    "title": "Mesh",
     "filename": "Mesh",
     "path": "Renderer/Backend/Vulkan/Layer/Scene/Mesh",
     "source": {

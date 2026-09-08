@@ -1,11 +1,31 @@
 {
-    "title": "GamepadMotionEvent",
+    "title": "Event",
     "filename": "Event",
     "path": "Core/Input/Gamepad/Motion/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
-        "namespace": "Chicane::Input::GamepadMotionEvent",
-        "types": [],
+        "namespace": "Chicane::Input::GamepadMotionEventCallback",
+        "types": [
+            {
+                "name": "GamepadMotionEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const GamepadMotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENTCALLBACK_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -80,7 +100,7 @@
                 "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_VALUE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENTCALLBACK_DESCRIPTION"
     },
     "children": []
 }

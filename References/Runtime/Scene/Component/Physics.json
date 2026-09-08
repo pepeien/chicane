@@ -1,5 +1,5 @@
 {
-    "title": "CPhysics",
+    "title": "Physics",
     "filename": "Physics",
     "path": "Runtime/Scene/Component/Physics",
     "source": {
@@ -85,7 +85,7 @@
                             "prefix": "const ",
                             "name": "Kerb::BodyPolygon",
                             "suffix": "&",
-                            "path": "Kerb",
+                            "path": "Kerb/Body/CreateInfo",
                             "templates": []
                         },
                         "name": "inPolygon"

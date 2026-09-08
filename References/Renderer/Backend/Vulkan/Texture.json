@@ -1,5 +1,5 @@
 {
-    "title": "VulkanTexture",
+    "title": "Texture",
     "filename": "Texture",
     "path": "Renderer/Backend/Vulkan/Texture",
     "source": {

@@ -1,10 +1,10 @@
 {
-    "title": "AssetHeader",
+    "title": "Header",
     "filename": "Header",
     "path": "Box/Asset/Header",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Header.hpp",
-        "namespace": "Chicane::Box::AssetHeader",
+        "namespace": "Chicane::Box::peek",
         "types": [],
         "enums": [],
         "constructors": [
@@ -308,6 +308,34 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_ASSETHEADER_FETCHTYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AssetHeader",
+                    "suffix": "",
+                    "path": "Box/Asset/Header",
+                    "templates": []
+                },
+                "name": "peek",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_PEEK_DESCRIPTION"
             }
         ],
         "members": [
@@ -364,7 +392,7 @@
                 "description": "CHICANE_BOX_ASSETHEADER_TYPE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_ASSETHEADER_DESCRIPTION"
+        "description": "CHICANE_BOX_PEEK_DESCRIPTION"
     },
     "children": []
 }

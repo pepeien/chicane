@@ -1,5 +1,5 @@
 {
-    "title": "VulkanShaderStageCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Renderer/Backend/Vulkan/Shader/CreateInfo",
     "source": {

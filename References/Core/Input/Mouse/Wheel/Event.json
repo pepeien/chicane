@@ -1,11 +1,31 @@
 {
-    "title": "MouseWheelEvent",
+    "title": "Event",
     "filename": "Event",
     "path": "Core/Input/Mouse/Wheel/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/Wheel/Event.hpp",
-        "namespace": "Chicane::Input::MouseWheelEvent",
-        "types": [],
+        "namespace": "Chicane::Input::MouseWheelEventCallback",
+        "types": [
+            {
+                "name": "MouseWheelEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MouseWheelEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_MOUSEWHEELEVENTCALLBACK_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -80,7 +100,7 @@
                 "description": "CHICANE_INPUT_MOUSEWHEELEVENT_LOCATION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_MOUSEWHEELEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_MOUSEWHEELEVENTCALLBACK_DESCRIPTION"
     },
     "children": []
 }

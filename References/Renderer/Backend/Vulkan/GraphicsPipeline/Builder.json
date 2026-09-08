@@ -1,5 +1,5 @@
 {
-    "title": "VulkanGraphicsPipelineBuilder",
+    "title": "Builder",
     "filename": "Builder",
     "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Builder",
     "source": {

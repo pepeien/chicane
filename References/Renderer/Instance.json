@@ -698,7 +698,7 @@
                     "prefix": "const ",
                     "name": "ResourceBudget",
                     "suffix": "&",
-                    "path": "Renderer",
+                    "path": "Renderer/Resource",
                     "templates": []
                 },
                 "name": "getResourceBudget",
@@ -725,7 +725,7 @@
                             "prefix": "const ",
                             "name": "ResourceBudget",
                             "suffix": "&",
-                            "path": "Renderer",
+                            "path": "Renderer/Resource",
                             "templates": []
                         },
                         "name": "inValue"

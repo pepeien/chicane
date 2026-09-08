@@ -4,7 +4,7 @@
     "path": "Core/Hash",
     "source": {
         "header": "Includes/Chicane/Core/Hash.hpp",
-        "namespace": "Chicane::Hash",
+        "namespace": "Chicane::Hash::generate",
         "types": [
             {
                 "name": "Value",
@@ -60,7 +60,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_HASH_DESCRIPTION"
+        "description": "CHICANE_HASH_GENERATE_DESCRIPTION"
     },
     "children": []
 }

@@ -1,0 +1,55 @@
+{
+    "title": "Parsed",
+    "filename": "Parsed",
+    "path": "Box/Sky/Parsed",
+    "source": {
+        "header": "Includes/Chicane/Box/Sky/Parsed.hpp",
+        "namespace": "Chicane::Box::SkyParsedSides",
+        "types": [
+            {
+                "name": "SkyParsedSide",
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Reference",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "description": "CHICANE_BOX_SKYPARSEDSIDE_DESCRIPTION"
+            },
+            {
+                "name": "SkyParsedSides",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkySide",
+                            "suffix": "",
+                            "path": "Box/Sky/Side",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SkyParsedSide",
+                            "suffix": "",
+                            "path": "Box/Sky/Parsed",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
+    },
+    "children": []
+}

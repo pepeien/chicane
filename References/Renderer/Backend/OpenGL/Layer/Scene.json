@@ -1,5 +1,5 @@
 {
-    "title": "OpenGLLScene",
+    "title": "Scene",
     "filename": "Scene",
     "path": "Renderer/Backend/OpenGL/Layer/Scene",
     "source": {

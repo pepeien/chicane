@@ -4,8 +4,35 @@
     "path": "Renderer/Resource",
     "source": {
         "header": "Includes/Chicane/Renderer/Resource.hpp",
-        "namespace": "Chicane::Renderer::Resource",
-        "types": [],
+        "namespace": "Chicane::Renderer::ResourceBudget",
+        "types": [
+            {
+                "name": "ResourceBudget",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Resource",
+                            "suffix": "",
+                            "path": "Renderer/Resource",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_RESOURCEBUDGET_DESCRIPTION"
+            }
+        ],
         "enums": [
             {
                 "type": {
@@ -144,7 +171,7 @@
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_RENDERER_RESOURCE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_RESOURCEBUDGET_DESCRIPTION"
     },
     "children": []
 }

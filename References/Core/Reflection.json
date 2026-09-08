@@ -3,14 +3,15 @@
     "filename": "Reflection",
     "path": "Core/Reflection",
     "source": {
-        "header": null,
+        "header": "Includes/Chicane/Core/Reflection.hpp",
         "namespace": null,
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": []
+        "members": [],
+        "description": null
     },
     "children": []
 }

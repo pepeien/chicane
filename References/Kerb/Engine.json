@@ -537,7 +537,7 @@
                     "prefix": "",
                     "name": "BodyPolygon",
                     "suffix": "",
-                    "path": "Kerb",
+                    "path": "Kerb/Body/CreateInfo",
                     "templates": []
                 },
                 "name": "getBodyPolygon",

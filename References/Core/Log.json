@@ -4,7 +4,7 @@
     "path": "Core/Log",
     "source": {
         "header": "Includes/Chicane/Core/Log.hpp",
-        "namespace": "Chicane::Log",
+        "namespace": "Chicane::Log::critical",
         "types": [
             {
                 "name": "List",
@@ -491,7 +491,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_LOG_DESCRIPTION"
+        "description": "CHICANE_LOG_CRITICAL_DESCRIPTION"
     },
     "children": []
 }

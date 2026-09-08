@@ -1,10 +1,10 @@
 {
-    "title": "VulkanDevice",
+    "title": "Device",
     "filename": "Device",
     "path": "Renderer/Backend/Vulkan/Device",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Device.hpp",
-        "namespace": "Chicane::Renderer::VulkanDevice",
+        "namespace": "Chicane::Renderer::VulkanDevice::findMemoryTypeIndex",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -209,7 +209,7 @@
                 "description": "CHICANE_RENDERER_VULKANDEVICE_EXTENSIONS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANDEVICE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANDEVICE_FINDMEMORYTYPEINDEX_DESCRIPTION"
     },
     "children": []
 }

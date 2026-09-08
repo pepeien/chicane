@@ -250,7 +250,7 @@
                             "prefix": "",
                             "name": "Input::MouseMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Mouse/Motion/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -296,7 +296,7 @@
                             "prefix": "",
                             "name": "Input::MouseButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Mouse/Button/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -322,7 +322,7 @@
                             "prefix": "",
                             "name": "Input::MouseWheelEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Mouse/Wheel/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -368,7 +368,7 @@
                             "prefix": "",
                             "name": "Input::KeyboardEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Keyboard/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -394,7 +394,7 @@
                             "prefix": "",
                             "name": "Input::GamepadMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Gamepad/Motion/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -440,7 +440,7 @@
                             "prefix": "",
                             "name": "Input::GamepadButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device",
+                            "path": "Core/Input/Gamepad/Button/Event",
                             "templates": []
                         },
                         "name": "inCallback"

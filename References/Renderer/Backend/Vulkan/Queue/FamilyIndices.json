@@ -1,5 +1,5 @@
 {
-    "title": "VulkanQueueFamilyIndices",
+    "title": "FamilyIndices",
     "filename": "FamilyIndices",
     "path": "Renderer/Backend/Vulkan/Queue/FamilyIndices",
     "source": {

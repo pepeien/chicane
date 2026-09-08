@@ -1,10 +1,10 @@
 {
-    "title": "VulkanSurface",
+    "title": "Surface",
     "filename": "Surface",
     "path": "Renderer/Backend/Vulkan/Surface",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Surface.hpp",
-        "namespace": "Chicane::Renderer::VulkanSurface",
+        "namespace": "Chicane::Renderer::VulkanSurface::init",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -58,7 +58,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANSURFACE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANSURFACE_INIT_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "OpenGLLSceneSky",
+    "title": "Sky",
     "filename": "Sky",
     "path": "Renderer/Backend/OpenGL/Layer/Scene/Sky",
     "source": {

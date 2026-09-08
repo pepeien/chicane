@@ -10,7 +10,8 @@
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": []
+        "members": [],
+        "description": null
     },
     "children": []
 }

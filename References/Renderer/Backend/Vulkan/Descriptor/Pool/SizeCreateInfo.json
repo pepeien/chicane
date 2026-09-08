@@ -1,5 +1,5 @@
 {
-    "title": "VulkanDescriptorPoolSizeCreateInfo",
+    "title": "SizeCreateInfo",
     "filename": "SizeCreateInfo",
     "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
     "source": {

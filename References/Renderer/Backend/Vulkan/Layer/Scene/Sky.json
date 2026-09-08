@@ -1,5 +1,5 @@
 {
-    "title": "VulkanLSceneSky",
+    "title": "Sky",
     "filename": "Sky",
     "path": "Renderer/Backend/Vulkan/Layer/Scene/Sky",
     "source": {

@@ -1,10 +1,10 @@
 {
-    "title": "VulkanSync",
+    "title": "Sync",
     "filename": "Sync",
     "path": "Renderer/Backend/Vulkan/Sync",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sync.hpp",
-        "namespace": "Chicane::Renderer::VulkanSync",
+        "namespace": "Chicane::Renderer::VulkanSync::initFence",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -84,7 +84,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANSYNC_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANSYNC_INITFENCE_DESCRIPTION"
     },
     "children": []
 }

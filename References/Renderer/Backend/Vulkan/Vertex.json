@@ -1,10 +1,10 @@
 {
-    "title": "VulkanVertex",
+    "title": "Vertex",
     "filename": "Vertex",
     "path": "Renderer/Backend/Vulkan/Vertex",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Vertex.hpp",
-        "namespace": "Chicane::Renderer::VulkanVertex",
+        "namespace": "Chicane::Renderer::VulkanVertex::getAttributeDescriptions",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -50,7 +50,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANVERTEX_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANVERTEX_GETATTRIBUTEDESCRIPTIONS_DESCRIPTION"
     },
     "children": []
 }

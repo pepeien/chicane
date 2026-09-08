@@ -1,10 +1,10 @@
 {
-    "title": "StyleAlignment",
+    "title": "Alignment",
     "filename": "Alignment",
     "path": "Grid/Style/Alignment",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-        "namespace": "Chicane::Grid::StyleAlignment",
+        "namespace": "Chicane::Grid::toAlignment",
         "types": [],
         "enums": [
             {
@@ -43,9 +43,36 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleAlignment",
+                    "suffix": "",
+                    "path": "Grid/Style/Alignment",
+                    "templates": []
+                },
+                "name": "toAlignment",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inText"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TOALIGNMENT_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_GRID_STYLEALIGNMENT_DESCRIPTION"
+        "description": "CHICANE_GRID_TOALIGNMENT_DESCRIPTION"
     },
     "children": []
 }

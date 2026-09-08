@@ -4,7 +4,7 @@
     "path": "Core/Color",
     "source": {
         "header": "Includes/Chicane/Core/Color.hpp",
-        "namespace": "Chicane::Color",
+        "namespace": "Chicane::Color::toRgba",
         "types": [
             {
                 "name": "Rgb",
@@ -606,7 +606,7 @@
                 "description": "CHICANE_COLOR_TEXT_COLOR_BLACK_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_COLOR_DESCRIPTION"
+        "description": "CHICANE_COLOR_TORGBA_DESCRIPTION"
     },
     "children": []
 }

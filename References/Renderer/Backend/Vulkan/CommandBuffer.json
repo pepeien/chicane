@@ -1,10 +1,10 @@
 {
-    "title": "VulkanCommandBuffer",
+    "title": "CommandBuffer",
     "filename": "CommandBuffer",
     "path": "Renderer/Backend/Vulkan/CommandBuffer",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp",
-        "namespace": "Chicane::Renderer::VulkanCommandBuffer",
+        "namespace": "Chicane::Renderer::VulkanCommandBuffer::init",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -92,7 +92,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_INIT_DESCRIPTION"
     },
     "children": []
 }

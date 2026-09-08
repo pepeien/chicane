@@ -1,10 +1,10 @@
 {
-    "title": "ModelWavefront",
+    "title": "Wavefront",
     "filename": "Wavefront",
     "path": "Box/Model/Wavefront",
     "source": {
         "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
-        "namespace": "Chicane::Box::ModelWavefront",
+        "namespace": "Chicane::Box::ModelWavefront::parse",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -27,7 +27,7 @@
                             "prefix": "const ",
                             "name": "ModelRaw",
                             "suffix": "&",
-                            "path": "Box",
+                            "path": "Box/Model/Raw",
                             "templates": []
                         },
                         "name": "inData"
@@ -38,7 +38,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_MODELWAVEFRONT_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELWAVEFRONT_PARSE_DESCRIPTION"
     },
     "children": []
 }

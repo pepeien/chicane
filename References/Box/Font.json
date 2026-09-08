@@ -266,7 +266,7 @@
                             "prefix": "const ",
                             "name": "FontRaw",
                             "suffix": "&",
-                            "path": "Box",
+                            "path": "Box/Font/Raw",
                             "templates": []
                         },
                         "name": "inValue"
@@ -377,7 +377,7 @@
                             "prefix": "const ",
                             "name": "FontRaw",
                             "suffix": "&",
-                            "path": "Box",
+                            "path": "Box/Font/Raw",
                             "templates": []
                         },
                         "name": "inValue"
@@ -405,7 +405,7 @@
                             "prefix": "const ",
                             "name": "FontRaw",
                             "suffix": "&",
-                            "path": "Box",
+                            "path": "Box/Font/Raw",
                             "templates": []
                         },
                         "name": "inValue"
@@ -528,7 +528,7 @@
                     "prefix": "",
                     "name": "FontRaw",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Box/Font/Raw",
                     "templates": []
                 },
                 "name": "m_raw",

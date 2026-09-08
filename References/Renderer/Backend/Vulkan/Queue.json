@@ -1,10 +1,10 @@
 {
-    "title": "VulkanQueue",
+    "title": "Queue",
     "filename": "Queue",
     "path": "Renderer/Backend/Vulkan/Queue",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue.hpp",
-        "namespace": "Chicane::Renderer::VulkanQueue",
+        "namespace": "Chicane::Renderer::VulkanQueue::initPresentQueue",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -124,7 +124,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANQUEUE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANQUEUE_INITPRESENTQUEUE_DESCRIPTION"
     },
     "children": []
 }

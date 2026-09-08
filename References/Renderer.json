@@ -4,126 +4,12 @@
     "path": "Renderer",
     "source": {
         "header": "Includes/Chicane/Renderer.hpp",
-        "namespace": "Chicane::Renderer",
-        "types": [
-            {
-                "name": "ResourceBudget",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Resource",
-                            "suffix": "",
-                            "path": "Renderer/Resource",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_RESOURCEBUDGET_DESCRIPTION"
-            }
-        ],
+        "namespace": "Chicane::Renderer::SHADOW_MAP_HEIGHT",
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "OpenGLDebugCallback",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "source"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "type"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "id"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "unsigned int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "severity"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "length"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "message"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "void",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "userParam"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLDEBUGCALLBACK_DESCRIPTION"
-            }
-        ],
+        "functions": [],
         "members": [
             {
                 "accessor": "public",
@@ -334,7 +220,7 @@
                 "description": "CHICANE_RENDERER_SHADOW_MAP_HEIGHT_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_SHADOW_MAP_HEIGHT_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "VulkanImageSamplerCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Renderer/Backend/Vulkan/Image/Sampler/CreateInfo",
     "source": {

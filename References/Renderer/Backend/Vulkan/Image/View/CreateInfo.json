@@ -1,5 +1,5 @@
 {
-    "title": "VulkanImageViewCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Renderer/Backend/Vulkan/Image/View/CreateInfo",
     "source": {

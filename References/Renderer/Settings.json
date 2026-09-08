@@ -59,7 +59,7 @@
                     "prefix": "",
                     "name": "ResourceBudget",
                     "suffix": "",
-                    "path": "Renderer",
+                    "path": "Renderer/Resource",
                     "templates": []
                 },
                 "name": "resourceBudget",

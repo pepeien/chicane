@@ -1,11 +1,31 @@
 {
-    "title": "KeyboardEvent",
+    "title": "Event",
     "filename": "Event",
     "path": "Core/Input/Keyboard/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-        "namespace": "Chicane::Input::KeyboardEvent",
-        "types": [],
+        "namespace": "Chicane::Input::KeyboardEventCallback",
+        "types": [
+            {
+                "name": "KeyboardEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_KEYBOARDEVENTCALLBACK_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -119,7 +139,7 @@
                 "description": "CHICANE_INPUT_KEYBOARDEVENT_KEY_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_KEYBOARDEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_KEYBOARDEVENTCALLBACK_DESCRIPTION"
     },
     "children": []
 }

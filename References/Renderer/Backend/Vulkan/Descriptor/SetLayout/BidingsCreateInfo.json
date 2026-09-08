@@ -1,5 +1,5 @@
 {
-    "title": "VulkanDescriptorSetLayoutBidingsCreateInfo",
+    "title": "BidingsCreateInfo",
     "filename": "BidingsCreateInfo",
     "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo",
     "source": {

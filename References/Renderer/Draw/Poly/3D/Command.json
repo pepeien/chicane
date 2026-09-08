@@ -1,5 +1,5 @@
 {
-    "title": "DrawPoly3DCommand",
+    "title": "Command",
     "filename": "Command",
     "path": "Renderer/Draw/Poly/3D/Command",
     "source": {

@@ -1,5 +1,5 @@
 {
-    "title": "VulkanBuffer",
+    "title": "Buffer",
     "filename": "Buffer",
     "path": "Renderer/Backend/Vulkan/Buffer",
     "source": {

@@ -1,5 +1,5 @@
 {
-    "title": "VulkanLSceneShadow",
+    "title": "Shadow",
     "filename": "Shadow",
     "path": "Renderer/Backend/Vulkan/Layer/Scene/Shadow",
     "source": {

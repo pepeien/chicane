@@ -1,10 +1,10 @@
 {
-    "title": "VulkanInstance",
+    "title": "Instance",
     "filename": "Instance",
     "path": "Renderer/Backend/Vulkan/Instance",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Instance.hpp",
-        "namespace": "Chicane::Renderer::VulkanInstance",
+        "namespace": "Chicane::Renderer::VulkanInstance::init",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -163,7 +163,7 @@
                 "description": "CHICANE_RENDERER_VULKANINSTANCE_EXTENSIONS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANINSTANCE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANINSTANCE_INIT_DESCRIPTION"
     },
     "children": []
 }

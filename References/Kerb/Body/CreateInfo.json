@@ -1,11 +1,38 @@
 {
-    "title": "BodyCreateInfo",
+    "title": "CreateInfo",
     "filename": "CreateInfo",
     "path": "Kerb/Body/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
-        "namespace": "Chicane::Kerb::BodyCreateInfo",
-        "types": [],
+        "namespace": "Chicane::Kerb::BodyPolygon",
+        "types": [
+            {
+                "name": "BodyPolygon",
+                "type": {
+                    "prefix": "",
+                    "name": "std::pair",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vertex::Indices",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_KERB_BODYPOLYGON_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -70,14 +97,14 @@
                     "prefix": "",
                     "name": "BodyPolygon",
                     "suffix": "",
-                    "path": "Kerb",
+                    "path": "Kerb/Body/CreateInfo",
                     "templates": []
                 },
                 "name": "polygon",
                 "description": "CHICANE_KERB_BODYCREATEINFO_POLYGON_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_KERB_BODYCREATEINFO_DESCRIPTION"
+        "description": "CHICANE_KERB_BODYPOLYGON_DESCRIPTION"
     },
     "children": []
 }

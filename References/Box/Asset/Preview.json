@@ -1,10 +1,10 @@
 {
-    "title": "AssetPreview",
+    "title": "Preview",
     "filename": "Preview",
     "path": "Box/Asset/Preview",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Preview.hpp",
-        "namespace": "Chicane::Box::AssetPreview",
+        "namespace": "Chicane::Box::decodePreview",
         "types": [],
         "enums": [],
         "constructors": [
@@ -534,6 +534,50 @@
                     "const"
                 ],
                 "description": "CHICANE_BOX_ASSETPREVIEW_TEXTUREID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetPreview",
+                            "suffix": "",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "decodePreview",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inShouldUseStored"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_DECODEPREVIEW_DESCRIPTION"
             }
         ],
         "members": [
@@ -1425,7 +1469,7 @@
                 "description": "CHICANE_BOX_ASSETPREVIEW_IMAGE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_ASSETPREVIEW_DESCRIPTION"
+        "description": "CHICANE_BOX_DECODEPREVIEW_DESCRIPTION"
     },
     "children": []
 }

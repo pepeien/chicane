@@ -1,11 +1,31 @@
 {
-    "title": "MouseMotionEvent",
+    "title": "Event",
     "filename": "Event",
     "path": "Core/Input/Mouse/Motion/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
-        "namespace": "Chicane::Input::MouseMotionEvent",
-        "types": [],
+        "namespace": "Chicane::Input::MouseMotionEventCallback",
+        "types": [
+            {
+                "name": "MouseMotionEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MouseMotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_MOUSEMOTIONEVENTCALLBACK_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -93,7 +113,7 @@
                 "description": "CHICANE_INPUT_MOUSEMOTIONEVENT_RELATIVELOCATION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_MOUSEMOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_MOUSEMOTIONEVENTCALLBACK_DESCRIPTION"
     },
     "children": []
 }

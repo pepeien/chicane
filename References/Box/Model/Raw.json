@@ -1,0 +1,37 @@
+{
+    "title": "Raw",
+    "filename": "Raw",
+    "path": "Box/Model/Raw",
+    "source": {
+        "header": "Includes/Chicane/Box/Model/Raw.hpp",
+        "namespace": "Chicane::Box::ModelRaw",
+        "types": [
+            {
+                "name": "ModelRaw",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MODELRAW_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_MODELRAW_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,10 +1,10 @@
 {
-    "title": "VulkanDebug",
+    "title": "Debug",
     "filename": "Debug",
     "path": "Renderer/Backend/Vulkan/Debug",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/Vulkan/Debug.hpp",
-        "namespace": "Chicane::Renderer::VulkanDebug",
+        "namespace": "Chicane::Renderer::VulkanDebug::destroyMessenger",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -104,7 +104,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_VULKANDEBUG_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANDEBUG_DESTROYMESSENGER_DESCRIPTION"
     },
     "children": []
 }

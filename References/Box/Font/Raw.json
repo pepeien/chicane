@@ -1,0 +1,37 @@
+{
+    "title": "Raw",
+    "filename": "Raw",
+    "path": "Box/Font/Raw",
+    "source": {
+        "header": "Includes/Chicane/Box/Font/Raw.hpp",
+        "namespace": "Chicane::Box::FontRaw",
+        "types": [
+            {
+                "name": "FontRaw",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_FONTRAW_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_FONTRAW_DESCRIPTION"
+    },
+    "children": []
+}

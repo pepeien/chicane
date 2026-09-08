@@ -4,35 +4,8 @@
     "path": "Kerb",
     "source": {
         "header": "Includes/Chicane/Kerb.hpp",
-        "namespace": "Chicane::Kerb",
-        "types": [
-            {
-                "name": "BodyPolygon",
-                "type": {
-                    "prefix": "",
-                    "name": "std::pair",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vertex::Indices",
-                            "suffix": "",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "Vertex::List",
-                            "suffix": "",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_KERB_BODYPOLYGON_DESCRIPTION"
-            }
-        ],
+        "namespace": "Chicane::Kerb::shutdown",
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -69,7 +42,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_DESCRIPTION"
+        "description": "CHICANE_KERB_SHUTDOWN_DESCRIPTION"
     },
     "children": []
 }

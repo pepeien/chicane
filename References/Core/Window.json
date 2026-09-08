@@ -4,8 +4,187 @@
     "path": "Core/Window",
     "source": {
         "header": "Includes/Chicane/Core/Window.hpp",
-        "namespace": "Chicane::Window",
-        "types": [],
+        "namespace": "Chicane::WindowCursors",
+        "types": [
+            {
+                "name": "WindowEventObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWEVENTOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "WindowEventSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWEVENTSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "WindowSizeObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vec",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWSIZEOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "WindowSizeSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vec",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWSIZESUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "WindowBackendObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWBACKENDOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "WindowBackendSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWBACKENDSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "WindowCursors",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "static_cast",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::size_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_WINDOWCURSORS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -893,7 +1072,7 @@
                     "prefix": "",
                     "name": "WindowEventSubscription",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "watchEvent",
@@ -939,7 +1118,7 @@
                     "prefix": "",
                     "name": "WindowSizeSubscription",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "watchSize",
@@ -985,7 +1164,7 @@
                     "prefix": "",
                     "name": "WindowBackendSubscription",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "watchBackend",
@@ -1355,7 +1534,7 @@
                     "prefix": "",
                     "name": "WindowCursors",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "m_cursors",
@@ -1368,7 +1547,7 @@
                     "prefix": "",
                     "name": "WindowEventObservable",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "m_eventObservable",
@@ -1381,7 +1560,7 @@
                     "prefix": "",
                     "name": "WindowSizeObservable",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "m_sizeObservable",
@@ -1394,14 +1573,14 @@
                     "prefix": "",
                     "name": "WindowBackendObservable",
                     "suffix": "",
-                    "path": "Box",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "m_backendObservable",
                 "description": "CHICANE_WINDOW_M_BACKENDOBSERVABLE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_WINDOW_DESCRIPTION"
+        "description": "CHICANE_WINDOWCURSORS_DESCRIPTION"
     },
     "children": []
 }
