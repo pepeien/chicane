@@ -6,7 +6,7 @@ PROJECT_NUMBER         = "0.0.1"
 # Input
 INPUT                  = Includes
 FILE_PATTERNS          = *.hpp
-EXCLUDE_PATTERNS       = */Vendors/*
+EXCLUDE_PATTERNS       = */Vendor/* */Vendors/*
 RECURSIVE              = YES
 DOT_GRAPH_MAX_NODES    = 100
 
@@ -19,10 +19,31 @@ EXTRACT_STATIC         = YES
 SOURCE_BROWSER         = YES
 VERBATIM_HEADERS       = NO
 
+# Preprocessing
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+SKIP_FUNCTION_MACROS   = NO
+PREDEFINED             = \
+    CH_TYPE(...)= \
+    CH_ENUM(...)= \
+    CH_FIELD(...)= \
+    CH_FUNCTION(...)= \
+    CH_CONSTRUCTOR(...)= \
+    CHICANE_BOX= \
+    CHICANE_CORE= \
+    CHICANE_DRIFT= \
+    CHICANE_GRID= \
+    CHICANE_KERB= \
+    CHICANE_RENDERER= \
+    CHICANE_RUNTIME= \
+    CHICANE_SCREECH=
+
 # Output
 OUTPUT_DIRECTORY       = .docs
 CREATE_SUBDIRS         = YES
-FULL_PATH_NAMES        = NO
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        =
 HIDE_SCOPE_NAMES       = NO
 
 # Output Formats
