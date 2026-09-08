@@ -291,6 +291,36 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_SETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "markSpatialDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_MARKSPATIALDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "consumeSpatialDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_CONSUMESPATIALDIRTY_DESCRIPTION"
             }
         ],
         "members": [
@@ -319,6 +349,27 @@
                 },
                 "name": "m_scene",
                 "description": "CHICANE_OBJECT_M_SCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bIsSpatialDirty",
+                "description": "CHICANE_OBJECT_M_BISSPATIALDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "protected",

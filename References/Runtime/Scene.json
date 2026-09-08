@@ -1008,6 +1008,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "flushSpatial",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_FLUSHSPATIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "updateSpatial",
                 "parameters": [
                     {

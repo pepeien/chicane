@@ -283,6 +283,42 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "sortEdges",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "DockPanel",
+                                    "suffix": "*",
+                                    "path": "Grid/Component/Dock/Panel",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inOutEdges"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_SORTEDGES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "layout",
                 "parameters": [],
                 "modifiers": [],
@@ -329,6 +365,16 @@
                             "templates": []
                         },
                         "name": "inContent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHasFill"
                     }
                 ],
                 "modifiers": [],
@@ -937,6 +983,16 @@
                             "templates": []
                         },
                         "name": "inContent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHasFill"
                     }
                 ],
                 "modifiers": [
@@ -1187,6 +1243,38 @@
                 },
                 "name": "DROP_BAND_RATIO",
                 "description": "CHICANE_GRID_DOCK_DROP_BAND_RATIO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_WIDTH_SIZE",
+                "description": "CHICANE_GRID_DOCK_DEFAULT_WIDTH_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_HEIGHT_SIZE",
+                "description": "CHICANE_GRID_DOCK_DEFAULT_HEIGHT_SIZE_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -147,6 +147,22 @@
                 "description": "CHICANE_GRID_DOCKDROP_TAG_ID_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BORDER_RADIUS_IN_PX",
+                "description": "CHICANE_GRID_DOCKDROP_BORDER_RADIUS_IN_PX_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
