@@ -17,6 +17,7 @@ namespace Chicane
     public:
         bool intersects(const Bounds3D& inOther) const;
         bool intersects(const Vec3& inPoint) const;
+        bool intersectsSegment(const Vec3& inStart, const Vec3& inEnd, float& outEnter) const;
 
         const Vec3& getTop() const;
         const Vec3& getCenter() const;

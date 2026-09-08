@@ -2,6 +2,7 @@
 
 #include <Chicane/Runtime/Scene.hpp>
 
+#include "Sample/Shooter/Actor/Structure.hpp"
 #include "Sample/Shooter/Game.hpp"
 
 Apple::Apple()
@@ -36,15 +37,14 @@ void Apple::onTick(float inDeltaTime)
     addRelativeRotation(0.0f, 0.0f, m_rotateRate);
     addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
 
-    for (Chicane::Actor* actor : getScene()->getActors())
+    for (Strcuture* structure : getScene()->getActors<Strcuture>())
     {
-        if (actor == this || !actor->canCollide() || !isCollidingWith(actor))
+        if (!structure->canCollide() || !isCollidingWith(structure))
         {
             continue;
         }
 
-        collideWith(actor);
-
+        collideWith(structure);
         break;
     }
 }

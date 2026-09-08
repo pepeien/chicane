@@ -281,11 +281,22 @@ void Character::onShoot()
     const Chicane::Vec3& origin      = m_camera->getTranslation();
     const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples = getScene()->traceLine<Apple>(origin, destination, {this});
-
-    for (Apple* apple : hitApples)
+    std::vector<Chicane::SceneTraceResponse> hits;
+    if (!getScene()->traceMulti<Apple>(
+            hits,
+            Chicane::SceneTraceRequest::Line(origin, destination),
+            {this}
+        ))
     {
-        apple->onHit(this);
+        return;
+    }
+
+    for (const Chicane::SceneTraceResponse& hit : hits)
+    {
+        if (Apple* apple = static_cast<Apple*>(hit.actor))
+        {
+            apple->onHit(this);
+        }
     }
 }
 

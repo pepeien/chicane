@@ -740,9 +740,13 @@ namespace Editor
             return;
         }
 
-        const Chicane::Vec3 destination = origin + direction * 1000.0f;
-        const std::vector<Item*> hits   = scene->traceLine<Item>(origin, destination, {});
-        Chicane::Object*         target = hits.empty() ? nullptr : hits.front();
+        const Chicane::Vec3            destination = origin + direction * 1000.0f;
+        Chicane::SceneTraceResponse    hit;
+        Chicane::Object*               target      = nullptr;
+        if (scene->trace<Item>(hit, Chicane::SceneTraceRequest::Line(origin, destination), {}))
+        {
+            target = hit.actor;
+        }
 
         if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
         {

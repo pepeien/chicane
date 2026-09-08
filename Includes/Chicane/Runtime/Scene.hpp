@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cmath>
 #include <cstdint>
 #include <typeindex>
 #include <unordered_map>
@@ -14,14 +13,16 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 #include "Chicane/Runtime/Scene/SpatialCell.hpp"
-
-constexpr inline float LINE_TRACE_STEP_SIZE = 0.1f;
-constexpr inline float SPATIAL_CELL_SIZE    = 64.0f;
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
+#include "Chicane/Runtime/Scene/Trace/Response.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
 
 namespace Chicane
 {
     class CHICANE_RUNTIME Scene
     {
+        friend Object;
+
     public:
         using ActorsObservable   = EventObservable<std::vector<Actor*>>;
         using ActorsSubscription = EventSubscription<std::vector<Actor*>>;
@@ -211,58 +212,82 @@ namespace Chicane
 
         // Helper
         template <typename T = Actor>
-        inline std::vector<T*> traceLine(
-            const Vec3& inOrigin, const Vec3& inDestination, const std::vector<Actor*>& inIgnoredActors
+        inline bool trace(
+            SceneTraceResponse& outResponse,
+            const SceneTraceRequest& inRequest,
+            const std::vector<Actor*>& inIgnoredActors = {}
         ) const
         {
+            std::vector<SceneTraceResponse> responses;
+            if (!traceMulti<T>(responses, inRequest, inIgnoredActors) || responses.empty())
+            {
+                return false;
+            }
+
+            outResponse = responses.front();
+
+            return true;
+        }
+
+        template <typename T = Actor>
+        inline bool traceMulti(
+            std::vector<SceneTraceResponse>& outResponses,
+            const SceneTraceRequest& inRequest,
+            const std::vector<Actor*>& inIgnoredActors = {}
+        ) const
+        {
+            outResponses.clear();
+
             auto found = m_actors.find(std::type_index(typeid(T)));
-            if (found == m_actors.end() || found->second.empty())
+            if (found == m_actors.end() || found->second.empty() || !inRequest.isValid())
             {
-                return {};
+                return false;
             }
 
-            Vec3  point = inOrigin;
-            Vec3  delta = inDestination - inOrigin;
+            std::unordered_set<const Actor*> ignored(inIgnoredActors.begin(), inIgnoredActors.end());
 
-            float maxDistance = glm::length(glm::vec3(delta.x, delta.y, delta.z));
+            outResponses.reserve(found->second.size());
 
-            if (maxDistance == 0.0f)
+            for (Actor* actor : found->second)
             {
-                return {};
-            }
-
-            Vec3            direction = delta / maxDistance;
-
-            std::vector<T*> result{};
-            float           traveled = 0.0f;
-
-            while (traveled <= maxDistance)
-            {
-                for (Actor* actor : found->second)
+                if (!actor || ignored.find(actor) != ignored.end())
                 {
-                    if (!actor->isCollidingWith(point))
-                    {
-                        continue;
-                    }
-
-                    if (std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) != inIgnoredActors.end())
-                    {
-                        continue;
-                    }
-
-                    if (std::find(result.begin(), result.end(), actor) != result.end())
-                    {
-                        continue;
-                    }
-
-                    result.push_back(static_cast<T*>(actor));
+                    continue;
                 }
 
-                point += direction * LINE_TRACE_STEP_SIZE;
-                traveled += LINE_TRACE_STEP_SIZE;
+                float enter = 0.0f;
+                if (!inRequest.intersects(actor->getBounds(), enter))
+                {
+                    continue;
+                }
+
+                SceneTraceResponse response;
+                SceneTraceShapeUtility::fillResponse(
+                    response,
+                    inRequest.origin,
+                    inRequest.destination,
+                    actor->getBounds(),
+                    enter
+                );
+                response.actor = actor;
+                outResponses.push_back(response);
             }
 
-            return result;
+            if (outResponses.empty())
+            {
+                return false;
+            }
+
+            std::sort(
+                outResponses.begin(),
+                outResponses.end(),
+                [](const SceneTraceResponse& inLeft, const SceneTraceResponse& inRight)
+                {
+                    return inLeft.distance < inRight.distance;
+                }
+            );
+
+            return true;
         }
 
         template <typename T = Actor>
@@ -336,6 +361,8 @@ namespace Chicane
         void updateSpatial(Object* inObject);
         void removeSpatial(Object* inObject);
 
+        float getCellSize() const;
+        void setCellSize(float inValue);
         std::uint64_t makeCellKey(int inX, int inY, int inZ) const;
         std::uint64_t makeCellKey(const Vec3& inPosition) const;
         void collectCellKeys(const Object* inObject, std::vector<std::uint64_t>& outKeys) const;
@@ -343,13 +370,12 @@ namespace Chicane
         void eraseFromCell(Object* inObject, std::uint64_t inKey);
 
     private:
-        friend Object;
-
         void attachObject(Object* inObject, const String& inFallback);
         void assignUniqueId(Object* inObject, const String& inFallback);
         String makeUniqueId(const String& inBase) const;
         void ensureUniqueId(const String& inId, const Object* inIgnored) const;
 
+    private:
         bool                                                         m_bIsLoaded;
 
         std::size_t                                                  m_actorCount;
@@ -360,6 +386,7 @@ namespace Chicane
         std::unordered_map<std::type_index, std::vector<Component*>> m_components;
         ComponentsObservable                                         m_componentsObservable;
 
+        float                                                        m_cellSize;
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
     };

@@ -1,5 +1,9 @@
 #include "Chicane/Core/Math/Bounds/3D.hpp"
 
+#include <algorithm>
+#include <cfloat>
+#include <cmath>
+
 namespace Chicane
 {
     Bounds3D::Bounds3D(const Vertex::List& inVertices)
@@ -90,6 +94,53 @@ namespace Chicane
         const bool bIsWithinZ = inPoint.z >= min.z && inPoint.z <= max.z;
 
         return bIsWithinX && bIsWithinY && bIsWithinZ;
+    }
+
+    bool Bounds3D::intersectsSegment(const Vec3& inStart, const Vec3& inEnd, float& outEnter) const
+    {
+        const Vec3& min = getMin().transformed;
+        const Vec3& max = getMax().transformed;
+        const Vec3  dir = inEnd - inStart;
+
+        float tMin = 0.0f;
+        float tMax = 1.0f;
+
+        const float origins[3] = {inStart.x, inStart.y, inStart.z};
+        const float directions[3] = {dir.x, dir.y, dir.z};
+        const float mins[3] = {min.x, min.y, min.z};
+        const float maxs[3] = {max.x, max.y, max.z};
+
+        for (int axis = 0; axis < 3; ++axis)
+        {
+            if (std::abs(directions[axis]) <= FLT_EPSILON)
+            {
+                if (origins[axis] < mins[axis] || origins[axis] > maxs[axis])
+                {
+                    return false;
+                }
+
+                continue;
+            }
+
+            float inv = 1.0f / directions[axis];
+            float t1  = (mins[axis] - origins[axis]) * inv;
+            float t2  = (maxs[axis] - origins[axis]) * inv;
+            if (t1 > t2)
+            {
+                std::swap(t1, t2);
+            }
+
+            tMin = std::max(tMin, t1);
+            tMax = std::min(tMax, t2);
+            if (tMin > tMax)
+            {
+                return false;
+            }
+        }
+
+        outEnter = tMin;
+
+        return true;
     }
 
     const Vec3& Bounds3D::getTop() const

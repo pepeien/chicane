@@ -12,6 +12,7 @@ namespace Chicane
           m_componentCount(0),
           m_components({}),
           m_componentsObservable({}),
+          m_cellSize(SceneTraceRequest::DefaultCellSize),
           m_cells({}),
           m_objectCells({})
     {}
@@ -72,7 +73,9 @@ namespace Chicane
     {
         tickActors(inDeltaTime);
         tickComponents(inDeltaTime);
+
         flushSpatial();
+
         onTick(inDeltaTime);
     }
 
@@ -446,6 +449,16 @@ namespace Chicane
         m_objectCells.erase(found);
     }
 
+    float Scene::getCellSize() const
+    {
+        return m_cellSize;
+    }
+
+    void Scene::setCellSize(float inValue)
+    {
+        m_cellSize = inValue;
+    }
+
     std::uint64_t Scene::makeCellKey(int inX, int inY, int inZ) const
     {
         return (static_cast<std::uint64_t>(static_cast<std::uint32_t>(inX) & 0x1FFFFF) << 42) |
@@ -456,9 +469,9 @@ namespace Chicane
     std::uint64_t Scene::makeCellKey(const Vec3& inPosition) const
     {
         return makeCellKey(
-            static_cast<int>(std::floor(inPosition.x / SPATIAL_CELL_SIZE)),
-            static_cast<int>(std::floor(inPosition.y / SPATIAL_CELL_SIZE)),
-            static_cast<int>(std::floor(inPosition.z / SPATIAL_CELL_SIZE))
+            static_cast<int>(std::floor(inPosition.x / m_cellSize)),
+            static_cast<int>(std::floor(inPosition.y / m_cellSize)),
+            static_cast<int>(std::floor(inPosition.z / m_cellSize))
         );
     }
 
@@ -487,12 +500,12 @@ namespace Chicane
             return;
         }
 
-        int minX = static_cast<int>(std::floor(min.x / SPATIAL_CELL_SIZE));
-        int minY = static_cast<int>(std::floor(min.y / SPATIAL_CELL_SIZE));
-        int minZ = static_cast<int>(std::floor(min.z / SPATIAL_CELL_SIZE));
-        int maxX = static_cast<int>(std::floor(max.x / SPATIAL_CELL_SIZE));
-        int maxY = static_cast<int>(std::floor(max.y / SPATIAL_CELL_SIZE));
-        int maxZ = static_cast<int>(std::floor(max.z / SPATIAL_CELL_SIZE));
+        int minX = static_cast<int>(std::floor(min.x / m_cellSize));
+        int minY = static_cast<int>(std::floor(min.y / m_cellSize));
+        int minZ = static_cast<int>(std::floor(min.z / m_cellSize));
+        int maxX = static_cast<int>(std::floor(max.x / m_cellSize));
+        int maxY = static_cast<int>(std::floor(max.y / m_cellSize));
+        int maxZ = static_cast<int>(std::floor(max.z / m_cellSize));
 
         static constexpr int MAX_SPAN = 32;
         maxX                          = std::min(maxX, minX + MAX_SPAN);
@@ -533,12 +546,11 @@ namespace Chicane
             const int cellZ = restore(z);
 
             cell.min = Vec3(
-                static_cast<float>(cellX) * SPATIAL_CELL_SIZE,
-                static_cast<float>(cellY) * SPATIAL_CELL_SIZE,
-                static_cast<float>(cellZ) * SPATIAL_CELL_SIZE
+                static_cast<float>(cellX) * m_cellSize,
+                static_cast<float>(cellY) * m_cellSize,
+                static_cast<float>(cellZ) * m_cellSize
             );
-            cell.max =
-                Vec3(cell.min.x + SPATIAL_CELL_SIZE, cell.min.y + SPATIAL_CELL_SIZE, cell.min.z + SPATIAL_CELL_SIZE);
+            cell.max = Vec3(cell.min.x + m_cellSize, cell.min.y + m_cellSize, cell.min.z + m_cellSize);
         }
 
         if (std::find(cell.objects.begin(), cell.objects.end(), inObject) != cell.objects.end())
