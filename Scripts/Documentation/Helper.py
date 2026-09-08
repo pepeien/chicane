@@ -196,7 +196,7 @@ def make_node(path: str, header=None, namespace=None):
     }
 
 
-def merge_node(existing, value):
+def merge_node(existing, value, replace_namespace=False):
     for key, val in value.items():
         if key != "source":
             if val is not None:
@@ -206,11 +206,17 @@ def merge_node(existing, value):
         for src_key, src_val in val.items():
             if isinstance(src_val, list):
                 existing["source"][src_key].extend(src_val)
+            elif src_key == "namespace":
+                # Member FQ names must not overwrite a class/enum namespace.
+                if src_val is None:
+                    continue
+                if replace_namespace or existing["source"].get("namespace") is None:
+                    existing["source"]["namespace"] = src_val
             elif src_val is not None:
                 existing["source"][src_key] = src_val
 
 
-def add_node(tree, parts, value, accumulated_path=""):
+def add_node(tree, parts, value, accumulated_path="", replace_namespace=False):
     part = parts[0]
     path = accumulated_path + part
 
@@ -220,17 +226,37 @@ def add_node(tree, parts, value, accumulated_path=""):
         tree.append(existing)
 
     if len(parts) == 1:
-        merge_node(existing, value)
+        merge_node(existing, value, replace_namespace=replace_namespace)
     else:
-        add_node(existing["children"], parts[1:], value, path + "/")
+        add_node(
+            existing["children"],
+            parts[1:],
+            value,
+            path + "/",
+            replace_namespace=replace_namespace,
+        )
 
     tree.sort(key=lambda x: x["title"])
 
 
-def add_to_tree(tree, path, value, separator="/"):
+def add_to_tree(tree, path, value, separator="/", replace_namespace=False):
     if not path:
         return
-    add_node(tree, path.split(separator), value)
+    add_node(tree, path.split(separator), value, replace_namespace=replace_namespace)
+
+
+def namespace_from_path(path: str) -> str:
+    if not path:
+        return base_namespace
+    return base_namespace + "::" + path.replace("/", "::")
+
+
+def fill_missing_namespaces(nodes):
+    for node in nodes:
+        source = node.get("source") or {}
+        if source.get("header") and not source.get("namespace"):
+            source["namespace"] = namespace_from_path(node.get("path", ""))
+        fill_missing_namespaces(node.get("children") or [])
 
 
 def ensure_header_node(tree, key: str, header: str):
@@ -316,6 +342,7 @@ def append_source_list(tree, key: str, header: str, list_name: str, item, namesp
             }
         },
         "/",
+        replace_namespace=False,
     )
 
 
@@ -354,7 +381,7 @@ def add_enum_definition(result, memberdef):
         },
     }
 
-    add_to_tree(result, key, data, "/")
+    add_to_tree(result, key, data, "/", replace_namespace=True)
     add_reference(memberdef, key)
 
 
@@ -378,6 +405,7 @@ def add_definition(result, compounddef):
     # Class/struct compounds own their file node. Namespace compounds only
     # distribute members into the headers where those members were declared.
     owns_file = kind in ["class", "struct"]
+    file_namespace = namespace
     if owns_file:
         ensure_header_node(result, compound_key, normalize_slashes(header))
         add_to_tree(
@@ -393,6 +421,7 @@ def add_definition(result, compounddef):
                 },
             },
             "/",
+            replace_namespace=True,
         )
         add_reference(compounddef, compound_key)
 
@@ -430,7 +459,7 @@ def add_definition(result, compounddef):
                         "type": get_type_def(inner_typing),
                         "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION",
                     },
-                    inner_namespace,
+                    file_namespace,
                 )
                 add_reference(memberdef, declared_key)
                 continue
@@ -475,7 +504,7 @@ def add_definition(result, compounddef):
                     target_header,
                     list_name,
                     data,
-                    namespace if owns_file else inner_namespace,
+                    file_namespace,
                 )
                 continue
 
@@ -492,7 +521,7 @@ def add_definition(result, compounddef):
                         "name": inner_name,
                         "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION",
                     },
-                    namespace if owns_file else inner_namespace,
+                    file_namespace,
                 )
 
 
@@ -519,6 +548,7 @@ def generate_metadata(root):
 
         add_definition(result, compounddef)
 
+    fill_missing_namespaces(result)
     return result
 
 
