@@ -33,8 +33,20 @@ void Apple::onTick(float inDeltaTime)
         return;
     }
 
-    m_meshComponent->addRelativeRotation(0.0f, 0.0f, m_rotateRate);
-    //addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
+    addRelativeRotation(0.0f, 0.0f, m_rotateRate);
+    addAbsoluteTranslation(0.0f, 0.0f, -m_fallRate);
+
+    for (Chicane::Actor* actor : getScene()->getActors())
+    {
+        if (actor == this || !actor->canCollide() || !isCollidingWith(actor))
+        {
+            continue;
+        }
+
+        collideWith(actor);
+
+        break;
+    }
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)

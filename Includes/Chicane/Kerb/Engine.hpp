@@ -8,7 +8,9 @@
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Body.hpp"
 #include "Chicane/Kerb/Body/CreateInfo.hpp"
+#include "Chicane/Kerb/Gravity/Planet.hpp"
 #include "Chicane/Kerb/Motion/Type.hpp"
+#include "Chicane/Kerb/Object/Layer.hpp"
 
 namespace Chicane
 {
@@ -20,6 +22,24 @@ namespace Chicane
 
         public:
             static Engine& getInstance();
+
+            // Gravity
+            static const Vec3& getZeroGravity();
+            static const Vec3& getMercuryGravity();
+            static const Vec3& getVenusGravity();
+            static const Vec3& getEarthGravity();
+            static const Vec3& getMoonGravity();
+            static const Vec3& getMarsGravity();
+            static const Vec3& getJupiterGravity();
+            static const Vec3& getSaturnGravity();
+            static const Vec3& getUranusGravity();
+            static const Vec3& getNeptuneGravity();
+            static const Vec3& getPlutoGravity();
+            static const Vec3& getPlanetGravity(Planet inPlanet);
+
+            static void setZeroGravity();
+            static void setGravity(Planet inPlanet);
+            static void setGravity(const Vec3& inValue);
 
         public:
             Engine(const Engine&)            = delete;
@@ -35,12 +55,18 @@ namespace Chicane
         public:
             void tick(float inDeltaTime); // seconds
 
+            const Vec3& getGravity() const;
+
             Body createBody(const BodyCreateInfo& inCreateInfo);
             void activateBody(Body inBody);
             void deactivateBody(Body inBody);
             void destroyBody(Body inBody);
 
             void setBodyMotion(Body inBody, MotionType inType);
+            void setBodyObjectLayer(Body inBody, ObjectLayer inLayer);
+            void setBodyMass(Body inBody, float inMass, float inMassScale = 1.0f);
+            void setBodyGravityFactor(Body inBody, float inFactor);
+            float getBodyGravityFactor(Body inBody) const;
 
             void addBodyImpulse(Body inBody, const Vec3& inDirection, float inForce, const Vec3& inLocation);
 

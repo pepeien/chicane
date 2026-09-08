@@ -18,6 +18,7 @@ namespace Chicane
         m_physics = getScene()->createComponent<CPhysics>();
         m_physics->setShape(Kerb::BodyShape::Capsule);
         m_physics->setMotion(Kerb::MotionType::Dynamic);
+        m_physics->setCollisionPreset(Kerb::CollisionPreset::Pawn);
         m_physics->attachTo(this);
     }
 

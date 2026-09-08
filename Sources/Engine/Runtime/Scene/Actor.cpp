@@ -26,7 +26,7 @@ namespace Chicane
             return false;
         }
 
-        return isCollidingWith(inSubject->getTranslation());
+        return isCollidingWith(inSubject->getBounds());
     }
 
     bool Actor::isCollidingWith(const Bounds3D& inBounds) const

@@ -1,5 +1,7 @@
 #include "Sample/Shooter/Scene.hpp"
 
+#include <Chicane/Kerb/Engine.hpp>
+#include <Chicane/Kerb/Gravity.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 #include <Chicane/Runtime/Scene/Actor/Sky.hpp>
@@ -11,10 +13,11 @@
 
 #include "Game.hpp"
 
-static constexpr inline const std::uint32_t APPLE_DEPTH_COUNT  = 2;
-static constexpr inline const std::uint32_t APPLE_COLUMN_COUNT = 5;
-static constexpr inline const std::uint32_t APPLE_ROW_COUNT    = 2;
-static constexpr inline const float         APPLE_STEP         = 20.0f;
+static constexpr inline const std::uint32_t APPLE_DEPTH_COUNT   = 2;
+static constexpr inline const std::uint32_t APPLE_COLUMN_COUNT  = 5;
+static constexpr inline const std::uint32_t APPLE_ROW_COUNT     = 2;
+static constexpr inline const float         APPLE_STEP          = 20.0f;
+static constexpr inline float               WORLD_GRAVITY_SCALE = 10.0f;
 
 Scene::Scene()
     : Chicane::Scene(),
@@ -25,6 +28,10 @@ Scene::Scene()
 
 void Scene::onLoad()
 {
+    Chicane::Kerb::Engine::setGravity(
+        Chicane::Kerb::Gravity::down(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
+    );
+
     spawnSky();
     spawnLights();
     spawnCameras();
@@ -96,7 +103,7 @@ void Scene::spawnCameras()
 
 void Scene::spawnStructures()
 {
-    createActor<Strcuture>()->setAbsoluteScale(500.0f, 500.0f, 0.5);
+    createActor<Strcuture>()->setAbsoluteScale(1000.0f, 1000.0f, 2.0f);
 }
 
 void Scene::spawnCharacter()

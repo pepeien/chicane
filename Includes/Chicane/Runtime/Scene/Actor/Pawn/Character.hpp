@@ -13,13 +13,16 @@ namespace Chicane
     class CHICANE_RUNTIME ACharacter : public APawn
     {
     public:
+        static constexpr inline float DEFAULT_JUMP_SPEED = 12.0f;
+
+    public:
         ACharacter();
 
     public:
         void setMoveScale(float inScale);
         void setMoveInput(float inForward, float inRight, float inUp = 0.0f);
         void move(const Vec3& inDirection, float inScale);
-        void jump();
+        void jump(float inSpeed = DEFAULT_JUMP_SPEED);
 
         void addPitch(float inValue);
         void addRoll(float inValue);

@@ -12,8 +12,11 @@
 #include <Jolt/Physics/Body/Body.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyInterface.h>
+#include <Jolt/Physics/Body/BodyLock.h>
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayerInterfaceTable.h>
 #include <Jolt/Physics/Collision/BroadPhase/ObjectVsBroadPhaseLayerFilterTable.h>
+#include <Jolt/Physics/Collision/CollisionGroup.h>
+#include <Jolt/Physics/Collision/GroupFilterTable.h>
 #include <Jolt/Physics/Collision/ObjectLayerPairFilterTable.h>
 #include <Jolt/Physics/Collision/Shape/BoxShape.h>
 #include <Jolt/Physics/Collision/Shape/CapsuleShape.h>
@@ -23,6 +26,9 @@
 #include <Jolt/Physics/PhysicsSystem.h>
 
 #include "Chicane/Core/Hash.hpp"
+#include "Chicane/Kerb/Collision/Preset/Info.hpp"
+#include "Chicane/Kerb/Gravity.hpp"
+#include "Chicane/Kerb/Object/Layer.hpp"
 
 #include "Convert.hpp"
 
@@ -38,21 +44,15 @@ namespace Chicane
             static constexpr std::uint32_t Count = 2;
         }
 
-        namespace ObjectLayer
-        {
-            static constexpr JPH::ObjectLayer NonMoving = 0;
-            static constexpr JPH::ObjectLayer Moving    = 1;
-
-            static constexpr std::uint32_t Count = 2;
-        }
-
-        static constexpr std::uint32_t MAX_BODIES              = 65536;
-        static constexpr std::uint32_t MAX_BODY_MUTEXES        = 0;
-        static constexpr std::uint32_t MAX_BODY_PAIRS          = MAX_BODIES;
-        static constexpr std::uint32_t MAX_CONTACT_CONSTRAINTS = 10240;
-        static constexpr float         FIXED_STEP              = 1.0f / 60.0f;
-        static constexpr int           COLLISION_STEPS         = 1;
-        static constexpr int           MAX_STEPS_PER_TICK      = 4;
+        static constexpr std::uint32_t OBJECT_LAYER_COUNT       = static_cast<std::uint32_t>(ObjectLayer::Count);
+        static constexpr std::uint32_t MAX_COLLISION_SUB_GROUPS = 32;
+        static constexpr std::uint32_t MAX_BODIES               = 65536;
+        static constexpr std::uint32_t MAX_BODY_MUTEXES         = 0;
+        static constexpr std::uint32_t MAX_BODY_PAIRS           = MAX_BODIES;
+        static constexpr std::uint32_t MAX_CONTACT_CONSTRAINTS  = 10240;
+        static constexpr float         FIXED_STEP               = 1.0f / 60.0f;
+        static constexpr int           COLLISION_STEPS          = 1;
+        static constexpr int           MAX_STEPS_PER_TICK       = 4;
 
         JPH::BodyID toId(Body inBody)
         {
@@ -62,6 +62,92 @@ namespace Chicane
         Body toBody(JPH::BodyID inId)
         {
             return Body(inId.GetIndexAndSequenceNumber());
+        }
+
+        JPH::ObjectLayer toPhysicsObjectLayer(ObjectLayer inLayer)
+        {
+            return static_cast<JPH::ObjectLayer>(inLayer);
+        }
+
+        bool isNonMovingLayer(ObjectLayer inLayer)
+        {
+            return inLayer == ObjectLayer::NonMoving || inLayer == ObjectLayer::NoCollision;
+        }
+
+        ObjectLayer resolveCreateLayer(const BodyCreateInfo& inCreateInfo)
+        {
+            if (inCreateInfo.preset != CollisionPreset::Custom)
+            {
+                return resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).layer;
+            }
+
+            return resolveObjectLayer(inCreateInfo.layer, inCreateInfo.motion);
+        }
+
+        bool resolveCreateSensor(const BodyCreateInfo& inCreateInfo)
+        {
+            if (inCreateInfo.preset != CollisionPreset::Custom)
+            {
+                return resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).bIsSensor ||
+                       inCreateInfo.bSensor;
+            }
+
+            return inCreateInfo.bSensor || inCreateInfo.layer == ObjectLayer::Trigger;
+        }
+
+        float resolveCreateMass(const BodyCreateInfo& inCreateInfo)
+        {
+            return std::max(0.1f, inCreateInfo.mass * std::max(0.0f, inCreateInfo.massScale));
+        }
+
+        void enableLayerPair(JPH::ObjectLayerPairFilterTable& inTable, ObjectLayer inA, ObjectLayer inB)
+        {
+            const JPH::ObjectLayer a = toPhysicsObjectLayer(inA);
+            const JPH::ObjectLayer b = toPhysicsObjectLayer(inB);
+            inTable.EnableCollision(a, b);
+            if (a != b)
+            {
+                inTable.EnableCollision(b, a);
+            }
+        }
+
+        void setupObjectLayerMatrix(JPH::ObjectLayerPairFilterTable& inTable)
+        {
+            // WorldStatic / NonMoving collides with everything dynamic-ish, not other static.
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Moving);
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Pawn);
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::PhysicsBody);
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Projectile);
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Trigger);
+            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Debris);
+
+            // WorldDynamic / Moving
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Moving);
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Pawn);
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::PhysicsBody);
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Projectile);
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Trigger);
+            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Debris);
+
+            // Pawn
+            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Pawn);
+            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::PhysicsBody);
+            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Projectile);
+            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Trigger);
+            // Pawn ignores Debris (debris should not shove characters)
+
+            // PhysicsBody
+            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::PhysicsBody);
+            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Projectile);
+            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Trigger);
+            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Debris);
+
+            // Projectile ignores other projectiles
+            enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Trigger);
+            enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Debris);
+
+            // Trigger overlaps/contacts most things; ignore other triggers
+            enableLayerPair(inTable, ObjectLayer::Trigger, ObjectLayer::Debris);
         }
 
         Hash::Value hashPolygon(const BodyPolygon& inPolygon)
@@ -89,21 +175,30 @@ namespace Chicane
         {
             Implementation()
                 : tempAllocator(10 * 1024 * 1024),
-                  broadLayer(ObjectLayer::Count, BroadPhaseLayer::Count),
-                  objectLayer(ObjectLayer::Count),
+                  broadLayer(OBJECT_LAYER_COUNT, BroadPhaseLayer::Count),
+                  objectLayer(OBJECT_LAYER_COUNT),
+                  groupFilter(new JPH::GroupFilterTable(MAX_COLLISION_SUB_GROUPS)),
+                  gravity(getEarthGravity()),
                   accumulator(0.0f)
             {
                 threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, -1);
 
-                broadLayer.MapObjectToBroadPhaseLayer(ObjectLayer::NonMoving, BroadPhaseLayer::NonMoving);
-                broadLayer.MapObjectToBroadPhaseLayer(ObjectLayer::Moving, BroadPhaseLayer::Moving);
+                for (std::uint32_t i = 0; i < OBJECT_LAYER_COUNT; ++i)
+                {
+                    const ObjectLayer layer = static_cast<ObjectLayer>(i);
+                    broadLayer.MapObjectToBroadPhaseLayer(
+                        toPhysicsObjectLayer(layer),
+                        isNonMovingLayer(layer) ? BroadPhaseLayer::NonMoving : BroadPhaseLayer::Moving
+                    );
+                }
 
-                objectLayer.EnableCollision(ObjectLayer::NonMoving, ObjectLayer::Moving);
-                objectLayer.EnableCollision(ObjectLayer::Moving, ObjectLayer::Moving);
-                objectLayer.EnableCollision(ObjectLayer::Moving, ObjectLayer::NonMoving);
+                setupObjectLayerMatrix(objectLayer);
 
                 objectVsBroadPhaseLayer = std::make_unique<JPH::ObjectVsBroadPhaseLayerFilterTable>(
-                    broadLayer, BroadPhaseLayer::Count, objectLayer, ObjectLayer::Count
+                    broadLayer,
+                    BroadPhaseLayer::Count,
+                    objectLayer,
+                    OBJECT_LAYER_COUNT
                 );
 
                 system.Init(
@@ -115,21 +210,22 @@ namespace Chicane
                     *objectVsBroadPhaseLayer,
                     objectLayer
                 );
-                system.SetGravity(JPH::Vec3(0.0f, -3.6f, 0.0f));
+                system.SetGravity(Convert::toPhysicsPosition(gravity));
             }
 
-            JPH::BodyInterface& bodies()
+            void applyGravity(const Vec3& inValue)
             {
-                return system.GetBodyInterface();
+                gravity = inValue;
+
+                system.SetGravity(Convert::toPhysicsPosition(gravity));
             }
 
-            const JPH::BodyInterface& bodies() const
-            {
-                return system.GetBodyInterface();
-            }
+            JPH::BodyInterface& bodies() { return system.GetBodyInterface(); }
+
+            const JPH::BodyInterface& bodies() const { return system.GetBodyInterface(); }
 
             JPH::RefConst<JPH::Shape> createShape(const BodyCreateInfo& inCreateInfo);
-            void                      applyPendingWrites();
+            void applyPendingWrites();
 
             struct PendingWrite
             {
@@ -146,20 +242,22 @@ namespace Chicane
                 JPH::Vec3   location = JPH::Vec3::sZero();
             };
 
-            JPH::JobSystemThreadPool                                 threadPool;
-            JPH::TempAllocatorImpl                                   tempAllocator;
-            JPH::BroadPhaseLayerInterfaceTable                       broadLayer;
-            JPH::ObjectLayerPairFilterTable                          objectLayer;
-            std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable> objectVsBroadPhaseLayer;
-            JPH::PhysicsSystem                                       system;
+            JPH::JobSystemThreadPool                                   threadPool;
+            JPH::TempAllocatorImpl                                     tempAllocator;
+            JPH::BroadPhaseLayerInterfaceTable                         broadLayer;
+            JPH::ObjectLayerPairFilterTable                            objectLayer;
+            std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable>   objectVsBroadPhaseLayer;
+            JPH::RefConst<JPH::GroupFilterTable>                       groupFilter;
+            JPH::PhysicsSystem                                         system;
             std::unordered_map<Hash::Value, JPH::RefConst<JPH::Shape>> shapes;
-            std::vector<JPH::BodyID>                                 ids;
-            std::mutex                                               pendingMutex;
-            std::vector<PendingWrite>                                pending;
-            std::unordered_map<std::uint32_t, JPH::Vec3>             horizontalWish;
-            std::unordered_map<std::uint32_t, JPH::RVec3>            previousPosition;
-            bool                                                     bBroadPhaseDirty = false;
-            float                                                    accumulator;
+            std::vector<JPH::BodyID>                                   ids;
+            std::mutex                                                 pendingMutex;
+            std::vector<PendingWrite>                                  pending;
+            std::unordered_map<std::uint32_t, JPH::Vec3>               horizontalWish;
+            std::unordered_map<std::uint32_t, JPH::RVec3>              previousPosition;
+            Vec3                                                       gravity;
+            bool                                                       bBroadPhaseDirty = false;
+            float                                                      accumulator;
         };
 
         JPH::RefConst<JPH::Shape> makeBox(const Vec3& inSize)
@@ -263,6 +361,141 @@ namespace Chicane
             return instance;
         }
 
+        const Vec3& Engine::getZeroGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Zero);
+
+            return value;
+        }
+
+        const Vec3& Engine::getMercuryGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Mercury);
+
+            return value;
+        }
+
+        const Vec3& Engine::getVenusGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Venus);
+
+            return value;
+        }
+
+        const Vec3& Engine::getEarthGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Earth);
+
+            return value;
+        }
+
+        const Vec3& Engine::getMoonGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Moon);
+
+            return value;
+        }
+
+        const Vec3& Engine::getMarsGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Mars);
+
+            return value;
+        }
+
+        const Vec3& Engine::getJupiterGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Jupiter);
+
+            return value;
+        }
+
+        const Vec3& Engine::getSaturnGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Saturn);
+
+            return value;
+        }
+
+        const Vec3& Engine::getUranusGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Uranus);
+
+            return value;
+        }
+
+        const Vec3& Engine::getNeptuneGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Neptune);
+
+            return value;
+        }
+
+        const Vec3& Engine::getPlutoGravity()
+        {
+            static const Vec3 value = Gravity::down(Gravity::Pluto);
+
+            return value;
+        }
+
+        const Vec3& Engine::getPlanetGravity(Planet inPlanet)
+        {
+            switch (inPlanet)
+            {
+            case Planet::Mercury:
+                return getMercuryGravity();
+
+            case Planet::Venus:
+                return getVenusGravity();
+
+            case Planet::Moon:
+                return getMoonGravity();
+
+            case Planet::Mars:
+                return getMarsGravity();
+
+            case Planet::Jupiter:
+                return getJupiterGravity();
+
+            case Planet::Saturn:
+                return getSaturnGravity();
+
+            case Planet::Uranus:
+                return getUranusGravity();
+
+            case Planet::Neptune:
+                return getNeptuneGravity();
+
+            case Planet::Pluto:
+                return getPlutoGravity();
+
+            case Planet::Earth:
+            default:
+                return getEarthGravity();
+            }
+        }
+
+        void Engine::setZeroGravity()
+        {
+            setGravity(getZeroGravity());
+        }
+
+        void Engine::setGravity(Planet inPlanet)
+        {
+            setGravity(getPlanetGravity(inPlanet));
+        }
+
+        void Engine::setGravity(const Vec3& inValue)
+        {
+            Engine& engine = getInstance();
+            if (!engine.m_implementation)
+            {
+                return;
+            }
+
+            engine.m_implementation->applyGravity(inValue);
+        }
+
         Engine::Engine()
             : m_implementation(std::make_unique<Implementation>())
         {}
@@ -292,6 +525,16 @@ namespace Chicane
 
             m_implementation->ids.clear();
             m_implementation.reset();
+        }
+
+        const Vec3& Engine::getGravity() const
+        {
+            if (!m_implementation)
+            {
+                return getEarthGravity();
+            }
+
+            return m_implementation->gravity;
         }
 
         void Engine::Implementation::applyPendingWrites()
@@ -324,6 +567,7 @@ namespace Chicane
                     continue;
                 }
 
+                horizontalWish.erase(write.id.GetIndexAndSequenceNumber());
                 interface.SetLinearVelocity(write.id, write.vector);
             }
         }
@@ -373,11 +617,16 @@ namespace Chicane
                 }
 
                 m_implementation->system.Update(
-                    FIXED_STEP, COLLISION_STEPS, &m_implementation->tempAllocator, &m_implementation->threadPool
+                    FIXED_STEP,
+                    COLLISION_STEPS,
+                    &m_implementation->tempAllocator,
+                    &m_implementation->threadPool
                 );
                 m_implementation->accumulator -= FIXED_STEP;
                 ++steps;
             }
+
+            m_implementation->horizontalWish.clear();
 
             if (steps >= MAX_STEPS_PER_TICK)
             {
@@ -398,34 +647,46 @@ namespace Chicane
                 return Body::invalid();
             }
 
-            const bool bIsStatic = inCreateInfo.motion == MotionType::Static;
+            const bool        bIsStatic = inCreateInfo.motion == MotionType::Static;
+            const ObjectLayer layer     = resolveCreateLayer(inCreateInfo);
+            const bool        bSensor   = resolveCreateSensor(inCreateInfo);
 
             JPH::BodyCreationSettings settings(
                 shape,
                 Convert::toPhysicsPosition(inCreateInfo.bounds.getCenter()),
                 JPH::Quat::sIdentity(),
                 Convert::toPhysicsMotion(inCreateInfo.motion),
-                bIsStatic ? ObjectLayer::NonMoving : ObjectLayer::Moving
+                toPhysicsObjectLayer(layer)
             );
             settings.mAllowSleeping                = bIsStatic;
             settings.mAllowDynamicOrKinematic      = !bIsStatic;
-            settings.mGravityFactor                = 1.0f;
+            settings.mGravityFactor                = inCreateInfo.gravityFactor;
+            settings.mIsSensor                     = bSensor;
             settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
-            settings.mMassPropertiesOverride.mMass = std::max(0.1f, inCreateInfo.mass);
+            settings.mMassPropertiesOverride.mMass = resolveCreateMass(inCreateInfo);
+
+            if (inCreateInfo.group.isValid() && m_implementation->groupFilter != nullptr)
+            {
+                settings.mCollisionGroup = JPH::CollisionGroup(
+                    m_implementation->groupFilter,
+                    inCreateInfo.group.group,
+                    inCreateInfo.group.subGroup
+                );
+            }
+
             if (inCreateInfo.shape == BodyShape::Capsule && !bIsStatic)
             {
                 settings.mFriction       = 0.0f;
                 settings.mRestitution    = 0.0f;
                 settings.mLinearDamping  = 0.0f;
                 settings.mAngularDamping = 0.0f;
-                settings.mMotionQuality  = JPH::EMotionQuality::Discrete;
-                settings.mAllowedDOFs    = JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY |
-                                        JPH::EAllowedDOFs::TranslationZ;
+                settings.mMotionQuality  = JPH::EMotionQuality::LinearCast;
+                settings.mAllowedDOFs =
+                    JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY | JPH::EAllowedDOFs::TranslationZ;
             }
             else
             {
-                settings.mMotionQuality =
-                    bIsStatic ? JPH::EMotionQuality::Discrete : JPH::EMotionQuality::LinearCast;
+                settings.mMotionQuality = bIsStatic ? JPH::EMotionQuality::Discrete : JPH::EMotionQuality::LinearCast;
             }
 
             JPH::Body* created = m_implementation->bodies().CreateBody(settings);
@@ -505,8 +766,71 @@ namespace Chicane
                 return;
             }
 
-            m_implementation->bodies()
-                .SetMotionType(id, Convert::toPhysicsMotion(inType), JPH::EActivation::Activate);
+            m_implementation->bodies().SetMotionType(id, Convert::toPhysicsMotion(inType), JPH::EActivation::Activate);
+        }
+
+        void Engine::setBodyObjectLayer(Body inBody, ObjectLayer inLayer)
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation || inLayer == ObjectLayer::Auto ||
+                static_cast<std::uint8_t>(inLayer) >= static_cast<std::uint8_t>(ObjectLayer::Count))
+            {
+                return;
+            }
+
+            m_implementation->bodies().SetObjectLayer(id, toPhysicsObjectLayer(inLayer));
+        }
+
+        void Engine::setBodyMass(Body inBody, float inMass, float inMassScale)
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation)
+            {
+                return;
+            }
+
+            JPH::BodyInterface& interface = m_implementation->bodies();
+            if (!interface.IsAdded(id))
+            {
+                return;
+            }
+
+            const JPH::BodyLockWrite lock(m_implementation->system.GetBodyLockInterface(), id);
+            if (!lock.Succeeded())
+            {
+                return;
+            }
+
+            JPH::Body& body = lock.GetBody();
+            if (!body.IsDynamic())
+            {
+                return;
+            }
+
+            const float mass = std::max(0.1f, inMass * std::max(0.0f, inMassScale));
+            body.GetMotionProperties()->ScaleToMass(mass);
+        }
+
+        void Engine::setBodyGravityFactor(Body inBody, float inFactor)
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation)
+            {
+                return;
+            }
+
+            m_implementation->bodies().SetGravityFactor(id, inFactor);
+        }
+
+        float Engine::getBodyGravityFactor(Body inBody) const
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation)
+            {
+                return Gravity::FactorFull;
+            }
+
+            return m_implementation->bodies().GetGravityFactor(id);
         }
 
         void Engine::addBodyImpulse(Body inBody, const Vec3& inDirection, float inForce, const Vec3& inLocation)
@@ -653,9 +977,8 @@ namespace Chicane
                         const JPH::Float3& point = vertices[i * 3 + j];
 
                         Vertex vertex;
-                        vertex.position =
-                            Convert::toEnginePosition(JPH::Vec3(point.x, point.y, point.z));
-                        vertex.color = Vec4(255.0f);
+                        vertex.position = Convert::toEnginePosition(JPH::Vec3(point.x, point.y, point.z));
+                        vertex.color    = Vec4(255.0f);
 
                         result.second.push_back(vertex);
                     }

@@ -6,7 +6,10 @@
 #include "Chicane/Kerb/Body.hpp"
 #include "Chicane/Kerb/Body/CreateInfo.hpp"
 #include "Chicane/Kerb/Body/Shape.hpp"
+#include "Chicane/Kerb/Collision/Group.hpp"
+#include "Chicane/Kerb/Collision/Preset.hpp"
 #include "Chicane/Kerb/Motion/Type.hpp"
+#include "Chicane/Kerb/Object/Layer.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
@@ -37,6 +40,17 @@ namespace Chicane
 
         void setMotion(Kerb::MotionType inType);
 
+        void setMass(float inMass);
+        void setMassScale(float inScale);
+
+        void setGravityFactor(float inFactor);
+        float getGravityFactor() const;
+
+        void setObjectLayer(Kerb::ObjectLayer inLayer);
+        void setCollisionPreset(Kerb::CollisionPreset inPreset);
+        void setCollisionGroup(const Kerb::CollisionGroup& inGroup);
+        void setSensor(bool bInSensor);
+
         void moveTo(const Vec3& inLocation);
         void moveBy(const Vec3& inOffset);
 
@@ -52,8 +66,11 @@ namespace Chicane
 
         void ensureBody();
         void destroyBody();
+        void rebuildBody();
         void syncBody();
         void syncTickState();
+        void syncCollisionSettings();
+        void updateCollision();
         Transform makeActorTransform(const Vec3& inLocation) const;
 
     protected:

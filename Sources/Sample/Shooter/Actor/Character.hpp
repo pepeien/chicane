@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdint>
-
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
@@ -28,7 +26,6 @@ private:
     void onLeftClick();
     void onRightClick();
 
-    // Keyboard
     void onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld);
 
     // Actions
@@ -38,17 +35,15 @@ private:
     void refreshMoveInput();
 
 private:
-    std::uint8_t m_moveBits;
-    float   m_padForward;
-    float   m_padRight;
+    bool  m_bIsMovingForward;
+    bool  m_bIsMovingBackward;
+    bool  m_bIsMovingLeft;
+    bool  m_bIsMovingRight;
+    float m_padForward;
+    float m_padRight;
 
-    // View
     Chicane::CCamera* m_camera;
-
-    // Mesh
-    Chicane::CMesh* m_wand;
-    Chicane::CMesh* m_body;
-
-    // Sound
-    Chicane::CSound* m_victorySound;
+    Chicane::CMesh*   m_wand;
+    Chicane::CMesh*   m_body;
+    Chicane::CSound*  m_victorySound;
 };

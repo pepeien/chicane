@@ -20,6 +20,7 @@ void Strcuture::onLoad()
     m_physics = getScene()->createComponent<Chicane::CPhysics>();
     m_physics->setShape(Chicane::Kerb::BodyShape::Box);
     m_physics->setMotion(Chicane::Kerb::MotionType::Static);
+    m_physics->setCollisionPreset(Chicane::Kerb::CollisionPreset::BlockAll);
     m_physics->attachTo(this);
     m_physics->activate();
 }

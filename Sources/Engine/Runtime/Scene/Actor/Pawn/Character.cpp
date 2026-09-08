@@ -6,7 +6,7 @@
 
 namespace Chicane
 {
-    static constexpr float MOVE_STEP_SECONDS = 0.016f;
+    constexpr inline float MOVE_STEP_SECONDS = 0.016f;
 
     ACharacter::ACharacter()
         : APawn(),
@@ -40,8 +40,8 @@ namespace Chicane
 
         const Vec3 offset = (inDirection / dirLength) * inScale;
         m_forwardInput += offset.dot(getForward());
-        m_rightInput   += offset.dot(getRight());
-        m_upInput      += offset.dot(getUp());
+        m_rightInput += offset.dot(getRight());
+        m_upInput += offset.dot(getUp());
     }
 
     void ACharacter::onInput()
@@ -81,11 +81,8 @@ namespace Chicane
 
         if (!bHasMove)
         {
-            if (m_bMoving)
-            {
-                m_physics->setHorizontalVelocity(Vec3::Zero());
-                m_bMoving = false;
-            }
+            m_physics->setHorizontalVelocity(Vec3::Zero());
+            m_bMoving = false;
 
             return;
         }
@@ -94,16 +91,21 @@ namespace Chicane
         m_bMoving = true;
     }
 
-    void ACharacter::jump()
+    void ACharacter::jump(float inSpeed)
     {
-        if (!m_physics->isActive())
+        const float speed = std::max(0.0f, inSpeed);
+
+        if (!m_physics || !m_physics->isActive())
         {
-            addAbsoluteTranslation(getUp() * 1000.0f);
+            addAbsoluteTranslation(getUp() * speed);
 
             return;
         }
 
-        m_physics->addImpulse(getUp(), 1000.0f, getBottom());
+        Vec3 velocity = m_physics->getLinearVelocity();
+        velocity.z    = speed;
+
+        m_physics->setLinearVelocity(velocity);
     }
 
     void ACharacter::addPitch(float inValue)
