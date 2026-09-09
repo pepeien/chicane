@@ -20,7 +20,7 @@ namespace Chicane
 
         inline static constexpr Vec3 Right() { return Vec3(1.0f, 0.0f, 0.0f); }
 
-        inline static constexpr Vec3 Forward() { return Vec3(0.0f, 2.0f, 0.0f); }
+        inline static constexpr Vec3 Forward() { return Vec3(0.0f, 1.0f, 0.0f); }
 
         inline static constexpr Vec3 Up() { return Vec3(0.0f, 0.0f, 1.0f); }
 
