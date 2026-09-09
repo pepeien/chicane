@@ -45,6 +45,7 @@ void Apple::onTick(float inDeltaTime)
         }
 
         collideWith(structure);
+
         break;
     }
 }

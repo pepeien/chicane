@@ -1,4 +1,5 @@
 #include "Chicane/Core/Xml.hpp"
+#include "Chicane/Core/Xml/Writer.hpp"
 
 namespace Chicane
 {
@@ -22,16 +23,6 @@ namespace Chicane
             }
 
             const FileSystem::Path path = std::filesystem::absolute(inFilepath);
-
-            struct Writer : pugi::xml_writer
-            {
-                std::string data;
-
-                void write(const void* inData, size_t inSize) override
-                {
-                    data.append(static_cast<const char*>(inData), inSize);
-                }
-            };
 
             Writer writer;
             inDocument.save(

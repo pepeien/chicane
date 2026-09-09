@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Chicane/Box.hpp"
+#include "Chicane/Box/Asset/Preview/GeometryBatch.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
 #include "Chicane/Box/Font/Family.hpp"
 
@@ -94,7 +95,13 @@ namespace Chicane
                 const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
             );
             static std::unique_ptr<AssetPreview> createFromGeometry(
-                const FileSystem::Path& inAsset, const Vertex::List& inVertices, const Vertex::Indices& inIndices
+                const FileSystem::Path& inAsset, const std::vector<PreviewGeometryBatch>& inBatches
+            );
+            static std::unique_ptr<AssetPreview> createFromGeometry(
+                const FileSystem::Path& inAsset,
+                const Vertex::List&     inVertices,
+                const Vertex::Indices&  inIndices,
+                const Image::Instance&  inTexture = {}
             );
             static std::unique_ptr<AssetPreview> createFromFont(
                 const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel

@@ -4,7 +4,6 @@
 
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Model.hpp"
-#include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Xml.hpp"
 
@@ -66,14 +65,16 @@ namespace Chicane
             pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
-            // Texture
-            pugi::xml_node textureNode = groupNode.append_child(Texture::TAG);
-            inGroup.getTexture().saveTo(textureNode);
+            // Textures
+            inGroup.saveTextures(groupNode);
+
+            // Transform
+            inGroup.saveTransform(groupNode);
         }
 
         void Mesh::updateGroup(const MeshGroup& inGroup)
         {
-            if (inGroup.isValid())
+            if (!inGroup.isValid())
             {
                 return;
             }
@@ -107,9 +108,11 @@ namespace Chicane
             pugi::xml_node modelNode = foundGroupNode.child(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
-            // Texture
-            pugi::xml_node textureNode = foundGroupNode.child(Texture::TAG);
-            inGroup.getTexture().saveTo(textureNode);
+            // Textures
+            inGroup.saveTextures(foundGroupNode);
+
+            // Transform
+            inGroup.saveTransform(foundGroupNode);
         }
 
         void Mesh::fetchGroups()
@@ -129,6 +132,8 @@ namespace Chicane
                 }
 
                 MeshGroup group;
+                group.setId(Xml::getAttribute(GROUP_ID_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setTransform(groupNode);
 
                 for (const auto& assetNode : groupNode.children())
                 {
@@ -141,9 +146,10 @@ namespace Chicane
                         continue;
                     }
 
-                    if (currentTag.equals(Texture::TAG))
+                    const TextureMap textureMap = toTextureMap(currentTag);
+                    if (textureMap != TextureMap::Count)
                     {
-                        group.setTexture(assetNode);
+                        group.setTexture(textureMap, assetNode);
 
                         continue;
                     }

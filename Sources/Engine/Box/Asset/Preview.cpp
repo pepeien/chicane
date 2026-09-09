@@ -276,45 +276,106 @@ namespace Chicane
             }
         }
 
-        std::unique_ptr<AssetPreview> rasterPreview(
-            const FileSystem::Path&             inAsset,
-            AssetType                           inType,
-            Vertex::List                        inVertices,
-            Vertex::Indices                     inIndices,
-            const std::vector<Image::Instance>& inFaces
-        )
+        Color::Rgba sampleImage(const Image::Instance& inImage, const Vec2& inUv)
         {
-            if (inVertices.empty() && !inFaces.empty())
+            if (!inImage || inImage->getPixels() == nullptr || inImage->getWidth() <= 0 || inImage->getHeight() <= 0)
             {
-                appendUnitCube(inVertices, inIndices);
+                return AssetPreview::CLAY_COLOR;
             }
 
-            if (inAsset.isEmpty() || inVertices.empty())
+            const float u = inUv.x - std::floor(inUv.x);
+            const float v = inUv.y - std::floor(inUv.y);
+
+            const int width    = inImage->getWidth();
+            const int height   = inImage->getHeight();
+            const int channels = std::max(1, inImage->getChannel());
+            const int x        = std::clamp(static_cast<int>(u * static_cast<float>(width - 1)), 0, width - 1);
+            const int y        = std::clamp(static_cast<int>(v * static_cast<float>(height - 1)), 0, height - 1);
+
+            const Image::Pixels pixels = inImage->getPixels();
+            const std::size_t   offset =
+                ((static_cast<std::size_t>(y) * static_cast<std::size_t>(width)) + static_cast<std::size_t>(x)) *
+                static_cast<std::size_t>(channels);
+
+            return Color::Rgba(
+                pixels[offset],
+                channels > 1 ? pixels[offset + 1] : pixels[offset],
+                channels > 2 ? pixels[offset + 2] : pixels[offset],
+                channels > 3 ? pixels[offset + 3] : 255
+            );
+        }
+
+        std::unique_ptr<AssetPreview> rasterPreview(
+            const FileSystem::Path&                          inAsset,
+            AssetType                                        inType,
+            std::vector<PreviewGeometryBatch>         inBatches,
+            const std::vector<Image::Instance>&              inFaces
+        )
+        {
+            if (inBatches.empty() && !inFaces.empty())
+            {
+                PreviewGeometryBatch batch;
+                appendUnitCube(batch.vertices, batch.indices);
+                inBatches.push_back(std::move(batch));
+            }
+
+            if (inAsset.isEmpty() || inBatches.empty())
             {
                 return nullptr;
             }
 
-            if (inIndices.empty())
+            for (PreviewGeometryBatch& batch : inBatches)
             {
-                inIndices.resize(inVertices.size());
-                for (Vertex::Index i = 0; i < static_cast<Vertex::Index>(inVertices.size()); i++)
+                if (batch.indices.empty() && !batch.vertices.empty())
                 {
-                    inIndices[i] = i;
+                    batch.indices.resize(batch.vertices.size());
+                    for (Vertex::Index i = 0; i < static_cast<Vertex::Index>(batch.vertices.size()); i++)
+                    {
+                        batch.indices[i] = i;
+                    }
                 }
             }
 
-            const std::size_t triangleCount = inIndices.size() / 3;
-            if (triangleCount == 0)
+            bool hasGeometry = false;
+            for (const PreviewGeometryBatch& batch : inBatches)
+            {
+                if (!batch.vertices.empty() && batch.indices.size() >= 3)
+                {
+                    hasGeometry = true;
+
+                    break;
+                }
+            }
+
+            if (!hasGeometry)
             {
                 return nullptr;
             }
 
-            Vec3 minPosition = inVertices.front().position;
-            Vec3 maxPosition = minPosition;
-            for (const Vertex& vertex : inVertices)
+            Vec3 minPosition = Vec3::Zero();
+            Vec3 maxPosition = Vec3::Zero();
+            bool bHasBounds  = false;
+            for (const PreviewGeometryBatch& batch : inBatches)
             {
-                minPosition = minPosition.min(vertex.position);
-                maxPosition = maxPosition.max(vertex.position);
+                for (const Vertex& vertex : batch.vertices)
+                {
+                    if (!bHasBounds)
+                    {
+                        minPosition = vertex.position;
+                        maxPosition = vertex.position;
+                        bHasBounds  = true;
+
+                        continue;
+                    }
+
+                    minPosition = minPosition.min(vertex.position);
+                    maxPosition = maxPosition.max(vertex.position);
+                }
+            }
+
+            if (!bHasBounds)
+            {
+                return nullptr;
             }
 
             const Vec3 center = (minPosition + maxPosition) * AssetPreview::HALF;
@@ -333,17 +394,23 @@ namespace Chicane
             Vec2 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             Vec2 max(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
 
-            std::vector<Vec3> projected(inVertices.size());
-            for (std::size_t i = 0; i < inVertices.size(); i++)
+            std::vector<std::vector<Vec3>> projectedBatches(inBatches.size());
+            for (std::size_t batchIndex = 0; batchIndex < inBatches.size(); batchIndex++)
             {
-                const Vec3 offset = inVertices.at(i).position - center;
-                projected[i].x    = offset.dot(right);
-                projected[i].y    = -offset.dot(up);
-                projected[i].z    = offset.dot(viewDir);
-                min.x             = std::min(min.x, projected[i].x);
-                max.x             = std::max(max.x, projected[i].x);
-                min.y             = std::min(min.y, projected[i].y);
-                max.y             = std::max(max.y, projected[i].y);
+                const PreviewGeometryBatch& batch = inBatches.at(batchIndex);
+                projectedBatches[batchIndex].resize(batch.vertices.size());
+
+                for (std::size_t i = 0; i < batch.vertices.size(); i++)
+                {
+                    const Vec3 offset           = batch.vertices.at(i).position - center;
+                    projectedBatches[batchIndex][i].x = offset.dot(right);
+                    projectedBatches[batchIndex][i].y = offset.dot(up);
+                    projectedBatches[batchIndex][i].z = offset.dot(viewDir);
+                    min.x = std::min(min.x, projectedBatches[batchIndex][i].x);
+                    max.x = std::max(max.x, projectedBatches[batchIndex][i].x);
+                    min.y = std::min(min.y, projectedBatches[batchIndex][i].y);
+                    max.y = std::max(max.y, projectedBatches[batchIndex][i].y);
+                }
             }
 
             const Vec2 span(
@@ -365,100 +432,124 @@ namespace Chicane
             auto edge = [](const Vec2& inA, const Vec2& inB, const Vec2& inC)
             { return ((inC.x - inA.x) * (inB.y - inA.y)) - ((inC.y - inA.y) * (inB.x - inA.x)); };
 
-            for (std::size_t triangle = 0; triangle < triangleCount; triangle++)
+            for (std::size_t batchIndex = 0; batchIndex < inBatches.size(); batchIndex++)
             {
-                const Vertex::Index i0 = inIndices.at((triangle * 3) + 0);
-                const Vertex::Index i1 = inIndices.at((triangle * 3) + 1);
-                const Vertex::Index i2 = inIndices.at((triangle * 3) + 2);
-                if (i0 >= inVertices.size() || i1 >= inVertices.size() || i2 >= inVertices.size())
+                const PreviewGeometryBatch& batch     = inBatches.at(batchIndex);
+                const std::vector<Vec3>&           projected = projectedBatches.at(batchIndex);
+                const std::size_t                  triangleCount = batch.indices.size() / 3;
+                if (batch.vertices.empty() || triangleCount == 0)
                 {
                     continue;
                 }
 
-                const Vec3& a = projected.at(i0);
-                const Vec3& b = projected.at(i1);
-                const Vec3& c = projected.at(i2);
-
-                const Vec2  screenA((a.x * scale) + origin.x, origin.y + (a.y * scale));
-                const Vec2  screenB((b.x * scale) + origin.x, origin.y + (b.y * scale));
-                const Vec2  screenC((c.x * scale) + origin.x, origin.y + (c.y * scale));
-                const float area = edge(screenA, screenB, screenC);
-                if (std::fabs(area) < AssetPreview::AREA_EPSILON)
+                for (std::size_t triangle = 0; triangle < triangleCount; triangle++)
                 {
-                    continue;
-                }
-
-                Vec3 normal = inVertices.at(i0).normal + inVertices.at(i1).normal + inVertices.at(i2).normal;
-                if (normal.dot(normal) < AssetPreview::NORMAL_EPSILON)
-                {
-                    const Vec3 e0 = inVertices.at(i1).position - inVertices.at(i0).position;
-                    const Vec3 e1 = inVertices.at(i2).position - inVertices.at(i0).position;
-                    normal        = e0.cross(e1);
-                }
-
-                if (normal.dot(normal) < AssetPreview::NORMAL_EPSILON)
-                {
-                    continue;
-                }
-
-                normal            = normal.normalize();
-                const float shade = AssetPreview::SHADE_MIN + (AssetPreview::SHADE_RANGE * std::abs(normal.dot(light)));
-                const Color::Rgba clay = scaledRgb(AssetPreview::CLAY_COLOR, shade);
-
-                const int minPx =
-                    std::max(0, static_cast<int>(std::floor(std::min({screenA.x, screenB.x, screenC.x}))));
-                const int maxPx = std::min(
-                    AssetPreview::SIZE - 1,
-                    static_cast<int>(std::ceil(std::max({screenA.x, screenB.x, screenC.x})))
-                );
-                const int minPy =
-                    std::max(0, static_cast<int>(std::floor(std::min({screenA.y, screenB.y, screenC.y}))));
-                const int maxPy = std::min(
-                    AssetPreview::SIZE - 1,
-                    static_cast<int>(std::ceil(std::max({screenA.y, screenB.y, screenC.y})))
-                );
-
-                for (int py = minPy; py <= maxPy; py++)
-                {
-                    for (int px = minPx; px <= maxPx; px++)
+                    const Vertex::Index i0 = batch.indices.at((triangle * 3) + 0);
+                    const Vertex::Index i1 = batch.indices.at((triangle * 3) + 1);
+                    const Vertex::Index i2 = batch.indices.at((triangle * 3) + 2);
+                    if (i0 >= batch.vertices.size() || i1 >= batch.vertices.size() || i2 >= batch.vertices.size())
                     {
-                        const Vec2 sample(
-                            static_cast<float>(px) + AssetPreview::PIXEL_CENTER,
-                            static_cast<float>(py) + AssetPreview::PIXEL_CENTER
-                        );
-                        const float w0 = edge(screenB, screenC, sample);
-                        const float w1 = edge(screenC, screenA, sample);
-                        const float w2 = edge(screenA, screenB, sample);
-                        if ((w0 * area) < 0.0f || (w1 * area) < 0.0f || (w2 * area) < 0.0f)
+                        continue;
+                    }
+
+                    const Vec3& a = projected.at(i0);
+                    const Vec3& b = projected.at(i1);
+                    const Vec3& c = projected.at(i2);
+
+                    const Vec2  screenA((a.x * scale) + origin.x, origin.y + (a.y * scale));
+                    const Vec2  screenB((b.x * scale) + origin.x, origin.y + (b.y * scale));
+                    const Vec2  screenC((c.x * scale) + origin.x, origin.y + (c.y * scale));
+                    const float area = edge(screenA, screenB, screenC);
+                    if (std::fabs(area) < AssetPreview::AREA_EPSILON)
+                    {
+                        continue;
+                    }
+
+                    Vec3 normal =
+                        batch.vertices.at(i0).normal + batch.vertices.at(i1).normal + batch.vertices.at(i2).normal;
+                    if (normal.dot(normal) < AssetPreview::NORMAL_EPSILON)
+                    {
+                        const Vec3 e0 = batch.vertices.at(i1).position - batch.vertices.at(i0).position;
+                        const Vec3 e1 = batch.vertices.at(i2).position - batch.vertices.at(i0).position;
+                        normal        = e0.cross(e1);
+                    }
+
+                    if (normal.dot(normal) < AssetPreview::NORMAL_EPSILON)
+                    {
+                        continue;
+                    }
+
+                    normal            = normal.normalize();
+                    const float shade =
+                        AssetPreview::SHADE_MIN + (AssetPreview::SHADE_RANGE * std::abs(normal.dot(light)));
+
+                    const int minPx =
+                        std::max(0, static_cast<int>(std::floor(std::min({screenA.x, screenB.x, screenC.x}))));
+                    const int maxPx = std::min(
+                        AssetPreview::SIZE - 1,
+                        static_cast<int>(std::ceil(std::max({screenA.x, screenB.x, screenC.x})))
+                    );
+                    const int minPy =
+                        std::max(0, static_cast<int>(std::floor(std::min({screenA.y, screenB.y, screenC.y}))));
+                    const int maxPy = std::min(
+                        AssetPreview::SIZE - 1,
+                        static_cast<int>(std::ceil(std::max({screenA.y, screenB.y, screenC.y})))
+                    );
+
+                    for (int py = minPy; py <= maxPy; py++)
+                    {
+                        for (int px = minPx; px <= maxPx; px++)
                         {
-                            continue;
+                            const Vec2 sample(
+                                static_cast<float>(px) + AssetPreview::PIXEL_CENTER,
+                                static_cast<float>(py) + AssetPreview::PIXEL_CENTER
+                            );
+                            const float w0 = edge(screenB, screenC, sample);
+                            const float w1 = edge(screenC, screenA, sample);
+                            const float w2 = edge(screenA, screenB, sample);
+                            if ((w0 * area) < 0.0f || (w1 * area) < 0.0f || (w2 * area) < 0.0f)
+                            {
+                                continue;
+                            }
+
+                            const float       z = ((a.z * w0) + (b.z * w1) + (c.z * w2)) / area;
+                            const std::size_t index =
+                                (static_cast<std::size_t>(py) * static_cast<std::size_t>(AssetPreview::SIZE)) +
+                                static_cast<std::size_t>(px);
+                            if (z >= depth.at(index))
+                            {
+                                continue;
+                            }
+
+                            depth[index] = z;
+
+                            if (!inFaces.empty())
+                            {
+                                const Vec3 position =
+                                    ((batch.vertices.at(i0).position * w0) + (batch.vertices.at(i1).position * w1) +
+                                     (batch.vertices.at(i2).position * w2)) /
+                                    area;
+                                unsigned char color[AssetPreview::CHANNELS] = {};
+                                writeRgba(color, AssetPreview::BACKGROUND_COLOR);
+                                sampleCubemap(inFaces, position, color);
+                                writeRgba(pixels, index, color);
+
+                                continue;
+                            }
+
+                            Color::Rgba albedo = AssetPreview::CLAY_COLOR;
+                            if (batch.texture)
+                            {
+                                const Vec2  uv0     = batch.vertices.at(i0).uv;
+                                const Vec2  uv1     = batch.vertices.at(i1).uv;
+                                const Vec2  uv2     = batch.vertices.at(i2).uv;
+                                const float invArea = 1.0f / area;
+                                const Vec2  uv      = ((uv0 * w0) + (uv1 * w1) + (uv2 * w2)) * invArea;
+                                albedo              = sampleImage(batch.texture, uv);
+                            }
+
+                            writeRgba(pixels, index, scaledRgb(albedo, shade));
                         }
-
-                        const float       z = ((a.z * w0) + (b.z * w1) + (c.z * w2)) / area;
-                        const std::size_t index =
-                            (static_cast<std::size_t>(py) * static_cast<std::size_t>(AssetPreview::SIZE)) +
-                            static_cast<std::size_t>(px);
-                        if (z >= depth.at(index))
-                        {
-                            continue;
-                        }
-
-                        depth[index] = z;
-
-                        if (inFaces.empty())
-                        {
-                            writeRgba(pixels, index, clay);
-
-                            continue;
-                        }
-
-                        const Vec3 position = ((inVertices.at(i0).position * w0) + (inVertices.at(i1).position * w1) +
-                                               (inVertices.at(i2).position * w2)) /
-                                              area;
-                        unsigned char color[AssetPreview::CHANNELS] = {};
-                        writeRgba(color, AssetPreview::BACKGROUND_COLOR);
-                        sampleCubemap(inFaces, position, color);
-                        writeRgba(pixels, index, color);
                     }
                 }
             }
@@ -478,10 +569,25 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
-            const FileSystem::Path& inAsset, const Vertex::List& inVertices, const Vertex::Indices& inIndices
+            const FileSystem::Path& inAsset, const std::vector<PreviewGeometryBatch>& inBatches
         )
         {
-            return rasterPreview(inAsset, AssetType::Mesh, inVertices, inIndices, {});
+            return rasterPreview(inAsset, AssetType::Mesh, inBatches, {});
+        }
+
+        std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
+            const FileSystem::Path& inAsset,
+            const Vertex::List&     inVertices,
+            const Vertex::Indices&  inIndices,
+            const Image::Instance&  inTexture
+        )
+        {
+            PreviewGeometryBatch batch;
+            batch.vertices = inVertices;
+            batch.indices  = inIndices;
+            batch.texture  = inTexture;
+
+            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch> {std::move(batch)});
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromSky(
@@ -491,7 +597,11 @@ namespace Chicane
             const std::vector<Image::Instance>& inFaces
         )
         {
-            return rasterPreview(inAsset, AssetType::Sky, inVertices, inIndices, inFaces);
+            PreviewGeometryBatch batch;
+            batch.vertices = inVertices;
+            batch.indices  = inIndices;
+
+            return rasterPreview(inAsset, AssetType::Sky, {std::move(batch)}, inFaces);
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromFont(

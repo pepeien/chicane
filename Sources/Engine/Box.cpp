@@ -15,7 +15,9 @@
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Texture/Map.hpp"
 
 namespace Chicane
 {
@@ -25,10 +27,9 @@ namespace Chicane
         static PreviewObservable                                                  g_previewObservable = {};
         static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache             = {};
 
-        static std::unordered_map<FileSystem::Path, std::unique_ptr<AssetPreview>> g_previewCache   = {};
-        static std::list<FileSystem::Path>                                         g_previewOrder   = {};
-        static std::unordered_map<FileSystem::Path, std::list<FileSystem::Path>::iterator>
-            g_previewOrderIt = {};
+        static std::unordered_map<FileSystem::Path, std::unique_ptr<AssetPreview>>         g_previewCache   = {};
+        static std::list<FileSystem::Path>                                                 g_previewOrder   = {};
+        static std::unordered_map<FileSystem::Path, std::list<FileSystem::Path>::iterator> g_previewOrderIt = {};
 
         FileSystem::Path normalizePreviewPath(const FileSystem::Path& inFilePath)
         {
@@ -38,7 +39,8 @@ namespace Chicane
         void appendGeometry(
             const ModelParsed::Map& inModels,
             Vertex::List&           outVertices,
-            Vertex::Indices&        outIndices
+            Vertex::Indices&        outIndices,
+            const Mat4&             inTransform = Mat4(1.0f)
         )
         {
             for (const auto& entry : inModels)
@@ -50,7 +52,13 @@ namespace Chicane
                 }
 
                 const Vertex::Index base = static_cast<Vertex::Index>(outVertices.size());
-                outVertices.insert(outVertices.end(), data.vertices.begin(), data.vertices.end());
+                outVertices.reserve(outVertices.size() + data.vertices.size());
+                for (const Vertex& vertex : data.vertices)
+                {
+                    Vertex copy   = vertex;
+                    copy.position = inTransform * vertex.position;
+                    outVertices.push_back(copy);
+                }
 
                 if (data.indices.empty())
                 {
@@ -106,7 +114,7 @@ namespace Chicane
                 }
             }
 
-            const Texture texture(inFilePath);
+            const Texture    texture(inFilePath);
             Image::Reference data = texture.getData();
             if (data.expired())
             {
@@ -129,8 +137,7 @@ namespace Chicane
             case AssetType::Texture:
                 return decodeTexturePreview(inFilePath, inShouldUseStored);
 
-            case AssetType::Mesh:
-            {
+            case AssetType::Mesh: {
                 if (!FileSystem::exists(inFilePath))
                 {
                     return nullptr;
@@ -153,8 +160,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                Vertex::List    vertices = {};
-                Vertex::Indices indices  = {};
+                std::vector<PreviewGeometryBatch> batches = {};
 
                 for (const MeshGroup& group : mesh.getGroups())
                 {
@@ -179,14 +185,26 @@ namespace Chicane
 
                     ModelParsed::Map selected = {};
                     selected[found->first]    = found->second;
-                    appendGeometry(selected, vertices, indices);
+
+                    PreviewGeometryBatch batch;
+                    appendGeometry(selected, batch.vertices, batch.indices, group.getModelMatrix());
+                    if (batch.vertices.empty())
+                    {
+                        continue;
+                    }
+
+                    if (group.hasTexture(TextureMap::Base))
+                    {
+                        batch.texture = loadTextureImage(group.getTexture(TextureMap::Base).getSource());
+                    }
+
+                    batches.push_back(std::move(batch));
                 }
 
-                return AssetPreview::createFromGeometry(inFilePath, vertices, indices);
+                return AssetPreview::createFromGeometry(inFilePath, batches);
             }
 
-            case AssetType::Model:
-            {
+            case AssetType::Model: {
                 if (!FileSystem::exists(inFilePath))
                 {
                     return nullptr;
@@ -203,13 +221,12 @@ namespace Chicane
                     }
                 }
 
-                const Model model(inFilePath);
+                const Model     model(inFilePath);
                 Vertex::List    vertices = {};
                 Vertex::Indices indices  = {};
                 appendGeometry(model.getData(), vertices, indices);
 
-                std::unique_ptr<AssetPreview> preview =
-                    AssetPreview::createFromGeometry(inFilePath, vertices, indices);
+                std::unique_ptr<AssetPreview> preview = AssetPreview::createFromGeometry(inFilePath, vertices, indices);
                 if (preview)
                 {
                     preview->type = AssetType::Model;
@@ -218,8 +235,7 @@ namespace Chicane
                 return preview;
             }
 
-            case AssetType::Sound:
-            {
+            case AssetType::Sound: {
                 if (!FileSystem::exists(inFilePath))
                 {
                     return nullptr;
@@ -241,8 +257,7 @@ namespace Chicane
                 return AssetPreview::createFromSound(inFilePath, sound.getData());
             }
 
-            case AssetType::Font:
-            {
+            case AssetType::Font: {
                 if (!FileSystem::exists(inFilePath))
                 {
                     return nullptr;
@@ -274,8 +289,7 @@ namespace Chicane
                 return AssetPreview::createFromFont(inFilePath, family, label);
             }
 
-            case AssetType::Sky:
-            {
+            case AssetType::Sky: {
                 if (!FileSystem::exists(inFilePath))
                 {
                     return nullptr;
@@ -294,8 +308,8 @@ namespace Chicane
 
                 const Sky sky(inFilePath);
 
-                Vertex::List    vertices = {};
-                Vertex::Indices indices  = {};
+                Vertex::List           vertices  = {};
+                Vertex::Indices        indices   = {};
                 const FileSystem::Path modelPath = sky.getModel().getSource();
                 if (FileSystem::exists(modelPath))
                 {
@@ -524,7 +538,11 @@ namespace Chicane
 
                 for (const MeshGroup& group : asset->getGroups())
                 {
-                    loadTexture(group.getTexture().getSource());
+                    for (const auto& [map, texture] : group.getTextures())
+                    {
+                        (void)map;
+                        loadTexture(texture.getSource());
+                    }
                     loadModel(group.getModel().getSource());
                 }
 

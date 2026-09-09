@@ -48,10 +48,24 @@ Program::Program()
 
 void Program::onExec(const Chicane::ProgramParam& inParam)
 {
-    const Chicane::String& bake = inParam.getOption(BAKE_OPTION_NAME)->getValue();
-    if (!bake.isEmpty())
+    const Chicane::ProgramOption* bakeOption = inParam.getOption(BAKE_OPTION_NAME);
+    const bool bBake = inParam.hasFlag(BAKE_OPTION_NAME) || (bakeOption && !bakeOption->getValue().isEmpty());
+
+    if (bBake)
     {
-        bakePreviews(bake);
+        Chicane::FileSystem::Path bakePath =
+            bakeOption ? Chicane::FileSystem::Path(bakeOption->getValue()) : Chicane::FileSystem::Path();
+
+        if (bakePath.isEmpty())
+        {
+            const Chicane::ProgramParam::Positionals& positionals = inParam.getPositionals();
+            if (!positionals.empty())
+            {
+                bakePath = positionals.front();
+            }
+        }
+
+        bakePreviews(bakePath);
 
         return;
     }
@@ -216,8 +230,11 @@ void Program::createMesh(
     }
 
     Chicane::Box::Texture texture(textures.at(0));
+    Chicane::Image::Instance textureImage = {};
     if (Chicane::Image::Instance data = texture.getData().lock())
     {
+        textureImage = data;
+
         if (Chicane::Box::AssetPreview::write(texture.getXML(), Chicane::Box::AssetType::Texture, *data))
         {
             texture.saveXML();
@@ -234,31 +251,32 @@ void Program::createMesh(
         asset.appendGroup(group);
     }
 
-    Chicane::Vertex::List    vertices = {};
-    Chicane::Vertex::Indices indices  = {};
+    std::vector<Chicane::Box::PreviewGeometryBatch> batches = {};
     for (const auto& [reference, data] : modelGroups)
     {
-        const Chicane::Vertex::Index base = static_cast<Chicane::Vertex::Index>(vertices.size());
-        vertices.insert(vertices.end(), data.vertices.begin(), data.vertices.end());
+        Chicane::Box::PreviewGeometryBatch batch;
+        batch.texture = textureImage;
+
+        const Chicane::Vertex::Index base = 0;
+        batch.vertices                    = data.vertices;
 
         if (data.indices.empty())
         {
             for (Chicane::Vertex::Index i = 0; i < static_cast<Chicane::Vertex::Index>(data.vertices.size()); i++)
             {
-                indices.push_back(base + i);
+                batch.indices.push_back(base + i);
             }
-
-            continue;
         }
-
-        for (const Chicane::Vertex::Index index : data.indices)
+        else
         {
-            indices.push_back(base + index);
+            batch.indices = data.indices;
         }
+
+        batches.push_back(std::move(batch));
     }
 
     if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
-            Chicane::Box::AssetPreview::createFromGeometry(output, vertices, indices))
+            Chicane::Box::AssetPreview::createFromGeometry(output, batches))
     {
         if (preview->image)
         {
@@ -378,11 +396,11 @@ void Program::createSky(
     asset.setModel(model.getFilepath(), modelGroups.begin()->first);
     asset.addTexture(textures);
 
-    Chicane::Vertex::List    vertices = {};
-    Chicane::Vertex::Indices indices  = {};
-    const Chicane::Box::ModelParsed& parsed = modelGroups.begin()->second;
-    vertices = parsed.vertices;
-    indices  = parsed.indices;
+    Chicane::Vertex::List            vertices = {};
+    Chicane::Vertex::Indices         indices  = {};
+    const Chicane::Box::ModelParsed& parsed   = modelGroups.begin()->second;
+    vertices                                  = parsed.vertices;
+    indices                                   = parsed.indices;
 
     std::vector<Chicane::Image::Instance> faces = {};
     for (const Chicane::FileSystem::Path& path : textures)
@@ -495,12 +513,12 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
 
         if (Chicane::Box::embedPreview(inPath))
         {
-            std::cout << "Preview " << inPath.toString() << std::endl;
+            std::cout << "Generated a preview for [" << inPath.toString() << "]" << std::endl;
 
             return;
         }
 
-        std::cerr << "Failed " << inPath.toString() << std::endl;
+        std::cerr << "Failed to generated a preview for[" << inPath.toString() << "]" << std::endl;
     };
 
     if (root.isFile())

@@ -3,6 +3,8 @@
 #include <unordered_map>
 
 #include "Chicane/Box/Model.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 
 namespace Chicane
 {
@@ -77,7 +79,19 @@ namespace Chicane
                     continue;
                 }
 
-                bounds.add(model->getModel(group.getModel().getReference()).vertices);
+                const Vertex::List& vertices = model->getModel(group.getModel().getReference()).vertices;
+                const Mat4&         local    = group.getModelMatrix();
+
+                Vertex::List transformed;
+                transformed.reserve(vertices.size());
+                for (const Vertex& vertex : vertices)
+                {
+                    Vertex copy   = vertex;
+                    copy.position = local * vertex.position;
+                    transformed.push_back(copy);
+                }
+
+                bounds.add(transformed);
             }
 
             cached = boundsByMesh.emplace(m_asset, std::move(bounds)).first;

@@ -61,12 +61,12 @@ namespace Chicane
 
         bool SvgTessellation::pump()
         {
-            std::vector<Ready> ready;
+            std::vector<SvgTessellationReady> ready;
             {
                 std::lock_guard<std::mutex> lock(m_mutex);
                 ready.swap(m_ready);
 
-                for (const Ready& entry : ready)
+                for (const SvgTessellationReady& entry : ready)
                 {
                     m_inFlight.erase(entry.key);
                 }
@@ -77,7 +77,7 @@ namespace Chicane
                 return false;
             }
 
-            for (Ready& entry : ready)
+            for (SvgTessellationReady& entry : ready)
             {
                 m_cache[std::move(entry.key)] = std::move(entry.primitive);
             }

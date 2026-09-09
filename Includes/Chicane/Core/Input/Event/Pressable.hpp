@@ -7,6 +7,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
+#include "Chicane/Core/Input/Event/Pressable/Pressed.hpp"
 #include "Chicane/Core/Input/Status.hpp"
 #include "Chicane/Core/Time.hpp"
 
@@ -70,7 +71,7 @@ namespace Chicane
 
                 const Time::Point now = Time::Clock::now();
                 bool              bDue = false;
-                for (const Pressed& entry : m_pressed)
+                for (const PressablePressed<B>& entry : m_pressed)
                 {
                     if (Time::miliseconds(now - entry.lastFire) >= REPEAT_INTERVAL_MS)
                     {
@@ -95,12 +96,6 @@ namespace Chicane
             }
 
         private:
-            struct Pressed
-            {
-                B           button;
-                Time::Point lastFire;
-            };
-
             inline void fire(B inButton, Status inStatus)
             {
                 if (m_events.find(inButton) == m_events.end())
@@ -126,7 +121,7 @@ namespace Chicane
                 std::vector<B>    toFire;
                 toFire.reserve(m_pressed.size());
 
-                for (Pressed& entry : m_pressed)
+                for (PressablePressed<B>& entry : m_pressed)
                 {
                     entry.lastFire = now;
                     toFire.push_back(entry.button);
@@ -138,12 +133,12 @@ namespace Chicane
                 }
             }
 
-            inline typename std::vector<Pressed>::iterator findPressed(B inButton)
+            inline typename std::vector<PressablePressed<B>>::iterator findPressed(B inButton)
             {
                 return std::find_if(
                     m_pressed.begin(),
                     m_pressed.end(),
-                    [inButton](const Pressed& inEntry) { return inEntry.button == inButton; }
+                    [inButton](const PressablePressed<B>& inEntry) { return inEntry.button == inButton; }
                 );
             }
 
@@ -170,8 +165,8 @@ namespace Chicane
             }
 
         private:
-            std::vector<Pressed> m_pressed;
-            Events               m_events;
+            std::vector<PressablePressed<B>> m_pressed;
+            Events                           m_events;
         };
     }
 }

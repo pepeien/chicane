@@ -16,30 +16,66 @@ layout(set = 0, binding = 3) uniform sampler2D shadowMap;
 layout(set = 1, binding = 0) uniform sampler2D textures[];
 
 layout(location = 0) in Data {
-    flat int textureIndex;
+    flat ivec4 textureMaps[3];
     vec2 UV;
     vec3 normal;
     vec4 color;
-    vec3 meshPosition; 
-    vec4 shadowPosition; 
-    vec3 lightPosition; 
-    vec3 cameraPosition; 
+    vec3 meshPosition;
+    vec4 shadowPosition;
+    vec3 lightPosition;
+    vec3 cameraPosition;
 } inData;
 
+vec4 sampleMap(int index, vec2 uv) {
+    if (index < 0) {
+        return vec4(1.0);
+    }
+
+    return texture(textures[index], uv);
+}
+
 void main() {
-    vec3 color  = texture(textures[inData.textureIndex], inData.UV).rgb;
+    int baseIndex               = inData.textureMaps[0].x;
+    int ambientOcclusionIndex   = inData.textureMaps[0].y;
+    int normalIndex             = inData.textureMaps[0].z;
+    int roughnessIndex          = inData.textureMaps[0].w;
+    int metalnessIndex          = inData.textureMaps[1].x;
+    int specularIndex           = inData.textureMaps[1].z;
+    int opacityIndex            = inData.textureMaps[1].w;
+    int selfIlluminationIndex   = inData.textureMaps[2].y;
+
+    vec4  baseSample     = sampleMap(baseIndex, inData.UV);
+    vec3  color          = baseSample.rgb * inData.color.rgb;
+    float ambientOcclusion = sampleMap(ambientOcclusionIndex, inData.UV).r;
+    float roughness      = roughnessIndex < 0 ? 0.5 : sampleMap(roughnessIndex, inData.UV).r;
+    float metalness      = metalnessIndex < 0 ? 0.0 : sampleMap(metalnessIndex, inData.UV).r;
+    float opacity        = opacityIndex < 0 ? baseSample.a * inData.color.a : sampleMap(opacityIndex, inData.UV).r;
+    vec3  emissive       = selfIlluminationIndex < 0 ? vec3(0.0) : sampleMap(selfIlluminationIndex, inData.UV).rgb;
+    vec3  specularColor  = specularIndex < 0 ? vec3(1.0) : sampleMap(specularIndex, inData.UV).rgb;
+
     vec3 normal = normalize(inData.normal);
+    if (normalIndex >= 0) {
+        vec3 tangentNormal = sampleMap(normalIndex, inData.UV).xyz * 2.0 - 1.0;
+        normal = applyTangentNormal(normal, tangentNormal, inData.meshPosition, inData.UV);
+    }
 
     vec3 lightDirection   = normalize(inData.lightPosition - inData.meshPosition);
     vec3 viewDirection    = normalize(inData.cameraPosition - inData.meshPosition);
-    vec3 halfwayDirection = normalize(lightDirection + viewDirection);
-
-    vec3 diffuse  = max(dot(lightDirection, normal), 0.0) * LIGHT_COLOR;
-    vec3 specular = pow(max(dot(normal, halfwayDirection), 0.0), 64.0) * LIGHT_COLOR;
 
     float shadow = ShadowCalculation(shadowMap, inData.shadowPosition, normal, lightDirection);
 
-    vec3 lighting = (AMBIENT_LIGHT + (1.0 - shadow) * (diffuse + specular)) * color;
+    vec3 lighting = evaluateLighting(
+        color,
+        normal,
+        lightDirection,
+        viewDirection,
+        clamp(roughness, 0.0, 1.0),
+        clamp(metalness, 0.0, 1.0),
+        specularColor,
+        ambientOcclusion,
+        shadow
+    );
+    lighting += emissive;
 
-    outColor = vec4(lighting, 1.0);
+    outColor = vec4(lighting, opacity);
 }

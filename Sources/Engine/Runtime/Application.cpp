@@ -10,11 +10,13 @@
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Upload.hpp"
 #include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Texture/Map.hpp"
 
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Engine.hpp"
@@ -561,12 +563,24 @@ namespace Chicane
                     subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, Box::Model::DEFAULT_REFERENCE);
                 }
 
-                subcommand.instance.model   = matrix;
-                subcommand.instance.texture = m_renderer->findTexture(group.getTexture().getReference());
+                subcommand.instance.model = matrix * group.getModelMatrix();
 
-                if (subcommand.instance.texture <= Renderer::Draw::InvalidId)
+                for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
                 {
-                    subcommand.instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                    const TextureMap   map = static_cast<TextureMap>(slot);
+                    Renderer::Draw::Id id  = Renderer::Draw::InvalidId;
+
+                    if (group.hasTexture(map))
+                    {
+                        id = m_renderer->findTexture(group.getTexture(map).getReference());
+                    }
+
+                    if (map == TextureMap::Base && id <= Renderer::Draw::InvalidId)
+                    {
+                        id = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                    }
+
+                    subcommand.instance.textures[slot] = id;
                 }
 
                 command.meshes.emplace_back(std::move(subcommand));
