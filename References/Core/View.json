@@ -44,6 +44,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_VIEW_FLIPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "depthZeroToOne",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VIEW_DEPTHZEROTOONE_DESCRIPTION"
             }
         ],
         "members": [
