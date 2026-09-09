@@ -24,6 +24,8 @@ namespace Editor
         CH_FIELD()
         Chicane::String action;
         CH_FIELD()
+        bool isChecked;
+        CH_FIELD()
         List children;
     };
 }

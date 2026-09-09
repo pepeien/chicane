@@ -9,6 +9,8 @@
 
 layout(std430, binding = 0) readonly buffer Scene {
     CameraInstance camera;
+    LightInstance lights[];
+    PolyInstance3D meshes[];
 } scene;
 
 layout(location = 0) out Data {
@@ -21,7 +23,10 @@ layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
 void main() {
-    outData.color = inColor;
+    CameraInstance camera = scene.camera;
+    PolyInstance3D mesh   = scene.meshes[gl_InstanceID + gl_BaseInstance];
 
-    gl_Position = scene.camera.projection * scene.camera.view * vec4(inPosition, 1.0);
+    outData.color = vec4(1.0);
+
+    gl_Position = camera.projection * camera.view * mesh.model * vec4(inPosition, 1.0);
 }

@@ -28,7 +28,8 @@ namespace Chicane
                   m_subpassDepedencies({}),
                   m_subpasses({}),
                   m_descriptorSetLayouts({}),
-                  m_pushConstants({})
+                  m_pushConstants({}),
+                  m_renderPass(nullptr)
             {}
 
         public:
@@ -95,6 +96,13 @@ namespace Chicane
             inline VulkanGraphicsPipelineBuilder setRasterization(vk::PipelineRasterizationStateCreateInfo inValue)
             {
                 m_rasterization = inValue;
+
+                return *this;
+            }
+
+            inline VulkanGraphicsPipelineBuilder setRenderPass(vk::RenderPass inValue)
+            {
+                m_renderPass = inValue;
 
                 return *this;
             }
@@ -205,12 +213,14 @@ namespace Chicane
                 createInfo.pDepthStencilState  = &m_depthStencil;
                 createInfo.layout =
                     VulkanGraphicsPipeline::createLayout(m_descriptorSetLayouts, m_pushConstants, inLogicalDevice);
-                createInfo.renderPass = VulkanGraphicsPipeline::createRendepass(
-                    m_attachments,
-                    m_subpassDepedencies,
-                    m_subpasses,
-                    inLogicalDevice
-                );
+                createInfo.renderPass = m_renderPass
+                    ? m_renderPass
+                    : VulkanGraphicsPipeline::createRendepass(
+                          m_attachments,
+                          m_subpassDepedencies,
+                          m_subpasses,
+                          inLogicalDevice
+                      );
                 createInfo.subpass            = 0;
                 createInfo.basePipelineHandle = nullptr;
 
@@ -260,6 +270,9 @@ namespace Chicane
             // Layout
             std::vector<vk::DescriptorSetLayout>               m_descriptorSetLayouts;
             std::vector<vk::PushConstantRange>                 m_pushConstants;
+
+            // Optional shared render pass
+            vk::RenderPass                                     m_renderPass;
         };
     }
 }

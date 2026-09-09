@@ -48,6 +48,9 @@ namespace Editor
         CH_FUNCTION()
         bool hasShortcut() const;
 
+        CH_FUNCTION()
+        bool isChecked() const;
+
     private:
         bool isNested() const;
         bool hasOpenSibling() const;
@@ -69,11 +72,15 @@ namespace Editor
         bool bShouldShowChevron;
         CH_FIELD()
         bool bHasShortcut;
+        CH_FIELD()
+        bool bIsChecked;
 
         CH_FIELD()
         Chicane::String label;
         CH_FIELD()
         Chicane::String shortcut;
+        CH_FIELD()
+        Chicane::String checkState;
 
     private:
         bool m_bHasSubmenuList;

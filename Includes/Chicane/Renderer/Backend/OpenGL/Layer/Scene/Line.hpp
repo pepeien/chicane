@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Math/Vertex.hpp"
+
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
@@ -21,12 +23,27 @@ namespace Chicane
             void onEndRender() override;
 
         private:
-            void buildShader();
-            void destroyShader();
+            void buildMeshShader();
+            void destroyMeshShader();
+
+            void buildOverlayShader();
+            void destroyOverlayShader();
+
+            void buildOverlayVertexArray();
+            void destroyOverlayVertexArray();
+
+            void uploadOverlayBuffer(const Vertex::List& inVertices);
+
+            bool shouldDrawMeshWireframe(const Frame& inFrame) const;
+            bool shouldDrawOverlay() const;
 
         private:
-            // Shader
-            std::uint32_t m_shaderProgram;
+            std::uint32_t m_meshShaderProgram;
+            std::uint32_t m_overlayShaderProgram;
+
+            std::uint32_t m_overlayVertexArray;
+            std::uint32_t m_overlayVertexBuffer;
+            std::uint32_t m_overlayVertexCount;
         };
     }
 }

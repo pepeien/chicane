@@ -3,6 +3,8 @@
 #include <memory>
 #include <unordered_map>
 
+#include "Chicane/Core/Math/Bounds/3D.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/View.hpp"
@@ -11,6 +13,8 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Debug/Resource.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -81,6 +85,21 @@ namespace Chicane
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);
 
+            // Debug
+            void enableDebug(DebugMode inMode);
+            void disableDebug(DebugMode inMode);
+            void toggleDebug(DebugMode inMode);
+            bool hasDebug(DebugMode inMode) const;
+
+            void clearDebug(DebugMode inMode = DebugMode::All);
+            void drawDebug(const Bounds3D& inBounds);
+            void drawDebug(DebugMode inMode, const Vertex::List& inVertices);
+
+            bool hasDebugOverlay() const;
+            Vertex::List getDebugOverlayVertices() const;
+
+            float getGpuDelta() const;
+
             // Window
             bool hasWindow() const;
             const Window* getWindow() const;
@@ -103,8 +122,6 @@ namespace Chicane
             {
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }
-
-            float getGpuDelta() const;
 
         private:
             // Backend
@@ -131,6 +148,9 @@ namespace Chicane
             DrawPolyResource::Map    m_polyResources;
             DrawTextureResource      m_textureResources;
             DrawSkyResource          m_skyResource;
+
+            // Debug
+            DebugResource            m_debugResources;
 
             // Backend
             std::unique_ptr<Backend> m_backend;

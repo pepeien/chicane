@@ -16,6 +16,7 @@
 #include "Chicane/Runtime/Application/Telemetry.hpp"
 #include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
 
 namespace Chicane
 {
@@ -131,6 +132,9 @@ namespace Chicane
         Renderer::Instance* getRenderer() const;
         void setRenderer(WindowBackend inBackend);
 
+        // Debug
+        void pushTrace(const SceneTraceRequest& inRequest);
+
     private:
         // Renderer
         void initRenderer(const Renderer::Settings& inSettings);
@@ -154,6 +158,7 @@ namespace Chicane
         void tickScene();
         void buildSceneCommands(std::shared_ptr<Scene> inScene);
         void renderScene();
+        void updateDebugOverlays();
 
         // Grid
         void initUI();

@@ -30,7 +30,7 @@ namespace Editor
         backend->useProgram(m_shaderProgram);
 
         Chicane::Renderer::Depth depth;
-        depth.bCanWrite = true;
+        depth.bCanWrite = false;
         depth.compare   = Chicane::Renderer::DepthCompare::LessOrEqual;
         backend->enableDepth(depth);
 

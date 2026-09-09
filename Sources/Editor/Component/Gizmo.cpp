@@ -740,10 +740,14 @@ namespace Editor
             return;
         }
 
-        const Chicane::Vec3            destination = origin + direction * 1000.0f;
-        Chicane::SceneTraceResponse    hit;
-        Chicane::Object*               target      = nullptr;
-        if (scene->trace<Item>(hit, Chicane::SceneTraceRequest::Line(origin, destination), {}))
+        const Chicane::Vec3         destination = origin + direction * 1000.0f;
+        Chicane::SceneTraceRequest  request     = Chicane::SceneTraceRequest::Line(origin, destination);
+        Chicane::SceneTraceResponse hit;
+        Chicane::Object*            target = nullptr;
+
+        Chicane::Application::getInstance().pushTrace(request);
+
+        if (scene->trace<Item>(hit, request, {}))
         {
             target = hit.actor;
         }

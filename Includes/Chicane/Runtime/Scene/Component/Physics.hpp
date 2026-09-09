@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Chicane/Core/Math/Transform.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Kerb/Body.hpp"
@@ -35,8 +37,13 @@ namespace Chicane
         void onRefresh() override;
 
     public:
+        bool hasBody() const;
+
         void setShape(Kerb::BodyShape inType);
         void setShape(const Kerb::BodyPolygon& inPolygon);
+
+        Kerb::BodyShape getShape() const;
+        void appendDebugWireframe(Vertex::List& outVertices, const Vec4& inColor) const;
 
         void setMotion(Kerb::MotionType inType);
 
@@ -62,7 +69,6 @@ namespace Chicane
 
     protected:
         bool canCollide() const;
-        bool hasBody() const;
 
         void ensureBody();
         void destroyBody();

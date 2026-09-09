@@ -54,6 +54,7 @@ namespace Editor
         void unbindMoveHitTest();
 
         void initSettingsMenu();
+        void syncMenuChecks();
 
     public:
         CH_FIELD()

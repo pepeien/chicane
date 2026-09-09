@@ -8,6 +8,10 @@ Editor::HeaderMenu {
     display: flex;
     overflow: visible;
 
+    &__check {
+        display: none;
+    }
+
     &__label {
         margin: auto 0;
         color: $--black;
@@ -18,17 +22,19 @@ Editor::HeaderMenu {
     &__control {
         height: 100%;
         display: flex;
+        flex-direction: row;
+        gap: 0.45em;
         padding: 0 0.4em;
-        cursor: pointer;
         overflow: hidden;
         background-color: transparent;
         transition: background-color 200ms ease-in-out;
         border-radius: 5px;
 
         &:hover {
+            cursor: pointer;
             background-color: $--black;
 
-            Text {
+            Text, Icon {
                 color: $--white;
             }
         }
@@ -72,6 +78,20 @@ Editor::HeaderMenu {
                 color: $--grey;
             }
 
+            &__check {
+                display: block;
+                width: 0.35em;
+                height: 0.35em;
+                margin: auto 0;
+                color: $--grey;
+                opacity: 0;
+                transition: color 200ms ease-in-out, opacity 100ms ease-in-out;
+
+                &.--checked {
+                    opacity: 1;
+                }
+            }
+
             &__control {
                 width: 100%;
                 height: auto;
@@ -84,6 +104,10 @@ Editor::HeaderMenu {
                     padding-left: 0.8em;
                     border-color: $--light-grey;
                     background-color: transparent;
+
+                    Text, Icon {
+                        color: $--light-grey;
+                    }
                 }
             }
 

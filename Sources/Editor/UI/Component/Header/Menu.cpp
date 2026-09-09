@@ -9,8 +9,10 @@ namespace Editor
           bIsOpen(false),
           bShouldShowChevron(false),
           bHasShortcut(false),
+          bIsChecked(false),
           label(Chicane::String::empty()),
           shortcut(Chicane::String::empty()),
+          checkState("idle"),
           m_bHasSubmenuList(false)
     {
         import <HeaderMenu>();
@@ -139,6 +141,13 @@ namespace Editor
         return item && !item->shortcut.isEmpty();
     }
 
+    bool HeaderMenu::isChecked() const
+    {
+        const HeaderMenuItem* item = getItem();
+
+        return item && item->isChecked;
+    }
+
     bool HeaderMenu::isNested() const
     {
         return findParentMenu() != nullptr;
@@ -257,9 +266,11 @@ namespace Editor
         const HeaderMenuItem* item = getItem();
 
         bShouldShowChevron = isNested() && item && !item->children.empty();
-        bHasShortcut = item && !item->shortcut.isEmpty();
-        label        = item ? item->label : Chicane::String::empty();
-        shortcut     = item ? item->shortcut : Chicane::String::empty();
+        bHasShortcut       = item && !item->shortcut.isEmpty();
+        bIsChecked         = item && item->isChecked;
+        checkState         = bIsChecked ? "checked" : "idle";
+        label              = item ? item->label : Chicane::String::empty();
+        shortcut           = item ? item->shortcut : Chicane::String::empty();
 
         if (m_bHasSubmenuList)
         {

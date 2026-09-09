@@ -23,13 +23,81 @@
 
 #include "Chicane/Grid/Component/Viewport.hpp"
 
+#include "Chicane/Renderer/Debug.hpp"
+#include "Chicane/Renderer/Debug/Mode.hpp"
+
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Physics.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Cone.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Cylinder.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Line.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Rectangle.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
 
 namespace Chicane
 {
+    void appendTrace(Vertex::List& outVertices, const SceneTraceRequest& inRequest, const Vec4& inColor)
+    {
+        if (!inRequest.isValid() || !inRequest.shape)
+        {
+            return;
+        }
+
+        if (dynamic_cast<const SceneTraceShapeLine*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendSegment(outVertices, inRequest.origin, inRequest.destination, inColor);
+
+            return;
+        }
+
+        if (const SceneTraceShapeRectangle* rectangle =
+                dynamic_cast<const SceneTraceShapeRectangle*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendRectangle(
+                outVertices,
+                inRequest.origin,
+                inRequest.destination,
+                rectangle->halfExtents.x,
+                rectangle->halfExtents.y,
+                inColor
+            );
+
+            return;
+        }
+
+        if (const SceneTraceShapeCylinder* cylinder =
+                dynamic_cast<const SceneTraceShapeCylinder*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendRadial(
+                outVertices,
+                inRequest.origin,
+                inRequest.destination,
+                cylinder->getRadiusAt(0.0f),
+                cylinder->getRadiusAt(1.0f),
+                inColor
+            );
+
+            return;
+        }
+
+        if (const SceneTraceShapeCone* cone = dynamic_cast<const SceneTraceShapeCone*>(inRequest.shape.get()))
+        {
+            const float length = SceneTraceShapeUtility::axisLength(inRequest.origin, inRequest.destination);
+
+            Renderer::Debug::appendRadial(
+                outVertices,
+                inRequest.origin,
+                inRequest.destination,
+                cone->getRadiusAt(0.0f, length),
+                cone->getRadiusAt(1.0f, length),
+                inColor
+            );
+        }
+    }
+
     Application& Application::getInstance()
     {
         static Application instance;
@@ -574,6 +642,61 @@ namespace Chicane
         {
             m_renderer->drawPoly(mesh.model, mesh.instance);
         }
+
+        updateDebugOverlays();
+    }
+
+    void Application::updateDebugOverlays()
+    {
+        if (!hasRenderer() || !m_scene)
+        {
+            return;
+        }
+
+        m_renderer->clearDebug(Renderer::DebugMode::Bounds | Renderer::DebugMode::Colliders);
+
+        if (m_renderer->hasDebug(Renderer::DebugMode::Bounds))
+        {
+            for (Actor* actor : m_scene->getActors())
+            {
+                if (!actor)
+                {
+                    continue;
+                }
+
+                m_renderer->drawDebug(actor->getBounds());
+            }
+        }
+
+        if (m_renderer->hasDebug(Renderer::DebugMode::Colliders))
+        {
+            Vertex::List colliders;
+
+            for (CPhysics* physics : m_scene->getComponents<CPhysics>())
+            {
+                if (!physics)
+                {
+                    continue;
+                }
+
+                physics->appendDebugWireframe(colliders, Renderer::Debug::COLLIDER_COLOR);
+            }
+
+            m_renderer->drawDebug(Renderer::DebugMode::Colliders, colliders);
+        }
+    }
+
+    void Application::pushTrace(const SceneTraceRequest& inRequest)
+    {
+        if (!inRequest.isValid() || !hasRenderer())
+        {
+            return;
+        }
+
+        Vertex::List vertices;
+        appendTrace(vertices, inRequest, Renderer::Debug::TRACE_COLOR);
+
+        m_renderer->drawDebug(Renderer::DebugMode::Traces, vertices);
     }
 
     void Application::initUI()

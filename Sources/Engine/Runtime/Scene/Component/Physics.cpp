@@ -4,6 +4,7 @@
 
 #include "Chicane/Kerb/Engine.hpp"
 #include "Chicane/Kerb/Collision/Preset/Info.hpp"
+#include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 
@@ -117,6 +118,72 @@ namespace Chicane
     {
         Object::onRefresh();
         syncBody();
+    }
+
+    Kerb::BodyShape CPhysics::getShape() const
+    {
+        return m_bodySettings.shape;
+    }
+
+    void CPhysics::appendDebugWireframe(Vertex::List& outVertices, const Vec4& inColor) const
+    {
+        if (!hasBody())
+        {
+            return;
+        }
+
+        const Transform  transform = Kerb::Engine::getInstance().getBodyTransform(m_body);
+        const QuatFloat& rotation  = transform.getRotation().get();
+        const Vec3       center    = transform.getTranslation();
+        const Vec3       size      = m_bodySettings.bounds.getSize();
+
+        if (m_bodySettings.shape == Kerb::BodyShape::Capsule)
+        {
+            const float radius     = std::max(0.05f, std::min(size.x, size.y) * 0.5f);
+            const float halfHeight = std::max(0.0f, size.z * 0.5f - radius);
+
+            Renderer::Debug::appendCapsule(outVertices, center, rotation, radius, halfHeight, inColor);
+
+            return;
+        }
+
+        if (m_bodySettings.shape == Kerb::BodyShape::Polygon)
+        {
+            const Kerb::BodyPolygon polygon = Kerb::Engine::getInstance().getBodyPolygon(m_body);
+            if (polygon.first.size() < 3 || polygon.second.empty())
+            {
+                return;
+            }
+
+            for (std::size_t i = 0; i + 2 < polygon.first.size(); i += 3)
+            {
+                const Vertex::Index i0 = polygon.first[i];
+                const Vertex::Index i1 = polygon.first[i + 1];
+                const Vertex::Index i2 = polygon.first[i + 2];
+                if (i0 >= polygon.second.size() || i1 >= polygon.second.size() || i2 >= polygon.second.size())
+                {
+                    continue;
+                }
+
+                const Vec3& p0 = polygon.second[i0].position;
+                const Vec3& p1 = polygon.second[i1].position;
+                const Vec3& p2 = polygon.second[i2].position;
+
+                Renderer::Debug::appendSegment(outVertices, p0, p1, inColor);
+                Renderer::Debug::appendSegment(outVertices, p1, p2, inColor);
+                Renderer::Debug::appendSegment(outVertices, p2, p0, inColor);
+            }
+
+            return;
+        }
+
+        Renderer::Debug::appendBox(
+            outVertices,
+            center,
+            rotation,
+            Vec3(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f),
+            inColor
+        );
     }
 
     void CPhysics::setShape(Kerb::BodyShape inType)

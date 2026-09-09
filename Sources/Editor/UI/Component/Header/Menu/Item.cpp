@@ -8,6 +8,7 @@ namespace Editor
         : label(Chicane::String::empty()),
           shortcut(Chicane::String::empty()),
           action(Chicane::String::empty()),
+          isChecked(false),
           children({})
     {}
 }

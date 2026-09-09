@@ -23,10 +23,10 @@ list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 ######################### Setup #########################
 if (CHICANE_OPENGL)
     find_package(OpenGL REQUIRED)
-    list(APPEND PRIVATE_LIBS OpenGL::GL)
+    list(APPEND PUBLIC_LIBS OpenGL::GL)
 
     add_subdirectory(${VENDORS_DIR}/Glad)
-    list(APPEND PRIVATE_LIBS Glad::Glad)
+    list(APPEND PUBLIC_LIBS Glad::Glad)
 else()
     list(FILTER HEADERS EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_INCLUDES_DIR}/Backend/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/OpenGL")

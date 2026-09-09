@@ -273,25 +273,26 @@ void Character::refreshMoveInput()
 
 void Character::onShoot()
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    Chicane::Application& application = Chicane::Application::getInstance();
+
+    if (!application.getWindow()->isFocused())
     {
         return;
     }
 
-    const Chicane::Vec3& origin      = m_camera->getTranslation();
-    const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
+    Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::Line();
+    request.origin                     = m_camera->getTranslation();
+    request.destination                = request.origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Chicane::SceneTraceResponse> hits;
-    if (!getScene()->traceMulti<Apple>(
-            hits,
-            Chicane::SceneTraceRequest::Line(origin, destination),
-            {this}
-        ))
+    std::vector<Chicane::SceneTraceResponse> response;
+    if (!getScene()->traceMulti<Apple>(response, request, {this}))
     {
         return;
     }
 
-    for (const Chicane::SceneTraceResponse& hit : hits)
+    application.pushTrace(request);
+
+    for (const Chicane::SceneTraceResponse& hit : response)
     {
         if (Apple* apple = static_cast<Apple*>(hit.actor))
         {

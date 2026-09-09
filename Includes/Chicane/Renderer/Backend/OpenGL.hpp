@@ -3,6 +3,8 @@
 #include <array>
 #include <vector>
 
+#include <glad/gl.h>
+
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Blending.hpp"

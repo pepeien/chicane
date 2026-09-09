@@ -155,7 +155,7 @@ namespace Editor
         depth.flags                 = vk::PipelineDepthStencilStateCreateFlags();
         depth.depthBoundsTestEnable = VK_FALSE;
         depth.stencilTestEnable     = VK_FALSE;
-        depth.depthWriteEnable      = VK_TRUE;
+        depth.depthWriteEnable      = VK_FALSE;
         depth.depthTestEnable       = VK_TRUE;
         depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
         depth.minDepthBounds        = 0.0f;

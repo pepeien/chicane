@@ -19,7 +19,8 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_backend(nullptr)
+              m_backend(nullptr),
+              m_debugResources({})
         {}
 
         void Instance::init(const Settings& inSettings)
@@ -146,6 +147,87 @@ namespace Chicane
             return m_skyResource.findId(sky.reference);
         }
 
+        void Instance::enableDebug(DebugMode inMode)
+        {
+            m_debugResources.enable(inMode);
+        }
+
+        void Instance::disableDebug(DebugMode inMode)
+        {
+            m_debugResources.disable(inMode);
+        }
+
+        void Instance::toggleDebug(DebugMode inMode)
+        {
+            m_debugResources.toggle(inMode);
+        }
+
+        bool Instance::hasDebug(DebugMode inMode) const
+        {
+            return m_debugResources.has(inMode);
+        }
+
+        void Instance::clearDebug(DebugMode inMode)
+        {
+            if ((inMode & DebugMode::Bounds) == DebugMode::Bounds)
+            {
+                m_debugResources.clearBoundsOverlay();
+            }
+
+            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders)
+            {
+                m_debugResources.clearCollidersOverlay();
+            }
+
+            if ((inMode & DebugMode::Traces) == DebugMode::Traces)
+            {
+                m_debugResources.clearTraces();
+            }
+        }
+
+        void Instance::drawDebug(const Bounds3D& inBounds)
+        {
+            m_debugResources.appendBoundsOverlay(inBounds);
+        }
+
+        void Instance::drawDebug(DebugMode inMode, const Vertex::List& inVertices)
+        {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
+            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders)
+            {
+                m_debugResources.appendCollidersOverlay(inVertices);
+            }
+
+            if ((inMode & DebugMode::Traces) == DebugMode::Traces)
+            {
+                m_debugResources.pushTraceOverlay(inVertices);
+            }
+        }
+
+        bool Instance::hasDebugOverlay() const
+        {
+            return m_debugResources.hasOverlay();
+        }
+
+        Vertex::List Instance::getDebugOverlayVertices() const
+        {
+            return m_debugResources.getOverlayVertices();
+        }
+
+        float Instance::getGpuDelta() const
+        {
+            if (!hasBackend())
+            {
+                return 0.0f;
+            }
+
+            return m_backend->getGpuDelta();
+        }
+
         bool Instance::hasWindow() const
         {
             return m_window != nullptr;
@@ -250,16 +332,6 @@ namespace Chicane
             loadTexture(screen);
 
             markResourcesAsDirty();
-        }
-
-        float Instance::getGpuDelta() const
-        {
-            if (!hasBackend())
-            {
-                return 0.0f;
-            }
-
-            return m_backend->getGpuDelta();
         }
 
         void Instance::syncDirtyResources()

@@ -1,5 +1,6 @@
 <Container class="header-menu">
     <Button class="header-menu__control" onClick="{{ onActivate() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="Check" class="header-menu__check --{{ checkState }}"/>
         <Text class="header-menu__label">{{ label }}</Text>
         <Text dir:if="{{ bHasShortcut }}" class="header-menu__shortcut">{{ shortcut }}</Text>
         <Icon dir:if="{{ bShouldShowChevron }}" source="Assets/Editor/UI/Icons/Regular" name="CaretRight" class="header-menu__chevron"/>
