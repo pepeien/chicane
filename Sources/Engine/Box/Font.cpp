@@ -212,8 +212,7 @@ namespace Chicane
                 label = getId();
             }
 
-            const std::unique_ptr<AssetPreview> preview =
-                AssetPreview::createFromFont(getFilepath(), m_data, label);
+            const std::unique_ptr<AssetPreview> preview = AssetPreview::createFromFont(getFilepath(), m_data, label);
             if (!preview || !preview->image)
             {
                 return;

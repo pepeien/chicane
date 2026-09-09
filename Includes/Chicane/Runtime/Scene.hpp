@@ -213,8 +213,8 @@ namespace Chicane
         // Helper
         template <typename T = Actor>
         inline bool trace(
-            SceneTraceResponse& outResponse,
-            const SceneTraceRequest& inRequest,
+            SceneTraceResponse&        outResponse,
+            const SceneTraceRequest&   inRequest,
             const std::vector<Actor*>& inIgnoredActors = {}
         ) const
         {
@@ -232,8 +232,8 @@ namespace Chicane
         template <typename T = Actor>
         inline bool traceMulti(
             std::vector<SceneTraceResponse>& outResponses,
-            const SceneTraceRequest& inRequest,
-            const std::vector<Actor*>& inIgnoredActors = {}
+            const SceneTraceRequest&         inRequest,
+            const std::vector<Actor*>&       inIgnoredActors = {}
         ) const
         {
             outResponses.clear();
@@ -282,9 +282,7 @@ namespace Chicane
                 outResponses.begin(),
                 outResponses.end(),
                 [](const SceneTraceResponse& inLeft, const SceneTraceResponse& inRight)
-                {
-                    return inLeft.distance < inRight.distance;
-                }
+                { return inLeft.distance < inRight.distance; }
             );
 
             return true;

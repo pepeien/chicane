@@ -41,14 +41,14 @@ namespace Chicane
             bool shouldDrawOverlay() const;
 
         private:
-            VulkanGraphicsPipeline m_meshPipeline;
-            VulkanGraphicsPipeline m_overlayPipeline;
+            VulkanGraphicsPipeline      m_meshPipeline;
+            VulkanGraphicsPipeline      m_overlayPipeline;
 
-            VulkanDescriptorBundle m_frameDescriptor;
+            VulkanDescriptorBundle      m_frameDescriptor;
 
-            VulkanBuffer  m_overlayBuffer;
-            std::size_t   m_overlayBufferCapacity;
-            std::uint32_t m_overlayVertexCount;
+            VulkanBuffer                m_overlayBuffer;
+            std::size_t                 m_overlayBufferCapacity;
+            std::uint32_t               m_overlayVertexCount;
 
             std::vector<vk::ClearValue> m_clear;
         };

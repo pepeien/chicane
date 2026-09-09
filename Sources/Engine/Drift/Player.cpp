@@ -34,7 +34,7 @@ namespace Chicane
                 reset();
             }
 
-            m_status    = Status::Playing;
+            m_status      = Status::Playing;
             m_bIsFinished = false;
         }
 
@@ -60,7 +60,7 @@ namespace Chicane
             m_elapsed        = 0.0f;
             m_remainingDelay = std::max(0.0f, m_delay);
             m_iteration      = 0;
-            m_bIsFinished      = false;
+            m_bIsFinished    = false;
         }
 
         void Player::tick(float inDeltaTime)
@@ -103,7 +103,7 @@ namespace Chicane
                 m_iteration++;
 
                 const bool bIsInfinite = m_clip.iterations <= 0;
-                const bool bIsOnce     = m_clip.loop == Loop::Once || (!bIsInfinite && m_iteration >= m_clip.iterations);
+                const bool bIsOnce = m_clip.loop == Loop::Once || (!bIsInfinite && m_iteration >= m_clip.iterations);
 
                 if (bIsOnce)
                 {
@@ -262,7 +262,7 @@ namespace Chicane
                 return;
             }
 
-            m_status    = Status::Stopped;
+            m_status      = Status::Stopped;
             m_bIsFinished = true;
 
             m_onComplete.next();

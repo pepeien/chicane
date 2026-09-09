@@ -5,6 +5,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 
 namespace Chicane
 {
@@ -52,6 +53,11 @@ namespace Chicane
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
             glClear(GL_DEPTH_BUFFER_BIT);
+
+            if (OpenGLLSceneSky* sky = getBackend<OpenGLBackend>()->getLayer<OpenGLLSceneSky>(SCENE_SKY_LAYER_ID))
+            {
+                glBindTextureUnit(3, sky->getCubemap());
+            }
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);

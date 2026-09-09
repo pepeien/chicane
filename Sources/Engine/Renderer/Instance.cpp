@@ -65,12 +65,12 @@ namespace Chicane
             getCurrentFrame().useCamera(inData);
         }
 
-        void Instance::addLight(const View::List& inData)
+        void Instance::addLight(const Light::List& inData)
         {
             getCurrentFrame().addLight(inData);
         }
 
-        void Instance::addLight(const View& inData)
+        void Instance::addLight(const Light& inData)
         {
             getCurrentFrame().addLight(inData);
         }

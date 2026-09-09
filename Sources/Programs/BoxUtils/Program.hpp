@@ -17,7 +17,7 @@ private:
     static constexpr inline const char* OUTPUT_OPTION_NAME        = "output";
     static constexpr inline const char* OUTPUT_OPTION_DESCRIPTION = "Output file location";
 
-    static constexpr inline const char* BAKE_OPTION_NAME        = "bake";
+    static constexpr inline const char* BAKE_OPTION_NAME = "bake";
     static constexpr inline const char* BAKE_OPTION_DESCRIPTION =
         "Embed previews into existing assets (file or directory; defaults to Assets)";
 

@@ -306,10 +306,10 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> rasterPreview(
-            const FileSystem::Path&                          inAsset,
-            AssetType                                        inType,
-            std::vector<PreviewGeometryBatch>         inBatches,
-            const std::vector<Image::Instance>&              inFaces
+            const FileSystem::Path&             inAsset,
+            AssetType                           inType,
+            std::vector<PreviewGeometryBatch>   inBatches,
+            const std::vector<Image::Instance>& inFaces
         )
         {
             if (inBatches.empty() && !inFaces.empty())
@@ -402,14 +402,14 @@ namespace Chicane
 
                 for (std::size_t i = 0; i < batch.vertices.size(); i++)
                 {
-                    const Vec3 offset           = batch.vertices.at(i).position - center;
+                    const Vec3 offset                 = batch.vertices.at(i).position - center;
                     projectedBatches[batchIndex][i].x = offset.dot(right);
                     projectedBatches[batchIndex][i].y = offset.dot(up);
                     projectedBatches[batchIndex][i].z = offset.dot(viewDir);
-                    min.x = std::min(min.x, projectedBatches[batchIndex][i].x);
-                    max.x = std::max(max.x, projectedBatches[batchIndex][i].x);
-                    min.y = std::min(min.y, projectedBatches[batchIndex][i].y);
-                    max.y = std::max(max.y, projectedBatches[batchIndex][i].y);
+                    min.x                             = std::min(min.x, projectedBatches[batchIndex][i].x);
+                    max.x                             = std::max(max.x, projectedBatches[batchIndex][i].x);
+                    min.y                             = std::min(min.y, projectedBatches[batchIndex][i].y);
+                    max.y                             = std::max(max.y, projectedBatches[batchIndex][i].y);
                 }
             }
 
@@ -434,9 +434,9 @@ namespace Chicane
 
             for (std::size_t batchIndex = 0; batchIndex < inBatches.size(); batchIndex++)
             {
-                const PreviewGeometryBatch& batch     = inBatches.at(batchIndex);
-                const std::vector<Vec3>&           projected = projectedBatches.at(batchIndex);
-                const std::size_t                  triangleCount = batch.indices.size() / 3;
+                const PreviewGeometryBatch& batch         = inBatches.at(batchIndex);
+                const std::vector<Vec3>&    projected     = projectedBatches.at(batchIndex);
+                const std::size_t           triangleCount = batch.indices.size() / 3;
                 if (batch.vertices.empty() || triangleCount == 0)
                 {
                     continue;
@@ -479,7 +479,7 @@ namespace Chicane
                         continue;
                     }
 
-                    normal            = normal.normalize();
+                    normal = normal.normalize();
                     const float shade =
                         AssetPreview::SHADE_MIN + (AssetPreview::SHADE_RANGE * std::abs(normal.dot(light)));
 
@@ -587,7 +587,7 @@ namespace Chicane
             batch.indices  = inIndices;
             batch.texture  = inTexture;
 
-            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch> {std::move(batch)});
+            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch>{std::move(batch)});
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromSky(
@@ -1051,10 +1051,10 @@ namespace Chicane
             Image::Raw encoded = image.encode();
             if (encoded.empty())
             {
-                const int         width    = image.getWidth();
-                const int         height   = image.getHeight();
-                const int         channels = std::max(1, image.getChannel());
-                const Image::Pixels pixels = image.getPixels();
+                const int           width    = image.getWidth();
+                const int           height   = image.getHeight();
+                const int           channels = std::max(1, image.getChannel());
+                const Image::Pixels pixels   = image.getPixels();
                 encoded.assign(
                     pixels,
                     pixels + (static_cast<std::size_t>(width) * static_cast<std::size_t>(height) *

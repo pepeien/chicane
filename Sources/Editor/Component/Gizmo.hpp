@@ -56,22 +56,22 @@ namespace Editor
         void dragAt(const Chicane::Vec2& inLocation);
 
     protected:
-        GizmoType                            m_type;
-        Chicane::CMesh*                      m_mesh;
-        Chicane::Object*                     m_target;
-        Chicane::EventSubscription<>         m_targetSubscription;
+        GizmoType                    m_type;
+        Chicane::CMesh*              m_mesh;
+        Chicane::Object*             m_target;
+        Chicane::EventSubscription<> m_targetSubscription;
 
-        bool                                 m_bIsDragging;
-        GizmoAxis                            m_dragAxis;
-        float                                m_dragStartT;
-        float                                m_dragStartAngle;
-        Chicane::Vec3                        m_dragOrigin;
-        Chicane::Vec3                        m_dragAxisDir;
-        Chicane::Vec3                        m_dragStartTranslation;
-        Chicane::Vec3                        m_dragStartScale;
-        Chicane::Rotator                     m_dragStartRotation;
+        bool             m_bIsDragging;
+        GizmoAxis        m_dragAxis;
+        float            m_dragStartT;
+        float            m_dragStartAngle;
+        Chicane::Vec3    m_dragOrigin;
+        Chicane::Vec3    m_dragAxisDir;
+        Chicane::Vec3    m_dragStartTranslation;
+        Chicane::Vec3    m_dragStartScale;
+        Chicane::Rotator m_dragStartRotation;
 
-        std::shared_ptr<bool>                m_bIsListening;
-        Chicane::WindowEventSubscription     m_windowSubscription;
+        std::shared_ptr<bool>            m_bIsListening;
+        Chicane::WindowEventSubscription m_windowSubscription;
     };
 }

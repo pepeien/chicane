@@ -1102,7 +1102,7 @@ namespace Chicane
                 {
                     const float angle = PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
                     const Vec2  curr  = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
-                                        scaleVec(inOutbound, std::sin(angle) * half);
+                                      scaleVec(inOutbound, std::sin(angle) * half);
 
                     emitTriangle(inCenter, prev, curr);
 

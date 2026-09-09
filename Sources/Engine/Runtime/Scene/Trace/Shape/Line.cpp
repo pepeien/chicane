@@ -10,10 +10,7 @@ namespace Chicane
     }
 
     bool SceneTraceShapeLine::intersects(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        const Bounds3D& inBounds,
-        float& outEnter
+        const Vec3& inOrigin, const Vec3& inDestination, const Bounds3D& inBounds, float& outEnter
     ) const
     {
         if (SceneTraceShapeUtility::axisLength(inOrigin, inDestination) <= FLT_EPSILON)

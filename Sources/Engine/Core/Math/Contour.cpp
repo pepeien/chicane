@@ -151,8 +151,8 @@ namespace Chicane
 
         std::vector<Points> contours;
 
-        Vec2 min       = Vec2::Zero();
-        Vec2 max       = Vec2::Zero();
+        Vec2 min        = Vec2::Zero();
+        Vec2 max        = Vec2::Zero();
         bool bHasBounds = false;
 
         for (const Curve& curve : inCurves)

@@ -48,17 +48,17 @@ namespace Chicane
             m_camera = std::move(inData);
         }
 
-        const View::List& Frame::getLights() const
+        const Light::List& Frame::getLights() const
         {
             return m_lights;
         }
 
-        void Frame::addLight(const View::List& inData)
+        void Frame::addLight(const Light::List& inData)
         {
             m_lights.insert(m_lights.begin(), inData.begin(), inData.end());
         }
 
-        void Frame::addLight(const View& inData)
+        void Frame::addLight(const Light& inData)
         {
             m_lights.push_back(std::move(inData));
         }

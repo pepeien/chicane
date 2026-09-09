@@ -24,8 +24,7 @@ namespace Chicane
                 return isNearlyEqual(translation.x, 0.0f) && isNearlyEqual(translation.y, 0.0f) &&
                        isNearlyEqual(translation.z, 0.0f) && isNearlyEqual(rotation.x, 0.0f) &&
                        isNearlyEqual(rotation.y, 0.0f) && isNearlyEqual(rotation.z, 0.0f) &&
-                       isNearlyEqual(scale.x, 1.0f) && isNearlyEqual(scale.y, 1.0f) &&
-                       isNearlyEqual(scale.z, 1.0f);
+                       isNearlyEqual(scale.x, 1.0f) && isNearlyEqual(scale.y, 1.0f) && isNearlyEqual(scale.z, 1.0f);
             }
 
             String toAttribute(const Vec3& inValue)
@@ -33,9 +32,7 @@ namespace Chicane
                 return String::sprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
             }
 
-            Vec3 readVec3Attribute(
-                const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback
-            )
+            Vec3 readVec3Attribute(const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback)
             {
                 const pugi::xml_attribute attribute = Xml::getAttribute(inName, inNode);
                 if (attribute.empty())
@@ -217,9 +214,7 @@ namespace Chicane
             }
 
             Transform transform;
-            transform.setTranslation(
-                readVec3Attribute(inNode, TRANSLATION_ATTRIBUTE_NAME, Vec3::Zero())
-            );
+            transform.setTranslation(readVec3Attribute(inNode, TRANSLATION_ATTRIBUTE_NAME, Vec3::Zero()));
             transform.setRotation(readVec3Attribute(inNode, ROTATION_ATTRIBUTE_NAME, Vec3::Zero()));
             transform.setScale(readVec3Attribute(inNode, SCALE_ATTRIBUTE_NAME, Vec3::One()));
 

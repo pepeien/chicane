@@ -33,16 +33,25 @@ namespace Chicane
             // Images
             void buildShadowImage();
             void destroyShadowImage();
+            void buildSkyImage();
+            void destroySkyImage();
 
             // Layer
             void buildLayers();
+
+        public:
+            void setSkyImageInfo(const vk::DescriptorImageInfo& inInfo);
 
         public:
             VulkanBuffer            modelVertexBuffer;
             VulkanBuffer            modelIndexBuffer;
 
             VulkanImageInfo         shadowImage;
+            vk::ImageView           shadowLayerViews[SHADOW_CASCADE_COUNT] = {};
             vk::DescriptorImageInfo shadowImageInfo;
+
+            VulkanImageInfo         skyImage;
+            vk::DescriptorImageInfo skyImageInfo;
         };
     }
 }

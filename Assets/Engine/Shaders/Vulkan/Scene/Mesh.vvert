@@ -18,19 +18,6 @@ layout(set = 0, binding = 0) uniform Camera {
     vec4 translation;
 } camera;
 
-layout(set = 0, binding = 1) uniform Light {
-    vec4 clip;
-
-    mat4 view;
-    mat4 projection;
-
-    vec4 up;
-    vec4 right;
-    vec4 forward;
-
-    vec4 translation;
-} light;
-
 layout(std430, set = 0, binding = 2) readonly buffer Scene {
     PolyInstance3D meshes[];
 } instance;
@@ -41,9 +28,8 @@ layout(location = 0) out Data {
     vec3 normal;
     vec4 color;
     vec3 meshPosition;
-    vec4 shadowPosition;
-    vec3 lightPosition;
     vec3 cameraPosition;
+    float viewDepth;
 } outData;
 
 layout(location = 0) in vec3 inPosition;
@@ -63,9 +49,8 @@ void main() {
     outData.normal         = mat3(transpose(inverse(mesh.model))) * inNormal;
     outData.color          = inColor;
     outData.meshPosition   = vec3(mesh.model * position);
-    outData.shadowPosition = light.projection * light.view * vec4(outData.meshPosition, 1.0);
-    outData.lightPosition  = light.translation.xyz;
     outData.cameraPosition = camera.translation.xyz;
+    outData.viewDepth      = -(camera.view * vec4(outData.meshPosition, 1.0)).z;
 
     gl_Position = camera.projection * camera.view * mesh.model * position;
 }

@@ -27,8 +27,7 @@ namespace Chicane
         {
             Container::onRefresh();
 
-            if (!m_bIsLaidOutThisFrame && !src.isEmpty() &&
-                !(m_load == Box::AssetLoad::Preview && !m_previewImage))
+            if (!m_bIsLaidOutThisFrame && !src.isEmpty() && !(m_load == Box::AssetLoad::Preview && !m_previewImage))
             {
                 return;
             }
@@ -44,7 +43,7 @@ namespace Chicane
 
             const bool bIsSrcBound       = isReference(getAttribute(SRC_ATTRIBUTE_NAME));
             const bool bIsWaitingPreview = m_load == Box::AssetLoad::Preview && !src.isEmpty() && !m_previewImage;
-            const bool bIsAnimated = m_texture && m_texture->getFrameCount() > 1 && playbackRate != 0.0f;
+            const bool bIsAnimated       = m_texture && m_texture->getFrameCount() > 1 && playbackRate != 0.0f;
 
             if (bIsSrcBound || bIsWaitingPreview)
             {

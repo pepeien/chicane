@@ -105,10 +105,10 @@ namespace Chicane
         float tMin = 0.0f;
         float tMax = 1.0f;
 
-        const float origins[3] = {inStart.x, inStart.y, inStart.z};
+        const float origins[3]    = {inStart.x, inStart.y, inStart.z};
         const float directions[3] = {dir.x, dir.y, dir.z};
-        const float mins[3] = {min.x, min.y, min.z};
-        const float maxs[3] = {max.x, max.y, max.z};
+        const float mins[3]       = {min.x, min.y, min.z};
+        const float maxs[3]       = {max.x, max.y, max.z};
 
         for (int axis = 0; axis < 3; ++axis)
         {

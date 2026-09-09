@@ -381,14 +381,7 @@ namespace Chicane
                 cursor.y = (lineCount - 1) * lineHeight;
 
                 TextGlyph* textGlyph = acquireGlyph(glyphIndex++);
-                textGlyph->configure(
-                    &glyph,
-                    fontSize,
-                    letterSpacing,
-                    color,
-                    cursor,
-                    ascender
-                );
+                textGlyph->configure(&glyph, fontSize, letterSpacing, color, cursor, ascender);
 
                 cursor.x += textGlyph->getAdvance();
                 maxWidth = std::max(maxWidth, cursor.x);

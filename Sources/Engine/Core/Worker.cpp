@@ -67,13 +67,7 @@ namespace Chicane
 
             {
                 std::unique_lock<std::mutex> lock(m_mutex);
-                m_signal.wait(
-                    lock,
-                    [this]()
-                    {
-                        return !m_bIsRunning || !m_pending.empty();
-                    }
-                );
+                m_signal.wait(lock, [this]() { return !m_bIsRunning || !m_pending.empty(); });
 
                 if (!m_bIsRunning && m_pending.empty())
                 {

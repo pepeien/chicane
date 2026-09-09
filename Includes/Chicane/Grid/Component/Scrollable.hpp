@@ -72,13 +72,13 @@ namespace Chicane
             );
 
         protected:
-            Vec2 m_currentPosition;
-            std::uint64_t m_scrollGeneration;
+            Vec2                m_currentPosition;
+            std::uint64_t       m_scrollGeneration;
 
-            Vec2 m_virtualContentSize;
-            bool m_bHasVirtualContent;
-            bool m_bReserveHorizontalBar;
-            bool m_bReserveVerticalBar;
+            Vec2                m_virtualContentSize;
+            bool                m_bHasVirtualContent;
+            bool                m_bReserveHorizontalBar;
+            bool                m_bReserveVerticalBar;
 
             ScrollBarProperties m_horizontalBar;
             ScrollBarProperties m_verticalBar;

@@ -18,6 +18,8 @@ namespace Chicane
         public:
             void bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
 
+            vk::DescriptorImageInfo getDescriptorImageInfo() const;
+
         private:
             void initExtent(const Image::References& inImages);
             void initInstance(std::uint32_t inCount);

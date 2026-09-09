@@ -58,8 +58,7 @@ namespace Chicane
                 return;
             }
 
-            const std::unique_ptr<AssetPreview> preview =
-                AssetPreview::createFromSound(getFilepath(), m_data);
+            const std::unique_ptr<AssetPreview> preview = AssetPreview::createFromSound(getFilepath(), m_data);
             if (!preview || !preview->image)
             {
                 return;

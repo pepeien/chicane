@@ -7,6 +7,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
+#include "Chicane/Renderer/Light.hpp"
 
 namespace Chicane
 {
@@ -30,7 +31,7 @@ namespace Chicane
         public:
             // View
             View                        camera = {};
-            View::List                  lights = {};
+            Light::List                 lights = {};
 
             // Sky
             Renderer::DrawSkyData       sky = {};

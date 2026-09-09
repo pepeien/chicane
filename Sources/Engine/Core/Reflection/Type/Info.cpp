@@ -81,11 +81,11 @@ namespace Chicane
             return {};
         }
 
-        const ReflectionTypeInfo*  currentType    = this;
-        std::size_t                offset         = 0;
-        std::size_t                ptrOffset      = 0;
+        const ReflectionTypeInfo*  currentType        = this;
+        std::size_t                offset             = 0;
+        std::size_t                ptrOffset          = 0;
         bool                       bHasCrossedPointer = false;
-        const ReflectionFieldInfo* field          = nullptr;
+        const ReflectionFieldInfo* field              = nullptr;
 
         for (std::size_t i = 0; i < parts.size(); ++i)
         {

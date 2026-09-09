@@ -300,6 +300,11 @@ namespace Chicane
             }
 
             m_sky.reset(new VulkanSky(createInfo));
+
+            if (VulkanLScene* parent = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID))
+            {
+                parent->setSkyImageInfo(m_sky->getDescriptorImageInfo());
+            }
         }
 
         void VulkanLSceneSky::destroyTextureData()

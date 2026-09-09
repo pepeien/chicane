@@ -7,7 +7,7 @@ namespace Chicane
         namespace Convert
         {
             // Engine is Z-up. Jolt is Y-up. (x, y, z) -> (x, z, -y) is a -90 deg rotation around X.
-            const JPH::Quat BASIS = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), -JPH::JPH_PI * 0.5f);
+            const JPH::Quat BASIS           = JPH::Quat::sRotation(JPH::Vec3::sAxisX(), -JPH::JPH_PI * 0.5f);
             const JPH::Quat BASIS_CONJUGATE = BASIS.Conjugated();
 
             JPH::Vec3 toPhysicsPosition(const Vec3& inValue)

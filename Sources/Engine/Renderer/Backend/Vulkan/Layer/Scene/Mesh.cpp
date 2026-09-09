@@ -109,7 +109,7 @@ namespace Chicane
             VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
-            bidings.count = 4;
+            bidings.count = 5;
 
             // Camera
             bidings.indices.push_back(0);
@@ -121,7 +121,7 @@ namespace Chicane
             bidings.indices.push_back(1);
             bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
             bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment);
 
             // Poly 3D
             bidings.indices.push_back(2);
@@ -131,6 +131,12 @@ namespace Chicane
 
             // Shadow
             bidings.indices.push_back(3);
+            bidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            // Sky
+            bidings.indices.push_back(4);
             bidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
@@ -147,6 +153,9 @@ namespace Chicane
             );
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets}
+            );
+            descriptorPoolCreateInfo.sizes.push_back(
+                {vk::DescriptorType::eCombinedImageSampler, descriptorPoolCreateInfo.maxSets}
             );
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eCombinedImageSampler, descriptorPoolCreateInfo.maxSets}
@@ -201,6 +210,34 @@ namespace Chicane
                 shadowWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
                 shadowWriteInfo.pImageInfo      = &parent->shadowImageInfo;
                 frame.addWriteDescriptorSet(shadowWriteInfo);
+
+                vk::WriteDescriptorSet skyWriteInfo;
+                skyWriteInfo.dstSet          = descriptorSet;
+                skyWriteInfo.dstBinding      = 4;
+                skyWriteInfo.dstArrayElement = 0;
+                skyWriteInfo.descriptorCount = 1;
+                skyWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                skyWriteInfo.pImageInfo      = &parent->skyImageInfo;
+                frame.addWriteDescriptorSet(skyWriteInfo);
+            }
+        }
+
+        void VulkanLSceneMesh::updateSkyDescriptors(const vk::DescriptorImageInfo& inInfo)
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
+            parent->skyImageInfo   = inInfo;
+
+            for (VulkanFrame& frame : backend->frames)
+            {
+                vk::WriteDescriptorSet skyWriteInfo;
+                skyWriteInfo.dstSet          = frame.getDescriptorSet(m_id);
+                skyWriteInfo.dstBinding      = 4;
+                skyWriteInfo.dstArrayElement = 0;
+                skyWriteInfo.descriptorCount = 1;
+                skyWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                skyWriteInfo.pImageInfo      = &parent->skyImageInfo;
+                backend->logicalDevice.updateDescriptorSets(skyWriteInfo, nullptr);
             }
         }
 

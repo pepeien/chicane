@@ -7,6 +7,7 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
+#include "Chicane/Renderer/Shadow.hpp"
 
 namespace Chicane
 {
@@ -70,10 +71,13 @@ namespace Chicane
             View camera = inFrame.getCamera();
             camera.depthZeroToOne();
 
-            View::List lights = inFrame.getLights();
-            for (View& light : lights)
+            m_light = Shadow::build(inFrame.getCamera(), inFrame.getLights());
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
-                light.depthZeroToOne();
+                Mat4 depth                   = Mat4::One;
+                depth[2][2]                  = 0.5f;
+                depth[3][2]                  = 0.5f;
+                m_light.projections[cascade] = depth * m_light.projections[cascade];
             }
 
             std::size_t size   = sizeof(View);
@@ -81,13 +85,20 @@ namespace Chicane
             glNamedBufferSubData(m_instanceBuffer, offset, size, &camera);
             offset += size;
 
-            size = sizeof(View) * lights.size();
-            glNamedBufferSubData(m_instanceBuffer, offset, size, lights.data());
+            m_lightOffset = offset;
+            size          = sizeof(ShadowLight);
+            glNamedBufferSubData(m_instanceBuffer, offset, size, &m_light);
             offset += size;
 
             const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
             size                                      = sizeof(DrawPoly3DInstance) * instances.size();
             glNamedBufferSubData(m_instanceBuffer, offset, size, instances.data());
+        }
+
+        void OpenGLLScene::setShadowCascade(std::uint32_t inCascade)
+        {
+            m_light.info.y = static_cast<float>(inCascade);
+            glNamedBufferSubData(m_instanceBuffer, m_lightOffset, sizeof(ShadowLight), &m_light);
         }
 
         void OpenGLLScene::buildModelVertexArray()

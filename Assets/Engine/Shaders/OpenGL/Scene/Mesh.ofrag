@@ -6,13 +6,20 @@
 
 #extension GL_ARB_shading_language_include : require
 
+#include "../../Common/View.glsl"
 #include "../../Common/Shadow.glsl"
 
 layout(location = 0) out vec4 outColor;
 
 layout(location = 0) uniform sampler2DArray textures;
 
-layout(binding = 2) uniform sampler2D shadowMap;
+layout(binding = 2) uniform sampler2DArray shadowMap;
+layout(binding = 3) uniform samplerCube skyMap;
+
+layout(std430, binding = 0) readonly buffer Scene {
+    CameraInstance camera;
+    LightInstance light;
+} scene;
 
 layout(location = 0) in Data {
     flat ivec4 textureMaps[3];
@@ -20,9 +27,8 @@ layout(location = 0) in Data {
     vec3 normal;
     vec4 color;
     vec3 meshPosition;
-    vec4 shadowPosition;
-    vec3 lightPosition;
     vec3 cameraPosition;
+    float viewDepth;
 } inData;
 
 vec4 sampleMap(int index, vec2 uv) {
@@ -34,23 +40,23 @@ vec4 sampleMap(int index, vec2 uv) {
 }
 
 void main() {
-    int baseIndex               = inData.textureMaps[0].x;
-    int ambientOcclusionIndex   = inData.textureMaps[0].y;
-    int normalIndex             = inData.textureMaps[0].z;
-    int roughnessIndex          = inData.textureMaps[0].w;
-    int metalnessIndex          = inData.textureMaps[1].x;
-    int specularIndex           = inData.textureMaps[1].z;
-    int opacityIndex            = inData.textureMaps[1].w;
-    int selfIlluminationIndex   = inData.textureMaps[2].y;
+    int baseIndex             = inData.textureMaps[0].x;
+    int ambientOcclusionIndex = inData.textureMaps[0].y;
+    int normalIndex           = inData.textureMaps[0].z;
+    int roughnessIndex        = inData.textureMaps[0].w;
+    int metalnessIndex        = inData.textureMaps[1].x;
+    int specularIndex         = inData.textureMaps[1].z;
+    int opacityIndex          = inData.textureMaps[1].w;
+    int selfIlluminationIndex = inData.textureMaps[2].y;
 
     vec4  baseSample       = sampleMap(baseIndex, inData.UV);
     vec3  color            = baseSample.rgb * inData.color.rgb;
     float ambientOcclusion = sampleMap(ambientOcclusionIndex, inData.UV).r;
-    float roughness        = roughnessIndex < 0 ? 0.5 : sampleMap(roughnessIndex, inData.UV).r;
+    float roughness        = roughnessIndex < 0 ? 0.9 : sampleMap(roughnessIndex, inData.UV).r;
     float metalness        = metalnessIndex < 0 ? 0.0 : sampleMap(metalnessIndex, inData.UV).r;
     float opacity          = opacityIndex < 0 ? baseSample.a * inData.color.a : sampleMap(opacityIndex, inData.UV).r;
     vec3  emissive         = selfIlluminationIndex < 0 ? vec3(0.0) : sampleMap(selfIlluminationIndex, inData.UV).rgb;
-    vec3  specularColor    = specularIndex < 0 ? vec3(1.0) : sampleMap(specularIndex, inData.UV).rgb;
+    vec3  specularColor    = specularIndex < 0 ? vec3(0.5) : sampleMap(specularIndex, inData.UV).rgb;
 
     vec3 normal = normalize(inData.normal);
     if (normalIndex >= 0) {
@@ -58,23 +64,75 @@ void main() {
         normal = applyTangentNormal(normal, tangentNormal, inData.meshPosition, inData.UV);
     }
 
-    vec3 lightDirection   = normalize(inData.lightPosition - inData.meshPosition);
-    vec3 viewDirection    = normalize(inData.cameraPosition - inData.meshPosition);
+    vec3 viewDirection = normalize(inData.cameraPosition - inData.meshPosition);
+    int  lightCount    = int(scene.light.info.x);
+    int  shadowCaster  = int(scene.light.info.z);
+    int  environment   = int(scene.light.info.w);
+    float roughnessClamped = clamp(roughness, 0.0, 1.0);
+    float metalnessClamped = clamp(metalness, 0.0, 1.0);
 
-    float shadow = ShadowCalculation(shadowMap, inData.shadowPosition, normal, lightDirection);
+    vec3 environmentColor = vec3(0.0);
+    if (environment >= 0 && environment < lightCount) {
+        environmentColor = scene.light.lights[environment].color.rgb;
+    }
 
-    vec3 lighting = evaluateLighting(
+    vec3 lighting = evaluateIBL(
+        skyMap,
         color,
         normal,
-        lightDirection,
         viewDirection,
-        clamp(roughness, 0.0, 1.0),
-        clamp(metalness, 0.0, 1.0),
+        roughnessClamped,
+        metalnessClamped,
         specularColor,
         ambientOcclusion,
-        shadow
+        environmentColor
     );
-    lighting += emissive;
 
+    for (int index = 0; index < 8; ++index) {
+        if (index >= lightCount) {
+            break;
+        }
+
+        SceneLight entry = scene.light.lights[index];
+        if (entry.direction.w > 2.5) {
+            continue;
+        }
+
+        vec3 lightDirection = resolveLightDirection(entry.translation, entry.direction, inData.meshPosition);
+        float attenuation   = resolveLightAttenuation(entry.translation, entry.direction, inData.meshPosition);
+        vec3 lightColor     = entry.color.rgb * attenuation;
+
+        if (entry.direction.w < 0.5 && lightDirection.z <= 0.0) {
+            continue;
+        }
+
+        float shadow = 0.0;
+        if (index == shadowCaster) {
+            int cascade = selectCascade(inData.viewDepth, scene.light.splits);
+            shadow = ShadowCalculation(
+                shadowMap,
+                cascade,
+                scene.light.views[cascade],
+                scene.light.projections[cascade],
+                inData.meshPosition,
+                normal,
+                lightDirection
+            );
+        }
+
+        lighting += evaluateLightContribution(
+            color,
+            normal,
+            lightDirection,
+            viewDirection,
+            roughnessClamped,
+            metalnessClamped,
+            specularColor,
+            shadow,
+            lightColor
+        );
+    }
+
+    lighting += emissive;
     outColor = vec4(lighting, opacity);
 }

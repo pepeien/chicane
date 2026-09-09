@@ -2,6 +2,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Shadow/Light.hpp"
 
 namespace Chicane
 {
@@ -20,6 +21,8 @@ namespace Chicane
 
             bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
+
+            void setShadowCascade(std::uint32_t inCascade);
 
         private:
             // Model
@@ -43,6 +46,8 @@ namespace Chicane
 
             // Instance
             std::uint32_t m_instanceBuffer;
+            std::size_t   m_lightOffset = 0;
+            ShadowLight   m_light       = {};
         };
     }
 }

@@ -69,7 +69,7 @@ namespace Chicane
                     return;
                 }
 
-                const Time::Point now = Time::Clock::now();
+                const Time::Point now  = Time::Clock::now();
                 bool              bDue = false;
                 for (const PressablePressed<B>& entry : m_pressed)
                 {

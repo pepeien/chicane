@@ -332,23 +332,19 @@ namespace Editor
                 {
                     if (item.label.equals("Meshes"))
                     {
-                        item.isChecked =
-                            renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Meshes);
+                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Meshes);
                     }
                     else if (item.label.equals("Bounds"))
                     {
-                        item.isChecked =
-                            renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Bounds);
+                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Bounds);
                     }
                     else if (item.label.equals("Traces"))
                     {
-                        item.isChecked =
-                            renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Traces);
+                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Traces);
                     }
                     else if (item.label.equals("Colliders"))
                     {
-                        item.isChecked =
-                            renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Colliders);
+                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Colliders);
                     }
                 }
             }

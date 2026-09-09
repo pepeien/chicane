@@ -428,7 +428,7 @@ namespace Chicane
             createInfo.queryType  = vk::QueryType::eTimestamp;
             createInfo.queryCount = static_cast<std::uint32_t>(frames.size() * 2U);
 
-            m_timestampQueryPool = logicalDevice.createQueryPool(createInfo);
+            m_timestampQueryPool   = logicalDevice.createQueryPool(createInfo);
             m_bIsTimestampsEnabled = true;
         }
 

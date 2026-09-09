@@ -11,10 +11,7 @@ namespace Chicane
         struct CHICANE_KERB Body
         {
         public:
-            static Body invalid()
-            {
-                return {};
-            }
+            static Body invalid() { return {}; }
 
         public:
             Body() = default;
@@ -22,15 +19,9 @@ namespace Chicane
                 : m_id(inId)
             {}
 
-            bool isValid() const
-            {
-                return m_id != Invalid;
-            }
+            bool isValid() const { return m_id != Invalid; }
 
-            std::uint32_t value() const
-            {
-                return m_id;
-            }
+            std::uint32_t value() const { return m_id; }
 
             friend inline bool operator==(const Body& inLeft, const Body& inRight)
             {
@@ -45,7 +36,7 @@ namespace Chicane
         private:
             static constexpr std::uint32_t Invalid = 0xffffffffu;
 
-            std::uint32_t m_id = Invalid;
+            std::uint32_t                  m_id = Invalid;
         };
     }
 }

@@ -72,10 +72,7 @@ namespace
     }
 
     void appendChunk(
-        std::vector<unsigned char>& outValue,
-        const char*                 inType,
-        const unsigned char*        inData,
-        std::size_t                 inSize
+        std::vector<unsigned char>& outValue, const char* inType, const unsigned char* inData, std::size_t inSize
     )
     {
         appendU32(outValue, static_cast<std::uint32_t>(inSize));
@@ -403,8 +400,8 @@ namespace Chicane
             return {};
         }
 
-        const int         channels = m_channel;
-        const std::size_t rowBytes = static_cast<std::size_t>(m_width) * static_cast<std::size_t>(channels);
+        const int                  channels = m_channel;
+        const std::size_t          rowBytes = static_cast<std::size_t>(m_width) * static_cast<std::size_t>(channels);
         std::vector<unsigned char> raw(static_cast<std::size_t>(m_height) * (rowBytes + 1));
 
         for (int y = 0; y < m_height; y++)
@@ -429,13 +426,17 @@ namespace Chicane
             const std::uint16_t nlen = static_cast<std::uint16_t>(~static_cast<std::uint16_t>(block));
             zlib.push_back(static_cast<unsigned char>(nlen & 0xFF));
             zlib.push_back(static_cast<unsigned char>((nlen >> 8) & 0xFF));
-            zlib.insert(zlib.end(), raw.begin() + static_cast<std::ptrdiff_t>(pos), raw.begin() + static_cast<std::ptrdiff_t>(pos + block));
+            zlib.insert(
+                zlib.end(),
+                raw.begin() + static_cast<std::ptrdiff_t>(pos),
+                raw.begin() + static_cast<std::ptrdiff_t>(pos + block)
+            );
             pos += block;
         }
 
         appendU32(zlib, adler32(raw.data(), raw.size()));
 
-        Raw png;
+        Raw                 png;
         const unsigned char signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
         png.insert(png.end(), signature, signature + 8);
 
@@ -534,7 +535,8 @@ namespace Chicane
                 {
                     const Vec2 delta(x - center.x, dy);
                     Vec2       source(
-                        cosA * delta.x + sinA * delta.y + center.x, -sinA * delta.x + cosA * delta.y + center.y
+                        cosA * delta.x + sinA * delta.y + center.x,
+                        -sinA * delta.x + cosA * delta.y + center.y
                     );
 
                     source.x = std::clamp(source.x, 0.0f, (float)(m_width - 1));

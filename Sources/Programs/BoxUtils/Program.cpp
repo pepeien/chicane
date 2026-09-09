@@ -229,7 +229,7 @@ void Program::createMesh(
         );
     }
 
-    Chicane::Box::Texture texture(textures.at(0));
+    Chicane::Box::Texture    texture(textures.at(0));
     Chicane::Image::Instance textureImage = {};
     if (Chicane::Image::Instance data = texture.getData().lock())
     {

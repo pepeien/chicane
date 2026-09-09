@@ -20,11 +20,7 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Line(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        float inCellSize
-    )
+    SceneTraceRequest SceneTraceRequest::Line(const Vec3& inOrigin, const Vec3& inDestination, float inCellSize)
     {
         SceneTraceRequest request = Line(inCellSize);
         request.origin            = inOrigin;
@@ -43,10 +39,7 @@ namespace Chicane
     }
 
     SceneTraceRequest SceneTraceRequest::Rectangle(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        const Vec2& inHalfExtents,
-        float inCellSize
+        const Vec3& inOrigin, const Vec3& inDestination, const Vec2& inHalfExtents, float inCellSize
     )
     {
         SceneTraceRequest request = Rectangle(inHalfExtents, inCellSize);
@@ -66,10 +59,7 @@ namespace Chicane
     }
 
     SceneTraceRequest SceneTraceRequest::Cone(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        float inAngle,
-        float inCellSize
+        const Vec3& inOrigin, const Vec3& inDestination, float inAngle, float inCellSize
     )
     {
         SceneTraceRequest request = Cone(inAngle, inCellSize);
@@ -89,10 +79,7 @@ namespace Chicane
     }
 
     SceneTraceRequest SceneTraceRequest::Cylinder(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        float inRadius,
-        float inCellSize
+        const Vec3& inOrigin, const Vec3& inDestination, float inRadius, float inCellSize
     )
     {
         SceneTraceRequest request = Cylinder(inRadius, inCellSize);
@@ -104,10 +91,7 @@ namespace Chicane
 
     bool SceneTraceRequest::isValid() const
     {
-        return shape &&
-               shape->isValid() &&
-               cellSize > FLT_EPSILON &&
-               getLength() > FLT_EPSILON;
+        return shape && shape->isValid() && cellSize > FLT_EPSILON && getLength() > FLT_EPSILON;
     }
 
     float SceneTraceRequest::getLength() const

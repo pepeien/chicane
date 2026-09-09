@@ -126,7 +126,7 @@ namespace Editor
                 tangent = inAxis.cross(Chicane::Vec3::Right());
             }
 
-            tangent               = tangent.normalize();
+            tangent                       = tangent.normalize();
             const Chicane::Vec3 bitangent = inAxis.cross(tangent).normalize();
             const Chicane::Vec3 offset    = inPoint - inOrigin;
 
@@ -229,22 +229,22 @@ namespace Editor
         const Chicane::Vec3 origin = getTranslation();
         const GizmoAxis     axes[] = {GizmoAxis::X, GizmoAxis::Y, GizmoAxis::Z};
 
-        GizmoAxis hit      = GizmoAxis::None;
-        float     best     = m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS;
-        float     startT   = 0.0f;
-        float     startAng = 0.0f;
-        Chicane::Vec3 hitAxis = Chicane::Vec3::Right();
+        GizmoAxis     hit      = GizmoAxis::None;
+        float         best     = m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS;
+        float         startT   = 0.0f;
+        float         startAng = 0.0f;
+        Chicane::Vec3 hitAxis  = Chicane::Vec3::Right();
 
         if (m_type == GizmoType::Scale)
         {
-            const float ray = std::max(0.0f, (origin - inOrigin).dot(inDirection));
+            const float ray      = std::max(0.0f, (origin - inOrigin).dot(inDirection));
             const float distance = length((inOrigin + inDirection * ray) - origin);
             if (distance < CENTER_RADIUS)
             {
-                hit      = GizmoAxis::Center;
-                best     = distance;
-                startT   = std::max(distance, MIN_SCALE);
-                hitAxis  = Chicane::Vec3::One();
+                hit     = GizmoAxis::Center;
+                best    = distance;
+                startT  = std::max(distance, MIN_SCALE);
+                hitAxis = Chicane::Vec3::One();
             }
         }
 
@@ -277,17 +277,7 @@ namespace Editor
             float ray      = 0.0f;
             float along    = 0.0f;
             float distance = 0.0f;
-            closestOnAxis(
-                inOrigin,
-                inDirection,
-                origin,
-                direction,
-                0.0f,
-                AXIS_LENGTH,
-                ray,
-                along,
-                distance
-            );
+            closestOnAxis(inOrigin, inDirection, origin, direction, 0.0f, AXIS_LENGTH, ray, along, distance);
 
             if (distance >= best)
             {
@@ -310,15 +300,15 @@ namespace Editor
             return false;
         }
 
-        m_bIsDragging           = true;
-        m_dragAxis              = hit;
-        m_dragStartT            = startT;
-        m_dragStartAngle        = startAng;
-        m_dragOrigin            = origin;
-        m_dragAxisDir           = hitAxis;
-        m_dragStartTranslation  = m_target->getTranslation();
-        m_dragStartScale        = m_target->getScale();
-        m_dragStartRotation     = m_target->getRotation();
+        m_bIsDragging          = true;
+        m_dragAxis             = hit;
+        m_dragStartT           = startT;
+        m_dragStartAngle       = startAng;
+        m_dragOrigin           = origin;
+        m_dragAxisDir          = hitAxis;
+        m_dragStartTranslation = m_target->getTranslation();
+        m_dragStartScale       = m_target->getScale();
+        m_dragStartRotation    = m_target->getRotation();
 
         return true;
     }
@@ -363,21 +353,11 @@ namespace Editor
         float ray      = 0.0f;
         float along    = 0.0f;
         float distance = 0.0f;
-        closestOnAxis(
-            inOrigin,
-            inDirection,
-            m_dragOrigin,
-            m_dragAxisDir,
-            -1000.0f,
-            1000.0f,
-            ray,
-            along,
-            distance
-        );
+        closestOnAxis(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, -1000.0f, 1000.0f, ray, along, distance);
 
         if (m_type == GizmoType::Scale)
         {
-            const float ratio = along / std::max(m_dragStartT, MIN_SCALE);
+            const float   ratio = along / std::max(m_dragStartT, MIN_SCALE);
             Chicane::Vec3 scale = m_dragStartScale;
 
             switch (m_dragAxis)
@@ -398,9 +378,7 @@ namespace Editor
             return;
         }
 
-        m_target->setAbsoluteTranslation(
-            m_dragStartTranslation + m_dragAxisDir * (along - m_dragStartT)
-        );
+        m_target->setAbsoluteTranslation(m_dragStartTranslation + m_dragAxisDir * (along - m_dragStartT));
         setAbsoluteTranslation(m_target->getTranslation());
         setAbsoluteRotation(m_target->getRotation());
         setAbsoluteScale(Chicane::Vec3::One());
@@ -497,7 +475,7 @@ namespace Editor
             return;
         }
 
-        m_bIsListening = std::make_shared<bool>(true);
+        m_bIsListening                  = std::make_shared<bool>(true);
         std::shared_ptr<bool> listening = m_bIsListening;
 
         m_windowSubscription = window->watchEvent(
@@ -538,8 +516,7 @@ namespace Editor
 
         switch (inEvent.type)
         {
-        case Chicane::WindowEventType::MouseButtonDown:
-        {
+        case Chicane::WindowEventType::MouseButtonDown: {
             const Chicane::Input::MouseButtonEvent event =
                 *static_cast<const Chicane::Input::MouseButtonEvent*>(inEvent.data);
             if (event.button != Chicane::Input::MouseButton::Left)
@@ -552,8 +529,7 @@ namespace Editor
             break;
         }
 
-        case Chicane::WindowEventType::MouseButtonUp:
-        {
+        case Chicane::WindowEventType::MouseButtonUp: {
             const Chicane::Input::MouseButtonEvent event =
                 *static_cast<const Chicane::Input::MouseButtonEvent*>(inEvent.data);
             if (event.button != Chicane::Input::MouseButton::Left)
@@ -566,8 +542,7 @@ namespace Editor
             break;
         }
 
-        case Chicane::WindowEventType::MouseMotion:
-        {
+        case Chicane::WindowEventType::MouseMotion: {
             if (!isDragging())
             {
                 break;
@@ -580,8 +555,7 @@ namespace Editor
             break;
         }
 
-        case Chicane::WindowEventType::KeyDown:
-        {
+        case Chicane::WindowEventType::KeyDown: {
             if (!getTarget())
             {
                 break;
@@ -656,10 +630,7 @@ namespace Editor
         }
 
         const Chicane::Vec2 size = viewport->getSize();
-        const Chicane::Vec2 local(
-            inLocation.x - viewport->getPosition().x,
-            inLocation.y - viewport->getPosition().y
-        );
+        const Chicane::Vec2 local(inLocation.x - viewport->getPosition().x, inLocation.y - viewport->getPosition().y);
 
         std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
         if (cameras.empty())

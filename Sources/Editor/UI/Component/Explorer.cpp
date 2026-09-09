@@ -559,7 +559,7 @@ namespace Editor
         const bool          bIsVertical       = layout.equals(LAYOUT_VERTICAL);
         const bool          bHasLayoutChanged = !layout.equals(m_gridLayout);
         const auto&         style             = content->getStyle();
-        const Chicane::Vec2 inner = content->getInnerLayoutSize();
+        const Chicane::Vec2 inner             = content->getInnerLayoutSize();
         const Chicane::Vec2 view(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
         const float         em = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
         const float         iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);

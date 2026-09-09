@@ -536,7 +536,7 @@ namespace Chicane
         {
             light->onResize(m_renderer->getResolution());
 
-            command.lights.push_back(light->getData());
+            command.lights.push_back(light->getLight());
         }
 
         auto submitMesh = [&](CMesh* mesh)

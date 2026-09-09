@@ -20,4 +20,8 @@ void Sun::onLoad()
     m_light->setFarClip(distanceToFocus + m_distance);
     m_light->setViewport(50.0f, 50.0f);
     m_light->setProjectionType(Chicane::ViewProjectionType::Orthographic);
+    m_light->setType(Chicane::LightType::Directional);
+    m_light->setCanCastShadows(true);
+    m_light->setColor(Chicane::Vec3(1.0f));
+    m_light->setIntensity(1.0f);
 }

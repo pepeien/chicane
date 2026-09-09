@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend.hpp"
 
 #include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer/Shadow/Light.hpp"
 
 namespace Chicane
 {
@@ -138,7 +139,7 @@ namespace Chicane
                 return sizeof(View);
 
             case Resource::SceneLights:
-                return sizeof(View);
+                return sizeof(ShadowLight);
 
             case Resource::SceneInstances:
                 return sizeof(DrawPoly3DInstance) + sizeof(View);

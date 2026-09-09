@@ -14,11 +14,11 @@ namespace Chicane
         struct CHICANE_GRID DockDrag
         {
         public:
-            DockPanel* panel   = nullptr;
-            Vec2       cursor  = Vec2::Zero();
-            Vec2       grab    = Vec2::Zero();
+            DockPanel* panel     = nullptr;
+            Vec2       cursor    = Vec2::Zero();
+            Vec2       grab      = Vec2::Zero();
             bool       bIsActive = false;
-            DockSide   drop    = DockSide::Float;
+            DockSide   drop      = DockSide::Float;
         };
     }
 }

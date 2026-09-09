@@ -25,12 +25,7 @@ namespace Chicane
             return std::sqrt(lengthSquared(inDestination - inOrigin));
         }
 
-        Vec3 closestPointOnSegment(
-            const Vec3& inPoint,
-            const Vec3& inStart,
-            const Vec3& inEnd,
-            float& outFraction
-        )
+        Vec3 closestPointOnSegment(const Vec3& inPoint, const Vec3& inStart, const Vec3& inEnd, float& outFraction)
         {
             const Vec3  delta  = inEnd - inStart;
             const float length = lengthSquared(delta);
@@ -63,11 +58,7 @@ namespace Chicane
             const Vec3& min = inBounds.getMin().transformed;
             const Vec3& max = inBounds.getMax().transformed;
 
-            return Vec3(
-                clamp(inPoint.x, min.x, max.x),
-                clamp(inPoint.y, min.y, max.y),
-                clamp(inPoint.z, min.z, max.z)
-            );
+            return Vec3(clamp(inPoint.x, min.x, max.x), clamp(inPoint.y, min.y, max.y), clamp(inPoint.z, min.z, max.z));
         }
 
         bool buildAxisBasis(const Vec3& inDirection, Vec3& outRight, Vec3& outUp)
@@ -95,11 +86,11 @@ namespace Chicane
         }
 
         bool intersectsRadial(
-            const Vec3& inOrigin,
-            const Vec3& inDestination,
+            const Vec3&     inOrigin,
+            const Vec3&     inDestination,
             const Bounds3D& inBounds,
-            float inRadiusAtFraction,
-            float& outEnter
+            float           inRadiusAtFraction,
+            float&          outEnter
         )
         {
             const Vec3 center   = inBounds.getCenter();
@@ -117,10 +108,10 @@ namespace Chicane
 
         void fillResponse(
             SceneTraceResponse& outResponse,
-            const Vec3& inOrigin,
-            const Vec3& inDestination,
-            const Bounds3D& inBounds,
-            float inEnter
+            const Vec3&         inOrigin,
+            const Vec3&         inDestination,
+            const Bounds3D&     inBounds,
+            float               inEnter
         )
         {
             const Vec3  delta  = inDestination - inOrigin;

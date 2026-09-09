@@ -9,7 +9,7 @@
 
 layout(std430, binding = 0) readonly buffer Scene {
     CameraInstance camera;
-    LightInstance lights[];
+    LightInstance light;
     PolyInstance3D meshes[];
 } scene;
 
@@ -19,9 +19,8 @@ layout(location = 0) out Data {
     vec3 normal;
     vec4 color;
     vec3 meshPosition;
-    vec4 shadowPosition;
-    vec3 lightPosition;
     vec3 cameraPosition;
+    float viewDepth;
 } outData;
 
 layout(location = 0) in vec3 inPosition;
@@ -31,7 +30,6 @@ layout(location = 3) in vec3 inNormal;
 
 void main() {
     CameraInstance camera = scene.camera;
-    LightInstance light   = scene.lights[0];
     PolyInstance3D mesh   = scene.meshes[gl_InstanceID + gl_BaseInstance];
 
     vec4 position = vec4(inPosition, 1.0);
@@ -43,9 +41,8 @@ void main() {
     outData.normal         = mat3(transpose(inverse(mesh.model))) * inNormal;
     outData.color          = inColor;
     outData.meshPosition   = vec3(mesh.model * position);
-    outData.shadowPosition = light.projection * light.view * vec4(outData.meshPosition, 1.0);
-    outData.lightPosition  = light.translation.xyz;
     outData.cameraPosition = camera.translation.xyz;
+    outData.viewDepth      = -(camera.view * vec4(outData.meshPosition, 1.0)).z;
 
     gl_Position = camera.projection * camera.view * mesh.model * position;
 }

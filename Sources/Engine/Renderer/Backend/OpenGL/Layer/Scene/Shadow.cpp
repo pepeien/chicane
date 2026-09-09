@@ -5,6 +5,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
 
 namespace Chicane
 {
@@ -38,6 +39,8 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
+            OpenGLLScene* parent = getBackend<OpenGLBackend>()->getLayer<OpenGLLScene>(SCENE_LAYER_ID);
+
             glUseProgram(m_shaderProgram);
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
@@ -55,26 +58,29 @@ namespace Chicane
             glEnable(GL_POLYGON_OFFSET_FILL);
             glPolygonOffset(2.0f, 4.0f);
 
-            glClear(GL_DEPTH_BUFFER_BIT);
-
-            // Shadow map is its own framebuffer — always fill the full atlas.
             glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
-                glDrawElementsInstancedBaseVertexBaseInstance(
-                    GL_TRIANGLES,
-                    draw.indexCount,
-                    GL_UNSIGNED_INT,
-                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
-                    draw.instanceCount,
-                    draw.vertexStart,
-                    draw.instanceStart
-                );
+                parent->setShadowCascade(cascade);
+                glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, cascade);
+                glClear(GL_DEPTH_BUFFER_BIT);
+
+                for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+                {
+                    glDrawElementsInstancedBaseVertexBaseInstance(
+                        GL_TRIANGLES,
+                        draw.indexCount,
+                        GL_UNSIGNED_INT,
+                        (void*)(sizeof(Vertex::Index) * draw.indexStart),
+                        draw.instanceCount,
+                        draw.vertexStart,
+                        draw.instanceStart
+                    );
+                }
             }
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
             glBindTextureUnit(2, m_depthMapBuffer);
 
             getBackend<OpenGLBackend>()->bindTarget();
@@ -91,7 +97,6 @@ namespace Chicane
         {
             GLint result = GL_FALSE;
 
-            // Vertex
             const std::vector<char> vertexShaderCode =
                 FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Shadow.overt");
 
@@ -112,7 +117,6 @@ namespace Chicane
 
             result = GL_FALSE;
 
-            // Shader Program
             m_shaderProgram = glCreateProgram();
             glAttachShader(m_shaderProgram, vertexShader);
             glLinkProgram(m_shaderProgram);
@@ -133,12 +137,17 @@ namespace Chicane
 
         void OpenGLLSceneShadow::buildShadowMap()
         {
-            // Framebuffer
             glCreateFramebuffers(1, &m_shadowFramebuffer);
 
-            // Depth Map
-            glCreateTextures(GL_TEXTURE_2D, 1, &m_depthMapBuffer);
-            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT32F, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+            glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_depthMapBuffer);
+            glTextureStorage3D(
+                m_depthMapBuffer,
+                1,
+                GL_DEPTH_COMPONENT32F,
+                SHADOW_MAP_WIDTH,
+                SHADOW_MAP_HEIGHT,
+                SHADOW_CASCADE_COUNT
+            );
 
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -150,9 +159,8 @@ namespace Chicane
             float borderColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
             glTextureParameterfv(m_depthMapBuffer, GL_TEXTURE_BORDER_COLOR, borderColor);
 
-            // Attach
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthMapBuffer, 0);
+            glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, 0);
             glDrawBuffer(GL_NONE);
             glReadBuffer(GL_NONE);
 

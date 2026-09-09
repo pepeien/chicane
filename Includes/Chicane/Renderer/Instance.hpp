@@ -52,8 +52,8 @@ namespace Chicane
 
             // View
             void useCamera(const View& inData);
-            void addLight(const View& inData);
-            void addLight(const View::List& inData);
+            void addLight(const Light& inData);
+            void addLight(const Light::List& inData);
 
             // Frame
             Frame& getCurrentFrame();

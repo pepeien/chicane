@@ -143,10 +143,10 @@ namespace Chicane
 
             for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e2D, DrawPolyMode::Fill))
             {
-                std::uint32_t       runStart    = draw.instanceStart;
-                std::uint32_t       runCount    = 0;
+                std::uint32_t       runStart        = draw.instanceStart;
+                std::uint32_t       runCount        = 0;
                 bool                bHasRunBackdrop = false;
-                const std::uint32_t instanceEnd = draw.instanceStart + draw.instanceCount;
+                const std::uint32_t instanceEnd     = draw.instanceStart + draw.instanceCount;
 
                 auto flush = [&]()
                 {

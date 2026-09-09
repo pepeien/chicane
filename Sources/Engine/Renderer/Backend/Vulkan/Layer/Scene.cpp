@@ -1,10 +1,12 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
@@ -23,11 +25,13 @@ namespace Chicane
             buildModelVertexBuffer();
             buildModelIndexBuffer();
             buildShadowImage();
+            buildSkyImage();
             buildLayers();
         }
 
         void VulkanLScene::onDestruction()
         {
+            destroySkyImage();
             destroyShadowImage();
             destroyModelData();
         }
@@ -128,12 +132,12 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             shadowImage.format = backend->swapchain.depthFormat;
-            shadowImage.extent = vk::Extent2D {SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT};
+            shadowImage.extent = vk::Extent2D{SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT};
 
             VulkanImageCreateInfo instanceCreateInfo;
             instanceCreateInfo.width  = SHADOW_MAP_WIDTH;
             instanceCreateInfo.height = SHADOW_MAP_HEIGHT;
-            instanceCreateInfo.count  = 1;
+            instanceCreateInfo.count  = SHADOW_CASCADE_COUNT;
             instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
             instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
             instanceCreateInfo.usage =
@@ -167,13 +171,25 @@ namespace Chicane
             memoryCreateInfo.physicalDevice = backend->physicalDevice;
             VulkanImage::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
 
-            VulkanImageViewCreateInfo viewCreateInfo;
-            viewCreateInfo.count         = instanceCreateInfo.count;
-            viewCreateInfo.type          = vk::ImageViewType::e2D;
-            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
-            viewCreateInfo.format        = instanceCreateInfo.format;
-            viewCreateInfo.logicalDevice = backend->logicalDevice;
-            VulkanImage::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
+            VulkanImageViewCreateInfo arrayViewCreateInfo;
+            arrayViewCreateInfo.count         = SHADOW_CASCADE_COUNT;
+            arrayViewCreateInfo.type          = vk::ImageViewType::e2DArray;
+            arrayViewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+            arrayViewCreateInfo.format        = instanceCreateInfo.format;
+            arrayViewCreateInfo.logicalDevice = backend->logicalDevice;
+            VulkanImage::initView(shadowImage.view, shadowImage.instance, arrayViewCreateInfo);
+
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            {
+                VulkanImageViewCreateInfo layerViewCreateInfo;
+                layerViewCreateInfo.count          = 1;
+                layerViewCreateInfo.baseArrayLayer = cascade;
+                layerViewCreateInfo.type           = vk::ImageViewType::e2D;
+                layerViewCreateInfo.aspect         = vk::ImageAspectFlagBits::eDepth;
+                layerViewCreateInfo.format         = instanceCreateInfo.format;
+                layerViewCreateInfo.logicalDevice  = backend->logicalDevice;
+                VulkanImage::initView(shadowLayerViews[cascade], shadowImage.instance, layerViewCreateInfo);
+            }
 
             shadowImageInfo.imageLayout = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
             shadowImageInfo.imageView   = shadowImage.view;
@@ -184,10 +200,113 @@ namespace Chicane
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            {
+                backend->logicalDevice.destroyImageView(shadowLayerViews[cascade]);
+                shadowLayerViews[cascade] = nullptr;
+            }
+
             backend->logicalDevice.freeMemory(shadowImage.memory);
             backend->logicalDevice.destroyImage(shadowImage.instance);
             backend->logicalDevice.destroyImageView(shadowImage.view);
             backend->logicalDevice.destroySampler(shadowImage.sampler);
+        }
+
+        void VulkanLScene::buildSkyImage()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            constexpr std::uint32_t kFaceCount = 6;
+
+            skyImage.format = vk::Format::eR8G8B8A8Unorm;
+            skyImage.extent = vk::Extent2D{1, 1};
+
+            VulkanImageCreateInfo instanceCreateInfo;
+            instanceCreateInfo.width         = 1;
+            instanceCreateInfo.height        = 1;
+            instanceCreateInfo.count         = kFaceCount;
+            instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+            instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
+            instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+            instanceCreateInfo.format        = skyImage.format;
+            instanceCreateInfo.logicalDevice = backend->logicalDevice;
+            VulkanImage::initInstance(skyImage.instance, instanceCreateInfo);
+
+            VulkanImageSamplerCreateInfo samplerCreateInfo;
+            samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eClampToEdge;
+            samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
+            samplerCreateInfo.logicalDevice = backend->logicalDevice;
+            VulkanImage::initSampler(skyImage.sampler, samplerCreateInfo);
+
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = backend->logicalDevice;
+            memoryCreateInfo.physicalDevice = backend->physicalDevice;
+            VulkanImage::initMemory(skyImage.memory, skyImage.instance, memoryCreateInfo);
+
+            VulkanImageViewCreateInfo viewCreateInfo;
+            viewCreateInfo.count         = kFaceCount;
+            viewCreateInfo.type          = vk::ImageViewType::eCube;
+            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+            viewCreateInfo.format        = skyImage.format;
+            viewCreateInfo.logicalDevice = backend->logicalDevice;
+            VulkanImage::initView(skyImage.view, skyImage.instance, viewCreateInfo);
+
+            VulkanImage::transitionLayout(
+                backend->mainCommandBuffer,
+                backend->graphicsQueue,
+                skyImage.instance,
+                vk::ImageLayout::eUndefined,
+                vk::ImageLayout::eTransferDstOptimal,
+                kFaceCount,
+                1
+            );
+
+            VulkanCommandBufferWorker::startJob(backend->mainCommandBuffer);
+            vk::ClearColorValue       clearColor(0.15f, 0.15f, 0.18f, 1.0f);
+            vk::ImageSubresourceRange range;
+            range.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            range.baseMipLevel   = 0;
+            range.levelCount     = 1;
+            range.baseArrayLayer = 0;
+            range.layerCount     = kFaceCount;
+            backend->mainCommandBuffer
+                .clearColorImage(skyImage.instance, vk::ImageLayout::eTransferDstOptimal, clearColor, range);
+            VulkanCommandBufferWorker::endJob(backend->mainCommandBuffer, backend->graphicsQueue, "Clear Default Sky");
+
+            VulkanImage::transitionLayout(
+                backend->mainCommandBuffer,
+                backend->graphicsQueue,
+                skyImage.instance,
+                vk::ImageLayout::eTransferDstOptimal,
+                vk::ImageLayout::eShaderReadOnlyOptimal,
+                kFaceCount,
+                1
+            );
+
+            skyImageInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+            skyImageInfo.imageView   = skyImage.view;
+            skyImageInfo.sampler     = skyImage.sampler;
+        }
+
+        void VulkanLScene::destroySkyImage()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            backend->logicalDevice.freeMemory(skyImage.memory);
+            backend->logicalDevice.destroyImage(skyImage.instance);
+            backend->logicalDevice.destroyImageView(skyImage.view);
+            backend->logicalDevice.destroySampler(skyImage.sampler);
+        }
+
+        void VulkanLScene::setSkyImageInfo(const vk::DescriptorImageInfo& inInfo)
+        {
+            skyImageInfo = inInfo;
+
+            if (VulkanLSceneMesh* mesh = m_backend->getLayer<VulkanLSceneMesh>(SCENE_MESH_LAYER_ID))
+            {
+                mesh->updateSkyDescriptors(skyImageInfo);
+            }
         }
 
         void VulkanLScene::buildLayers()

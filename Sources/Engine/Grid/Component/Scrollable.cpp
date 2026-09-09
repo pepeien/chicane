@@ -15,7 +15,7 @@ namespace Chicane
     {
         const Color::Rgba SCROLL_BAR_TRACK_COLOR(0, 0, 0, 110);
         const Color::Rgba SCROLL_BAR_THUMB_COLOR(210, 210, 210, 210);
-        constexpr float SCROLL_BAR_MARGIN_EM = 0.25f;
+        constexpr float   SCROLL_BAR_MARGIN_EM = 0.25f;
 
         Scrollable::Scrollable(const pugi::xml_node& inNode)
             : Component(inNode),
@@ -187,23 +187,18 @@ namespace Chicane
         {
             const float slot = scrollBarThickness() + scrollBarMargin();
 
-            return Vec2(
-                m_bReserveVerticalBar ? slot : 0.0f, m_bReserveHorizontalBar ? slot : 0.0f
-            );
+            return Vec2(m_bReserveVerticalBar ? slot : 0.0f, m_bReserveHorizontalBar ? slot : 0.0f);
         }
 
         Vec2 Scrollable::getScrollMax() const
         {
-            const Vec2  content = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
-            const Vec2  inner   = getInnerLayoutSize();
-            const float innerW  = std::max(0.0f, inner.x);
-            const float innerH  = std::max(0.0f, inner.y);
+            const Vec2      content  = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
+            const Vec2      inner    = getInnerLayoutSize();
+            const float     innerW   = std::max(0.0f, inner.x);
+            const float     innerH   = std::max(0.0f, inner.y);
             constexpr float kEpsilon = 1.0f;
 
-            return Vec2(
-                std::max(0.0f, content.x - innerW - kEpsilon),
-                std::max(0.0f, content.y - innerH - kEpsilon)
-            );
+            return Vec2(std::max(0.0f, content.x - innerW - kEpsilon), std::max(0.0f, content.y - innerH - kEpsilon));
         }
 
         void Scrollable::setVirtualContentSize(const Vec2& inValue)
@@ -471,10 +466,10 @@ namespace Chicane
 
         void Scrollable::refreshScrollBarReservation()
         {
-            const StyleOverflow overflowX = m_style.overflowX.get();
-            const StyleOverflow overflowY = m_style.overflowY.get();
-            const bool canReserveX = overflowX == StyleOverflow::Scroll || overflowX == StyleOverflow::Auto;
-            const bool canReserveY = overflowY == StyleOverflow::Scroll || overflowY == StyleOverflow::Auto;
+            const StyleOverflow overflowX   = m_style.overflowX.get();
+            const StyleOverflow overflowY   = m_style.overflowY.get();
+            const bool          canReserveX = overflowX == StyleOverflow::Scroll || overflowX == StyleOverflow::Auto;
+            const bool          canReserveY = overflowY == StyleOverflow::Scroll || overflowY == StyleOverflow::Auto;
 
             if (!canReserveX && !canReserveY)
             {
@@ -490,9 +485,9 @@ namespace Chicane
                 return;
             }
 
-            const Vec2 paddingBox = Component::getContentSize();
-            const Vec2 content    = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
-            constexpr float kEpsilon = 1.0f;
+            const Vec2      paddingBox = Component::getContentSize();
+            const Vec2      content    = m_bHasVirtualContent ? m_virtualContentSize : getChildrenContentSize();
+            constexpr float kEpsilon   = 1.0f;
 
             auto needsBar = [kEpsilon](StyleOverflow overflow, float contentSize, float innerSize) -> bool
             {

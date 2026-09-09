@@ -120,7 +120,7 @@ namespace Chicane
                 createInfo.subresourceRange.aspectMask     = inCreateInfo.aspect;
                 createInfo.subresourceRange.baseMipLevel   = 0;
                 createInfo.subresourceRange.levelCount     = std::max(1u, inCreateInfo.mipLevels);
-                createInfo.subresourceRange.baseArrayLayer = 0;
+                createInfo.subresourceRange.baseArrayLayer = inCreateInfo.baseArrayLayer;
                 createInfo.subresourceRange.layerCount     = inCreateInfo.count;
 
                 outView = inCreateInfo.logicalDevice.createImageView(createInfo);

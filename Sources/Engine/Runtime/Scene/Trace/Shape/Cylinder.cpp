@@ -22,10 +22,7 @@ namespace Chicane
     }
 
     bool SceneTraceShapeCylinder::intersects(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        const Bounds3D& inBounds,
-        float& outEnter
+        const Vec3& inOrigin, const Vec3& inDestination, const Bounds3D& inBounds, float& outEnter
     ) const
     {
         if (!isValid() || SceneTraceShapeUtility::axisLength(inOrigin, inDestination) <= FLT_EPSILON)
@@ -33,12 +30,6 @@ namespace Chicane
             return false;
         }
 
-        return SceneTraceShapeUtility::intersectsRadial(
-            inOrigin,
-            inDestination,
-            inBounds,
-            getRadiusAt(0.0f),
-            outEnter
-        );
+        return SceneTraceShapeUtility::intersectsRadial(inOrigin, inDestination, inBounds, getRadiusAt(0.0f), outEnter);
     }
 }

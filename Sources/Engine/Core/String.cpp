@@ -149,7 +149,7 @@ namespace Chicane
         {
             if (at(i) == '&' && i + 3 < size() && at(i + 1) == '#')
             {
-                size_t j   = i + 2;
+                size_t j      = i + 2;
                 bool   bIsHex = false;
 
                 if (j < size() && (at(j) == 'x' || at(j) == 'X'))

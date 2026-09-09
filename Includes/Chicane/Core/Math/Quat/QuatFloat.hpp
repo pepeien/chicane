@@ -27,14 +27,13 @@ namespace Chicane
 
         friend inline Vec3 operator*(const QuatFloat& inOrientation, const Vec3& inValue)
         {
-            const glm::vec3 mapped =
-                static_cast<const glm::quat&>(inOrientation) * static_cast<glm::vec3>(inValue);
+            const glm::vec3 mapped = static_cast<const glm::quat&>(inOrientation) * static_cast<glm::vec3>(inValue);
 
             return Vec3(mapped);
         }
 
     public:
         QuatFloat normalize() const;
-        Vec3      toEuler() const;
+        Vec3 toEuler() const;
     };
 }

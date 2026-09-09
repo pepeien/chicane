@@ -7,7 +7,7 @@
 
 layout(std430, binding = 0) readonly buffer Scene {
     CameraInstance camera;
-    LightInstance lights[];
+    LightInstance light;
     PolyInstance3D meshes[];
 } scene;
 
@@ -17,8 +17,9 @@ layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
 void main() {
-    LightInstance light   = scene.lights[0];
-    PolyInstance3D mesh   = scene.meshes[gl_InstanceID + gl_BaseInstance];
+    LightInstance light = scene.light;
+    PolyInstance3D mesh = scene.meshes[gl_InstanceID + gl_BaseInstance];
+    int cascade         = int(light.info.y);
 
-    gl_Position = light.projection * light.view * mesh.model * vec4(inPosition, 1.0);
+    gl_Position = light.projections[cascade] * light.views[cascade] * mesh.model * vec4(inPosition, 1.0);
 }

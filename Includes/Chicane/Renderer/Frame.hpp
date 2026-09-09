@@ -11,6 +11,7 @@
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Sky/Instance.hpp"
 #include "Chicane/Renderer/Draw/Sky/Resource.hpp"
+#include "Chicane/Renderer/Light.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -27,9 +28,9 @@ namespace Chicane
             const View& getCamera() const;
             void useCamera(const View& inData);
 
-            const View::List& getLights() const;
-            void addLight(const View::List& inData);
-            void addLight(const View& inData);
+            const Light::List& getLights() const;
+            void addLight(const Light::List& inData);
+            void addLight(const Light& inData);
 
             bool hasDraws(DrawPolyType inType, DrawPolyMode inMode) const;
             DrawPoly::List getDraws(DrawPolyType inType, DrawPolyMode inMode) const;
@@ -55,20 +56,20 @@ namespace Chicane
 
         protected:
             // View
-            View                             m_camera = {};
-            View::List                       m_lights = {};
+            View                     m_camera = {};
+            Light::List              m_lights = {};
 
             // Poly
-            DrawPoly::Map                    m_polys = {};
+            DrawPoly::Map            m_polys = {};
 
             // Batches
-            DrawPoly::List                   m_2DBatches = {};
+            DrawPoly::List           m_2DBatches = {};
 
             // Instances
             DrawPoly3DInstance::Map  m_3DInstances     = {};
             DrawPoly3DInstance::List m_3DInstancesFlat = {};
-            DrawPoly2DInstance::List         m_2DInstances       = {};
-            DrawSkyInstance                  m_skyInstance       = {};
+            DrawPoly2DInstance::List m_2DInstances     = {};
+            DrawSkyInstance          m_skyInstance     = {};
         };
     }
 }

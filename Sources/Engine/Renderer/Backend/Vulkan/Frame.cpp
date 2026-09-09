@@ -4,6 +4,7 @@
 
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
+#include "Chicane/Renderer/Shadow.hpp"
 
 namespace Chicane
 {
@@ -32,7 +33,7 @@ namespace Chicane
             commandBuffer.reset();
 
             updateCameraData(inFrame.getCamera());
-            updateLightData(inFrame.getLights());
+            updateLightData(inFrame.getCamera(), inFrame.getLights());
             update2DData(inFrame.getInstances2D());
             update3DData(inFrame.getInstances3D());
 
@@ -262,24 +263,26 @@ namespace Chicane
             bufferCreateInfo.physicalDevice = physicalDevice;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size  = sizeof(View);
+            bufferCreateInfo.size  = sizeof(ShadowLight);
             bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
 
             lightResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::updateLightData(const View::List& inData)
+        void VulkanFrame::updateLightData(const View& inCamera, const Light::List& inLights)
         {
-            if (inData.empty())
+            lightData = Shadow::build(inCamera, inLights);
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
-                return;
+                lightData.projections[cascade][1][1] *= -1.0f;
+
+                Mat4 depth                     = Mat4::One;
+                depth[2][2]                    = 0.5f;
+                depth[3][2]                    = 0.5f;
+                lightData.projections[cascade] = depth * lightData.projections[cascade];
             }
 
-            View data = inData.at(0);
-            data.flipY();
-            data.depthZeroToOne();
-
-            lightResource.copyToBuffer(&data, sizeof(View));
+            lightResource.copyToBuffer(&lightData, sizeof(ShadowLight));
         }
 
         void VulkanFrame::destroyLightData()

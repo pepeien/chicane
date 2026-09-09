@@ -42,6 +42,15 @@ namespace Chicane
                 .bindDescriptorSets(vk::PipelineBindPoint::eGraphics, inPipelineLayout, 1, m_descriptor.set, nullptr);
         }
 
+        vk::DescriptorImageInfo VulkanSky::getDescriptorImageInfo() const
+        {
+            vk::DescriptorImageInfo info;
+            info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+            info.imageView   = view;
+            info.sampler     = sampler;
+            return info;
+        }
+
         void VulkanSky::initExtent(const Image::References& inImages)
         {
             extent.width  = INT32_MAX;

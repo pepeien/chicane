@@ -20,17 +20,17 @@ namespace Chicane
         struct CHICANE_KERB BodyCreateInfo
         {
         public:
-            BodyShape        shape         = BodyShape::Box;
-            MotionType       motion        = MotionType::Static;
-            Bounds3D         bounds        = {};
-            float            mass          = 30.0f;
-            float            massScale     = 1.0f;
-            float            gravityFactor = Gravity::FactorFull;
-            ObjectLayer      layer         = ObjectLayer::Auto;
-            CollisionPreset  preset        = CollisionPreset::Custom;
-            CollisionGroup   group         = {};
-            bool             bSensor       = false;
-            BodyPolygon      polygon       = {}; // Only used if `shape` is `BodyShape::Polygon`
+            BodyShape       shape         = BodyShape::Box;
+            MotionType      motion        = MotionType::Static;
+            Bounds3D        bounds        = {};
+            float           mass          = 30.0f;
+            float           massScale     = 1.0f;
+            float           gravityFactor = Gravity::FactorFull;
+            ObjectLayer     layer         = ObjectLayer::Auto;
+            CollisionPreset preset        = CollisionPreset::Custom;
+            CollisionGroup  group         = {};
+            bool            bSensor       = false;
+            BodyPolygon     polygon       = {}; // Only used if `shape` is `BodyShape::Polygon`
         };
     }
 }

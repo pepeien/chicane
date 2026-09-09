@@ -18,10 +18,7 @@ namespace Chicane
     }
 
     bool SceneTraceShapeRectangle::intersects(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        const Bounds3D& inBounds,
-        float& outEnter
+        const Vec3& inOrigin, const Vec3& inDestination, const Bounds3D& inBounds, float& outEnter
     ) const
     {
         if (!isValid())
@@ -52,8 +49,7 @@ namespace Chicane
         const float extentZ     = 0.5f * (max.z - min.z);
         const float actorRadius = std::sqrt(extentX * extentX + extentY * extentY + extentZ * extentZ);
 
-        if (std::abs(localX) > halfExtents.x + actorRadius ||
-            std::abs(localY) > halfExtents.y + actorRadius)
+        if (std::abs(localX) > halfExtents.x + actorRadius || std::abs(localY) > halfExtents.y + actorRadius)
         {
             return false;
         }

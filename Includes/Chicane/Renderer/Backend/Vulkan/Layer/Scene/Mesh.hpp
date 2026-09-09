@@ -15,6 +15,8 @@ namespace Chicane
         public:
             VulkanLSceneMesh();
 
+            void updateSkyDescriptors(const vk::DescriptorImageInfo& inInfo);
+
         protected:
             void onInit() override;
             void onRestart() override;

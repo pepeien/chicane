@@ -213,14 +213,13 @@ namespace Chicane
                 createInfo.pDepthStencilState  = &m_depthStencil;
                 createInfo.layout =
                     VulkanGraphicsPipeline::createLayout(m_descriptorSetLayouts, m_pushConstants, inLogicalDevice);
-                createInfo.renderPass = m_renderPass
-                    ? m_renderPass
-                    : VulkanGraphicsPipeline::createRendepass(
-                          m_attachments,
-                          m_subpassDepedencies,
-                          m_subpasses,
-                          inLogicalDevice
-                      );
+                createInfo.renderPass         = m_renderPass ? m_renderPass
+                                                             : VulkanGraphicsPipeline::createRendepass(
+                                                           m_attachments,
+                                                           m_subpassDepedencies,
+                                                           m_subpasses,
+                                                           inLogicalDevice
+                                                       );
                 createInfo.subpass            = 0;
                 createInfo.basePipelineHandle = nullptr;
 

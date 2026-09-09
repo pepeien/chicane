@@ -78,6 +78,11 @@ namespace Chicane
             glDisable(GL_CULL_FACE);
         }
 
+        std::uint32_t OpenGLLSceneSky::getCubemap() const
+        {
+            return m_texturesBuffer;
+        }
+
         void OpenGLLSceneSky::buildShader()
         {
             GLint result = GL_FALSE;

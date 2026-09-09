@@ -45,9 +45,7 @@ namespace Chicane
                 }
             }
 
-            void appendSegment(
-                Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor
-            )
+            void appendSegment(Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor)
             {
                 Vertex start;
                 start.position = inStart;
@@ -229,10 +227,7 @@ namespace Chicane
                     std::max(0.05f, inHalfExtents.z)
                 );
 
-                auto toWorld = [&](const Vec3& inLocal)
-                {
-                    return inCenter + inRotation * inLocal;
-                };
+                auto toWorld = [&](const Vec3& inLocal) { return inCenter + inRotation * inLocal; };
 
                 const Vec3 corners[8] = {
                     toWorld(Vec3(-half.x, -half.y, -half.z)),

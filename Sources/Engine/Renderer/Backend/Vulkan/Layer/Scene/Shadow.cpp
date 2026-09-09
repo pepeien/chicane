@@ -57,7 +57,6 @@ namespace Chicane
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
-            // Shadow map is its own framebuffer — always fill the full atlas.
             vk::Viewport viewport;
             viewport.x        = 0.0f;
             viewport.y        = 0.0f;
@@ -65,49 +64,56 @@ namespace Chicane
             viewport.height   = static_cast<float>(SHADOW_MAP_HEIGHT);
             viewport.minDepth = 0.0f;
             viewport.maxDepth = 1.0f;
-            commandBuffer.setViewport(0, 1, &viewport);
 
             vk::Rect2D scissor;
             scissor.offset.x      = 0;
             scissor.offset.y      = 0;
             scissor.extent.width  = SHADOW_MAP_WIDTH;
             scissor.extent.height = SHADOW_MAP_HEIGHT;
-            commandBuffer.setScissor(0, 1, &scissor);
 
-            vk::RenderPassBeginInfo beginInfo;
-            beginInfo.renderPass               = m_graphicsPipeline.renderPass;
-            beginInfo.framebuffer              = frame.image.getFramebuffer(m_id);
-            beginInfo.renderArea.extent.width  = viewport.width;
-            beginInfo.renderArea.extent.height = viewport.height;
-            beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
-            beginInfo.pClearValues             = m_clear.data();
-
-            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
-            // Pipeline
-            m_graphicsPipeline.bind(commandBuffer);
-
-            // Frame
-            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-
-            // Draw
-            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-            vk::DeviceSize offsets[]       = {0};
-
-            commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-
-            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
-
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
-                commandBuffer.drawIndexed(
-                    draw.indexCount,
-                    draw.instanceCount,
-                    draw.indexStart,
-                    draw.vertexStart,
-                    draw.instanceStart
+                vk::RenderPassBeginInfo beginInfo;
+                beginInfo.renderPass = m_graphicsPipeline.renderPass;
+                beginInfo.framebuffer =
+                    frame.image.getFramebuffer(String(SCENE_SHADOW_LAYER_ID) + "_" + std::to_string(cascade));
+                beginInfo.renderArea.extent.width  = SHADOW_MAP_WIDTH;
+                beginInfo.renderArea.extent.height = SHADOW_MAP_HEIGHT;
+                beginInfo.clearValueCount          = static_cast<std::uint32_t>(m_clear.size());
+                beginInfo.pClearValues             = m_clear.data();
+
+                commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+                commandBuffer.setViewport(0, 1, &viewport);
+                commandBuffer.setScissor(0, 1, &scissor);
+
+                m_graphicsPipeline.bind(commandBuffer);
+                m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                commandBuffer.pushConstants(
+                    m_graphicsPipeline.layout,
+                    vk::ShaderStageFlagBits::eVertex,
+                    0,
+                    sizeof(std::uint32_t),
+                    &cascade
                 );
+
+                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+
+                for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+                {
+                    commandBuffer.drawIndexed(
+                        draw.indexCount,
+                        draw.instanceCount,
+                        draw.indexStart,
+                        draw.vertexStart,
+                        draw.instanceStart
+                    );
+                }
+
+                commandBuffer.endRenderPass();
             }
-            commandBuffer.endRenderPass();
         }
 
         void VulkanLSceneShadow::initFrameResources()
@@ -247,6 +253,11 @@ namespace Chicane
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
 
             // Build
+            vk::PushConstantRange cascadePush;
+            cascadePush.stageFlags = vk::ShaderStageFlagBits::eVertex;
+            cascadePush.offset     = 0;
+            cascadePush.size       = sizeof(std::uint32_t);
+
             VulkanGraphicsPipelineBuilder()
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
@@ -263,6 +274,7 @@ namespace Chicane
                 .addSubpassDependecy(depthSubpassEnd)
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .addPushConstant(cascadePush)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }
@@ -274,15 +286,18 @@ namespace Chicane
 
             for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
-                VulkanFrameBufferCreateInfo createInfo;
-                createInfo.id            = m_id;
-                createInfo.logicalDevice = backend->logicalDevice;
-                createInfo.renderPass    = m_graphicsPipeline.renderPass;
-                createInfo.extent.width  = SHADOW_MAP_WIDTH;
-                createInfo.extent.height = SHADOW_MAP_HEIGHT;
-                createInfo.attachments.push_back(parent->shadowImage.view);
+                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+                {
+                    VulkanFrameBufferCreateInfo createInfo;
+                    createInfo.id            = String(SCENE_SHADOW_LAYER_ID) + "_" + std::to_string(cascade);
+                    createInfo.logicalDevice = backend->logicalDevice;
+                    createInfo.renderPass    = m_graphicsPipeline.renderPass;
+                    createInfo.extent.width  = SHADOW_MAP_WIDTH;
+                    createInfo.extent.height = SHADOW_MAP_HEIGHT;
+                    createInfo.attachments.push_back(parent->shadowLayerViews[cascade]);
 
-                image.addBuffer(createInfo);
+                    image.addBuffer(createInfo);
+                }
             }
         }
     }

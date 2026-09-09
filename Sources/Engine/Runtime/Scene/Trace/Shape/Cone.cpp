@@ -30,10 +30,7 @@ namespace Chicane
     }
 
     bool SceneTraceShapeCone::intersects(
-        const Vec3& inOrigin,
-        const Vec3& inDestination,
-        const Bounds3D& inBounds,
-        float& outEnter
+        const Vec3& inOrigin, const Vec3& inDestination, const Bounds3D& inBounds, float& outEnter
     ) const
     {
         if (!isValid())
