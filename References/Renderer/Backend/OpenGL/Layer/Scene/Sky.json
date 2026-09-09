@@ -231,6 +231,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "clearTextureData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENESKY_CLEARTEXTUREDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "updateTextureData",
                 "parameters": [
                     {

@@ -159,26 +159,17 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "setShadowCascade",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCascade"
-                    }
+                "name": "getModelVertexArray",
+                "parameters": [],
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_SETSHADOWCASCADE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENE_GETMODELVERTEXARRAY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -338,19 +329,6 @@
                 },
                 "name": "m_instanceBuffer",
                 "description": "CHICANE_RENDERER_OPENGLLSCENE_M_INSTANCEBUFFER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_lightOffset",
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_LIGHTOFFSET_DESCRIPTION"
             },
             {
                 "accessor": "private",

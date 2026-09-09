@@ -136,6 +136,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "SCENE_FOREGROUND_LAYER_ID",
+                "description": "CHICANE_RENDERER_SCENE_FOREGROUND_LAYER_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "UI_LAYER_ID",
                 "description": "CHICANE_RENDERER_UI_LAYER_ID_DESCRIPTION"
             },
@@ -250,6 +266,53 @@
                 },
                 "name": "MAX_LIGHTS",
                 "description": "CHICANE_RENDERER_MAX_LIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SKY_TEXTURE_SIZE",
+                "description": "CHICANE_RENDERER_SKY_TEXTURE_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SKY_MIP_LEVELS",
+                "description": "CHICANE_RENDERER_SKY_MIP_LEVELS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "OUTLINE_COLOR",
+                "description": "CHICANE_RENDERER_OUTLINE_COLOR_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DESCRIPTION"

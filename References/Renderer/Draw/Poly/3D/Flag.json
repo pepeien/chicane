@@ -1,0 +1,296 @@
+{
+    "title": "Flag",
+    "filename": "Flag",
+    "path": "Renderer/Draw/Poly/3D/Flag",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Flag.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DFlag",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DFLAG_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lit",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DFLAG_LIT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Shadow",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DFLAG_SHADOW_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Foreground",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DFLAG_FOREGROUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Outlined",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DFLAG_OUTLINED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly3DFlag",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "operator|",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR|_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly3DFlag",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "operator&",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR&_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly3DFlag",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "operator|=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR|=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly3DFlag",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "operator&=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR&=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly3DFlag",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "operator~",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR~_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlags"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_RENDERER_HAS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

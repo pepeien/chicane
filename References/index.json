@@ -4675,6 +4675,23 @@
                                         },
                                         "children": [
                                             {
+                                                "title": "Foreground",
+                                                "filename": "Foreground",
+                                                "path": "Renderer/Backend/OpenGL/Layer/Scene/Foreground",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Foreground.hpp",
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneForeground",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
                                                 "title": "Line",
                                                 "filename": "Line",
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Line",
@@ -5387,6 +5404,23 @@
                                             "description": null
                                         },
                                         "children": [
+                                            {
+                                                "title": "Foreground",
+                                                "filename": "Foreground",
+                                                "path": "Renderer/Backend/Vulkan/Layer/Scene/Foreground",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Foreground.hpp",
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneForeground",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
                                             {
                                                 "title": "Line",
                                                 "filename": "Line",
@@ -6118,6 +6152,23 @@
                                                 "children": []
                                             }
                                         ]
+                                    },
+                                    {
+                                        "title": "Flag",
+                                        "filename": "Flag",
+                                        "path": "Renderer/Draw/Poly/3D/Flag",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Flag.hpp",
+                                            "namespace": "Chicane::Renderer::DrawPoly3DFlag",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
                                     },
                                     {
                                         "title": "Instance",

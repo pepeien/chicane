@@ -1,10 +1,10 @@
 {
-    "title": "Mesh",
-    "filename": "Mesh",
-    "path": "Renderer/Backend/OpenGL/Layer/Scene/Mesh",
+    "title": "Foreground",
+    "filename": "Foreground",
+    "path": "Renderer/Backend/Vulkan/Layer/Scene/Foreground",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp",
-        "namespace": "Chicane::Renderer::OpenGLLSceneMesh",
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Foreground.hpp",
+        "namespace": "Chicane::Renderer::VulkanLSceneForeground",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "OpenGLLSceneMesh",
+                "name": "VulkanLSceneForeground",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_OPENGLLSCENEMESH_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_VULKANLSCENEFOREGROUND_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -31,20 +31,29 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "getShaderProgram",
-                "parameters": [],
-                "modifiers": [
-                    "const"
+                "name": "updateSkyDescriptors",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorImageInfo",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInfo"
+                    }
                 ],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_GETSHADERPROGRAM_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_UPDATESKYDESCRIPTORS_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -56,10 +65,25 @@
                 "name": "onInit",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_ONINIT_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_ONINIT_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRestart",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_ONRESTART_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -71,10 +95,10 @@
                 "name": "onDestruction",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_ONDESTRUCTION_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_ONDESTRUCTION_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -97,10 +121,10 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_ONBEGINRENDER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_ONBEGINRENDER_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "override",
                 "return": {
                     "prefix": "",
@@ -133,22 +157,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_ONRENDER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onEndRender",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_ONENDRENDER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_ONRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -160,10 +169,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildShader",
+                "name": "initFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_BUILDSHADER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_INITFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -175,10 +184,40 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyShader",
+                "name": "destroyFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_DESTROYSHADER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_DESTROYFRAMERESOURCES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initGraphicsPipeline",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_INITGRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initFramebuffers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_INITFRAMEBUFFERS_DESCRIPTION"
             }
         ],
         "members": [
@@ -187,16 +226,50 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "VulkanGraphicsPipeline",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
                     "templates": []
                 },
-                "name": "m_shaderProgram",
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_M_SHADERPROGRAM_DESCRIPTION"
+                "name": "m_graphicsPipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_M_GRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorBundle",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_frameDescriptor",
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_M_FRAMEDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::ClearValue",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_clear",
+                "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_M_CLEAR_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANLSCENEFOREGROUND_DESCRIPTION"
     },
     "children": []
 }

@@ -108,6 +108,49 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Renderer::DrawPoly3DFlag",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
+                    "templates": []
+                },
+                "name": "getFlags",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_GETFLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFlags",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_SETFLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -190,6 +233,92 @@
                 "description": "CHICANE_CMESH_SETISLIT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isForeground",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_ISFOREGROUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setIsForeground",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_SETISFOREGROUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isOutlined",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_ISOUTLINED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setIsOutlined",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_SETISOUTLINED_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -229,6 +358,42 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_CMESH_GENERATEBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFlag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_SETFLAG_DESCRIPTION"
             }
         ],
         "members": [
@@ -250,26 +415,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "Renderer::DrawPoly3DFlag",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
                     "templates": []
                 },
-                "name": "m_bCanCastShadows",
-                "description": "CHICANE_CMESH_M_BCANCASTSHADOWS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsLit",
-                "description": "CHICANE_CMESH_M_BISLIT_DESCRIPTION"
+                "name": "m_flags",
+                "description": "CHICANE_CMESH_M_FLAGS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

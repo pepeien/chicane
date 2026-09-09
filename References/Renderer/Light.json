@@ -121,6 +121,32 @@
                 },
                 "name": "direction",
                 "description": "CHICANE_RENDERER_LIGHT_DIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "innerAngle",
+                "description": "CHICANE_RENDERER_LIGHT_INNERANGLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "outerAngle",
+                "description": "CHICANE_RENDERER_LIGHT_OUTERANGLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LIGHT_DESCRIPTION"

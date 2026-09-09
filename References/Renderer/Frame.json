@@ -320,6 +320,108 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSceneDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASSCENEDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getSceneDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETSCENEDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasForegroundDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASFOREGROUNDDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getForegroundDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETFOREGROUNDDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasOutlineDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASOUTLINEDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getOutlineDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETOUTLINEDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "DrawPoly2DInstance::List",
                     "suffix": "&",
@@ -543,6 +645,62 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_FRAME_REBUILDINSTANCES3D_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "anyInstance3D",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool(*)(const DrawPoly3DInstance &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPredicate"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_ANYINSTANCE3D_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "splitDraws",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool(*)(const DrawPoly3DInstance &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPredicate"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_SPLITDRAWS_DESCRIPTION"
             }
         ],
         "members": [

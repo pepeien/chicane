@@ -55,7 +55,37 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPoly3DFlag",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_HAS_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
@@ -88,13 +118,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::int32_t",
+                    "name": "DrawPoly3DFlag",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Draw/Poly/3D/Flag",
                     "templates": []
                 },
-                "name": "bCanCastShadows",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_BCANCASTSHADOWS_DESCRIPTION"
+                "name": "flags",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_FLAGS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -106,8 +136,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bIsLit",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_BISLIT_DESCRIPTION"
+                "name": "_pad0",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD0_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -119,8 +149,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_pad",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD_DESCRIPTION"
+                "name": "_pad1",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD1_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_pad2",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD2_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_DESCRIPTION"

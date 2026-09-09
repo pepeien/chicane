@@ -87,6 +87,49 @@
                 "description": "CHICANE_ASKY_GETENVIRONMENTLIGHT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getEnvironmentIntensity",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ASKY_GETENVIRONMENTINTENSITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setEnvironmentIntensity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIntensity"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_SETENVIRONMENTINTENSITY_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -128,6 +171,19 @@
                 },
                 "name": "m_environment",
                 "description": "CHICANE_ASKY_M_ENVIRONMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_environmentIntensity",
+                "description": "CHICANE_ASKY_M_ENVIRONMENTINTENSITY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ASKY_DESCRIPTION"

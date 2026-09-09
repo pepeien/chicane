@@ -203,10 +203,93 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initOutlineGraphicsPipeline",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITOUTLINEGRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initFramebuffers",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITFRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawOutlineMeshes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::PipelineLayout",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffsetX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffsetY"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_DRAWOUTLINEMESHES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -319,6 +402,34 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_SHOULDDRAWOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawOutline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_SHOULDDRAWOUTLINE_DESCRIPTION"
             }
         ],
         "members": [
@@ -347,6 +458,32 @@
                 },
                 "name": "m_overlayPipeline",
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_outlineMaskPipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OUTLINEMASKPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_outlinePipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OUTLINEPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
