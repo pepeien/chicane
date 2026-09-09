@@ -45,7 +45,7 @@ namespace Chicane
         static constexpr inline const std::size_t   TEXTURE_HEIGHT = 512;
 
         // Images
-        static constexpr inline const std::uint32_t SHADOW_MAP_WIDTH  = 1024;
-        static constexpr inline const std::uint32_t SHADOW_MAP_HEIGHT = 1024;
+        static constexpr inline const std::uint32_t SHADOW_MAP_WIDTH  = 2048;
+        static constexpr inline const std::uint32_t SHADOW_MAP_HEIGHT = 2048;
     }
 }

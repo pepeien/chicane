@@ -57,14 +57,21 @@ namespace Chicane
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
-            vk::Viewport viewport = backend->getVkViewport(this);
-            viewport.width        = SHADOW_MAP_HEIGHT;
-            viewport.height       = SHADOW_MAP_HEIGHT;
+            // Shadow map is its own framebuffer — always fill the full atlas.
+            vk::Viewport viewport;
+            viewport.x        = 0.0f;
+            viewport.y        = 0.0f;
+            viewport.width    = static_cast<float>(SHADOW_MAP_WIDTH);
+            viewport.height   = static_cast<float>(SHADOW_MAP_HEIGHT);
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
             commandBuffer.setViewport(0, 1, &viewport);
 
-            vk::Rect2D scissor    = backend->getVkScissor(this);
-            scissor.extent.width  = viewport.width;
-            scissor.extent.height = viewport.height;
+            vk::Rect2D scissor;
+            scissor.offset.x      = 0;
+            scissor.offset.y      = 0;
+            scissor.extent.width  = SHADOW_MAP_WIDTH;
+            scissor.extent.height = SHADOW_MAP_HEIGHT;
             commandBuffer.setScissor(0, 1, &scissor);
 
             vk::RenderPassBeginInfo beginInfo;
@@ -202,19 +209,27 @@ namespace Chicane
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            depthAttachment.finalLayout   = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
 
             vk::AttachmentReference depthReference;
             depthReference.attachment = 0;
             depthReference.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
-            vk::SubpassDependency depthSubpassDepedency;
-            depthSubpassDepedency.srcSubpass    = 0;
-            depthSubpassDepedency.dstSubpass    = VK_SUBPASS_EXTERNAL;
-            depthSubpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eLateFragmentTests;
-            depthSubpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eFragmentShader;
-            depthSubpassDepedency.srcAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
-            depthSubpassDepedency.dstAccessMask = vk::AccessFlagBits::eShaderRead;
+            vk::SubpassDependency depthSubpassBegin;
+            depthSubpassBegin.srcSubpass    = VK_SUBPASS_EXTERNAL;
+            depthSubpassBegin.dstSubpass    = 0;
+            depthSubpassBegin.srcStageMask  = vk::PipelineStageFlagBits::eFragmentShader;
+            depthSubpassBegin.dstStageMask  = vk::PipelineStageFlagBits::eEarlyFragmentTests;
+            depthSubpassBegin.srcAccessMask = vk::AccessFlagBits::eShaderRead;
+            depthSubpassBegin.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+
+            vk::SubpassDependency depthSubpassEnd;
+            depthSubpassEnd.srcSubpass    = 0;
+            depthSubpassEnd.dstSubpass    = VK_SUBPASS_EXTERNAL;
+            depthSubpassEnd.srcStageMask  = vk::PipelineStageFlagBits::eLateFragmentTests;
+            depthSubpassEnd.dstStageMask  = vk::PipelineStageFlagBits::eFragmentShader;
+            depthSubpassEnd.srcAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+            depthSubpassEnd.dstAccessMask = vk::AccessFlagBits::eShaderRead;
 
             vk::SubpassDescription subpass;
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
@@ -223,7 +238,7 @@ namespace Chicane
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterization;
             rasterization.rasterizerDiscardEnable = false;
-            rasterization.depthClampEnable        = true;
+            rasterization.depthClampEnable        = false;
             rasterization.depthBiasEnable         = true;
             rasterization.depthBiasConstantFactor = 1.25f;
             rasterization.depthBiasSlopeFactor    = 1.75f;
@@ -244,7 +259,8 @@ namespace Chicane
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .setDepthStencil(depth)
                 .addAttachment(depthAttachment)
-                .addSubpassDependecy(depthSubpassDepedency)
+                .addSubpassDependecy(depthSubpassBegin)
+                .addSubpassDependecy(depthSubpassEnd)
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .setRasterization(rasterization)

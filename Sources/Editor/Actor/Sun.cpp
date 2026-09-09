@@ -1,5 +1,7 @@
 #include "Editor/Actor/Sun.reflected.hpp"
 
+#include <cmath>
+
 namespace Editor
 {
     Sun::Sun()
@@ -14,7 +16,9 @@ namespace Editor
     {
         Chicane::ALight::onLoad();
 
-        m_light->setFarClip(m_distance);
+        const float distanceToFocus = std::sqrt(m_distance * m_distance + 50.0f * 50.0f);
+        m_light->setNearClip(1.0f);
+        m_light->setFarClip(distanceToFocus + m_distance);
         m_light->setViewport(m_distance, m_distance);
         m_light->setProjectionType(Chicane::ViewProjectionType::Orthographic);
     }

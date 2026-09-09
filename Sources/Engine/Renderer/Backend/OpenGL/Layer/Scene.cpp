@@ -67,13 +67,22 @@ namespace Chicane
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
             glVertexArrayVertexBuffer(m_modelVertexArray, 0, m_modelVertexBuffer, 0, sizeof(Vertex));
 
+            View camera = inFrame.getCamera();
+            camera.depthZeroToOne();
+
+            View::List lights = inFrame.getLights();
+            for (View& light : lights)
+            {
+                light.depthZeroToOne();
+            }
+
             std::size_t size   = sizeof(View);
             std::size_t offset = 0;
-            glNamedBufferSubData(m_instanceBuffer, offset, size, &inFrame.getCamera());
+            glNamedBufferSubData(m_instanceBuffer, offset, size, &camera);
             offset += size;
 
-            size = sizeof(View) * inFrame.getLights().size();
-            glNamedBufferSubData(m_instanceBuffer, offset, size, inFrame.getLights().data());
+            size = sizeof(View) * lights.size();
+            glNamedBufferSubData(m_instanceBuffer, offset, size, lights.data());
             offset += size;
 
             const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();

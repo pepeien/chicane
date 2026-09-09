@@ -47,7 +47,7 @@ namespace Chicane
             glDepthFunc(GL_LEQUAL);
 
             glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CW);
+            glFrontFace(GL_CCW);
             glCullFace(GL_FRONT);
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -57,8 +57,8 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
-            glViewport(viewport.position.x, viewport.position.y, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+            // Shadow map is its own framebuffer — always fill the full atlas.
+            glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
             for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {

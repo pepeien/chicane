@@ -128,7 +128,7 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             shadowImage.format = backend->swapchain.depthFormat;
-            shadowImage.extent = backend->swapchain.extent;
+            shadowImage.extent = vk::Extent2D {SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT};
 
             VulkanImageCreateInfo instanceCreateInfo;
             instanceCreateInfo.width  = SHADOW_MAP_WIDTH;
@@ -144,22 +144,21 @@ namespace Chicane
 
             vk::SamplerCreateInfo samplerCreateInfo;
             samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
-            samplerCreateInfo.minFilter               = vk::Filter::eLinear;
-            samplerCreateInfo.magFilter               = vk::Filter::eLinear;
-            samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+            samplerCreateInfo.minFilter               = vk::Filter::eNearest;
+            samplerCreateInfo.magFilter               = vk::Filter::eNearest;
+            samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eNearest;
             samplerCreateInfo.mipLodBias              = 0.0f;
-            samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
-            samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
-            samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+            samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToBorder;
+            samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToBorder;
+            samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToBorder;
             samplerCreateInfo.anisotropyEnable        = false;
             samplerCreateInfo.maxAnisotropy           = 1.0f;
             samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
             samplerCreateInfo.unnormalizedCoordinates = false;
-            samplerCreateInfo.compareEnable           = true;
+            samplerCreateInfo.compareEnable           = false;
             samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
             samplerCreateInfo.minLod                  = 0.0f;
             samplerCreateInfo.maxLod                  = 1.0f;
-            samplerCreateInfo.unnormalizedCoordinates = false;
             shadowImage.sampler                       = backend->logicalDevice.createSampler(samplerCreateInfo);
 
             VulkanImageMemoryCreateInfo memoryCreateInfo;
@@ -176,7 +175,7 @@ namespace Chicane
             viewCreateInfo.logicalDevice = backend->logicalDevice;
             VulkanImage::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
 
-            shadowImageInfo.imageLayout = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+            shadowImageInfo.imageLayout = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
             shadowImageInfo.imageView   = shadowImage.view;
             shadowImageInfo.sampler     = shadowImage.sampler;
         }

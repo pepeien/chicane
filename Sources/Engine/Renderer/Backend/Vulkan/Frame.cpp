@@ -245,6 +245,7 @@ namespace Chicane
         {
             View data = inData;
             data.flipY();
+            data.depthZeroToOne();
 
             cameraResource.copyToBuffer(&data, sizeof(View));
         }
@@ -276,6 +277,7 @@ namespace Chicane
 
             View data = inData.at(0);
             data.flipY();
+            data.depthZeroToOne();
 
             lightResource.copyToBuffer(&data, sizeof(View));
         }
