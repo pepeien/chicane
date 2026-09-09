@@ -320,12 +320,22 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View::List",
+                            "name": "View",
                             "suffix": "&",
                             "path": "Core/View",
                             "templates": []
                         },
-                        "name": "inData"
+                        "name": "inCamera"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Light::List",
+                            "suffix": "&",
+                            "path": "Renderer/Light",
+                            "templates": []
+                        },
+                        "name": "inLights"
                     }
                 ],
                 "modifiers": [],
@@ -684,15 +694,28 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "View",
+                            "name": "ShadowLight",
                             "suffix": "",
-                            "path": "Core/View",
+                            "path": "Renderer/Shadow/Light",
                             "templates": []
                         }
                     ]
                 },
                 "name": "lightResource",
                 "description": "CHICANE_RENDERER_VULKANFRAME_LIGHTRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ShadowLight",
+                    "suffix": "",
+                    "path": "Renderer/Shadow/Light",
+                    "templates": []
+                },
+                "name": "lightData",
+                "description": "CHICANE_RENDERER_VULKANFRAME_LIGHTDATA_DESCRIPTION"
             },
             {
                 "accessor": "public",

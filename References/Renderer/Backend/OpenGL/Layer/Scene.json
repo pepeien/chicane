@@ -155,6 +155,32 @@
                 "description": "CHICANE_RENDERER_OPENGLLSCENE_ONRENDER_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setShadowCascade",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCascade"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENE_SETSHADOWCASCADE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -312,6 +338,32 @@
                 },
                 "name": "m_instanceBuffer",
                 "description": "CHICANE_RENDERER_OPENGLLSCENE_M_INSTANCEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_lightOffset",
+                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_LIGHTOFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ShadowLight",
+                    "suffix": "",
+                    "path": "Renderer/Shadow/Light",
+                    "templates": []
+                },
+                "name": "m_light",
+                "description": "CHICANE_RENDERER_OPENGLLSCENE_M_LIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_OPENGLLSCENE_DESCRIPTION"

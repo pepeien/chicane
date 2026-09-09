@@ -1,0 +1,62 @@
+{
+    "title": "LightType",
+    "filename": "Type",
+    "path": "Renderer/Light/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Light/Type.hpp",
+        "namespace": "Chicane::LightType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Directional",
+                "description": "CHICANE_LIGHTTYPE_DIRECTIONAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Point",
+                "description": "CHICANE_LIGHTTYPE_POINT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Spot",
+                "description": "CHICANE_LIGHTTYPE_SPOT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Environment",
+                "description": "CHICANE_LIGHTTYPE_ENVIRONMENT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_LIGHTTYPE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -125,9 +125,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "View::List",
+                    "name": "Light::List",
                     "suffix": "&",
-                    "path": "Core/View",
+                    "path": "Renderer/Light",
                     "templates": []
                 },
                 "name": "getLights",
@@ -152,9 +152,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View::List",
+                            "name": "Light::List",
                             "suffix": "&",
-                            "path": "Core/View",
+                            "path": "Renderer/Light",
                             "templates": []
                         },
                         "name": "inData"
@@ -178,9 +178,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View",
+                            "name": "Light",
                             "suffix": "&",
-                            "path": "Core/View",
+                            "path": "Renderer/Light",
                             "templates": []
                         },
                         "name": "inData"
@@ -513,9 +513,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View::List",
+                    "name": "Light::List",
                     "suffix": "",
-                    "path": "Core/View",
+                    "path": "Renderer/Light",
                     "templates": []
                 },
                 "name": "m_lights",

@@ -1,0 +1,57 @@
+{
+    "title": "Scene",
+    "filename": "Scene",
+    "path": "Renderer/Light/Scene",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Light/Scene.hpp",
+        "namespace": "Chicane::Renderer::SceneLight",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "translation",
+                "description": "CHICANE_RENDERER_SCENELIGHT_TRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "direction",
+                "description": "CHICANE_RENDERER_SCENELIGHT_DIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_SCENELIGHT_COLOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_SCENELIGHT_DESCRIPTION"
+    },
+    "children": []
+}

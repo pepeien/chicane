@@ -1,0 +1,129 @@
+{
+    "title": "Light",
+    "filename": "Light",
+    "path": "Renderer/Light",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Light.hpp",
+        "namespace": "Chicane::Renderer::Light",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Light",
+                            "suffix": "",
+                            "path": "Renderer/Light",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_LIGHT_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "LightType",
+                    "suffix": "",
+                    "path": "Renderer/Light/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_LIGHT_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "castShadows",
+                "description": "CHICANE_RENDERER_LIGHT_CASTSHADOWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_LIGHT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intensity",
+                "description": "CHICANE_RENDERER_LIGHT_INTENSITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "range",
+                "description": "CHICANE_RENDERER_LIGHT_RANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "translation",
+                "description": "CHICANE_RENDERER_LIGHT_TRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "direction",
+                "description": "CHICANE_RENDERER_LIGHT_DIRECTION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LIGHT_DESCRIPTION"
+    },
+    "children": []
+}

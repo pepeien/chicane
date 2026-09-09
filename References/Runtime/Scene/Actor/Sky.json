@@ -68,6 +68,38 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_ASKY_SETSKY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CLight",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component/Light",
+                    "templates": []
+                },
+                "name": "getEnvironmentLight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ASKY_GETENVIRONMENTLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_ONLOAD_DESCRIPTION"
             }
         ],
         "members": [
@@ -83,6 +115,19 @@
                 },
                 "name": "m_asset",
                 "description": "CHICANE_ASKY_M_ASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CLight",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component/Light",
+                    "templates": []
+                },
+                "name": "m_environment",
+                "description": "CHICANE_ASKY_M_ENVIRONMENT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ASKY_DESCRIPTION"

@@ -123,9 +123,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View",
+                            "name": "Light",
                             "suffix": "&",
-                            "path": "Core/View",
+                            "path": "Renderer/Light",
                             "templates": []
                         },
                         "name": "inData"
@@ -149,9 +149,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View::List",
+                            "name": "Light::List",
                             "suffix": "&",
-                            "path": "Core/View",
+                            "path": "Renderer/Light",
                             "templates": []
                         },
                         "name": "inData"

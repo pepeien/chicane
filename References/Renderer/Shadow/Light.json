@@ -1,0 +1,83 @@
+{
+    "title": "Light",
+    "filename": "Light",
+    "path": "Renderer/Shadow/Light",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Shadow/Light.hpp",
+        "namespace": "Chicane::Renderer::ShadowLight",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "splits",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_SPLITS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "info",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_INFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "views",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_VIEWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "projections",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_PROJECTIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SceneLight",
+                    "suffix": "",
+                    "path": "Renderer/Light/Scene",
+                    "templates": []
+                },
+                "name": "lights",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_LIGHTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_SHADOWLIGHT_DESCRIPTION"
+    },
+    "children": []
+}

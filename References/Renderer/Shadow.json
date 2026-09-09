@@ -1,0 +1,54 @@
+{
+    "title": "Shadow",
+    "filename": "Shadow",
+    "path": "Renderer/Shadow",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Shadow.hpp",
+        "namespace": "Chicane::Renderer::Shadow",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ShadowLight",
+                    "suffix": "",
+                    "path": "Renderer/Shadow/Light",
+                    "templates": []
+                },
+                "name": "build",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "View",
+                            "suffix": "&",
+                            "path": "Core/View",
+                            "templates": []
+                        },
+                        "name": "inCamera"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Light::List",
+                            "suffix": "&",
+                            "path": "Renderer/Light",
+                            "templates": []
+                        },
+                        "name": "inLights"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_SHADOW_BUILD_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_SHADOW_DESCRIPTION"
+    },
+    "children": []
+}

@@ -218,6 +218,38 @@
                 },
                 "name": "SHADOW_MAP_HEIGHT",
                 "description": "CHICANE_RENDERER_SHADOW_MAP_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHADOW_CASCADE_COUNT",
+                "description": "CHICANE_RENDERER_SHADOW_CASCADE_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_LIGHTS",
+                "description": "CHICANE_RENDERER_MAX_LIGHTS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DESCRIPTION"

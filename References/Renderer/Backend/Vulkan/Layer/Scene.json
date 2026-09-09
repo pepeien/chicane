@@ -27,6 +27,32 @@
         "destructors": [],
         "functions": [
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSkyImageInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorImageInfo",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SETSKYIMAGEINFO_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -229,6 +255,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildSkyImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_BUILDSKYIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySkyImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_DESTROYSKYIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -280,6 +336,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "vk::ImageView",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shadowLayerViews",
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SHADOWLAYERVIEWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "vk::DescriptorImageInfo",
                     "suffix": "",
                     "path": "",
@@ -287,6 +356,32 @@
                 },
                 "name": "shadowImageInfo",
                 "description": "CHICANE_RENDERER_VULKANLSCENE_SHADOWIMAGEINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanImageInfo",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Image/Info",
+                    "templates": []
+                },
+                "name": "skyImage",
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SKYIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorImageInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "skyImageInfo",
+                "description": "CHICANE_RENDERER_VULKANLSCENE_SKYIMAGEINFO_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANLSCENE_DESCRIPTION"

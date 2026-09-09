@@ -34,6 +34,19 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "baseArrayLayer",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_BASEARRAYLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "mipLevels",
                 "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_MIPLEVELS_DESCRIPTION"
             },

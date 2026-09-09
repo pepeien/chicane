@@ -6417,6 +6417,58 @@
                 "children": []
             },
             {
+                "title": "Light",
+                "filename": "Light",
+                "path": "Renderer/Light",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Light.hpp",
+                    "namespace": "Chicane::Renderer::Light",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "LightType",
+                        "filename": "Type",
+                        "path": "Renderer/Light/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Light/Type.hpp",
+                            "namespace": "Chicane::LightType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Scene",
+                        "filename": "Scene",
+                        "path": "Renderer/Light/Scene",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Light/Scene.hpp",
+                            "namespace": "Chicane::Renderer::SceneLight",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Resource",
                 "filename": "Resource",
                 "path": "Renderer/Resource",
@@ -6473,6 +6525,41 @@
                         "source": {
                             "header": "Includes/Chicane/Renderer/Shader/Type.hpp",
                             "namespace": "Chicane::Renderer::ShaderType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Shadow",
+                "filename": "Shadow",
+                "path": "Renderer/Shadow",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Shadow.hpp",
+                    "namespace": "Chicane::Renderer::Shadow",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Light",
+                        "filename": "Light",
+                        "path": "Renderer/Shadow/Light",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Shadow/Light.hpp",
+                            "namespace": "Chicane::Renderer::ShadowLight",
                             "types": [],
                             "enums": [],
                             "constructors": [],

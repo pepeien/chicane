@@ -67,9 +67,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View::List",
+                    "name": "Light::List",
                     "suffix": "",
-                    "path": "Core/View",
+                    "path": "Renderer/Light",
                     "templates": []
                 },
                 "name": "lights",
