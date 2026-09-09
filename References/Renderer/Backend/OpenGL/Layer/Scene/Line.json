@@ -143,10 +143,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildShader",
+                "name": "buildMeshShader",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDSHADER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDMESHSHADER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -158,10 +158,141 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyShader",
+                "name": "destroyMeshShader",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYSHADER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYMESHSHADER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildOverlayShader",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDOVERLAYSHADER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyOverlayShader",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYOVERLAYSHADER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildOverlayVertexArray",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDOVERLAYVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyOverlayVertexArray",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYOVERLAYVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "uploadOverlayBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_UPLOADOVERLAYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawMeshWireframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_SHOULDDRAWMESHWIREFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawOverlay",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_SHOULDDRAWOVERLAY_DESCRIPTION"
             }
         ],
         "members": [
@@ -175,8 +306,60 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_shaderProgram",
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_SHADERPROGRAM_DESCRIPTION"
+                "name": "m_meshShaderProgram",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_MESHSHADERPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayShaderProgram",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYSHADERPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayVertexArray",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayVertexBuffer",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayVertexCount",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXCOUNT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESCRIPTION"

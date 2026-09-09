@@ -520,6 +520,251 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enableDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_ENABLEDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disableDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_DISABLEDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toggleDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_TOGGLEDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_HASDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_CLEARDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_DRAWDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_DRAWDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasDebugOverlay",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_HASDEBUGOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getDebugOverlayVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETDEBUGOVERLAYVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getGpuDelta",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETGPUDELTA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -798,23 +1043,6 @@
                 "description": "CHICANE_RENDERER_INSTANCE_ADDBACKENDLAYER_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getGpuDelta",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_GETGPUDELTA_DESCRIPTION"
-            },
-            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -998,6 +1226,19 @@
                 },
                 "name": "m_skyResource",
                 "description": "CHICANE_RENDERER_INSTANCE_M_SKYRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DebugResource",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Resource",
+                    "templates": []
+                },
+                "name": "m_debugResources",
+                "description": "CHICANE_RENDERER_INSTANCE_M_DEBUGRESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",

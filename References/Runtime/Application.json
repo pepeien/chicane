@@ -688,6 +688,32 @@
                 "description": "CHICANE_APPLICATION_SETRENDERER_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushTrace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "inRequest"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_PUSHTRACE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -922,6 +948,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_RENDERSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateDebugOverlays",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_UPDATEDEBUGOVERLAYS_DESCRIPTION"
             },
             {
                 "accessor": "private",

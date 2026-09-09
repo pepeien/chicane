@@ -1,0 +1,427 @@
+{
+    "title": "Resource",
+    "filename": "Resource",
+    "path": "Renderer/Debug/Resource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Debug/Resource.hpp",
+        "namespace": "Chicane::Renderer::DebugResource",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DebugResource",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_DEBUGRESOURCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "getModes",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_GETMODES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_ENABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_DISABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toggle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_TOGGLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_HAS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBoundsOverlay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_SETBOUNDSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearBoundsOverlay",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_CLEARBOUNDSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendBoundsOverlay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_APPENDBOUNDSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCollidersOverlay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_SETCOLLIDERSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearCollidersOverlay",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_CLEARCOLLIDERSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendCollidersOverlay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_APPENDCOLLIDERSOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushTraceOverlay",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_PUSHTRACEOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearTraces",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_CLEARTRACES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasOverlay",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_HASOVERLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getOverlayVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_GETOVERLAYVERTICES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "m_mode",
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_MODE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_bounds",
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_BOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_colliders",
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_COLLIDERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_traces",
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_TRACES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DEBUGRESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

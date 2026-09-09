@@ -173,10 +173,25 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "initGraphicsPipeline",
+                "name": "initMeshGraphicsPipeline",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITGRAPHICSPIPELINE_DESCRIPTION"
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITMESHGRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initOverlayGraphicsPipeline",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITOVERLAYGRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -192,6 +207,118 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITFRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureOverlayBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inVertexCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_ENSUREOVERLAYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyOverlayBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_DESTROYOVERLAYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "uploadOverlayBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_UPLOADOVERLAYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawMeshWireframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_SHOULDDRAWMESHWIREFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawOverlay",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_SHOULDDRAWOVERLAY_DESCRIPTION"
             }
         ],
         "members": [
@@ -205,8 +332,21 @@
                     "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
                     "templates": []
                 },
-                "name": "m_graphicsPipeline",
-                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_GRAPHICSPIPELINE_DESCRIPTION"
+                "name": "m_meshPipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_MESHPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_overlayPipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -220,6 +360,45 @@
                 },
                 "name": "m_frameDescriptor",
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_FRAMEDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "m_overlayBuffer",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayBufferCapacity",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYBUFFERCAPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_overlayVertexCount",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYVERTEXCOUNT_DESCRIPTION"
             },
             {
                 "accessor": "private",

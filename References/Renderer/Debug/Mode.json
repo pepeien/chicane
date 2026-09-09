@@ -1,0 +1,265 @@
+{
+    "title": "Mode",
+    "filename": "Mode",
+    "path": "Renderer/Debug/Mode",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Debug/Mode.hpp",
+        "namespace": "Chicane::Renderer::DebugMode",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_RENDERER_DEBUGMODE_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Meshes",
+                "description": "CHICANE_RENDERER_DEBUGMODE_MESHES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds",
+                "description": "CHICANE_RENDERER_DEBUGMODE_BOUNDS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Traces",
+                "description": "CHICANE_RENDERER_DEBUGMODE_TRACES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Colliders",
+                "description": "CHICANE_RENDERER_DEBUGMODE_COLLIDERS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "All",
+                "description": "CHICANE_RENDERER_DEBUGMODE_ALL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "operator|",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR|_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "operator&",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR&_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "&",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "operator|=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "&",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR|=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "&",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "operator&=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "&",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR&=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "operator~",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_OPERATOR~_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

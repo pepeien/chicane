@@ -308,6 +308,34 @@
                     "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Builder",
                     "templates": []
                 },
+                "name": "setRenderPass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::RenderPass",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEBUILDER_SETRENDERPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipelineBuilder",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Builder",
+                    "templates": []
+                },
                 "name": "setMultisample",
                 "parameters": [
                     {
@@ -865,6 +893,19 @@
                 },
                 "name": "m_pushConstants",
                 "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEBUILDER_M_PUSHCONSTANTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::RenderPass",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_renderPass",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEBUILDER_M_RENDERPASS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEBUILDER_DESCRIPTION"

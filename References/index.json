@@ -5722,6 +5722,58 @@
                 ]
             },
             {
+                "title": "Debug",
+                "filename": "Debug",
+                "path": "Renderer/Debug",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Debug.hpp",
+                    "namespace": "Chicane::Renderer::Debug",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Mode",
+                        "filename": "Mode",
+                        "path": "Renderer/Debug/Mode",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Debug/Mode.hpp",
+                            "namespace": "Chicane::Renderer::DebugMode",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Resource",
+                        "filename": "Resource",
+                        "path": "Renderer/Debug/Resource",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Debug/Resource.hpp",
+                            "namespace": "Chicane::Renderer::DebugResource",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Depth",
                 "filename": "Depth",
                 "path": "Renderer/Depth",
