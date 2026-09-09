@@ -1,0 +1,17 @@
+{
+    "title": "Texture",
+    "filename": "Texture",
+    "path": "Core/Texture",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

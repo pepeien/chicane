@@ -198,32 +198,6 @@
         ],
         "members": [
             {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::string",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "key",
-                "description": "CHICANE_GRID_SVGTESSELLATION_READY_KEY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Primitive",
-                    "suffix": "",
-                    "path": "Grid/Primitive",
-                    "templates": []
-                },
-                "name": "primitive",
-                "description": "CHICANE_GRID_SVGTESSELLATION_READY_PRIMITIVE_DESCRIPTION"
-            },
-            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
@@ -268,9 +242,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Ready",
+                            "name": "SvgTessellationReady",
                             "suffix": "",
-                            "path": "Grid/Component/Svg/Tessellation",
+                            "path": "Grid/Component/Svg/Tessellation/Ready",
                             "templates": []
                         }
                     ]

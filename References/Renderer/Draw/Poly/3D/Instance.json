@@ -80,21 +80,8 @@
                     "path": "Renderer/Draw",
                     "templates": []
                 },
-                "name": "texture",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TEXTURE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::int32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "_padding",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PADDING_DESCRIPTION"
+                "name": "textures",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TEXTURES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_DESCRIPTION"

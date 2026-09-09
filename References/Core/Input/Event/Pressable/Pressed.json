@@ -1,0 +1,44 @@
+{
+    "title": "Pressed",
+    "filename": "Pressed",
+    "path": "Core/Input/Event/Pressable/Pressed",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Event/Pressable/Pressed.hpp",
+        "namespace": "Chicane::Input::PressablePressed",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "B",
+                    "suffix": "",
+                    "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
+                    "templates": []
+                },
+                "name": "button",
+                "description": "CHICANE_INPUT_PRESSABLEPRESSED_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time::Point",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "lastFire",
+                "description": "CHICANE_INPUT_PRESSABLEPRESSED_LASTFIRE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_INPUT_PRESSABLEPRESSED_DESCRIPTION"
+    },
+    "children": []
+}

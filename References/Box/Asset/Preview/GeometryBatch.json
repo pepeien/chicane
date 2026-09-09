@@ -1,0 +1,57 @@
+{
+    "title": "GeometryBatch",
+    "filename": "GeometryBatch",
+    "path": "Box/Asset/Preview/GeometryBatch",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Preview/GeometryBatch.hpp",
+        "namespace": "Chicane::Box::PreviewGeometryBatch",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "vertices",
+                "description": "CHICANE_BOX_PREVIEWGEOMETRYBATCH_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "indices",
+                "description": "CHICANE_BOX_PREVIEWGEOMETRYBATCH_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Instance",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_BOX_PREVIEWGEOMETRYBATCH_TEXTURE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_PREVIEWGEOMETRYBATCH_DESCRIPTION"
+    },
+    "children": []
+}

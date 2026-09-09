@@ -143,6 +143,60 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "PreviewGeometryBatch",
+                                    "suffix": "",
+                                    "path": "Box/Asset/Preview/GeometryBatch",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inBatches"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMGEOMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetPreview",
+                            "suffix": "",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "createFromGeometry",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "Vertex::List",
                             "suffix": "&",
                             "path": "Core/Math/Vertex",
@@ -159,6 +213,16 @@
                             "templates": []
                         },
                         "name": "inIndices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image::Instance",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inTexture"
                     }
                 ],
                 "modifiers": [

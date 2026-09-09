@@ -1,0 +1,70 @@
+{
+    "title": "Writer",
+    "filename": "Writer",
+    "path": "Core/Xml/Writer",
+    "source": {
+        "header": "Includes/Chicane/Core/Xml/Writer.hpp",
+        "namespace": "Chicane::Xml::Writer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "write",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_XML_WRITER_WRITE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_XML_WRITER_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_XML_WRITER_DESCRIPTION"
+    },
+    "children": []
+}

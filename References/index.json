@@ -99,6 +99,23 @@
                         },
                         "children": [
                             {
+                                "title": "GeometryBatch",
+                                "filename": "GeometryBatch",
+                                "path": "Box/Asset/Preview/GeometryBatch",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Asset/Preview/GeometryBatch.hpp",
+                                    "namespace": "Chicane::Box::PreviewGeometryBatch",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
                                 "title": "Service",
                                 "filename": "Service",
                                 "path": "Box/Asset/Preview/Service",
@@ -1057,7 +1074,7 @@
                                 "path": "Core/Input/Event/Pressable",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
-                                    "namespace": "Chicane::Input::PressableEvents::Pressed",
+                                    "namespace": "Chicane::Input::PressableEvents",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -1066,7 +1083,25 @@
                                     "members": [],
                                     "description": null
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "Pressed",
+                                        "filename": "Pressed",
+                                        "path": "Core/Input/Event/Pressable/Pressed",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Event/Pressable/Pressed.hpp",
+                                            "namespace": "Chicane::Input::PressablePressed",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -2327,6 +2362,41 @@
                 "children": []
             },
             {
+                "title": "Texture",
+                "filename": "Texture",
+                "path": "Core/Texture",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Map",
+                        "filename": "Map",
+                        "path": "Core/Texture/Map",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Texture/Map.hpp",
+                            "namespace": "Chicane::TextureMap",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Time",
                 "filename": "Time",
                 "path": "Core/Time",
@@ -2652,7 +2722,25 @@
                     "members": [],
                     "description": null
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Writer",
+                        "filename": "Writer",
+                        "path": "Core/Xml/Writer",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Xml/Writer.hpp",
+                            "namespace": "Chicane::Xml::Writer",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
             }
         ]
     },
@@ -3510,7 +3598,25 @@
                                     "members": [],
                                     "description": null
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "Ready",
+                                        "filename": "Ready",
+                                        "path": "Grid/Component/Svg/Tessellation/Ready",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Component/Svg/Tessellation/Ready.hpp",
+                                            "namespace": "Chicane::Grid::SvgTessellationReady",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
                                 "title": "ViewBox",

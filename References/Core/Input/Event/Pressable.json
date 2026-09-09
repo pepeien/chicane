@@ -4,7 +4,7 @@
     "path": "Core/Input/Event/Pressable",
     "source": {
         "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
-        "namespace": "Chicane::Input::PressableEvents::Pressed",
+        "namespace": "Chicane::Input::PressableEvents",
         "types": [
             {
                 "name": "Events",
@@ -280,10 +280,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Pressed",
+                            "name": "PressablePressed",
                             "suffix": "",
-                            "path": "Core/Input/Event/Pressable",
-                            "templates": []
+                            "path": "Core/Input/Event/Pressable/Pressed",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "B",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -372,10 +380,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Pressed",
+                            "name": "PressablePressed",
                             "suffix": "",
-                            "path": "Core/Input/Event/Pressable",
-                            "templates": []
+                            "path": "Core/Input/Event/Pressable/Pressed",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "B",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
@@ -394,35 +410,9 @@
                 },
                 "name": "m_events",
                 "description": "CHICANE_INPUT_PRESSABLEEVENTS_M_EVENTS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "B",
-                    "suffix": "",
-                    "path": "d7/ddc/namespaceChicane_1_1Input_1a39f8cc25ea979b36d973dc589cc1ff0fa9d5ed678fe57bcca610140957afab571",
-                    "templates": []
-                },
-                "name": "button",
-                "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_BUTTON_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Time::Point",
-                    "suffix": "",
-                    "path": "Core/Time",
-                    "templates": []
-                },
-                "name": "lastFire",
-                "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_LASTFIRE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_PRESSABLEEVENTS_PRESSED_DESCRIPTION"
+        "description": "CHICANE_INPUT_PRESSABLEEVENTS_DESCRIPTION"
     },
     "children": []
 }
