@@ -82,6 +82,45 @@
                 },
                 "name": "textures",
                 "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanCastShadows",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_BCANCASTSHADOWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsLit",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_BISLIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_pad",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_DESCRIPTION"
