@@ -13,6 +13,9 @@ namespace Editor
         X,
         Y,
         Z,
+        XY,
+        XZ,
+        YZ,
         Center
     };
 }

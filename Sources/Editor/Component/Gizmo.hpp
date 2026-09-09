@@ -7,10 +7,10 @@
 #include <Chicane/Core/Math/Vec/Vec2.hpp>
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Core/Reflection.hpp>
-#include <Chicane/Core/Window.hpp>
+#include <Chicane/Core/Window/Event.hpp>
 #include <Chicane/Runtime/Scene/Component.hpp>
+#include <Chicane/Runtime/Scene/Component/Camera.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
-#include <Chicane/Runtime/Scene/Object.hpp>
 
 #include "Editor/Component/Gizmo/Axis.hpp"
 #include "Editor/Component/Gizmo/Type.hpp"
@@ -43,9 +43,13 @@ namespace Editor
         void onUnload() override;
         void onActivation() override;
         void onDeactivation() override;
+        void onTick(float inDeltaTime) override;
 
         void applyMesh();
         void syncTransform();
+        void syncOrigin();
+        float handleScale() const;
+        Chicane::CCamera* activeCamera() const;
         Chicane::Vec3 axisDirection(GizmoAxis inAxis) const;
 
         void bindWindow();
@@ -59,6 +63,7 @@ namespace Editor
     protected:
         GizmoType                    m_type;
         Chicane::CMesh*              m_mesh;
+        Chicane::CMesh*              m_origin;
         Chicane::Object*             m_target;
         Chicane::EventSubscription<> m_targetSubscription;
 
@@ -68,11 +73,12 @@ namespace Editor
         float            m_dragStartAngle;
         Chicane::Vec3    m_dragOrigin;
         Chicane::Vec3    m_dragAxisDir;
+        Chicane::Vec3    m_dragStartHit;
         Chicane::Vec3    m_dragStartTranslation;
         Chicane::Vec3    m_dragStartScale;
         Chicane::Rotator m_dragStartRotation;
 
-        std::shared_ptr<bool>            m_bIsListening;
-        Chicane::WindowEventSubscription m_windowSubscription;
+        std::shared_ptr<bool>                                   m_bIsListening;
+        Chicane::EventSubscription<const Chicane::WindowEvent&> m_windowSubscription;
     };
 }

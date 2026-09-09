@@ -22,11 +22,19 @@ namespace Editor
     namespace
     {
         constexpr float AXIS_LENGTH    = 1.5f;
-        constexpr float AXIS_RADIUS    = 0.12f;
+        constexpr float AXIS_RADIUS    = 0.08f;
         constexpr float RING_RADIUS    = 1.0f;
-        constexpr float RING_THICKNESS = 0.12f;
-        constexpr float CENTER_RADIUS  = 0.16f;
+        constexpr float RING_THICKNESS = 0.07f;
+        constexpr float CENTER_RADIUS  = 0.12f;
+        constexpr float ORIGIN_RADIUS  = 0.165f;
+        constexpr float ORIGIN_TUBE    = 0.012f;
+        constexpr float ORIGIN_OUTER   = ORIGIN_RADIUS + ORIGIN_TUBE;
+        constexpr float PLANE_INNER    = 0.18f;
+        constexpr float PLANE_OUTER    = 0.40f;
         constexpr float MIN_SCALE      = 0.01f;
+        constexpr float HANDLE_SCALE   = 0.10f;
+        constexpr float MIN_HANDLE     = 0.25f;
+        constexpr float MAX_HANDLE     = 250.0f;
 
         Chicane::FileSystem::Path meshPath(GizmoType inType)
         {
@@ -132,6 +140,11 @@ namespace Editor
 
             return std::atan2(offset.dot(bitangent), offset.dot(tangent));
         }
+
+        bool isPlaneAxis(GizmoAxis inAxis)
+        {
+            return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
+        }
     }
 
     Gizmo::Gizmo()
@@ -142,6 +155,7 @@ namespace Editor
         : Chicane::Component(),
           m_type(inType),
           m_mesh(nullptr),
+          m_origin(nullptr),
           m_target(nullptr),
           m_targetSubscription({}),
           m_bIsDragging(false),
@@ -150,12 +164,15 @@ namespace Editor
           m_dragStartAngle(0.0f),
           m_dragOrigin(Chicane::Vec3::Zero()),
           m_dragAxisDir(Chicane::Vec3::Right()),
+          m_dragStartHit(Chicane::Vec3::Zero()),
           m_dragStartTranslation(Chicane::Vec3::Zero()),
           m_dragStartScale(Chicane::Vec3::One()),
           m_dragStartRotation({}),
           m_bIsListening(nullptr),
           m_windowSubscription({})
-    {}
+    {
+        setCanTick(true);
+    }
 
     Gizmo::~Gizmo()
     {
@@ -227,19 +244,113 @@ namespace Editor
         }
 
         const Chicane::Vec3 origin = getTranslation();
+        const float         scale  = handleScale();
         const GizmoAxis     axes[] = {GizmoAxis::X, GizmoAxis::Y, GizmoAxis::Z};
 
         GizmoAxis     hit      = GizmoAxis::None;
-        float         best     = m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS;
+        float         best     = (m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS) * scale;
         float         startT   = 0.0f;
         float         startAng = 0.0f;
         Chicane::Vec3 hitAxis  = Chicane::Vec3::Right();
+        Chicane::Vec3 startHit = origin;
+
+        if (m_type == GizmoType::Translation)
+        {
+            Chicane::CCamera* camera = activeCamera();
+            if (camera)
+            {
+                const Chicane::Vec3 view  = camera->getForward().normalize();
+                Chicane::Vec3       point = Chicane::Vec3::Zero();
+                if (intersectPlane(inOrigin, inDirection, origin, view, point))
+                {
+                    const float dist = length(point - origin) / scale;
+                    if (dist <= ORIGIN_OUTER)
+                    {
+                        m_bIsDragging          = true;
+                        m_dragAxis             = GizmoAxis::Center;
+                        m_dragStartT           = std::max(length(point - origin), MIN_SCALE);
+                        m_dragStartAngle       = startAng;
+                        m_dragOrigin           = origin;
+                        m_dragAxisDir          = view;
+                        m_dragStartHit         = point;
+                        m_dragStartTranslation = m_target->getTranslation();
+                        m_dragStartScale       = m_target->getScale();
+                        m_dragStartRotation    = m_target->getRotation();
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (m_type == GizmoType::Translation || m_type == GizmoType::Scale)
+        {
+            struct PlaneHandle
+            {
+                GizmoAxis     axis;
+                Chicane::Vec3 u;
+                Chicane::Vec3 v;
+                Chicane::Vec3 n;
+            };
+
+            const PlaneHandle planes[] = {
+                {GizmoAxis::XY, getRight().normalize(),   getForward().normalize(), getUp().normalize()     },
+                {GizmoAxis::XZ, getRight().normalize(),   getUp().normalize(),      getForward().normalize()},
+                {GizmoAxis::YZ, getForward().normalize(), getUp().normalize(),      getRight().normalize()  }
+            };
+
+            float bestRay = 1.0e9f;
+
+            for (const PlaneHandle& plane : planes)
+            {
+                Chicane::Vec3 point = Chicane::Vec3::Zero();
+                if (!intersectPlane(inOrigin, inDirection, origin, plane.n, point))
+                {
+                    continue;
+                }
+
+                const Chicane::Vec3 offset = point - origin;
+                const float         u      = offset.dot(plane.u) / scale;
+                const float         v      = offset.dot(plane.v) / scale;
+                if (u < PLANE_INNER || u > PLANE_OUTER || v < PLANE_INNER || v > PLANE_OUTER)
+                {
+                    continue;
+                }
+
+                const float ray = length(point - inOrigin);
+                if (ray >= bestRay)
+                {
+                    continue;
+                }
+
+                bestRay  = ray;
+                hit      = plane.axis;
+                hitAxis  = plane.n;
+                startHit = point;
+            }
+
+            if (hit != GizmoAxis::None)
+            {
+                m_bIsDragging          = true;
+                m_dragAxis             = hit;
+                m_dragStartT           = std::max(length(startHit - origin), MIN_SCALE);
+                m_dragStartAngle       = startAng;
+                m_dragOrigin           = origin;
+                m_dragAxisDir          = hitAxis;
+                m_dragStartHit         = startHit;
+                m_dragStartTranslation = m_target->getTranslation();
+                m_dragStartScale       = m_target->getScale();
+                m_dragStartRotation    = m_target->getRotation();
+
+                return true;
+            }
+        }
 
         if (m_type == GizmoType::Scale)
         {
             const float ray      = std::max(0.0f, (origin - inOrigin).dot(inDirection));
             const float distance = length((inOrigin + inDirection * ray) - origin);
-            if (distance < CENTER_RADIUS)
+            if (distance < CENTER_RADIUS * scale)
             {
                 hit     = GizmoAxis::Center;
                 best    = distance;
@@ -260,7 +371,7 @@ namespace Editor
                     continue;
                 }
 
-                const float distance = std::fabs(length(point - origin) - RING_RADIUS);
+                const float distance = std::fabs(length(point - origin) - RING_RADIUS * scale);
                 if (distance >= best)
                 {
                     continue;
@@ -277,14 +388,24 @@ namespace Editor
             float ray      = 0.0f;
             float along    = 0.0f;
             float distance = 0.0f;
-            closestOnAxis(inOrigin, inDirection, origin, direction, 0.0f, AXIS_LENGTH, ray, along, distance);
+            closestOnAxis(
+                inOrigin,
+                inDirection,
+                origin,
+                direction,
+                ORIGIN_OUTER * scale,
+                AXIS_LENGTH * scale,
+                ray,
+                along,
+                distance
+            );
 
             if (distance >= best)
             {
                 continue;
             }
 
-            if (along < 0.2f)
+            if (along < ORIGIN_OUTER * scale)
             {
                 continue;
             }
@@ -306,6 +427,7 @@ namespace Editor
         m_dragStartAngle       = startAng;
         m_dragOrigin           = origin;
         m_dragAxisDir          = hitAxis;
+        m_dragStartHit         = startHit;
         m_dragStartTranslation = m_target->getTranslation();
         m_dragStartScale       = m_target->getScale();
         m_dragStartRotation    = m_target->getRotation();
@@ -338,14 +460,71 @@ namespace Editor
 
         if (m_dragAxis == GizmoAxis::Center)
         {
-            const float ray      = std::max(0.0f, (m_dragOrigin - inOrigin).dot(inDirection));
-            const float distance = std::max(length((inOrigin + inDirection * ray) - m_dragOrigin), MIN_SCALE);
-            const float ratio    = distance / std::max(m_dragStartT, MIN_SCALE);
+            if (m_type == GizmoType::Scale)
+            {
+                const float ray      = std::max(0.0f, (m_dragOrigin - inOrigin).dot(inDirection));
+                const float distance = std::max(length((inOrigin + inDirection * ray) - m_dragOrigin), MIN_SCALE);
+                const float ratio    = distance / std::max(m_dragStartT, MIN_SCALE);
 
-            m_target->setAbsoluteScale(m_dragStartScale * ratio);
+                m_target->setAbsoluteScale(m_dragStartScale * ratio);
+                setAbsoluteTranslation(m_target->getTranslation());
+                setAbsoluteRotation(Chicane::Rotator());
+                setAbsoluteScale(Chicane::Vec3(handleScale()));
+
+                return;
+            }
+
+            Chicane::Vec3 point = Chicane::Vec3::Zero();
+            if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
+            {
+                return;
+            }
+
+            m_target->setAbsoluteTranslation(m_dragStartTranslation + (point - m_dragStartHit));
             setAbsoluteTranslation(m_target->getTranslation());
-            setAbsoluteRotation(m_target->getRotation());
-            setAbsoluteScale(Chicane::Vec3::One());
+            setAbsoluteRotation(Chicane::Rotator());
+            setAbsoluteScale(Chicane::Vec3(handleScale()));
+
+            return;
+        }
+
+        if (isPlaneAxis(m_dragAxis))
+        {
+            Chicane::Vec3 point = Chicane::Vec3::Zero();
+            if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
+            {
+                return;
+            }
+
+            if (m_type == GizmoType::Scale)
+            {
+                const float   ratio = length(point - m_dragOrigin) / std::max(m_dragStartT, MIN_SCALE);
+                Chicane::Vec3 scale = m_dragStartScale;
+
+                if (m_dragAxis == GizmoAxis::XY || m_dragAxis == GizmoAxis::XZ)
+                {
+                    scale.x = std::max(MIN_SCALE, m_dragStartScale.x * ratio);
+                }
+
+                if (m_dragAxis == GizmoAxis::XY || m_dragAxis == GizmoAxis::YZ)
+                {
+                    scale.y = std::max(MIN_SCALE, m_dragStartScale.y * ratio);
+                }
+
+                if (m_dragAxis == GizmoAxis::XZ || m_dragAxis == GizmoAxis::YZ)
+                {
+                    scale.z = std::max(MIN_SCALE, m_dragStartScale.z * ratio);
+                }
+
+                m_target->setAbsoluteScale(scale);
+
+                return;
+            }
+
+            m_target->setAbsoluteTranslation(m_dragStartTranslation + (point - m_dragStartHit));
+            setAbsoluteTranslation(m_target->getTranslation());
+            setAbsoluteRotation(Chicane::Rotator());
+            setAbsoluteScale(Chicane::Vec3(handleScale()));
 
             return;
         }
@@ -380,8 +559,8 @@ namespace Editor
 
         m_target->setAbsoluteTranslation(m_dragStartTranslation + m_dragAxisDir * (along - m_dragStartT));
         setAbsoluteTranslation(m_target->getTranslation());
-        setAbsoluteRotation(m_target->getRotation());
-        setAbsoluteScale(Chicane::Vec3::One());
+        setAbsoluteRotation(Chicane::Rotator());
+        setAbsoluteScale(Chicane::Vec3(handleScale()));
     }
 
     void Gizmo::endDrag()
@@ -402,7 +581,16 @@ namespace Editor
         m_mesh = getScene()->createComponent<Chicane::CMesh>();
         m_mesh->setCanCastShadows(false);
         m_mesh->setIsLit(false);
+        m_mesh->setIsForeground(true);
         m_mesh->attachTo(this);
+
+        m_origin = getScene()->createComponent<Chicane::CMesh>();
+        m_origin->setCanCastShadows(false);
+        m_origin->setIsLit(false);
+        m_origin->setIsForeground(true);
+        m_origin->setMesh("Assets/Editor/Meshes/Gizmo/Origin.bmsh");
+        m_origin->attachTo(this);
+        m_origin->deactivate();
 
         applyMesh();
 
@@ -420,6 +608,8 @@ namespace Editor
         {
             m_mesh->activate();
         }
+
+        syncOrigin();
     }
 
     void Gizmo::onDeactivation()
@@ -430,6 +620,18 @@ namespace Editor
         {
             m_mesh->deactivate();
         }
+
+        if (m_origin)
+        {
+            m_origin->deactivate();
+        }
+    }
+
+    void Gizmo::onTick(float inDeltaTime)
+    {
+        (void)inDeltaTime;
+
+        syncTransform();
     }
 
     void Gizmo::applyMesh()
@@ -440,18 +642,90 @@ namespace Editor
         }
 
         m_mesh->setMesh(meshPath(m_type));
+        syncOrigin();
     }
 
     void Gizmo::syncTransform()
     {
-        if (!m_target || m_bIsDragging)
+        if (!m_target)
+        {
+            if (m_origin)
+            {
+                m_origin->deactivate();
+            }
+
+            return;
+        }
+
+        setAbsoluteScale(Chicane::Vec3(handleScale()));
+
+        if (!m_bIsDragging)
+        {
+            setAbsoluteTranslation(m_target->getTranslation());
+            setAbsoluteRotation(Chicane::Rotator());
+        }
+
+        syncOrigin();
+    }
+
+    void Gizmo::syncOrigin()
+    {
+        if (!m_origin)
         {
             return;
         }
 
-        setAbsoluteTranslation(m_target->getTranslation());
-        setAbsoluteRotation(m_target->getRotation());
-        setAbsoluteScale(Chicane::Vec3::One());
+        if (!isActive() || !m_target || m_type != GizmoType::Translation)
+        {
+            m_origin->deactivate();
+
+            return;
+        }
+
+        m_origin->activate();
+
+        Chicane::CCamera* camera = activeCamera();
+        if (!camera)
+        {
+            return;
+        }
+
+        m_origin->lookAt(camera->getTranslation());
+    }
+
+    float Gizmo::handleScale() const
+    {
+        if (!m_target)
+        {
+            return 1.0f;
+        }
+
+        Chicane::CCamera* camera = activeCamera();
+        if (!camera)
+        {
+            return 1.0f;
+        }
+
+        const Chicane::Vec3 offset = m_target->getTranslation() - camera->getTranslation();
+
+        return std::clamp(length(offset) * HANDLE_SCALE, MIN_HANDLE, MAX_HANDLE);
+    }
+
+    Chicane::CCamera* Gizmo::activeCamera() const
+    {
+        Chicane::Scene* scene = getScene();
+        if (!scene)
+        {
+            return nullptr;
+        }
+
+        std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
+        if (cameras.empty())
+        {
+            return nullptr;
+        }
+
+        return cameras.back();
     }
 
     Chicane::Vec3 Gizmo::axisDirection(GizmoAxis inAxis) const
