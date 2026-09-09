@@ -1,0 +1,45 @@
+#pragma once
+
+#include <vector>
+
+#include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Renderer/Layer.hpp"
+
+namespace Chicane
+{
+    namespace Renderer
+    {
+        class CHICANE_RENDERER VulkanLSceneForeground : public Layer
+        {
+        public:
+            VulkanLSceneForeground();
+
+            void updateSkyDescriptors(const vk::DescriptorImageInfo& inInfo);
+
+        protected:
+            void onInit() override;
+            void onRestart() override;
+            void onDestruction() override;
+
+            bool onBeginRender(const Frame& inFrame) override;
+            void onRender(const Frame& inFrame, void* inData = nullptr) override;
+
+        private:
+            void initFrameResources();
+            void destroyFrameResources();
+
+            void initGraphicsPipeline();
+            void initFramebuffers();
+
+        private:
+            VulkanGraphicsPipeline      m_graphicsPipeline;
+
+            VulkanDescriptorBundle      m_frameDescriptor;
+
+            std::vector<vk::ClearValue> m_clear;
+        };
+    }
+}

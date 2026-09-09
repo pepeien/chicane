@@ -20,6 +20,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "Chicane/Core/Color.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -29,11 +31,12 @@ namespace Chicane
         static constexpr inline const char*         ENGINE_NAME      = "Chicane";
 
         // Layers
-        static constexpr inline const char*         SCENE_LAYER_ID        = "Engine_Scene";
-        static constexpr inline const char*         SCENE_SKY_LAYER_ID    = "Engine_Scene_Sky";
-        static constexpr inline const char*         SCENE_SHADOW_LAYER_ID = "Engine_Scene_Shadow";
-        static constexpr inline const char*         SCENE_MESH_LAYER_ID   = "Engine_Scene_Mesh";
-        static constexpr inline const char*         SCENE_LINE_LAYER_ID   = "Engine_Scene_Line";
+        static constexpr inline const char*         SCENE_LAYER_ID            = "Engine_Scene";
+        static constexpr inline const char*         SCENE_SKY_LAYER_ID        = "Engine_Scene_Sky";
+        static constexpr inline const char*         SCENE_SHADOW_LAYER_ID     = "Engine_Scene_Shadow";
+        static constexpr inline const char*         SCENE_MESH_LAYER_ID       = "Engine_Scene_Mesh";
+        static constexpr inline const char*         SCENE_LINE_LAYER_ID       = "Engine_Scene_Line";
+        static constexpr inline const char*         SCENE_FOREGROUND_LAYER_ID = "Engine_Scene_Foreground";
 
         static constexpr inline const char*         UI_LAYER_ID = "Engine_UI";
 
@@ -49,5 +52,10 @@ namespace Chicane
         static constexpr inline const std::uint32_t SHADOW_MAP_HEIGHT    = 2048;
         static constexpr inline const std::uint32_t SHADOW_CASCADE_COUNT = 4;
         static constexpr inline const std::uint32_t MAX_LIGHTS           = 8;
+
+        static constexpr inline const std::uint32_t SKY_TEXTURE_SIZE = 512;
+        static constexpr inline const std::uint32_t SKY_MIP_LEVELS   = 10;
+
+        static inline const Color::Rgba             OUTLINE_COLOR = Color::Rgba(11, 153, 125, 255);
     }
 }
