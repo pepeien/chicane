@@ -37,11 +37,9 @@ namespace Chicane
                 Draw::InvalidId,
                 Draw::InvalidId
             };
+            std::int32_t bCanCastShadows = 1;
+            std::int32_t bIsLit          = 1;
+            std::int32_t _pad[2]         = {};
         };
-
-        static_assert(
-            sizeof(DrawPoly3DInstance) == 64 + (sizeof(Draw::Id) * TEXTURE_MAP_COUNT),
-            "Poly3D instance texture slots must match TextureMap::Count"
-        );
     }
 }

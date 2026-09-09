@@ -400,8 +400,12 @@ namespace Editor
     void Gizmo::onLoad()
     {
         m_mesh = getScene()->createComponent<Chicane::CMesh>();
+        m_mesh->setCanCastShadows(false);
+        m_mesh->setIsLit(false);
         m_mesh->attachTo(this);
+
         applyMesh();
+
         bindWindow();
     }
 

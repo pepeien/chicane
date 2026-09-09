@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Chicane/Renderer/Light/Type.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -103,6 +105,81 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        bool Frame::hasShadowDraws() const
+        {
+            return std::any_of(
+                m_3DInstancesFlat.begin(),
+                m_3DInstancesFlat.end(),
+                [](const DrawPoly3DInstance& inInstance) { return inInstance.bCanCastShadows != 0; }
+            );
+        }
+
+        DrawPoly::List Frame::getShadowDraws() const
+        {
+            DrawPoly::List result;
+
+            for (const DrawPoly& draw : getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            {
+                std::uint32_t runStart = 0U;
+                std::uint32_t runCount = 0U;
+
+                for (std::uint32_t index = 0U; index < draw.instanceCount; ++index)
+                {
+                    const std::uint32_t instanceIndex = draw.instanceStart + index;
+
+                    const bool bCanCastShadows = instanceIndex < m_3DInstancesFlat.size() &&
+                                                 m_3DInstancesFlat.at(instanceIndex).bCanCastShadows != 0;
+
+                    if (bCanCastShadows)
+                    {
+                        if (runCount == 0U)
+                        {
+                            runStart = instanceIndex;
+                        }
+                        runCount++;
+                        continue;
+                    }
+
+                    if (runCount == 0U)
+                    {
+                        continue;
+                    }
+
+                    DrawPoly shadowDraw      = draw;
+                    shadowDraw.instanceStart = runStart;
+                    shadowDraw.instanceCount = runCount;
+                    result.push_back(shadowDraw);
+
+                    runCount = 0U;
+                }
+
+                if (runCount == 0U)
+                {
+                    continue;
+                }
+
+                DrawPoly shadowDraw      = draw;
+                shadowDraw.instanceStart = runStart;
+                shadowDraw.instanceCount = runCount;
+                result.push_back(shadowDraw);
+            }
+
+            return result;
+        }
+
+        bool Frame::hasShadowCasterLights() const
+        {
+            for (const Light& light : m_lights)
+            {
+                if (light.castShadows && light.type != LightType::Environment)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         const DrawPoly2DInstance::List& Frame::getInstances2D() const
@@ -228,9 +305,9 @@ namespace Chicane
         {
             m_3DInstancesFlat.clear();
 
-            for (const auto& [id, instance] : m_3DInstances)
+            for (const auto& [id, instances] : m_3DInstances)
             {
-                m_3DInstancesFlat.insert(m_3DInstancesFlat.end(), instance.begin(), instance.end());
+                m_3DInstancesFlat.insert(m_3DInstancesFlat.end(), instances.begin(), instances.end());
             }
         }
     }

@@ -14,7 +14,7 @@
 #endif
 
 #if defined(NDEBUG)
-    #define IS_DEBUGGING false
+    #define IS_DEBUGGING true
 #else
     #define IS_DEBUGGING true
 #endif

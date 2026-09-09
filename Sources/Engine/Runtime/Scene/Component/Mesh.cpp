@@ -11,6 +11,8 @@ namespace Chicane
     CMesh::CMesh()
         : Component(),
           m_bIsVisible(false),
+          m_bCanCastShadows(true),
+          m_bIsLit(true),
           m_asset(nullptr)
     {}
 
@@ -49,6 +51,26 @@ namespace Chicane
     const Box::Mesh* CMesh::getMesh() const
     {
         return m_asset;
+    }
+
+    bool CMesh::canCastShadows() const
+    {
+        return m_bCanCastShadows;
+    }
+
+    void CMesh::setCanCastShadows(bool inValue)
+    {
+        m_bCanCastShadows = inValue;
+    }
+
+    bool CMesh::isLit() const
+    {
+        return m_bIsLit;
+    }
+
+    void CMesh::setIsLit(bool inValue)
+    {
+        m_bIsLit = inValue;
     }
 
     void CMesh::generateBounds()

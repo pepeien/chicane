@@ -23,6 +23,7 @@ namespace Editor
     public:
         Gizmo();
         Gizmo(GizmoType inType);
+
         ~Gizmo() override;
 
     public:

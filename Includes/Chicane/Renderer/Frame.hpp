@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <vector>
+
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/View.hpp"
 
@@ -34,6 +37,9 @@ namespace Chicane
 
             bool hasDraws(DrawPolyType inType, DrawPolyMode inMode) const;
             DrawPoly::List getDraws(DrawPolyType inType, DrawPolyMode inMode) const;
+            bool hasShadowDraws() const;
+            DrawPoly::List getShadowDraws() const;
+            bool hasShadowCasterLights() const;
 
             const DrawPoly2DInstance::List& getInstances2D() const;
             void draw(Draw::Id inId, const DrawPoly2DInstance& inInstance);

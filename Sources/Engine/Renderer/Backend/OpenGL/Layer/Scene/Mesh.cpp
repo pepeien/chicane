@@ -1,5 +1,8 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 
+#include <algorithm>
+#include <string>
+
 #include <glad/gl.h>
 
 #include "Chicane/Core/FileSystem.hpp"

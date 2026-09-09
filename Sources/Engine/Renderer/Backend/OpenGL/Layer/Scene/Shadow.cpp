@@ -29,7 +29,7 @@ namespace Chicane
 
         bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
             {
                 return false;
             }
@@ -66,7 +66,7 @@ namespace Chicane
                 glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, cascade);
                 glClear(GL_DEPTH_BUFFER_BIT);
 
-                for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+                for (const DrawPoly& draw : inFrame.getShadowDraws())
                 {
                     glDrawElementsInstancedBaseVertexBaseInstance(
                         GL_TRIANGLES,

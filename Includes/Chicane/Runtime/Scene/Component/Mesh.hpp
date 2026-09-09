@@ -25,11 +25,19 @@ namespace Chicane
         void setMesh(const FileSystem::Path& inFilePath);
         const Box::Mesh* getMesh() const;
 
+        bool canCastShadows() const;
+        void setCanCastShadows(bool inValue);
+
+        bool isLit() const;
+        void setIsLit(bool inValue);
+
     protected:
         void generateBounds();
 
     protected:
         bool             m_bIsVisible;
+        bool             m_bCanCastShadows;
+        bool             m_bIsLit;
 
         const Box::Mesh* m_asset;
     };

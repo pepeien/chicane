@@ -41,7 +41,7 @@ namespace Chicane
 
         bool VulkanLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
             {
                 return false;
             }
@@ -101,7 +101,7 @@ namespace Chicane
                 commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
-                for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+                for (const DrawPoly& draw : inFrame.getShadowDraws())
                 {
                     commandBuffer.drawIndexed(
                         draw.indexCount,
