@@ -48,6 +48,26 @@ namespace Chicane
         m_range = std::max(inRange, 0.0f);
     }
 
+    float CLight::getInnerAngle() const
+    {
+        return m_innerAngle;
+    }
+
+    void CLight::setInnerAngle(float inAngle)
+    {
+        m_innerAngle = std::clamp(inAngle, 0.0f, 89.9f);
+    }
+
+    float CLight::getOuterAngle() const
+    {
+        return m_outerAngle;
+    }
+
+    void CLight::setOuterAngle(float inAngle)
+    {
+        m_outerAngle = std::clamp(inAngle, 0.0f, 89.9f);
+    }
+
     bool CLight::canCastShadows() const
     {
         return m_bCanCastShadows;
@@ -66,14 +86,12 @@ namespace Chicane
         light.color           = m_color;
         light.intensity       = m_intensity;
         light.range           = m_range;
+        light.innerAngle      = std::min(m_innerAngle, m_outerAngle);
+        light.outerAngle      = m_outerAngle;
         light.translation     = Vec3(m_data.translation.x, m_data.translation.y, m_data.translation.z);
 
-        Vec3 direction = Vec3(m_data.forward.x, m_data.forward.y, m_data.forward.z).normalize();
-        if (direction.dot(direction) < 1e-8f)
-        {
-            direction = Vec3::Forward();
-        }
-        light.direction = direction;
+        const Vec3 forward = Vec3(m_data.forward.x, m_data.forward.y, m_data.forward.z);
+        light.direction    = forward.dot(forward) < 1e-8f ? Vec3::Forward() : forward.normalize();
 
         return light;
     }

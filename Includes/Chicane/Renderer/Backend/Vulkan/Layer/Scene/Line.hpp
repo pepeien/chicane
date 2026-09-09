@@ -31,7 +31,16 @@ namespace Chicane
 
             void initMeshGraphicsPipeline();
             void initOverlayGraphicsPipeline();
+            void initOutlineGraphicsPipeline();
             void initFramebuffers();
+
+            void drawOutlineMeshes(
+                const Frame&       inFrame,
+                vk::CommandBuffer  inCommandBuffer,
+                vk::PipelineLayout inLayout,
+                float              inOffsetX,
+                float              inOffsetY
+            ) const;
 
             void ensureOverlayBuffer(std::size_t inVertexCount);
             void destroyOverlayBuffer();
@@ -39,10 +48,13 @@ namespace Chicane
 
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
             bool shouldDrawOverlay() const;
+            bool shouldDrawOutline(const Frame& inFrame) const;
 
         private:
             VulkanGraphicsPipeline      m_meshPipeline;
             VulkanGraphicsPipeline      m_overlayPipeline;
+            VulkanGraphicsPipeline      m_outlineMaskPipeline;
+            VulkanGraphicsPipeline      m_outlinePipeline;
 
             VulkanDescriptorBundle      m_frameDescriptor;
 

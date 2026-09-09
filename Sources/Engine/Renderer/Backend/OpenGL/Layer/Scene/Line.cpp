@@ -15,6 +15,7 @@ namespace Chicane
             : Layer(SCENE_LINE_LAYER_ID),
               m_meshShaderProgram(0),
               m_overlayShaderProgram(0),
+              m_outlineShaderProgram(0),
               m_overlayVertexArray(0),
               m_overlayVertexBuffer(0),
               m_overlayVertexCount(0)
@@ -24,12 +25,14 @@ namespace Chicane
         {
             buildMeshShader();
             buildOverlayShader();
+            buildOutlineShader();
             buildOverlayVertexArray();
         }
 
         void OpenGLLSceneLine::onDestruction()
         {
             destroyOverlayVertexArray();
+            destroyOutlineShader();
             destroyOverlayShader();
             destroyMeshShader();
         }
@@ -55,9 +58,14 @@ namespace Chicane
                    renderer->hasDebugOverlay();
         }
 
+        bool OpenGLLSceneLine::shouldDrawOutline(const Frame& inFrame) const
+        {
+            return inFrame.hasOutlineDraws();
+        }
+
         bool OpenGLLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay();
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay() || shouldDrawOutline(inFrame);
         }
 
         void OpenGLLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -107,6 +115,66 @@ namespace Chicane
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
 
+            if (shouldDrawOutline(inFrame))
+            {
+                Depth depth;
+                depth.bCanWrite = false;
+                depth.compare   = DepthCompare::LessOrEqual;
+                backend->enableDepth(depth);
+                backend->disableCulling();
+
+                backend->useProgram(m_outlineShaderProgram);
+                glProgramUniform4f(
+                    m_outlineShaderProgram,
+                    1,
+                    static_cast<float>(OUTLINE_COLOR.r) / 255.0f,
+                    static_cast<float>(OUTLINE_COLOR.g) / 255.0f,
+                    static_cast<float>(OUTLINE_COLOR.b) / 255.0f,
+                    static_cast<float>(OUTLINE_COLOR.a) / 255.0f
+                );
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+                glEnable(GL_STENCIL_TEST);
+                glClear(GL_STENCIL_BUFFER_BIT);
+
+                glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+                glStencilMask(0xFF);
+                glStencilFunc(GL_ALWAYS, 1, 0xFF);
+                glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+                drawOutlineMeshes(inFrame, 0.0f, 0.0f);
+
+                const Viewport viewport = backend->getGLViewport(this);
+                const float    scaleX   = viewport.size.x > 0.0f ? 4.0f / viewport.size.x : 0.0f;
+                const float    scaleY   = viewport.size.y > 0.0f ? 4.0f / viewport.size.y : 0.0f;
+
+                glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+                glStencilMask(0x00);
+                glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+                glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+                static const float kOffsets[8][2] = {
+                    {1.0f,         0.0f        },
+                    {-1.0f,        0.0f        },
+                    {0.0f,         1.0f        },
+                    {0.0f,         -1.0f       },
+                    {0.70710678f,  0.70710678f },
+                    {0.70710678f,  -0.70710678f},
+                    {-0.70710678f, 0.70710678f },
+                    {-0.70710678f, -0.70710678f}
+                };
+
+                for (const float* offset : kOffsets)
+                {
+                    drawOutlineMeshes(inFrame, offset[0] * scaleX, offset[1] * scaleY);
+                }
+
+                glDisable(GL_STENCIL_TEST);
+                glStencilMask(0xFF);
+
+                depth.bCanWrite = true;
+                backend->enableDepth(depth);
+            }
+
             if (!shouldDrawOverlay())
             {
                 return;
@@ -134,6 +202,9 @@ namespace Chicane
             OpenGLBackend* backend = getBackend<OpenGLBackend>();
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             backend->disableDepth();
+            glDisable(GL_STENCIL_TEST);
+            glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+            glStencilMask(0xFF);
         }
 
         void OpenGLLSceneLine::buildMeshShader()
@@ -188,6 +259,32 @@ namespace Chicane
             }
         }
 
+        void OpenGLLSceneLine::buildOutlineShader()
+        {
+            Shader::List shaders;
+
+            Shader vertex;
+            vertex.type   = ShaderType::Vertex;
+            vertex.source = "Assets/Engine/Shaders/OpenGL/Scene/Outline.overt";
+            shaders.push_back(vertex);
+
+            Shader fragment;
+            fragment.type   = ShaderType::Fragment;
+            fragment.source = "Assets/Engine/Shaders/OpenGL/Scene/Outline.ofrag";
+            shaders.push_back(fragment);
+
+            m_outlineShaderProgram = getBackend<OpenGLBackend>()->initShader(shaders);
+        }
+
+        void OpenGLLSceneLine::destroyOutlineShader()
+        {
+            if (m_outlineShaderProgram)
+            {
+                getBackend<OpenGLBackend>()->destroyProgram(m_outlineShaderProgram);
+                m_outlineShaderProgram = 0;
+            }
+        }
+
         void OpenGLLSceneLine::buildOverlayVertexArray()
         {
             OpenGLBackend* backend = getBackend<OpenGLBackend>();
@@ -237,6 +334,24 @@ namespace Chicane
             glVertexArrayVertexBuffer(m_overlayVertexArray, 0, m_overlayVertexBuffer, 0, sizeof(Vertex));
 
             m_overlayVertexCount = static_cast<std::uint32_t>(inVertices.size());
+        }
+
+        void OpenGLLSceneLine::drawOutlineMeshes(const Frame& inFrame, float inOffsetX, float inOffsetY) const
+        {
+            glProgramUniform2f(m_outlineShaderProgram, 0, inOffsetX, inOffsetY);
+
+            for (const DrawPoly& draw : inFrame.getOutlineDraws())
+            {
+                glDrawElementsInstancedBaseVertexBaseInstance(
+                    GL_TRIANGLES,
+                    draw.indexCount,
+                    GL_UNSIGNED_INT,
+                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
+                    draw.instanceCount,
+                    draw.vertexStart,
+                    draw.instanceStart
+                );
+            }
         }
     }
 }

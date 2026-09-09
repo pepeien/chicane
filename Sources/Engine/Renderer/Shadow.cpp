@@ -50,8 +50,9 @@ namespace Chicane
 
                 void buildCascades(ShadowLight& outLight, const View& inCamera, const Vec3& inLightDirection)
                 {
-                    const float nearClip = std::max(inCamera.clip.x, 0.1f);
-                    const float farClip  = std::max(std::min(inCamera.clip.y, kMaxShadowDistance), nearClip + 1.0f);
+                    const float nearClip  = std::max(inCamera.clip.x, 0.1f);
+                    const float cameraFar = std::max(inCamera.clip.y, nearClip + 1.0f);
+                    const float farClip   = std::max(std::min(cameraFar, kMaxShadowDistance), nearClip + 1.0f);
 
                     float splits[SHADOW_CASCADE_COUNT] = {};
                     for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
@@ -70,10 +71,18 @@ namespace Chicane
                     Vec3       fullFrustumCorners[8] = {};
                     getFrustumCorners(inverseViewProjection, fullFrustumCorners);
 
-                    float lastSplit = nearClip / farClip;
+                    Vec3 up = Vec3::Up();
+                    if (std::abs(inLightDirection.dot(up)) > 0.999f)
+                    {
+                        up = Vec3::Right();
+                    }
+
+                    const float cameraRange = cameraFar - nearClip;
+
+                    float lastSplit = 0.0f;
                     for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
                     {
-                        const float split      = splits[cascade] / farClip;
+                        const float split      = std::clamp((splits[cascade] - nearClip) / cameraRange, 0.0f, 1.0f);
                         Vec3        corners[8] = {};
 
                         for (std::uint32_t corner = 0; corner < 4; ++corner)
@@ -102,45 +111,30 @@ namespace Chicane
                         const Mat4 lightView = glm::lookAt(
                             static_cast<glm::vec3>(eye),
                             static_cast<glm::vec3>(center),
-                            static_cast<glm::vec3>(Vec3::Up())
+                            static_cast<glm::vec3>(up)
                         );
 
-                        float minX = std::numeric_limits<float>::max();
-                        float maxX = -std::numeric_limits<float>::max();
-                        float minY = std::numeric_limits<float>::max();
-                        float maxY = -std::numeric_limits<float>::max();
+                        const float diameter            = radius * 2.0f;
+                        const float worldUnitsPerTexelX = diameter / static_cast<float>(SHADOW_MAP_WIDTH);
+                        const float worldUnitsPerTexelY = diameter / static_cast<float>(SHADOW_MAP_HEIGHT);
+
+                        Vec4 centerLight = lightView * Vec4(center, 1.0f);
+                        centerLight.x    = std::floor(centerLight.x / worldUnitsPerTexelX) * worldUnitsPerTexelX;
+                        centerLight.y    = std::floor(centerLight.y / worldUnitsPerTexelY) * worldUnitsPerTexelY;
+
+                        const float minX = centerLight.x - radius;
+                        const float maxX = centerLight.x + radius;
+                        const float minY = centerLight.y - radius;
+                        const float maxY = centerLight.y + radius;
+
                         float minZ = std::numeric_limits<float>::max();
                         float maxZ = -std::numeric_limits<float>::max();
 
                         for (const Vec3& corner : corners)
                         {
                             const Vec4 lightSpace = lightView * Vec4(corner, 1.0f);
-                            minX                  = std::min(minX, lightSpace.x);
-                            maxX                  = std::max(maxX, lightSpace.x);
-                            minY                  = std::min(minY, lightSpace.y);
-                            maxY                  = std::max(maxY, lightSpace.y);
                             minZ                  = std::min(minZ, lightSpace.z);
                             maxZ                  = std::max(maxZ, lightSpace.z);
-                        }
-
-                        const float padX = std::max((maxX - minX) * 0.25f, radius * 0.35f);
-                        const float padY = std::max((maxY - minY) * 0.25f, radius * 0.35f);
-                        minX -= padX;
-                        maxX += padX;
-                        minY -= padY;
-                        maxY += padY;
-
-                        const float worldUnitsPerTexelX = (maxX - minX) / static_cast<float>(SHADOW_MAP_WIDTH);
-                        const float worldUnitsPerTexelY = (maxY - minY) / static_cast<float>(SHADOW_MAP_HEIGHT);
-                        if (worldUnitsPerTexelX > 0.0f)
-                        {
-                            minX = std::floor(minX / worldUnitsPerTexelX) * worldUnitsPerTexelX;
-                            maxX = std::ceil(maxX / worldUnitsPerTexelX) * worldUnitsPerTexelX;
-                        }
-                        if (worldUnitsPerTexelY > 0.0f)
-                        {
-                            minY = std::floor(minY / worldUnitsPerTexelY) * worldUnitsPerTexelY;
-                            maxY = std::ceil(maxY / worldUnitsPerTexelY) * worldUnitsPerTexelY;
                         }
 
                         const float depthPadding = radius * kDepthPaddingFactor;
@@ -185,6 +179,109 @@ namespace Chicane
                     return directional >= 0 ? directional : any;
                 }
 
+                bool isVisible(const Light& inLight)
+                {
+                    return inLight.intensity > 0.0f && inLight.color.dot(inLight.color) > 0.0f;
+                }
+
+                std::uint32_t getPriority(const Light& inLight)
+                {
+                    switch (inLight.type)
+                    {
+                    case LightType::Environment:
+                        return 0;
+
+                    case LightType::Directional:
+                        return inLight.castShadows ? 1 : 2;
+
+                    default:
+                        return inLight.castShadows ? 3 : 4;
+                    }
+                }
+
+                Light::List selectLights(const View& inCamera, const Light::List& inLights)
+                {
+                    const Vec3 cameraTranslation =
+                        Vec3(inCamera.translation.x, inCamera.translation.y, inCamera.translation.z);
+
+                    std::vector<std::uint32_t> indices;
+                    indices.reserve(inLights.size());
+
+                    bool hasEnvironment = false;
+                    for (std::uint32_t index = 0; index < inLights.size(); ++index)
+                    {
+                        const Light& light = inLights.at(index);
+                        if (!isVisible(light))
+                        {
+                            continue;
+                        }
+
+                        if (light.type == LightType::Environment)
+                        {
+                            if (hasEnvironment)
+                            {
+                                continue;
+                            }
+
+                            hasEnvironment = true;
+                        }
+
+                        indices.push_back(index);
+                    }
+
+                    if (indices.size() > MAX_LIGHTS)
+                    {
+                        std::stable_sort(
+                            indices.begin(),
+                            indices.end(),
+                            [&](std::uint32_t inLeft, std::uint32_t inRight)
+                            {
+                                const Light& left  = inLights.at(inLeft);
+                                const Light& right = inLights.at(inRight);
+
+                                const std::uint32_t leftPriority  = getPriority(left);
+                                const std::uint32_t rightPriority = getPriority(right);
+                                if (leftPriority != rightPriority)
+                                {
+                                    return leftPriority < rightPriority;
+                                }
+
+                                return length(left.translation - cameraTranslation) - left.range <
+                                       length(right.translation - cameraTranslation) - right.range;
+                            }
+                        );
+
+                        indices.resize(MAX_LIGHTS);
+                    }
+
+                    Light::List result;
+                    result.reserve(indices.size());
+                    for (std::uint32_t index : indices)
+                    {
+                        result.push_back(inLights.at(index));
+                    }
+
+                    return result;
+                }
+
+                Vec4 getCone(const Light& inLight)
+                {
+                    if (inLight.type != LightType::Spot)
+                    {
+                        return Vec4::Zero();
+                    }
+
+                    constexpr float kDegreesToRadians = 3.14159265358979323846f / 180.0f;
+
+                    const float outer = std::clamp(inLight.outerAngle, 0.0f, 89.9f);
+                    const float inner = std::clamp(inLight.innerAngle, 0.0f, outer);
+
+                    const float cosOuter = std::cos(outer * kDegreesToRadians);
+                    const float cosInner = std::max(std::cos(inner * kDegreesToRadians), cosOuter + 1e-4f);
+
+                    return Vec4(cosInner, cosOuter, 0.0f, 0.0f);
+                }
+
                 int findEnvironmentLight(const Light::List& inLights, std::uint32_t inCount)
                 {
                     for (std::uint32_t index = 0; index < inCount; ++index)
@@ -209,18 +306,16 @@ namespace Chicane
                     return result;
                 }
 
-                const std::uint32_t count = std::min(static_cast<std::uint32_t>(inLights.size()), MAX_LIGHTS);
-                result.info.x             = static_cast<float>(count);
+                const Light::List   lights = selectLights(inCamera, inLights);
+                const std::uint32_t count  = static_cast<std::uint32_t>(lights.size());
+                result.info.x              = static_cast<float>(count);
 
                 for (std::uint32_t index = 0; index < count; ++index)
                 {
-                    const Light& source = inLights.at(index);
+                    const Light& source = lights.at(index);
 
-                    Vec3 direction = source.direction.normalize();
-                    if (direction.dot(direction) < 1e-8f)
-                    {
-                        direction = Vec3(0.0f, 0.0f, -1.0f);
-                    }
+                    const bool bIsDegenerate = source.direction.dot(source.direction) < 1e-8f;
+                    const Vec3 direction     = bIsDegenerate ? Vec3(0.0f, 0.0f, -1.0f) : source.direction.normalize();
 
                     const Vec3 litColor = source.color * source.intensity;
 
@@ -229,11 +324,12 @@ namespace Chicane
                     result.lights[index].direction =
                         Vec4(direction.x, direction.y, direction.z, static_cast<float>(source.type));
                     result.lights[index].color = Vec4(litColor.x, litColor.y, litColor.z, 1.0f);
+                    result.lights[index].cone  = getCone(source);
                 }
 
-                const int caster = findShadowCaster(inLights, count);
+                const int caster = findShadowCaster(lights, count);
                 result.info.z    = static_cast<float>(caster);
-                result.info.w    = static_cast<float>(findEnvironmentLight(inLights, count));
+                result.info.w    = static_cast<float>(findEnvironmentLight(lights, count));
 
                 if (caster >= 0)
                 {

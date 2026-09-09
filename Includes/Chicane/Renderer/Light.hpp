@@ -24,6 +24,8 @@ namespace Chicane
             float     range       = 50.0f;
             Vec3      translation = Vec3::Zero();
             Vec3      direction   = Vec3::Forward();
+            float     innerAngle  = 25.0f;
+            float     outerAngle  = 40.0f;
         };
     }
 }

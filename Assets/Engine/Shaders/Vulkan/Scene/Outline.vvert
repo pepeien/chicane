@@ -1,0 +1,42 @@
+#version 460
+
+#extension GL_ARB_shading_language_include : require
+
+#include "../../Common/Poly/3D.glsl"
+
+layout(set = 0, binding = 0) uniform Camera {
+    vec4 clip;
+
+    mat4 view;
+    mat4 projection;
+
+    vec4 up;
+    vec4 right;
+    vec4 forward;
+
+    vec4 translation;
+} camera;
+
+layout(std430, set = 0, binding = 1) readonly buffer Scene {
+    PolyInstance3D meshes[];
+} instance;
+
+layout(push_constant) uniform OutlinePush {
+    vec2 pixelOffset;
+    vec2 padding;
+    vec4 color;
+} push;
+
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec4 inColor;
+layout(location = 2) in vec2 inUV;
+layout(location = 3) in vec3 inNormal;
+
+void main() {
+    PolyInstance3D mesh = instance.meshes[gl_InstanceIndex];
+
+    vec4 clipPosition = camera.projection * camera.view * mesh.model * vec4(inPosition, 1.0);
+    clipPosition.xy  += push.pixelOffset * clipPosition.w;
+
+    gl_Position = clipPosition;
+}

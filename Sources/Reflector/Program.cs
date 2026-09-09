@@ -258,11 +258,6 @@ class Program
                 List<Reflector.EnumModel> enums = allEnums.GetValueOrDefault(file, []);
                 List<Reflector.TypeModel> types = allTypes.GetValueOrDefault(file, []);
 
-                if (enums.Count <= 0 && types.Count <= 0)
-                {
-                    return;
-                }
-
                 string relativePath = Path.GetRelativePath(baseDir, file);
                 string directory = Path.GetDirectoryName(relativePath) ?? "";
                 string baseName = Path.GetFileNameWithoutExtension(relativePath);

@@ -563,9 +563,8 @@ namespace Chicane
                     subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, Box::Model::DEFAULT_REFERENCE);
                 }
 
-                subcommand.instance.model           = matrix * group.getModelMatrix();
-                subcommand.instance.bCanCastShadows = mesh->canCastShadows() ? 1 : 0;
-                subcommand.instance.bIsLit          = mesh->isLit() ? 1 : 0;
+                subcommand.instance.model = matrix * group.getModelMatrix();
+                subcommand.instance.flags = mesh->getFlags();
 
                 for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
                 {

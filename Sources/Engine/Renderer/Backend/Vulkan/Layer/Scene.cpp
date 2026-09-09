@@ -7,6 +7,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Foreground.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
@@ -131,7 +132,12 @@ namespace Chicane
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
-            shadowImage.format = backend->swapchain.depthFormat;
+            shadowImage.format = VulkanImage::findSupportedFormat(
+                backend->physicalDevice,
+                {vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint},
+                vk::ImageTiling::eOptimal,
+                vk::FormatFeatureFlagBits::eDepthStencilAttachment
+            );
             shadowImage.extent = vk::Extent2D{SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT};
 
             VulkanImageCreateInfo instanceCreateInfo;
@@ -307,6 +313,12 @@ namespace Chicane
             {
                 mesh->updateSkyDescriptors(skyImageInfo);
             }
+
+            if (VulkanLSceneForeground* foreground =
+                    m_backend->getLayer<VulkanLSceneForeground>(SCENE_FOREGROUND_LAYER_ID))
+            {
+                foreground->updateSkyDescriptors(skyImageInfo);
+            }
         }
 
         void VulkanLScene::buildLayers()
@@ -318,6 +330,7 @@ namespace Chicane
             m_backend->addLayer<VulkanLSceneShadow>(settings);
             m_backend->addLayer<VulkanLSceneMesh>(settings);
             m_backend->addLayer<VulkanLSceneLine>(settings);
+            m_backend->addLayer<VulkanLSceneForeground>(settings);
         }
     }
 }

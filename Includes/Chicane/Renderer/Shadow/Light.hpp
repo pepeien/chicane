@@ -21,5 +21,11 @@ namespace Chicane
 
             SceneLight lights[MAX_LIGHTS] = {};
         };
+
+        static_assert(
+            sizeof(ShadowLight) ==
+                (2 * sizeof(Vec4)) + (2 * SHADOW_CASCADE_COUNT * sizeof(Mat4)) + (MAX_LIGHTS * sizeof(SceneLight)),
+            "ShadowLight must stay tightly packed for GPU upload"
+        );
     }
 }

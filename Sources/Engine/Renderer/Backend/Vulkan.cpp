@@ -133,19 +133,23 @@ namespace Chicane
             bindScreenTarget(nextImage.targetImage);
 
             nextFrame.begin(inFrame, nextImage);
-            writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
-            renderLayers(
-                inFrame,
-                &nextFrame,
-                [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
-            );
-            nextFrame.flushTarget(!isScreenComposited(inFrame));
-            renderLayers(
-                inFrame,
-                &nextFrame,
-                [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
-            );
-            writeGpuTimestampEnd(nextFrame.commandBuffer, m_currentFrameIndex);
+            {
+                writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
+
+                renderLayers(
+                    inFrame,
+                    &nextFrame,
+                    [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
+                );
+                nextFrame.flushTarget(!isScreenComposited(inFrame));
+                renderLayers(
+                    inFrame,
+                    &nextFrame,
+                    [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
+                );
+
+                writeGpuTimestampEnd(nextFrame.commandBuffer, m_currentFrameIndex);
+            }
             nextFrame.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};

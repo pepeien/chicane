@@ -90,7 +90,7 @@ namespace Chicane
 
             commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (const DrawPoly& draw : inFrame.getSceneDraws())
             {
                 commandBuffer.drawIndexed(
                     draw.indexCount,

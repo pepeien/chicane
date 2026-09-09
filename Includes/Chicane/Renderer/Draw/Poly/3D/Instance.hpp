@@ -10,6 +10,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 
 namespace Chicane
 {
@@ -20,6 +21,9 @@ namespace Chicane
         public:
             using List = std::vector<DrawPoly3DInstance>;
             using Map  = std::map<Draw::Id, List>;
+
+        public:
+            bool has(DrawPoly3DFlag inFlag) const { return Renderer::has(flags, inFlag); }
 
         public:
             Mat4     model                       = Mat4::One;
@@ -37,9 +41,14 @@ namespace Chicane
                 Draw::InvalidId,
                 Draw::InvalidId
             };
-            std::int32_t bCanCastShadows = 1;
-            std::int32_t bIsLit          = 1;
-            std::int32_t _pad[2]         = {};
+            DrawPoly3DFlag flags = DrawPoly3DFlag::Lit | DrawPoly3DFlag::Shadow;
+            std::int32_t   _pad0 = 0;
+            std::int32_t   _pad1 = 0;
+            std::int32_t   _pad2 = 0;
         };
+
+        static_assert(
+            sizeof(DrawPoly3DInstance) == 128, "DrawPoly3DInstance must match the std430 array stride of PolyInstance3D"
+        );
     }
 }

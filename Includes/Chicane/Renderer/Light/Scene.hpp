@@ -14,6 +14,9 @@ namespace Chicane
             Vec4 translation = Vec4::Zero();
             Vec4 direction   = Vec4::Zero();
             Vec4 color       = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            Vec4 cone        = Vec4::Zero();
         };
+
+        static_assert(sizeof(SceneLight) == 64, "SceneLight must stay tightly packed for GPU upload");
     }
 }

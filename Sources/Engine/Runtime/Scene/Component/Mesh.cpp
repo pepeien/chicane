@@ -11,8 +11,7 @@ namespace Chicane
     CMesh::CMesh()
         : Component(),
           m_bIsVisible(false),
-          m_bCanCastShadows(true),
-          m_bIsLit(true),
+          m_flags(Renderer::DrawPoly3DFlag::Lit | Renderer::DrawPoly3DFlag::Shadow),
           m_asset(nullptr)
     {}
 
@@ -53,24 +52,66 @@ namespace Chicane
         return m_asset;
     }
 
+    Renderer::DrawPoly3DFlag CMesh::getFlags() const
+    {
+        return m_flags;
+    }
+
+    void CMesh::setFlags(Renderer::DrawPoly3DFlag inValue)
+    {
+        m_flags = inValue;
+    }
+
     bool CMesh::canCastShadows() const
     {
-        return m_bCanCastShadows;
+        return Renderer::has(m_flags, Renderer::DrawPoly3DFlag::Shadow);
     }
 
     void CMesh::setCanCastShadows(bool inValue)
     {
-        m_bCanCastShadows = inValue;
+        setFlag(Renderer::DrawPoly3DFlag::Shadow, inValue);
     }
 
     bool CMesh::isLit() const
     {
-        return m_bIsLit;
+        return Renderer::has(m_flags, Renderer::DrawPoly3DFlag::Lit);
     }
 
     void CMesh::setIsLit(bool inValue)
     {
-        m_bIsLit = inValue;
+        setFlag(Renderer::DrawPoly3DFlag::Lit, inValue);
+    }
+
+    bool CMesh::isForeground() const
+    {
+        return Renderer::has(m_flags, Renderer::DrawPoly3DFlag::Foreground);
+    }
+
+    void CMesh::setIsForeground(bool inValue)
+    {
+        setFlag(Renderer::DrawPoly3DFlag::Foreground, inValue);
+    }
+
+    bool CMesh::isOutlined() const
+    {
+        return Renderer::has(m_flags, Renderer::DrawPoly3DFlag::Outlined);
+    }
+
+    void CMesh::setIsOutlined(bool inValue)
+    {
+        setFlag(Renderer::DrawPoly3DFlag::Outlined, inValue);
+    }
+
+    void CMesh::setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue)
+    {
+        if (inValue)
+        {
+            m_flags |= inFlag;
+
+            return;
+        }
+
+        m_flags &= ~inFlag;
     }
 
     void CMesh::generateBounds()

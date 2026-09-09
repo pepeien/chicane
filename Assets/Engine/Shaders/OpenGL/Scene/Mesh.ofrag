@@ -108,12 +108,12 @@ void main() {
         }
 
         vec3 lightDirection = resolveLightDirection(entry.translation, entry.direction, inData.meshPosition);
-        float attenuation   = resolveLightAttenuation(entry.translation, entry.direction, inData.meshPosition);
-        vec3 lightColor     = entry.color.rgb * attenuation;
-
-        if (entry.direction.w < 0.5 && lightDirection.z <= 0.0) {
+        float attenuation   = resolveLightAttenuation(entry.translation, entry.direction, entry.cone, inData.meshPosition);
+        if (attenuation <= 0.0) {
             continue;
         }
+
+        vec3 lightColor = entry.color.rgb * attenuation;
 
         float shadow = 0.0;
         if (index == shadowCaster) {

@@ -29,6 +29,12 @@ namespace Chicane
         float getRange() const;
         void setRange(float inRange);
 
+        float getInnerAngle() const;
+        void setInnerAngle(float inAngle);
+
+        float getOuterAngle() const;
+        void setOuterAngle(float inAngle);
+
         bool canCastShadows() const;
         void setCanCastShadows(bool inValue);
 
@@ -39,6 +45,8 @@ namespace Chicane
         Vec3      m_color           = Vec3(1.0f);
         float     m_intensity       = 1.0f;
         float     m_range           = 50.0f;
+        float     m_innerAngle      = 25.0f;
+        float     m_outerAngle      = 40.0f;
         bool      m_bCanCastShadows = false;
     };
 }

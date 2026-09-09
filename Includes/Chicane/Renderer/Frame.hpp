@@ -41,6 +41,15 @@ namespace Chicane
             DrawPoly::List getShadowDraws() const;
             bool hasShadowCasterLights() const;
 
+            bool hasSceneDraws() const;
+            DrawPoly::List getSceneDraws() const;
+
+            bool hasForegroundDraws() const;
+            DrawPoly::List getForegroundDraws() const;
+
+            bool hasOutlineDraws() const;
+            DrawPoly::List getOutlineDraws() const;
+
             const DrawPoly2DInstance::List& getInstances2D() const;
             void draw(Draw::Id inId, const DrawPoly2DInstance& inInstance);
 
@@ -59,6 +68,9 @@ namespace Chicane
             void refresh3DDraws();
             void reset3DDraws();
             void rebuildInstances3D();
+
+            bool anyInstance3D(bool (*inPredicate)(const DrawPoly3DInstance&)) const;
+            DrawPoly::List splitDraws(bool (*inPredicate)(const DrawPoly3DInstance&)) const;
 
         protected:
             // View

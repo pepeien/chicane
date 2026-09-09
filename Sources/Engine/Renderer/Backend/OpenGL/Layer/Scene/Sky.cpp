@@ -28,7 +28,7 @@ namespace Chicane
 
         void OpenGLLSceneSky::onLoad(const DrawSkyResource& inResource)
         {
-            glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            clearTextureData();
 
             if (inResource.isEmpty())
             {
@@ -36,6 +36,8 @@ namespace Chicane
             }
 
             updateTextureData(inResource.getDraw());
+
+            glGenerateTextureMipmap(m_texturesBuffer);
         }
 
         bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
@@ -159,14 +161,30 @@ namespace Chicane
         void OpenGLLSceneSky::buildTextureData()
         {
             glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_texturesBuffer);
-            glTextureStorage2D(m_texturesBuffer, 1, GL_RGBA8, 512, 512);
+            glTextureStorage2D(
+                m_texturesBuffer,
+                static_cast<GLsizei>(SKY_MIP_LEVELS),
+                GL_RGBA8,
+                static_cast<GLsizei>(SKY_TEXTURE_SIZE),
+                static_cast<GLsizei>(SKY_TEXTURE_SIZE)
+            );
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+            clearTextureData();
+        }
+
+        void OpenGLLSceneSky::clearTextureData()
+        {
+            for (std::uint32_t level = 0; level < SKY_MIP_LEVELS; ++level)
+            {
+                glClearTexImage(m_texturesBuffer, static_cast<GLint>(level), GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            }
         }
 
         void OpenGLLSceneSky::updateTextureData(const DrawSky& inValue)

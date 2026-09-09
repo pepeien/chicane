@@ -1,3 +1,8 @@
+const int POLY_FLAG_LIT        = 1;
+const int POLY_FLAG_SHADOW     = 2;
+const int POLY_FLAG_FOREGROUND = 4;
+const int POLY_FLAG_OUTLINED   = 8;
+
 struct PolyInstance3D {
     mat4 model;
 
@@ -5,6 +10,8 @@ struct PolyInstance3D {
     ivec4 textures1; // Metalness, Height, Specular, Opacity
     ivec4 textures2; // Refraction, SelfIllumination, Bump, Reflection
 
-    int bCanCastShadows;
-    int bIsLit;
+    int flags;
+    int _pad0;
+    int _pad1;
+    int _pad2;
 };

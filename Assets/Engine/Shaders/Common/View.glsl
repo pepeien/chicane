@@ -15,6 +15,7 @@ struct SceneLight {
     vec4 translation;
     vec4 direction;
     vec4 color;
+    vec4 cone;
 };
 
 struct LightInstance {

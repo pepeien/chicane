@@ -38,7 +38,7 @@ void main() {
     outData.textureMaps[0] = mesh.textures0;
     outData.textureMaps[1] = mesh.textures1;
     outData.textureMaps[2] = mesh.textures2;
-    outData.bIsLit         = mesh.bIsLit;
+    outData.bIsLit         = (mesh.flags & POLY_FLAG_LIT) != 0 ? 1 : 0;
     outData.UV             = inUV;
     outData.normal         = mat3(transpose(inverse(mesh.model))) * inNormal;
     outData.color          = inColor;

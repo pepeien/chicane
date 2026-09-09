@@ -3,6 +3,7 @@
 #include <glad/gl.h>
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Foreground.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
@@ -85,8 +86,7 @@ namespace Chicane
             glNamedBufferSubData(m_instanceBuffer, offset, size, &camera);
             offset += size;
 
-            m_lightOffset = offset;
-            size          = sizeof(ShadowLight);
+            size = sizeof(ShadowLight);
             glNamedBufferSubData(m_instanceBuffer, offset, size, &m_light);
             offset += size;
 
@@ -95,10 +95,9 @@ namespace Chicane
             glNamedBufferSubData(m_instanceBuffer, offset, size, instances.data());
         }
 
-        void OpenGLLScene::setShadowCascade(std::uint32_t inCascade)
+        std::uint32_t OpenGLLScene::getModelVertexArray() const
         {
-            m_light.info.y = static_cast<float>(inCascade);
-            glNamedBufferSubData(m_instanceBuffer, m_lightOffset, sizeof(ShadowLight), &m_light);
+            return m_modelVertexArray;
         }
 
         void OpenGLLScene::buildModelVertexArray()
@@ -184,6 +183,7 @@ namespace Chicane
             m_backend->addLayer<OpenGLLSceneShadow>(settings);
             m_backend->addLayer<OpenGLLSceneMesh>(settings);
             m_backend->addLayer<OpenGLLSceneLine>(settings);
+            m_backend->addLayer<OpenGLLSceneForeground>(settings);
         }
     }
 }

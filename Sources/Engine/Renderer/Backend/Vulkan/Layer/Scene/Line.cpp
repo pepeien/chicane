@@ -30,6 +30,7 @@ namespace Chicane
             initFrameResources();
             initMeshGraphicsPipeline();
             initOverlayGraphicsPipeline();
+            initOutlineGraphicsPipeline();
             initFramebuffers();
         }
 
@@ -43,10 +44,28 @@ namespace Chicane
             destroyOverlayBuffer();
             destroyFrameResources();
 
-            // Overlay shares the mesh pipeline render pass — destroy pipeline/layout only.
+            getBackend<VulkanBackend>()->logicalDevice.waitIdle();
+
+            if (m_outlineMaskPipeline.instance)
+            {
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_outlineMaskPipeline.instance);
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_outlineMaskPipeline.layout);
+                m_outlineMaskPipeline.instance   = nullptr;
+                m_outlineMaskPipeline.layout     = nullptr;
+                m_outlineMaskPipeline.renderPass = nullptr;
+            }
+
+            if (m_outlinePipeline.instance)
+            {
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_outlinePipeline.instance);
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_outlinePipeline.layout);
+                m_outlinePipeline.instance   = nullptr;
+                m_outlinePipeline.layout     = nullptr;
+                m_outlinePipeline.renderPass = nullptr;
+            }
+
             if (m_overlayPipeline.instance)
             {
-                getBackend<VulkanBackend>()->logicalDevice.waitIdle();
                 getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_overlayPipeline.instance);
                 getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_overlayPipeline.layout);
                 m_overlayPipeline.instance   = nullptr;
@@ -78,9 +97,14 @@ namespace Chicane
                    renderer->hasDebugOverlay();
         }
 
+        bool VulkanLSceneLine::shouldDrawOutline(const Frame& inFrame) const
+        {
+            return inFrame.hasOutlineDraws();
+        }
+
         bool VulkanLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay();
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay() || shouldDrawOutline(inFrame);
         }
 
         void VulkanLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -144,6 +168,49 @@ namespace Chicane
                 if (renderer->hasDebug(DebugMode::Meshes))
                 {
                     drawBatch(DrawPolyMode::Fill);
+                }
+            }
+
+            if (shouldDrawOutline(inFrame))
+            {
+                m_outlineMaskPipeline.bind(commandBuffer);
+                m_outlineMaskPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+
+                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+
+                drawOutlineMeshes(inFrame, commandBuffer, m_outlineMaskPipeline.layout, 0.0f, 0.0f);
+
+                m_outlinePipeline.bind(commandBuffer);
+                m_outlinePipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+
+                const float scaleX = viewport.width > 0.0f ? 4.0f / viewport.width : 0.0f;
+                const float scaleY = viewport.height > 0.0f ? 4.0f / viewport.height : 0.0f;
+
+                static const float meshesOffsets[8][2] = {
+                    {1.0f,         0.0f        },
+                    {-1.0f,        0.0f        },
+                    {0.0f,         1.0f        },
+                    {0.0f,         -1.0f       },
+                    {0.70710678f,  0.70710678f },
+                    {0.70710678f,  -0.70710678f},
+                    {-0.70710678f, 0.70710678f },
+                    {-0.70710678f, -0.70710678f}
+                };
+
+                for (const float* offset : meshesOffsets)
+                {
+                    drawOutlineMeshes(
+                        inFrame,
+                        commandBuffer,
+                        m_outlinePipeline.layout,
+                        offset[0] * scaleX,
+                        offset[1] * scaleY
+                    );
                 }
             }
 
@@ -280,12 +347,14 @@ namespace Chicane
                 vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
             vk::AttachmentDescription depthAttachment;
-            depthAttachment.format        = backend->swapchain.depthFormat;
-            depthAttachment.samples       = vk::SampleCountFlagBits::e1;
-            depthAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
-            depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            depthAttachment.initialLayout = vk::ImageLayout::eDepthStencilAttachmentOptimal;
-            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+            depthAttachment.format         = backend->swapchain.depthFormat;
+            depthAttachment.samples        = vk::SampleCountFlagBits::e1;
+            depthAttachment.loadOp         = vk::AttachmentLoadOp::eLoad;
+            depthAttachment.storeOp        = vk::AttachmentStoreOp::eStore;
+            depthAttachment.stencilLoadOp  = vk::AttachmentLoadOp::eClear;
+            depthAttachment.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
+            depthAttachment.initialLayout  = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+            depthAttachment.finalLayout    = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             vk::AttachmentReference depthReference;
             depthReference.attachment = 1;
@@ -389,6 +458,113 @@ namespace Chicane
                 .build(m_overlayPipeline, backend->logicalDevice);
         }
 
+        void VulkanLSceneLine::initOutlineGraphicsPipeline()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            vk::PushConstantRange push;
+            push.stageFlags = vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment;
+            push.offset     = 0;
+            push.size       = sizeof(float) * 8;
+
+            vk::PipelineRasterizationStateCreateInfo rasterization;
+            rasterization.depthClampEnable        = VK_FALSE;
+            rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.lineWidth               = 1.0f;
+            rasterization.depthBiasEnable         = VK_FALSE;
+            rasterization.polygonMode             = vk::PolygonMode::eFill;
+            rasterization.cullMode                = vk::CullModeFlagBits::eNone;
+            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
+
+            vk::StencilOpState stencilWrite;
+            stencilWrite.failOp      = vk::StencilOp::eKeep;
+            stencilWrite.passOp      = vk::StencilOp::eReplace;
+            stencilWrite.depthFailOp = vk::StencilOp::eKeep;
+            stencilWrite.compareOp   = vk::CompareOp::eAlways;
+            stencilWrite.compareMask = 0xFF;
+            stencilWrite.writeMask   = 0xFF;
+            stencilWrite.reference   = 1;
+
+            vk::PipelineDepthStencilStateCreateInfo maskDepth;
+            maskDepth.depthBoundsTestEnable = VK_FALSE;
+            maskDepth.stencilTestEnable     = VK_TRUE;
+            maskDepth.depthWriteEnable      = VK_FALSE;
+            maskDepth.depthTestEnable       = VK_TRUE;
+            maskDepth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            maskDepth.minDepthBounds        = 0.0f;
+            maskDepth.maxDepthBounds        = 1.0f;
+            maskDepth.front                 = stencilWrite;
+            maskDepth.back                  = stencilWrite;
+
+            vk::PipelineColorBlendAttachmentState maskBlend = VulkanGraphicsPipeline::createBlendAttachmentState(false);
+            maskBlend.colorWriteMask                        = {};
+
+            VulkanShaderStageCreateInfo maskVertex;
+            maskVertex.path = "Assets/Engine/Shaders/Vulkan/Scene/Outline.vvert";
+            maskVertex.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo maskFragment;
+            maskFragment.path = "Assets/Engine/Shaders/Vulkan/Scene/Outline.vfrag";
+            maskFragment.type = vk::ShaderStageFlagBits::eFragment;
+
+            VulkanGraphicsPipelineBuilder()
+                .addVertexBinding(VulkanVertex::getBindingDescription())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
+                .addViewport(backend->getVkViewport(this))
+                .addDynamicState(vk::DynamicState::eViewport)
+                .addScissor(backend->getVkScissor(this))
+                .addDynamicState(vk::DynamicState::eScissor)
+                .addShaderStage(maskVertex, backend->logicalDevice)
+                .addShaderStage(maskFragment, backend->logicalDevice)
+                .addColorBlendingAttachment(maskBlend)
+                .setDepthStencil(maskDepth)
+                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .addPushConstant(push)
+                .setRasterization(rasterization)
+                .setRenderPass(m_meshPipeline.renderPass)
+                .build(m_outlineMaskPipeline, backend->logicalDevice);
+
+            vk::StencilOpState stencilTest;
+            stencilTest.failOp      = vk::StencilOp::eKeep;
+            stencilTest.passOp      = vk::StencilOp::eKeep;
+            stencilTest.depthFailOp = vk::StencilOp::eKeep;
+            stencilTest.compareOp   = vk::CompareOp::eNotEqual;
+            stencilTest.compareMask = 0xFF;
+            stencilTest.writeMask   = 0x00;
+            stencilTest.reference   = 1;
+
+            vk::PipelineDepthStencilStateCreateInfo ringDepth = maskDepth;
+            ringDepth.front                                   = stencilTest;
+            ringDepth.back                                    = stencilTest;
+
+            VulkanShaderStageCreateInfo ringVertex;
+            ringVertex.path = "Assets/Engine/Shaders/Vulkan/Scene/Outline.vvert";
+            ringVertex.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo ringFragment;
+            ringFragment.path = "Assets/Engine/Shaders/Vulkan/Scene/Outline.vfrag";
+            ringFragment.type = vk::ShaderStageFlagBits::eFragment;
+
+            VulkanGraphicsPipelineBuilder()
+                .addVertexBinding(VulkanVertex::getBindingDescription())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
+                .addViewport(backend->getVkViewport(this))
+                .addDynamicState(vk::DynamicState::eViewport)
+                .addScissor(backend->getVkScissor(this))
+                .addDynamicState(vk::DynamicState::eScissor)
+                .addShaderStage(ringVertex, backend->logicalDevice)
+                .addShaderStage(ringFragment, backend->logicalDevice)
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
+                .setDepthStencil(ringDepth)
+                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .addPushConstant(push)
+                .setRasterization(rasterization)
+                .setRenderPass(m_meshPipeline.renderPass)
+                .build(m_outlinePipeline, backend->logicalDevice);
+        }
+
         void VulkanLSceneLine::initFramebuffers()
         {
             VulkanBackend* backend  = getBackend<VulkanBackend>();
@@ -406,6 +582,44 @@ namespace Chicane
                 createInfo.attachments.push_back(frame.depthImage.view);
 
                 frame.addBuffer(createInfo);
+            }
+        }
+
+        void VulkanLSceneLine::drawOutlineMeshes(
+            const Frame&       inFrame,
+            vk::CommandBuffer  inCommandBuffer,
+            vk::PipelineLayout inLayout,
+            float              inOffsetX,
+            float              inOffsetY
+        ) const
+        {
+            const float push[8] = {
+                inOffsetX,
+                inOffsetY,
+                0.0f,
+                0.0f,
+                static_cast<float>(OUTLINE_COLOR.r) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.g) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.b) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.a) / 255.0f
+            };
+            inCommandBuffer.pushConstants(
+                inLayout,
+                vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment,
+                0,
+                sizeof(push),
+                push
+            );
+
+            for (const DrawPoly& draw : inFrame.getOutlineDraws())
+            {
+                inCommandBuffer.drawIndexed(
+                    draw.indexCount,
+                    draw.instanceCount,
+                    draw.indexStart,
+                    draw.vertexStart,
+                    draw.instanceStart
+                );
             }
         }
 

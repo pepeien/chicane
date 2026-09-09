@@ -29,17 +29,24 @@ namespace Chicane
             void buildOverlayShader();
             void destroyOverlayShader();
 
+            void buildOutlineShader();
+            void destroyOutlineShader();
+
             void buildOverlayVertexArray();
             void destroyOverlayVertexArray();
 
             void uploadOverlayBuffer(const Vertex::List& inVertices);
 
+            void drawOutlineMeshes(const Frame& inFrame, float inOffsetX, float inOffsetY) const;
+
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
             bool shouldDrawOverlay() const;
+            bool shouldDrawOutline(const Frame& inFrame) const;
 
         private:
             std::uint32_t m_meshShaderProgram;
             std::uint32_t m_overlayShaderProgram;
+            std::uint32_t m_outlineShaderProgram;
 
             std::uint32_t m_overlayVertexArray;
             std::uint32_t m_overlayVertexBuffer;

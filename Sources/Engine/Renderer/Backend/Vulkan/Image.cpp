@@ -65,7 +65,7 @@ namespace Chicane
             {
                 vk::SamplerCreateInfo createInfo;
                 createInfo.flags                   = vk::SamplerCreateFlags();
-                createInfo.minFilter               = vk::Filter::eNearest;
+                createInfo.minFilter               = vk::Filter::eLinear;
                 createInfo.magFilter               = vk::Filter::eLinear;
                 createInfo.addressModeU            = inCreateInfo.addressMode;
                 createInfo.addressModeV            = inCreateInfo.addressMode;
@@ -79,7 +79,7 @@ namespace Chicane
                 createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
                 createInfo.mipLodBias              = 0.0f;
                 createInfo.minLod                  = 0.0f;
-                createInfo.maxLod                  = 1.0f;
+                createInfo.maxLod                  = static_cast<float>(std::max(1u, inCreateInfo.mipLevels) - 1u);
 
                 outSampler = inCreateInfo.logicalDevice.createSampler(createInfo);
             }
@@ -168,6 +168,136 @@ namespace Chicane
                     .pipelineBarrier(sourceStage, destinationStage, vk::DependencyFlags(), nullptr, nullptr, barrier);
 
                 VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
+            }
+
+            void generateMipmaps(
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::Queue&         inQueue,
+                const vk::Image&         inImage,
+                std::uint32_t            inWidth,
+                std::uint32_t            inHeight,
+                std::uint32_t            inCount,
+                std::uint32_t            inLevelCount
+            )
+            {
+                const std::uint32_t levels = std::max(1u, inLevelCount);
+                if (levels == 1)
+                {
+                    return;
+                }
+
+                VulkanCommandBufferWorker::startJob(inCommandBuffer);
+
+                auto transition = [&](std::uint32_t          inLevel,
+                                      vk::ImageLayout        inOldLayout,
+                                      vk::ImageLayout        inNewLayout,
+                                      vk::AccessFlags        inSourceAccess,
+                                      vk::AccessFlags        inDestinationAccess,
+                                      vk::PipelineStageFlags inSourceStage,
+                                      vk::PipelineStageFlags inDestinationStage)
+                {
+                    vk::ImageMemoryBarrier barrier;
+                    barrier.oldLayout                       = inOldLayout;
+                    barrier.newLayout                       = inNewLayout;
+                    barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+                    barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+                    barrier.image                           = inImage;
+                    barrier.srcAccessMask                   = inSourceAccess;
+                    barrier.dstAccessMask                   = inDestinationAccess;
+                    barrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                    barrier.subresourceRange.baseMipLevel   = inLevel;
+                    barrier.subresourceRange.levelCount     = 1;
+                    barrier.subresourceRange.baseArrayLayer = 0;
+                    barrier.subresourceRange.layerCount     = inCount;
+
+                    inCommandBuffer.pipelineBarrier(
+                        inSourceStage,
+                        inDestinationStage,
+                        vk::DependencyFlags(),
+                        nullptr,
+                        nullptr,
+                        barrier
+                    );
+                };
+
+                std::uint32_t width  = std::max(1u, inWidth);
+                std::uint32_t height = std::max(1u, inHeight);
+
+                for (std::uint32_t level = 1; level < levels; ++level)
+                {
+                    transition(
+                        level - 1,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::ImageLayout::eTransferSrcOptimal,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::AccessFlagBits::eTransferRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eTransfer
+                    );
+
+                    transition(
+                        level,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::AccessFlagBits::eTransferWrite,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eTransfer
+                    );
+
+                    const std::uint32_t nextWidth  = std::max(1u, width / 2);
+                    const std::uint32_t nextHeight = std::max(1u, height / 2);
+
+                    vk::ImageBlit blit;
+                    blit.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                    blit.srcSubresource.mipLevel       = level - 1;
+                    blit.srcSubresource.baseArrayLayer = 0;
+                    blit.srcSubresource.layerCount     = inCount;
+                    blit.srcOffsets[0]                 = vk::Offset3D(0, 0, 0);
+                    blit.srcOffsets[1] =
+                        vk::Offset3D(static_cast<std::int32_t>(width), static_cast<std::int32_t>(height), 1);
+                    blit.dstSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                    blit.dstSubresource.mipLevel       = level;
+                    blit.dstSubresource.baseArrayLayer = 0;
+                    blit.dstSubresource.layerCount     = inCount;
+                    blit.dstOffsets[0]                 = vk::Offset3D(0, 0, 0);
+                    blit.dstOffsets[1] =
+                        vk::Offset3D(static_cast<std::int32_t>(nextWidth), static_cast<std::int32_t>(nextHeight), 1);
+
+                    inCommandBuffer.blitImage(
+                        inImage,
+                        vk::ImageLayout::eTransferSrcOptimal,
+                        inImage,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        blit,
+                        vk::Filter::eLinear
+                    );
+
+                    transition(
+                        level - 1,
+                        vk::ImageLayout::eTransferSrcOptimal,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::AccessFlagBits::eTransferRead,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader
+                    );
+
+                    transition(
+                        level,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::AccessFlagBits::eTransferWrite,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader
+                    );
+
+                    width  = nextWidth;
+                    height = nextHeight;
+                }
+
+                VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Generate Image Mipmaps");
             }
 
             void copyBufferToImage(

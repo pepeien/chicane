@@ -22,6 +22,7 @@ namespace Chicane
 
         private:
             void initExtent(const Image::References& inImages);
+            void initMipLevels();
             void initInstance(std::uint32_t inCount);
             void initSampler();
             void initMemory();
@@ -34,6 +35,7 @@ namespace Chicane
             vk::PhysicalDevice     m_physicalDevice;
             vk::CommandBuffer      m_commandBuffer;
             vk::Queue              m_queue;
+            std::uint32_t          m_mipLevels;
             VulkanDescriptorBundle m_descriptor;
         };
     }

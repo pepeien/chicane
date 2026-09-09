@@ -109,14 +109,66 @@ namespace Chicane
 
         bool Frame::hasShadowDraws() const
         {
-            return std::any_of(
-                m_3DInstancesFlat.begin(),
-                m_3DInstancesFlat.end(),
-                [](const DrawPoly3DInstance& inInstance) { return inInstance.bCanCastShadows != 0; }
+            return anyInstance3D(
+                [](const DrawPoly3DInstance& inInstance)
+                { return inInstance.has(DrawPoly3DFlag::Shadow) && !inInstance.has(DrawPoly3DFlag::Foreground); }
             );
         }
 
         DrawPoly::List Frame::getShadowDraws() const
+        {
+            return splitDraws(
+                [](const DrawPoly3DInstance& inInstance)
+                { return inInstance.has(DrawPoly3DFlag::Shadow) && !inInstance.has(DrawPoly3DFlag::Foreground); }
+            );
+        }
+
+        bool Frame::hasSceneDraws() const
+        {
+            return anyInstance3D([](const DrawPoly3DInstance& inInstance)
+                                 { return !inInstance.has(DrawPoly3DFlag::Foreground); });
+        }
+
+        DrawPoly::List Frame::getSceneDraws() const
+        {
+            return splitDraws([](const DrawPoly3DInstance& inInstance)
+                              { return !inInstance.has(DrawPoly3DFlag::Foreground); });
+        }
+
+        bool Frame::hasForegroundDraws() const
+        {
+            return anyInstance3D([](const DrawPoly3DInstance& inInstance)
+                                 { return inInstance.has(DrawPoly3DFlag::Foreground); });
+        }
+
+        DrawPoly::List Frame::getForegroundDraws() const
+        {
+            return splitDraws([](const DrawPoly3DInstance& inInstance)
+                              { return inInstance.has(DrawPoly3DFlag::Foreground); });
+        }
+
+        bool Frame::hasOutlineDraws() const
+        {
+            return anyInstance3D(
+                [](const DrawPoly3DInstance& inInstance)
+                { return inInstance.has(DrawPoly3DFlag::Outlined) && !inInstance.has(DrawPoly3DFlag::Foreground); }
+            );
+        }
+
+        DrawPoly::List Frame::getOutlineDraws() const
+        {
+            return splitDraws(
+                [](const DrawPoly3DInstance& inInstance)
+                { return inInstance.has(DrawPoly3DFlag::Outlined) && !inInstance.has(DrawPoly3DFlag::Foreground); }
+            );
+        }
+
+        bool Frame::anyInstance3D(bool (*inPredicate)(const DrawPoly3DInstance&)) const
+        {
+            return std::any_of(m_3DInstancesFlat.begin(), m_3DInstancesFlat.end(), inPredicate);
+        }
+
+        DrawPoly::List Frame::splitDraws(bool (*inPredicate)(const DrawPoly3DInstance&)) const
         {
             DrawPoly::List result;
 
@@ -129,10 +181,10 @@ namespace Chicane
                 {
                     const std::uint32_t instanceIndex = draw.instanceStart + index;
 
-                    const bool bCanCastShadows = instanceIndex < m_3DInstancesFlat.size() &&
-                                                 m_3DInstancesFlat.at(instanceIndex).bCanCastShadows != 0;
+                    const bool bIsMatch =
+                        instanceIndex < m_3DInstancesFlat.size() && inPredicate(m_3DInstancesFlat.at(instanceIndex));
 
-                    if (bCanCastShadows)
+                    if (bIsMatch)
                     {
                         if (runCount == 0U)
                         {
@@ -147,10 +199,10 @@ namespace Chicane
                         continue;
                     }
 
-                    DrawPoly shadowDraw      = draw;
-                    shadowDraw.instanceStart = runStart;
-                    shadowDraw.instanceCount = runCount;
-                    result.push_back(shadowDraw);
+                    DrawPoly split      = draw;
+                    split.instanceStart = runStart;
+                    split.instanceCount = runCount;
+                    result.push_back(split);
 
                     runCount = 0U;
                 }
@@ -160,10 +212,10 @@ namespace Chicane
                     continue;
                 }
 
-                DrawPoly shadowDraw      = draw;
-                shadowDraw.instanceStart = runStart;
-                shadowDraw.instanceCount = runCount;
-                result.push_back(shadowDraw);
+                DrawPoly split      = draw;
+                split.instanceStart = runStart;
+                split.instanceCount = runCount;
+                result.push_back(split);
             }
 
             return result;

@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Sky.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -13,6 +15,7 @@ namespace Chicane
               m_physicalDevice(inCreateInfo.physicalDevice),
               m_commandBuffer(inCreateInfo.commandBuffer),
               m_queue(inCreateInfo.queue),
+              m_mipLevels(1),
               m_descriptor({})
         {
             m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
@@ -20,6 +23,7 @@ namespace Chicane
             m_descriptor.pool      = inCreateInfo.descriptorPool;
 
             initExtent(inCreateInfo.images);
+            initMipLevels();
             initInstance(inCreateInfo.images.size());
             initSampler();
             initMemory();
@@ -66,15 +70,28 @@ namespace Chicane
             }
         }
 
+        void VulkanSky::initMipLevels()
+        {
+            m_mipLevels           = 1;
+            std::uint32_t largest = std::max(extent.width, extent.height);
+            while (largest > 1)
+            {
+                largest >>= 1;
+                m_mipLevels++;
+            }
+        }
+
         void VulkanSky::initInstance(std::uint32_t inCount)
         {
             VulkanImageCreateInfo createInfo;
-            createInfo.width         = extent.width;
-            createInfo.height        = extent.height;
-            createInfo.count         = inCount;
-            createInfo.tiling        = vk::ImageTiling::eOptimal;
-            createInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
-            createInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+            createInfo.width     = extent.width;
+            createInfo.height    = extent.height;
+            createInfo.count     = inCount;
+            createInfo.mipLevels = m_mipLevels;
+            createInfo.tiling    = vk::ImageTiling::eOptimal;
+            createInfo.flags     = vk::ImageCreateFlagBits::eCubeCompatible;
+            createInfo.usage     = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eTransferSrc |
+                               vk::ImageUsageFlagBits::eSampled;
             createInfo.format        = vk::Format::eR8G8B8A8Unorm;
             createInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initInstance(instance, createInfo);
@@ -83,6 +100,7 @@ namespace Chicane
         void VulkanSky::initSampler()
         {
             VulkanImageSamplerCreateInfo createInfo;
+            createInfo.mipLevels     = m_mipLevels;
             createInfo.addressMode   = vk::SamplerAddressMode::eClampToEdge;
             createInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
             createInfo.logicalDevice = m_logicalDevice;
@@ -102,6 +120,7 @@ namespace Chicane
         {
             VulkanImageViewCreateInfo createInfo;
             createInfo.count         = inCount;
+            createInfo.mipLevels     = m_mipLevels;
             createInfo.type          = vk::ImageViewType::eCube;
             createInfo.aspect        = vk::ImageAspectFlagBits::eColor;
             createInfo.format        = vk::Format::eR8G8B8A8Unorm;
@@ -145,13 +164,16 @@ namespace Chicane
                 }
             }
 
+            const std::uint32_t faces = static_cast<std::uint32_t>(inImages.size());
+
             VulkanImage::transitionLayout(
                 m_commandBuffer,
                 m_queue,
                 instance,
                 vk::ImageLayout::eUndefined,
                 vk::ImageLayout::eTransferDstOptimal,
-                static_cast<std::uint32_t>(inImages.size())
+                faces,
+                m_mipLevels
             );
 
             VulkanImage::copyBufferToImage(
@@ -161,7 +183,7 @@ namespace Chicane
                 instance,
                 extent.width,
                 extent.height,
-                static_cast<std::uint32_t>(inImages.size())
+                faces
             );
 
             VulkanImage::transitionLayout(
@@ -170,7 +192,18 @@ namespace Chicane
                 instance,
                 vk::ImageLayout::eTransferDstOptimal,
                 vk::ImageLayout::eShaderReadOnlyOptimal,
-                static_cast<std::uint32_t>(inImages.size())
+                faces,
+                m_mipLevels
+            );
+
+            VulkanImage::generateMipmaps(
+                m_commandBuffer,
+                m_queue,
+                instance,
+                extent.width,
+                extent.height,
+                faces,
+                m_mipLevels
             );
 
             stagingBuffer.destroy(m_logicalDevice);

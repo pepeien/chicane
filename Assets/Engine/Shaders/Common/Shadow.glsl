@@ -98,7 +98,7 @@ vec3 resolveLightDirection(vec4 translation, vec4 direction, vec3 worldPosition)
     return toLight * inversesqrt(distanceSq);
 }
 
-float resolveLightAttenuation(vec4 translation, vec4 direction, vec3 worldPosition) {
+float resolveLightAttenuation(vec4 translation, vec4 direction, vec4 cone, vec3 worldPosition) {
     float lightType = direction.w;
     if (lightType < 0.5) {
         return 1.0;
@@ -107,13 +107,15 @@ float resolveLightAttenuation(vec4 translation, vec4 direction, vec3 worldPositi
     float range = max(translation.w, 0.001);
     float distance = length(translation.xyz - worldPosition);
     float normalized = clamp(distance / range, 0.0, 1.0);
-    float attenuation = 1.0 - normalized * normalized;
+
+    float squared = normalized * normalized;
+    float attenuation = 1.0 - squared * squared;
     attenuation *= attenuation;
 
     if (lightType >= 1.5) {
         vec3 toLight = normalize(translation.xyz - worldPosition);
         float cosTheta = dot(toLight, normalize(-direction.xyz));
-        attenuation *= smoothstep(0.45, 0.75, cosTheta);
+        attenuation *= smoothstep(cone.y, cone.x, cosTheta);
     }
 
     return attenuation;
@@ -167,9 +169,11 @@ vec3 evaluateIBL(
         return vec3(0.0);
     }
 
-    vec3 irradiance = texture(skyMap, normal).rgb;
+    float maxLod = float(textureQueryLevels(skyMap) - 1);
+
+    vec3 irradiance = textureLod(skyMap, normal, maxLod).rgb;
     vec3 reflection = reflect(-viewDirection, normal);
-    vec3 specularEnv = textureLod(skyMap, reflection, roughness * 4.0).rgb;
+    vec3 specularEnv = textureLod(skyMap, reflection, sqrt(roughness) * maxLod).rgb;
 
     vec3 F0 = mix(vec3(0.04), albedo, metalness) * specularColor;
     float NdotV = max(dot(normal, viewDirection), 0.0);

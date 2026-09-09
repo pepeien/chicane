@@ -192,7 +192,7 @@ namespace Chicane
             VulkanImageViewCreateInfo viewCreateInfo;
             viewCreateInfo.count         = instanceCreateInfo.count;
             viewCreateInfo.type          = vk::ImageViewType::e2D;
-            viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+            viewCreateInfo.aspect        = VulkanImage::depthAspect(inFormat);
             viewCreateInfo.format        = instanceCreateInfo.format;
             viewCreateInfo.logicalDevice = logicalDevice;
             VulkanImage::initView(depthImage.view, depthImage.instance, viewCreateInfo);

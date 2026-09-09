@@ -18,6 +18,11 @@ namespace Chicane
             : Layer(SCENE_MESH_LAYER_ID)
         {}
 
+        std::uint32_t OpenGLLSceneMesh::getShaderProgram() const
+        {
+            return m_shaderProgram;
+        }
+
         void OpenGLLSceneMesh::onInit()
         {
             buildShader();
@@ -65,7 +70,7 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            for (const DrawPoly& draw : inFrame.getSceneDraws())
             {
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,

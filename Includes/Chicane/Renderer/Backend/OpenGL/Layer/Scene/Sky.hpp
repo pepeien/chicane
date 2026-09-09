@@ -29,6 +29,7 @@ namespace Chicane
             void destroyShader();
 
             void buildTextureData();
+            void clearTextureData();
             void updateTextureData(const DrawSky& inValue);
             void destroyTextureData();
 

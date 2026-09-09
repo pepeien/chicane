@@ -22,7 +22,7 @@ namespace Chicane
             bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
 
-            void setShadowCascade(std::uint32_t inCascade);
+            std::uint32_t getModelVertexArray() const;
 
         private:
             // Model
@@ -46,8 +46,7 @@ namespace Chicane
 
             // Instance
             std::uint32_t m_instanceBuffer;
-            std::size_t   m_lightOffset = 0;
-            ShadowLight   m_light       = {};
+            ShadowLight   m_light = {};
         };
     }
 }

@@ -39,8 +39,6 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
-            OpenGLLScene* parent = getBackend<OpenGLBackend>()->getLayer<OpenGLLScene>(SCENE_LAYER_ID);
-
             glUseProgram(m_shaderProgram);
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
@@ -62,7 +60,7 @@ namespace Chicane
 
             for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
-                parent->setShadowCascade(cascade);
+                glProgramUniform1i(m_shaderProgram, 0, static_cast<GLint>(cascade));
                 glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, cascade);
                 glClear(GL_DEPTH_BUFFER_BIT);
 

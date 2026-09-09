@@ -88,7 +88,7 @@ namespace Chicane
 
                 vk::Format depthFormat = VulkanImage::findSupportedFormat(
                     inPhysicalDevice,
-                    {vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint},
+                    {vk::Format::eD32SfloatS8Uint, vk::Format::eD24UnormS8Uint, vk::Format::eD32Sfloat},
                     vk::ImageTiling::eOptimal,
                     vk::FormatFeatureFlagBits::eDepthStencilAttachment
                 );

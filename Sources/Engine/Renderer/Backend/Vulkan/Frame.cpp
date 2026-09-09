@@ -3,6 +3,7 @@
 #include <array>
 
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
 #include "Chicane/Renderer/Shadow.hpp"
 
@@ -67,7 +68,7 @@ namespace Chicane
             depthToAttachment.srcAccessMask       = vk::AccessFlagBits::eNone;
             depthToAttachment.dstAccessMask =
                 vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite;
-            depthToAttachment.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eDepth;
+            depthToAttachment.subresourceRange.aspectMask     = VulkanImage::depthAspect(image.depthImage.format);
             depthToAttachment.subresourceRange.baseMipLevel   = 0;
             depthToAttachment.subresourceRange.levelCount     = 1;
             depthToAttachment.subresourceRange.baseArrayLayer = 0;

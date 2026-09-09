@@ -12,6 +12,8 @@ namespace Chicane
         public:
             OpenGLLSceneMesh();
 
+            std::uint32_t getShaderProgram() const;
+
         public:
             void onInit() override;
             void onDestruction() override;
