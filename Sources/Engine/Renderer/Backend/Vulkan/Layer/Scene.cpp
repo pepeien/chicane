@@ -197,6 +197,17 @@ namespace Chicane
                 VulkanImage::initView(shadowLayerViews[cascade], shadowImage.instance, layerViewCreateInfo);
             }
 
+            VulkanImage::transitionLayout(
+                backend->mainCommandBuffer,
+                backend->graphicsQueue,
+                shadowImage.instance,
+                vk::ImageLayout::eUndefined,
+                vk::ImageLayout::eDepthStencilReadOnlyOptimal,
+                SHADOW_CASCADE_COUNT,
+                1,
+                vk::ImageAspectFlagBits::eDepth
+            );
+
             shadowImageInfo.imageLayout = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
             shadowImageInfo.imageView   = shadowImage.view;
             shadowImageInfo.sampler     = shadowImage.sampler;

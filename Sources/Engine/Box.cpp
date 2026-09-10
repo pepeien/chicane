@@ -4,12 +4,14 @@
 #include <list>
 #include <unordered_map>
 
+#include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Service.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Skeleton.hpp"
 #include "Chicane/Box/Sky.hpp"
 #include "Chicane/Box/Sound.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -525,6 +527,55 @@ namespace Chicane
             return asset;
         }
 
+        const Skeleton* loadSkeleton(const FileSystem::Path& inFilePath)
+        {
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Skeleton)
+            {
+                throw std::runtime_error(inFilePath.toString() + " is not a skeleton");
+            }
+
+            if (!hasAsset(inFilePath))
+            {
+                return addAsset<Skeleton>(inFilePath);
+            }
+
+            return getAsset<Skeleton>(inFilePath);
+        }
+
+        const Animation* loadAnimation(const FileSystem::Path& inFilePath)
+        {
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Animation)
+            {
+                throw std::runtime_error(inFilePath.toString() + " is not an animation");
+            }
+
+            if (!hasAsset(inFilePath))
+            {
+                const Animation* asset = addAsset<Animation>(inFilePath);
+
+                if (asset->hasSkeleton())
+                {
+                    const Skeleton* skeleton = loadSkeleton(asset->getSkeleton().getSource());
+                    for (const AnimationTrack& track : asset->getClip().tracks)
+                    {
+                        if (track.name.isEmpty() || skeleton->hasBone(track.name))
+                        {
+                            continue;
+                        }
+
+                        throw std::runtime_error(
+                            "Animation [" + asset->getId().toStandard() + "] track [" + track.name.toStandard() +
+                            "] does not exist on skeleton [" + skeleton->getId().toStandard() + "]"
+                        );
+                    }
+                }
+
+                return asset;
+            }
+
+            return getAsset<Animation>(inFilePath);
+        }
+
         const Mesh* loadMesh(const FileSystem::Path& inFilePath)
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Mesh)
@@ -535,6 +586,16 @@ namespace Chicane
             if (!hasAsset(inFilePath))
             {
                 const Mesh* asset = addAsset<Mesh>(inFilePath);
+
+                if (asset->hasSkeleton())
+                {
+                    loadSkeleton(asset->getSkeleton().getSource());
+                }
+
+                for (const AssetReference& animation : asset->getAnimations())
+                {
+                    loadAnimation(animation.getSource());
+                }
 
                 for (const MeshGroup& group : asset->getGroups())
                 {
@@ -661,6 +722,9 @@ namespace Chicane
 
             switch (AssetHeader::getTypeFromExtension(inFilePath))
             {
+            case AssetType::Animation:
+                return loadAnimation(inFilePath);
+
             case AssetType::Font:
                 return loadFont(inFilePath);
 
@@ -669,6 +733,9 @@ namespace Chicane
 
             case AssetType::Model:
                 return loadModel(inFilePath);
+
+            case AssetType::Skeleton:
+                return loadSkeleton(inFilePath);
 
             case AssetType::Sound:
                 return loadSound(inFilePath);

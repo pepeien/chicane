@@ -14,6 +14,7 @@ file(
     CONFIGURE_DEPENDS
     ${CHICANE_ENGINE_DRIFT_SOURCES_DIR}/*.cpp
 )
+list(APPEND SOURCES ${CHICANE_ENGINE_SOURCES_DIR}/Drift.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ######################### Setup #########################

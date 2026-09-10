@@ -9,7 +9,8 @@ namespace Chicane
         enum class ModelVendor : std::uint8_t
         {
             Undefined, // N/A
-            Wavefront  // .obj
+            Wavefront, // .obj
+            Gltf       // .gltf / .glb
         };
     }
 }

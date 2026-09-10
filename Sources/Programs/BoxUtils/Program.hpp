@@ -64,5 +64,17 @@ private:
         const Chicane::FileSystem::Path&          inOutput
     );
 
+    void createSkeleton(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createAnimation(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
     void bakePreviews(const Chicane::FileSystem::Path& inRoot);
 };

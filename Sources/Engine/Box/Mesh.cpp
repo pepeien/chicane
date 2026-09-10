@@ -2,8 +2,10 @@
 
 #include <algorithm>
 
+#include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Skeleton.hpp"
 
 #include "Chicane/Core/Xml.hpp"
 
@@ -12,8 +14,13 @@ namespace Chicane
     namespace Box
     {
         Mesh::Mesh(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_skeleton({}),
+              m_animations({}),
+              m_groups({})
         {
+            fetchSkeleton();
+            fetchAnimations();
             fetchGroups();
         }
 
@@ -28,7 +35,8 @@ namespace Chicane
             for (pugi::xml_node child = root.first_child(); child;)
             {
                 pugi::xml_node next = child.next_sibling();
-                if (!String(child.name()).equals(AssetPreview::TAG))
+                const String name = child.name();
+                if (!name.equals(AssetPreview::TAG) && !name.equals(Skeleton::TAG) && !name.equals(Animation::TAG))
                 {
                     root.remove_child(child);
                 }
@@ -113,6 +121,151 @@ namespace Chicane
 
             // Transform
             inGroup.saveTransform(foundGroupNode);
+        }
+
+        bool Mesh::hasSkeleton() const
+        {
+            return m_skeleton.isValid();
+        }
+
+        const AssetReference& Mesh::getSkeleton() const
+        {
+            return m_skeleton;
+        }
+
+        void Mesh::setSkeleton(const FileSystem::Path& inSource)
+        {
+            AssetReference reference;
+            reference.setSource(inSource);
+            setSkeleton(reference);
+        }
+
+        void Mesh::setSkeleton(const AssetReference& inValue)
+        {
+            m_skeleton = inValue;
+            writeSkeleton();
+        }
+
+        void Mesh::fetchSkeleton()
+        {
+            if (getFilepath().isEmpty() || isXMLEmpty())
+            {
+                return;
+            }
+
+            const pugi::xml_node skeletonNode = getXML().child(Skeleton::TAG);
+            if (Xml::isEmpty(skeletonNode))
+            {
+                return;
+            }
+
+            m_skeleton.setFrom(skeletonNode);
+        }
+
+        void Mesh::writeSkeleton()
+        {
+            pugi::xml_node root         = getXML();
+            pugi::xml_node skeletonNode = root.child(Skeleton::TAG);
+            if (Xml::isEmpty(skeletonNode))
+            {
+                skeletonNode = root.prepend_child(Skeleton::TAG);
+            }
+
+            m_skeleton.saveTo(skeletonNode);
+        }
+
+        const std::vector<AssetReference>& Mesh::getAnimations() const
+        {
+            return m_animations;
+        }
+
+        bool Mesh::hasAnimation(const FileSystem::Path& inSource) const
+        {
+            for (const AssetReference& animation : m_animations)
+            {
+                if (animation.getSource() == inSource)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        void Mesh::setAnimations(const std::vector<AssetReference>& inAnimations)
+        {
+            m_animations = inAnimations;
+            writeAnimations();
+        }
+
+        void Mesh::appendAnimation(const FileSystem::Path& inSource)
+        {
+            AssetReference reference;
+            reference.setSource(inSource);
+            appendAnimation(reference);
+        }
+
+        void Mesh::appendAnimation(const AssetReference& inValue)
+        {
+            if (!inValue.isValid() || hasAnimation(inValue.getSource()))
+            {
+                return;
+            }
+
+            m_animations.push_back(inValue);
+            writeAnimations();
+        }
+
+        void Mesh::fetchAnimations()
+        {
+            m_animations.clear();
+
+            if (getFilepath().isEmpty() || isXMLEmpty())
+            {
+                return;
+            }
+
+            for (const pugi::xml_node& child : getXML().children())
+            {
+                if (!String(child.name()).equals(Animation::TAG))
+                {
+                    continue;
+                }
+
+                AssetReference reference;
+                reference.setFrom(child);
+                if (!reference.isValid())
+                {
+                    continue;
+                }
+
+                m_animations.push_back(reference);
+            }
+        }
+
+        void Mesh::writeAnimations()
+        {
+            pugi::xml_node root = getXML();
+            for (pugi::xml_node child = root.first_child(); child;)
+            {
+                pugi::xml_node next = child.next_sibling();
+                if (String(child.name()).equals(Animation::TAG))
+                {
+                    root.remove_child(child);
+                }
+
+                child = next;
+            }
+
+            pugi::xml_node after = root.child(Skeleton::TAG);
+            for (const AssetReference& animation : m_animations)
+            {
+                pugi::xml_node animationNode = after
+                                                   ? root.insert_child_after(Animation::TAG, after)
+                                                   : root.prepend_child(Animation::TAG);
+                animation.saveTo(animationNode);
+                after = animationNode;
+            }
         }
 
         void Mesh::fetchGroups()

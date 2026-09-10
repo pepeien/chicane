@@ -57,7 +57,7 @@ vec2 getUITextureUV(int textureIndex, vec2 uv) {
 }
 
 vec3 sampleUITexture(int textureIndex, vec2 uv) {
-    return texture(textures[textureIndex], getUITextureUV(textureIndex, uv)).rgb;
+    return texture(textures[nonuniformEXT(textureIndex)], getUITextureUV(textureIndex, uv)).rgb;
 }
 
 void main() {

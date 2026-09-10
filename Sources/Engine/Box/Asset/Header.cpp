@@ -1,9 +1,11 @@
 #include "Chicane/Box/Asset/Header.hpp"
 
+#include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Skeleton.hpp"
 #include "Chicane/Box/Sky.hpp"
 #include "Chicane/Box/Sound.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -13,21 +15,25 @@ namespace Chicane
     namespace Box
     {
         const std::unordered_map<AssetType, String> TAGS = {
-            {AssetType::Font,    Font::TAG   },
-            {AssetType::Mesh,    Mesh::TAG   },
-            {AssetType::Model,   Model::TAG  },
-            {AssetType::Sky,     Sky::TAG    },
-            {AssetType::Sound,   Sound::TAG  },
-            {AssetType::Texture, Texture::TAG}
+            {AssetType::Animation, Animation::TAG},
+            {AssetType::Font,      Font::TAG     },
+            {AssetType::Mesh,      Mesh::TAG     },
+            {AssetType::Model,     Model::TAG    },
+            {AssetType::Skeleton,  Skeleton::TAG },
+            {AssetType::Sky,       Sky::TAG      },
+            {AssetType::Sound,     Sound::TAG    },
+            {AssetType::Texture,   Texture::TAG  }
         };
 
         const std::unordered_map<AssetType, String> EXTENSIONS = {
-            {AssetType::Font,    Font::EXTENSION   },
-            {AssetType::Mesh,    Mesh::EXTENSION   },
-            {AssetType::Model,   Model::EXTENSION  },
-            {AssetType::Sky,     Sky::EXTENSION    },
-            {AssetType::Sound,   Sound::EXTENSION  },
-            {AssetType::Texture, Texture::EXTENSION}
+            {AssetType::Animation, Animation::EXTENSION},
+            {AssetType::Font,      Font::EXTENSION     },
+            {AssetType::Mesh,      Mesh::EXTENSION     },
+            {AssetType::Model,     Model::EXTENSION    },
+            {AssetType::Skeleton,  Skeleton::EXTENSION },
+            {AssetType::Sky,       Sky::EXTENSION      },
+            {AssetType::Sound,     Sound::EXTENSION    },
+            {AssetType::Texture,   Texture::EXTENSION  }
         };
 
         bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)
@@ -49,7 +55,7 @@ namespace Chicane
                 return true;
             }
 
-            return false;
+            return value.equals(".anim");
         }
 
         AssetType AssetHeader::getTypeFromExtension(const FileSystem::Path& inValue)
@@ -69,6 +75,11 @@ namespace Chicane
                 }
 
                 return type;
+            }
+
+            if (value.equals(".anim"))
+            {
+                return AssetType::Animation;
             }
 
             return AssetType::Undefined;

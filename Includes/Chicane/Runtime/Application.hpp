@@ -146,7 +146,9 @@ namespace Chicane
         // Systems
         void initBox();
         void initKerb();
+        void initDrift();
         void initScreech();
+        void shutdownDrift();
 
         // Lifecycle
         void render();

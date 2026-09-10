@@ -2,6 +2,8 @@
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
+#include "Chicane/Drift.hpp"
+
 #include "Chicane/Runtime/Scene.hpp"
 
 namespace Chicane
@@ -17,6 +19,8 @@ namespace Chicane
 
     Object::~Object()
     {
+        Drift::unbind(*this);
+
         if (m_scene)
         {
             m_scene->removeSpatial(this);

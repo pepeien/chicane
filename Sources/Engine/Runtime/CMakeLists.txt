@@ -69,6 +69,7 @@ target_link_libraries(
     PUBLIC
         Chicane::Box
         Chicane::Core
+        Chicane::Drift
         Chicane::Grid
         Chicane::Kerb
         Chicane::Renderer

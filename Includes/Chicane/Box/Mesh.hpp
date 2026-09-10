@@ -2,6 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Reference.hpp"
 #include "Chicane/Box/Mesh/Group.hpp"
 
 namespace Chicane
@@ -27,11 +28,28 @@ namespace Chicane
             void appendGroup(const MeshGroup& inGroup);
             void updateGroup(const MeshGroup& inGroup);
 
-        private:
-            void fetchGroups();
+            bool hasSkeleton() const;
+            const AssetReference& getSkeleton() const;
+            void setSkeleton(const FileSystem::Path& inSource);
+            void setSkeleton(const AssetReference& inValue);
+
+            const std::vector<AssetReference>& getAnimations() const;
+            bool hasAnimation(const FileSystem::Path& inSource) const;
+            void setAnimations(const std::vector<AssetReference>& inAnimations);
+            void appendAnimation(const FileSystem::Path& inSource);
+            void appendAnimation(const AssetReference& inValue);
 
         private:
-            std::vector<MeshGroup> m_groups;
+            void fetchGroups();
+            void fetchSkeleton();
+            void fetchAnimations();
+            void writeSkeleton();
+            void writeAnimations();
+
+        private:
+            AssetReference              m_skeleton;
+            std::vector<AssetReference> m_animations;
+            std::vector<MeshGroup>      m_groups;
         };
     }
 }

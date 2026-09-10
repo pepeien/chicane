@@ -27,3 +27,33 @@ set_target_properties(
         POSITION_INDEPENDENT_CODE
             TRUE
 )
+
+# tinygltf
+
+set(TINYGLTF3_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(TINYGLTF3_INSTALL     OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(tinygltf)
+
+add_library(tinygltf STATIC tinygltf/tiny_gltf_v3.c)
+target_include_directories(
+    tinygltf
+
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/tinygltf
+)
+target_compile_definitions(
+    tinygltf
+
+    PRIVATE
+        TINYGLTF3_ENABLE_FS
+)
+set_target_properties(
+    tinygltf
+
+    PROPERTIES
+        C_STANDARD 11
+        C_STANDARD_REQUIRED ON
+        C_EXTENSIONS OFF
+        POSITION_INDEPENDENT_CODE TRUE
+)

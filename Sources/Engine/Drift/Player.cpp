@@ -102,10 +102,11 @@ namespace Chicane
             {
                 m_iteration++;
 
-                const bool bIsInfinite = m_clip.iterations <= 0;
-                const bool bIsOnce = m_clip.loop == Loop::Once || (!bIsInfinite && m_iteration >= m_clip.iterations);
+                const bool bIsOnce     = m_clip.loop == Loop::Once;
+                const bool bIsFinite   = m_clip.iterations > 1;
+                const bool bShouldStop = bIsOnce || (bIsFinite && m_iteration >= m_clip.iterations);
 
-                if (bIsOnce)
+                if (bShouldStop)
                 {
                     m_elapsed = duration;
 

@@ -376,7 +376,7 @@ namespace Chicane
 
         for (int y = 0; y < outHeight; y++)
         {
-            const int srcY = m_height - 1 - ((y * m_height) / outHeight);
+            const int srcY = (y * m_height) / outHeight;
 
             for (int x = 0; x < outWidth; x++)
             {

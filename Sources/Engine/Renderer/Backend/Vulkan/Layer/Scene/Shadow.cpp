@@ -39,16 +39,6 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
-        bool VulkanLSceneShadow::onBeginRender(const Frame& inFrame)
-        {
-            if (!inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
@@ -192,6 +182,7 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
@@ -210,11 +201,11 @@ namespace Chicane
 
             // Attachments
             vk::AttachmentDescription depthAttachment;
-            depthAttachment.format        = backend->swapchain.depthFormat;
+            depthAttachment.format        = parent->shadowImage.format;
             depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.initialLayout = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilReadOnlyOptimal;
 
             vk::AttachmentReference depthReference;

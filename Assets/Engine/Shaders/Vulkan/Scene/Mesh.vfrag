@@ -43,7 +43,7 @@ vec4 sampleMap(int index, vec2 uv) {
         return vec4(1.0);
     }
 
-    return texture(textures[index], uv);
+    return texture(textures[nonuniformEXT(index)], uv);
 }
 
 void main() {

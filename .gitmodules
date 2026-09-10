@@ -32,3 +32,6 @@
 [submodule "Sources/Engine/Screech/Vendor/miniaudio"]
 	path = Sources/Engine/Screech/Vendor/miniaudio
 	url = https://github.com/pepeien/miniaudio.git
+[submodule "Sources/Engine/Box/Vendor/tinygltf"]
+	path = Sources/Engine/Box/Vendor/tinygltf
+	url = https://github.com/pepeien/tinygltf.git

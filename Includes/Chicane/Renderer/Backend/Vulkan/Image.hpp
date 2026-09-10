@@ -58,7 +58,8 @@ namespace Chicane
                 const vk::ImageLayout&   inOldLayout,
                 const vk::ImageLayout&   inNewLayout,
                 std::uint32_t            inCount,
-                std::uint32_t            inLevelCount = 1
+                std::uint32_t            inLevelCount = 1,
+                vk::ImageAspectFlags     inAspect     = vk::ImageAspectFlagBits::eColor
             );
             CHICANE_RENDERER void generateMipmaps(
                 const vk::CommandBuffer& inCommandBuffer,

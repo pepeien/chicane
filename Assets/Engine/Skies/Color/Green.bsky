@@ -8,5 +8,5 @@
         <Texture source="Assets/Engine/Textures/Color/Green.btex">Color_Green</Texture>
         <Texture source="Assets/Engine/Textures/Color/Green.btex">Color_Green</Texture>
     </Textures>
-    <Model source="Assets/Engine/Models/Sky/Box.bmdl">Skybox_Body</Model>
+    <Model source="Assets/Engine/Models/Sky/Box.bmdl">Body</Model>
 </Asset>

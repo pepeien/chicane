@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 #include <Chicane/Box.hpp>
@@ -10,9 +11,15 @@
 #include <Chicane/Box/Asset/Preview.hpp>
 #include <Chicane/Core/Image.hpp>
 #include <Chicane/Core/Math/Vertex.hpp>
+#include <Chicane/Box/Animation.hpp>
+#include <Chicane/Box/Animation/Loop.hpp>
+#include <Chicane/Box/Animation/Track.hpp>
 #include <Chicane/Box/Font.hpp>
+#include <Chicane/Box/Gltf.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
+#include <Chicane/Box/Model/Vendor.hpp>
+#include <Chicane/Box/Skeleton.hpp>
 #include <Chicane/Box/Texture.hpp>
 #include <Chicane/Box/Sky.hpp>
 #include <Chicane/Box/Sound.hpp>
@@ -85,6 +92,11 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
 
     switch (Chicane::Box::AssetHeader::getTypeFromTag(typeOption->getValue()))
     {
+    case Chicane::Box::AssetType::Animation:
+        createAnimation(id, sources, output);
+
+        break;
+
     case Chicane::Box::AssetType::Font:
         createFont(id, sources, output);
 
@@ -102,6 +114,11 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
 
     case Chicane::Box::AssetType::Sky:
         createSky(id, sources, output);
+
+        break;
+
+    case Chicane::Box::AssetType::Skeleton:
+        createSkeleton(id, sources, output);
 
         break;
 
@@ -163,8 +180,10 @@ void Program::createMesh(
 )
 {
     std::unordered_map<Chicane::Box::AssetType, std::vector<Chicane::FileSystem::Path>> sources = {
-        {Chicane::Box::AssetType::Model,   {}},
-        {Chicane::Box::AssetType::Texture, {}}
+        {Chicane::Box::AssetType::Animation, {}},
+        {Chicane::Box::AssetType::Model,     {}},
+        {Chicane::Box::AssetType::Skeleton,  {}},
+        {Chicane::Box::AssetType::Texture,   {}}
     };
 
     for (const Chicane::String& source : inSources)
@@ -249,6 +268,17 @@ void Program::createMesh(
         group.setTexture(texture.getFilepath(), texture.getId());
 
         asset.appendGroup(group);
+    }
+
+    const std::vector<Chicane::FileSystem::Path>& skeletons = sources.at(Chicane::Box::AssetType::Skeleton);
+    if (!skeletons.empty())
+    {
+        asset.setSkeleton(skeletons.at(0));
+    }
+
+    for (const Chicane::FileSystem::Path& animation : sources.at(Chicane::Box::AssetType::Animation))
+    {
+        asset.appendAnimation(animation);
     }
 
     std::vector<Chicane::Box::PreviewGeometryBatch> batches = {};
@@ -493,6 +523,145 @@ void Program::createSound(
     Chicane::Box::Sound asset(output);
     asset.setId(inId);
     asset.setData(source);
+    asset.saveXML();
+}
+
+void Program::createSkeleton(
+    const Chicane::String&                    inId,
+    const Chicane::ProgramParam::Positionals& inSources,
+    const Chicane::FileSystem::Path&          inOutput
+)
+{
+    Chicane::FileSystem::Path output = inOutput;
+
+    if (output.isEmpty())
+    {
+        Chicane::String location = inId;
+        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Skeleton));
+
+        output = location;
+    }
+
+    Chicane::Box::SkeletonBone::List bones;
+
+    std::optional<Chicane::FileSystem::Path> gltf;
+    for (const Chicane::String& source : inSources)
+    {
+        const Chicane::FileSystem::Path path(source);
+        if (Chicane::Box::Model::parseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
+        {
+            gltf = path;
+
+            break;
+        }
+    }
+
+    if (gltf)
+    {
+        bones = Chicane::Box::SkeletonGltf::parse(*gltf);
+    }
+    else
+    {
+        for (const Chicane::String& source : inSources)
+        {
+            Chicane::Box::SkeletonBone bone;
+            bone.id = source;
+            bones.push_back(bone);
+        }
+    }
+
+    Chicane::Box::Skeleton asset(output);
+    asset.setId(inId);
+    asset.setBones(bones);
+    asset.saveXML();
+}
+
+void Program::createAnimation(
+    const Chicane::String&                    inId,
+    const Chicane::ProgramParam::Positionals& inSources,
+    const Chicane::FileSystem::Path&          inOutput
+)
+{
+    if (inSources.empty())
+    {
+        throw std::runtime_error("The animation skeleton file is missing");
+    }
+
+    std::optional<Chicane::FileSystem::Path> gltf;
+    std::optional<Chicane::FileSystem::Path> skeleton;
+    for (const Chicane::String& source : inSources)
+    {
+        const Chicane::FileSystem::Path path(source);
+        if (Chicane::Box::Model::parseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
+        {
+            gltf = path;
+
+            continue;
+        }
+
+        if (Chicane::Box::AssetHeader::getTypeFromExtension(path) == Chicane::Box::AssetType::Skeleton)
+        {
+            skeleton = path;
+        }
+    }
+
+    if (!skeleton)
+    {
+        throw std::runtime_error(
+            gltf ? "The animation skeleton file is missing"
+                 : "The animation source must be a skeleton or a glTF file"
+        );
+    }
+
+    if (!Chicane::FileSystem::exists(*skeleton))
+    {
+        throw std::runtime_error("The animation skeleton file doesn't exist");
+    }
+
+    Chicane::FileSystem::Path output = inOutput;
+
+    if (output.isEmpty())
+    {
+        Chicane::String location = inId;
+        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation));
+
+        output = location;
+    }
+
+    Chicane::Box::AnimationClip clip(inId);
+    clip.loop = Chicane::Box::AnimationLoop::Once;
+
+    if (gltf)
+    {
+        clip = Chicane::Box::AnimationGltf::parse(*gltf, inId);
+
+        Chicane::Box::Skeleton           bones(*skeleton);
+        Chicane::Box::AnimationTrack::List tracks;
+        for (const Chicane::Box::AnimationTrack& track : clip.tracks)
+        {
+            if (track.name.isEmpty() || !bones.hasBone(track.name))
+            {
+                continue;
+            }
+
+            tracks.push_back(track);
+        }
+
+        if (tracks.empty())
+        {
+            throw std::runtime_error(
+                "Animation [" + inId.toStandard() + "] has no tracks on skeleton [" +
+                bones.getId().toStandard() + "]"
+            );
+        }
+
+        clip.tracks = std::move(tracks);
+    }
+
+    Chicane::Box::Animation asset(output);
+    asset.setId(inId);
+    asset.setSkeleton(*skeleton);
+    asset.setClip(clip);
     asset.saveXML();
 }
 

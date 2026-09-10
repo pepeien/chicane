@@ -76,6 +76,7 @@ target_link_libraries(
     PRIVATE
         fast_obj
         freetype
+        tinygltf
 )
 
 CH_ADD_COMPILER(${CHICANE_ENGINE_BOX_TARGET_NAME})

@@ -623,6 +623,7 @@ namespace Chicane
                     &m_implementation->threadPool
                 );
                 m_implementation->accumulator -= FIXED_STEP;
+
                 ++steps;
             }
 

@@ -17,9 +17,12 @@
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Texture/Map.hpp"
+#include "Chicane/Core/Time.hpp"
 
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Engine.hpp"
+
+#include "Chicane/Drift.hpp"
 
 #include "Chicane/Screech.hpp"
 
@@ -139,6 +142,7 @@ namespace Chicane
         initRenderer(inCreateInfo.renderer);
         initBox();
         initKerb();
+        initDrift();
         initScreech();
 
         if (inCreateInfo.onSetup)
@@ -165,6 +169,7 @@ namespace Chicane
         m_bIsRunning.store(false, std::memory_order_seq_cst);
         shutdownScene();
         shutdownUI();
+        shutdownDrift();
 
         shutdownRenderer();
     }
@@ -457,6 +462,16 @@ namespace Chicane
         Kerb::init();
     }
 
+    void Application::initDrift()
+    {
+        Drift::init();
+    }
+
+    void Application::shutdownDrift()
+    {
+        Drift::shutdown();
+    }
+
     void Application::initScreech()
     {
         Screech::init();
@@ -477,35 +492,44 @@ namespace Chicane
 
     void Application::tickScene()
     {
-        m_telemetry.physics.start();
+        Telemetry telemetry = {};
 
         while (m_bIsRunning)
         {
-            std::shared_ptr<Scene> scene = getScene();
-
-            if (!scene)
+            telemetry.start();
             {
-                std::this_thread::yield();
+                std::shared_ptr<Scene> scene = getScene();
 
-                continue;
-            }
+                if (!scene)
+                {
+                    std::this_thread::yield();
 
-            Kerb::Engine::getInstance().tick(m_telemetry.physics.frame.delta * 0.001f);
+                    continue;
+                }
 
-            {
+                m_telemetry.physics.start();
+                {
+                    Kerb::Engine::getInstance().tick(telemetry.frame.delta * 0.001f);
+                }
+                m_telemetry.physics.end();
+
+                m_telemetry.animation.start();
+                {
+                    Drift::tick(telemetry.frame.delta);
+                }
+                m_telemetry.animation.end();
+
                 m_telemetry.scene.start();
+                {
+                    scene->tick(telemetry.frame.delta);
 
-                scene->tick(m_telemetry.scene.frame.delta);
-
-                buildSceneCommands(scene);
-
+                    buildSceneCommands(scene);
+                }
                 m_telemetry.scene.end();
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-            m_telemetry.physics.end();
-            m_telemetry.physics.start();
+            telemetry.end();
         }
     }
 
@@ -563,7 +587,7 @@ namespace Chicane
                     subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, Box::Model::DEFAULT_REFERENCE);
                 }
 
-                subcommand.instance.model = matrix * group.getModelMatrix();
+                subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
                 subcommand.instance.flags = mesh->getFlags();
 
                 for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)

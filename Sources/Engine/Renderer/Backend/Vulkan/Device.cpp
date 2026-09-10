@@ -78,11 +78,15 @@ namespace Chicane
                 }
 
                 vk::PhysicalDeviceFeatures features = vk::PhysicalDeviceFeatures();
-                features.depthClamp                 = true;
-                features.fillModeNonSolid           = true;
+                features.depthClamp                              = true;
+                features.fillModeNonSolid                        = true;
+                features.shaderSampledImageArrayDynamicIndexing = true;
 
-                vk::PhysicalDeviceDescriptorIndexingFeatures descriptorFeatures;
-                descriptorFeatures.runtimeDescriptorArray = true;
+                vk::PhysicalDeviceVulkan12Features vulkan12Features;
+                vulkan12Features.descriptorIndexing                        = true;
+                vulkan12Features.runtimeDescriptorArray                    = true;
+                vulkan12Features.shaderSampledImageArrayNonUniformIndexing = true;
+                vulkan12Features.descriptorBindingPartiallyBound           = true;
 
                 vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
                     vk::DeviceCreateFlags(),
@@ -98,7 +102,7 @@ namespace Chicane
 
                     &features
                 );
-                logicalDeviceInfo.pNext = &descriptorFeatures;
+                logicalDeviceInfo.pNext = &vulkan12Features;
 
                 outDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
             }

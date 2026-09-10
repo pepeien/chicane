@@ -133,7 +133,8 @@ namespace Chicane
                 const vk::ImageLayout&   inOldLayout,
                 const vk::ImageLayout&   inNewLayout,
                 std::uint32_t            inCount,
-                std::uint32_t            inLevelCount
+                std::uint32_t            inLevelCount,
+                vk::ImageAspectFlags     inAspect
             )
             {
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
@@ -146,7 +147,7 @@ namespace Chicane
                 barrier.image                           = inImage;
                 barrier.srcAccessMask                   = vk::AccessFlagBits::eTransferWrite;
                 barrier.dstAccessMask                   = vk::AccessFlagBits::eShaderRead;
-                barrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                barrier.subresourceRange.aspectMask     = inAspect;
                 barrier.subresourceRange.baseMipLevel   = 0;
                 barrier.subresourceRange.levelCount     = std::max(1u, inLevelCount);
                 barrier.subresourceRange.baseArrayLayer = 0;
@@ -162,6 +163,20 @@ namespace Chicane
 
                     sourceStage      = vk::PipelineStageFlagBits::eBottomOfPipe;
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
+                }
+                else if (
+                    inOldLayout == vk::ImageLayout::eUndefined &&
+                    (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
+                     inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal)
+                )
+                {
+                    barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
+                    barrier.dstAccessMask =
+                        vk::AccessFlagBits::eShaderRead | vk::AccessFlagBits::eDepthStencilAttachmentRead;
+
+                    sourceStage = vk::PipelineStageFlagBits::eTopOfPipe;
+                    destinationStage =
+                        vk::PipelineStageFlagBits::eFragmentShader | vk::PipelineStageFlagBits::eEarlyFragmentTests;
                 }
 
                 inCommandBuffer
@@ -231,7 +246,7 @@ namespace Chicane
                         vk::ImageLayout::eTransferSrcOptimal,
                         vk::AccessFlagBits::eShaderRead,
                         vk::AccessFlagBits::eTransferRead,
-                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader,
                         vk::PipelineStageFlagBits::eTransfer
                     );
 
@@ -241,7 +256,7 @@ namespace Chicane
                         vk::ImageLayout::eTransferDstOptimal,
                         vk::AccessFlagBits::eShaderRead,
                         vk::AccessFlagBits::eTransferWrite,
-                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader,
                         vk::PipelineStageFlagBits::eTransfer
                     );
 

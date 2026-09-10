@@ -75,9 +75,11 @@ namespace Editor
         dialog.bCanSelectMany = false;
         dialog.location       = "/";
         dialog.title          = "Select asset source";
+        dialog.addFilter("Animations", {".bani"});
         dialog.addFilter("Fonts", {".bfon"});
         dialog.addFilter("Meshes", {".bmsh"});
         dialog.addFilter("Models", {".bmdl"});
+        dialog.addFilter("Skeletons", {".bskl"});
         dialog.addFilter("Textures", {".btex"});
         dialog.addFilter("Skies", {".bsky"});
         dialog.addFilter("Sounds", {".bsnd"});

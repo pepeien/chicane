@@ -518,6 +518,7 @@ namespace Chicane
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
             layoutBidings.counts.push_back(getResourceBudgetCount(Resource::Texture));
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+            layoutBidings.bindingFlags.push_back(vk::DescriptorBindingFlagBits::ePartiallyBound);
 
             VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
 
@@ -595,15 +596,24 @@ namespace Chicane
 
             for (vk::DescriptorSet set : textureDescriptorSets)
             {
-                vk::WriteDescriptorSet write;
-                write.dstSet          = set;
-                write.dstBinding      = 0;
-                write.dstArrayElement = 0;
-                write.descriptorCount = static_cast<std::uint32_t>(infos.size());
-                write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                write.pImageInfo      = infos.data();
+                for (std::size_t i = 0; i < infos.size(); ++i)
+                {
+                    const Draw::Id id = inTextures[i].id;
+                    if (id <= Draw::InvalidId)
+                    {
+                        continue;
+                    }
 
-                logicalDevice.updateDescriptorSets(write, nullptr);
+                    vk::WriteDescriptorSet write;
+                    write.dstSet          = set;
+                    write.dstBinding      = 0;
+                    write.dstArrayElement = static_cast<std::uint32_t>(id);
+                    write.descriptorCount = 1;
+                    write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                    write.pImageInfo      = &infos[i];
+
+                    logicalDevice.updateDescriptorSets(write, nullptr);
+                }
             }
         }
 

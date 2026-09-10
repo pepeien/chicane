@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Chicane/Box/Asset/Preview.hpp"
+#include "Chicane/Box/Model/Gltf.hpp"
 #include "Chicane/Box/Model/Wavefront.hpp"
 
 #include "Chicane/Core/Base64.hpp"
@@ -16,6 +17,7 @@ namespace Chicane
         static const std::unordered_map<ModelVendor, String> EXTENSIONS = {
             {ModelVendor::Undefined, "N/A"},
             {ModelVendor::Wavefront, "OBJ"},
+            {ModelVendor::Gltf,      "GLTF"},
         };
 
         ModelVendor Model::parseVendor(const String& inValue)
@@ -26,6 +28,10 @@ namespace Chicane
             }
 
             const String& value = inValue.trim().toUpper();
+            if (value.contains("GLB"))
+            {
+                return ModelVendor::Gltf;
+            }
 
             for (const auto& [type, extension] : EXTENSIONS)
             {
@@ -223,6 +229,11 @@ namespace Chicane
 
                 break;
 
+            case ModelVendor::Gltf:
+                result = ModelGltf::parse(inValue);
+
+                break;
+
             default:
                 throw std::runtime_error("Failed to parse Model due to invalid vendor");
             }
@@ -236,11 +247,7 @@ namespace Chicane
 
             for (const auto& [name, model] : inValue)
             {
-                String id = getId();
-                id.append("_");
-                id.append(name);
-
-                result[id] = model;
+                result[name] = model;
             }
 
             return result;
