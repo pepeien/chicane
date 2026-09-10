@@ -1,0 +1,133 @@
+{
+    "title": "Track",
+    "filename": "Track",
+    "path": "Box/Animation/Track",
+    "source": {
+        "header": "Includes/Chicane/Box/Animation/Track.hpp",
+        "namespace": "Chicane::Box::AnimationTrack",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AnimationTrack",
+                            "suffix": "",
+                            "path": "Box/Animation/Track",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_ANIMATIONTRACK_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AnimationTrack",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONTRACK_ANIMATIONTRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AnimationTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONTRACK_ANIMATIONTRACK_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addKeyframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AnimationKeyframe",
+                            "suffix": "&",
+                            "path": "Box/Animation/Keyframe",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONTRACK_ADDKEYFRAME_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_BOX_ANIMATIONTRACK_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnimationKeyframe::List",
+                    "suffix": "",
+                    "path": "Box/Animation/Keyframe",
+                    "templates": []
+                },
+                "name": "keyframes",
+                "description": "CHICANE_BOX_ANIMATIONTRACK_KEYFRAMES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_ANIMATIONTRACK_DESCRIPTION"
+    },
+    "children": []
+}

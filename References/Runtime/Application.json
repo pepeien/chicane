@@ -820,10 +820,40 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initDrift",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITDRIFT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initScreech",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_INITSCREECH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownDrift",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SHUTDOWNDRIFT_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -1,0 +1,44 @@
+{
+    "title": "Gltf",
+    "filename": "Gltf",
+    "path": "Box/Skeleton/Gltf",
+    "source": {
+        "header": "Includes/Chicane/Box/Skeleton/Gltf.hpp",
+        "namespace": "Chicane::Box::SkeletonGltf",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SkeletonBone::List",
+                    "suffix": "",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETONGLTF_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_BOX_SKELETONGLTF_DESCRIPTION"
+    },
+    "children": []
+}

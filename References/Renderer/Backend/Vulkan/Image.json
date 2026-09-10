@@ -375,6 +375,16 @@
                             "templates": []
                         },
                         "name": "inLevelCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::ImageAspectFlags",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAspect"
                     }
                 ],
                 "modifiers": [],

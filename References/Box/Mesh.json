@@ -165,6 +165,231 @@
                 "description": "CHICANE_BOX_MESH_UPDATEGROUP_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSkeleton",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESH_HASSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "AssetReference",
+                    "suffix": "&",
+                    "path": "Box/Asset/Reference",
+                    "templates": []
+                },
+                "name": "getSkeleton",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESH_GETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSkeleton",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_SETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSkeleton",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AssetReference",
+                            "suffix": "&",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_SETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetReference",
+                            "suffix": "",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getAnimations",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESH_GETANIMATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasAnimation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESH_HASANIMATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAnimations",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "AssetReference",
+                                    "suffix": "",
+                                    "path": "Box/Asset/Reference",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inAnimations"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_SETANIMATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendAnimation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_APPENDANIMATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendAnimation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AssetReference",
+                            "suffix": "&",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_APPENDANIMATION_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -178,6 +403,66 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_MESH_FETCHGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchSkeleton",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_FETCHSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchAnimations",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_FETCHANIMATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeSkeleton",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_WRITESKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeAnimations",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_WRITEANIMATIONS_DESCRIPTION"
             }
         ],
         "members": [
@@ -244,6 +529,40 @@
                 },
                 "name": "GROUP_ID_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_MESH_GROUP_ID_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AssetReference",
+                    "suffix": "",
+                    "path": "Box/Asset/Reference",
+                    "templates": []
+                },
+                "name": "m_skeleton",
+                "description": "CHICANE_BOX_MESH_M_SKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetReference",
+                            "suffix": "",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_animations",
+                "description": "CHICANE_BOX_MESH_M_ANIMATIONS_DESCRIPTION"
             },
             {
                 "accessor": "private",

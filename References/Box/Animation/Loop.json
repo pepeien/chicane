@@ -1,10 +1,10 @@
 {
-    "title": "ModelVendor",
-    "filename": "Vendor",
-    "path": "Box/Model/Vendor",
+    "title": "AnimationLoop",
+    "filename": "Loop",
+    "path": "Box/Animation/Loop",
     "source": {
-        "header": "Includes/Chicane/Box/Model/Vendor.hpp",
-        "namespace": "Chicane::Box::ModelVendor",
+        "header": "Includes/Chicane/Box/Animation/Loop.hpp",
+        "namespace": "Chicane::Box::AnimationLoop",
         "types": [],
         "enums": [
             {
@@ -15,8 +15,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Undefined",
-                "description": "CHICANE_BOX_MODELVENDOR_UNDEFINED_DESCRIPTION"
+                "name": "Once",
+                "description": "CHICANE_BOX_ANIMATIONLOOP_ONCE_DESCRIPTION"
             },
             {
                 "type": {
@@ -26,8 +26,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Wavefront",
-                "description": "CHICANE_BOX_MODELVENDOR_WAVEFRONT_DESCRIPTION"
+                "name": "Repeat",
+                "description": "CHICANE_BOX_ANIMATIONLOOP_REPEAT_DESCRIPTION"
             },
             {
                 "type": {
@@ -37,15 +37,15 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Gltf",
-                "description": "CHICANE_BOX_MODELVENDOR_GLTF_DESCRIPTION"
+                "name": "PingPong",
+                "description": "CHICANE_BOX_ANIMATIONLOOP_PINGPONG_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_MODELVENDOR_DESCRIPTION"
+        "description": "CHICANE_BOX_ANIMATIONLOOP_DESCRIPTION"
     },
     "children": []
 }

@@ -16,6 +16,109 @@
         },
         "children": [
             {
+                "title": "Animation",
+                "filename": "Animation",
+                "path": "Box/Animation",
+                "source": {
+                    "header": "Includes/Chicane/Box/Animation.hpp",
+                    "namespace": "Chicane::Box::Animation",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "AnimationLoop",
+                        "filename": "Loop",
+                        "path": "Box/Animation/Loop",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Loop.hpp",
+                            "namespace": "Chicane::Box::AnimationLoop",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Clip",
+                        "filename": "Clip",
+                        "path": "Box/Animation/Clip",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Clip.hpp",
+                            "namespace": "Chicane::Box::AnimationClip",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Gltf",
+                        "filename": "Gltf",
+                        "path": "Box/Animation/Gltf",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Gltf.hpp",
+                            "namespace": "Chicane::Box::AnimationGltf",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Keyframe",
+                        "filename": "Keyframe",
+                        "path": "Box/Animation/Keyframe",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Keyframe.hpp",
+                            "namespace": "Chicane::Box::AnimationKeyframe",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Track",
+                        "filename": "Track",
+                        "path": "Box/Animation/Track",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Track.hpp",
+                            "namespace": "Chicane::Box::AnimationTrack",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Asset",
                 "filename": "Asset",
                 "path": "Box/Asset",
@@ -310,6 +413,23 @@
                 ]
             },
             {
+                "title": "Gltf",
+                "filename": "Gltf",
+                "path": "Box/Gltf",
+                "source": {
+                    "header": "Includes/Chicane/Box/Gltf.hpp",
+                    "namespace": "Chicane::Box::Gltf",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
                 "title": "Mesh",
                 "filename": "Mesh",
                 "path": "Box/Mesh",
@@ -378,6 +498,23 @@
                 },
                 "children": [
                     {
+                        "title": "Gltf",
+                        "filename": "Gltf",
+                        "path": "Box/Model/Gltf",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Model/Gltf.hpp",
+                            "namespace": "Chicane::Box::ModelGltf",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "ModelVendor",
                         "filename": "Vendor",
                         "path": "Box/Model/Vendor",
@@ -435,6 +572,58 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
                             "namespace": "Chicane::Box::ModelWavefront",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Skeleton",
+                "filename": "Skeleton",
+                "path": "Box/Skeleton",
+                "source": {
+                    "header": "Includes/Chicane/Box/Skeleton.hpp",
+                    "namespace": "Chicane::Box::Skeleton",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Bone",
+                        "filename": "Bone",
+                        "path": "Box/Skeleton/Bone",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Skeleton/Bone.hpp",
+                            "namespace": "Chicane::Box::SkeletonBoneEntry",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Gltf",
+                        "filename": "Gltf",
+                        "path": "Box/Skeleton/Gltf",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Skeleton/Gltf.hpp",
+                            "namespace": "Chicane::Box::SkeletonGltf",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -2904,6 +3093,23 @@
                 "source": {
                     "header": "Includes/Chicane/Drift/Player.hpp",
                     "namespace": "Chicane::Drift::Player",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Queue",
+                "filename": "Queue",
+                "path": "Drift/Queue",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Queue.hpp",
+                    "namespace": "Chicane::Drift::Queue",
                     "types": [],
                     "enums": [],
                     "constructors": [],

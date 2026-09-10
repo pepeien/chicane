@@ -1,0 +1,309 @@
+{
+    "title": "Skeleton",
+    "filename": "Skeleton",
+    "path": "Box/Skeleton",
+    "source": {
+        "header": "Includes/Chicane/Box/Skeleton.hpp",
+        "namespace": "Chicane::Box::Skeleton",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Skeleton",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_SKELETON_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Skeleton",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_~SKELETON_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "SkeletonBone::List",
+                    "suffix": "&",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "getBones",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SKELETON_GETBONES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBones",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SkeletonBone::List",
+                            "suffix": "&",
+                            "path": "Box/Skeleton/Bone",
+                            "templates": []
+                        },
+                        "name": "inBones"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_SETBONES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "SkeletonBoneEntry::List",
+                    "suffix": "&",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "getEntries",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SKELETON_GETENTRIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "SkeletonBone",
+                    "suffix": "*",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "getBone",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SKELETON_GETBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findIndex",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SKELETON_FINDINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasBone",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SKELETON_HASBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchBones",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_FETCHBONES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildEntries",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_REBUILDENTRIES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeBones",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETON_WRITEBONES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENSION",
+                "description": "CHICANE_BOX_SKELETON_EXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG",
+                "description": "CHICANE_BOX_SKELETON_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SkeletonBone::List",
+                    "suffix": "",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "m_bones",
+                "description": "CHICANE_BOX_SKELETON_M_BONES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SkeletonBoneEntry::List",
+                    "suffix": "",
+                    "path": "Box/Skeleton/Bone",
+                    "templates": []
+                },
+                "name": "m_entries",
+                "description": "CHICANE_BOX_SKELETON_M_ENTRIES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_SKELETON_DESCRIPTION"
+    },
+    "children": []
+}

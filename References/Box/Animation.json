@@ -1,0 +1,501 @@
+{
+    "title": "Animation",
+    "filename": "Animation",
+    "path": "Box/Animation",
+    "source": {
+        "header": "Includes/Chicane/Box/Animation.hpp",
+        "namespace": "Chicane::Box::Animation",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Animation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_ANIMATION_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Animation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_~ANIMATION_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSkeleton",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ANIMATION_HASSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "AssetReference",
+                    "suffix": "&",
+                    "path": "Box/Asset/Reference",
+                    "templates": []
+                },
+                "name": "getSkeleton",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ANIMATION_GETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSkeleton",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_SETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSkeleton",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AssetReference",
+                            "suffix": "&",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_SETSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "AnimationClip",
+                    "suffix": "&",
+                    "path": "Box/Animation/Clip",
+                    "templates": []
+                },
+                "name": "getClip",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ANIMATION_GETCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setClip",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AnimationClip",
+                            "suffix": "&",
+                            "path": "Box/Animation/Clip",
+                            "templates": []
+                        },
+                        "name": "inClip"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_SETCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchSkeleton",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_FETCHSKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchClip",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_FETCHCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeSkeleton",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_WRITESKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeClip",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATION_WRITECLIP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENSION",
+                "description": "CHICANE_BOX_ANIMATION_EXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG",
+                "description": "CHICANE_BOX_ANIMATION_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLIP_TAG",
+                "description": "CHICANE_BOX_ANIMATION_CLIP_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLIP_DURATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_CLIP_DURATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLIP_LOOP_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_CLIP_LOOP_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLIP_ITERATIONS_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_CLIP_ITERATIONS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRACK_TAG",
+                "description": "CHICANE_BOX_ANIMATION_TRACK_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRACK_NAME_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_TRACK_NAME_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAME_TAG",
+                "description": "CHICANE_BOX_ANIMATION_KEYFRAME_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAME_TIME_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_KEYFRAME_TIME_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KEYFRAME_EASING_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_KEYFRAME_EASING_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TRANSLATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ROTATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ANIMATION_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AssetReference",
+                    "suffix": "",
+                    "path": "Box/Asset/Reference",
+                    "templates": []
+                },
+                "name": "m_skeleton",
+                "description": "CHICANE_BOX_ANIMATION_M_SKELETON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnimationClip",
+                    "suffix": "",
+                    "path": "Box/Animation/Clip",
+                    "templates": []
+                },
+                "name": "m_clip",
+                "description": "CHICANE_BOX_ANIMATION_M_CLIP_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_ANIMATION_DESCRIPTION"
+    },
+    "children": []
+}

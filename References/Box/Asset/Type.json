@@ -26,6 +26,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Animation",
+                "description": "CHICANE_BOX_ASSETTYPE_ANIMATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Font",
                 "description": "CHICANE_BOX_ASSETTYPE_FONT_DESCRIPTION"
             },
@@ -50,6 +61,17 @@
                 },
                 "name": "Model",
                 "description": "CHICANE_BOX_ASSETTYPE_MODEL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Skeleton",
+                "description": "CHICANE_BOX_ASSETTYPE_SKELETON_DESCRIPTION"
             },
             {
                 "type": {

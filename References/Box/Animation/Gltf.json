@@ -1,0 +1,54 @@
+{
+    "title": "Gltf",
+    "filename": "Gltf",
+    "path": "Box/Animation/Gltf",
+    "source": {
+        "header": "Includes/Chicane/Box/Animation/Gltf.hpp",
+        "namespace": "Chicane::Box::AnimationGltf",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnimationClip",
+                    "suffix": "",
+                    "path": "Box/Animation/Clip",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONGLTF_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_BOX_ANIMATIONGLTF_DESCRIPTION"
+    },
+    "children": []
+}

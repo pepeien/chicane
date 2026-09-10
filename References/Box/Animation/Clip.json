@@ -1,0 +1,206 @@
+{
+    "title": "Clip",
+    "filename": "Clip",
+    "path": "Box/Animation/Clip",
+    "source": {
+        "header": "Includes/Chicane/Box/Animation/Clip.hpp",
+        "namespace": "Chicane::Box::AnimationClip",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AnimationClip",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONCLIP_ANIMATIONCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AnimationClip",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONCLIP_ANIMATIONCLIP_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnimationTrack",
+                    "suffix": "*",
+                    "path": "Box/Animation/Track",
+                    "templates": []
+                },
+                "name": "getTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONCLIP_GETTRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "AnimationTrack",
+                    "suffix": "*",
+                    "path": "Box/Animation/Track",
+                    "templates": []
+                },
+                "name": "getTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ANIMATIONCLIP_GETTRACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addTrack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "AnimationTrack",
+                            "suffix": "&",
+                            "path": "Box/Animation/Track",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONCLIP_ADDTRACK_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_BOX_ANIMATIONCLIP_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "duration",
+                "description": "CHICANE_BOX_ANIMATIONCLIP_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnimationLoop",
+                    "suffix": "",
+                    "path": "Box/Animation/Loop",
+                    "templates": []
+                },
+                "name": "loop",
+                "description": "CHICANE_BOX_ANIMATIONCLIP_LOOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "iterations",
+                "description": "CHICANE_BOX_ANIMATIONCLIP_ITERATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnimationTrack::List",
+                    "suffix": "",
+                    "path": "Box/Animation/Track",
+                    "templates": []
+                },
+                "name": "tracks",
+                "description": "CHICANE_BOX_ANIMATIONCLIP_TRACKS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_ANIMATIONCLIP_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,44 @@
+{
+    "title": "Gltf",
+    "filename": "Gltf",
+    "path": "Box/Model/Gltf",
+    "source": {
+        "header": "Includes/Chicane/Box/Model/Gltf.hpp",
+        "namespace": "Chicane::Box::ModelGltf",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelParsed::Map",
+                    "suffix": "",
+                    "path": "Box/Model/Parsed",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelRaw",
+                            "suffix": "&",
+                            "path": "Box/Model/Raw",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODELGLTF_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_BOX_MODELGLTF_DESCRIPTION"
+    },
+    "children": []
+}

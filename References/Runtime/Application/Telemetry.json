@@ -63,6 +63,19 @@
                     "path": "Runtime/Telemetry",
                     "templates": []
                 },
+                "name": "animation",
+                "description": "CHICANE_APPLICATIONTELEMETRY_ANIMATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
                 "name": "ui",
                 "description": "CHICANE_APPLICATIONTELEMETRY_UI_DESCRIPTION"
             },
