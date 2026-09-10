@@ -1,6 +1,9 @@
 Button::Check {
-    cursor: pointer;
     overflow: visible;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .button-check {

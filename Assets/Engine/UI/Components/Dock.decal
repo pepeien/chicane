@@ -12,5 +12,7 @@ DockPanel {
 }
 
 DockHandle {
-    cursor: grab;
+    &:hover {
+        cursor: grab;
+    }
 }
