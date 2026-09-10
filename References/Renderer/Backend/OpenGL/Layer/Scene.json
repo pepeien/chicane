@@ -155,23 +155,6 @@
                 "description": "CHICANE_RENDERER_OPENGLLSCENE_ONRENDER_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getModelVertexArray",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_OPENGLLSCENE_GETMODELVERTEXARRAY_DESCRIPTION"
-            },
-            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {

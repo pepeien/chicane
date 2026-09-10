@@ -911,6 +911,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -1058,6 +1088,40 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "OpenGLFrame",
+                            "suffix": "",
+                            "path": "Renderer/Backend/OpenGL/Frame",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "frames",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_FRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_currentFrameIndex",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_CURRENTFRAMEINDEX_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],

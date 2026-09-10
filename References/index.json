@@ -4643,6 +4643,23 @@
                                 "children": []
                             },
                             {
+                                "title": "Frame",
+                                "filename": "Frame",
+                                "path": "Renderer/Backend/OpenGL/Frame",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Backend/OpenGL/Frame.hpp",
+                                    "namespace": "Chicane::Renderer::OpenGLFrame",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
                                 "title": "Layer",
                                 "filename": "Layer",
                                 "path": "Renderer/Backend/OpenGL/Layer",

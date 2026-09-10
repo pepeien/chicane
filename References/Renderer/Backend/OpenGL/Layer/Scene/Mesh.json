@@ -28,23 +28,6 @@
         "functions": [
             {
                 "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getShaderProgram",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_OPENGLLSCENEMESH_GETSHADERPROGRAM_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "type": "override",
                 "return": {
                     "prefix": "",
