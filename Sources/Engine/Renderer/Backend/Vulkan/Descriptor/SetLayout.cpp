@@ -26,14 +26,14 @@ namespace Chicane
                     setLayoutBidings.push_back(setLayoutBiding);
                 }
 
-                vk::DescriptorSetLayoutCreateInfo setLayoutCreateInfo;
+                vk::DescriptorSetLayoutBindingFlagsCreateInfo bidingFlagsInfo{};
+                vk::DescriptorSetLayoutCreateInfo setLayoutCreateInfo{};
                 setLayoutCreateInfo.flags        = vk::DescriptorSetLayoutCreateFlags();
                 setLayoutCreateInfo.bindingCount = static_cast<std::uint32_t>(setLayoutBidings.size());
                 setLayoutCreateInfo.pBindings    = setLayoutBidings.data();
 
                 if (!inBidingsCreateInfo.bindingFlags.empty())
                 {
-                    vk::DescriptorSetLayoutBindingFlagsCreateInfo bidingFlagsInfo{};
                     bidingFlagsInfo.bindingCount  = static_cast<std::uint32_t>(inBidingsCreateInfo.bindingFlags.size());
                     bidingFlagsInfo.pBindingFlags = inBidingsCreateInfo.bindingFlags.data();
 
