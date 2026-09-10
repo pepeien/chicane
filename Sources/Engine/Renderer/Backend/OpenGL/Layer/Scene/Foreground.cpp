@@ -5,9 +5,6 @@
 #include "Chicane/Core/Math/Vertex.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 
 namespace Chicane
 {
@@ -24,23 +21,11 @@ namespace Chicane
 
         void OpenGLLSceneForeground::onRender(const Frame& inFrame, void* inData)
         {
-            OpenGLBackend*    backend = getBackend<OpenGLBackend>();
-            OpenGLLScene*     scene   = backend->getLayer<OpenGLLScene>(SCENE_LAYER_ID);
-            OpenGLLSceneMesh* mesh    = backend->getLayer<OpenGLLSceneMesh>(SCENE_MESH_LAYER_ID);
+            OpenGLBackend* backend = getBackend<OpenGLBackend>();
+            OpenGLFrame&   frame   = *((OpenGLFrame*)inData);
 
-            if (!scene || !mesh)
-            {
-                return;
-            }
-
-            const std::uint32_t shaderProgram = mesh->getShaderProgram();
-            if (shaderProgram == 0)
-            {
-                return;
-            }
-
-            glBindVertexArray(scene->getModelVertexArray());
-            glUseProgram(shaderProgram);
+            backend->bindVertexArray(frame.getObject(SCENE_LAYER_ID));
+            backend->useProgram(frame.getObject(SCENE_MESH_LAYER_ID));
 
             glDisable(GL_DEPTH_TEST);
             glDepthMask(GL_FALSE);
@@ -54,10 +39,7 @@ namespace Chicane
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-            if (OpenGLLSceneSky* sky = backend->getLayer<OpenGLLSceneSky>(SCENE_SKY_LAYER_ID))
-            {
-                glBindTextureUnit(3, sky->getCubemap());
-            }
+            glBindTextureUnit(3, frame.getObject(SCENE_SKY_LAYER_ID));
 
             Viewport viewport = backend->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);

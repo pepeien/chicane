@@ -97,7 +97,8 @@ namespace Chicane
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-            glBindVertexArray(m_primitiveVertexArray);
+            OpenGLFrame& frame = *((OpenGLFrame*)inData);
+            glBindVertexArray(frame.getObject(m_id));
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
 
@@ -271,6 +272,10 @@ namespace Chicane
         void OpenGLLUI::buildPrimitiveVertexArray()
         {
             glCreateVertexArrays(1, &m_primitiveVertexArray);
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.addObject(m_id, m_primitiveVertexArray);
+            }
         }
 
         void OpenGLLUI::buildPrimitiveVertexBuffer()
@@ -317,6 +322,10 @@ namespace Chicane
 
         void OpenGLLUI::destroyPrimitiveData()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
             glDeleteVertexArrays(1, &m_primitiveVertexArray);
             glDeleteBuffers(1, &m_primitiveVertexBuffer);
             glDeleteBuffers(1, &m_primitiveIndexBuffer);

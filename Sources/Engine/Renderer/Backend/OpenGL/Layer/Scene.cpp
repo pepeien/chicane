@@ -95,14 +95,13 @@ namespace Chicane
             glNamedBufferSubData(m_instanceBuffer, offset, size, instances.data());
         }
 
-        std::uint32_t OpenGLLScene::getModelVertexArray() const
-        {
-            return m_modelVertexArray;
-        }
-
         void OpenGLLScene::buildModelVertexArray()
         {
             glCreateVertexArrays(1, &m_modelVertexArray);
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.addObject(m_id, m_modelVertexArray);
+            }
         }
 
         void OpenGLLScene::buildModelVertexBuffer()
@@ -149,6 +148,10 @@ namespace Chicane
 
         void OpenGLLScene::destroyModelData()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
             glDeleteVertexArrays(1, &m_modelVertexArray);
             glDeleteBuffers(1, &m_modelVertexBuffer);
             glDeleteBuffers(1, &m_modelIndexBuffer);

@@ -48,7 +48,9 @@ namespace Editor
         draw.topology   = Chicane::Renderer::DrawPolyTopology::TriangleList;
         draw.indexCount = 6U;
         draw.indexStart = 0U;
-        backend->drawPolyArrays(draw, m_vertexArray);
+
+        Chicane::Renderer::OpenGLFrame& frame = *((Chicane::Renderer::OpenGLFrame*)inData);
+        backend->drawPolyArrays(draw, frame.getObject(getId()));
     }
 
     void OpenGLLUI::onEndRender()
@@ -83,12 +85,22 @@ namespace Editor
 
     void OpenGLLUI::buildVertexArray()
     {
-        m_vertexArray = getBackend<Chicane::Renderer::OpenGLBackend>()->initVertexArray(1);
+        Chicane::Renderer::OpenGLBackend* backend = getBackend<Chicane::Renderer::OpenGLBackend>();
+        m_vertexArray                             = backend->initVertexArray(1);
+        for (Chicane::Renderer::OpenGLFrame& frame : backend->frames)
+        {
+            frame.addObject(getId(), m_vertexArray);
+        }
     }
 
     void OpenGLLUI::destroyVertexArray()
     {
-        getBackend<Chicane::Renderer::OpenGLBackend>()->destroyVertexArray(m_vertexArray);
+        Chicane::Renderer::OpenGLBackend* backend = getBackend<Chicane::Renderer::OpenGLBackend>();
+        for (Chicane::Renderer::OpenGLFrame& frame : backend->frames)
+        {
+            frame.removeObject(getId());
+        }
+        backend->destroyVertexArray(m_vertexArray);
     }
 
     void OpenGLLUI::buildViewport()

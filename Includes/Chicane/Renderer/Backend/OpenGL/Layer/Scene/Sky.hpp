@@ -22,8 +22,6 @@ namespace Chicane
             void onRender(const Frame& inFrame, void* inData) override;
             void onEndRender() override;
 
-            std::uint32_t getCubemap() const;
-
         private:
             void buildShader();
             void destroyShader();

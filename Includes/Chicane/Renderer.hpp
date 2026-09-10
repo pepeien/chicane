@@ -56,6 +56,6 @@ namespace Chicane
         static constexpr inline const std::uint32_t SKY_TEXTURE_SIZE = 512;
         static constexpr inline const std::uint32_t SKY_MIP_LEVELS   = 10;
 
-        static inline const Color::Rgba             OUTLINE_COLOR = Color::Rgba(11, 153, 125, 255);
+        static inline const Color::Rgba             OUTLINE_COLOR = Color::toRgba("#0b997d");
     }
 }

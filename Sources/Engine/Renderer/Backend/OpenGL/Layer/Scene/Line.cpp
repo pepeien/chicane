@@ -72,6 +72,7 @@ namespace Chicane
         {
             OpenGLBackend*  backend  = getBackend<OpenGLBackend>();
             const Instance* renderer = backend->getRenderer();
+            OpenGLFrame&    frame    = *((OpenGLFrame*)inData);
 
             backend->useViewport(this);
 
@@ -83,6 +84,7 @@ namespace Chicane
 
             if (shouldDrawMeshWireframe(inFrame))
             {
+                backend->bindVertexArray(frame.getObject(SCENE_LAYER_ID));
                 backend->useProgram(m_meshShaderProgram);
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -123,6 +125,7 @@ namespace Chicane
                 backend->enableDepth(depth);
                 backend->disableCulling();
 
+                backend->bindVertexArray(frame.getObject(SCENE_LAYER_ID));
                 backend->useProgram(m_outlineShaderProgram);
                 glProgramUniform4f(
                     m_outlineShaderProgram,
@@ -194,7 +197,7 @@ namespace Chicane
             draw.topology   = DrawPolyTopology::LineList;
             draw.indexCount = m_overlayVertexCount;
             draw.indexStart = 0U;
-            backend->drawPolyArrays(draw, m_overlayVertexArray);
+            backend->drawPolyArrays(draw, frame.getObject(m_id));
         }
 
         void OpenGLLSceneLine::onEndRender()
@@ -307,10 +310,20 @@ namespace Chicane
             glEnableVertexArrayAttrib(m_overlayVertexArray, 3);
             glVertexArrayAttribFormat(m_overlayVertexArray, 3, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
             glVertexArrayAttribBinding(m_overlayVertexArray, 3, 0);
+
+            for (OpenGLFrame& frame : backend->frames)
+            {
+                frame.addObject(m_id, m_overlayVertexArray);
+            }
         }
 
         void OpenGLLSceneLine::destroyOverlayVertexArray()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
+
             if (m_overlayVertexBuffer)
             {
                 glDeleteBuffers(1, &m_overlayVertexBuffer);

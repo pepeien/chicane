@@ -7,6 +7,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Frame.hpp"
 #include "Chicane/Renderer/Blending.hpp"
 #include "Chicane/Renderer/Culling.hpp"
 #include "Chicane/Renderer/Depth.hpp"
@@ -101,6 +102,10 @@ namespace Chicane
             void endGpuQuery();
             void resolveGpuQuery(std::uint32_t inSlot);
 
+            // Frame
+            void buildFrames();
+            void destroyFrames();
+
             // Layer
             void buildLayers();
 
@@ -111,7 +116,13 @@ namespace Chicane
             std::uint16_t toGLFactor(BlendingFactor inValue) const;
             std::uint32_t toGLDrawTopology(DrawPolyTopology inValue) const;
 
+        public:
+            // Frame
+            std::vector<OpenGLFrame> frames;
+
         private:
+            std::uint32_t     m_currentFrameIndex;
+
             std::uint32_t     m_texturesBuffer;
             std::uint32_t     m_targetFramebuffer;
             std::uint32_t     m_targetColor;

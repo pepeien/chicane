@@ -8,7 +8,6 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 
 namespace Chicane
 {
@@ -17,11 +16,6 @@ namespace Chicane
         OpenGLLSceneMesh::OpenGLLSceneMesh()
             : Layer(SCENE_MESH_LAYER_ID)
         {}
-
-        std::uint32_t OpenGLLSceneMesh::getShaderProgram() const
-        {
-            return m_shaderProgram;
-        }
 
         void OpenGLLSceneMesh::onInit()
         {
@@ -62,10 +56,9 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            if (OpenGLLSceneSky* sky = getBackend<OpenGLBackend>()->getLayer<OpenGLLSceneSky>(SCENE_SKY_LAYER_ID))
-            {
-                glBindTextureUnit(3, sky->getCubemap());
-            }
+            OpenGLFrame& frame = *((OpenGLFrame*)inData);
+
+            glBindTextureUnit(3, frame.getObject(SCENE_SKY_LAYER_ID));
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
@@ -151,10 +144,19 @@ namespace Chicane
 
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
+
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.addObject(m_id, m_shaderProgram);
+            }
         }
 
         void OpenGLLSceneMesh::destroyShader()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
             glDeleteProgram(m_shaderProgram);
         }
     }

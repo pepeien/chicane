@@ -80,11 +80,6 @@ namespace Chicane
             glDisable(GL_CULL_FACE);
         }
 
-        std::uint32_t OpenGLLSceneSky::getCubemap() const
-        {
-            return m_texturesBuffer;
-        }
-
         void OpenGLLSceneSky::buildShader()
         {
             GLint result = GL_FALSE;
@@ -177,6 +172,11 @@ namespace Chicane
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
             clearTextureData();
+
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.addObject(m_id, m_texturesBuffer);
+            }
         }
 
         void OpenGLLSceneSky::clearTextureData()
@@ -215,6 +215,10 @@ namespace Chicane
 
         void OpenGLLSceneSky::destroyTextureData()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
             glDeleteTextures(1, &m_texturesBuffer);
         }
     }

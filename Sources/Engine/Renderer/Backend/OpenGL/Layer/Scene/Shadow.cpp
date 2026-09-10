@@ -5,7 +5,6 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
 
 namespace Chicane
 {
@@ -163,10 +162,19 @@ namespace Chicane
             glReadBuffer(GL_NONE);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.addObject(m_id, m_depthMapBuffer);
+            }
         }
 
         void OpenGLLSceneShadow::destroyShadowMap()
         {
+            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            {
+                frame.removeObject(m_id);
+            }
             glDeleteTextures(1, &m_depthMapBuffer);
             glDeleteFramebuffers(1, &m_shadowFramebuffer);
         }

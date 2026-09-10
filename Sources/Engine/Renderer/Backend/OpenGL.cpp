@@ -21,6 +21,8 @@ namespace Chicane
 
         OpenGLBackend::OpenGLBackend()
             : Backend(),
+              frames({}),
+              m_currentFrameIndex(0U),
               m_texturesBuffer(0),
               m_targetFramebuffer(0),
               m_targetColor(0),
@@ -52,6 +54,7 @@ namespace Chicane
             buildGlad();
             enableFeatures();
             updateResourcesBudget();
+            buildFrames();
             buildGpuQueries();
             buildTextureData();
             buildTarget();
@@ -69,6 +72,7 @@ namespace Chicane
 
             // Layers
             destroyLayers();
+            destroyFrames();
 
             // OpenGL
             destroyGpuQueries();
@@ -152,12 +156,24 @@ namespace Chicane
 
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
-            renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); });
+            OpenGLFrame& nextFrame = frames.at(m_currentFrameIndex);
+
+            renderLayers(
+                inFrame,
+                &nextFrame,
+                [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
+            );
 
             presentTarget(!isScreenComposited(inFrame));
             glBindTextureUnit(0, m_texturesBuffer);
 
-            renderLayers(inFrame, nullptr, [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); });
+            renderLayers(
+                inFrame,
+                &nextFrame,
+                [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
+            );
+
+            m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
         }
 
         void OpenGLBackend::onEndRender()
@@ -652,6 +668,18 @@ namespace Chicane
             );
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
+        }
+
+        void OpenGLBackend::buildFrames()
+        {
+            frames.resize(getRenderer()->getFrameInFlighCount());
+            m_currentFrameIndex = 0U;
+        }
+
+        void OpenGLBackend::destroyFrames()
+        {
+            frames.clear();
+            m_currentFrameIndex = 0U;
         }
 
         void OpenGLBackend::buildLayers()

@@ -22,8 +22,6 @@ namespace Chicane
             bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
 
-            std::uint32_t getModelVertexArray() const;
-
         private:
             // Model
             void buildModelVertexArray();
