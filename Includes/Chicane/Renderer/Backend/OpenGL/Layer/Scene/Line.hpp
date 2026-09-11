@@ -40,7 +40,7 @@ namespace Chicane
             void drawOutlineMeshes(const Frame& inFrame, float inOffsetX, float inOffsetY) const;
 
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
-            bool shouldDrawOverlay() const;
+            bool shouldDrawOverlay(const Frame& inFrame) const;
             bool shouldDrawOutline(const Frame& inFrame) const;
 
         private:

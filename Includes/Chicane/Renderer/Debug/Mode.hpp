@@ -11,11 +11,12 @@ namespace Chicane
         enum class DebugMode : std::uint8_t
         {
             None      = 0,
-            Meshes    = 1 << 0,
-            Bounds    = 1 << 1,
-            Traces    = 1 << 2,
-            Colliders = 1 << 3,
-            All       = Meshes | Bounds | Traces | Colliders
+            Meshes     = 1 << 0,
+            Bounds     = 1 << 1,
+            Traces     = 1 << 2,
+            Colliders  = 1 << 3,
+            Skeletons  = 1 << 4,
+            All        = Meshes | Bounds | Traces | Colliders | Skeletons
         };
 
         inline DebugMode operator|(DebugMode inLeft, DebugMode inRight)

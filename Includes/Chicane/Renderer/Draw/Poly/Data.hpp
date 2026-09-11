@@ -6,6 +6,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 
 namespace Chicane
 {
@@ -14,9 +15,10 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPolyData : public DrawData
         {
         public:
-            DrawPolyMode    mode     = DrawPolyMode::Fill;
-            Vertex::List    vertices = {};
-            Vertex::Indices indices  = {};
+            DrawPolyMode     mode     = DrawPolyMode::Fill;
+            DrawPolyTopology topology = DrawPolyTopology::TriangleList;
+            Vertex::List     vertices = {};
+            Vertex::Indices  indices  = {};
         };
     }
 }

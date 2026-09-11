@@ -49,13 +49,9 @@ namespace Chicane
             return renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
         }
 
-        bool OpenGLLSceneLine::shouldDrawOverlay() const
+        bool OpenGLLSceneLine::shouldDrawOverlay(const Frame& inFrame) const
         {
-            const Instance* renderer = getBackend()->getRenderer();
-
-            return (renderer->hasDebug(DebugMode::Bounds) || renderer->hasDebug(DebugMode::Traces) ||
-                    renderer->hasDebug(DebugMode::Colliders)) &&
-                   renderer->hasDebugOverlay();
+            return inFrame.hasLines() || inFrame.hasTriangles();
         }
 
         bool OpenGLLSceneLine::shouldDrawOutline(const Frame& inFrame) const
@@ -65,7 +61,7 @@ namespace Chicane
 
         bool OpenGLLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay() || shouldDrawOutline(inFrame);
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay(inFrame) || shouldDrawOutline(inFrame);
         }
 
         void OpenGLLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -178,26 +174,57 @@ namespace Chicane
                 backend->enableDepth(depth);
             }
 
-            if (!shouldDrawOverlay())
+            if (!shouldDrawOverlay(inFrame))
             {
                 return;
             }
 
-            Vertex::List vertices = renderer->getDebugOverlayVertices();
-            if (vertices.empty())
+            const Vertex::List& lines     = inFrame.getLines();
+            const Vertex::List& triangles = inFrame.getTriangles();
+            if (lines.empty() && triangles.empty())
             {
                 return;
             }
+
+            Vertex::List vertices;
+            vertices.reserve(lines.size() + triangles.size());
+            vertices.insert(vertices.end(), lines.begin(), lines.end());
+            vertices.insert(vertices.end(), triangles.begin(), triangles.end());
 
             uploadOverlayBuffer(vertices);
 
+            backend->disableCulling();
             backend->useProgram(m_overlayShaderProgram);
 
-            DrawPoly draw;
-            draw.topology   = DrawPolyTopology::LineList;
-            draw.indexCount = m_overlayVertexCount;
-            draw.indexStart = 0U;
-            backend->drawPolyArrays(draw, frame.getObject(m_id));
+            if (!triangles.empty())
+            {
+                glClear(GL_DEPTH_BUFFER_BIT);
+
+                Depth overlayDepth;
+                overlayDepth.bCanWrite = true;
+                overlayDepth.compare   = DepthCompare::LessOrEqual;
+                backend->enableDepth(overlayDepth);
+
+                DrawPoly draw;
+                draw.topology   = DrawPolyTopology::TriangleList;
+                draw.indexCount = static_cast<std::uint32_t>(triangles.size());
+                draw.indexStart = static_cast<std::uint32_t>(lines.size());
+                backend->drawPolyArrays(draw, frame.getObject(m_id));
+            }
+
+            backend->disableDepth();
+
+            if (!lines.empty())
+            {
+                glLineWidth(3.0f);
+
+                DrawPoly draw;
+                draw.topology   = DrawPolyTopology::LineList;
+                draw.indexCount = static_cast<std::uint32_t>(lines.size());
+                draw.indexStart = 0U;
+                backend->drawPolyArrays(draw, frame.getObject(m_id));
+                glLineWidth(1.0f);
+            }
         }
 
         void OpenGLLSceneLine::onEndRender()

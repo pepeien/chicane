@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Instance.hpp"
 
+#include "Chicane/Renderer/Debug.hpp"
+
 #if CHICANE_OPENGL
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
@@ -47,6 +49,11 @@ namespace Chicane
 
             syncDirtyResources();
 
+            if (m_debugResources.has(DebugMode::Traces))
+            {
+                drawLines(m_debugResources.getTraceVertices());
+            }
+
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
@@ -56,6 +63,7 @@ namespace Chicane
             m_backend->onEndRender();
 
             currentFrame.reset();
+            resetResources();
 
             m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
@@ -76,6 +84,11 @@ namespace Chicane
         }
 
         Frame& Instance::getCurrentFrame()
+        {
+            return m_frames.at(m_currentFrame);
+        }
+
+        const Frame& Instance::getCurrentFrame() const
         {
             return m_frames.at(m_currentFrame);
         }
@@ -169,14 +182,13 @@ namespace Chicane
 
         void Instance::clearDebug(DebugMode inMode)
         {
-            if ((inMode & DebugMode::Bounds) == DebugMode::Bounds)
+            if ((inMode & DebugMode::Bounds) == DebugMode::Bounds ||
+                (inMode & DebugMode::Colliders) == DebugMode::Colliders ||
+                (inMode & DebugMode::Skeletons) == DebugMode::Skeletons)
             {
-                m_debugResources.clearBoundsOverlay();
-            }
-
-            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders)
-            {
-                m_debugResources.clearCollidersOverlay();
+                getPolyResource(DrawPolyType::e3D).reset();
+                getCurrentFrame().clearLines();
+                getCurrentFrame().clearTriangles();
             }
 
             if ((inMode & DebugMode::Traces) == DebugMode::Traces)
@@ -187,7 +199,10 @@ namespace Chicane
 
         void Instance::drawDebug(const Bounds3D& inBounds)
         {
-            m_debugResources.appendBoundsOverlay(inBounds);
+            Vertex::List vertices;
+            Debug::appendBounds(vertices, inBounds, Debug::BOUNDS_COLOR);
+
+            drawLines(vertices);
         }
 
         void Instance::drawDebug(DebugMode inMode, const Vertex::List& inVertices)
@@ -197,25 +212,59 @@ namespace Chicane
                 return;
             }
 
-            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders)
-            {
-                m_debugResources.appendCollidersOverlay(inVertices);
-            }
-
             if ((inMode & DebugMode::Traces) == DebugMode::Traces)
             {
                 m_debugResources.pushTraceOverlay(inVertices);
             }
+
+            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders ||
+                (inMode & DebugMode::Skeletons) == DebugMode::Skeletons ||
+                (inMode & DebugMode::Bounds) == DebugMode::Bounds)
+            {
+                drawLines(inVertices);
+            }
+        }
+
+        void Instance::drawLines(const Vertex::List& inVertices)
+        {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
+            DrawPolyData data;
+            data.bIsVolatile = true;
+            data.mode        = DrawPolyMode::Line;
+            data.topology    = DrawPolyTopology::LineList;
+            data.vertices    = inVertices;
+
+            loadPoly(DrawPolyType::e3D, data);
+        }
+
+        void Instance::drawTriangles(const Vertex::List& inVertices)
+        {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
+            DrawPolyData data;
+            data.bIsVolatile = true;
+            data.mode        = DrawPolyMode::Fill;
+            data.topology    = DrawPolyTopology::TriangleList;
+            data.vertices    = inVertices;
+
+            loadPoly(DrawPolyType::e3D, data);
         }
 
         bool Instance::hasDebugOverlay() const
         {
-            return m_debugResources.hasOverlay();
+            return getCurrentFrame().hasLines() || getCurrentFrame().hasTriangles() || m_debugResources.hasTraces();
         }
 
         Vertex::List Instance::getDebugOverlayVertices() const
         {
-            return m_debugResources.getOverlayVertices();
+            return getCurrentFrame().getLines();
         }
 
         float Instance::getGpuDelta() const
@@ -371,6 +420,17 @@ namespace Chicane
             m_textureResources.markAsDirty();
 
             m_skyResource.markAsDirty();
+        }
+
+        void Instance::resetResources()
+        {
+            for (auto& [type, resource] : m_polyResources)
+            {
+                resource.reset();
+            }
+
+            m_textureResources.reset();
+            m_skyResource.reset();
         }
 
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)

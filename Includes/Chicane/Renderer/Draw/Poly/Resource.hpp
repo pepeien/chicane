@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <map>
 
 #include "Chicane/Core/Hash.hpp"
@@ -24,8 +25,6 @@ namespace Chicane
             using GlyphOutlines = std::vector<float>;
 
         public:
-            // Floats per glyph header, followed by six floats per curve.
-            // Layout: bounds min xy, bounds max xy, curve count, padding
             static constexpr inline const Draw::Id GlyphHeaderSize = 6;
             static constexpr inline const Draw::Id GlyphCurveSize  = 6;
 
@@ -59,6 +58,9 @@ namespace Chicane
             Draws           m_draws    = {};
             Vertex::List    m_vertices = {};
             Vertex::Indices m_indices  = {};
+
+            std::size_t     m_stableVertexCount = 0;
+            std::size_t     m_stableIndexCount  = 0;
 
             Glyphs          m_glyphs        = {};
             GlyphOutlines   m_glyphOutlines = {};

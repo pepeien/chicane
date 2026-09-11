@@ -6,6 +6,8 @@
 #include "Chicane/Box/Mesh.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -43,6 +45,7 @@ namespace Chicane
 
         bool hasSkeleton() const;
         const Box::Skeleton* getSkeleton() const;
+        void appendDebugWireframe(Vertex::List& outLines, Vertex::List& outTriangles, const Vec4& inColor) const;
 
         const std::vector<const Box::Animation*>& getAnimations() const;
         bool hasAnimation(const String& inId) const;
@@ -78,6 +81,7 @@ namespace Chicane
         void generateBounds();
         void bindSkeleton();
         void evaluatePose();
+        std::int32_t findBoundBone(const Box::MeshGroup& inGroup) const;
 
         void setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue);
 
@@ -91,6 +95,7 @@ namespace Chicane
         std::vector<const Box::Animation*>                m_animations;
         std::unordered_map<String, const Box::Animation*> m_animationById;
         Drift::Queue                                      m_queue;
+        std::vector<Mat4>                                 m_bones;
         std::vector<Mat4>                                 m_skins;
     };
 }

@@ -43,6 +43,48 @@ namespace Chicane
 
                     return true;
                 }
+
+            void appendTriangle(
+                Vertex::List& outVertices,
+                const Vec3&   inA,
+                const Vec3&   inB,
+                const Vec3&   inC,
+                const Vec4&   inColor
+            )
+            {
+                const Vec3  edgeB  = inB - inA;
+                const Vec3  edgeC  = inC - inA;
+                Vec3        normal = edgeB.cross(edgeC);
+                const float length = std::sqrt(lengthSquared(normal));
+                if (length > 1e-8f)
+                {
+                    normal = normal / length;
+                }
+
+                Vertex vertex;
+                vertex.color  = inColor;
+                vertex.normal = normal;
+
+                vertex.position = inA;
+                outVertices.push_back(vertex);
+
+                vertex.position = inB;
+                outVertices.push_back(vertex);
+
+                vertex.position = inC;
+                outVertices.push_back(vertex);
+            }
+
+            void appendVertex(
+                Vertex::List& outVertices, const Vec3& inPosition, const Vec3& inNormal, const Vec4& inColor
+            )
+            {
+                Vertex vertex;
+                vertex.position = inPosition;
+                vertex.normal   = inNormal;
+                vertex.color    = inColor;
+                outVertices.push_back(vertex);
+            }
             }
 
             void appendSegment(Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor)
@@ -57,6 +99,79 @@ namespace Chicane
 
                 outVertices.push_back(start);
                 outVertices.push_back(end);
+            }
+
+            void appendAxes(Vertex::List& outVertices, const Vec3& inCenter, float inSize, const Vec4& inColor)
+            {
+                appendSegment(
+                    outVertices, inCenter - Vec3(inSize, 0.0f, 0.0f), inCenter + Vec3(inSize, 0.0f, 0.0f), inColor
+                );
+                appendSegment(
+                    outVertices, inCenter - Vec3(0.0f, inSize, 0.0f), inCenter + Vec3(0.0f, inSize, 0.0f), inColor
+                );
+                appendSegment(
+                    outVertices, inCenter - Vec3(0.0f, 0.0f, inSize), inCenter + Vec3(0.0f, 0.0f, inSize), inColor
+                );
+            }
+
+            void appendBone(
+                Vertex::List& outVertices,
+                const Vec3&   inStart,
+                const Vec3&   inEnd,
+                float         inRadius,
+                const Vec4&   inColor
+            )
+            {
+                appendSegment(outVertices, inStart, inEnd, inColor);
+
+                if (inRadius > 1e-6f)
+                {
+                    appendSphere(outVertices, inEnd, inRadius, inColor);
+                }
+            }
+
+            void appendSphere(Vertex::List& outVertices, const Vec3& inCenter, float inRadius, const Vec4& inColor)
+            {
+                constexpr int kStacks = 8;
+                constexpr int kSlices = 12;
+
+                Vec3 rings[kStacks + 1][kSlices + 1];
+                Vec3 normals[kStacks + 1][kSlices + 1];
+
+                for (int stack = 0; stack <= kStacks; ++stack)
+                {
+                    const float theta = kPi * static_cast<float>(stack) / static_cast<float>(kStacks);
+                    const float y     = std::cos(theta);
+                    const float ring  = std::sin(theta);
+
+                    for (int slice = 0; slice <= kSlices; ++slice)
+                    {
+                        const float phi = 2.0f * kPi * static_cast<float>(slice) / static_cast<float>(kSlices);
+                        const Vec3  normal(ring * std::cos(phi), y, ring * std::sin(phi));
+
+                        normals[stack][slice] = normal;
+                        rings[stack][slice]   = inCenter + normal * inRadius;
+                    }
+                }
+
+                for (int stack = 0; stack < kStacks; ++stack)
+                {
+                    for (int slice = 0; slice < kSlices; ++slice)
+                    {
+                        const Vec3& a = rings[stack][slice];
+                        const Vec3& b = rings[stack + 1][slice];
+                        const Vec3& c = rings[stack][slice + 1];
+                        const Vec3& d = rings[stack + 1][slice + 1];
+
+                        appendVertex(outVertices, a, normals[stack][slice], inColor);
+                        appendVertex(outVertices, b, normals[stack + 1][slice], inColor);
+                        appendVertex(outVertices, c, normals[stack][slice + 1], inColor);
+
+                        appendVertex(outVertices, c, normals[stack][slice + 1], inColor);
+                        appendVertex(outVertices, b, normals[stack + 1][slice], inColor);
+                        appendVertex(outVertices, d, normals[stack + 1][slice + 1], inColor);
+                    }
+                }
             }
 
             void appendBounds(Vertex::List& outVertices, const Bounds3D& inBounds, const Vec4& inColor)

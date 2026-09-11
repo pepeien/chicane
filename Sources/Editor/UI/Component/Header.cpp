@@ -295,6 +295,11 @@ namespace Editor
         colliders.action         = "onDebugToggleColliders()";
         debug.children.push_back(colliders);
 
+        HeaderMenuItem skeletons = {};
+        skeletons.label          = "Skeletons";
+        skeletons.action         = "onDebugToggleSkeletons()";
+        debug.children.push_back(skeletons);
+
         HeaderMenuItem root = {};
         root.label          = "Settings";
         root.children.push_back(themes);
@@ -345,6 +350,10 @@ namespace Editor
                     else if (item.label.equals("Colliders"))
                     {
                         item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Colliders);
+                    }
+                    else if (item.label.equals("Skeletons"))
+                    {
+                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Skeletons);
                     }
                 }
             }

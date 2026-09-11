@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <vector>
 
-#include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
 #include "Chicane/Renderer.hpp"
@@ -25,24 +24,13 @@ namespace Chicane
             void toggle(DebugMode inMode);
             bool has(DebugMode inMode) const;
 
-            void setBoundsOverlay(const Vertex::List& inVertices);
-            void clearBoundsOverlay();
-            void appendBoundsOverlay(const Bounds3D& inBounds);
-
-            void setCollidersOverlay(const Vertex::List& inVertices);
-            void clearCollidersOverlay();
-            void appendCollidersOverlay(const Vertex::List& inVertices);
-
             void pushTraceOverlay(const Vertex::List& inVertices);
             void clearTraces();
-
-            bool hasOverlay() const;
-            Vertex::List getOverlayVertices() const;
+            bool hasTraces() const;
+            Vertex::List getTraceVertices() const;
 
         private:
             DebugMode                 m_mode;
-            Vertex::List              m_bounds;
-            Vertex::List              m_colliders;
             std::vector<Vertex::List> m_traces;
         };
     }

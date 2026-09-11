@@ -142,6 +142,14 @@ namespace Editor
         }
     }
 
+    void HomeView::onDebugToggleSkeletons()
+    {
+        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
+        {
+            renderer->toggleDebug(Chicane::Renderer::DebugMode::Skeletons);
+        }
+    }
+
     void HomeView::onItemSelection(Chicane::Object* inItem)
     {
         selectedItem    = !inItem ? nullptr : inItem;

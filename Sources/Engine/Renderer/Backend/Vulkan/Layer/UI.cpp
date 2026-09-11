@@ -159,6 +159,7 @@ namespace Chicane
                 commandBuffer.bindIndexBuffer(m_primitiveIndexBuffer.instance, 0, vk::IndexType::eUint32);
                 commandBuffer.setViewport(0, 1, &viewport);
                 commandBuffer.setScissor(0, 1, &scissor);
+                commandBuffer.setLineWidth(1.0f);
 
                 bIsPass = true;
             };

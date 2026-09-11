@@ -5,7 +5,9 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Triangle.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 #include "Chicane/Renderer/Light.hpp"
 
@@ -26,18 +28,24 @@ namespace Chicane
 
                 lights.clear();
                 meshes.clear();
+                lines.vertices.clear();
+                triangles.vertices.clear();
             }
 
         public:
             // View
-            View                        camera = {};
-            Light::List                 lights = {};
+            View                         camera    = {};
+            Light::List                  lights    = {};
 
             // Sky
-            Renderer::DrawSkyData       sky = {};
+            Renderer::DrawSkyData        sky       = {};
 
             // Mesh
-            DrawPoly3DCommandMesh::List meshes = {};
+            DrawPoly3DCommandMesh::List  meshes    = {};
+
+            // Overlay
+            DrawPoly3DCommandLine        lines     = {};
+            DrawPoly3DCommandTriangle    triangles = {};
         };
     }
 }

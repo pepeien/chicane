@@ -58,6 +58,16 @@ namespace Chicane
 
             const DrawSkyInstance& getSkyInstance() const;
 
+            void drawLines(const Vertex::List& inVertices);
+            bool hasLines() const;
+            const Vertex::List& getLines() const;
+            void clearLines();
+
+            void drawTriangles(const Vertex::List& inVertices);
+            bool hasTriangles() const;
+            const Vertex::List& getTriangles() const;
+            void clearTriangles();
+
         protected:
             void resetCamera();
             void resetLights();
@@ -88,6 +98,9 @@ namespace Chicane
             DrawPoly3DInstance::List m_3DInstancesFlat = {};
             DrawPoly2DInstance::List m_2DInstances     = {};
             DrawSkyInstance          m_skyInstance     = {};
+
+            Vertex::List             m_lines           = {};
+            Vertex::List             m_triangles       = {};
         };
     }
 }

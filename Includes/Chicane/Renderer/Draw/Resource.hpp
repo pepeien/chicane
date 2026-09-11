@@ -25,6 +25,10 @@ namespace Chicane
 
             inline void markAsClean() { m_bIsDirty = false; }
 
+            inline bool isVolatile() const { return m_bIsVolatile; }
+
+            inline void setIsVolatile(bool inValue) { m_bIsVolatile = inValue; }
+
         protected:
             inline Draw::Id findHash(
                 const Data* inData, std::uint32_t inDataSize, const Seed* inSeed, std::uint32_t inSeedSize
@@ -86,9 +90,10 @@ namespace Chicane
             void clearHashes() { m_hashes.clear(); }
 
         private:
-            bool      m_bIsDirty = false;
+            bool      m_bIsDirty     = false;
+            bool      m_bIsVolatile  = false;
 
-            HashTable m_hashes = {};
+            HashTable m_hashes       = {};
         };
     }
 }

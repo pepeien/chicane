@@ -24,9 +24,24 @@ namespace Chicane
             static inline const Vec4            BOUNDS_COLOR   = Vec4(1.0f, 0.75f, 0.2f, 1.0f);
             static inline const Vec4            TRACE_COLOR    = Vec4(0.2f, 0.9f, 1.0f, 1.0f);
             static inline const Vec4            COLLIDER_COLOR = Vec4(0.3f, 1.0f, 0.4f, 1.0f);
+            static inline const Vec4            SKELETON_COLOR       = Vec4(0.0f, 0.82f, 1.0f, 1.0f);
+            static inline const Vec4            SKELETON_JOINT_COLOR = Vec4(0.35f, 0.95f, 1.0f, 1.0f);
 
             CHICANE_RENDERER void appendSegment(
                 Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor
+            );
+            CHICANE_RENDERER void appendAxes(
+                Vertex::List& outVertices, const Vec3& inCenter, float inSize, const Vec4& inColor
+            );
+            CHICANE_RENDERER void appendBone(
+                Vertex::List& outVertices,
+                const Vec3&   inStart,
+                const Vec3&   inEnd,
+                float         inRadius,
+                const Vec4&   inColor
+            );
+            CHICANE_RENDERER void appendSphere(
+                Vertex::List& outVertices, const Vec3& inCenter, float inRadius, const Vec4& inColor
             );
             CHICANE_RENDERER void appendBounds(
                 Vertex::List& outVertices, const Bounds3D& inBounds, const Vec4& inColor

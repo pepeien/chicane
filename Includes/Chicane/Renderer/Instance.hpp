@@ -57,6 +57,7 @@ namespace Chicane
 
             // Frame
             Frame& getCurrentFrame();
+            const Frame& getCurrentFrame() const;
 
             // Render
             Draw::Id findPoly(DrawPolyType inType, const Draw::Reference& inReference);
@@ -94,6 +95,8 @@ namespace Chicane
             void clearDebug(DebugMode inMode = DebugMode::All);
             void drawDebug(const Bounds3D& inBounds);
             void drawDebug(DebugMode inMode, const Vertex::List& inVertices);
+            void drawLines(const Vertex::List& inVertices);
+            void drawTriangles(const Vertex::List& inVertices);
 
             bool hasDebugOverlay() const;
             Vertex::List getDebugOverlayVertices() const;
@@ -130,6 +133,7 @@ namespace Chicane
             // Draw
             void syncDirtyResources();
             void markResourcesAsDirty();
+            void resetResources();
 
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 

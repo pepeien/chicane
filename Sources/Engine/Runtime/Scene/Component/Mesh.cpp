@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.reflected.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <unordered_map>
 
 #include "Chicane/Box/Animation.hpp"
@@ -11,11 +12,13 @@
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Drift/Clip.hpp"
 #include "Chicane/Drift/Easing/Curve.hpp"
 #include "Chicane/Drift/Loop.hpp"
+#include "Chicane/Renderer/Debug.hpp"
 
 namespace Chicane
 {
@@ -25,14 +28,15 @@ namespace Chicane
 
         std::vector<float> packTransform(const Transform& inTransform)
         {
-            const Vec3& translation = inTransform.getTranslation();
-            const Vec3& rotation    = inTransform.getRotation().getAngles();
-            const Vec3& scale       = inTransform.getScale();
+            const Vec3&      translation = inTransform.getTranslation();
+            const QuatFloat& rotation    = inTransform.getRotation().get();
+            const Vec3&      scale       = inTransform.getScale();
 
             return {
                 translation.x,
                 translation.y,
                 translation.z,
+                rotation.w,
                 rotation.x,
                 rotation.y,
                 rotation.z,
@@ -40,6 +44,29 @@ namespace Chicane
                 scale.y,
                 scale.z
             };
+        }
+
+        void alignPackedRotation(std::vector<float>& ioValue, const QuatFloat& inPrevious)
+        {
+            if (ioValue.size() < 7)
+            {
+                return;
+            }
+
+            const QuatFloat current(ioValue.at(3), ioValue.at(4), ioValue.at(5), ioValue.at(6));
+            const float     align = glm::dot(
+                static_cast<const glm::quat&>(inPrevious),
+                static_cast<const glm::quat&>(current)
+            );
+            if (align >= 0.0f)
+            {
+                return;
+            }
+
+            ioValue.at(3) = -ioValue.at(3);
+            ioValue.at(4) = -ioValue.at(4);
+            ioValue.at(5) = -ioValue.at(5);
+            ioValue.at(6) = -ioValue.at(6);
         }
 
         Transform unpackTransform(const std::vector<float>& inValue, const Transform& inFallback)
@@ -51,8 +78,17 @@ namespace Chicane
 
             Transform transform;
             transform.setTranslation(Vec3(inValue.at(0), inValue.at(1), inValue.at(2)));
-            transform.setRotation(Vec3(inValue.at(3), inValue.at(4), inValue.at(5)));
-            transform.setScale(Vec3(inValue.at(6), inValue.at(7), inValue.at(8)));
+            if (inValue.size() >= 10)
+            {
+                const QuatFloat rotation(inValue.at(3), inValue.at(4), inValue.at(5), inValue.at(6));
+                transform.setRotation(rotation.normalize());
+                transform.setScale(Vec3(inValue.at(7), inValue.at(8), inValue.at(9)));
+            }
+            else
+            {
+                transform.setRotation(Vec3(inValue.at(3), inValue.at(4), inValue.at(5)));
+                transform.setScale(Vec3(inValue.at(6), inValue.at(7), inValue.at(8)));
+            }
 
             return transform;
         }
@@ -82,11 +118,26 @@ namespace Chicane
             for (const Box::AnimationTrack& track : inClip.tracks)
             {
                 Drift::Track converted(track.name);
+                QuatFloat    previous(1.0f, 0.0f, 0.0f, 0.0f);
+                bool         hasPrevious = false;
+
                 for (const Box::AnimationKeyframe& keyframe : track.keyframes)
                 {
+                    std::vector<float> packed = packTransform(keyframe.transform);
+                    if (hasPrevious)
+                    {
+                        alignPackedRotation(packed, previous);
+                    }
+
+                    if (packed.size() >= 7)
+                    {
+                        previous    = QuatFloat(packed.at(3), packed.at(4), packed.at(5), packed.at(6));
+                        hasPrevious = true;
+                    }
+
                     converted.addKeyframe(
                         keyframe.time * TO_MILLISECONDS,
-                        packTransform(keyframe.transform),
+                        packed,
                         keyframe.easing.isEmpty() ? Drift::EasingCurve::linear()
                                                   : Drift::EasingCurve::fromString(keyframe.easing)
                     );
@@ -123,6 +174,7 @@ namespace Chicane
           m_animations({}),
           m_animationById({}),
           m_queue(),
+          m_bones({}),
           m_skins({})
     {}
 
@@ -183,6 +235,70 @@ namespace Chicane
     const Box::Skeleton* CMesh::getSkeleton() const
     {
         return m_skeleton;
+    }
+
+    void CMesh::appendDebugWireframe(Vertex::List& outLines, Vertex::List& outTriangles, const Vec4& inColor) const
+    {
+        if (!m_skeleton || m_bones.empty())
+        {
+            return;
+        }
+
+        const Box::SkeletonBoneEntry::List& entries = m_skeleton->getEntries();
+        if (entries.size() != m_bones.size())
+        {
+            return;
+        }
+
+        const Mat4        meshWorld = getMatrix();
+        std::vector<Vec3> positions(m_bones.size());
+        Vec3              min = Vec3(0.0f);
+        Vec3              max = Vec3(0.0f);
+
+        for (std::size_t i = 0; i < m_bones.size(); i++)
+        {
+            positions[i] = (meshWorld * m_bones[i]).getTranslation();
+
+            if (i == 0)
+            {
+                min = positions[i];
+                max = positions[i];
+
+                continue;
+            }
+
+            min.x = std::min(min.x, positions[i].x);
+            min.y = std::min(min.y, positions[i].y);
+            min.z = std::min(min.z, positions[i].z);
+            max.x = std::max(max.x, positions[i].x);
+            max.y = std::max(max.y, positions[i].y);
+            max.z = std::max(max.z, positions[i].z);
+        }
+
+        const Vec3  extent    = max - min;
+        const float jointSize = std::max(
+            0.06f, std::max(std::max(extent.x, extent.y), extent.z) * 0.028f
+        );
+
+        for (std::size_t i = 0; i < entries.size(); i++)
+        {
+            const std::int32_t parentIndex = entries.at(i).parentIndex;
+            if (parentIndex < 0 || static_cast<std::size_t>(parentIndex) >= positions.size())
+            {
+                continue;
+            }
+
+            Renderer::Debug::appendSegment(
+                outLines, positions.at(static_cast<std::size_t>(parentIndex)), positions[i], inColor
+            );
+        }
+
+        for (std::size_t i = 0; i < entries.size(); i++)
+        {
+            Renderer::Debug::appendSphere(
+                outTriangles, positions[i], jointSize * 0.42f, Renderer::Debug::SKELETON_JOINT_COLOR
+            );
+        }
     }
 
     const std::vector<const Box::Animation*>& CMesh::getAnimations() const
@@ -339,7 +455,7 @@ namespace Chicane
             return local;
         }
 
-        const std::int32_t index = m_skeleton->findIndex(inGroup.getId());
+        const std::int32_t index = findBoundBone(inGroup);
         if (index < 0 || static_cast<std::size_t>(index) >= m_skins.size())
         {
             return local;
@@ -366,9 +482,69 @@ namespace Chicane
         m_skeleton = Box::load<Box::Skeleton>(m_asset->getSkeleton().getSource());
     }
 
+    std::int32_t CMesh::findBoundBone(const Box::MeshGroup& inGroup) const
+    {
+        if (!m_skeleton)
+        {
+            return -1;
+        }
+
+        const auto findIndex = [this](const String& inId) -> std::int32_t
+        {
+            if (inId.isEmpty())
+            {
+                return -1;
+            }
+
+            return m_skeleton->findIndex(inId);
+        };
+
+        const std::int32_t bound = findIndex(inGroup.getBone());
+        if (bound >= 0)
+        {
+            return bound;
+        }
+
+        const std::int32_t named = findIndex(inGroup.getId());
+        if (named >= 0)
+        {
+            return named;
+        }
+
+        const String& groupId = inGroup.getId();
+        if (groupId.isEmpty())
+        {
+            return -1;
+        }
+
+        const Box::SkeletonBoneEntry::List& entries = m_skeleton->getEntries();
+        std::int32_t                        best    = -1;
+        std::size_t                         bestLen = 0;
+
+        for (std::size_t i = 0; i < entries.size(); i++)
+        {
+            const String& boneId = entries.at(i).id;
+            if (boneId.isEmpty() || boneId.size() < bestLen || !groupId.startsWith(boneId))
+            {
+                continue;
+            }
+
+            if (groupId.size() != boneId.size() && groupId.at(boneId.size()) != '_')
+            {
+                continue;
+            }
+
+            bestLen = boneId.size();
+            best    = static_cast<std::int32_t>(i);
+        }
+
+        return best;
+    }
+
     void CMesh::evaluatePose()
     {
         m_skins.clear();
+        m_bones.clear();
         if (!m_skeleton)
         {
             return;
@@ -376,8 +552,7 @@ namespace Chicane
 
         const Box::SkeletonBoneEntry::List& entries = m_skeleton->getEntries();
         m_skins.resize(entries.size(), Mat4::One);
-
-        std::vector<Mat4> worlds(entries.size(), Mat4::One);
+        m_bones.resize(entries.size(), Mat4::One);
 
         for (std::size_t i = 0; i < entries.size(); i++)
         {
@@ -389,14 +564,14 @@ namespace Chicane
 
             if (entries.at(i).parentIndex >= 0)
             {
-                worlds[i] = worlds.at(static_cast<std::size_t>(entries.at(i).parentIndex)) * local.getMatrix();
+                m_bones[i] = m_bones.at(static_cast<std::size_t>(entries.at(i).parentIndex)) * local.getMatrix();
             }
             else
             {
-                worlds[i] = local.getMatrix();
+                m_bones[i] = local.getMatrix();
             }
 
-            m_skins[i] = worlds[i] * entries.at(i).inverseBind;
+            m_skins[i] = m_bones[i] * entries.at(i).inverseBind;
         }
     }
 

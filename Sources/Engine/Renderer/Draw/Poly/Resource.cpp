@@ -83,16 +83,23 @@ namespace Chicane
 
         Draw::Id DrawPolyResource::add(const DrawPolyData& inData)
         {
-            const Draw::Id id = findId(inData);
-
-            if (id > Draw::InvalidId)
+            if (!inData.bIsVolatile)
             {
-                return id;
+                reset();
+
+                const Draw::Id id = findId(inData);
+
+                if (id > Draw::InvalidId)
+                {
+                    return id;
+                }
             }
 
             DrawPoly draw;
-            draw.id   = m_draws.size();
-            draw.mode = inData.mode;
+            draw.id          = static_cast<Draw::Id>(m_draws.size());
+            draw.mode        = inData.mode;
+            draw.topology    = inData.topology;
+            draw.bIsVolatile = inData.bIsVolatile;
             draw.reference =
                 inData.reference.isEmpty() ? generateInternalReference(draw.mode, draw.id) : inData.reference;
             draw.vertexStart = m_vertices.empty() ? 0U : m_vertices.size();
@@ -108,13 +115,19 @@ namespace Chicane
             m_indices.reserve(m_indices.size() + inData.indices.size());
             m_indices.insert(m_indices.end(), inData.indices.begin(), inData.indices.end());
 
-            addHash(
-                inData.indices.data(),
-                inData.indices.size() * sizeof(Vertex::Index),
-                inData.vertices.data(),
-                inData.vertices.size() * sizeof(Vertex),
-                draw.id
-            );
+            if (!inData.bIsVolatile)
+            {
+                m_stableVertexCount = m_vertices.size();
+                m_stableIndexCount  = m_indices.size();
+
+                addHash(
+                    inData.indices.data(),
+                    inData.indices.size() * sizeof(Vertex::Index),
+                    inData.vertices.data(),
+                    inData.vertices.size() * sizeof(Vertex),
+                    draw.id
+                );
+            }
 
             return draw.id;
         }
@@ -172,12 +185,42 @@ namespace Chicane
 
         void DrawPolyResource::reset()
         {
-            m_draws.clear();
-            m_vertices.clear();
-            m_indices.clear();
-            m_glyphs.clear();
-            m_glyphOutlines.clear();
-            clearHashes();
+            if (isVolatile())
+            {
+                m_draws.clear();
+                m_vertices.clear();
+                m_indices.clear();
+                m_glyphs.clear();
+                m_glyphOutlines.clear();
+                m_stableVertexCount = 0;
+                m_stableIndexCount  = 0;
+                clearHashes();
+                markAsDirty();
+
+                return;
+            }
+
+            bool bHasVolatile = false;
+            for (auto it = m_draws.begin(); it != m_draws.end();)
+            {
+                if (!it->second.bIsVolatile)
+                {
+                    ++it;
+
+                    continue;
+                }
+
+                bHasVolatile = true;
+                it           = m_draws.erase(it);
+            }
+
+            if (!bHasVolatile)
+            {
+                return;
+            }
+
+            m_vertices.resize(m_stableVertexCount);
+            m_indices.resize(m_stableIndexCount);
         }
 
         String DrawPolyResource::generateInternalReference(DrawPolyMode inMode, Draw::Id inId) const

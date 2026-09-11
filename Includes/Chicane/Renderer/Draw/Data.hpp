@@ -10,7 +10,8 @@ namespace Chicane
         struct CHICANE_RENDERER DrawData
         {
         public:
-            Draw::Reference reference = "";
+            Draw::Reference reference   = "";
+            bool            bIsVolatile = false;
         };
     }
 }

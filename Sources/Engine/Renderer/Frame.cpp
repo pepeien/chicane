@@ -17,17 +17,33 @@ namespace Chicane
             // Draw
             reset2DDraws();
             reset3DDraws();
+
+            m_lines.clear();
+            m_triangles.clear();
         }
 
         void Frame::setup(const DrawPolyResource::Map& inResources)
         {
             for (const auto& [type, resource] : inResources)
             {
-                DrawPoly::List& draws = m_polys[type];
+                DrawPoly::List&     draws    = m_polys[type];
+                const Vertex::List& vertices = resource.getVertices();
 
                 for (const auto& [reference, draw] : resource.getDraws())
                 {
                     draws.push_back(draw);
+
+                    if (!draw.bIsVolatile || draw.vertexCount == 0 || draw.vertexStart >= vertices.size())
+                    {
+                        continue;
+                    }
+
+                    const std::size_t start = draw.vertexStart;
+                    const std::size_t count = std::min(static_cast<std::size_t>(draw.vertexCount), vertices.size() - start);
+                    Vertex::List&     target =
+                        draw.topology == DrawPolyTopology::LineList ? m_lines : m_triangles;
+
+                    target.insert(target.end(), vertices.begin() + start, vertices.begin() + start + count);
                 }
             }
 
@@ -279,6 +295,56 @@ namespace Chicane
         const DrawSkyInstance& Frame::getSkyInstance() const
         {
             return m_skyInstance;
+        }
+
+        void Frame::drawLines(const Vertex::List& inVertices)
+        {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
+            m_lines.insert(m_lines.end(), inVertices.begin(), inVertices.end());
+        }
+
+        bool Frame::hasLines() const
+        {
+            return !m_lines.empty();
+        }
+
+        const Vertex::List& Frame::getLines() const
+        {
+            return m_lines;
+        }
+
+        void Frame::clearLines()
+        {
+            m_lines.clear();
+        }
+
+        void Frame::drawTriangles(const Vertex::List& inVertices)
+        {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
+            m_triangles.insert(m_triangles.end(), inVertices.begin(), inVertices.end());
+        }
+
+        bool Frame::hasTriangles() const
+        {
+            return !m_triangles.empty();
+        }
+
+        const Vertex::List& Frame::getTriangles() const
+        {
+            return m_triangles;
+        }
+
+        void Frame::clearTriangles()
+        {
+            m_triangles.clear();
         }
 
         void Frame::resetCamera()

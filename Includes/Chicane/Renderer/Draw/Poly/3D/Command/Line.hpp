@@ -1,0 +1,17 @@
+#pragma once
+
+#include "Chicane/Core/Math/Vertex.hpp"
+
+#include "Chicane/Renderer.hpp"
+
+namespace Chicane
+{
+    namespace Renderer
+    {
+        struct CHICANE_RENDERER DrawPoly3DCommandLine
+        {
+        public:
+            Vertex::List vertices = {};
+        };
+    }
+}

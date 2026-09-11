@@ -44,6 +44,33 @@
 
 namespace Chicane
 {
+    String resolveModelDrawId(const Box::AssetReference& inReference)
+    {
+        const Box::Model* model = Box::load<Box::Model>(inReference.getSource());
+        if (!model)
+        {
+            model = Box::Model::getDefault();
+        }
+
+        if (!model)
+        {
+            return inReference.getReference();
+        }
+
+        return model->getUniqueId(inReference.getReference());
+    }
+
+    String resolveDefaultModelDrawId()
+    {
+        const Box::Model* model = Box::Model::getDefault();
+        if (!model)
+        {
+            return Box::Model::DEFAULT_REFERENCE;
+        }
+
+        return model->getUniqueId(Box::Model::DEFAULT_REFERENCE);
+    }
+
     void appendTrace(Vertex::List& outVertices, const SceneTraceRequest& inRequest, const Vec4& inColor)
     {
         if (!inRequest.isValid() || !inRequest.shape)
@@ -372,7 +399,7 @@ namespace Chicane
                     for (const auto& [id, polygon] : model->getData())
                     {
                         Renderer::DrawPolyData data;
-                        data.reference = id;
+                        data.reference = model->getUniqueId(id);
                         data.mode      = Renderer::DrawPolyMode::Fill;
                         data.vertices  = polygon.vertices;
                         data.indices   = polygon.indices;
@@ -580,11 +607,12 @@ namespace Chicane
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
                 Renderer::DrawPoly3DCommandMesh subcommand;
-                subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, group.getModel().getReference());
+                subcommand.model =
+                    m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveModelDrawId(group.getModel()));
 
                 if (subcommand.model <= Renderer::Draw::InvalidId)
                 {
-                    subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, Box::Model::DEFAULT_REFERENCE);
+                    subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveDefaultModelDrawId());
                 }
 
                 subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
@@ -641,11 +669,11 @@ namespace Chicane
 
             Renderer::DrawSkyData data;
             data.reference = asset->getFilepath();
-            data.model     = asset->getModel().getReference();
+            data.model     = resolveModelDrawId(asset->getModel());
 
             if (m_renderer->findPoly(Renderer::DrawPolyType::e3D, data.model) <= Renderer::Draw::InvalidId)
             {
-                data.model = Box::Model::DEFAULT_REFERENCE;
+                data.model = resolveDefaultModelDrawId();
             }
 
             for (const Box::AssetReference& texture : asset->getTextures())
@@ -661,6 +689,52 @@ namespace Chicane
             }
 
             command.sky = data;
+        }
+
+        if (m_renderer)
+        {
+            if (m_renderer->hasDebug(Renderer::DebugMode::Bounds))
+            {
+                for (Actor* actor : inScene->getActors())
+                {
+                    if (!actor)
+                    {
+                        continue;
+                    }
+
+                    Renderer::Debug::appendBounds(
+                        command.lines.vertices, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR
+                    );
+                }
+            }
+
+            if (m_renderer->hasDebug(Renderer::DebugMode::Colliders))
+            {
+                for (CPhysics* physics : inScene->getComponents<CPhysics>())
+                {
+                    if (!physics)
+                    {
+                        continue;
+                    }
+
+                    physics->appendDebugWireframe(command.lines.vertices, Renderer::Debug::COLLIDER_COLOR);
+                }
+            }
+
+            if (m_renderer->hasDebug(Renderer::DebugMode::Skeletons))
+            {
+                for (CMesh* mesh : inScene->getComponents<CMesh>())
+                {
+                    if (!mesh)
+                    {
+                        continue;
+                    }
+
+                    mesh->appendDebugWireframe(
+                        command.lines.vertices, command.triangles.vertices, Renderer::Debug::SKELETON_COLOR
+                    );
+                }
+            }
         }
 
         m_sceneReadIndex.store(index, std::memory_order_release);
@@ -682,47 +756,8 @@ namespace Chicane
             m_renderer->drawPoly(mesh.model, mesh.instance);
         }
 
-        updateDebugOverlays();
-    }
-
-    void Application::updateDebugOverlays()
-    {
-        if (!hasRenderer() || !m_scene)
-        {
-            return;
-        }
-
-        m_renderer->clearDebug(Renderer::DebugMode::Bounds | Renderer::DebugMode::Colliders);
-
-        if (m_renderer->hasDebug(Renderer::DebugMode::Bounds))
-        {
-            for (Actor* actor : m_scene->getActors())
-            {
-                if (!actor)
-                {
-                    continue;
-                }
-
-                m_renderer->drawDebug(actor->getBounds());
-            }
-        }
-
-        if (m_renderer->hasDebug(Renderer::DebugMode::Colliders))
-        {
-            Vertex::List colliders;
-
-            for (CPhysics* physics : m_scene->getComponents<CPhysics>())
-            {
-                if (!physics)
-                {
-                    continue;
-                }
-
-                physics->appendDebugWireframe(colliders, Renderer::Debug::COLLIDER_COLOR);
-            }
-
-            m_renderer->drawDebug(Renderer::DebugMode::Colliders, colliders);
-        }
+        m_renderer->drawLines(command.lines.vertices);
+        m_renderer->drawTriangles(command.triangles.vertices);
     }
 
     void Application::pushTrace(const SceneTraceRequest& inRequest)

@@ -1,17 +1,22 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core/Math/Vertex.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
+        class VulkanFrame;
+
         class CHICANE_RENDERER VulkanLSceneLine : public Layer
         {
         public:
@@ -31,6 +36,7 @@ namespace Chicane
 
             void initMeshGraphicsPipeline();
             void initOverlayGraphicsPipeline();
+            void initOverlayFillGraphicsPipeline();
             void initOutlineGraphicsPipeline();
             void initFramebuffers();
 
@@ -42,27 +48,32 @@ namespace Chicane
                 float              inOffsetY
             ) const;
 
-            void ensureOverlayBuffer(std::size_t inVertexCount);
-            void destroyOverlayBuffer();
-            void uploadOverlayBuffer(const Vertex::List& inVertices);
+            VulkanLSceneLineOverlayBuffer& overlayBufferFor(VulkanFrame& inFrame);
+            void                           ensureOverlayBuffer(
+                                              VulkanLSceneLineOverlayBuffer& outBuffer, std::size_t inVertexCount
+                                          );
+            void                           destroyOverlayBuffer(VulkanLSceneLineOverlayBuffer& inBuffer);
+            void                           destroyOverlayBuffers();
+            void                           uploadOverlayBuffer(
+                                              VulkanLSceneLineOverlayBuffer& outBuffer, const Vertex::List& inVertices
+                                          );
 
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
-            bool shouldDrawOverlay() const;
+            bool shouldDrawOverlay(const Frame& inFrame) const;
             bool shouldDrawOutline(const Frame& inFrame) const;
 
         private:
-            VulkanGraphicsPipeline      m_meshPipeline;
-            VulkanGraphicsPipeline      m_overlayPipeline;
-            VulkanGraphicsPipeline      m_outlineMaskPipeline;
-            VulkanGraphicsPipeline      m_outlinePipeline;
+            VulkanGraphicsPipeline                     m_meshPipeline;
+            VulkanGraphicsPipeline                     m_overlayPipeline;
+            VulkanGraphicsPipeline                     m_overlayFillPipeline;
+            VulkanGraphicsPipeline                     m_outlineMaskPipeline;
+            VulkanGraphicsPipeline                     m_outlinePipeline;
 
-            VulkanDescriptorBundle      m_frameDescriptor;
+            VulkanDescriptorBundle                     m_frameDescriptor;
 
-            VulkanBuffer                m_overlayBuffer;
-            std::size_t                 m_overlayBufferCapacity;
-            std::uint32_t               m_overlayVertexCount;
+            std::vector<VulkanLSceneLineOverlayBuffer> m_overlayBuffers;
 
-            std::vector<vk::ClearValue> m_clear;
+            std::vector<vk::ClearValue>                m_clear;
         };
     }
 }

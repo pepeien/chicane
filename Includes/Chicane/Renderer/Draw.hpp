@@ -22,8 +22,9 @@ namespace Chicane
             static constexpr inline const char* InvalidReference = "";
 
         public:
-            Id        id        = InvalidId;
-            Reference reference = InvalidReference;
+            Id        id          = InvalidId;
+            Reference reference   = InvalidReference;
+            bool      bIsVolatile = false;
         };
     }
 }

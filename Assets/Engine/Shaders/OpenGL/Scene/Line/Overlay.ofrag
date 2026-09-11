@@ -4,8 +4,18 @@ layout(location = 0) out vec4 outColor;
 
 layout(location = 0) in Data {
     vec4 color;
+    vec3 normal;
 } inData;
 
 void main() {
-    outColor = inData.color;
+    float lighting = 1.0;
+    float nlen     = length(inData.normal);
+
+    if (nlen > 0.001) {
+        vec3  N    = inData.normal / nlen;
+        vec3  L    = normalize(vec3(0.25, 0.85, 0.45));
+        lighting   = mix(0.42, 1.0, max(dot(N, L), 0.0));
+    }
+
+    outColor = vec4(inData.color.rgb * lighting, inData.color.a);
 }

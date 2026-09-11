@@ -75,6 +75,7 @@ namespace Chicane
                 commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
                 commandBuffer.setViewport(0, 1, &viewport);
                 commandBuffer.setScissor(0, 1, &scissor);
+                commandBuffer.setLineWidth(1.0f);
 
                 m_graphicsPipeline.bind(commandBuffer);
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));

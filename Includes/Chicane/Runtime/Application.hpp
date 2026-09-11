@@ -160,7 +160,6 @@ namespace Chicane
         void tickScene();
         void buildSceneCommands(std::shared_ptr<Scene> inScene);
         void renderScene();
-        void updateDebugOverlays();
 
         // Grid
         void initUI();

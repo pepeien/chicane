@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 
+#include <algorithm>
+#include <cstddef>
 #include <cstring>
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
@@ -20,8 +22,6 @@ namespace Chicane
     {
         VulkanLSceneLine::VulkanLSceneLine()
             : Layer(SCENE_LINE_LAYER_ID),
-              m_overlayBufferCapacity(0),
-              m_overlayVertexCount(0),
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
@@ -30,6 +30,7 @@ namespace Chicane
             initFrameResources();
             initMeshGraphicsPipeline();
             initOverlayGraphicsPipeline();
+            initOverlayFillGraphicsPipeline();
             initOutlineGraphicsPipeline();
             initFramebuffers();
         }
@@ -41,10 +42,10 @@ namespace Chicane
 
         void VulkanLSceneLine::onDestruction()
         {
-            destroyOverlayBuffer();
-            destroyFrameResources();
-
             getBackend<VulkanBackend>()->logicalDevice.waitIdle();
+
+            destroyOverlayBuffers();
+            destroyFrameResources();
 
             if (m_outlineMaskPipeline.instance)
             {
@@ -73,6 +74,15 @@ namespace Chicane
                 m_overlayPipeline.renderPass = nullptr;
             }
 
+            if (m_overlayFillPipeline.instance)
+            {
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_overlayFillPipeline.instance);
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_overlayFillPipeline.layout);
+                m_overlayFillPipeline.instance   = nullptr;
+                m_overlayFillPipeline.layout     = nullptr;
+                m_overlayFillPipeline.renderPass = nullptr;
+            }
+
             m_meshPipeline.destroy();
         }
 
@@ -88,13 +98,9 @@ namespace Chicane
             return renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
         }
 
-        bool VulkanLSceneLine::shouldDrawOverlay() const
+        bool VulkanLSceneLine::shouldDrawOverlay(const Frame& inFrame) const
         {
-            const Instance* renderer = getBackend()->getRenderer();
-
-            return (renderer->hasDebug(DebugMode::Bounds) || renderer->hasDebug(DebugMode::Traces) ||
-                    renderer->hasDebug(DebugMode::Colliders)) &&
-                   renderer->hasDebugOverlay();
+            return inFrame.hasLines() || inFrame.hasTriangles();
         }
 
         bool VulkanLSceneLine::shouldDrawOutline(const Frame& inFrame) const
@@ -104,7 +110,7 @@ namespace Chicane
 
         bool VulkanLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay() || shouldDrawOutline(inFrame);
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay(inFrame) || shouldDrawOutline(inFrame);
         }
 
         void VulkanLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -125,6 +131,7 @@ namespace Chicane
 
             vk::Rect2D scissor = backend->getVkScissor(this);
             commandBuffer.setScissor(0, 1, &scissor);
+            commandBuffer.setLineWidth(1.0f);
 
             vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass               = m_meshPipeline.renderPass;
@@ -214,20 +221,60 @@ namespace Chicane
                 }
             }
 
-            if (shouldDrawOverlay())
+            if (shouldDrawOverlay(inFrame))
             {
-                Vertex::List vertices = renderer->getDebugOverlayVertices();
-                if (!vertices.empty())
-                {
-                    uploadOverlayBuffer(vertices);
+                const Vertex::List& lines      = inFrame.getLines();
+                const Vertex::List& triangles  = inFrame.getTriangles();
 
+                Vertex::List vertices;
+                vertices.reserve(lines.size() + triangles.size());
+                vertices.insert(vertices.end(), lines.begin(), lines.end());
+                vertices.insert(vertices.end(), triangles.begin(), triangles.end());
+
+                VulkanLSceneLineOverlayBuffer& overlay = overlayBufferFor(frame);
+                uploadOverlayBuffer(overlay, vertices);
+
+                vk::Buffer     vertexBuffers[] = {overlay.buffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+
+                if (!triangles.empty())
+                {
+                    vk::ClearAttachment depthClear;
+                    depthClear.aspectMask                      = vk::ImageAspectFlagBits::eDepth;
+                    depthClear.clearValue.depthStencil.depth   = 1.0f;
+                    depthClear.clearValue.depthStencil.stencil = 0;
+
+                    vk::ClearRect clearRect;
+                    clearRect.rect.offset.x      = static_cast<std::int32_t>(viewport.x);
+                    clearRect.rect.offset.y      = static_cast<std::int32_t>(viewport.y);
+                    clearRect.rect.extent.width  = static_cast<std::uint32_t>(viewport.width);
+                    clearRect.rect.extent.height = static_cast<std::uint32_t>(viewport.height);
+                    clearRect.baseArrayLayer     = 0;
+                    clearRect.layerCount         = 1;
+                    commandBuffer.clearAttachments(1, &depthClear, 1, &clearRect);
+
+                    m_overlayFillPipeline.bind(commandBuffer);
+                    m_overlayFillPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                    commandBuffer.draw(
+                        static_cast<std::uint32_t>(triangles.size()),
+                        1,
+                        static_cast<std::uint32_t>(lines.size()),
+                        0
+                    );
+                }
+
+                if (!lines.empty())
+                {
                     m_overlayPipeline.bind(commandBuffer);
                     m_overlayPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
-                    vk::Buffer     vertexBuffers[] = {m_overlayBuffer.instance};
-                    vk::DeviceSize offsets[]       = {0};
-                    commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-                    commandBuffer.draw(m_overlayVertexCount, 1, 0, 0);
+                    const vk::PhysicalDeviceLimits& limits = backend->physicalDevice.getProperties().limits;
+                    commandBuffer.setLineWidth(
+                        std::clamp(3.0f, limits.lineWidthRange[0], limits.lineWidthRange[1])
+                    );
+                    commandBuffer.draw(static_cast<std::uint32_t>(lines.size()), 1, 0, 0);
+                    commandBuffer.setLineWidth(1.0f);
                 }
             }
 
@@ -421,9 +468,9 @@ namespace Chicane
             vk::PipelineDepthStencilStateCreateInfo depth;
             depth.depthBoundsTestEnable = VK_FALSE;
             depth.stencilTestEnable     = VK_FALSE;
-            depth.depthWriteEnable      = VK_TRUE;
-            depth.depthTestEnable       = VK_TRUE;
-            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depth.depthWriteEnable      = VK_FALSE;
+            depth.depthTestEnable       = VK_FALSE;
+            depth.depthCompareOp        = vk::CompareOp::eAlways;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
@@ -456,6 +503,57 @@ namespace Chicane
                 .setRasterization(rasterization)
                 .setRenderPass(m_meshPipeline.renderPass)
                 .build(m_overlayPipeline, backend->logicalDevice);
+        }
+
+        void VulkanLSceneLine::initOverlayFillGraphicsPipeline()
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
+            VulkanShaderStageCreateInfo vertexShader;
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vvert";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo fragmentShader;
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vfrag";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
+
+            vk::PipelineDepthStencilStateCreateInfo depth;
+            depth.depthBoundsTestEnable = VK_FALSE;
+            depth.stencilTestEnable     = VK_FALSE;
+            depth.depthWriteEnable      = VK_TRUE;
+            depth.depthTestEnable       = VK_TRUE;
+            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depth.minDepthBounds        = 0.0f;
+            depth.maxDepthBounds        = 1.0f;
+
+            vk::PipelineRasterizationStateCreateInfo rasterization;
+            rasterization.depthClampEnable        = VK_FALSE;
+            rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.lineWidth               = 1.0f;
+            rasterization.depthBiasEnable         = VK_FALSE;
+            rasterization.polygonMode             = vk::PolygonMode::eFill;
+            rasterization.cullMode                = vk::CullModeFlagBits::eNone;
+            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
+
+            vk::PipelineInputAssemblyStateCreateInfo inputAssembly;
+            inputAssembly.topology = vk::PrimitiveTopology::eTriangleList;
+
+            VulkanGraphicsPipelineBuilder()
+                .addVertexBinding(VulkanVertex::getBindingDescription())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .setInputAssembly(inputAssembly)
+                .addViewport(backend->getVkViewport(this))
+                .addDynamicState(vk::DynamicState::eViewport)
+                .addScissor(backend->getVkScissor(this))
+                .addDynamicState(vk::DynamicState::eScissor)
+                .addShaderStage(vertexShader, backend->logicalDevice)
+                .addShaderStage(fragmentShader, backend->logicalDevice)
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
+                .setDepthStencil(depth)
+                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .setRasterization(rasterization)
+                .setRenderPass(m_meshPipeline.renderPass)
+                .build(m_overlayFillPipeline, backend->logicalDevice);
         }
 
         void VulkanLSceneLine::initOutlineGraphicsPipeline()
@@ -623,15 +721,40 @@ namespace Chicane
             }
         }
 
-        void VulkanLSceneLine::ensureOverlayBuffer(std::size_t inVertexCount)
+        VulkanLSceneLineOverlayBuffer& VulkanLSceneLine::overlayBufferFor(VulkanFrame& inFrame)
+        {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            if (m_overlayBuffers.size() != backend->frames.size())
+            {
+                destroyOverlayBuffers();
+                m_overlayBuffers.resize(backend->frames.size());
+            }
+
+            if (m_overlayBuffers.empty())
+            {
+                m_overlayBuffers.resize(1);
+            }
+
+            const std::ptrdiff_t index = &inFrame - backend->frames.data();
+            if (index < 0 || static_cast<std::size_t>(index) >= m_overlayBuffers.size())
+            {
+                return m_overlayBuffers.front();
+            }
+
+            return m_overlayBuffers[static_cast<std::size_t>(index)];
+        }
+
+        void VulkanLSceneLine::ensureOverlayBuffer(
+            VulkanLSceneLineOverlayBuffer& outBuffer, std::size_t inVertexCount
+        )
         {
             const std::size_t required = sizeof(Vertex) * std::max<std::size_t>(inVertexCount, 1);
-            if (m_overlayBuffer.instance && required <= m_overlayBufferCapacity)
+            if (outBuffer.buffer.instance && required <= outBuffer.capacity)
             {
                 return;
             }
 
-            destroyOverlayBuffer();
+            destroyOverlayBuffer(outBuffer);
 
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
@@ -643,35 +766,47 @@ namespace Chicane
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 
-            m_overlayBuffer.init(createInfo);
-            m_overlayBufferCapacity = required;
+            outBuffer.buffer.init(createInfo);
+            outBuffer.capacity = required;
         }
 
-        void VulkanLSceneLine::destroyOverlayBuffer()
+        void VulkanLSceneLine::destroyOverlayBuffer(VulkanLSceneLineOverlayBuffer& inBuffer)
         {
-            if (!m_overlayBuffer.instance)
+            if (!inBuffer.buffer.instance)
             {
                 return;
             }
 
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            m_overlayBuffer.destroy(backend->logicalDevice);
-            m_overlayBufferCapacity = 0;
-            m_overlayVertexCount    = 0;
+            inBuffer.buffer.destroy(backend->logicalDevice);
+            inBuffer.capacity    = 0;
+            inBuffer.vertexCount = 0;
         }
 
-        void VulkanLSceneLine::uploadOverlayBuffer(const Vertex::List& inVertices)
+        void VulkanLSceneLine::destroyOverlayBuffers()
         {
-            ensureOverlayBuffer(inVertices.size());
+            for (VulkanLSceneLineOverlayBuffer& overlay : m_overlayBuffers)
+            {
+                destroyOverlayBuffer(overlay);
+            }
+
+            m_overlayBuffers.clear();
+        }
+
+        void VulkanLSceneLine::uploadOverlayBuffer(
+            VulkanLSceneLineOverlayBuffer& outBuffer, const Vertex::List& inVertices
+        )
+        {
+            ensureOverlayBuffer(outBuffer, inVertices.size());
 
             VulkanBackend*       backend = getBackend<VulkanBackend>();
             const vk::DeviceSize size    = sizeof(Vertex) * inVertices.size();
 
-            void* writeLocation = backend->logicalDevice.mapMemory(m_overlayBuffer.memory, 0, size);
+            void* writeLocation = backend->logicalDevice.mapMemory(outBuffer.buffer.memory, 0, size);
             memcpy(writeLocation, inVertices.data(), size);
-            backend->logicalDevice.unmapMemory(m_overlayBuffer.memory);
+            backend->logicalDevice.unmapMemory(outBuffer.buffer.memory);
 
-            m_overlayVertexCount = static_cast<std::uint32_t>(inVertices.size());
+            outBuffer.vertexCount = static_cast<std::uint32_t>(inVertices.size());
         }
     }
 }

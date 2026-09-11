@@ -33,6 +33,9 @@ namespace Editor
         void onDebugToggleColliders();
 
         CH_FUNCTION()
+        void onDebugToggleSkeletons();
+
+        CH_FUNCTION()
         void onItemSelection(Chicane::Object* inItem);
 
     public:

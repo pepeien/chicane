@@ -84,9 +84,33 @@ namespace Chicane
 
         void DrawTextureResource::reset()
         {
-            m_draws.clear();
+            if (isVolatile())
+            {
+                m_draws.clear();
+                clearHashes();
+                markAsDirty();
 
-            clearHashes();
+                return;
+            }
+
+            bool bHasVolatile = false;
+            for (auto it = m_draws.begin(); it != m_draws.end();)
+            {
+                if (!it->bIsVolatile)
+                {
+                    ++it;
+
+                    continue;
+                }
+
+                bHasVolatile = true;
+                it           = m_draws.erase(it);
+            }
+
+            if (bHasVolatile)
+            {
+                markAsDirty();
+            }
         }
     }
 }
