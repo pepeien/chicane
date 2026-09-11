@@ -74,6 +74,11 @@ vec3 applyTangentNormal(vec3 geometricNormal, vec3 tangentNormal, vec3 worldPosi
     vec2 st1 = dFdx(uv);
     vec2 st2 = dFdy(uv);
 
+#if defined(VULKAN)
+    q2  = -q2;
+    st2 = -st2;
+#endif
+
     vec3 n = normalize(geometricNormal);
     vec3 t = q1 * st2.t - q2 * st1.t;
     if (dot(t, t) < 1e-8) {

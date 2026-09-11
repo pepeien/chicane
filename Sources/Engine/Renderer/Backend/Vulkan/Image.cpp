@@ -194,10 +194,6 @@ namespace Chicane
             )
             {
                 const std::uint32_t levels = std::max(1u, inLevelCount);
-                if (levels == 1)
-                {
-                    return;
-                }
 
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
 
@@ -233,6 +229,22 @@ namespace Chicane
                     );
                 };
 
+                if (levels == 1)
+                {
+                    transition(
+                        0,
+                        vk::ImageLayout::eTransferDstOptimal,
+                        vk::ImageLayout::eShaderReadOnlyOptimal,
+                        vk::AccessFlagBits::eTransferWrite,
+                        vk::AccessFlagBits::eShaderRead,
+                        vk::PipelineStageFlagBits::eTransfer,
+                        vk::PipelineStageFlagBits::eFragmentShader
+                    );
+                    VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Generate Image Mipmaps");
+
+                    return;
+                }
+
                 std::uint32_t width  = std::max(1u, inWidth);
                 std::uint32_t height = std::max(1u, inHeight);
 
@@ -240,21 +252,11 @@ namespace Chicane
                 {
                     transition(
                         level - 1,
-                        vk::ImageLayout::eShaderReadOnlyOptimal,
-                        vk::ImageLayout::eTransferSrcOptimal,
-                        vk::AccessFlagBits::eShaderRead,
-                        vk::AccessFlagBits::eTransferRead,
-                        vk::PipelineStageFlagBits::eFragmentShader,
-                        vk::PipelineStageFlagBits::eTransfer
-                    );
-
-                    transition(
-                        level,
-                        vk::ImageLayout::eShaderReadOnlyOptimal,
                         vk::ImageLayout::eTransferDstOptimal,
-                        vk::AccessFlagBits::eShaderRead,
+                        vk::ImageLayout::eTransferSrcOptimal,
                         vk::AccessFlagBits::eTransferWrite,
-                        vk::PipelineStageFlagBits::eFragmentShader,
+                        vk::AccessFlagBits::eTransferRead,
+                        vk::PipelineStageFlagBits::eTransfer,
                         vk::PipelineStageFlagBits::eTransfer
                     );
 
@@ -296,19 +298,19 @@ namespace Chicane
                         vk::PipelineStageFlagBits::eFragmentShader
                     );
 
-                    transition(
-                        level,
-                        vk::ImageLayout::eTransferDstOptimal,
-                        vk::ImageLayout::eShaderReadOnlyOptimal,
-                        vk::AccessFlagBits::eTransferWrite,
-                        vk::AccessFlagBits::eShaderRead,
-                        vk::PipelineStageFlagBits::eTransfer,
-                        vk::PipelineStageFlagBits::eFragmentShader
-                    );
-
                     width  = nextWidth;
                     height = nextHeight;
                 }
+
+                transition(
+                    levels - 1,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    vk::ImageLayout::eShaderReadOnlyOptimal,
+                    vk::AccessFlagBits::eTransferWrite,
+                    vk::AccessFlagBits::eShaderRead,
+                    vk::PipelineStageFlagBits::eTransfer,
+                    vk::PipelineStageFlagBits::eFragmentShader
+                );
 
                 VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Generate Image Mipmaps");
             }

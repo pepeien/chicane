@@ -186,16 +186,6 @@ namespace Chicane
                 faces
             );
 
-            VulkanImage::transitionLayout(
-                m_commandBuffer,
-                m_queue,
-                instance,
-                vk::ImageLayout::eTransferDstOptimal,
-                vk::ImageLayout::eShaderReadOnlyOptimal,
-                faces,
-                m_mipLevels
-            );
-
             VulkanImage::generateMipmaps(
                 m_commandBuffer,
                 m_queue,

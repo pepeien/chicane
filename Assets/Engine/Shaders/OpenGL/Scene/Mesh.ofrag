@@ -55,9 +55,9 @@ void main() {
     vec4  baseSample       = sampleMap(baseIndex, inData.UV);
     vec3  color            = baseSample.rgb * inData.color.rgb;
     float ambientOcclusion = sampleMap(ambientOcclusionIndex, inData.UV).r;
-    float roughness        = roughnessIndex < 0 ? 0.9 : sampleMap(roughnessIndex, inData.UV).r;
-    float metalness        = metalnessIndex < 0 ? 0.0 : sampleMap(metalnessIndex, inData.UV).r;
-    float opacity          = opacityIndex < 0 ? baseSample.a * inData.color.a : sampleMap(opacityIndex, inData.UV).r;
+    float roughness        = roughnessIndex < 0 ? 0.9 : sampleMap(roughnessIndex, inData.UV).g;
+    float metalness        = metalnessIndex < 0 ? 0.0 : sampleMap(metalnessIndex, inData.UV).b;
+    float opacity          = opacityIndex < 0 ? inData.color.a : sampleMap(opacityIndex, inData.UV).r;
     vec3  emissive         = selfIlluminationIndex < 0 ? vec3(0.0) : sampleMap(selfIlluminationIndex, inData.UV).rgb;
     vec3  specularColor    = specularIndex < 0 ? vec3(0.5) : sampleMap(specularIndex, inData.UV).rgb;
 
