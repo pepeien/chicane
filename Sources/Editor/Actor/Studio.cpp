@@ -7,7 +7,7 @@
 
 namespace Editor
 {
-    const StudioLight LIGHTS[] = {
+    const std::vector<StudioLight> LIGHTS = {
         {{0.60f, 0.60f, 0.60f},   {-0.353f, 0.171f, -0.920f}},
         {{1.12f, 1.137f, 1.137f}, {-0.408f, 0.347f, 0.844f} },
         {{0.38f, 0.42f, 0.52f},   {0.522f, 0.826f, 0.213f}  },
@@ -23,7 +23,7 @@ namespace Editor
 
     void Studio::onLoad()
     {
-        for (std::size_t index = 0; index < LightCount; ++index)
+        for (std::size_t index = 0; index < LIGHT_COUNT; ++index)
         {
             Chicane::CLight* light = getScene()->createComponent<Chicane::CLight>();
             light->setType(Chicane::LightType::Directional);
@@ -32,7 +32,7 @@ namespace Editor
             light->setIntensity(1.0f);
             light->activate();
 
-            m_lights[index] = light;
+            m_lights.at(index) = light;
         }
 
         syncLights();
@@ -40,8 +40,6 @@ namespace Editor
 
     void Studio::onTick(float inDeltaTime)
     {
-        (void)inDeltaTime;
-
         syncLights();
     }
 
@@ -65,15 +63,15 @@ namespace Editor
         const Chicane::Vec3 up     = camera->getUp().normalize();
         const Chicane::Vec3 look   = camera->getForward().normalize();
 
-        for (std::size_t index = 0; index < LightCount; ++index)
+        for (std::size_t index = 0; index < LIGHT_COUNT; ++index)
         {
-            Chicane::CLight* light = m_lights[index];
+            Chicane::CLight* light = m_lights.at(index);
             if (!light)
             {
                 continue;
             }
 
-            const Chicane::Vec3& view    = LIGHTS[index].view;
+            const Chicane::Vec3& view    = LIGHTS.at(index).view;
             const Chicane::Vec3  toLight = (right * view.x + up * view.y - look * view.z).normalize();
 
             light->setAbsoluteTranslation(origin);

@@ -68,6 +68,8 @@ namespace Chicane
 
             refresh2DDraws();
             refresh3DDraws();
+
+            rebuildInstances3D();
         }
 
         void Frame::setup(const DrawSkyResource& inResource)
@@ -308,7 +310,6 @@ namespace Chicane
             }
 
             m_3DInstances[inId].push_back(inInstance);
-            rebuildInstances3D();
         }
 
         const DrawSkyInstance& Frame::getSkyInstance() const

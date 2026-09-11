@@ -11,7 +11,7 @@ namespace Editor
     class Studio : public Chicane::Actor
     {
     public:
-        static constexpr std::size_t LightCount = 4;
+        static constexpr inline std::size_t LIGHT_COUNT = 4;
 
     public:
         Studio();
@@ -23,6 +23,6 @@ namespace Editor
         void syncLights();
 
     private:
-        std::array<Chicane::CLight*, LightCount> m_lights;
+        std::array<Chicane::CLight*, LIGHT_COUNT> m_lights;
     };
 }

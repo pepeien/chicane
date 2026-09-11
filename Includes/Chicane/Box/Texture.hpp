@@ -19,6 +19,8 @@ namespace Chicane
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
             static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Textures/Checkered.btex";
             static constexpr inline const char* DEFAULT_REFERENCE     = "Checkered";
+            static constexpr inline const char* GREY_SOURCE           = "Assets/Engine/Textures/Color/Grey.btex";
+            static constexpr inline const char* GREY_REFERENCE        = "Color_Grey";
 
         public:
             static const Texture* getDefault();

@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Instance.hpp"
 
+#include <atomic>
+
 #include "Chicane/Renderer/Debug.hpp"
 
 #if CHICANE_OPENGL
@@ -21,7 +23,7 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_debug(DebugMode::None),
+              m_debug(static_cast<std::uint8_t>(DebugMode::None)),
               m_traces({}),
               m_backend(nullptr)
         {}
@@ -158,12 +160,15 @@ namespace Chicane
 
         void Instance::enableDebug(DebugMode inMode)
         {
-            m_debug |= inMode;
+            m_debug.fetch_or(static_cast<std::uint8_t>(inMode), std::memory_order_relaxed);
         }
 
         void Instance::disableDebug(DebugMode inMode)
         {
-            m_debug &= ~inMode;
+            m_debug.fetch_and(
+                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inMode)),
+                std::memory_order_relaxed
+            );
         }
 
         void Instance::toggleDebug(DebugMode inMode)
@@ -178,9 +183,14 @@ namespace Chicane
             enableDebug(inMode);
         }
 
+        DebugMode Instance::getDebug() const
+        {
+            return static_cast<DebugMode>(m_debug.load(std::memory_order_relaxed));
+        }
+
         bool Instance::hasDebug(DebugMode inMode) const
         {
-            return (m_debug & inMode) == inMode;
+            return (getDebug() & inMode) == inMode;
         }
 
         void Instance::clearDebug(DebugMode inMode)

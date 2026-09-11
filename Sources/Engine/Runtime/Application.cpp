@@ -1,7 +1,9 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
+#include <memory>
 #include <typeinfo>
 #include <vector>
 
@@ -31,10 +33,12 @@
 
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Mode.hpp"
 #include "Chicane/Renderer/Draw/Poly/Topology.hpp"
+#include "Chicane/Renderer/Draw/Texture/Data.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -49,6 +53,13 @@
 
 namespace Chicane
 {
+    std::shared_ptr<std::vector<Renderer::DrawPolyData>> g_pendingPolys =
+        std::make_shared<std::vector<Renderer::DrawPolyData>>();
+    std::shared_ptr<std::vector<Renderer::DrawTextureData>> g_pendingTextures =
+        std::make_shared<std::vector<Renderer::DrawTextureData>>();
+    std::shared_ptr<std::vector<Renderer::DrawGlyphData>> g_pendingGlyphs =
+        std::make_shared<std::vector<Renderer::DrawGlyphData>>();
+
     String resolveModelDrawId(const Box::AssetReference& inReference)
     {
         const Box::Model* model = Box::load<Box::Model>(inReference.getSource());
@@ -76,15 +87,91 @@ namespace Chicane
         return model->getUniqueId(Box::Model::DEFAULT_REFERENCE);
     }
 
-    String resolveSphereModelDrawId()
+    template <typename T>
+    void enqueuePending(std::shared_ptr<std::vector<T>>& ioQueue, const T& inValue)
     {
-        const Box::Model* model = Box::load<Box::Model>(Box::Model::SPHERE_SOURCE);
-        if (!model)
+        std::shared_ptr<std::vector<T>> current = std::atomic_load_explicit(&ioQueue, std::memory_order_acquire);
+
+        while (true)
         {
-            return resolveDefaultModelDrawId();
+            std::shared_ptr<std::vector<T>> next = std::make_shared<std::vector<T>>(*current);
+            next->push_back(inValue);
+
+            if (std::atomic_compare_exchange_weak_explicit(
+                    &ioQueue,
+                    &current,
+                    next,
+                    std::memory_order_release,
+                    std::memory_order_acquire
+                ))
+            {
+                return;
+            }
+        }
+    }
+
+    template <typename T>
+    std::shared_ptr<std::vector<T>> drainPending(std::shared_ptr<std::vector<T>>& ioQueue)
+    {
+        return std::atomic_exchange_explicit(&ioQueue, std::make_shared<std::vector<T>>(), std::memory_order_acq_rel);
+    }
+
+    std::size_t nextSceneWriteIndex(std::size_t inCurrent, std::size_t inBusy, std::size_t inCount)
+    {
+        if (inCount == 0)
+        {
+            return 0;
         }
 
-        return model->getUniqueId(Box::Model::DEFAULT_REFERENCE);
+        std::size_t next = (inCurrent + 1) % inCount;
+        if (next == inBusy)
+        {
+            next = (next + 1) % inCount;
+        }
+
+        return next;
+    }
+
+    Renderer::Draw::Id resolvePolyId(Renderer::Instance* inRenderer, const Renderer::Draw::Reference& inReference)
+    {
+        if (!inRenderer)
+        {
+            return Renderer::Draw::InvalidId;
+        }
+
+        Renderer::Draw::Id id = inRenderer->findPoly(Renderer::DrawPolyType::e3D, inReference);
+        if (id > Renderer::Draw::InvalidId)
+        {
+            return id;
+        }
+
+        return inRenderer->findPoly(Renderer::DrawPolyType::e3D, resolveDefaultModelDrawId());
+    }
+
+    Renderer::Draw::Id resolveTextureId(
+        Renderer::Instance* inRenderer, const Renderer::Draw::Reference& inReference, bool inUseDefault
+    )
+    {
+        if (!inRenderer)
+        {
+            return Renderer::Draw::InvalidId;
+        }
+
+        if (!inReference.isEmpty())
+        {
+            const Renderer::Draw::Id id = inRenderer->findTexture(inReference);
+            if (id > Renderer::Draw::InvalidId)
+            {
+                return id;
+            }
+        }
+
+        if (!inUseDefault)
+        {
+            return Renderer::Draw::InvalidId;
+        }
+
+        return inRenderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
     }
 
     Renderer::DrawPoly3DCommandPoly makeLinePoly(
@@ -175,6 +262,7 @@ namespace Chicane
           m_sceneCommandBuffers({}),
           m_sceneWriteIndex(0),
           m_sceneReadIndex(1),
+          m_sceneBusyIndex(3),
           m_sceneObservable({}),
           m_view(nullptr),
           m_viewThread({}),
@@ -185,9 +273,13 @@ namespace Chicane
           m_screenViewportHeight(0),
           m_viewObservable({}),
           m_window(nullptr),
-          m_renderer(nullptr)
+          m_renderer(nullptr),
+          m_debugFlags(0),
+          m_rendererWidth(0),
+          m_rendererHeight(0)
     {
-        m_sceneCommandBuffers.resize(2);
+        m_sceneCommandBuffers.resize(3);
+        m_sceneBusyIndex.store(m_sceneCommandBuffers.size(), std::memory_order_relaxed);
         m_viewCommandBuffers.resize(2);
     }
 
@@ -231,6 +323,7 @@ namespace Chicane
 
     void Application::render()
     {
+        snapshotRendererState();
         uploadPreviewTextures();
         renderScene();
         renderUI();
@@ -243,6 +336,30 @@ namespace Chicane
         if (!m_renderer)
         {
             return;
+        }
+
+        if (std::shared_ptr<std::vector<Renderer::DrawPolyData>> polys = drainPending(g_pendingPolys))
+        {
+            for (const Renderer::DrawPolyData& data : *polys)
+            {
+                m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+            }
+        }
+
+        if (std::shared_ptr<std::vector<Renderer::DrawTextureData>> textures = drainPending(g_pendingTextures))
+        {
+            for (const Renderer::DrawTextureData& data : *textures)
+            {
+                m_renderer->loadTexture(data);
+            }
+        }
+
+        if (std::shared_ptr<std::vector<Renderer::DrawGlyphData>> glyphs = drainPending(g_pendingGlyphs))
+        {
+            for (const Renderer::DrawGlyphData& data : *glyphs)
+            {
+                m_renderer->loadGlyph(data);
+            }
         }
 
         std::vector<Box::PreviewUpload> pending;
@@ -261,6 +378,34 @@ namespace Chicane
 
             m_renderer->loadTexture(data);
         }
+    }
+
+    void Application::snapshotRendererState()
+    {
+        if (!m_renderer)
+        {
+            m_debugFlags.store(0, std::memory_order_relaxed);
+            m_rendererWidth.store(0, std::memory_order_relaxed);
+            m_rendererHeight.store(0, std::memory_order_relaxed);
+
+            return;
+        }
+
+        const Vec<2, std::uint32_t> resolution = m_renderer->getResolution();
+
+        m_debugFlags.store(static_cast<std::uint8_t>(m_renderer->getDebug()), std::memory_order_relaxed);
+        m_rendererWidth.store(resolution.x, std::memory_order_relaxed);
+        m_rendererHeight.store(resolution.y, std::memory_order_relaxed);
+    }
+
+    bool Application::hasSceneDebug(Renderer::DebugMode inMode) const
+    {
+        return (static_cast<Renderer::DebugMode>(m_debugFlags.load(std::memory_order_relaxed)) & inMode) == inMode;
+    }
+
+    Vec<2, std::uint32_t> Application::getRendererResolution() const
+    {
+        return {m_rendererWidth.load(std::memory_order_relaxed), m_rendererHeight.load(std::memory_order_relaxed)};
     }
 
     const ApplicationTelemetry& Application::getTelemetry() const
@@ -403,6 +548,7 @@ namespace Chicane
         m_renderer = std::make_unique<Renderer::Instance>();
         m_renderer->init(inSettings);
         m_renderer->setWindow(m_window.get());
+        snapshotRendererState();
     }
 
     void Application::shutdownRenderer()
@@ -432,7 +578,7 @@ namespace Chicane
                         data.vertices  = polygon.vertices;
                         data.indices   = polygon.indices;
 
-                        m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                        enqueuePending(g_pendingPolys, data);
                     }
 
                     return;
@@ -449,7 +595,7 @@ namespace Chicane
                         data.reference = texture->getFrameId(i);
                         data.image     = texture->getFrame(i).lock();
 
-                        m_renderer->loadTexture(data);
+                        enqueuePending(g_pendingTextures, data);
                     }
 
                     return;
@@ -486,7 +632,7 @@ namespace Chicane
                                 data.points.push_back(curve.end);
                             }
 
-                            m_renderer->loadGlyph(data);
+                            enqueuePending(g_pendingGlyphs, data);
                         }
                     }
 
@@ -509,8 +655,9 @@ namespace Chicane
 
         Box::load(Box::Font::DEFAULT_SOURCE);
         Box::load(Box::Model::DEFAULT_SOURCE);
-        Box::load(Box::Model::SPHERE_SOURCE);
+        Box::load(Box::Mesh::SPHERE_SOURCE);
         Box::load(Box::Texture::DEFAULT_SOURCE);
+        uploadPreviewTextures();
     }
 
     void Application::initKerb()
@@ -601,8 +748,9 @@ namespace Chicane
         Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
         command.clear();
 
-        CCamera*                    activeCamera   = nullptr;
-        const Vec<2, std::uint32_t> screenViewport = getScreenViewport();
+        CCamera*                    activeCamera       = nullptr;
+        const Vec<2, std::uint32_t> screenViewport     = getScreenViewport();
+        const Vec<2, std::uint32_t> rendererResolution = getRendererResolution();
         for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
             camera->onResize(screenViewport);
@@ -614,7 +762,7 @@ namespace Chicane
 
         for (CLight* light : inScene->getActiveComponents<CLight>())
         {
-            light->onResize(m_renderer->getResolution());
+            light->onResize(rendererResolution);
 
             command.lights.push_back(light->getLight());
         }
@@ -636,33 +784,21 @@ namespace Chicane
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
                 Renderer::DrawPoly3DCommandMesh subcommand;
-                subcommand.model =
-                    m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveModelDrawId(group.getModel()));
-
-                if (subcommand.model <= Renderer::Draw::InvalidId)
-                {
-                    subcommand.model = m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveDefaultModelDrawId());
-                }
-
+                subcommand.model          = resolveModelDrawId(group.getModel());
                 subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
                 subcommand.instance.flags = mesh->getFlags();
 
                 for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
                 {
-                    const TextureMap   map = static_cast<TextureMap>(slot);
-                    Renderer::Draw::Id id  = Renderer::Draw::InvalidId;
-
+                    const TextureMap map = static_cast<TextureMap>(slot);
                     if (group.hasTexture(map))
                     {
-                        id = m_renderer->findTexture(group.getTexture(map).getReference());
+                        subcommand.textures[slot] = group.getTexture(map).getReference();
                     }
-
-                    if (map == TextureMap::Base && id <= Renderer::Draw::InvalidId)
+                    else if (map == TextureMap::Base)
                     {
-                        id = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                        subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
                     }
-
-                    subcommand.instance.textures[slot] = id;
                 }
 
                 command.meshes.emplace_back(std::move(subcommand));
@@ -700,98 +836,88 @@ namespace Chicane
             data.reference = asset->getFilepath();
             data.model     = resolveModelDrawId(asset->getModel());
 
-            if (m_renderer->findPoly(Renderer::DrawPolyType::e3D, data.model) <= Renderer::Draw::InvalidId)
-            {
-                data.model = resolveDefaultModelDrawId();
-            }
-
             for (const Box::AssetReference& texture : asset->getTextures())
             {
-                String reference = texture.getReference();
-
-                if (m_renderer->findTexture(reference) <= Renderer::Draw::InvalidId)
-                {
-                    reference = Box::Texture::DEFAULT_REFERENCE;
-                }
-
-                data.textures.push_back(reference);
+                data.textures.push_back(texture.getReference());
             }
 
             command.sky = data;
         }
 
-        if (m_renderer)
+        Vertex::List debugLines;
+        Vertex::List skeletonLines;
+
+        if (hasSceneDebug(Renderer::DebugMode::Bounds))
         {
-            Vertex::List debugLines;
-            Vertex::List skeletonLines;
-
-            if (m_renderer->hasDebug(Renderer::DebugMode::Bounds))
+            for (Actor* actor : inScene->getActors())
             {
-                for (Actor* actor : inScene->getActors())
+                if (!actor)
                 {
-                    if (!actor)
-                    {
-                        continue;
-                    }
-
-                    Renderer::Debug::appendBounds(debugLines, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR);
+                    continue;
                 }
-            }
 
-            if (m_renderer->hasDebug(Renderer::DebugMode::Colliders))
-            {
-                for (CPhysics* physics : inScene->getComponents<CPhysics>())
-                {
-                    if (!physics)
-                    {
-                        continue;
-                    }
-
-                    physics->appendDebugWireframe(debugLines, Renderer::Debug::COLLIDER_COLOR);
-                }
-            }
-
-            if (m_renderer->hasDebug(Renderer::DebugMode::Skeletons))
-            {
-                const Renderer::Draw::Id sphereId =
-                    m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveSphereModelDrawId());
-
-                for (CMesh* mesh : inScene->getComponents<CMesh>())
-                {
-                    if (!mesh)
-                    {
-                        continue;
-                    }
-
-                    mesh->appendDebugWireframe(
-                        skeletonLines,
-                        command.meshes,
-                        sphereId,
-                        Renderer::Debug::SKELETON_COLOR
-                    );
-                }
-            }
-
-            if (!debugLines.empty())
-            {
-                command.polys.push_back(makeLinePoly(std::move(debugLines)));
-            }
-
-            if (!skeletonLines.empty())
-            {
-                command.polys.push_back(makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground));
+                Renderer::Debug::appendBounds(debugLines, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR);
             }
         }
 
+        if (hasSceneDebug(Renderer::DebugMode::Colliders))
+        {
+            for (CPhysics* physics : inScene->getComponents<CPhysics>())
+            {
+                if (!physics)
+                {
+                    continue;
+                }
+
+                physics->appendDebugWireframe(debugLines, Renderer::Debug::COLLIDER_COLOR);
+            }
+        }
+
+        if (hasSceneDebug(Renderer::DebugMode::Skeletons))
+        {
+            const Renderer::Draw::Reference sphereReference = Box::Model::SPHERE_REFERENCE;
+
+            for (CMesh* mesh : inScene->getComponents<CMesh>())
+            {
+                if (!mesh)
+                {
+                    continue;
+                }
+
+                mesh->appendDebugWireframe(
+                    skeletonLines,
+                    command.meshes,
+                    sphereReference,
+                    Renderer::Debug::SKELETON_COLOR
+                );
+            }
+        }
+
+        if (!debugLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(debugLines)));
+        }
+
+        if (!skeletonLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground));
+        }
+
         m_sceneReadIndex.store(index, std::memory_order_release);
-        m_sceneWriteIndex.store(1 - index, std::memory_order_relaxed);
+        m_sceneWriteIndex.store(
+            nextSceneWriteIndex(index, m_sceneBusyIndex.load(std::memory_order_acquire), m_sceneCommandBuffers.size()),
+            std::memory_order_relaxed
+        );
     }
 
     void Application::renderScene()
     {
         const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
+        m_sceneBusyIndex.store(index, std::memory_order_release);
 
         const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
+
+        m_sceneBusyIndex.store(m_sceneCommandBuffers.size(), std::memory_order_release);
 
         m_renderer->useCamera(command.camera);
         m_renderer->addLight(command.lights);
@@ -799,7 +925,17 @@ namespace Chicane
 
         for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
         {
-            m_renderer->drawPoly(mesh.model, mesh.instance);
+            Renderer::DrawPoly3DInstance instance = mesh.instance;
+            for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
+            {
+                instance.textures[slot] = resolveTextureId(
+                    m_renderer.get(),
+                    mesh.textures[slot],
+                    slot == static_cast<std::uint8_t>(TextureMap::Base)
+                );
+            }
+
+            m_renderer->drawPoly(resolvePolyId(m_renderer.get(), mesh.model), instance);
         }
 
         for (const Renderer::DrawPoly3DCommandPoly& poly : command.polys)
@@ -901,7 +1037,7 @@ namespace Chicane
             {
                 m_telemetry.ui.start();
 
-                view->setSize(m_renderer->getResolution());
+                view->setSize(getRendererResolution());
 
                 view->tick(m_telemetry.ui.frame.delta);
                 snapshotScreenViewport(view);
@@ -956,7 +1092,7 @@ namespace Chicane
             return {width, height};
         }
 
-        return hasRenderer() ? m_renderer->getResolution() : Vec<2, std::uint32_t>(0, 0);
+        return getRendererResolution();
     }
 
     void Application::buildUICommands(std::shared_ptr<Grid::View> inView)

@@ -153,6 +153,9 @@ namespace Chicane
         // Lifecycle
         void render();
         void uploadPreviewTextures();
+        void snapshotRendererState();
+        bool hasSceneDebug(Renderer::DebugMode inMode) const;
+        Vec<2, std::uint32_t> getRendererResolution() const;
 
         // Scene
         void initScene();
@@ -184,6 +187,7 @@ namespace Chicane
         std::vector<Renderer::DrawPoly3DCommand> m_sceneCommandBuffers;
         std::atomic<std::size_t>                 m_sceneWriteIndex;
         std::atomic<std::size_t>                 m_sceneReadIndex;
+        std::atomic<std::size_t>                 m_sceneBusyIndex;
         SceneObservable                          m_sceneObservable;
 
         // Grid
@@ -201,5 +205,8 @@ namespace Chicane
 
         // Renderer
         std::unique_ptr<Renderer::Instance>      m_renderer;
+        std::atomic<std::uint8_t>                m_debugFlags;
+        std::atomic<std::uint32_t>               m_rendererWidth;
+        std::atomic<std::uint32_t>               m_rendererHeight;
     };
 }

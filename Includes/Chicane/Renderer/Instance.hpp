@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -89,6 +90,7 @@ namespace Chicane
             void enableDebug(DebugMode inMode);
             void disableDebug(DebugMode inMode);
             void toggleDebug(DebugMode inMode);
+            DebugMode getDebug() const;
             bool hasDebug(DebugMode inMode) const;
 
             void clearDebug(DebugMode inMode = DebugMode::All);
@@ -148,7 +150,7 @@ namespace Chicane
             DrawSkyResource           m_skyResource;
 
             // Debug
-            DebugMode                 m_debug;
+            std::atomic<std::uint8_t> m_debug;
             std::vector<Vertex::List> m_traces;
 
             // Backend

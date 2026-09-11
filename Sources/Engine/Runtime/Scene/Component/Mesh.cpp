@@ -11,158 +11,154 @@
 #include "Chicane/Box/Animation/Track.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
+#include "Chicane/Box/Texture.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Drift/Clip.hpp"
 #include "Chicane/Drift/Easing/Curve.hpp"
 #include "Chicane/Drift/Loop.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 
 namespace Chicane
 {
-    namespace
+    std::vector<float> packTransform(const Transform& inTransform)
     {
-        constexpr float TO_MILLISECONDS = 1000.0f;
+        const Vec3&      translation = inTransform.getTranslation();
+        const QuatFloat& rotation    = inTransform.getRotation().get();
+        const Vec3&      scale       = inTransform.getScale();
 
-        std::vector<float> packTransform(const Transform& inTransform)
+        return {
+            translation.x,
+            translation.y,
+            translation.z,
+            rotation.w,
+            rotation.x,
+            rotation.y,
+            rotation.z,
+            scale.x,
+            scale.y,
+            scale.z
+        };
+    }
+
+    void alignPackedRotation(std::vector<float>& ioValue, const QuatFloat& inPrevious)
+    {
+        if (ioValue.size() < 7)
         {
-            const Vec3&      translation = inTransform.getTranslation();
-            const QuatFloat& rotation    = inTransform.getRotation().get();
-            const Vec3&      scale       = inTransform.getScale();
-
-            return {
-                translation.x,
-                translation.y,
-                translation.z,
-                rotation.w,
-                rotation.x,
-                rotation.y,
-                rotation.z,
-                scale.x,
-                scale.y,
-                scale.z
-            };
+            return;
         }
 
-        void alignPackedRotation(std::vector<float>& ioValue, const QuatFloat& inPrevious)
+        const QuatFloat current(ioValue.at(3), ioValue.at(4), ioValue.at(5), ioValue.at(6));
+        const float align = glm::dot(static_cast<const glm::quat&>(inPrevious), static_cast<const glm::quat&>(current));
+        if (align >= 0.0f)
         {
-            if (ioValue.size() < 7)
-            {
-                return;
-            }
-
-            const QuatFloat current(ioValue.at(3), ioValue.at(4), ioValue.at(5), ioValue.at(6));
-            const float     align = glm::dot(
-                static_cast<const glm::quat&>(inPrevious),
-                static_cast<const glm::quat&>(current)
-            );
-            if (align >= 0.0f)
-            {
-                return;
-            }
-
-            ioValue.at(3) = -ioValue.at(3);
-            ioValue.at(4) = -ioValue.at(4);
-            ioValue.at(5) = -ioValue.at(5);
-            ioValue.at(6) = -ioValue.at(6);
+            return;
         }
 
-        Transform unpackTransform(const std::vector<float>& inValue, const Transform& inFallback)
+        ioValue.at(3) = -ioValue.at(3);
+        ioValue.at(4) = -ioValue.at(4);
+        ioValue.at(5) = -ioValue.at(5);
+        ioValue.at(6) = -ioValue.at(6);
+    }
+
+    Transform unpackTransform(const std::vector<float>& inValue, const Transform& inFallback)
+    {
+        if (inValue.size() < 9)
         {
-            if (inValue.size() < 9)
-            {
-                return inFallback;
-            }
-
-            Transform transform;
-            transform.setTranslation(Vec3(inValue.at(0), inValue.at(1), inValue.at(2)));
-            if (inValue.size() >= 10)
-            {
-                const QuatFloat rotation(inValue.at(3), inValue.at(4), inValue.at(5), inValue.at(6));
-                transform.setRotation(rotation.normalize());
-                transform.setScale(Vec3(inValue.at(7), inValue.at(8), inValue.at(9)));
-            }
-            else
-            {
-                transform.setRotation(Vec3(inValue.at(3), inValue.at(4), inValue.at(5)));
-                transform.setScale(Vec3(inValue.at(6), inValue.at(7), inValue.at(8)));
-            }
-
-            return transform;
+            return inFallback;
         }
 
-        Drift::Loop toDriftLoop(Box::AnimationLoop inValue)
+        Transform transform;
+        transform.setTranslation(Vec3(inValue.at(0), inValue.at(1), inValue.at(2)));
+        if (inValue.size() >= 10)
         {
-            switch (inValue)
-            {
-            case Box::AnimationLoop::Repeat:
-                return Drift::Loop::Repeat;
-
-            case Box::AnimationLoop::PingPong:
-                return Drift::Loop::PingPong;
-
-            default:
-                return Drift::Loop::Once;
-            }
+            const QuatFloat rotation(inValue.at(3), inValue.at(4), inValue.at(5), inValue.at(6));
+            transform.setRotation(rotation.normalize());
+            transform.setScale(Vec3(inValue.at(7), inValue.at(8), inValue.at(9)));
+        }
+        else
+        {
+            transform.setRotation(Vec3(inValue.at(3), inValue.at(4), inValue.at(5)));
+            transform.setScale(Vec3(inValue.at(6), inValue.at(7), inValue.at(8)));
         }
 
-        Drift::Clip toDriftClip(const Box::AnimationClip& inClip)
+        return transform;
+    }
+
+    Drift::Loop toDriftLoop(Box::AnimationLoop inValue)
+    {
+        switch (inValue)
         {
-            Drift::Clip clip(inClip.name);
-            clip.duration   = inClip.duration * TO_MILLISECONDS;
-            clip.loop       = toDriftLoop(inClip.loop);
-            clip.iterations = inClip.iterations;
+        case Box::AnimationLoop::Repeat:
+            return Drift::Loop::Repeat;
 
-            for (const Box::AnimationTrack& track : inClip.tracks)
+        case Box::AnimationLoop::PingPong:
+            return Drift::Loop::PingPong;
+
+        default:
+            return Drift::Loop::Once;
+        }
+    }
+
+    Drift::Clip toDriftClip(const Box::AnimationClip& inClip)
+    {
+        Drift::Clip clip(inClip.name);
+        clip.duration   = inClip.duration;
+        clip.loop       = toDriftLoop(inClip.loop);
+        clip.iterations = inClip.iterations;
+
+        for (const Box::AnimationTrack& track : inClip.tracks)
+        {
+            Drift::Track converted(track.name);
+            QuatFloat    previous(1.0f, 0.0f, 0.0f, 0.0f);
+            bool         hasPrevious = false;
+
+            for (const Box::AnimationKeyframe& keyframe : track.keyframes)
             {
-                Drift::Track converted(track.name);
-                QuatFloat    previous(1.0f, 0.0f, 0.0f, 0.0f);
-                bool         hasPrevious = false;
-
-                for (const Box::AnimationKeyframe& keyframe : track.keyframes)
+                std::vector<float> packed = packTransform(keyframe.transform);
+                if (hasPrevious)
                 {
-                    std::vector<float> packed = packTransform(keyframe.transform);
-                    if (hasPrevious)
-                    {
-                        alignPackedRotation(packed, previous);
-                    }
-
-                    if (packed.size() >= 7)
-                    {
-                        previous    = QuatFloat(packed.at(3), packed.at(4), packed.at(5), packed.at(6));
-                        hasPrevious = true;
-                    }
-
-                    converted.addKeyframe(
-                        keyframe.time * TO_MILLISECONDS,
-                        packed,
-                        keyframe.easing.isEmpty() ? Drift::EasingCurve::linear()
-                                                  : Drift::EasingCurve::fromString(keyframe.easing)
-                    );
+                    alignPackedRotation(packed, previous);
                 }
 
-                clip.addTrack(converted);
+                if (packed.size() >= 7)
+                {
+                    previous    = QuatFloat(packed.at(3), packed.at(4), packed.at(5), packed.at(6));
+                    hasPrevious = true;
+                }
+
+                converted.addKeyframe(
+                    keyframe.time,
+                    packed,
+                    keyframe.easing.isEmpty() ? Drift::EasingCurve::linear()
+                                              : Drift::EasingCurve::fromString(keyframe.easing)
+                );
             }
 
-            return clip;
+            clip.addTrack(converted);
         }
 
-        String animationId(const Box::Animation* inAnimation)
+        return clip;
+    }
+
+    String animationId(const Box::Animation* inAnimation)
+    {
+        if (!inAnimation)
         {
-            if (!inAnimation)
-            {
-                return "";
-            }
-
-            if (!inAnimation->getClip().name.isEmpty())
-            {
-                return inAnimation->getClip().name;
-            }
-
-            return inAnimation->getId();
+            return "";
         }
+
+        if (!inAnimation->getClip().name.isEmpty())
+        {
+            return inAnimation->getClip().name;
+        }
+
+        return inAnimation->getId();
     }
 
     CMesh::CMesh()
@@ -237,7 +233,12 @@ namespace Chicane
         return m_skeleton;
     }
 
-    void CMesh::appendDebugWireframe(Vertex::List& outLines, Vertex::List& outTriangles, const Vec4& inColor) const
+    void CMesh::appendDebugWireframe(
+        Vertex::List&                          outLines,
+        Renderer::DrawPoly3DCommandMesh::List& outMeshes,
+        const Renderer::Draw::Reference&       inSphereReference,
+        const Vec4&                            inColor
+    ) const
     {
         if (!m_skeleton || m_bones.empty())
         {
@@ -276,28 +277,45 @@ namespace Chicane
         }
 
         const Vec3  extent    = max - min;
-        const float jointSize = std::max(
-            0.06f, std::max(std::max(extent.x, extent.y), extent.z) * 0.028f
-        );
+        const float jointSize = std::max(0.06f, std::max(std::max(extent.x, extent.y), extent.z) * 0.028f);
+
+        outLines.reserve(outLines.size() + entries.size() * 2);
+        outMeshes.reserve(outMeshes.size() + entries.size());
 
         for (std::size_t i = 0; i < entries.size(); i++)
         {
-            const std::int32_t parentIndex = entries.at(i).parentIndex;
+            const std::int32_t parentIndex = entries[i].parentIndex;
             if (parentIndex < 0 || static_cast<std::size_t>(parentIndex) >= positions.size())
             {
                 continue;
             }
 
             Renderer::Debug::appendSegment(
-                outLines, positions.at(static_cast<std::size_t>(parentIndex)), positions[i], inColor
+                outLines,
+                positions[static_cast<std::size_t>(parentIndex)],
+                positions[i],
+                inColor
             );
         }
 
+        if (inSphereReference.isEmpty())
+        {
+            return;
+        }
+
+        const float jointRadius = jointSize * 0.42f;
         for (std::size_t i = 0; i < entries.size(); i++)
         {
-            Renderer::Debug::appendSphere(
-                outTriangles, positions[i], jointSize * 0.42f, Renderer::Debug::SKELETON_JOINT_COLOR
-            );
+            Transform transform;
+            transform.setTranslation(positions[i]);
+            transform.setScale(jointRadius);
+
+            Renderer::DrawPoly3DCommandMesh joint;
+            joint.model          = inSphereReference;
+            joint.textures[static_cast<std::uint8_t>(TextureMap::Base)] = Box::Texture::GREY_REFERENCE;
+            joint.instance.model = transform.getMatrix();
+            joint.instance.flags = Renderer::DrawPoly3DFlag::Foreground;
+            outMeshes.push_back(joint);
         }
     }
 

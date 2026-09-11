@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstring>
 
 #include <vulkan/vulkan.hpp>
 
@@ -50,7 +51,12 @@ namespace Chicane
 
             void copyToBuffer(const T* inData, std::size_t inSize)
             {
-                memcpy(m_writeLocation, inData, inSize);
+                if (!m_writeLocation || !inData || inSize == 0 || m_allocationSize == 0)
+                {
+                    return;
+                }
+
+                memcpy(m_writeLocation, inData, inSize < m_allocationSize ? inSize : m_allocationSize);
 
                 m_bIsDirty = false;
             }

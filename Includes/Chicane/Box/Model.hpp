@@ -20,6 +20,7 @@ namespace Chicane
             static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Models/Shape/Cube.bmdl";
             static constexpr inline const char* SPHERE_SOURCE         = "Assets/Engine/Models/Shape/Sphere.bmdl";
             static constexpr inline const char* DEFAULT_REFERENCE     = "Body";
+            static constexpr inline const char* SPHERE_REFERENCE      = "Sphere_Body";
 
         public:
             static ModelVendor parseVendor(const String& inValue);

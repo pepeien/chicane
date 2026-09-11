@@ -50,7 +50,7 @@ namespace Chicane
         void appendDebugWireframe(
             Vertex::List&                          outLines,
             Renderer::DrawPoly3DCommandMesh::List& outMeshes,
-            Renderer::Draw::Id                     inSphereId,
+            const Renderer::Draw::Reference&       inSphereReference,
             const Vec4&                            inColor
         ) const;
 

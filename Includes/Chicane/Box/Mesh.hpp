@@ -19,6 +19,8 @@ namespace Chicane
             static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME   = "id";
             static constexpr inline const char* GROUP_BONE_ATTRIBUTE_NAME = "bone";
 
+            static constexpr inline const char* SPHERE_SOURCE = "Assets/Engine/Meshes/Shape/Sphere.bmsh";
+
         public:
             Mesh(const FileSystem::Path& inFilepath);
             virtual ~Mesh() = default;

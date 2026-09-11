@@ -1,5 +1,6 @@
 #include "Editor/Actor/Item.reflected.hpp"
 
+#include <Chicane/Box/Animation.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
 namespace Editor

@@ -3,8 +3,10 @@
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Texture/Map.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 
 namespace Chicane
@@ -17,8 +19,9 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommandMesh>;
 
         public:
-            Draw::Id           model    = Draw::InvalidId;
-            DrawPoly3DInstance instance = {};
+            Draw::Reference    model                       = Draw::InvalidReference;
+            Draw::Reference    textures[TEXTURE_MAP_COUNT] = {};
+            DrawPoly3DInstance instance                    = {};
         };
     }
 }
