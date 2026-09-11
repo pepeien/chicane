@@ -21,8 +21,9 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_backend(nullptr),
-              m_debugResources({})
+              m_debug(DebugMode::None),
+              m_traces({}),
+              m_backend(nullptr)
         {}
 
         void Instance::init(const Settings& inSettings)
@@ -48,11 +49,6 @@ namespace Chicane
             }
 
             syncDirtyResources();
-
-            if (m_debugResources.has(DebugMode::Traces))
-            {
-                drawLines(m_debugResources.getTraceVertices());
-            }
 
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
@@ -100,7 +96,7 @@ namespace Chicane
 
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
         {
-            return getPolyResource(inType).add(inData);
+            return getPolyResource(inType).add(inType, inData);
         }
 
         Draw::Id Instance::findGlyph(const Draw::Reference& inReference)
@@ -162,109 +158,71 @@ namespace Chicane
 
         void Instance::enableDebug(DebugMode inMode)
         {
-            m_debugResources.enable(inMode);
+            m_debug |= inMode;
         }
 
         void Instance::disableDebug(DebugMode inMode)
         {
-            m_debugResources.disable(inMode);
+            m_debug &= ~inMode;
         }
 
         void Instance::toggleDebug(DebugMode inMode)
         {
-            m_debugResources.toggle(inMode);
+            if (hasDebug(inMode))
+            {
+                disableDebug(inMode);
+
+                return;
+            }
+
+            enableDebug(inMode);
         }
 
         bool Instance::hasDebug(DebugMode inMode) const
         {
-            return m_debugResources.has(inMode);
+            return (m_debug & inMode) == inMode;
         }
 
         void Instance::clearDebug(DebugMode inMode)
         {
-            if ((inMode & DebugMode::Bounds) == DebugMode::Bounds ||
-                (inMode & DebugMode::Colliders) == DebugMode::Colliders ||
-                (inMode & DebugMode::Skeletons) == DebugMode::Skeletons)
+            if ((inMode & DebugMode::Traces) != DebugMode::Traces)
             {
-                getPolyResource(DrawPolyType::e3D).reset();
-                getCurrentFrame().clearLines();
-                getCurrentFrame().clearTriangles();
+                return;
             }
 
-            if ((inMode & DebugMode::Traces) == DebugMode::Traces)
-            {
-                m_debugResources.clearTraces();
-            }
+            m_traces.clear();
         }
 
-        void Instance::drawDebug(const Bounds3D& inBounds)
-        {
-            Vertex::List vertices;
-            Debug::appendBounds(vertices, inBounds, Debug::BOUNDS_COLOR);
-
-            drawLines(vertices);
-        }
-
-        void Instance::drawDebug(DebugMode inMode, const Vertex::List& inVertices)
+        void Instance::pushTrace(const Vertex::List& inVertices)
         {
             if (inVertices.empty())
             {
                 return;
             }
 
-            if ((inMode & DebugMode::Traces) == DebugMode::Traces)
+            if (m_traces.size() >= Debug::TRACE_CAPACITY)
             {
-                m_debugResources.pushTraceOverlay(inVertices);
+                m_traces.erase(m_traces.begin());
             }
 
-            if ((inMode & DebugMode::Colliders) == DebugMode::Colliders ||
-                (inMode & DebugMode::Skeletons) == DebugMode::Skeletons ||
-                (inMode & DebugMode::Bounds) == DebugMode::Bounds)
-            {
-                drawLines(inVertices);
-            }
+            m_traces.push_back(inVertices);
         }
 
-        void Instance::drawLines(const Vertex::List& inVertices)
+        Vertex::List Instance::getTraceVertices() const
         {
-            if (inVertices.empty())
+            Vertex::List result;
+
+            if (!hasDebug(DebugMode::Traces))
             {
-                return;
+                return result;
             }
 
-            DrawPolyData data;
-            data.bIsVolatile = true;
-            data.mode        = DrawPolyMode::Line;
-            data.topology    = DrawPolyTopology::LineList;
-            data.vertices    = inVertices;
-
-            loadPoly(DrawPolyType::e3D, data);
-        }
-
-        void Instance::drawTriangles(const Vertex::List& inVertices)
-        {
-            if (inVertices.empty())
+            for (const Vertex::List& trace : m_traces)
             {
-                return;
+                result.insert(result.end(), trace.begin(), trace.end());
             }
 
-            DrawPolyData data;
-            data.bIsVolatile = true;
-            data.mode        = DrawPolyMode::Fill;
-            data.topology    = DrawPolyTopology::TriangleList;
-            data.vertices    = inVertices;
-
-            loadPoly(DrawPolyType::e3D, data);
-        }
-
-        bool Instance::hasDebugOverlay() const
-        {
-            return getCurrentFrame().hasLines() || getCurrentFrame().hasTriangles() || m_debugResources.hasTraces();
-        }
-
-        Vertex::List Instance::getDebugOverlayVertices() const
-        {
-            return getCurrentFrame().getLines();
+            return result;
         }
 
         float Instance::getGpuDelta() const

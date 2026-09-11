@@ -90,10 +90,10 @@ namespace Chicane
             void clearHashes() { m_hashes.clear(); }
 
         private:
-            bool      m_bIsDirty     = false;
-            bool      m_bIsVolatile  = false;
+            bool      m_bIsDirty    = false;
+            bool      m_bIsVolatile = false;
 
-            HashTable m_hashes       = {};
+            HashTable m_hashes = {};
         };
     }
 }

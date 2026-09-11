@@ -2,13 +2,11 @@
 
 #include <vector>
 
-#include "Chicane/Core/Math/Vertex.hpp"
-
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/ImmediateBuffer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane
@@ -35,8 +33,7 @@ namespace Chicane
             void destroyFrameResources();
 
             void initMeshGraphicsPipeline();
-            void initOverlayGraphicsPipeline();
-            void initOverlayFillGraphicsPipeline();
+            void initLineListGraphicsPipeline(VulkanGraphicsPipeline& outPipeline, bool inTestDepth);
             void initOutlineGraphicsPipeline();
             void initFramebuffers();
 
@@ -48,32 +45,33 @@ namespace Chicane
                 float              inOffsetY
             ) const;
 
-            VulkanLSceneLineOverlayBuffer& overlayBufferFor(VulkanFrame& inFrame);
-            void                           ensureOverlayBuffer(
-                                              VulkanLSceneLineOverlayBuffer& outBuffer, std::size_t inVertexCount
-                                          );
-            void                           destroyOverlayBuffer(VulkanLSceneLineOverlayBuffer& inBuffer);
-            void                           destroyOverlayBuffers();
-            void                           uploadOverlayBuffer(
-                                              VulkanLSceneLineOverlayBuffer& outBuffer, const Vertex::List& inVertices
-                                          );
+            VulkanLSceneLineImmediateBuffer& immediateBufferFor(VulkanFrame& inFrame);
+            void ensureImmediateVertexBuffer(VulkanLSceneLineImmediateBuffer& outBuffer, std::size_t inBytes);
+            void ensureImmediateIndexBuffer(VulkanLSceneLineImmediateBuffer& outBuffer, std::size_t inBytes);
+            void destroyImmediateBuffer(VulkanLSceneLineImmediateBuffer& inBuffer);
+            void destroyImmediateBuffers();
+            void uploadImmediateGeometry(VulkanLSceneLineImmediateBuffer& outBuffer, const Frame& inFrame);
 
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
-            bool shouldDrawOverlay(const Frame& inFrame) const;
+            bool shouldDrawLineList(const Frame& inFrame) const;
             bool shouldDrawOutline(const Frame& inFrame) const;
 
+            void drawLineList(
+                vk::CommandBuffer inCommandBuffer, const DrawPoly& inDraw, vk::Buffer inIndexBuffer
+            ) const;
+
         private:
-            VulkanGraphicsPipeline                     m_meshPipeline;
-            VulkanGraphicsPipeline                     m_overlayPipeline;
-            VulkanGraphicsPipeline                     m_overlayFillPipeline;
-            VulkanGraphicsPipeline                     m_outlineMaskPipeline;
-            VulkanGraphicsPipeline                     m_outlinePipeline;
+            VulkanGraphicsPipeline                       m_meshPipeline;
+            VulkanGraphicsPipeline                       m_lineListPipeline;
+            VulkanGraphicsPipeline                       m_lineListForegroundPipeline;
+            VulkanGraphicsPipeline                       m_outlineMaskPipeline;
+            VulkanGraphicsPipeline                       m_outlinePipeline;
 
-            VulkanDescriptorBundle                     m_frameDescriptor;
+            VulkanDescriptorBundle                       m_frameDescriptor;
 
-            std::vector<VulkanLSceneLineOverlayBuffer> m_overlayBuffers;
+            std::vector<VulkanLSceneLineImmediateBuffer> m_immediateBuffers;
 
-            std::vector<vk::ClearValue>                m_clear;
+            std::vector<vk::ClearValue>                  m_clear;
         };
     }
 }

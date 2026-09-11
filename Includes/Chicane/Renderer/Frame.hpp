@@ -58,15 +58,12 @@ namespace Chicane
 
             const DrawSkyInstance& getSkyInstance() const;
 
-            void drawLines(const Vertex::List& inVertices);
-            bool hasLines() const;
-            const Vertex::List& getLines() const;
-            void clearLines();
+            bool hasImmediateVertices() const;
+            const Vertex::List& getImmediateVertices() const;
+            bool hasImmediateIndices() const;
+            const Vertex::Indices& getImmediateIndices() const;
 
-            void drawTriangles(const Vertex::List& inVertices);
-            bool hasTriangles() const;
-            const Vertex::List& getTriangles() const;
-            void clearTriangles();
+            bool isForegroundDraw(const DrawPoly& inDraw) const;
 
         protected:
             void resetCamera();
@@ -99,8 +96,8 @@ namespace Chicane
             DrawPoly2DInstance::List m_2DInstances     = {};
             DrawSkyInstance          m_skyInstance     = {};
 
-            Vertex::List             m_lines           = {};
-            Vertex::List             m_triangles       = {};
+            Vertex::List             m_immediateVertices = {};
+            Vertex::Indices          m_immediateIndices  = {};
         };
     }
 }

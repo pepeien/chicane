@@ -1,10 +1,15 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 
+#include <cstddef>
+
 #include <glad/gl.h>
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
+#include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
@@ -14,44 +19,58 @@ namespace Chicane
         OpenGLLSceneLine::OpenGLLSceneLine()
             : Layer(SCENE_LINE_LAYER_ID),
               m_meshShaderProgram(0),
-              m_overlayShaderProgram(0),
               m_outlineShaderProgram(0),
-              m_overlayVertexArray(0),
-              m_overlayVertexBuffer(0),
-              m_overlayVertexCount(0)
+              m_immediateVertexArray(0),
+              m_immediateVertexBuffer(0),
+              m_immediateIndexBuffer(0),
+              m_immediateVertexCapacity(0),
+              m_immediateIndexCapacity(0)
         {}
 
         void OpenGLLSceneLine::onInit()
         {
             buildMeshShader();
-            buildOverlayShader();
             buildOutlineShader();
-            buildOverlayVertexArray();
+            buildImmediateVertexArray();
         }
 
         void OpenGLLSceneLine::onDestruction()
         {
-            destroyOverlayVertexArray();
+            destroyImmediateVertexArray();
             destroyOutlineShader();
-            destroyOverlayShader();
             destroyMeshShader();
         }
 
         bool OpenGLLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            const Instance* renderer = getBackend()->getRenderer();
+            if (renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return true;
             }
 
-            const Instance* renderer = getBackend()->getRenderer();
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            {
+                if (!draw.isLineList())
+                {
+                    return true;
+                }
+            }
 
-            return renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
+            return false;
         }
 
-        bool OpenGLLSceneLine::shouldDrawOverlay(const Frame& inFrame) const
+        bool OpenGLLSceneLine::shouldDrawLineList(const Frame& inFrame) const
         {
-            return inFrame.hasLines() || inFrame.hasTriangles();
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            {
+                if (draw.isLineList())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         bool OpenGLLSceneLine::shouldDrawOutline(const Frame& inFrame) const
@@ -61,7 +80,7 @@ namespace Chicane
 
         bool OpenGLLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay(inFrame) || shouldDrawOutline(inFrame);
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawLineList(inFrame) || shouldDrawOutline(inFrame);
         }
 
         void OpenGLLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -88,6 +107,11 @@ namespace Chicane
                 {
                     for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, inMode))
                     {
+                        if (draw.isLineList())
+                        {
+                            continue;
+                        }
+
                         glDrawElementsInstancedBaseVertexBaseInstance(
                             GL_TRIANGLES,
                             draw.indexCount,
@@ -107,7 +131,18 @@ namespace Chicane
 
                 if (renderer->hasDebug(DebugMode::Meshes))
                 {
-                    drawBatch(DrawPolyMode::Fill);
+                    for (const DrawPoly& draw : inFrame.getSceneDraws())
+                    {
+                        glDrawElementsInstancedBaseVertexBaseInstance(
+                            GL_TRIANGLES,
+                            draw.indexCount,
+                            GL_UNSIGNED_INT,
+                            (void*)(sizeof(Vertex::Index) * draw.indexStart),
+                            draw.instanceCount,
+                            draw.vertexStart,
+                            draw.instanceStart
+                        );
+                    }
                 }
 
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -115,10 +150,10 @@ namespace Chicane
 
             if (shouldDrawOutline(inFrame))
             {
-                Depth depth;
-                depth.bCanWrite = false;
-                depth.compare   = DepthCompare::LessOrEqual;
-                backend->enableDepth(depth);
+                Depth outlineDepth;
+                outlineDepth.bCanWrite = false;
+                outlineDepth.compare   = DepthCompare::LessOrEqual;
+                backend->enableDepth(outlineDepth);
                 backend->disableCulling();
 
                 backend->bindVertexArray(frame.getObject(SCENE_LAYER_ID));
@@ -170,60 +205,45 @@ namespace Chicane
                 glDisable(GL_STENCIL_TEST);
                 glStencilMask(0xFF);
 
-                depth.bCanWrite = true;
-                backend->enableDepth(depth);
+                outlineDepth.bCanWrite = true;
+                backend->enableDepth(outlineDepth);
             }
 
-            if (!shouldDrawOverlay(inFrame))
+            if (!shouldDrawLineList(inFrame))
             {
                 return;
             }
 
-            const Vertex::List& lines     = inFrame.getLines();
-            const Vertex::List& triangles = inFrame.getTriangles();
-            if (lines.empty() && triangles.empty())
-            {
-                return;
-            }
-
-            Vertex::List vertices;
-            vertices.reserve(lines.size() + triangles.size());
-            vertices.insert(vertices.end(), lines.begin(), lines.end());
-            vertices.insert(vertices.end(), triangles.begin(), triangles.end());
-
-            uploadOverlayBuffer(vertices);
-
+            backend->enableDepth(depth);
             backend->disableCulling();
-            backend->useProgram(m_overlayShaderProgram);
+            backend->useProgram(m_meshShaderProgram);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glLineWidth(1.0f);
 
-            if (!triangles.empty())
+            if (!inFrame.hasImmediateVertices())
             {
-                glClear(GL_DEPTH_BUFFER_BIT);
-
-                Depth overlayDepth;
-                overlayDepth.bCanWrite = true;
-                overlayDepth.compare   = DepthCompare::LessOrEqual;
-                backend->enableDepth(overlayDepth);
-
-                DrawPoly draw;
-                draw.topology   = DrawPolyTopology::TriangleList;
-                draw.indexCount = static_cast<std::uint32_t>(triangles.size());
-                draw.indexStart = static_cast<std::uint32_t>(lines.size());
-                backend->drawPolyArrays(draw, frame.getObject(m_id));
+                return;
             }
 
-            backend->disableDepth();
-
-            if (!lines.empty())
+            uploadImmediateGeometry(inFrame);
+            glBindVertexArray(m_immediateVertexArray);
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
             {
-                glLineWidth(3.0f);
+                if (!draw.isLineList())
+                {
+                    continue;
+                }
 
-                DrawPoly draw;
-                draw.topology   = DrawPolyTopology::LineList;
-                draw.indexCount = static_cast<std::uint32_t>(lines.size());
-                draw.indexStart = 0U;
-                backend->drawPolyArrays(draw, frame.getObject(m_id));
-                glLineWidth(1.0f);
+                if (inFrame.isForegroundDraw(draw))
+                {
+                    backend->disableDepth();
+                }
+                else
+                {
+                    backend->enableDepth(depth);
+                }
+
+                drawLineList(draw);
             }
         }
 
@@ -263,32 +283,6 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneLine::buildOverlayShader()
-        {
-            Shader::List shaders;
-
-            Shader vertex;
-            vertex.type   = ShaderType::Vertex;
-            vertex.source = "Assets/Engine/Shaders/OpenGL/Scene/Line/Overlay.overt";
-            shaders.push_back(vertex);
-
-            Shader fragment;
-            fragment.type   = ShaderType::Fragment;
-            fragment.source = "Assets/Engine/Shaders/OpenGL/Scene/Line/Overlay.ofrag";
-            shaders.push_back(fragment);
-
-            m_overlayShaderProgram = getBackend<OpenGLBackend>()->initShader(shaders);
-        }
-
-        void OpenGLLSceneLine::destroyOverlayShader()
-        {
-            if (m_overlayShaderProgram)
-            {
-                getBackend<OpenGLBackend>()->destroyProgram(m_overlayShaderProgram);
-                m_overlayShaderProgram = 0;
-            }
-        }
-
         void OpenGLLSceneLine::buildOutlineShader()
         {
             Shader::List shaders;
@@ -315,65 +309,90 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneLine::buildOverlayVertexArray()
+        void OpenGLLSceneLine::buildImmediateVertexArray()
         {
             OpenGLBackend* backend = getBackend<OpenGLBackend>();
 
-            m_overlayVertexArray = backend->initVertexArray(1);
-            glCreateBuffers(1, &m_overlayVertexBuffer);
+            m_immediateVertexArray = backend->initVertexArray(1);
+            glCreateBuffers(1, &m_immediateVertexBuffer);
+            glCreateBuffers(1, &m_immediateIndexBuffer);
 
-            glEnableVertexArrayAttrib(m_overlayVertexArray, 0);
-            glVertexArrayAttribFormat(m_overlayVertexArray, 0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
-            glVertexArrayAttribBinding(m_overlayVertexArray, 0, 0);
+            glEnableVertexArrayAttrib(m_immediateVertexArray, 0);
+            glVertexArrayAttribFormat(m_immediateVertexArray, 0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
+            glVertexArrayAttribBinding(m_immediateVertexArray, 0, 0);
 
-            glEnableVertexArrayAttrib(m_overlayVertexArray, 1);
-            glVertexArrayAttribFormat(m_overlayVertexArray, 1, 4, GL_FLOAT, GL_FALSE, offsetof(Vertex, color));
-            glVertexArrayAttribBinding(m_overlayVertexArray, 1, 0);
+            glEnableVertexArrayAttrib(m_immediateVertexArray, 1);
+            glVertexArrayAttribFormat(m_immediateVertexArray, 1, 4, GL_FLOAT, GL_FALSE, offsetof(Vertex, color));
+            glVertexArrayAttribBinding(m_immediateVertexArray, 1, 0);
 
-            glEnableVertexArrayAttrib(m_overlayVertexArray, 2);
-            glVertexArrayAttribFormat(m_overlayVertexArray, 2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, uv));
-            glVertexArrayAttribBinding(m_overlayVertexArray, 2, 0);
+            glEnableVertexArrayAttrib(m_immediateVertexArray, 2);
+            glVertexArrayAttribFormat(m_immediateVertexArray, 2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, uv));
+            glVertexArrayAttribBinding(m_immediateVertexArray, 2, 0);
 
-            glEnableVertexArrayAttrib(m_overlayVertexArray, 3);
-            glVertexArrayAttribFormat(m_overlayVertexArray, 3, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
-            glVertexArrayAttribBinding(m_overlayVertexArray, 3, 0);
-
-            for (OpenGLFrame& frame : backend->frames)
-            {
-                frame.addObject(m_id, m_overlayVertexArray);
-            }
+            glEnableVertexArrayAttrib(m_immediateVertexArray, 3);
+            glVertexArrayAttribFormat(m_immediateVertexArray, 3, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
+            glVertexArrayAttribBinding(m_immediateVertexArray, 3, 0);
         }
 
-        void OpenGLLSceneLine::destroyOverlayVertexArray()
+        void OpenGLLSceneLine::destroyImmediateVertexArray()
         {
-            for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
+            if (m_immediateIndexBuffer)
             {
-                frame.removeObject(m_id);
+                glDeleteBuffers(1, &m_immediateIndexBuffer);
+                m_immediateIndexBuffer = 0;
             }
 
-            if (m_overlayVertexBuffer)
+            if (m_immediateVertexBuffer)
             {
-                glDeleteBuffers(1, &m_overlayVertexBuffer);
-                m_overlayVertexBuffer = 0;
+                glDeleteBuffers(1, &m_immediateVertexBuffer);
+                m_immediateVertexBuffer = 0;
             }
 
-            if (m_overlayVertexArray)
+            if (m_immediateVertexArray)
             {
-                getBackend<OpenGLBackend>()->destroyVertexArray(m_overlayVertexArray);
-                m_overlayVertexArray = 0;
+                getBackend<OpenGLBackend>()->destroyVertexArray(m_immediateVertexArray);
+                m_immediateVertexArray = 0;
             }
 
-            m_overlayVertexCount = 0;
+            m_immediateVertexCapacity = 0;
+            m_immediateIndexCapacity  = 0;
         }
 
-        void OpenGLLSceneLine::uploadOverlayBuffer(const Vertex::List& inVertices)
+        void OpenGLLSceneLine::uploadImmediateGeometry(const Frame& inFrame)
         {
-            const GLsizeiptr size = static_cast<GLsizeiptr>(sizeof(Vertex) * inVertices.size());
+            const Vertex::List& vertices    = inFrame.getImmediateVertices();
+            const std::size_t   vertexCount = vertices.size();
+            const GLsizeiptr    vertexSize  = static_cast<GLsizeiptr>(sizeof(Vertex) * vertexCount);
 
-            glNamedBufferData(m_overlayVertexBuffer, size, inVertices.data(), GL_DYNAMIC_DRAW);
-            glVertexArrayVertexBuffer(m_overlayVertexArray, 0, m_overlayVertexBuffer, 0, sizeof(Vertex));
+            if (vertexCount > m_immediateVertexCapacity)
+            {
+                glNamedBufferData(m_immediateVertexBuffer, vertexSize, nullptr, GL_DYNAMIC_DRAW);
+                m_immediateVertexCapacity = vertexCount;
+            }
 
-            m_overlayVertexCount = static_cast<std::uint32_t>(inVertices.size());
+            if (!vertices.empty())
+            {
+                glNamedBufferSubData(m_immediateVertexBuffer, 0, vertexSize, vertices.data());
+            }
+
+            glVertexArrayVertexBuffer(m_immediateVertexArray, 0, m_immediateVertexBuffer, 0, sizeof(Vertex));
+
+            const Vertex::Indices& indices    = inFrame.getImmediateIndices();
+            const std::size_t      indexCount = indices.size();
+            const GLsizeiptr       indexSize  = static_cast<GLsizeiptr>(sizeof(Vertex::Index) * indexCount);
+
+            if (indexCount > m_immediateIndexCapacity)
+            {
+                glNamedBufferData(m_immediateIndexBuffer, indexSize, nullptr, GL_DYNAMIC_DRAW);
+                m_immediateIndexCapacity = indexCount;
+            }
+
+            if (!indices.empty())
+            {
+                glNamedBufferSubData(m_immediateIndexBuffer, 0, indexSize, indices.data());
+            }
+
+            glVertexArrayElementBuffer(m_immediateVertexArray, m_immediateIndexBuffer);
         }
 
         void OpenGLLSceneLine::drawOutlineMeshes(const Frame& inFrame, float inOffsetX, float inOffsetY) const
@@ -392,6 +411,32 @@ namespace Chicane
                     draw.instanceStart
                 );
             }
+        }
+
+        void OpenGLLSceneLine::drawLineList(const DrawPoly& inDraw) const
+        {
+            if (inDraw.indexCount == 0)
+            {
+                glDrawArraysInstancedBaseInstance(
+                    GL_LINES,
+                    static_cast<GLint>(inDraw.vertexStart),
+                    static_cast<GLsizei>(inDraw.vertexCount),
+                    static_cast<GLsizei>(inDraw.instanceCount),
+                    inDraw.instanceStart
+                );
+
+                return;
+            }
+
+            glDrawElementsInstancedBaseVertexBaseInstance(
+                GL_LINES,
+                inDraw.indexCount,
+                GL_UNSIGNED_INT,
+                (void*)(sizeof(Vertex::Index) * inDraw.indexStart),
+                inDraw.instanceCount,
+                inDraw.vertexStart,
+                inDraw.instanceStart
+            );
         }
     }
 }

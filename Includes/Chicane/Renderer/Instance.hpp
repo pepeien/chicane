@@ -2,8 +2,8 @@
 
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
-#include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
@@ -14,7 +14,6 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
-#include "Chicane/Renderer/Debug/Resource.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -93,13 +92,8 @@ namespace Chicane
             bool hasDebug(DebugMode inMode) const;
 
             void clearDebug(DebugMode inMode = DebugMode::All);
-            void drawDebug(const Bounds3D& inBounds);
-            void drawDebug(DebugMode inMode, const Vertex::List& inVertices);
-            void drawLines(const Vertex::List& inVertices);
-            void drawTriangles(const Vertex::List& inVertices);
-
-            bool hasDebugOverlay() const;
-            Vertex::List getDebugOverlayVertices() const;
+            void pushTrace(const Vertex::List& inVertices);
+            Vertex::List getTraceVertices() const;
 
             float getGpuDelta() const;
 
@@ -139,25 +133,26 @@ namespace Chicane
 
         private:
             // Window
-            const Window*            m_window;
+            const Window*             m_window;
 
             // Settings
-            Settings                 m_settings;
+            Settings                  m_settings;
 
             // Frame
-            std::vector<Frame>       m_frames;
-            std::uint32_t            m_currentFrame;
+            std::vector<Frame>        m_frames;
+            std::uint32_t             m_currentFrame;
 
             // Draw
-            DrawPolyResource::Map    m_polyResources;
-            DrawTextureResource      m_textureResources;
-            DrawSkyResource          m_skyResource;
+            DrawPolyResource::Map     m_polyResources;
+            DrawTextureResource       m_textureResources;
+            DrawSkyResource           m_skyResource;
 
             // Debug
-            DebugResource            m_debugResources;
+            DebugMode                 m_debug;
+            std::vector<Vertex::List> m_traces;
 
             // Backend
-            std::unique_ptr<Backend> m_backend;
+            std::unique_ptr<Backend>  m_backend;
         };
     }
 }

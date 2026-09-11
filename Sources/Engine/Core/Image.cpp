@@ -20,72 +20,69 @@
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 
-namespace
+static void appendU32(std::vector<unsigned char>& outValue, std::uint32_t inValue)
 {
-    void appendU32(std::vector<unsigned char>& outValue, std::uint32_t inValue)
+    outValue.push_back(static_cast<unsigned char>((inValue >> 24) & 0xFF));
+    outValue.push_back(static_cast<unsigned char>((inValue >> 16) & 0xFF));
+    outValue.push_back(static_cast<unsigned char>((inValue >> 8) & 0xFF));
+    outValue.push_back(static_cast<unsigned char>(inValue & 0xFF));
+}
+
+static std::uint32_t crc32(const unsigned char* inData, std::size_t inSize)
+{
+    std::uint32_t crc = 0xFFFFFFFFu;
+
+    for (std::size_t i = 0; i < inSize; i++)
     {
-        outValue.push_back(static_cast<unsigned char>((inValue >> 24) & 0xFF));
-        outValue.push_back(static_cast<unsigned char>((inValue >> 16) & 0xFF));
-        outValue.push_back(static_cast<unsigned char>((inValue >> 8) & 0xFF));
-        outValue.push_back(static_cast<unsigned char>(inValue & 0xFF));
+        crc ^= inData[i];
+
+        for (int bit = 0; bit < 8; bit++)
+        {
+            const std::uint32_t mask = static_cast<std::uint32_t>(-(static_cast<int>(crc & 1u)));
+            crc                      = (crc >> 1) ^ (0xEDB88320u & mask);
+        }
     }
 
-    std::uint32_t crc32(const unsigned char* inData, std::size_t inSize)
+    return crc ^ 0xFFFFFFFFu;
+}
+
+static std::uint32_t adler32(const unsigned char* inData, std::size_t inSize)
+{
+    std::uint32_t a = 1;
+    std::uint32_t b = 0;
+
+    for (std::size_t i = 0; i < inSize; i++)
     {
-        std::uint32_t crc = 0xFFFFFFFFu;
-
-        for (std::size_t i = 0; i < inSize; i++)
+        a += inData[i];
+        if (a >= 65521)
         {
-            crc ^= inData[i];
-
-            for (int bit = 0; bit < 8; bit++)
-            {
-                const std::uint32_t mask = static_cast<std::uint32_t>(-(static_cast<int>(crc & 1u)));
-                crc                      = (crc >> 1) ^ (0xEDB88320u & mask);
-            }
+            a -= 65521;
         }
 
-        return crc ^ 0xFFFFFFFFu;
-    }
-
-    std::uint32_t adler32(const unsigned char* inData, std::size_t inSize)
-    {
-        std::uint32_t a = 1;
-        std::uint32_t b = 0;
-
-        for (std::size_t i = 0; i < inSize; i++)
+        b += a;
+        if (b >= 65521)
         {
-            a += inData[i];
-            if (a >= 65521)
-            {
-                a -= 65521;
-            }
-
-            b += a;
-            if (b >= 65521)
-            {
-                b -= 65521;
-            }
+            b -= 65521;
         }
-
-        return (b << 16) | a;
     }
 
-    void appendChunk(
-        std::vector<unsigned char>& outValue, const char* inType, const unsigned char* inData, std::size_t inSize
-    )
+    return (b << 16) | a;
+}
+
+static void appendChunk(
+    std::vector<unsigned char>& outValue, const char* inType, const unsigned char* inData, std::size_t inSize
+)
+{
+    appendU32(outValue, static_cast<std::uint32_t>(inSize));
+
+    const std::size_t crcStart = outValue.size();
+    outValue.insert(outValue.end(), inType, inType + 4);
+    if (inData != nullptr && inSize > 0)
     {
-        appendU32(outValue, static_cast<std::uint32_t>(inSize));
-
-        const std::size_t crcStart = outValue.size();
-        outValue.insert(outValue.end(), inType, inType + 4);
-        if (inData != nullptr && inSize > 0)
-        {
-            outValue.insert(outValue.end(), inData, inData + inSize);
-        }
-
-        appendU32(outValue, crc32(outValue.data() + crcStart, 4 + inSize));
+        outValue.insert(outValue.end(), inData, inData + inSize);
     }
+
+    appendU32(outValue, crc32(outValue.data() + crcStart, 4 + inSize));
 }
 
 namespace Chicane

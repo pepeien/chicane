@@ -35,7 +35,7 @@ namespace Chicane
             for (pugi::xml_node child = root.first_child(); child;)
             {
                 pugi::xml_node next = child.next_sibling();
-                const String name = child.name();
+                const String   name = child.name();
                 if (!name.equals(AssetPreview::TAG) && !name.equals(Skeleton::TAG) && !name.equals(Animation::TAG))
                 {
                     root.remove_child(child);
@@ -126,8 +126,7 @@ namespace Chicane
             }
             else if (boneAttribute.empty())
             {
-                foundGroupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME)
-                    .set_value(inGroup.getBone().toStandard());
+                foundGroupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
             }
             else
             {
@@ -282,9 +281,8 @@ namespace Chicane
             pugi::xml_node after = root.child(Skeleton::TAG);
             for (const AssetReference& animation : m_animations)
             {
-                pugi::xml_node animationNode = after
-                                                   ? root.insert_child_after(Animation::TAG, after)
-                                                   : root.prepend_child(Animation::TAG);
+                pugi::xml_node animationNode =
+                    after ? root.insert_child_after(Animation::TAG, after) : root.prepend_child(Animation::TAG);
                 animation.saveTo(animationNode);
                 after = animationNode;
             }

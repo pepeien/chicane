@@ -29,6 +29,9 @@ namespace Chicane
             }
 
         public:
+            bool isLineList() const { return topology == DrawPolyTopology::LineList || indexCount == 0; }
+
+        public:
             DrawPolyMode     mode     = DrawPolyMode::Fill;
             DrawPolyTopology topology = DrawPolyTopology::TriangleList;
 

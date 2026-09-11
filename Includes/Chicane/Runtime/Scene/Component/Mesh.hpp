@@ -13,6 +13,8 @@
 
 #include "Chicane/Drift/Queue.hpp"
 
+#include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -45,7 +47,12 @@ namespace Chicane
 
         bool hasSkeleton() const;
         const Box::Skeleton* getSkeleton() const;
-        void appendDebugWireframe(Vertex::List& outLines, Vertex::List& outTriangles, const Vec4& inColor) const;
+        void appendDebugWireframe(
+            Vertex::List&                          outLines,
+            Renderer::DrawPoly3DCommandMesh::List& outMeshes,
+            Renderer::Draw::Id                     inSphereId,
+            const Vec4&                            inColor
+        ) const;
 
         const std::vector<const Box::Animation*>& getAnimations() const;
         bool hasAnimation(const String& inId) const;
@@ -86,11 +93,11 @@ namespace Chicane
         void setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue);
 
     protected:
-        bool                     m_bIsVisible;
-        Renderer::DrawPoly3DFlag m_flags;
+        bool                                              m_bIsVisible;
+        Renderer::DrawPoly3DFlag                          m_flags;
 
-        const Box::Mesh*         m_asset;
-        const Box::Skeleton*     m_skeleton;
+        const Box::Mesh*                                  m_asset;
+        const Box::Skeleton*                              m_skeleton;
 
         std::vector<const Box::Animation*>                m_animations;
         std::unordered_map<String, const Box::Animation*> m_animationById;

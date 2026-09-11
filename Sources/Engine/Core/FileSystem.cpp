@@ -4,7 +4,7 @@
 #include <system_error>
 
 #if IS_WINDOWS
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #include "Chicane/Core/FileSystem/Item/Type.reflected.hpp"
@@ -19,8 +19,8 @@ namespace Chicane
             static const Path directory = []() -> Path
             {
 #if IS_WINDOWS
-                wchar_t buffer[MAX_PATH] = {};
-                const DWORD length       = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
+                wchar_t     buffer[MAX_PATH] = {};
+                const DWORD length           = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
                 if (length == 0 || length >= MAX_PATH)
                 {
                     return Path(std::filesystem::current_path());
@@ -56,7 +56,7 @@ namespace Chicane
                     return {};
                 }
 
-                std::error_code error;
+                std::error_code             error;
                 const std::filesystem::path canonical =
                     std::filesystem::weakly_canonical(inCandidate.toStandard(), error);
                 if (error)
@@ -78,7 +78,7 @@ namespace Chicane
                 return found;
             }
 
-            Path base = inBase;
+            Path            base = inBase;
             std::error_code fileError;
             if (!base.isEmpty() &&
                 (base.hasExtension() || std::filesystem::is_regular_file(base.toStandard(), fileError)))

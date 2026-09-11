@@ -15,136 +15,134 @@
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
 #include "Editor/Actor/Item.hpp"
+#include "Editor/Component/Gizmo/PlaneHandle.hpp"
 #include "Editor/UI/View/Home.hpp"
 
 namespace Editor
 {
-    namespace
+    constexpr float AXIS_LENGTH    = 1.5f;
+    constexpr float AXIS_RADIUS    = 0.08f;
+    constexpr float RING_RADIUS    = 1.0f;
+    constexpr float RING_THICKNESS = 0.07f;
+    constexpr float CENTER_RADIUS  = 0.12f;
+    constexpr float ORIGIN_RADIUS  = 0.165f;
+    constexpr float ORIGIN_TUBE    = 0.012f;
+    constexpr float ORIGIN_OUTER   = ORIGIN_RADIUS + ORIGIN_TUBE;
+    constexpr float PLANE_INNER    = 0.18f;
+    constexpr float PLANE_OUTER    = 0.40f;
+    constexpr float MIN_SCALE      = 0.01f;
+    constexpr float HANDLE_SCALE   = 0.10f;
+    constexpr float MIN_HANDLE     = 0.25f;
+    constexpr float MAX_HANDLE     = 250.0f;
+
+    static Chicane::FileSystem::Path meshPath(GizmoType inType)
     {
-        constexpr float AXIS_LENGTH    = 1.5f;
-        constexpr float AXIS_RADIUS    = 0.08f;
-        constexpr float RING_RADIUS    = 1.0f;
-        constexpr float RING_THICKNESS = 0.07f;
-        constexpr float CENTER_RADIUS  = 0.12f;
-        constexpr float ORIGIN_RADIUS  = 0.165f;
-        constexpr float ORIGIN_TUBE    = 0.012f;
-        constexpr float ORIGIN_OUTER   = ORIGIN_RADIUS + ORIGIN_TUBE;
-        constexpr float PLANE_INNER    = 0.18f;
-        constexpr float PLANE_OUTER    = 0.40f;
-        constexpr float MIN_SCALE      = 0.01f;
-        constexpr float HANDLE_SCALE   = 0.10f;
-        constexpr float MIN_HANDLE     = 0.25f;
-        constexpr float MAX_HANDLE     = 250.0f;
-
-        Chicane::FileSystem::Path meshPath(GizmoType inType)
+        switch (inType)
         {
-            switch (inType)
-            {
-            case GizmoType::Rotation:
-                return "Assets/Editor/Meshes/Gizmo/Rotation.bmsh";
+        case GizmoType::Rotation:
+            return "Assets/Editor/Meshes/Gizmo/Rotation.bmsh";
 
-            case GizmoType::Scale:
-                return "Assets/Editor/Meshes/Gizmo/Scale.bmsh";
+        case GizmoType::Scale:
+            return "Assets/Editor/Meshes/Gizmo/Scale.bmsh";
 
-            default:
-                return "Assets/Editor/Meshes/Gizmo/Translation.bmsh";
-            }
+        default:
+            return "Assets/Editor/Meshes/Gizmo/Translation.bmsh";
+        }
+    }
+
+    static float length(const Chicane::Vec3& inValue)
+    {
+        return std::sqrt(inValue.dot(inValue));
+    }
+
+    static bool closestOnAxis(
+        const Chicane::Vec3& inOrigin,
+        const Chicane::Vec3& inDirection,
+        const Chicane::Vec3& inAxisOrigin,
+        const Chicane::Vec3& inAxis,
+        float                inMin,
+        float                inMax,
+        float&               outRay,
+        float&               outAxis,
+        float&               outDistance
+    )
+    {
+        const Chicane::Vec3 offset = inOrigin - inAxisOrigin;
+        const float         a      = inDirection.dot(inDirection);
+        const float         b      = inDirection.dot(inAxis);
+        const float         c      = inAxis.dot(inAxis);
+        const float         d      = inDirection.dot(offset);
+        const float         e      = inAxis.dot(offset);
+        const float         denom  = a * c - b * b;
+
+        float ray  = 0.0f;
+        float axis = 0.0f;
+
+        if (std::fabs(denom) > 0.0001f)
+        {
+            ray  = (b * e - c * d) / denom;
+            axis = (a * e - b * d) / denom;
+        }
+        else
+        {
+            axis = e;
+            ray  = 0.0f;
         }
 
-        float length(const Chicane::Vec3& inValue)
+        ray  = std::max(ray, 0.0f);
+        axis = std::clamp(axis, inMin, inMax);
+
+        const Chicane::Vec3 delta = (inOrigin + inDirection * ray) - (inAxisOrigin + inAxis * axis);
+        outRay                    = ray;
+        outAxis                   = axis;
+        outDistance               = length(delta);
+
+        return true;
+    }
+
+    static bool intersectPlane(
+        const Chicane::Vec3& inOrigin,
+        const Chicane::Vec3& inDirection,
+        const Chicane::Vec3& inPoint,
+        const Chicane::Vec3& inNormal,
+        Chicane::Vec3&       outHit
+    )
+    {
+        const float denom = inDirection.dot(inNormal);
+        if (std::fabs(denom) < 0.0001f)
         {
-            return std::sqrt(inValue.dot(inValue));
+            return false;
         }
 
-        bool closestOnAxis(
-            const Chicane::Vec3& inOrigin,
-            const Chicane::Vec3& inDirection,
-            const Chicane::Vec3& inAxisOrigin,
-            const Chicane::Vec3& inAxis,
-            float                inMin,
-            float                inMax,
-            float&               outRay,
-            float&               outAxis,
-            float&               outDistance
-        )
+        const float ray = (inPoint - inOrigin).dot(inNormal) / denom;
+        if (ray < 0.0f)
         {
-            const Chicane::Vec3 offset = inOrigin - inAxisOrigin;
-            const float         a      = inDirection.dot(inDirection);
-            const float         b      = inDirection.dot(inAxis);
-            const float         c      = inAxis.dot(inAxis);
-            const float         d      = inDirection.dot(offset);
-            const float         e      = inAxis.dot(offset);
-            const float         denom  = a * c - b * b;
-
-            float ray  = 0.0f;
-            float axis = 0.0f;
-
-            if (std::fabs(denom) > 0.0001f)
-            {
-                ray  = (b * e - c * d) / denom;
-                axis = (a * e - b * d) / denom;
-            }
-            else
-            {
-                axis = e;
-                ray  = 0.0f;
-            }
-
-            ray  = std::max(ray, 0.0f);
-            axis = std::clamp(axis, inMin, inMax);
-
-            const Chicane::Vec3 delta = (inOrigin + inDirection * ray) - (inAxisOrigin + inAxis * axis);
-            outRay                    = ray;
-            outAxis                   = axis;
-            outDistance               = length(delta);
-
-            return true;
+            return false;
         }
 
-        bool intersectPlane(
-            const Chicane::Vec3& inOrigin,
-            const Chicane::Vec3& inDirection,
-            const Chicane::Vec3& inPoint,
-            const Chicane::Vec3& inNormal,
-            Chicane::Vec3&       outHit
-        )
+        outHit = inOrigin + inDirection * ray;
+
+        return true;
+    }
+
+    static float angleOnPlane(const Chicane::Vec3& inPoint, const Chicane::Vec3& inOrigin, const Chicane::Vec3& inAxis)
+    {
+        Chicane::Vec3 tangent = inAxis.cross(Chicane::Vec3::Up());
+        if (tangent.dot(tangent) < 0.0001f)
         {
-            const float denom = inDirection.dot(inNormal);
-            if (std::fabs(denom) < 0.0001f)
-            {
-                return false;
-            }
-
-            const float ray = (inPoint - inOrigin).dot(inNormal) / denom;
-            if (ray < 0.0f)
-            {
-                return false;
-            }
-
-            outHit = inOrigin + inDirection * ray;
-
-            return true;
+            tangent = inAxis.cross(Chicane::Vec3::Right());
         }
 
-        float angleOnPlane(const Chicane::Vec3& inPoint, const Chicane::Vec3& inOrigin, const Chicane::Vec3& inAxis)
-        {
-            Chicane::Vec3 tangent = inAxis.cross(Chicane::Vec3::Up());
-            if (tangent.dot(tangent) < 0.0001f)
-            {
-                tangent = inAxis.cross(Chicane::Vec3::Right());
-            }
+        tangent                       = tangent.normalize();
+        const Chicane::Vec3 bitangent = inAxis.cross(tangent).normalize();
+        const Chicane::Vec3 offset    = inPoint - inOrigin;
 
-            tangent                       = tangent.normalize();
-            const Chicane::Vec3 bitangent = inAxis.cross(tangent).normalize();
-            const Chicane::Vec3 offset    = inPoint - inOrigin;
+        return std::atan2(offset.dot(bitangent), offset.dot(tangent));
+    }
 
-            return std::atan2(offset.dot(bitangent), offset.dot(tangent));
-        }
-
-        bool isPlaneAxis(GizmoAxis inAxis)
-        {
-            return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
-        }
+    static bool isPlaneAxis(GizmoAxis inAxis)
+    {
+        return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
     }
 
     Gizmo::Gizmo()
@@ -285,14 +283,6 @@ namespace Editor
 
         if (m_type == GizmoType::Translation || m_type == GizmoType::Scale)
         {
-            struct PlaneHandle
-            {
-                GizmoAxis     axis;
-                Chicane::Vec3 u;
-                Chicane::Vec3 v;
-                Chicane::Vec3 n;
-            };
-
             const PlaneHandle planes[] = {
                 {GizmoAxis::XY, getRight().normalize(),   getForward().normalize(), getUp().normalize()     },
                 {GizmoAxis::XZ, getRight().normalize(),   getUp().normalize(),      getForward().normalize()},

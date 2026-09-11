@@ -10,6 +10,7 @@
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
+#include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Resource.hpp"
 
 namespace Chicane
@@ -42,7 +43,10 @@ namespace Chicane
             const DrawPoly& getDraw(const Draw::Reference& inReference);
             const DrawPoly& getDraw(Draw::Id inId);
 
-            Draw::Id add(const DrawPolyData& inData);
+            Draw::Id add(DrawPolyType inType, const DrawPolyData& inData);
+
+            std::size_t getStableVertexCount() const { return m_stableVertexCount; }
+            std::size_t getStableIndexCount() const { return m_stableIndexCount; }
 
             // Glyphs are addressed by their offset into the outline buffer, which keeps a header and its curves
             // contiguous and lets new glyphs be appended without relocating the existing ones

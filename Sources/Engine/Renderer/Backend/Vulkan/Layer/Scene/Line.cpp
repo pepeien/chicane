@@ -5,6 +5,8 @@
 #include <cstring>
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Buffer/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -14,6 +16,9 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
+#include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
@@ -29,8 +34,8 @@ namespace Chicane
         {
             initFrameResources();
             initMeshGraphicsPipeline();
-            initOverlayGraphicsPipeline();
-            initOverlayFillGraphicsPipeline();
+            initLineListGraphicsPipeline(m_lineListPipeline, true);
+            initLineListGraphicsPipeline(m_lineListForegroundPipeline, false);
             initOutlineGraphicsPipeline();
             initFramebuffers();
         }
@@ -44,7 +49,7 @@ namespace Chicane
         {
             getBackend<VulkanBackend>()->logicalDevice.waitIdle();
 
-            destroyOverlayBuffers();
+            destroyImmediateBuffers();
             destroyFrameResources();
 
             if (m_outlineMaskPipeline.instance)
@@ -65,22 +70,22 @@ namespace Chicane
                 m_outlinePipeline.renderPass = nullptr;
             }
 
-            if (m_overlayPipeline.instance)
+            if (m_lineListForegroundPipeline.instance)
             {
-                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_overlayPipeline.instance);
-                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_overlayPipeline.layout);
-                m_overlayPipeline.instance   = nullptr;
-                m_overlayPipeline.layout     = nullptr;
-                m_overlayPipeline.renderPass = nullptr;
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_lineListForegroundPipeline.instance);
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_lineListForegroundPipeline.layout);
+                m_lineListForegroundPipeline.instance   = nullptr;
+                m_lineListForegroundPipeline.layout     = nullptr;
+                m_lineListForegroundPipeline.renderPass = nullptr;
             }
 
-            if (m_overlayFillPipeline.instance)
+            if (m_lineListPipeline.instance)
             {
-                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_overlayFillPipeline.instance);
-                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_overlayFillPipeline.layout);
-                m_overlayFillPipeline.instance   = nullptr;
-                m_overlayFillPipeline.layout     = nullptr;
-                m_overlayFillPipeline.renderPass = nullptr;
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipeline(m_lineListPipeline.instance);
+                getBackend<VulkanBackend>()->logicalDevice.destroyPipelineLayout(m_lineListPipeline.layout);
+                m_lineListPipeline.instance   = nullptr;
+                m_lineListPipeline.layout     = nullptr;
+                m_lineListPipeline.renderPass = nullptr;
             }
 
             m_meshPipeline.destroy();
@@ -88,19 +93,34 @@ namespace Chicane
 
         bool VulkanLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            const Instance* renderer = getBackend()->getRenderer();
+            if (renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return true;
             }
 
-            const Instance* renderer = getBackend()->getRenderer();
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            {
+                if (!draw.isLineList())
+                {
+                    return true;
+                }
+            }
 
-            return renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
+            return false;
         }
 
-        bool VulkanLSceneLine::shouldDrawOverlay(const Frame& inFrame) const
+        bool VulkanLSceneLine::shouldDrawLineList(const Frame& inFrame) const
         {
-            return inFrame.hasLines() || inFrame.hasTriangles();
+            for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+            {
+                if (draw.isLineList())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         bool VulkanLSceneLine::shouldDrawOutline(const Frame& inFrame) const
@@ -110,7 +130,7 @@ namespace Chicane
 
         bool VulkanLSceneLine::onBeginRender(const Frame& inFrame)
         {
-            return shouldDrawMeshWireframe(inFrame) || shouldDrawOverlay(inFrame) || shouldDrawOutline(inFrame);
+            return shouldDrawMeshWireframe(inFrame) || shouldDrawLineList(inFrame) || shouldDrawOutline(inFrame);
         }
 
         void VulkanLSceneLine::onRender(const Frame& inFrame, void* inData)
@@ -147,6 +167,7 @@ namespace Chicane
             {
                 m_meshPipeline.bind(commandBuffer);
                 m_meshPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                commandBuffer.setLineWidth(1.0f);
 
                 vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
                 vk::DeviceSize offsets[]       = {0};
@@ -157,6 +178,11 @@ namespace Chicane
                 {
                     for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, inMode))
                     {
+                        if (draw.isLineList())
+                        {
+                            continue;
+                        }
+
                         commandBuffer.drawIndexed(
                             draw.indexCount,
                             draw.instanceCount,
@@ -174,7 +200,16 @@ namespace Chicane
 
                 if (renderer->hasDebug(DebugMode::Meshes))
                 {
-                    drawBatch(DrawPolyMode::Fill);
+                    for (const DrawPoly& draw : inFrame.getSceneDraws())
+                    {
+                        commandBuffer.drawIndexed(
+                            draw.indexCount,
+                            draw.instanceCount,
+                            draw.indexStart,
+                            draw.vertexStart,
+                            draw.instanceStart
+                        );
+                    }
                 }
             }
 
@@ -221,60 +256,32 @@ namespace Chicane
                 }
             }
 
-            if (shouldDrawOverlay(inFrame))
+            if (shouldDrawLineList(inFrame))
             {
-                const Vertex::List& lines      = inFrame.getLines();
-                const Vertex::List& triangles  = inFrame.getTriangles();
-
-                Vertex::List vertices;
-                vertices.reserve(lines.size() + triangles.size());
-                vertices.insert(vertices.end(), lines.begin(), lines.end());
-                vertices.insert(vertices.end(), triangles.begin(), triangles.end());
-
-                VulkanLSceneLineOverlayBuffer& overlay = overlayBufferFor(frame);
-                uploadOverlayBuffer(overlay, vertices);
-
-                vk::Buffer     vertexBuffers[] = {overlay.buffer.instance};
-                vk::DeviceSize offsets[]       = {0};
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-
-                if (!triangles.empty())
+                if (inFrame.hasImmediateVertices())
                 {
-                    vk::ClearAttachment depthClear;
-                    depthClear.aspectMask                      = vk::ImageAspectFlagBits::eDepth;
-                    depthClear.clearValue.depthStencil.depth   = 1.0f;
-                    depthClear.clearValue.depthStencil.stencil = 0;
+                    VulkanLSceneLineImmediateBuffer& immediateBuffer = immediateBufferFor(frame);
+                    uploadImmediateGeometry(immediateBuffer, inFrame);
 
-                    vk::ClearRect clearRect;
-                    clearRect.rect.offset.x      = static_cast<std::int32_t>(viewport.x);
-                    clearRect.rect.offset.y      = static_cast<std::int32_t>(viewport.y);
-                    clearRect.rect.extent.width  = static_cast<std::uint32_t>(viewport.width);
-                    clearRect.rect.extent.height = static_cast<std::uint32_t>(viewport.height);
-                    clearRect.baseArrayLayer     = 0;
-                    clearRect.layerCount         = 1;
-                    commandBuffer.clearAttachments(1, &depthClear, 1, &clearRect);
+                    vk::Buffer     vertexBuffers[] = {immediateBuffer.vertexBuffer.instance};
+                    vk::DeviceSize offsets[]       = {0};
+                    commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-                    m_overlayFillPipeline.bind(commandBuffer);
-                    m_overlayFillPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-                    commandBuffer.draw(
-                        static_cast<std::uint32_t>(triangles.size()),
-                        1,
-                        static_cast<std::uint32_t>(lines.size()),
-                        0
-                    );
-                }
+                    for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
+                    {
+                        if (!draw.isLineList())
+                        {
+                            continue;
+                        }
 
-                if (!lines.empty())
-                {
-                    m_overlayPipeline.bind(commandBuffer);
-                    m_overlayPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                        VulkanGraphicsPipeline& pipeline =
+                            inFrame.isForegroundDraw(draw) ? m_lineListForegroundPipeline : m_lineListPipeline;
+                        pipeline.bind(commandBuffer);
+                        pipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                        commandBuffer.setLineWidth(1.0f);
 
-                    const vk::PhysicalDeviceLimits& limits = backend->physicalDevice.getProperties().limits;
-                    commandBuffer.setLineWidth(
-                        std::clamp(3.0f, limits.lineWidthRange[0], limits.lineWidthRange[1])
-                    );
-                    commandBuffer.draw(static_cast<std::uint32_t>(lines.size()), 1, 0, 0);
-                    commandBuffer.setLineWidth(1.0f);
+                        drawLineList(commandBuffer, draw, immediateBuffer.indexBuffer.instance);
+                    }
                 }
             }
 
@@ -453,24 +460,24 @@ namespace Chicane
                 .build(m_meshPipeline, backend->logicalDevice);
         }
 
-        void VulkanLSceneLine::initOverlayGraphicsPipeline()
+        void VulkanLSceneLine::initLineListGraphicsPipeline(VulkanGraphicsPipeline& outPipeline, bool inTestDepth)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vvert";
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vfrag";
+            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             vk::PipelineDepthStencilStateCreateInfo depth;
             depth.depthBoundsTestEnable = VK_FALSE;
             depth.stencilTestEnable     = VK_FALSE;
-            depth.depthWriteEnable      = VK_FALSE;
-            depth.depthTestEnable       = VK_FALSE;
-            depth.depthCompareOp        = vk::CompareOp::eAlways;
+            depth.depthWriteEnable      = inTestDepth ? VK_TRUE : VK_FALSE;
+            depth.depthTestEnable       = inTestDepth ? VK_TRUE : VK_FALSE;
+            depth.depthCompareOp        = inTestDepth ? vk::CompareOp::eLessOrEqual : vk::CompareOp::eAlways;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
@@ -502,58 +509,7 @@ namespace Chicane
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .setRasterization(rasterization)
                 .setRenderPass(m_meshPipeline.renderPass)
-                .build(m_overlayPipeline, backend->logicalDevice);
-        }
-
-        void VulkanLSceneLine::initOverlayFillGraphicsPipeline()
-        {
-            VulkanBackend* backend = getBackend<VulkanBackend>();
-
-            VulkanShaderStageCreateInfo vertexShader;
-            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vvert";
-            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
-
-            VulkanShaderStageCreateInfo fragmentShader;
-            fragmentShader.path = "Assets/Engine/Shaders/Vulkan/Scene/Line/Overlay.vfrag";
-            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
-
-            vk::PipelineDepthStencilStateCreateInfo depth;
-            depth.depthBoundsTestEnable = VK_FALSE;
-            depth.stencilTestEnable     = VK_FALSE;
-            depth.depthWriteEnable      = VK_TRUE;
-            depth.depthTestEnable       = VK_TRUE;
-            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
-            depth.minDepthBounds        = 0.0f;
-            depth.maxDepthBounds        = 1.0f;
-
-            vk::PipelineRasterizationStateCreateInfo rasterization;
-            rasterization.depthClampEnable        = VK_FALSE;
-            rasterization.rasterizerDiscardEnable = VK_FALSE;
-            rasterization.lineWidth               = 1.0f;
-            rasterization.depthBiasEnable         = VK_FALSE;
-            rasterization.polygonMode             = vk::PolygonMode::eFill;
-            rasterization.cullMode                = vk::CullModeFlagBits::eNone;
-            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
-
-            vk::PipelineInputAssemblyStateCreateInfo inputAssembly;
-            inputAssembly.topology = vk::PrimitiveTopology::eTriangleList;
-
-            VulkanGraphicsPipelineBuilder()
-                .addVertexBinding(VulkanVertex::getBindingDescription())
-                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
-                .setInputAssembly(inputAssembly)
-                .addViewport(backend->getVkViewport(this))
-                .addDynamicState(vk::DynamicState::eViewport)
-                .addScissor(backend->getVkScissor(this))
-                .addDynamicState(vk::DynamicState::eScissor)
-                .addShaderStage(vertexShader, backend->logicalDevice)
-                .addShaderStage(fragmentShader, backend->logicalDevice)
-                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
-                .setDepthStencil(depth)
-                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
-                .setRasterization(rasterization)
-                .setRenderPass(m_meshPipeline.renderPass)
-                .build(m_overlayFillPipeline, backend->logicalDevice);
+                .build(outPipeline, backend->logicalDevice);
         }
 
         void VulkanLSceneLine::initOutlineGraphicsPipeline()
@@ -721,42 +677,55 @@ namespace Chicane
             }
         }
 
-        VulkanLSceneLineOverlayBuffer& VulkanLSceneLine::overlayBufferFor(VulkanFrame& inFrame)
+        VulkanLSceneLineImmediateBuffer& VulkanLSceneLine::immediateBufferFor(VulkanFrame& inFrame)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            if (m_overlayBuffers.size() != backend->frames.size())
+            if (m_immediateBuffers.size() != backend->frames.size())
             {
-                destroyOverlayBuffers();
-                m_overlayBuffers.resize(backend->frames.size());
+                for (VulkanLSceneLineImmediateBuffer& buffer : m_immediateBuffers)
+                {
+                    destroyImmediateBuffer(buffer);
+                }
+
+                m_immediateBuffers.resize(backend->frames.size());
             }
 
-            if (m_overlayBuffers.empty())
+            if (m_immediateBuffers.empty())
             {
-                m_overlayBuffers.resize(1);
+                m_immediateBuffers.resize(1);
             }
 
             const std::ptrdiff_t index = &inFrame - backend->frames.data();
-            if (index < 0 || static_cast<std::size_t>(index) >= m_overlayBuffers.size())
+            if (index < 0 || static_cast<std::size_t>(index) >= m_immediateBuffers.size())
             {
-                return m_overlayBuffers.front();
+                return m_immediateBuffers.front();
             }
 
-            return m_overlayBuffers[static_cast<std::size_t>(index)];
+            return m_immediateBuffers[static_cast<std::size_t>(index)];
         }
 
-        void VulkanLSceneLine::ensureOverlayBuffer(
-            VulkanLSceneLineOverlayBuffer& outBuffer, std::size_t inVertexCount
+        void VulkanLSceneLine::ensureImmediateVertexBuffer(
+            VulkanLSceneLineImmediateBuffer& outBuffer, std::size_t inBytes
         )
         {
-            const std::size_t required = sizeof(Vertex) * std::max<std::size_t>(inVertexCount, 1);
-            if (outBuffer.buffer.instance && required <= outBuffer.capacity)
+            const std::size_t required = std::max<std::size_t>(inBytes, 1);
+            if (outBuffer.vertexBuffer.instance && required <= outBuffer.vertexCapacity)
             {
                 return;
             }
 
-            destroyOverlayBuffer(outBuffer);
-
             VulkanBackend* backend = getBackend<VulkanBackend>();
+            if (outBuffer.vertexBuffer.instance)
+            {
+                if (outBuffer.vertexMapped)
+                {
+                    backend->logicalDevice.unmapMemory(outBuffer.vertexBuffer.memory);
+                    outBuffer.vertexMapped = nullptr;
+                }
+
+                outBuffer.vertexBuffer.destroy(backend->logicalDevice);
+                outBuffer.vertexCapacity = 0;
+            }
 
             VulkanBufferCreateInfo createInfo;
             createInfo.physicalDevice = backend->physicalDevice;
@@ -766,47 +735,134 @@ namespace Chicane
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 
-            outBuffer.buffer.init(createInfo);
-            outBuffer.capacity = required;
+            outBuffer.vertexBuffer.init(createInfo);
+            outBuffer.vertexMapped   = backend->logicalDevice.mapMemory(outBuffer.vertexBuffer.memory, 0, required);
+            outBuffer.vertexCapacity = required;
         }
 
-        void VulkanLSceneLine::destroyOverlayBuffer(VulkanLSceneLineOverlayBuffer& inBuffer)
+        void VulkanLSceneLine::ensureImmediateIndexBuffer(
+            VulkanLSceneLineImmediateBuffer& outBuffer, std::size_t inBytes
+        )
         {
-            if (!inBuffer.buffer.instance)
+            if (inBytes == 0)
+            {
+                return;
+            }
+
+            const std::size_t required = inBytes;
+            if (outBuffer.indexBuffer.instance && required <= outBuffer.indexCapacity)
             {
                 return;
             }
 
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            inBuffer.buffer.destroy(backend->logicalDevice);
-            inBuffer.capacity    = 0;
-            inBuffer.vertexCount = 0;
-        }
-
-        void VulkanLSceneLine::destroyOverlayBuffers()
-        {
-            for (VulkanLSceneLineOverlayBuffer& overlay : m_overlayBuffers)
+            if (outBuffer.indexBuffer.instance)
             {
-                destroyOverlayBuffer(overlay);
+                if (outBuffer.indexMapped)
+                {
+                    backend->logicalDevice.unmapMemory(outBuffer.indexBuffer.memory);
+                    outBuffer.indexMapped = nullptr;
+                }
+
+                outBuffer.indexBuffer.destroy(backend->logicalDevice);
+                outBuffer.indexCapacity = 0;
             }
 
-            m_overlayBuffers.clear();
+            VulkanBufferCreateInfo createInfo;
+            createInfo.physicalDevice = backend->physicalDevice;
+            createInfo.logicalDevice  = backend->logicalDevice;
+            createInfo.size           = required;
+            createInfo.usage          = vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            outBuffer.indexBuffer.init(createInfo);
+            outBuffer.indexMapped   = backend->logicalDevice.mapMemory(outBuffer.indexBuffer.memory, 0, required);
+            outBuffer.indexCapacity = required;
         }
 
-        void VulkanLSceneLine::uploadOverlayBuffer(
-            VulkanLSceneLineOverlayBuffer& outBuffer, const Vertex::List& inVertices
-        )
+        void VulkanLSceneLine::destroyImmediateBuffer(VulkanLSceneLineImmediateBuffer& inBuffer)
         {
-            ensureOverlayBuffer(outBuffer, inVertices.size());
+            VulkanBackend* backend = getBackend<VulkanBackend>();
 
-            VulkanBackend*       backend = getBackend<VulkanBackend>();
-            const vk::DeviceSize size    = sizeof(Vertex) * inVertices.size();
+            if (inBuffer.vertexBuffer.instance)
+            {
+                if (inBuffer.vertexMapped)
+                {
+                    backend->logicalDevice.unmapMemory(inBuffer.vertexBuffer.memory);
+                    inBuffer.vertexMapped = nullptr;
+                }
 
-            void* writeLocation = backend->logicalDevice.mapMemory(outBuffer.buffer.memory, 0, size);
-            memcpy(writeLocation, inVertices.data(), size);
-            backend->logicalDevice.unmapMemory(outBuffer.buffer.memory);
+                inBuffer.vertexBuffer.destroy(backend->logicalDevice);
+                inBuffer.vertexCapacity = 0;
+            }
 
-            outBuffer.vertexCount = static_cast<std::uint32_t>(inVertices.size());
+            if (inBuffer.indexBuffer.instance)
+            {
+                if (inBuffer.indexMapped)
+                {
+                    backend->logicalDevice.unmapMemory(inBuffer.indexBuffer.memory);
+                    inBuffer.indexMapped = nullptr;
+                }
+
+                inBuffer.indexBuffer.destroy(backend->logicalDevice);
+                inBuffer.indexCapacity = 0;
+            }
+        }
+
+        void VulkanLSceneLine::destroyImmediateBuffers()
+        {
+            for (VulkanLSceneLineImmediateBuffer& buffer : m_immediateBuffers)
+            {
+                destroyImmediateBuffer(buffer);
+            }
+
+            m_immediateBuffers.clear();
+        }
+
+        void VulkanLSceneLine::uploadImmediateGeometry(VulkanLSceneLineImmediateBuffer& outBuffer, const Frame& inFrame)
+        {
+            const Vertex::List&    vertices = inFrame.getImmediateVertices();
+            const Vertex::Indices& indices  = inFrame.getImmediateIndices();
+
+            ensureImmediateVertexBuffer(outBuffer, sizeof(Vertex) * vertices.size());
+            if (outBuffer.vertexMapped && !vertices.empty())
+            {
+                std::memcpy(outBuffer.vertexMapped, vertices.data(), sizeof(Vertex) * vertices.size());
+            }
+
+            ensureImmediateIndexBuffer(outBuffer, sizeof(Vertex::Index) * indices.size());
+            if (outBuffer.indexMapped && !indices.empty())
+            {
+                std::memcpy(outBuffer.indexMapped, indices.data(), sizeof(Vertex::Index) * indices.size());
+            }
+        }
+
+        void VulkanLSceneLine::drawLineList(
+            vk::CommandBuffer inCommandBuffer, const DrawPoly& inDraw, vk::Buffer inIndexBuffer
+        ) const
+        {
+            if (inDraw.indexCount == 0)
+            {
+                inCommandBuffer
+                    .draw(inDraw.vertexCount, inDraw.instanceCount, inDraw.vertexStart, inDraw.instanceStart);
+
+                return;
+            }
+
+            if (!inIndexBuffer)
+            {
+                return;
+            }
+
+            inCommandBuffer.bindIndexBuffer(inIndexBuffer, 0, vk::IndexType::eUint32);
+            inCommandBuffer.drawIndexed(
+                inDraw.indexCount,
+                inDraw.instanceCount,
+                inDraw.indexStart,
+                inDraw.vertexStart,
+                inDraw.instanceStart
+            );
         }
     }
 }

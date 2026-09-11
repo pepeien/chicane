@@ -83,8 +83,10 @@ namespace Chicane
                 ModelParsed::Map           result;
                 std::unordered_set<String> usedNames;
 
-                auto parsePrimitive =
-                    [&](const String& inName, const String& inBone, const tg3_primitive& inPrimitive, const glm::mat4& inWorld)
+                auto parsePrimitive = [&](const String&        inName,
+                                          const String&        inBone,
+                                          const tg3_primitive& inPrimitive,
+                                          const glm::mat4&     inWorld)
                 {
                     const std::int32_t positionAccessor = document.findAttribute(inPrimitive, "POSITION");
                     if (positionAccessor < 0)
@@ -94,8 +96,7 @@ namespace Chicane
 
                     std::vector<float> positions;
                     std::int32_t       positionComponents = 0;
-                    if (!document.readFloats(positionAccessor, positions, positionComponents) ||
-                        positionComponents < 3)
+                    if (!document.readFloats(positionAccessor, positions, positionComponents) || positionComponents < 3)
                     {
                         return;
                     }
@@ -119,8 +120,7 @@ namespace Chicane
                     const bool         hasUvs =
                         document.findAttribute(inPrimitive, "TEXCOORD_0") >= 0 &&
                         document.readFloats(document.findAttribute(inPrimitive, "TEXCOORD_0"), uvs, uvComponents) &&
-                        uvComponents >= 2 &&
-                        (uvs.size() / static_cast<std::size_t>(uvComponents)) >= vertexCount;
+                        uvComponents >= 2 && (uvs.size() / static_cast<std::size_t>(uvComponents)) >= vertexCount;
 
                     std::vector<std::uint32_t> sourceIndices;
                     if (inPrimitive.indices >= 0)
@@ -155,12 +155,8 @@ namespace Chicane
                     for (std::size_t i = 0; i < vertexCount; ++i)
                     {
                         const std::size_t offset = i * static_cast<std::size_t>(positionComponents);
-                        const glm::vec4   mapped = inWorld * glm::vec4(
-                                                       positions[offset],
-                                                       positions[offset + 1],
-                                                       positions[offset + 2],
-                                                       1.0f
-                                                   );
+                        const glm::vec4   mapped =
+                            inWorld * glm::vec4(positions[offset], positions[offset + 1], positions[offset + 2], 1.0f);
 
                         glm::vec3 normal(0.0f, 0.0f, 1.0f);
                         if (hasNormals)
@@ -218,12 +214,7 @@ namespace Chicane
                             }
 
                             const String bone = node >= 0 ? document.nodeName(node) : String();
-                            parsePrimitive(
-                                uniqueName(name, usedNames),
-                                bone,
-                                mesh.primitives[primitiveIndex],
-                                world
-                            );
+                            parsePrimitive(uniqueName(name, usedNames), bone, mesh.primitives[primitiveIndex], world);
                         }
                     }
                 }

@@ -33,7 +33,7 @@ layout(location = 3) in vec3 inNormal;
 void main() {
     PolyInstance3D mesh = instance.meshes[gl_InstanceIndex];
 
-    outData.color = vec4(1.0);
+    outData.color = inColor;
 
     gl_Position = camera.projection * camera.view * mesh.model * vec4(inPosition, 1.0);
 }

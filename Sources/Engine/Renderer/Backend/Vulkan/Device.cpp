@@ -77,7 +77,7 @@ namespace Chicane
                     );
                 }
 
-                vk::PhysicalDeviceFeatures features = vk::PhysicalDeviceFeatures();
+                vk::PhysicalDeviceFeatures features             = vk::PhysicalDeviceFeatures();
                 features.depthClamp                             = true;
                 features.fillModeNonSolid                       = true;
                 features.shaderSampledImageArrayDynamicIndexing = true;

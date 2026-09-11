@@ -16,6 +16,7 @@
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Texture/Map.hpp"
 #include "Chicane/Core/Time.hpp"
 
@@ -30,6 +31,10 @@
 
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
+#include "Chicane/Renderer/Draw/Poly/Data.hpp"
+#include "Chicane/Renderer/Draw/Poly/Mode.hpp"
+#include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -71,6 +76,30 @@ namespace Chicane
         return model->getUniqueId(Box::Model::DEFAULT_REFERENCE);
     }
 
+    String resolveSphereModelDrawId()
+    {
+        const Box::Model* model = Box::load<Box::Model>(Box::Model::SPHERE_SOURCE);
+        if (!model)
+        {
+            return resolveDefaultModelDrawId();
+        }
+
+        return model->getUniqueId(Box::Model::DEFAULT_REFERENCE);
+    }
+
+    Renderer::DrawPoly3DCommandPoly makeLinePoly(
+        Vertex::List inVertices, Renderer::DrawPoly3DFlag inFlags = Renderer::DrawPoly3DFlag::None
+    )
+    {
+        Renderer::DrawPoly3DCommandPoly poly;
+        poly.data.mode      = Renderer::DrawPolyMode::Line;
+        poly.data.topology  = Renderer::DrawPolyTopology::LineList;
+        poly.data.vertices  = std::move(inVertices);
+        poly.instance.flags = inFlags;
+
+        return poly;
+    }
+
     void appendTrace(Vertex::List& outVertices, const SceneTraceRequest& inRequest, const Vec4& inColor)
     {
         if (!inRequest.isValid() || !inRequest.shape)
@@ -92,8 +121,7 @@ namespace Chicane
                 outVertices,
                 inRequest.origin,
                 inRequest.destination,
-                rectangle->halfExtents.x,
-                rectangle->halfExtents.y,
+                rectangle->halfExtents,
                 inColor
             );
 
@@ -481,6 +509,7 @@ namespace Chicane
 
         Box::load(Box::Font::DEFAULT_SOURCE);
         Box::load(Box::Model::DEFAULT_SOURCE);
+        Box::load(Box::Model::SPHERE_SOURCE);
         Box::load(Box::Texture::DEFAULT_SOURCE);
     }
 
@@ -693,6 +722,9 @@ namespace Chicane
 
         if (m_renderer)
         {
+            Vertex::List debugLines;
+            Vertex::List skeletonLines;
+
             if (m_renderer->hasDebug(Renderer::DebugMode::Bounds))
             {
                 for (Actor* actor : inScene->getActors())
@@ -702,9 +734,7 @@ namespace Chicane
                         continue;
                     }
 
-                    Renderer::Debug::appendBounds(
-                        command.lines.vertices, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR
-                    );
+                    Renderer::Debug::appendBounds(debugLines, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR);
                 }
             }
 
@@ -717,12 +747,15 @@ namespace Chicane
                         continue;
                     }
 
-                    physics->appendDebugWireframe(command.lines.vertices, Renderer::Debug::COLLIDER_COLOR);
+                    physics->appendDebugWireframe(debugLines, Renderer::Debug::COLLIDER_COLOR);
                 }
             }
 
             if (m_renderer->hasDebug(Renderer::DebugMode::Skeletons))
             {
+                const Renderer::Draw::Id sphereId =
+                    m_renderer->findPoly(Renderer::DrawPolyType::e3D, resolveSphereModelDrawId());
+
                 for (CMesh* mesh : inScene->getComponents<CMesh>())
                 {
                     if (!mesh)
@@ -731,9 +764,22 @@ namespace Chicane
                     }
 
                     mesh->appendDebugWireframe(
-                        command.lines.vertices, command.triangles.vertices, Renderer::Debug::SKELETON_COLOR
+                        skeletonLines,
+                        command.meshes,
+                        sphereId,
+                        Renderer::Debug::SKELETON_COLOR
                     );
                 }
+            }
+
+            if (!debugLines.empty())
+            {
+                command.polys.push_back(makeLinePoly(std::move(debugLines)));
+            }
+
+            if (!skeletonLines.empty())
+            {
+                command.polys.push_back(makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground));
             }
         }
 
@@ -745,7 +791,7 @@ namespace Chicane
     {
         const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly3DCommand& command = m_sceneCommandBuffers.at(index);
+        const Renderer::DrawPoly3DCommand command = m_sceneCommandBuffers.at(index);
 
         m_renderer->useCamera(command.camera);
         m_renderer->addLight(command.lights);
@@ -756,8 +802,24 @@ namespace Chicane
             m_renderer->drawPoly(mesh.model, mesh.instance);
         }
 
-        m_renderer->drawLines(command.lines.vertices);
-        m_renderer->drawTriangles(command.triangles.vertices);
+        for (const Renderer::DrawPoly3DCommandPoly& poly : command.polys)
+        {
+            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e3D, poly.data), poly.instance);
+        }
+
+        if (!m_renderer->hasDebug(Renderer::DebugMode::Traces))
+        {
+            return;
+        }
+
+        Vertex::List traces = m_renderer->getTraceVertices();
+        if (traces.empty())
+        {
+            return;
+        }
+
+        const Renderer::DrawPoly3DCommandPoly poly = makeLinePoly(std::move(traces));
+        m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e3D, poly.data), poly.instance);
     }
 
     void Application::pushTrace(const SceneTraceRequest& inRequest)
@@ -770,7 +832,7 @@ namespace Chicane
         Vertex::List vertices;
         appendTrace(vertices, inRequest, Renderer::Debug::TRACE_COLOR);
 
-        m_renderer->drawDebug(Renderer::DebugMode::Traces, vertices);
+        m_renderer->pushTrace(vertices);
     }
 
     void Application::initUI()

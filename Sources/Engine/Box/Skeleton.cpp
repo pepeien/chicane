@@ -7,55 +7,52 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace
+        static const SkeletonBone* findBone(const SkeletonBone::List& inBones, const String& inId)
         {
-            const SkeletonBone* findBone(const SkeletonBone::List& inBones, const String& inId)
+            for (const SkeletonBone& bone : inBones)
             {
-                for (const SkeletonBone& bone : inBones)
+                if (bone.id.equals(inId))
                 {
-                    if (bone.id.equals(inId))
-                    {
-                        return &bone;
-                    }
-
-                    if (const SkeletonBone* child = findBone(bone.children, inId))
-                    {
-                        return child;
-                    }
+                    return &bone;
                 }
 
-                return nullptr;
+                if (const SkeletonBone* child = findBone(bone.children, inId))
+                {
+                    return child;
+                }
             }
 
-            void flattenBone(
-                const SkeletonBone&          inBone,
-                std::int32_t                 inParentIndex,
-                SkeletonBoneEntry::List&     outEntries,
-                std::unordered_set<String>&  outIds
-            )
+            return nullptr;
+        }
+
+        static void flattenBone(
+            const SkeletonBone&         inBone,
+            std::int32_t                inParentIndex,
+            SkeletonBoneEntry::List&    outEntries,
+            std::unordered_set<String>& outIds
+        )
+        {
+            if (inBone.id.isEmpty())
             {
-                if (inBone.id.isEmpty())
-                {
-                    throw std::runtime_error("Skeleton bone is missing an id");
-                }
+                throw std::runtime_error("Skeleton bone is missing an id");
+            }
 
-                if (!outIds.insert(inBone.id).second)
-                {
-                    throw std::runtime_error("Skeleton bone [" + inBone.id.toStandard() + "] is duplicated");
-                }
+            if (!outIds.insert(inBone.id).second)
+            {
+                throw std::runtime_error("Skeleton bone [" + inBone.id.toStandard() + "] is duplicated");
+            }
 
-                const std::int32_t index = static_cast<std::int32_t>(outEntries.size());
+            const std::int32_t index = static_cast<std::int32_t>(outEntries.size());
 
-                SkeletonBoneEntry entry;
-                entry.id          = inBone.id;
-                entry.parentIndex = inParentIndex;
-                entry.transform.setTransform(inBone.transform);
-                outEntries.push_back(entry);
+            SkeletonBoneEntry entry;
+            entry.id          = inBone.id;
+            entry.parentIndex = inParentIndex;
+            entry.transform.setTransform(inBone.transform);
+            outEntries.push_back(entry);
 
-                for (const SkeletonBone& child : inBone.children)
-                {
-                    flattenBone(child, index, outEntries, outIds);
-                }
+            for (const SkeletonBone& child : inBone.children)
+            {
+                flattenBone(child, index, outEntries, outIds);
             }
         }
 

@@ -5,7 +5,6 @@
 
 #include "Chicane/Box.hpp"
 
-#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
@@ -36,21 +35,6 @@ namespace Chicane
             String    id;
             Transform transform;
             List      children;
-        };
-
-        struct CHICANE_BOX SkeletonBoneEntry
-        {
-        public:
-            using List = std::vector<SkeletonBoneEntry>;
-
-        public:
-            SkeletonBoneEntry();
-
-        public:
-            String       id;
-            std::int32_t parentIndex;
-            Transform    transform;
-            Mat4         inverseBind;
         };
     }
 }

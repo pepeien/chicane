@@ -725,79 +725,76 @@ void Program::createAnimation(
     asset.saveXML();
 }
 
-namespace
+static Chicane::String sanitizeName(const Chicane::String& inValue)
 {
-    Chicane::String sanitizeName(const Chicane::String& inValue)
+    std::string result;
+    result.reserve(inValue.size());
+
+    for (char character : inValue.toStandard())
     {
-        std::string result;
-        result.reserve(inValue.size());
-
-        for (char character : inValue.toStandard())
+        if (std::isalnum(static_cast<unsigned char>(character)) || character == '_' || character == '-')
         {
-            if (std::isalnum(static_cast<unsigned char>(character)) || character == '_' || character == '-')
-            {
-                result.push_back(character);
+            result.push_back(character);
 
-                continue;
-            }
-
-            if (result.empty() || result.back() == '_')
-            {
-                continue;
-            }
-
-            result.push_back('_');
+            continue;
         }
 
-        while (!result.empty() && result.back() == '_')
+        if (result.empty() || result.back() == '_')
         {
-            result.pop_back();
+            continue;
         }
 
-        return result.empty() ? Chicane::String("Asset") : Chicane::String(result);
+        result.push_back('_');
     }
 
-    void ensureParent(const Chicane::FileSystem::Path& inFile)
+    while (!result.empty() && result.back() == '_')
     {
-        const Chicane::FileSystem::Path parent = inFile.parent();
-        if (parent.isEmpty() || parent.exists())
-        {
-            return;
-        }
-
-        std::filesystem::create_directories(parent.toStandard());
+        result.pop_back();
     }
 
-    Chicane::FileSystem::Path resolveOutputDirectory(const Chicane::FileSystem::Path& inOutput)
-    {
-        if (inOutput.isEmpty())
-        {
-            return ".";
-        }
-
-        if (inOutput.hasExtension() &&
-            Chicane::Box::AssetHeader::getTypeFromExtension(inOutput) != Chicane::Box::AssetType::Undefined)
-        {
-            const Chicane::FileSystem::Path parent = inOutput.parent();
-
-            return parent.isEmpty() ? Chicane::FileSystem::Path(".") : parent;
-        }
-
-        return inOutput;
-    }
-
-    void logGenerated(const Chicane::FileSystem::Path& inPath)
-    {
-        std::cout << "Generated [" << inPath.toString() << "]" << std::endl;
-    }
-
-    struct WrittenTexture
-    {
-        Chicane::FileSystem::Path path;
-        Chicane::String           id;
-        Chicane::Image::Instance  image;
-    };
+    return result.empty() ? Chicane::String("Asset") : Chicane::String(result);
 }
+
+static void ensureParent(const Chicane::FileSystem::Path& inFile)
+{
+    const Chicane::FileSystem::Path parent = inFile.parent();
+    if (parent.isEmpty() || parent.exists())
+    {
+        return;
+    }
+
+    std::filesystem::create_directories(parent.toStandard());
+}
+
+static Chicane::FileSystem::Path resolveOutputDirectory(const Chicane::FileSystem::Path& inOutput)
+{
+    if (inOutput.isEmpty())
+    {
+        return ".";
+    }
+
+    if (inOutput.hasExtension() &&
+        Chicane::Box::AssetHeader::getTypeFromExtension(inOutput) != Chicane::Box::AssetType::Undefined)
+    {
+        const Chicane::FileSystem::Path parent = inOutput.parent();
+
+        return parent.isEmpty() ? Chicane::FileSystem::Path(".") : parent;
+    }
+
+    return inOutput;
+}
+
+static void logGenerated(const Chicane::FileSystem::Path& inPath)
+{
+    std::cout << "Generated [" << inPath.toString() << "]" << std::endl;
+}
+
+struct WrittenTexture
+{
+    Chicane::FileSystem::Path path;
+    Chicane::String           id;
+    Chicane::Image::Instance  image;
+};
 
 void Program::createFromGltf(
     const Chicane::String& inId, const Chicane::FileSystem::Path& inSource, const Chicane::FileSystem::Path& inOutput

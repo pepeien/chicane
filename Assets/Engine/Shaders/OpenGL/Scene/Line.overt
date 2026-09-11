@@ -26,7 +26,7 @@ void main() {
     CameraInstance camera = scene.camera;
     PolyInstance3D mesh   = scene.meshes[gl_InstanceID + gl_BaseInstance];
 
-    outData.color = vec4(1.0);
+    outData.color = inColor;
 
     gl_Position = camera.projection * camera.view * mesh.model * vec4(inPosition, 1.0);
 }

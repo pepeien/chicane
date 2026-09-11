@@ -18,32 +18,51 @@ namespace Chicane
             reset2DDraws();
             reset3DDraws();
 
-            m_lines.clear();
-            m_triangles.clear();
+            m_immediateVertices.clear();
+            m_immediateIndices.clear();
         }
 
         void Frame::setup(const DrawPolyResource::Map& inResources)
         {
+            m_immediateVertices.clear();
+            m_immediateIndices.clear();
+
             for (const auto& [type, resource] : inResources)
             {
-                DrawPoly::List&     draws    = m_polys[type];
-                const Vertex::List& vertices = resource.getVertices();
+                DrawPoly::List&   draws             = m_polys[type];
+                const std::size_t stableVertexCount = resource.getStableVertexCount();
+                const std::size_t stableIndexCount  = resource.getStableIndexCount();
+
+                if (type == DrawPolyType::e3D)
+                {
+                    const Vertex::List&    vertices = resource.getVertices();
+                    const Vertex::Indices& indices  = resource.getIndices();
+
+                    if (vertices.size() > stableVertexCount)
+                    {
+                        m_immediateVertices.assign(vertices.begin() + stableVertexCount, vertices.end());
+                    }
+
+                    if (indices.size() > stableIndexCount)
+                    {
+                        m_immediateIndices.assign(indices.begin() + stableIndexCount, indices.end());
+                    }
+                }
 
                 for (const auto& [reference, draw] : resource.getDraws())
                 {
-                    draws.push_back(draw);
-
-                    if (!draw.bIsVolatile || draw.vertexCount == 0 || draw.vertexStart >= vertices.size())
+                    DrawPoly copy = draw;
+                    if (type == DrawPolyType::e3D && copy.vertexStart >= stableVertexCount)
                     {
-                        continue;
+                        copy.vertexStart -= static_cast<std::uint32_t>(stableVertexCount);
+
+                        if (copy.indexStart >= stableIndexCount)
+                        {
+                            copy.indexStart -= static_cast<std::uint32_t>(stableIndexCount);
+                        }
                     }
 
-                    const std::size_t start = draw.vertexStart;
-                    const std::size_t count = std::min(static_cast<std::size_t>(draw.vertexCount), vertices.size() - start);
-                    Vertex::List&     target =
-                        draw.topology == DrawPolyTopology::LineList ? m_lines : m_triangles;
-
-                    target.insert(target.end(), vertices.begin() + start, vertices.begin() + start + count);
+                    draws.push_back(copy);
                 }
             }
 
@@ -297,54 +316,34 @@ namespace Chicane
             return m_skyInstance;
         }
 
-        void Frame::drawLines(const Vertex::List& inVertices)
+        bool Frame::hasImmediateVertices() const
         {
-            if (inVertices.empty())
+            return !m_immediateVertices.empty();
+        }
+
+        const Vertex::List& Frame::getImmediateVertices() const
+        {
+            return m_immediateVertices;
+        }
+
+        bool Frame::hasImmediateIndices() const
+        {
+            return !m_immediateIndices.empty();
+        }
+
+        const Vertex::Indices& Frame::getImmediateIndices() const
+        {
+            return m_immediateIndices;
+        }
+
+        bool Frame::isForegroundDraw(const DrawPoly& inDraw) const
+        {
+            if (inDraw.instanceCount == 0 || inDraw.instanceStart >= m_3DInstancesFlat.size())
             {
-                return;
+                return false;
             }
 
-            m_lines.insert(m_lines.end(), inVertices.begin(), inVertices.end());
-        }
-
-        bool Frame::hasLines() const
-        {
-            return !m_lines.empty();
-        }
-
-        const Vertex::List& Frame::getLines() const
-        {
-            return m_lines;
-        }
-
-        void Frame::clearLines()
-        {
-            m_lines.clear();
-        }
-
-        void Frame::drawTriangles(const Vertex::List& inVertices)
-        {
-            if (inVertices.empty())
-            {
-                return;
-            }
-
-            m_triangles.insert(m_triangles.end(), inVertices.begin(), inVertices.end());
-        }
-
-        bool Frame::hasTriangles() const
-        {
-            return !m_triangles.empty();
-        }
-
-        const Vertex::List& Frame::getTriangles() const
-        {
-            return m_triangles;
-        }
-
-        void Frame::clearTriangles()
-        {
-            m_triangles.clear();
+            return m_3DInstancesFlat[inDraw.instanceStart].has(DrawPoly3DFlag::Foreground);
         }
 
         void Frame::resetCamera()

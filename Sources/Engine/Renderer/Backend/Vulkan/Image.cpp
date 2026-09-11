@@ -164,11 +164,9 @@ namespace Chicane
                     sourceStage      = vk::PipelineStageFlagBits::eBottomOfPipe;
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
-                else if (
-                    inOldLayout == vk::ImageLayout::eUndefined &&
-                    (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
-                     inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal)
-                )
+                else if (inOldLayout == vk::ImageLayout::eUndefined &&
+                         (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
+                          inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal))
                 {
                     barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                     barrier.dstAccessMask =

@@ -9,47 +9,41 @@ namespace Chicane
     {
         namespace Debug
         {
-            namespace
+            constexpr int   kRingSegments = 16;
+            constexpr int   kSweepRings   = 4;
+            constexpr float kPi           = 3.14159265358979323846f;
+
+            static float lengthSquared(const Vec3& inValue)
             {
-                constexpr int   kRingSegments = 16;
-                constexpr int   kSweepRings   = 4;
-                constexpr float kPi           = 3.14159265358979323846f;
+                return inValue.dot(inValue);
+            }
 
-                float lengthSquared(const Vec3& inValue)
+            static bool buildAxisBasis(const Vec3& inDirection, Vec3& outRight, Vec3& outUp)
+            {
+                const float length = std::sqrt(lengthSquared(inDirection));
+                if (length <= 1e-6f)
                 {
-                    return inValue.dot(inValue);
+                    return false;
                 }
 
-                bool buildAxisBasis(const Vec3& inDirection, Vec3& outRight, Vec3& outUp)
+                const Vec3 axis = inDirection / length;
+                const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::Up() : Vec3::Right();
+
+                outRight                = hint.cross(axis);
+                const float rightLength = std::sqrt(lengthSquared(outRight));
+                if (rightLength <= 1e-6f)
                 {
-                    const float length = std::sqrt(lengthSquared(inDirection));
-                    if (length <= 1e-6f)
-                    {
-                        return false;
-                    }
-
-                    const Vec3 axis = inDirection / length;
-                    const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::Up() : Vec3::Right();
-
-                    outRight                = hint.cross(axis);
-                    const float rightLength = std::sqrt(lengthSquared(outRight));
-                    if (rightLength <= 1e-6f)
-                    {
-                        return false;
-                    }
-
-                    outRight = outRight / rightLength;
-                    outUp    = axis.cross(outRight);
-
-                    return true;
+                    return false;
                 }
 
-            void appendTriangle(
-                Vertex::List& outVertices,
-                const Vec3&   inA,
-                const Vec3&   inB,
-                const Vec3&   inC,
-                const Vec4&   inColor
+                outRight = outRight / rightLength;
+                outUp    = axis.cross(outRight);
+
+                return true;
+            }
+
+            static void appendTriangle(
+                Vertex::List& outVertices, const Vec3& inA, const Vec3& inB, const Vec3& inC, const Vec4& inColor
             )
             {
                 const Vec3  edgeB  = inB - inA;
@@ -75,16 +69,99 @@ namespace Chicane
                 outVertices.push_back(vertex);
             }
 
-            void appendVertex(
-                Vertex::List& outVertices, const Vec3& inPosition, const Vec3& inNormal, const Vec4& inColor
-            )
+            static Vec3 normalized(const Vec3& inValue)
             {
-                Vertex vertex;
-                vertex.position = inPosition;
-                vertex.normal   = inNormal;
-                vertex.color    = inColor;
-                outVertices.push_back(vertex);
+                const float length = std::sqrt(lengthSquared(inValue));
+                if (length <= 1e-8f)
+                {
+                    return Vec3::Zero();
+                }
+
+                return inValue / length;
             }
+
+            static const Vertex::List& unitSphereTriangles()
+            {
+                static const Vertex::List vertices = []()
+                {
+                    constexpr float kGolden = 1.6180339887498948482f;
+
+                    const Vec3 poles[] = {
+                        normalized(Vec3(-1.0f, kGolden, 0.0f)),
+                        normalized(Vec3(1.0f, kGolden, 0.0f)),
+                        normalized(Vec3(-1.0f, -kGolden, 0.0f)),
+                        normalized(Vec3(1.0f, -kGolden, 0.0f)),
+                        normalized(Vec3(0.0f, -1.0f, kGolden)),
+                        normalized(Vec3(0.0f, 1.0f, kGolden)),
+                        normalized(Vec3(0.0f, -1.0f, -kGolden)),
+                        normalized(Vec3(0.0f, 1.0f, -kGolden)),
+                        normalized(Vec3(kGolden, 0.0f, -1.0f)),
+                        normalized(Vec3(kGolden, 0.0f, 1.0f)),
+                        normalized(Vec3(-kGolden, 0.0f, -1.0f)),
+                        normalized(Vec3(-kGolden, 0.0f, 1.0f))
+                    };
+
+                    constexpr int faces[][3] = {
+                        {0,  11, 5 },
+                        {0,  5,  1 },
+                        {0,  1,  7 },
+                        {0,  7,  10},
+                        {0,  10, 11},
+                        {1,  5,  9 },
+                        {5,  11, 4 },
+                        {11, 10, 2 },
+                        {10, 7,  6 },
+                        {7,  1,  8 },
+                        {3,  9,  4 },
+                        {3,  4,  2 },
+                        {3,  2,  6 },
+                        {3,  6,  8 },
+                        {3,  8,  9 },
+                        {4,  9,  5 },
+                        {2,  4,  11},
+                        {6,  2,  10},
+                        {8,  6,  7 },
+                        {9,  8,  1 }
+                    };
+
+                    Vertex::List result;
+                    result.reserve(80 * 3);
+
+                    auto emit = [&result](const Vec3& inA, const Vec3& inB, const Vec3& inC)
+                    {
+                        Vertex vertex;
+                        vertex.position = inA;
+                        vertex.normal   = inA;
+                        result.push_back(vertex);
+
+                        vertex.position = inB;
+                        vertex.normal   = inB;
+                        result.push_back(vertex);
+
+                        vertex.position = inC;
+                        vertex.normal   = inC;
+                        result.push_back(vertex);
+                    };
+
+                    for (const int* face : faces)
+                    {
+                        const Vec3 a  = poles[face[0]];
+                        const Vec3 b  = poles[face[1]];
+                        const Vec3 c  = poles[face[2]];
+                        const Vec3 ab = normalized(a + b);
+                        const Vec3 bc = normalized(b + c);
+                        const Vec3 ca = normalized(c + a);
+
+                        emit(a, ab, ca);
+                        emit(b, bc, ab);
+                        emit(c, ca, bc);
+                        emit(ab, bc, ca);
+                    }
+
+                    return result;
+                }();
+
+                return vertices;
             }
 
             void appendSegment(Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor)
@@ -104,22 +181,27 @@ namespace Chicane
             void appendAxes(Vertex::List& outVertices, const Vec3& inCenter, float inSize, const Vec4& inColor)
             {
                 appendSegment(
-                    outVertices, inCenter - Vec3(inSize, 0.0f, 0.0f), inCenter + Vec3(inSize, 0.0f, 0.0f), inColor
+                    outVertices,
+                    inCenter - Vec3(inSize, 0.0f, 0.0f),
+                    inCenter + Vec3(inSize, 0.0f, 0.0f),
+                    inColor
                 );
                 appendSegment(
-                    outVertices, inCenter - Vec3(0.0f, inSize, 0.0f), inCenter + Vec3(0.0f, inSize, 0.0f), inColor
+                    outVertices,
+                    inCenter - Vec3(0.0f, inSize, 0.0f),
+                    inCenter + Vec3(0.0f, inSize, 0.0f),
+                    inColor
                 );
                 appendSegment(
-                    outVertices, inCenter - Vec3(0.0f, 0.0f, inSize), inCenter + Vec3(0.0f, 0.0f, inSize), inColor
+                    outVertices,
+                    inCenter - Vec3(0.0f, 0.0f, inSize),
+                    inCenter + Vec3(0.0f, 0.0f, inSize),
+                    inColor
                 );
             }
 
             void appendBone(
-                Vertex::List& outVertices,
-                const Vec3&   inStart,
-                const Vec3&   inEnd,
-                float         inRadius,
-                const Vec4&   inColor
+                Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, float inRadius, const Vec4& inColor
             )
             {
                 appendSegment(outVertices, inStart, inEnd, inColor);
@@ -132,45 +214,17 @@ namespace Chicane
 
             void appendSphere(Vertex::List& outVertices, const Vec3& inCenter, float inRadius, const Vec4& inColor)
             {
-                constexpr int kStacks = 8;
-                constexpr int kSlices = 12;
+                const Vertex::List& unit = unitSphereTriangles();
+                outVertices.reserve(outVertices.size() + unit.size());
 
-                Vec3 rings[kStacks + 1][kSlices + 1];
-                Vec3 normals[kStacks + 1][kSlices + 1];
+                Vertex vertex;
+                vertex.color = inColor;
 
-                for (int stack = 0; stack <= kStacks; ++stack)
+                for (const Vertex& source : unit)
                 {
-                    const float theta = kPi * static_cast<float>(stack) / static_cast<float>(kStacks);
-                    const float y     = std::cos(theta);
-                    const float ring  = std::sin(theta);
-
-                    for (int slice = 0; slice <= kSlices; ++slice)
-                    {
-                        const float phi = 2.0f * kPi * static_cast<float>(slice) / static_cast<float>(kSlices);
-                        const Vec3  normal(ring * std::cos(phi), y, ring * std::sin(phi));
-
-                        normals[stack][slice] = normal;
-                        rings[stack][slice]   = inCenter + normal * inRadius;
-                    }
-                }
-
-                for (int stack = 0; stack < kStacks; ++stack)
-                {
-                    for (int slice = 0; slice < kSlices; ++slice)
-                    {
-                        const Vec3& a = rings[stack][slice];
-                        const Vec3& b = rings[stack + 1][slice];
-                        const Vec3& c = rings[stack][slice + 1];
-                        const Vec3& d = rings[stack + 1][slice + 1];
-
-                        appendVertex(outVertices, a, normals[stack][slice], inColor);
-                        appendVertex(outVertices, b, normals[stack + 1][slice], inColor);
-                        appendVertex(outVertices, c, normals[stack][slice + 1], inColor);
-
-                        appendVertex(outVertices, c, normals[stack][slice + 1], inColor);
-                        appendVertex(outVertices, b, normals[stack + 1][slice], inColor);
-                        appendVertex(outVertices, d, normals[stack + 1][slice + 1], inColor);
-                    }
+                    vertex.position = inCenter + source.position * inRadius;
+                    vertex.normal   = source.normal;
+                    outVertices.push_back(vertex);
                 }
             }
 
@@ -283,8 +337,7 @@ namespace Chicane
                 Vertex::List& outVertices,
                 const Vec3&   inOrigin,
                 const Vec3&   inDestination,
-                float         inHalfExtentX,
-                float         inHalfExtentY,
+                const Vec2&   inHalfExtent,
                 const Vec4&   inColor
             )
             {
@@ -302,8 +355,8 @@ namespace Chicane
                     return;
                 }
 
-                const float hx = std::max(0.0f, inHalfExtentX);
-                const float hy = std::max(0.0f, inHalfExtentY);
+                const float hx = std::max(0.0f, inHalfExtent.x);
+                const float hy = std::max(0.0f, inHalfExtent.y);
 
                 const Vec3 startCorners[4] = {
                     inOrigin + right * hx + up * hy,

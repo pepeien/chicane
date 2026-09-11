@@ -6,7 +6,7 @@ namespace Chicane
     {
         bool DrawPolyResource::isEmpty() const
         {
-            return m_draws.empty() || m_vertices.empty() || m_indices.empty();
+            return m_draws.empty() || m_vertices.empty();
         }
 
         const DrawPolyResource::Draws& DrawPolyResource::getDraws() const
@@ -81,9 +81,11 @@ namespace Chicane
             return DrawPoly::empty();
         }
 
-        Draw::Id DrawPolyResource::add(const DrawPolyData& inData)
+        Draw::Id DrawPolyResource::add(DrawPolyType inType, const DrawPolyData& inData)
         {
-            if (!inData.bIsVolatile)
+            const bool bIsImmediate = inType == DrawPolyType::e3D && inData.reference.isEmpty();
+
+            if (!bIsImmediate)
             {
                 reset();
 
@@ -96,10 +98,9 @@ namespace Chicane
             }
 
             DrawPoly draw;
-            draw.id          = static_cast<Draw::Id>(m_draws.size());
-            draw.mode        = inData.mode;
-            draw.topology    = inData.topology;
-            draw.bIsVolatile = inData.bIsVolatile;
+            draw.id       = static_cast<Draw::Id>(m_draws.size());
+            draw.mode     = inData.mode;
+            draw.topology = inData.topology;
             draw.reference =
                 inData.reference.isEmpty() ? generateInternalReference(draw.mode, draw.id) : inData.reference;
             draw.vertexStart = m_vertices.empty() ? 0U : m_vertices.size();
@@ -115,7 +116,7 @@ namespace Chicane
             m_indices.reserve(m_indices.size() + inData.indices.size());
             m_indices.insert(m_indices.end(), inData.indices.begin(), inData.indices.end());
 
-            if (!inData.bIsVolatile)
+            if (!bIsImmediate)
             {
                 m_stableVertexCount = m_vertices.size();
                 m_stableIndexCount  = m_indices.size();
@@ -200,21 +201,21 @@ namespace Chicane
                 return;
             }
 
-            bool bHasVolatile = false;
+            bool bHasImmediate = false;
             for (auto it = m_draws.begin(); it != m_draws.end();)
             {
-                if (!it->second.bIsVolatile)
+                if (it->second.vertexStart < m_stableVertexCount)
                 {
                     ++it;
 
                     continue;
                 }
 
-                bHasVolatile = true;
-                it           = m_draws.erase(it);
+                bHasImmediate = true;
+                it            = m_draws.erase(it);
             }
 
-            if (!bHasVolatile)
+            if (!bHasImmediate)
             {
                 return;
             }

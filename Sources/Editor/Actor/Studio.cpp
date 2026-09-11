@@ -3,23 +3,16 @@
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
+#include "Editor/Actor/Studio/Light.hpp"
+
 namespace Editor
 {
-    namespace
-    {
-        struct StudioLight
-        {
-            Chicane::Vec3 color;
-            Chicane::Vec3 view;
-        };
-
-        const StudioLight LIGHTS[] = {
-            {{0.60f, 0.60f, 0.60f},   {-0.353f, 0.171f, -0.920f}},
-            {{1.12f, 1.137f, 1.137f}, {-0.408f, 0.347f, 0.844f} },
-            {{0.38f, 0.42f, 0.52f},   {0.522f, 0.826f, 0.213f}  },
-            {{0.40f, 0.34f, 0.28f},   {0.625f, -0.562f, -0.542f}}
-        };
-    }
+    const StudioLight LIGHTS[] = {
+        {{0.60f, 0.60f, 0.60f},   {-0.353f, 0.171f, -0.920f}},
+        {{1.12f, 1.137f, 1.137f}, {-0.408f, 0.347f, 0.844f} },
+        {{0.38f, 0.42f, 0.52f},   {0.522f, 0.826f, 0.213f}  },
+        {{0.40f, 0.34f, 0.28f},   {0.625f, -0.562f, -0.542f}}
+    };
 
     Studio::Studio()
         : Chicane::Actor(),

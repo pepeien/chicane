@@ -46,9 +46,5 @@ namespace Chicane
             std::int32_t   _pad1 = 0;
             std::int32_t   _pad2 = 0;
         };
-
-        static_assert(
-            sizeof(DrawPoly3DInstance) == 128, "DrawPoly3DInstance must match the std430 array stride of PolyInstance3D"
-        );
     }
 }

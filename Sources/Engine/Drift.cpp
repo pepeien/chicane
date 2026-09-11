@@ -7,6 +7,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Drift/Clip.hpp"
+#include "Chicane/Drift/Engine.hpp"
 #include "Chicane/Drift/Player.hpp"
 #include "Chicane/Drift/Queue.hpp"
 #include "Chicane/Drift/Track.hpp"
@@ -17,86 +18,77 @@ namespace Chicane
     {
         void applyPose(Transformable& inTarget, const std::vector<float>& inValue);
 
-        namespace
+        constexpr const char* TRANSFORM_TRACK = "transform";
+
+        static Engine& engine()
         {
-            constexpr const char* TRANSFORM_TRACK = "transform";
+            static Engine instance;
 
-            struct Engine
+            return instance;
+        }
+
+        static bool g_bWasInitialized = false;
+
+        static const Track* findApplyTrack(const Clip& inClip)
+        {
+            if (const Track* track = inClip.getTrack(TRANSFORM_TRACK))
             {
-                std::unordered_map<String, Clip>                           clips;
-                std::unordered_map<Transformable*, std::unique_ptr<Queue>> bindings;
-            };
-
-            Engine& engine()
-            {
-                static Engine instance;
-
-                return instance;
+                return track;
             }
 
-            bool g_bWasInitialized = false;
-
-            const Track* findApplyTrack(const Clip& inClip)
+            if (inClip.tracks.size() == 1)
             {
-                if (const Track* track = inClip.getTrack(TRANSFORM_TRACK))
-                {
-                    return track;
-                }
+                return &inClip.tracks.front();
+            }
 
-                if (inClip.tracks.size() == 1)
-                {
-                    return &inClip.tracks.front();
-                }
+            return nullptr;
+        }
 
+        static void apply(Transformable& inTarget, const Queue& inQueue)
+        {
+            const Player* player = inQueue.getPlayer();
+            if (!player)
+            {
+                return;
+            }
+
+            const Track* track = findApplyTrack(player->getClip());
+            if (!track)
+            {
+                return;
+            }
+
+            applyPose(inTarget, inQueue.sample(track->name));
+        }
+
+        static Queue* binding(Transformable& inTarget, bool bInCreate)
+        {
+            Engine& state = engine();
+            auto    found = state.bindings.find(&inTarget);
+            if (found != state.bindings.end())
+            {
+                return found->second.get();
+            }
+
+            if (!bInCreate)
+            {
                 return nullptr;
             }
 
-            void apply(Transformable& inTarget, const Queue& inQueue)
+            return state.bindings.insert_or_assign(&inTarget, std::make_unique<Queue>()).first->second.get();
+        }
+
+        static bool bindClip(Queue& outQueue, const String& inName)
+        {
+            const auto found = engine().clips.find(inName);
+            if (found == engine().clips.end())
             {
-                const Player* player = inQueue.getPlayer();
-                if (!player)
-                {
-                    return;
-                }
-
-                const Track* track = findApplyTrack(player->getClip());
-                if (!track)
-                {
-                    return;
-                }
-
-                applyPose(inTarget, inQueue.sample(track->name));
+                return false;
             }
 
-            Queue* binding(Transformable& inTarget, bool bInCreate)
-            {
-                Engine& state = engine();
-                auto    found = state.bindings.find(&inTarget);
-                if (found != state.bindings.end())
-                {
-                    return found->second.get();
-                }
+            outQueue.add(found->second);
 
-                if (!bInCreate)
-                {
-                    return nullptr;
-                }
-
-                return state.bindings.insert_or_assign(&inTarget, std::make_unique<Queue>()).first->second.get();
-            }
-
-            bool bindClip(Queue& outQueue, const String& inName)
-            {
-                const auto found = engine().clips.find(inName);
-                if (found == engine().clips.end())
-                {
-                    return false;
-                }
-
-                outQueue.add(found->second);
-
-                return true;
-            }
+            return true;
         }
 
         void init()

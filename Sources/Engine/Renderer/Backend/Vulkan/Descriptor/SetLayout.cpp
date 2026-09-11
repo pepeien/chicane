@@ -27,7 +27,7 @@ namespace Chicane
                 }
 
                 vk::DescriptorSetLayoutBindingFlagsCreateInfo bidingFlagsInfo{};
-                vk::DescriptorSetLayoutCreateInfo setLayoutCreateInfo{};
+                vk::DescriptorSetLayoutCreateInfo             setLayoutCreateInfo{};
                 setLayoutCreateInfo.flags        = vk::DescriptorSetLayoutCreateFlags();
                 setLayoutCreateInfo.bindingCount = static_cast<std::uint32_t>(setLayoutBidings.size());
                 setLayoutCreateInfo.pBindings    = setLayoutBidings.data();

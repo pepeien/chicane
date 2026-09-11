@@ -3,6 +3,7 @@
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Skeleton/Bone.hpp"
+#include "Chicane/Box/Skeleton/Bone/Entry.hpp"
 
 namespace Chicane
 {
