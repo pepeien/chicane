@@ -175,7 +175,7 @@ namespace Chicane
                 return;
             }
 
-            m_skeleton.setFrom(skeletonNode);
+            m_skeleton.setFrom(skeletonNode, getFilepath());
         }
 
         void Animation::fetchClip()

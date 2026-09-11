@@ -17,9 +17,12 @@ private:
     static constexpr inline const char* OUTPUT_OPTION_NAME        = "output";
     static constexpr inline const char* OUTPUT_OPTION_DESCRIPTION = "Output file location";
 
-    static constexpr inline const char* BAKE_OPTION_NAME = "bake";
-    static constexpr inline const char* BAKE_OPTION_DESCRIPTION =
-        "Embed previews into existing assets (file or directory; defaults to Assets)";
+    static constexpr inline const char* BAKE_OPTION_NAME        = "bake";
+    static constexpr inline const char* BAKE_OPTION_DESCRIPTION = "Embed previews into existing assets";
+
+    static constexpr inline const char* EXPORT_OPTION_NAME = "export";
+    static constexpr inline const char* EXPORT_OPTION_DESCRIPTION =
+        "Extract and convert all assets from packed resources";
 
 public:
     Program();
@@ -74,6 +77,12 @@ private:
         const Chicane::String&                    inId,
         const Chicane::ProgramParam::Positionals& inSources,
         const Chicane::FileSystem::Path&          inOutput
+    );
+
+    void createFromGltf(
+        const Chicane::String&           inId,
+        const Chicane::FileSystem::Path& inSource,
+        const Chicane::FileSystem::Path& inOutput
     );
 
     void bakePreviews(const Chicane::FileSystem::Path& inRoot);

@@ -84,7 +84,7 @@ namespace Chicane
                 std::unordered_set<String> usedNames;
 
                 auto parsePrimitive =
-                    [&](const String& inName, const tg3_primitive& inPrimitive, const glm::mat4& inWorld)
+                    [&](const String& inName, const String& inBone, const tg3_primitive& inPrimitive, const glm::mat4& inWorld)
                 {
                     const std::int32_t positionAccessor = document.findAttribute(inPrimitive, "POSITION");
                     if (positionAccessor < 0)
@@ -146,7 +146,10 @@ namespace Chicane
                     const glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(inWorld)));
 
                     ModelParsed parsed;
-                    parsed.indices = indices;
+                    parsed.indices   = indices;
+                    parsed.material  = inPrimitive.material;
+                    parsed.bone      = inBone;
+                    parsed.transform = transformFromMatrix(BASIS4 * inWorld * BASIS4_INVERSE);
                     parsed.vertices.reserve(vertexCount);
 
                     for (std::size_t i = 0; i < vertexCount; ++i)
@@ -214,7 +217,13 @@ namespace Chicane
                                 name = String::sprint("%s_%s", name.toChar(), document.nodeName(node).toChar());
                             }
 
-                            parsePrimitive(uniqueName(name, usedNames), mesh.primitives[primitiveIndex], world);
+                            const String bone = node >= 0 ? document.nodeName(node) : String();
+                            parsePrimitive(
+                                uniqueName(name, usedNames),
+                                bone,
+                                mesh.primitives[primitiveIndex],
+                                world
+                            );
                         }
                     }
                 }

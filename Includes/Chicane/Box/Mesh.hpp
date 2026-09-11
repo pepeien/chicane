@@ -15,8 +15,9 @@ namespace Chicane
             static constexpr inline const char* EXTENSION = ".bmsh";
             static constexpr inline const char* TAG       = "Mesh";
 
-            static constexpr inline const char* GROUP_TAG               = "Group";
-            static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME = "id";
+            static constexpr inline const char* GROUP_TAG                 = "Group";
+            static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME   = "id";
+            static constexpr inline const char* GROUP_BONE_ATTRIBUTE_NAME = "bone";
 
         public:
             Mesh(const FileSystem::Path& inFilepath);

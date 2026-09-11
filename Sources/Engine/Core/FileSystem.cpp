@@ -1,6 +1,11 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include <fstream>
+#include <system_error>
+
+#if IS_WINDOWS
+#include <windows.h>
+#endif
 
 #include "Chicane/Core/FileSystem/Item/Type.reflected.hpp"
 #include "Chicane/Core/FileSystem/Listing/Service.hpp"
@@ -9,14 +14,165 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        bool exists(const Path& inPath)
+        Path executableDirectory()
+        {
+            static const Path directory = []() -> Path
+            {
+#if IS_WINDOWS
+                wchar_t buffer[MAX_PATH] = {};
+                const DWORD length       = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
+                if (length == 0 || length >= MAX_PATH)
+                {
+                    return Path(std::filesystem::current_path());
+                }
+
+                return Path(std::filesystem::path(buffer).parent_path());
+#else
+                std::error_code             error;
+                const std::filesystem::path exe = std::filesystem::read_symlink("/proc/self/exe", error);
+                if (error)
+                {
+                    return Path(std::filesystem::current_path());
+                }
+
+                return Path(exe.parent_path());
+#endif
+            }();
+
+            return directory;
+        }
+
+        Path resolve(const Path& inPath, const Path& inBase)
+        {
+            if (inPath.isEmpty())
+            {
+                return inPath;
+            }
+
+            const auto existing = [](const Path& inCandidate) -> Path
+            {
+                if (inCandidate.isEmpty() || !std::filesystem::exists(inCandidate.toStandard()))
+                {
+                    return {};
+                }
+
+                std::error_code error;
+                const std::filesystem::path canonical =
+                    std::filesystem::weakly_canonical(inCandidate.toStandard(), error);
+                if (error)
+                {
+                    return inCandidate.lexicallyNormal();
+                }
+
+                return Path(canonical);
+            };
+
+            if (inPath.isAbsolute())
+            {
+                const Path found = existing(inPath);
+                return found.isEmpty() ? inPath : found;
+            }
+
+            if (const Path found = existing(inPath); !found.isEmpty())
+            {
+                return found;
+            }
+
+            Path base = inBase;
+            std::error_code fileError;
+            if (!base.isEmpty() &&
+                (base.hasExtension() || std::filesystem::is_regular_file(base.toStandard(), fileError)))
+            {
+                base = base.parent();
+            }
+
+            if (!base.isEmpty())
+            {
+                if (const Path found = existing(base / inPath); !found.isEmpty())
+                {
+                    return found;
+                }
+            }
+
+            if (const Path found = existing(executableDirectory() / inPath); !found.isEmpty())
+            {
+                return found;
+            }
+
+            if (!base.isEmpty())
+            {
+                return (base / inPath).lexicallyNormal();
+            }
+
+            return inPath.lexicallyNormal();
+        }
+
+        Path rootRelative(const Path& inPath)
+        {
+            if (inPath.isEmpty())
+            {
+                return inPath;
+            }
+
+            std::error_code       error;
+            std::filesystem::path absolute = std::filesystem::absolute(inPath.toStandard(), error);
+            if (error)
+            {
+                absolute = inPath.toStandard();
+            }
+
+            const std::filesystem::path canonical = std::filesystem::weakly_canonical(absolute, error);
+            if (!error)
+            {
+                absolute = canonical;
+            }
+
+            const std::filesystem::path relative =
+                std::filesystem::relative(absolute, executableDirectory().toStandard(), error);
+            if (!error && !relative.empty() && relative.begin() != relative.end() && *relative.begin() != "..")
+            {
+                return Path(String(relative.generic_string()));
+            }
+
+            std::filesystem::path fromAssets;
+            bool                  found = false;
+            for (const std::filesystem::path& part : absolute)
+            {
+                if (!found)
+                {
+                    if (part != "Assets")
+                    {
+                        continue;
+                    }
+
+                    found = true;
+                }
+
+                fromAssets /= part;
+            }
+
+            if (found)
+            {
+                return Path(String(fromAssets.generic_string()));
+            }
+
+            if (!error && !relative.empty())
+            {
+                return Path(String(relative.generic_string()));
+            }
+
+            return Path(String(absolute.generic_string()));
+        }
+
+        bool exists(const Path& inPath, const Path& inBase)
         {
             if (inPath.isEmpty())
             {
                 return false;
             }
 
-            return std::filesystem::exists(inPath);
+            const Path resolved = resolve(inPath, inBase);
+            return !resolved.isEmpty() && std::filesystem::exists(resolved.toStandard());
         }
 
         std::vector<Item> ls(const Path& inDir, std::uint32_t inDepth)
@@ -73,7 +229,7 @@ namespace Chicane
 
         std::vector<unsigned char> readUnsigned(const Path& inFilepath)
         {
-            std::ifstream file(inFilepath, std::ios::binary | std::ios::ate);
+            std::ifstream file(resolve(inFilepath).toStandard(), std::ios::binary | std::ios::ate);
 
             if (!file)
             {
@@ -107,7 +263,7 @@ namespace Chicane
 
         std::vector<char> read(const Path& inFilepath)
         {
-            const Path path = std::filesystem::absolute(inFilepath);
+            const Path path = resolve(inFilepath);
 
             std::basic_ifstream<char> file(path.toString(), std::ios::ate | std::ios::binary);
 

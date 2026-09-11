@@ -570,37 +570,82 @@ namespace Chicane
 
             std::vector<std::int32_t> collectJoints(const Document& inDocument)
             {
-                const tg3_model& model = inDocument.get();
-                if (model.skins_count > 0 && model.skins[0].joints && model.skins[0].joints_count > 0)
+                const tg3_model&             model = inDocument.get();
+                std::vector<std::int32_t>    joints;
+                std::unordered_set<std::int32_t> seen;
+
+                const auto add = [&](std::int32_t inNode)
                 {
-                    std::vector<std::int32_t> joints;
-                    joints.reserve(model.skins[0].joints_count);
-
-                    for (std::uint32_t i = 0; i < model.skins[0].joints_count; ++i)
+                    if (inNode < 0 || static_cast<std::uint32_t>(inNode) >= model.nodes_count)
                     {
-                        const std::int32_t joint = model.skins[0].joints[i];
-                        if (joint < 0 || static_cast<std::uint32_t>(joint) >= model.nodes_count)
-                        {
-                            continue;
-                        }
-
-                        joints.push_back(joint);
+                        return;
                     }
 
-                    if (!joints.empty())
+                    if (seen.insert(inNode).second)
                     {
-                        return joints;
+                        joints.push_back(inNode);
+                    }
+                };
+
+                for (std::uint32_t s = 0; s < model.skins_count; ++s)
+                {
+                    const tg3_skin& skin = model.skins[s];
+                    if (!skin.joints)
+                    {
+                        continue;
+                    }
+
+                    for (std::uint32_t i = 0; i < skin.joints_count; ++i)
+                    {
+                        add(skin.joints[i]);
                     }
                 }
 
-                std::vector<std::int32_t> nodes;
-                nodes.reserve(model.nodes_count);
+                for (std::uint32_t a = 0; a < model.animations_count; ++a)
+                {
+                    const tg3_animation& animation = model.animations[a];
+                    for (std::uint32_t c = 0; c < animation.channels_count; ++c)
+                    {
+                        add(animation.channels[c].target.node);
+                    }
+                }
+
                 for (std::uint32_t i = 0; i < model.nodes_count; ++i)
                 {
-                    nodes.push_back(static_cast<std::int32_t>(i));
+                    if (model.nodes[i].mesh >= 0)
+                    {
+                        add(static_cast<std::int32_t>(i));
+                    }
                 }
 
-                return nodes;
+                const std::vector<std::int32_t> parents = inDocument.parents();
+                const std::vector<std::int32_t> seeds   = joints;
+                for (const std::int32_t node : seeds)
+                {
+                    std::int32_t parent = (node >= 0 && static_cast<std::size_t>(node) < parents.size())
+                                              ? parents[static_cast<std::size_t>(node)]
+                                              : -1;
+                    while (parent >= 0)
+                    {
+                        add(parent);
+                        parent = static_cast<std::size_t>(parent) < parents.size()
+                                     ? parents[static_cast<std::size_t>(parent)]
+                                     : -1;
+                    }
+                }
+
+                if (!joints.empty())
+                {
+                    return joints;
+                }
+
+                joints.reserve(model.nodes_count);
+                for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+                {
+                    joints.push_back(static_cast<std::int32_t>(i));
+                }
+
+                return joints;
             }
 
             const tg3_animation* findAnimation(const tg3_model& inModel, const String& inId)

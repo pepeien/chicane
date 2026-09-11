@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
 #include <unordered_map>
 
 #include "Chicane/Box.hpp"
 
+#include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -25,8 +27,11 @@ namespace Chicane
             }
 
         public:
-            Vertex::List    vertices = {};
-            Vertex::Indices indices  = {};
+            Vertex::List    vertices  = {};
+            Vertex::Indices indices   = {};
+            std::int32_t    material  = -1;
+            String          bone      = "";
+            Transform       transform = {};
         };
     }
 }

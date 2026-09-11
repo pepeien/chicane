@@ -40,6 +40,8 @@ namespace Chicane
 
             const ModelParsed& getModel(const String& inId) const;
 
+            String getUniqueId(const String& inId) const;
+
         private:
             void fetchVendorFromXML();
             void fetchDataFromXML();

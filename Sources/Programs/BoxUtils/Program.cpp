@@ -1,5 +1,8 @@
 #include "Program.hpp"
 
+#include <cctype>
+#include <cstdint>
+#include <exception>
 #include <filesystem>
 #include <iostream>
 #include <memory>
@@ -10,17 +13,22 @@
 #include <Chicane/Box/Asset/Header.hpp>
 #include <Chicane/Box/Asset/Preview.hpp>
 #include <Chicane/Core/Image.hpp>
+#include <Chicane/Core/Math/Mat/Mat4.hpp>
 #include <Chicane/Core/Math/Vertex.hpp>
+#include <Chicane/Core/Texture/Map.hpp>
 #include <Chicane/Box/Animation.hpp>
+#include <Chicane/Box/Animation/Gltf.hpp>
 #include <Chicane/Box/Animation/Loop.hpp>
 #include <Chicane/Box/Animation/Track.hpp>
 #include <Chicane/Box/Font.hpp>
-#include <Chicane/Box/Gltf.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
+#include <Chicane/Box/Model/Gltf.hpp>
 #include <Chicane/Box/Model/Vendor.hpp>
 #include <Chicane/Box/Skeleton.hpp>
+#include <Chicane/Box/Skeleton/Gltf.hpp>
 #include <Chicane/Box/Texture.hpp>
+#include <Chicane/Box/Texture/Gltf.hpp>
 #include <Chicane/Box/Sky.hpp>
 #include <Chicane/Box/Sound.hpp>
 
@@ -51,6 +59,12 @@ Program::Program()
     bakeOption.name        = BAKE_OPTION_NAME;
     bakeOption.description = BAKE_OPTION_DESCRIPTION;
     addOption(bakeOption);
+
+    Chicane::ProgramOptionSetting exportOption;
+    exportOption.bIsRequired = false;
+    exportOption.name        = EXPORT_OPTION_NAME;
+    exportOption.description = EXPORT_OPTION_DESCRIPTION;
+    addOption(exportOption);
 }
 
 void Program::onExec(const Chicane::ProgramParam& inParam)
@@ -73,6 +87,54 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
         }
 
         bakePreviews(bakePath);
+
+        return;
+    }
+
+    const Chicane::ProgramOption* exportOption = inParam.getOption(EXPORT_OPTION_NAME);
+    const bool bExport = inParam.hasFlag(EXPORT_OPTION_NAME) || inParam.hasFlag(EXPORT_OPTION_NAME[0]) ||
+                         (exportOption && !exportOption->getValue().isEmpty());
+
+    if (bExport)
+    {
+        Chicane::FileSystem::Path source =
+            exportOption ? Chicane::FileSystem::Path(exportOption->getValue()) : Chicane::FileSystem::Path();
+
+        const Chicane::ProgramParam::Positionals& positionals = inParam.getPositionals();
+        if (source.isEmpty())
+        {
+            for (const Chicane::String& positional : positionals)
+            {
+                const Chicane::FileSystem::Path path(positional);
+                if (Chicane::Box::Model::parseVendor(path.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
+                {
+                    continue;
+                }
+
+                source = path;
+
+                break;
+            }
+        }
+
+        if (source.isEmpty() && !positionals.empty())
+        {
+            source = positionals.front();
+        }
+
+        const Chicane::ProgramOption* idOption = inParam.getOption(ID_OPTION_NAME);
+        Chicane::String               id       = idOption ? idOption->getValue() : Chicane::String();
+        if (id.isEmpty() && !source.isEmpty())
+        {
+            id = source.stem().toString();
+        }
+
+        const Chicane::FileSystem::Path output(
+            inParam.getOption(OUTPUT_OPTION_NAME) ? inParam.getOption(OUTPUT_OPTION_NAME)->getValue()
+                                                  : Chicane::String()
+        );
+
+        createFromGltf(id, source, output);
 
         return;
     }
@@ -608,8 +670,7 @@ void Program::createAnimation(
     if (!skeleton)
     {
         throw std::runtime_error(
-            gltf ? "The animation skeleton file is missing"
-                 : "The animation source must be a skeleton or a glTF file"
+            gltf ? "The animation skeleton file is missing" : "The animation source must be a skeleton or a glTF file"
         );
     }
 
@@ -635,7 +696,7 @@ void Program::createAnimation(
     {
         clip = Chicane::Box::AnimationGltf::parse(*gltf, inId);
 
-        Chicane::Box::Skeleton           bones(*skeleton);
+        Chicane::Box::Skeleton             bones(*skeleton);
         Chicane::Box::AnimationTrack::List tracks;
         for (const Chicane::Box::AnimationTrack& track : clip.tracks)
         {
@@ -650,8 +711,7 @@ void Program::createAnimation(
         if (tracks.empty())
         {
             throw std::runtime_error(
-                "Animation [" + inId.toStandard() + "] has no tracks on skeleton [" +
-                bones.getId().toStandard() + "]"
+                "Animation [" + inId.toStandard() + "] has no tracks on skeleton [" + bones.getId().toStandard() + "]"
             );
         }
 
@@ -663,6 +723,396 @@ void Program::createAnimation(
     asset.setSkeleton(*skeleton);
     asset.setClip(clip);
     asset.saveXML();
+}
+
+namespace
+{
+    Chicane::String sanitizeName(const Chicane::String& inValue)
+    {
+        std::string result;
+        result.reserve(inValue.size());
+
+        for (char character : inValue.toStandard())
+        {
+            if (std::isalnum(static_cast<unsigned char>(character)) || character == '_' || character == '-')
+            {
+                result.push_back(character);
+
+                continue;
+            }
+
+            if (result.empty() || result.back() == '_')
+            {
+                continue;
+            }
+
+            result.push_back('_');
+        }
+
+        while (!result.empty() && result.back() == '_')
+        {
+            result.pop_back();
+        }
+
+        return result.empty() ? Chicane::String("Asset") : Chicane::String(result);
+    }
+
+    void ensureParent(const Chicane::FileSystem::Path& inFile)
+    {
+        const Chicane::FileSystem::Path parent = inFile.parent();
+        if (parent.isEmpty() || parent.exists())
+        {
+            return;
+        }
+
+        std::filesystem::create_directories(parent.toStandard());
+    }
+
+    Chicane::FileSystem::Path resolveOutputDirectory(const Chicane::FileSystem::Path& inOutput)
+    {
+        if (inOutput.isEmpty())
+        {
+            return ".";
+        }
+
+        if (inOutput.hasExtension() &&
+            Chicane::Box::AssetHeader::getTypeFromExtension(inOutput) != Chicane::Box::AssetType::Undefined)
+        {
+            const Chicane::FileSystem::Path parent = inOutput.parent();
+
+            return parent.isEmpty() ? Chicane::FileSystem::Path(".") : parent;
+        }
+
+        return inOutput;
+    }
+
+    void logGenerated(const Chicane::FileSystem::Path& inPath)
+    {
+        std::cout << "Generated [" << inPath.toString() << "]" << std::endl;
+    }
+
+    struct WrittenTexture
+    {
+        Chicane::FileSystem::Path path;
+        Chicane::String           id;
+        Chicane::Image::Instance  image;
+    };
+}
+
+void Program::createFromGltf(
+    const Chicane::String& inId, const Chicane::FileSystem::Path& inSource, const Chicane::FileSystem::Path& inOutput
+)
+{
+    if (inSource.isEmpty())
+    {
+        throw std::runtime_error("The glTF/GLB source file is missing");
+    }
+
+    if (!Chicane::FileSystem::exists(inSource))
+    {
+        throw std::runtime_error("The glTF/GLB source file doesn't exist");
+    }
+
+    if (Chicane::Box::Model::parseVendor(inSource.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
+    {
+        throw std::runtime_error("The source file must be a glTF or GLB file");
+    }
+
+    const Chicane::String     id        = sanitizeName(inId.isEmpty() ? inSource.stem().toString() : inId);
+    Chicane::FileSystem::Path directory = resolveOutputDirectory(inOutput);
+    if (directory.isEmpty())
+    {
+        directory = ".";
+    }
+
+    std::filesystem::create_directories(directory.toStandard());
+
+    const Chicane::FileSystem::Path modelPath =
+        directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Model));
+    createModel(id, {inSource.toString()}, modelPath);
+    logGenerated(modelPath);
+
+    Chicane::Box::Model            model(modelPath);
+    Chicane::Box::ModelParsed::Map modelGroups = model.getData();
+    if (modelGroups.empty())
+    {
+        throw std::runtime_error("The glTF/GLB file has no meshes");
+    }
+
+    const Chicane::Box::TextureGltf::Parsed textures = Chicane::Box::TextureGltf::parse(inSource);
+
+    std::vector<WrittenTexture> written(textures.images.size());
+    for (std::size_t i = 0; i < textures.images.size(); ++i)
+    {
+        const Chicane::Box::TextureGltf::Entry& image = textures.images[i];
+        if (image.data.empty())
+        {
+            continue;
+        }
+
+        const Chicane::String name = sanitizeName(image.id);
+        WrittenTexture        texture;
+        if (i == 0)
+        {
+            texture.path =
+                directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+            texture.id = id;
+        }
+        else
+        {
+            texture.path =
+                directory / id / (name + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+            texture.id = id + "/" + name;
+        }
+
+        ensureParent(texture.path);
+
+        try
+        {
+            Chicane::Box::Texture asset(texture.path);
+            asset.setId(texture.id);
+            asset.setVendor(image.vendor);
+            asset.setData(image.data);
+            asset.saveXML();
+
+            if (Chicane::Image::Instance data = asset.getData().lock())
+            {
+                texture.image = data;
+            }
+        }
+        catch (const std::exception& exception)
+        {
+            std::cerr << "Failed to export texture [" << texture.path.toString() << "]: " << exception.what()
+                      << std::endl;
+
+            continue;
+        }
+
+        written[i] = texture;
+        logGenerated(texture.path);
+    }
+
+    Chicane::FileSystem::Path fallbackPath = Chicane::Box::Texture::DEFAULT_SOURCE;
+    Chicane::String           fallbackId   = Chicane::Box::Texture::DEFAULT_REFERENCE;
+    Chicane::Image::Instance  fallbackImage;
+    for (const WrittenTexture& texture : written)
+    {
+        if (texture.path.isEmpty())
+        {
+            continue;
+        }
+
+        fallbackPath  = texture.path;
+        fallbackId    = texture.id;
+        fallbackImage = texture.image;
+
+        break;
+    }
+
+    if (fallbackPath == Chicane::Box::Texture::DEFAULT_SOURCE && !Chicane::FileSystem::exists(fallbackPath))
+    {
+        const unsigned char             pixel[4] = {255, 255, 255, 255};
+        const Chicane::Image            image(pixel, 1, 1, 4, 4);
+        const Chicane::FileSystem::Path path =
+            directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+
+        ensureParent(path);
+
+        Chicane::Box::Texture asset(path);
+        asset.setId(id);
+        asset.setVendor(Chicane::ImageVendor::Png);
+        asset.setData(image.encode());
+        asset.saveXML();
+
+        fallbackPath = path;
+        fallbackId   = id;
+        if (Chicane::Image::Instance data = asset.getData().lock())
+        {
+            fallbackImage = data;
+        }
+
+        logGenerated(path);
+    }
+
+    const std::vector<Chicane::String> animationNames = Chicane::Box::AnimationGltf::list(inSource);
+
+    Chicane::FileSystem::Path skeletonPath;
+    if (Chicane::Box::SkeletonGltf::hasSkin(inSource) || !animationNames.empty())
+    {
+        skeletonPath =
+            directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Skeleton));
+        createSkeleton(id, {inSource.toString()}, skeletonPath);
+        logGenerated(skeletonPath);
+    }
+
+    std::vector<Chicane::FileSystem::Path> animations;
+    if (!skeletonPath.isEmpty())
+    {
+        Chicane::Box::Skeleton bones(skeletonPath);
+
+        for (std::uint32_t i = 0; i < animationNames.size(); ++i)
+        {
+            Chicane::Box::AnimationClip clip;
+            try
+            {
+                clip = Chicane::Box::AnimationGltf::parse(inSource, i);
+            }
+            catch (const std::exception& exception)
+            {
+                std::cerr << "Skipped animation [" << animationNames[i] << "]: " << exception.what() << std::endl;
+
+                continue;
+            }
+
+            Chicane::Box::AnimationTrack::List tracks;
+            for (const Chicane::Box::AnimationTrack& track : clip.tracks)
+            {
+                if (track.name.isEmpty() || !bones.hasBone(track.name))
+                {
+                    continue;
+                }
+
+                tracks.push_back(track);
+            }
+
+            if (tracks.empty())
+            {
+                std::cerr << "Skipped animation [" << animationNames[i] << "]: no tracks match skeleton bones"
+                          << std::endl;
+
+                continue;
+            }
+
+            clip.tracks = std::move(tracks);
+
+            const Chicane::String     animId = sanitizeName(animationNames[i]);
+            Chicane::FileSystem::Path animPath =
+                animationNames.size() == 1
+                    ? directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation))
+                    : directory / id /
+                          (animId + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation));
+
+            ensureParent(animPath);
+
+            Chicane::Box::Animation asset(animPath);
+            asset.setId(animId);
+            asset.setSkeleton(skeletonPath);
+            asset.setClip(clip);
+            asset.saveXML();
+
+            animations.push_back(animPath);
+            logGenerated(animPath);
+        }
+    }
+
+    const Chicane::FileSystem::Path meshPath =
+        directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Mesh));
+    ensureParent(meshPath);
+
+    Chicane::Box::Mesh asset(meshPath);
+    asset.setId(id);
+    asset.setGroups({});
+    asset.setAnimations({});
+
+    std::vector<Chicane::Box::PreviewGeometryBatch> batches    = {};
+    std::size_t                                     groupCount = 0;
+    for (const auto& [reference, data] : modelGroups)
+    {
+        Chicane::Box::MeshGroup group;
+        group.setId(reference);
+        group.setBone(data.bone);
+        group.setModel(model.getFilepath(), reference);
+
+        bool                     hasBase    = false;
+        Chicane::Image::Instance groupImage = fallbackImage;
+        if (data.material >= 0)
+        {
+            const auto found = textures.materials.find(data.material);
+            if (found != textures.materials.end())
+            {
+                for (const auto& [map, imageIndex] : found->second)
+                {
+                    if (imageIndex < 0 || static_cast<std::size_t>(imageIndex) >= written.size())
+                    {
+                        continue;
+                    }
+
+                    const WrittenTexture& texture = written.at(static_cast<std::size_t>(imageIndex));
+                    if (texture.path.isEmpty())
+                    {
+                        continue;
+                    }
+
+                    group.setTexture(map, texture.path.toString(), texture.id);
+                    if (map == Chicane::TextureMap::Base)
+                    {
+                        hasBase    = true;
+                        groupImage = texture.image;
+                    }
+                }
+            }
+        }
+
+        if (!hasBase)
+        {
+            group.setTexture(fallbackPath.toString(), fallbackId);
+        }
+
+        if (!group.isValid())
+        {
+            std::cerr << "Skipping mesh group [" << reference << "]" << std::endl;
+
+            continue;
+        }
+
+        asset.appendGroup(group);
+        groupCount++;
+
+        Chicane::Box::PreviewGeometryBatch batch;
+        batch.texture  = groupImage;
+        batch.vertices = data.vertices;
+
+        if (data.indices.empty())
+        {
+            for (Chicane::Vertex::Index i = 0; i < static_cast<Chicane::Vertex::Index>(data.vertices.size()); i++)
+            {
+                batch.indices.push_back(i);
+            }
+        }
+        else
+        {
+            batch.indices = data.indices;
+        }
+
+        batches.push_back(std::move(batch));
+    }
+
+    if (groupCount == 0)
+    {
+        throw std::runtime_error("Failed to generate a mesh from the glTF/GLB file");
+    }
+
+    if (!skeletonPath.isEmpty())
+    {
+        asset.setSkeleton(skeletonPath);
+    }
+
+    for (const Chicane::FileSystem::Path& animation : animations)
+    {
+        asset.appendAnimation(animation);
+    }
+
+    if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
+            Chicane::Box::AssetPreview::createFromGeometry(meshPath, batches))
+    {
+        if (preview->image)
+        {
+            Chicane::Box::AssetPreview::write(asset.getXML(), Chicane::Box::AssetType::Mesh, *preview->image);
+        }
+    }
+
+    asset.saveXML();
+    logGenerated(meshPath);
 }
 
 void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)

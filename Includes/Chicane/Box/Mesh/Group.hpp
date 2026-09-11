@@ -24,6 +24,7 @@ namespace Chicane
             static constexpr inline const char* TRANSLATION_ATTRIBUTE_NAME = "translation";
             static constexpr inline const char* ROTATION_ATTRIBUTE_NAME    = "rotation";
             static constexpr inline const char* SCALE_ATTRIBUTE_NAME       = "scale";
+            static constexpr inline const char* BONE_ATTRIBUTE_NAME        = "bone";
 
         public:
             bool isValid() const;
@@ -31,16 +32,19 @@ namespace Chicane
             const String& getId() const;
             void setId(const String& inId);
 
+            const String& getBone() const;
+            void setBone(const String& inBone);
+
             const AssetReference& getModel() const;
-            void setModel(const pugi::xml_node& inNode);
+            void setModel(const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
             void setModel(const String& inSource, const String& inReference);
 
             const TextureMaps& getTextures() const;
             bool hasTexture(TextureMap inMap) const;
             const AssetReference& getTexture(TextureMap inMap = TextureMap::Base) const;
-            void setTexture(TextureMap inMap, const pugi::xml_node& inNode);
+            void setTexture(TextureMap inMap, const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
             void setTexture(TextureMap inMap, const String& inSource, const String& inReference);
-            void setTexture(const pugi::xml_node& inNode);
+            void setTexture(const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
             void setTexture(const String& inSource, const String& inReference);
             void saveTextures(pugi::xml_node& outNode) const;
 
@@ -52,6 +56,7 @@ namespace Chicane
 
         private:
             String         m_id        = "";
+            String         m_bone      = "";
             AssetReference m_model     = {};
             TextureMaps    m_textures  = {};
             Transform      m_transform = {};

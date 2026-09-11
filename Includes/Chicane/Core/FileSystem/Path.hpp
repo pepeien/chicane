@@ -31,8 +31,8 @@ namespace Chicane
         public:
             // Conversion
             inline operator std::filesystem::path() const { return m_path; }
-            inline operator String() const { return String(m_path.string()); }
-            inline operator std::string() const { return m_path.string(); }
+            inline operator String() const { return toString(); }
+            inline operator std::string() const { return m_path.generic_string(); }
 
             // Comparison
             inline bool operator==(const Path& inOther) const { return m_path == inOther.m_path; }
@@ -71,7 +71,7 @@ namespace Chicane
             inline bool hasFilename() const { return m_path.has_filename(); }
 
             // Conversion
-            inline String toString() const { return String(m_path.string()); }
+            inline String toString() const { return String(m_path.generic_string()); }
             inline const std::filesystem::path::value_type* toChar() const { return m_path.c_str(); }
             inline const std::filesystem::path& toStandard() const { return m_path; }
 

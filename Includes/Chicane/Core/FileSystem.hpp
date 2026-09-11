@@ -13,7 +13,11 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        CHICANE_CORE bool exists(const Path& inPath);
+        CHICANE_CORE Path executableDirectory();
+        CHICANE_CORE Path resolve(const Path& inPath, const Path& inBase = {});
+        CHICANE_CORE Path rootRelative(const Path& inPath);
+
+        CHICANE_CORE bool exists(const Path& inPath, const Path& inBase = {});
         CHICANE_CORE std::vector<Item> ls(const Path& inDir = ".", std::uint32_t inDepth = 0);
         CHICANE_CORE void requestLs(const Path& inDir);
         CHICANE_CORE void pumpLs(std::vector<Listing>& outReady);

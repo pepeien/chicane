@@ -106,14 +106,24 @@ namespace Chicane
             m_id = inId;
         }
 
+        const String& MeshGroup::getBone() const
+        {
+            return m_bone;
+        }
+
+        void MeshGroup::setBone(const String& inBone)
+        {
+            m_bone = inBone;
+        }
+
         const AssetReference& MeshGroup::getModel() const
         {
             return m_model;
         }
 
-        void MeshGroup::setModel(const pugi::xml_node& inNode)
+        void MeshGroup::setModel(const pugi::xml_node& inNode, const FileSystem::Path& inBase)
         {
-            m_model.setFrom(inNode);
+            m_model.setFrom(inNode, inBase);
         }
 
         void MeshGroup::setModel(const String& inSource, const String& inReference)
@@ -143,10 +153,10 @@ namespace Chicane
             return found->second;
         }
 
-        void MeshGroup::setTexture(TextureMap inMap, const pugi::xml_node& inNode)
+        void MeshGroup::setTexture(TextureMap inMap, const pugi::xml_node& inNode, const FileSystem::Path& inBase)
         {
             AssetReference texture;
-            texture.setFrom(inNode);
+            texture.setFrom(inNode, inBase);
             m_textures[inMap] = texture;
         }
 
@@ -158,9 +168,9 @@ namespace Chicane
             m_textures[inMap] = texture;
         }
 
-        void MeshGroup::setTexture(const pugi::xml_node& inNode)
+        void MeshGroup::setTexture(const pugi::xml_node& inNode, const FileSystem::Path& inBase)
         {
-            setTexture(TextureMap::Base, inNode);
+            setTexture(TextureMap::Base, inNode, inBase);
         }
 
         void MeshGroup::setTexture(const String& inSource, const String& inReference)

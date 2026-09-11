@@ -22,7 +22,9 @@ namespace Chicane
                 throw std::runtime_error("The XML document path is empty");
             }
 
-            const FileSystem::Path path = std::filesystem::absolute(inFilepath);
+            const FileSystem::Path path = FileSystem::exists(inFilepath)
+                                              ? FileSystem::resolve(inFilepath)
+                                              : FileSystem::Path(std::filesystem::absolute(inFilepath));
 
             Writer writer;
             inDocument.save(
@@ -47,7 +49,7 @@ namespace Chicane
                 throw std::runtime_error("The XML document path is empty");
             }
 
-            const FileSystem::Path path = std::filesystem::absolute(inFilepath);
+            const FileSystem::Path path = FileSystem::resolve(inFilepath);
 
             pugi::xml_document result;
             if (!result.load_file(path.toChar(), pugi::parse_default | pugi::parse_fragment))

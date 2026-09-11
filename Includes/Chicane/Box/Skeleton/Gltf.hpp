@@ -11,6 +11,7 @@ namespace Chicane
     {
         namespace SkeletonGltf
         {
+            CHICANE_BOX bool hasSkin(const FileSystem::Path& inFilepath);
             CHICANE_BOX SkeletonBone::List parse(const FileSystem::Path& inFilepath);
         }
     }

@@ -68,6 +68,10 @@ namespace Chicane
 
             pugi::xml_node groupNode = root.append_child(GROUP_TAG);
             groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id.toStandard());
+            if (!inGroup.getBone().isEmpty())
+            {
+                groupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
+            }
 
             // Model
             pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
@@ -110,6 +114,24 @@ namespace Chicane
                 appendGroup(inGroup);
 
                 return;
+            }
+
+            pugi::xml_attribute boneAttribute = foundGroupNode.attribute(GROUP_BONE_ATTRIBUTE_NAME);
+            if (inGroup.getBone().isEmpty())
+            {
+                if (!boneAttribute.empty())
+                {
+                    foundGroupNode.remove_attribute(boneAttribute);
+                }
+            }
+            else if (boneAttribute.empty())
+            {
+                foundGroupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME)
+                    .set_value(inGroup.getBone().toStandard());
+            }
+            else
+            {
+                boneAttribute.set_value(inGroup.getBone().toStandard());
             }
 
             // Model
@@ -159,7 +181,7 @@ namespace Chicane
                 return;
             }
 
-            m_skeleton.setFrom(skeletonNode);
+            m_skeleton.setFrom(skeletonNode, getFilepath());
         }
 
         void Mesh::writeSkeleton()
@@ -233,7 +255,7 @@ namespace Chicane
                 }
 
                 AssetReference reference;
-                reference.setFrom(child);
+                reference.setFrom(child, getFilepath());
                 if (!reference.isValid())
                 {
                     continue;
@@ -286,6 +308,7 @@ namespace Chicane
 
                 MeshGroup group;
                 group.setId(Xml::getAttribute(GROUP_ID_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setBone(Xml::getAttribute(GROUP_BONE_ATTRIBUTE_NAME, groupNode).as_string());
                 group.setTransform(groupNode);
 
                 for (const auto& assetNode : groupNode.children())
@@ -294,7 +317,7 @@ namespace Chicane
 
                     if (currentTag.equals(Model::TAG))
                     {
-                        group.setModel(assetNode);
+                        group.setModel(assetNode, getFilepath());
 
                         continue;
                     }
@@ -302,7 +325,7 @@ namespace Chicane
                     const TextureMap textureMap = toTextureMap(currentTag);
                     if (textureMap != TextureMap::Count)
                     {
-                        group.setTexture(textureMap, assetNode);
+                        group.setTexture(textureMap, assetNode, getFilepath());
 
                         continue;
                     }

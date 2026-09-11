@@ -15,8 +15,8 @@ namespace Chicane
     namespace Box
     {
         static const std::unordered_map<ModelVendor, String> EXTENSIONS = {
-            {ModelVendor::Undefined, "N/A"},
-            {ModelVendor::Wavefront, "OBJ"},
+            {ModelVendor::Undefined, "N/A" },
+            {ModelVendor::Wavefront, "OBJ" },
             {ModelVendor::Gltf,      "GLTF"},
         };
 
@@ -150,6 +150,25 @@ namespace Chicane
             }
 
             return fallback->getModel(DEFAULT_REFERENCE);
+        }
+
+        String Model::getUniqueId(const String& inId) const
+        {
+            if (getId().isEmpty())
+            {
+                return inId;
+            }
+
+            if (inId.isEmpty())
+            {
+                return getId();
+            }
+
+            String result = getId();
+            result.append("_");
+            result.append(inId);
+
+            return result;
         }
 
         void Model::fetchVendorFromXML()

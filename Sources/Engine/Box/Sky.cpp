@@ -105,7 +105,7 @@ namespace Chicane
             for (const pugi::xml_node& node : textures.children(Texture::TAG))
             {
                 AssetReference texture;
-                texture.setFrom(node);
+                texture.setFrom(node, getFilepath());
 
                 m_textures.push_back(texture);
             }
@@ -120,7 +120,7 @@ namespace Chicane
                 return;
             }
 
-            m_model.setFrom(model);
+            m_model.setFrom(model, getFilepath());
         }
     }
 }
