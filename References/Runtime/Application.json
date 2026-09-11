@@ -989,21 +989,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "updateDebugOverlays",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_UPDATEDEBUGOVERLAYS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "initUI",
                 "parameters": [],
                 "modifiers": [],

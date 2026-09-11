@@ -159,140 +159,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setBoundsOverlay",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_SETBOUNDSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "clearBoundsOverlay",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_CLEARBOUNDSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "appendBoundsOverlay",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Bounds3D",
-                            "suffix": "&",
-                            "path": "Core/Math/Bounds/3D",
-                            "templates": []
-                        },
-                        "name": "inBounds"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_APPENDBOUNDSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setCollidersOverlay",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_SETCOLLIDERSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "clearCollidersOverlay",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_CLEARCOLLIDERSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "appendCollidersOverlay",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_APPENDCOLLIDERSOVERLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "pushTraceOverlay",
                 "parameters": [
                     {
@@ -334,12 +200,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasOverlay",
+                "name": "hasTraces",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_HASOVERLAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_HASTRACES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -351,12 +217,12 @@
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "getOverlayVertices",
+                "name": "getTraceVertices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_GETOVERLAYVERTICES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DEBUGRESOURCE_GETTRACEVERTICES_DESCRIPTION"
             }
         ],
         "members": [
@@ -372,32 +238,6 @@
                 },
                 "name": "m_mode",
                 "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_MODE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vertex::List",
-                    "suffix": "",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "m_bounds",
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_BOUNDS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vertex::List",
-                    "suffix": "",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "m_colliders",
-                "description": "CHICANE_RENDERER_DEBUGRESOURCE_M_COLLIDERS_DESCRIPTION"
             },
             {
                 "accessor": "private",

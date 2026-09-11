@@ -15,6 +15,40 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "list",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONGLTF_LIST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "AnimationClip",
                     "suffix": "",
                     "path": "Box/Animation/Clip",
@@ -41,6 +75,42 @@
                             "templates": []
                         },
                         "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ANIMATIONGLTF_PARSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnimationClip",
+                    "suffix": "",
+                    "path": "Box/Animation/Clip",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
                     }
                 ],
                 "modifiers": [],

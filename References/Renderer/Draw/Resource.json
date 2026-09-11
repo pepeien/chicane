@@ -90,6 +90,52 @@
                 "description": "CHICANE_RENDERER_DRAWRESOURCE_MARKASCLEAN_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVolatile",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWRESOURCE_ISVOLATILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setIsVolatile",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_DRAWRESOURCE_SETISVOLATILE_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -370,6 +416,19 @@
                 },
                 "name": "m_bIsDirty",
                 "description": "CHICANE_RENDERER_DRAWRESOURCE_M_BISDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsVolatile",
+                "description": "CHICANE_RENDERER_DRAWRESOURCE_M_BISVOLATILE_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -542,6 +542,156 @@
                 "description": "CHICANE_RENDERER_FRAME_GETSKYINSTANCE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawLines",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_DRAWLINES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasLines",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASLINES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::List",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getLines",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETLINES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearLines",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_CLEARLINES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawTriangles",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_DRAWTRIANGLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasTriangles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASTRIANGLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::List",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getTriangles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETTRIANGLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearTriangles",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_CLEARTRIANGLES_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -807,6 +957,32 @@
                 },
                 "name": "m_skyInstance",
                 "description": "CHICANE_RENDERER_FRAME_M_SKYINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_lines",
+                "description": "CHICANE_RENDERER_FRAME_M_LINES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_triangles",
+                "description": "CHICANE_RENDERER_FRAME_M_TRIANGLES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_FRAME_DESCRIPTION"

@@ -203,6 +203,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initOverlayFillGraphicsPipeline",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_INITOVERLAYFILLGRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initOutlineGraphicsPipeline",
                 "parameters": [],
                 "modifiers": [],
@@ -296,6 +311,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "VulkanLSceneLineOverlayBuffer",
+                    "suffix": "&",
+                    "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                    "templates": []
+                },
+                "name": "overlayBufferFor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanFrame",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_OVERLAYBUFFERFOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -303,6 +344,16 @@
                 },
                 "name": "ensureOverlayBuffer",
                 "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanLSceneLineOverlayBuffer",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                            "templates": []
+                        },
+                        "name": "outBuffer"
+                    },
                     {
                         "type": {
                             "prefix": "",
@@ -328,7 +379,18 @@
                     "templates": []
                 },
                 "name": "destroyOverlayBuffer",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanLSceneLineOverlayBuffer",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_DESTROYOVERLAYBUFFER_DESCRIPTION"
             },
@@ -342,8 +404,33 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "destroyOverlayBuffers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_DESTROYOVERLAYBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "uploadOverlayBuffer",
                 "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanLSceneLineOverlayBuffer",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                            "templates": []
+                        },
+                        "name": "outBuffer"
+                    },
                     {
                         "type": {
                             "prefix": "const ",
@@ -397,7 +484,18 @@
                     "templates": []
                 },
                 "name": "shouldDrawOverlay",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
@@ -469,6 +567,19 @@
                     "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
                     "templates": []
                 },
+                "name": "m_overlayFillPipeline",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYFILLPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
                 "name": "m_outlineMaskPipeline",
                 "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OUTLINEMASKPIPELINE_DESCRIPTION"
             },
@@ -503,39 +614,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "VulkanBuffer",
-                    "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Buffer",
-                    "templates": []
-                },
-                "name": "m_overlayBuffer",
-                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYBUFFER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanLSceneLineOverlayBuffer",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "m_overlayBufferCapacity",
-                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYBUFFERCAPACITY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_overlayVertexCount",
-                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYVERTEXCOUNT_DESCRIPTION"
+                "name": "m_overlayBuffers",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINE_M_OVERLAYBUFFERS_DESCRIPTION"
             },
             {
                 "accessor": "private",

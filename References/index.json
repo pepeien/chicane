@@ -413,23 +413,6 @@
                 ]
             },
             {
-                "title": "Gltf",
-                "filename": "Gltf",
-                "path": "Box/Gltf",
-                "source": {
-                    "header": "Includes/Chicane/Box/Gltf.hpp",
-                    "namespace": "Chicane::Box::Gltf",
-                    "types": [],
-                    "enums": [],
-                    "constructors": [],
-                    "destructors": [],
-                    "functions": [],
-                    "members": [],
-                    "description": null
-                },
-                "children": []
-            },
-            {
                 "title": "Mesh",
                 "filename": "Mesh",
                 "path": "Box/Mesh",
@@ -737,7 +720,25 @@
                     "members": [],
                     "description": null
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Gltf",
+                        "filename": "Gltf",
+                        "path": "Box/Texture/Gltf",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Texture/Gltf.hpp",
+                            "namespace": "Chicane::Box::TextureGltf::Parsed",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
             }
         ]
     },
@@ -5659,7 +5660,25 @@
                                                     "members": [],
                                                     "description": null
                                                 },
-                                                "children": []
+                                                "children": [
+                                                    {
+                                                        "title": "OverlayBuffer",
+                                                        "filename": "OverlayBuffer",
+                                                        "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                                                        "source": {
+                                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer.hpp",
+                                                            "namespace": "Chicane::Renderer::VulkanLSceneLineOverlayBuffer",
+                                                            "types": [],
+                                                            "enums": [],
+                                                            "constructors": [],
+                                                            "destructors": [],
+                                                            "functions": [],
+                                                            "members": [],
+                                                            "description": null
+                                                        },
+                                                        "children": []
+                                                    }
+                                                ]
                                             },
                                             {
                                                 "title": "Mesh",
@@ -6358,12 +6377,46 @@
                                         },
                                         "children": [
                                             {
+                                                "title": "Line",
+                                                "filename": "Line",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Line",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandLine",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
                                                 "title": "Mesh",
                                                 "filename": "Mesh",
                                                 "path": "Renderer/Draw/Poly/3D/Command/Mesh",
                                                 "source": {
                                                     "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp",
                                                     "namespace": "Chicane::Renderer::DrawPoly3DCommandMesh",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
+                                                "title": "Triangle",
+                                                "filename": "Triangle",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Triangle",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Triangle.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandTriangle",
                                                     "types": [],
                                                     "enums": [],
                                                     "constructors": [],

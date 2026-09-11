@@ -112,6 +112,16 @@
                             "templates": []
                         },
                         "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],

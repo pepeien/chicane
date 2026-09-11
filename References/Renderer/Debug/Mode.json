@@ -70,6 +70,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Skeletons",
+                "description": "CHICANE_RENDERER_DEBUGMODE_SKELETONS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "All",
                 "description": "CHICANE_RENDERER_DEBUGMODE_ALL_DESCRIPTION"
             }

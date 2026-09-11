@@ -366,7 +366,18 @@
                     "templates": []
                 },
                 "name": "shouldDrawOverlay",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],

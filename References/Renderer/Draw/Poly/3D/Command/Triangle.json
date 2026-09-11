@@ -1,0 +1,31 @@
+{
+    "title": "Triangle",
+    "filename": "Triangle",
+    "path": "Renderer/Draw/Poly/3D/Command/Triangle",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Triangle.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DCommandTriangle",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "vertices",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTRIANGLE_VERTICES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDTRIANGLE_DESCRIPTION"
+    },
+    "children": []
+}

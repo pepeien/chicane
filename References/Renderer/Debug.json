@@ -76,6 +76,184 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "appendAxes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "outVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inCenter"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_APPENDAXES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendBone",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "outVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inStart"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inEnd"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_APPENDBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendSphere",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "outVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inCenter"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_APPENDSPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "appendBounds",
                 "parameters": [
                     {
@@ -559,6 +737,36 @@
                 },
                 "name": "COLLIDER_COLOR",
                 "description": "CHICANE_RENDERER_DEBUG_COLLIDER_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "SKELETON_COLOR",
+                "description": "CHICANE_RENDERER_DEBUG_SKELETON_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "SKELETON_JOINT_COLOR",
+                "description": "CHICANE_RENDERER_DEBUG_SKELETON_JOINT_COLOR_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DEBUG_DESCRIPTION"

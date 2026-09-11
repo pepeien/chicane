@@ -179,6 +179,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "Frame",
+                    "suffix": "&",
+                    "path": "Renderer/Frame",
+                    "templates": []
+                },
+                "name": "getCurrentFrame",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETCURRENTFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "Draw::Id",
                     "suffix": "",
@@ -714,6 +731,58 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawLines",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_DRAWLINES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawTriangles",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_DRAWTRIANGLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1086,6 +1155,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_MARKRESOURCESASDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resetResources",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_RESETRESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",

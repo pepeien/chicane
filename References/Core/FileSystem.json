@@ -15,6 +15,83 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "executableDirectory",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_EXECUTABLEDIRECTORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "resolve",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_RESOLVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "rootRelative",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_ROOTRELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -31,6 +108,16 @@
                             "templates": []
                         },
                         "name": "inPath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],

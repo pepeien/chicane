@@ -293,6 +293,34 @@
                 "description": "CHICANE_BOX_MODEL_GETMODEL_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getUniqueId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETUNIQUEID_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {

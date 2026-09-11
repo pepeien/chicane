@@ -1,0 +1,148 @@
+{
+    "title": "Gltf",
+    "filename": "Gltf",
+    "path": "Box/Texture/Gltf",
+    "source": {
+        "header": "Includes/Chicane/Box/Texture/Gltf.hpp",
+        "namespace": "Chicane::Box::TextureGltf::Parsed",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Parsed",
+                    "suffix": "",
+                    "path": "Box/Texture/Gltf",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTUREGLTF_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageVendor",
+                    "suffix": "",
+                    "path": "Core/Image/Vendor",
+                    "templates": []
+                },
+                "name": "vendor",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Raw",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Entry",
+                            "suffix": "",
+                            "path": "Box/Texture/Gltf",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "images",
+                "description": "CHICANE_BOX_TEXTUREGLTF_PARSED_IMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::map",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "TextureMap",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::int32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "materials",
+                "description": "CHICANE_BOX_TEXTUREGLTF_PARSED_MATERIALS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_TEXTUREGLTF_DESCRIPTION"
+    },
+    "children": []
+}

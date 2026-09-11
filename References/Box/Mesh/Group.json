@@ -102,6 +102,49 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getBone",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESHGROUP_GETBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBone",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inBone"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESHGROUP_SETBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
                     "name": "AssetReference",
                     "suffix": "&",
                     "path": "Box/Asset/Reference",
@@ -135,6 +178,16 @@
                             "templates": []
                         },
                         "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],
@@ -280,6 +333,16 @@
                             "templates": []
                         },
                         "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],
@@ -352,6 +415,16 @@
                             "templates": []
                         },
                         "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],
@@ -586,6 +659,22 @@
                 "description": "CHICANE_BOX_MESHGROUP_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BONE_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MESHGROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
@@ -597,6 +686,19 @@
                 },
                 "name": "m_id",
                 "description": "CHICANE_BOX_MESHGROUP_M_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_bone",
+                "description": "CHICANE_BOX_MESHGROUP_M_BONE_DESCRIPTION"
             },
             {
                 "accessor": "private",

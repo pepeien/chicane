@@ -141,6 +141,54 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendDebugWireframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "outLines"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "outTriangles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_APPENDDEBUGWIREFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
@@ -731,6 +779,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findBoundBone",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::MeshGroup",
+                            "suffix": "&",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_FINDBOUNDBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -877,6 +953,27 @@
                 },
                 "name": "m_queue",
                 "description": "CHICANE_CMESH_M_QUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Mat4",
+                            "suffix": "",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bones",
+                "description": "CHICANE_CMESH_M_BONES_DESCRIPTION"
             },
             {
                 "accessor": "protected",

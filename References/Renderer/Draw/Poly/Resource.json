@@ -508,6 +508,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_stableVertexCount",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_STABLEVERTEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_stableIndexCount",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_STABLEINDEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Glyphs",
                     "suffix": "",
                     "path": "Renderer/Draw/Poly/Resource",

@@ -23,6 +23,19 @@
                 },
                 "name": "reference",
                 "description": "CHICANE_RENDERER_DRAWDATA_REFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsVolatile",
+                "description": "CHICANE_RENDERER_DRAWDATA_BISVOLATILE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWDATA_DESCRIPTION"

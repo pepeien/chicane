@@ -82,6 +82,45 @@
                 },
                 "name": "indices",
                 "description": "CHICANE_BOX_MODELPARSED_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "material",
+                "description": "CHICANE_BOX_MODELPARSED_MATERIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "bone",
+                "description": "CHICANE_BOX_MODELPARSED_BONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Transform",
+                    "suffix": "",
+                    "path": "Core/Math/Transform",
+                    "templates": []
+                },
+                "name": "transform",
+                "description": "CHICANE_BOX_MODELPARSED_TRANSFORM_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_MODELPARSED_DESCRIPTION"
