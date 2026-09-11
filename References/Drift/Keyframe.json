@@ -57,10 +57,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Time",
+                            "suffix": "&",
+                            "path": "Core/Time",
                             "templates": []
                         },
                         "name": "inTime"
@@ -101,10 +101,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Time",
+                            "suffix": "&",
+                            "path": "Core/Time",
                             "templates": []
                         },
                         "name": "inTime"
@@ -150,9 +150,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Time",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Time",
                     "templates": []
                 },
                 "name": "time",

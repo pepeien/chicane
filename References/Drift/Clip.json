@@ -152,9 +152,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "Time",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Time",
                     "templates": []
                 },
                 "name": "duration",
