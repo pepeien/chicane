@@ -895,6 +895,81 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "snapshotRendererState",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SNAPSHOTRENDERERSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSceneDebug",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::DebugMode",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Mode",
+                            "templates": []
+                        },
+                        "name": "inMode"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_APPLICATION_HASSCENEDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getRendererResolution",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_APPLICATION_GETRENDERERRESOLUTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initScene",
                 "parameters": [],
                 "modifiers": [],
@@ -1303,6 +1378,27 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneBusyIndex",
+                "description": "CHICANE_APPLICATION_M_SCENEBUSYINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "SceneObservable",
                     "suffix": "",
                     "path": "Runtime/Application",
@@ -1504,6 +1600,69 @@
                 },
                 "name": "m_renderer",
                 "description": "CHICANE_APPLICATION_M_RENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint8_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_debugFlags",
+                "description": "CHICANE_APPLICATION_M_DEBUGFLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_rendererWidth",
+                "description": "CHICANE_APPLICATION_M_RENDERERWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_rendererHeight",
+                "description": "CHICANE_APPLICATION_M_RENDERERHEIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_APPLICATION_DESCRIPTION"

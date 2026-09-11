@@ -520,6 +520,22 @@
                 "description": "CHICANE_BOX_MODEL_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPHERE_REFERENCE",
+                "description": "CHICANE_BOX_MODEL_SPHERE_REFERENCE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {

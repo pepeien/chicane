@@ -486,6 +486,38 @@
                 "description": "CHICANE_BOX_TEXTURE_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GREY_SOURCE",
+                "description": "CHICANE_BOX_TEXTURE_GREY_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GREY_REFERENCE",
+                "description": "CHICANE_BOX_TEXTURE_GREY_REFERENCE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {

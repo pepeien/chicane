@@ -171,13 +171,13 @@
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "Renderer::Draw::Id",
-                            "suffix": "",
+                            "prefix": "const ",
+                            "name": "Renderer::Draw::Reference",
+                            "suffix": "&",
                             "path": "Renderer/Draw",
                             "templates": []
                         },
-                        "name": "inSphereId"
+                        "name": "inSphereReference"
                     },
                     {
                         "type": {

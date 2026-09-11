@@ -547,6 +547,22 @@
                 "description": "CHICANE_BOX_MESH_GROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPHERE_SOURCE",
+                "description": "CHICANE_BOX_MESH_SPHERE_SOURCE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {

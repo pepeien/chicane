@@ -36,13 +36,26 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Draw::Id",
+                    "name": "Draw::Reference",
                     "suffix": "",
                     "path": "Renderer/Draw",
                     "templates": []
                 },
                 "name": "model",
                 "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "textures",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDMESH_TEXTURES_DESCRIPTION"
             },
             {
                 "accessor": "public",

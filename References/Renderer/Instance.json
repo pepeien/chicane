@@ -615,6 +615,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "DebugMode",
+                    "suffix": "",
+                    "path": "Renderer/Debug/Mode",
+                    "templates": []
+                },
+                "name": "getDebug",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETDEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1211,10 +1228,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DebugMode",
+                    "name": "std::atomic",
                     "suffix": "",
-                    "path": "Renderer/Debug/Mode",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint8_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "m_debug",
                 "description": "CHICANE_RENDERER_INSTANCE_M_DEBUG_DESCRIPTION"
