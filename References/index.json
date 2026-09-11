@@ -589,7 +589,7 @@
                         "path": "Box/Skeleton/Bone",
                         "source": {
                             "header": "Includes/Chicane/Box/Skeleton/Bone.hpp",
-                            "namespace": "Chicane::Box::SkeletonBoneEntry",
+                            "namespace": "Chicane::Box::SkeletonBone",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -598,7 +598,25 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "Entry",
+                                "filename": "Entry",
+                                "path": "Box/Skeleton/Bone/Entry",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Skeleton/Bone/Entry.hpp",
+                                    "namespace": "Chicane::Box::SkeletonBoneEntry",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "Gltf",
@@ -727,7 +745,7 @@
                         "path": "Box/Texture/Gltf",
                         "source": {
                             "header": "Includes/Chicane/Box/Texture/Gltf.hpp",
-                            "namespace": "Chicane::Box::TextureGltf::Parsed",
+                            "namespace": "Chicane::Box::TextureGltf",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -736,7 +754,42 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "Entry",
+                                "filename": "Entry",
+                                "path": "Box/Texture/Gltf/Entry",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Texture/Gltf/Entry.hpp",
+                                    "namespace": "Chicane::Box::TextureGltf::Entry",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Parsed",
+                                "filename": "Parsed",
+                                "path": "Box/Texture/Gltf/Parsed",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Texture/Gltf/Parsed.hpp",
+                                    "namespace": "Chicane::Box::TextureGltf::Parsed",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             }
@@ -3035,6 +3088,23 @@
                         "children": []
                     }
                 ]
+            },
+            {
+                "title": "Engine",
+                "filename": "Engine",
+                "path": "Drift/Engine",
+                "source": {
+                    "header": "Includes/Chicane/Drift/Engine.hpp",
+                    "namespace": "Chicane::Drift::Engine",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
             },
             {
                 "title": "Interpolation",
@@ -5662,12 +5732,12 @@
                                                 },
                                                 "children": [
                                                     {
-                                                        "title": "OverlayBuffer",
-                                                        "filename": "OverlayBuffer",
-                                                        "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer",
+                                                        "title": "ImmediateBuffer",
+                                                        "filename": "ImmediateBuffer",
+                                                        "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/ImmediateBuffer",
                                                         "source": {
-                                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/OverlayBuffer.hpp",
-                                                            "namespace": "Chicane::Renderer::VulkanLSceneLineOverlayBuffer",
+                                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/ImmediateBuffer.hpp",
+                                                            "namespace": "Chicane::Renderer::VulkanLSceneLineImmediateBuffer",
                                                             "types": [],
                                                             "enums": [],
                                                             "constructors": [],
@@ -6135,23 +6205,6 @@
                             "description": null
                         },
                         "children": []
-                    },
-                    {
-                        "title": "Resource",
-                        "filename": "Resource",
-                        "path": "Renderer/Debug/Resource",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Debug/Resource.hpp",
-                            "namespace": "Chicane::Renderer::DebugResource",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
                     }
                 ]
             },
@@ -6377,23 +6430,6 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "Line",
-                                                "filename": "Line",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Line",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Line.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandLine",
-                                                    "types": [],
-                                                    "enums": [],
-                                                    "constructors": [],
-                                                    "destructors": [],
-                                                    "functions": [],
-                                                    "members": [],
-                                                    "description": null
-                                                },
-                                                "children": []
-                                            },
-                                            {
                                                 "title": "Mesh",
                                                 "filename": "Mesh",
                                                 "path": "Renderer/Draw/Poly/3D/Command/Mesh",
@@ -6411,12 +6447,12 @@
                                                 "children": []
                                             },
                                             {
-                                                "title": "Triangle",
-                                                "filename": "Triangle",
-                                                "path": "Renderer/Draw/Poly/3D/Command/Triangle",
+                                                "title": "Poly",
+                                                "filename": "Poly",
+                                                "path": "Renderer/Draw/Poly/3D/Command/Poly",
                                                 "source": {
-                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Triangle.hpp",
-                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandTriangle",
+                                                    "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Poly.hpp",
+                                                    "namespace": "Chicane::Renderer::DrawPoly3DCommandPoly",
                                                     "types": [],
                                                     "enums": [],
                                                     "constructors": [],

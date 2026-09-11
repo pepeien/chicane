@@ -73,6 +73,24 @@
                     "inline"
                 ],
                 "description": "CHICANE_RENDERER_DRAWPOLY_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isLineList",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLY_ISLINELIST_DESCRIPTION"
             }
         ],
         "members": [

@@ -1,0 +1,82 @@
+{
+    "title": "Engine",
+    "filename": "Engine",
+    "path": "Drift/Engine",
+    "source": {
+        "header": "Includes/Chicane/Drift/Engine.hpp",
+        "namespace": "Chicane::Drift::Engine",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Clip",
+                            "suffix": "",
+                            "path": "Drift/Clip",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "clips",
+                "description": "CHICANE_DRIFT_ENGINE_CLIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Transformable",
+                            "suffix": "*",
+                            "path": "Core/Transformable",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::unique_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Queue",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "bindings",
+                "description": "CHICANE_DRIFT_ENGINE_BINDINGS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DRIFT_ENGINE_DESCRIPTION"
+    },
+    "children": []
+}

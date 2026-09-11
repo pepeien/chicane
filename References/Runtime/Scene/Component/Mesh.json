@@ -162,12 +162,22 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Vertex::List",
+                            "name": "Renderer::DrawPoly3DCommandMesh::List",
                             "suffix": "&",
-                            "path": "Core/Math/Vertex",
+                            "path": "Renderer/Draw/Poly/3D/Command/Mesh",
                             "templates": []
                         },
-                        "name": "outTriangles"
+                        "name": "outMeshes"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inSphereId"
                     },
                     {
                         "type": {

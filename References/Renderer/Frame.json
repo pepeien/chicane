@@ -546,43 +546,17 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "drawLines",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_DRAWLINES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "hasLines",
+                "name": "hasImmediateVertices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_FRAME_HASLINES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_HASIMMEDIATEVERTICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -594,53 +568,12 @@
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "getLines",
+                "name": "getImmediateVertices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_FRAME_GETLINES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "clearLines",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_CLEARLINES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "drawTriangles",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_DRAWTRIANGLES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_GETIMMEDIATEVERTICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -652,44 +585,57 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasTriangles",
+                "name": "hasImmediateIndices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_FRAME_HASTRIANGLES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_HASIMMEDIATEINDICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Vertex::List",
+                    "name": "Vertex::Indices",
                     "suffix": "&",
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "getTriangles",
+                "name": "getImmediateIndices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_FRAME_GETTRIANGLES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_FRAME_GETIMMEDIATEINDICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "clearTriangles",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_FRAME_CLEARTRIANGLES_DESCRIPTION"
+                "name": "isForegroundDraw",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPoly",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        },
+                        "name": "inDraw"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_ISFOREGROUNDDRAW_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -968,21 +914,21 @@
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "m_lines",
-                "description": "CHICANE_RENDERER_FRAME_M_LINES_DESCRIPTION"
+                "name": "m_immediateVertices",
+                "description": "CHICANE_RENDERER_FRAME_M_IMMEDIATEVERTICES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vertex::List",
+                    "name": "Vertex::Indices",
                     "suffix": "",
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "m_triangles",
-                "description": "CHICANE_RENDERER_FRAME_M_TRIANGLES_DESCRIPTION"
+                "name": "m_immediateIndices",
+                "description": "CHICANE_RENDERER_FRAME_M_IMMEDIATEINDICES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_FRAME_DESCRIPTION"

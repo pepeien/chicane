@@ -103,7 +103,7 @@
                     "prefix": "const ",
                     "name": "SkeletonBoneEntry::List",
                     "suffix": "&",
-                    "path": "Box/Skeleton/Bone",
+                    "path": "Box/Skeleton/Bone/Entry",
                     "templates": []
                 },
                 "name": "getEntries",
@@ -296,7 +296,7 @@
                     "prefix": "",
                     "name": "SkeletonBoneEntry::List",
                     "suffix": "",
-                    "path": "Box/Skeleton/Bone",
+                    "path": "Box/Skeleton/Bone/Entry",
                     "templates": []
                 },
                 "name": "m_entries",

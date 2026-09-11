@@ -1,0 +1,64 @@
+{
+    "title": "Poly",
+    "filename": "Poly",
+    "path": "Renderer/Draw/Poly/3D/Command/Poly",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Command/Poly.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DCommandPoly",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly3DCommandPoly",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Command/Poly",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDPOLY_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPolyData",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/Data",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDPOLY_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DInstance",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDPOLY_INSTANCE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMANDPOLY_DESCRIPTION"
+    },
+    "children": []
+}

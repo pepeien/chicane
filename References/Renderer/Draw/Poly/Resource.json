@@ -311,6 +311,16 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
                             "prefix": "const ",
                             "name": "DrawPolyData",
                             "suffix": "&",
@@ -322,6 +332,42 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getStableVertexCount",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETSTABLEVERTEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getStableIndexCount",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETSTABLEINDEXCOUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",

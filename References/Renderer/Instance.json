@@ -674,69 +674,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "drawDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Bounds3D",
-                            "suffix": "&",
-                            "path": "Core/Math/Bounds/3D",
-                            "templates": []
-                        },
-                        "name": "inBounds"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DRAWDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "drawDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DebugMode",
-                            "suffix": "",
-                            "path": "Renderer/Debug/Mode",
-                            "templates": []
-                        },
-                        "name": "inMode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DRAWDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "drawLines",
+                "name": "pushTrace",
                 "parameters": [
                     {
                         "type": {
@@ -750,50 +688,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DRAWLINES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "drawTriangles",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DRAWTRIANGLES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasDebugOverlay",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_HASDEBUGOVERLAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_PUSHTRACE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -805,12 +700,12 @@
                     "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "getDebugOverlayVertices",
+                "name": "getTraceVertices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_INSTANCE_GETDEBUGOVERLAYVERTICES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_GETTRACEVERTICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1316,13 +1211,34 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DebugResource",
+                    "name": "DebugMode",
                     "suffix": "",
-                    "path": "Renderer/Debug/Resource",
+                    "path": "Renderer/Debug/Mode",
                     "templates": []
                 },
-                "name": "m_debugResources",
-                "description": "CHICANE_RENDERER_INSTANCE_M_DEBUGRESOURCES_DESCRIPTION"
+                "name": "m_debug",
+                "description": "CHICANE_RENDERER_INSTANCE_M_DEBUG_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_traces",
+                "description": "CHICANE_RENDERER_INSTANCE_M_TRACES_DESCRIPTION"
             },
             {
                 "accessor": "private",

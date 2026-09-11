@@ -486,23 +486,13 @@
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
                             "templates": []
                         },
-                        "name": "inHalfExtentX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inHalfExtentY"
+                        "name": "inHalfExtent"
                     },
                     {
                         "type": {

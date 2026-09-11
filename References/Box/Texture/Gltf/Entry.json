@@ -1,0 +1,57 @@
+{
+    "title": "Entry",
+    "filename": "Entry",
+    "path": "Box/Texture/Gltf/Entry",
+    "source": {
+        "header": "Includes/Chicane/Box/Texture/Gltf/Entry.hpp",
+        "namespace": "Chicane::Box::TextureGltf::Entry",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageVendor",
+                    "suffix": "",
+                    "path": "Core/Image/Vendor",
+                    "templates": []
+                },
+                "name": "vendor",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Raw",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_TEXTUREGLTF_ENTRY_DESCRIPTION"
+    },
+    "children": []
+}

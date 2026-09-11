@@ -1,0 +1,106 @@
+{
+    "title": "Entry",
+    "filename": "Entry",
+    "path": "Box/Skeleton/Bone/Entry",
+    "source": {
+        "header": "Includes/Chicane/Box/Skeleton/Bone/Entry.hpp",
+        "namespace": "Chicane::Box::SkeletonBoneEntry",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkeletonBoneEntry",
+                            "suffix": "",
+                            "path": "Box/Skeleton/Bone/Entry",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SkeletonBoneEntry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_SKELETONBONEENTRY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parentIndex",
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_PARENTINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Transform",
+                    "suffix": "",
+                    "path": "Core/Math/Transform",
+                    "templates": []
+                },
+                "name": "transform",
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "inverseBind",
+                "description": "CHICANE_BOX_SKELETONBONEENTRY_INVERSEBIND_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_SKELETONBONEENTRY_DESCRIPTION"
+    },
+    "children": []
+}

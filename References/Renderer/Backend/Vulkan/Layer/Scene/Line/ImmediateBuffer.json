@@ -1,0 +1,96 @@
+{
+    "title": "ImmediateBuffer",
+    "filename": "ImmediateBuffer",
+    "path": "Renderer/Backend/Vulkan/Layer/Scene/Line/ImmediateBuffer",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line/ImmediateBuffer.hpp",
+        "namespace": "Chicane::Renderer::VulkanLSceneLineImmediateBuffer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "vertexBuffer",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_VERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexMapped",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_VERTEXMAPPED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexCapacity",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_VERTEXCAPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "indexBuffer",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_INDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexMapped",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_INDEXMAPPED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexCapacity",
+                "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_INDEXCAPACITY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANLSCENELINEIMMEDIATEBUFFER_DESCRIPTION"
+    },
+    "children": []
+}

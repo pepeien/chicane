@@ -106,26 +106,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPoly3DCommandLine",
+                    "name": "DrawPoly3DCommandPoly::List",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/3D/Command/Line",
+                    "path": "Renderer/Draw/Poly/3D/Command/Poly",
                     "templates": []
                 },
-                "name": "lines",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_LINES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "DrawPoly3DCommandTriangle",
-                    "suffix": "",
-                    "path": "Renderer/Draw/Poly/3D/Command/Triangle",
-                    "templates": []
-                },
-                "name": "triangles",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_TRIANGLES_DESCRIPTION"
+                "name": "polys",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_POLYS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_DESCRIPTION"

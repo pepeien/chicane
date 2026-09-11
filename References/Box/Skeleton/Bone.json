@@ -4,7 +4,7 @@
     "path": "Box/Skeleton/Bone",
     "source": {
         "header": "Includes/Chicane/Box/Skeleton/Bone.hpp",
-        "namespace": "Chicane::Box::SkeletonBoneEntry",
+        "namespace": "Chicane::Box::SkeletonBone",
         "types": [
             {
                 "name": "List",
@@ -24,25 +24,6 @@
                     ]
                 },
                 "description": "CHICANE_BOX_SKELETONBONE_LIST_DESCRIPTION"
-            },
-            {
-                "name": "List",
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "SkeletonBoneEntry",
-                            "suffix": "",
-                            "path": "Box/Skeleton/Bone",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_LIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -61,21 +42,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_SKELETONBONE_SKELETONBONE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "SkeletonBoneEntry",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_SKELETONBONEENTRY_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -254,61 +220,9 @@
                 },
                 "name": "children",
                 "description": "CHICANE_BOX_SKELETONBONE_CHILDREN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "id",
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::int32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "parentIndex",
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_PARENTINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Transform",
-                    "suffix": "",
-                    "path": "Core/Math/Transform",
-                    "templates": []
-                },
-                "name": "transform",
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_TRANSFORM_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Mat4",
-                    "suffix": "",
-                    "path": "Core/Math/Mat/Mat4",
-                    "templates": []
-                },
-                "name": "inverseBind",
-                "description": "CHICANE_BOX_SKELETONBONEENTRY_INVERSEBIND_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_SKELETONBONEENTRY_DESCRIPTION"
+        "description": "CHICANE_BOX_SKELETONBONE_DESCRIPTION"
     },
     "children": []
 }

@@ -173,36 +173,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildOverlayShader",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDOVERLAYSHADER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroyOverlayShader",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYOVERLAYSHADER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "buildOutlineShader",
                 "parameters": [],
                 "modifiers": [],
@@ -233,10 +203,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildOverlayVertexArray",
+                "name": "buildImmediateVertexArray",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDOVERLAYVERTEXARRAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_BUILDIMMEDIATEVERTEXARRAY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -248,10 +218,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyOverlayVertexArray",
+                "name": "destroyImmediateVertexArray",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYOVERLAYVERTEXARRAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESTROYIMMEDIATEVERTEXARRAY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -263,21 +233,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "uploadOverlayBuffer",
+                "name": "uploadImmediateGeometry",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Vertex::List",
+                            "name": "Frame",
                             "suffix": "&",
-                            "path": "Core/Math/Vertex",
+                            "path": "Renderer/Frame",
                             "templates": []
                         },
-                        "name": "inVertices"
+                        "name": "inFrame"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_UPLOADOVERLAYBUFFER_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_UPLOADIMMEDIATEGEOMETRY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -365,7 +335,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "shouldDrawOverlay",
+                "name": "shouldDrawLineList",
                 "parameters": [
                     {
                         "type": {
@@ -381,7 +351,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_SHOULDDRAWOVERLAY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_SHOULDDRAWLINELIST_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -410,6 +380,34 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_OPENGLLSCENELINE_SHOULDDRAWOUTLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawLineList",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPoly",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        },
+                        "name": "inDraw"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DRAWLINELIST_DESCRIPTION"
             }
         ],
         "members": [
@@ -436,19 +434,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_overlayShaderProgram",
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYSHADERPROGRAM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "m_outlineShaderProgram",
                 "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OUTLINESHADERPROGRAM_DESCRIPTION"
             },
@@ -462,8 +447,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_overlayVertexArray",
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXARRAY_DESCRIPTION"
+                "name": "m_immediateVertexArray",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_IMMEDIATEVERTEXARRAY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -475,8 +460,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_overlayVertexBuffer",
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXBUFFER_DESCRIPTION"
+                "name": "m_immediateVertexBuffer",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_IMMEDIATEVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -488,8 +473,34 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_overlayVertexCount",
-                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_OVERLAYVERTEXCOUNT_DESCRIPTION"
+                "name": "m_immediateIndexBuffer",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_IMMEDIATEINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_immediateVertexCapacity",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_IMMEDIATEVERTEXCAPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_immediateIndexCapacity",
+                "description": "CHICANE_RENDERER_OPENGLLSCENELINE_M_IMMEDIATEINDEXCAPACITY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_OPENGLLSCENELINE_DESCRIPTION"
