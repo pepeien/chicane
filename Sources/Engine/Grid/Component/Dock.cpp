@@ -787,11 +787,13 @@ namespace Chicane
         void Dock::applyDragCursor()
         {
             m_style.cursor.setRaw(Style::CURSOR_TYPE_GRABBING);
+            m_style.cursor.set(WindowCursor::Grabbing);
         }
 
         void Dock::clearCursor()
         {
-            m_style.cursor.setRaw(Style::CURSOR_TYPE_DEFAULT);
+            m_style.cursor.setRaw("");
+            m_style.cursor.set(WindowCursor::Default);
         }
 
         void Dock::raise(DockPanel* inPanel)

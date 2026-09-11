@@ -116,6 +116,12 @@ namespace Chicane
             return inStyle.isDisplay(StyleDisplay::Flex) && inStyle.flex.wrap.get() == StyleFlexWrap::NoWrap;
         }
 
+        void applyLaidOutRadius(Style& outStyle, const Vec2& inSize)
+        {
+            outStyle.radius.refresh();
+            outStyle.radius.constrain(inSize.x, inSize.y);
+        }
+
         bool hasLayoutTween(const Drift::Animator& inAnimator)
         {
             static const std::vector<String> properties = {
@@ -1160,6 +1166,7 @@ namespace Chicane
                 m_bHasInsetsApplied = true;
             }
 
+            applyLaidOutRadius(m_style, m_size);
             refreshBounds();
             invalidateDrawCacheSubtree();
             refreshCullSubtree();
@@ -1353,10 +1360,15 @@ namespace Chicane
                 }
             }
 
-            if (m_bIsLaidOutThisFrame && m_animator.isIdle() && m_style.transform.getRaw().contains('%'))
+            if (m_bIsLaidOutThisFrame)
             {
-                m_style.transform.refresh();
-                invalidateDrawCache();
+                if (m_animator.isIdle() && m_style.transform.getRaw().contains('%'))
+                {
+                    m_style.transform.refresh();
+                    invalidateDrawCache();
+                }
+
+                applyLaidOutRadius(m_style, m_size);
             }
 
             onRefresh();

@@ -61,6 +61,11 @@ namespace Chicane
 
         void StyleRadius::constrain(float inWidth, float inHeight)
         {
+            if (inWidth <= 0.0f || inHeight <= 0.0f)
+            {
+                return;
+            }
+
             const float topLeftX     = x.top.get();
             const float topRightX    = x.right.get();
             const float bottomRightX = x.bottom.get();
@@ -76,11 +81,6 @@ namespace Chicane
             {
                 if (inSum <= 0.0f || inEdge <= 0.0f)
                 {
-                    if (inSum > 0.0f && inEdge <= 0.0f)
-                    {
-                        factor = 0.0f;
-                    }
-
                     return;
                 }
 
