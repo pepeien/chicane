@@ -6,7 +6,7 @@ namespace Chicane
     {
         Clip::Clip()
             : name(""),
-              duration(0.0f),
+              duration(Time::Zero()),
               loop(Loop::Once),
               iterations(1),
               tracks({})

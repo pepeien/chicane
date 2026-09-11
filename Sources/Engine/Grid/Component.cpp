@@ -7,6 +7,7 @@
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Size.hpp"
+#include "Chicane/Core/Time.hpp"
 
 #include <glm/gtc/matrix_inverse.hpp>
 
@@ -3345,7 +3346,7 @@ namespace Chicane
         Drift::Clip Component::makeAnimationClip(const StyleKeyframe::List& inKeyframes) const
         {
             Drift::Clip clip(m_style.animation.name);
-            clip.duration   = m_style.animation.duration;
+            clip.duration   = Time::fromMilliseconds(m_style.animation.duration);
             clip.iterations = m_style.animation.iterations;
             clip.loop       = m_style.animation.bIsAlternate
                                   ? Drift::Loop::PingPong
@@ -3360,7 +3361,7 @@ namespace Chicane
                 snapshot.setProperties(frame.properties);
                 snapshot.refresh();
 
-                const float time = frame.offset * clip.duration;
+                const Time time = clip.duration * frame.offset;
 
                 for (const auto& [name, value] : frame.properties)
                 {

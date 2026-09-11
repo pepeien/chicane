@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Time.hpp"
 
 #include "Chicane/Drift.hpp"
 #include "Chicane/Drift/Loop.hpp"
@@ -24,7 +25,7 @@ namespace Chicane
 
         public:
             String      name;
-            float       duration;
+            Time        duration;
             Loop        loop;
             int         iterations;
             Track::List tracks;

@@ -21,17 +21,41 @@ namespace Chicane
 
     float Time::seconds(Clock::duration inTime)
     {
-        return Time::miliseconds(inTime) * 1000;
+        return Time::miliseconds(inTime) * 0.001f;
     }
 
     float Time::minutes(Clock::duration inTime)
     {
-        return Time::seconds(inTime) * 60;
+        return Time::seconds(inTime) / 60.0f;
     }
 
     float Time::hours(Clock::duration inTime)
     {
-        return Time::minutes(inTime) * 60;
+        return Time::minutes(inTime) / 60.0f;
+    }
+
+    Time Time::fromMilliseconds(float inValue)
+    {
+        return Time(
+            std::chrono::duration_cast<Clock::duration>(
+                std::chrono::duration<float, std::milli>(inValue < 0.0f ? 0.0f : inValue)
+            )
+        );
+    }
+
+    Time Time::fromSeconds(float inValue)
+    {
+        return Time::fromMilliseconds(inValue * 1000.0f);
+    }
+
+    Time Time::fromMinutes(float inValue)
+    {
+        return Time::fromSeconds(inValue * 60.0f);
+    }
+
+    Time Time::fromHours(float inValue)
+    {
+        return Time::fromMinutes(inValue * 60.0f);
     }
 
     float Time::miliseconds() const

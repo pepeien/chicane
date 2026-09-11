@@ -5,6 +5,7 @@
 #include "Chicane/Box/Skeleton.hpp"
 
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Time.hpp"
 
 namespace Chicane
 {
@@ -191,7 +192,7 @@ namespace Chicane
                 return;
             }
 
-            m_clip.duration   = Xml::getAttribute(CLIP_DURATION_ATTRIBUTE_NAME, clipNode).as_float();
+            m_clip.duration   = Time::fromSeconds(Xml::getAttribute(CLIP_DURATION_ATTRIBUTE_NAME, clipNode).as_float());
             m_clip.loop       = parseLoop(Xml::getAttribute(CLIP_LOOP_ATTRIBUTE_NAME, clipNode).as_string());
             m_clip.iterations = Xml::getAttribute(CLIP_ITERATIONS_ATTRIBUTE_NAME, clipNode).as_int(1);
 
@@ -213,7 +214,7 @@ namespace Chicane
                     }
 
                     AnimationKeyframe keyframe;
-                    keyframe.time      = Xml::getAttribute(KEYFRAME_TIME_ATTRIBUTE_NAME, keyframeNode).as_float();
+                    keyframe.time      = Time::fromSeconds(Xml::getAttribute(KEYFRAME_TIME_ATTRIBUTE_NAME, keyframeNode).as_float());
                     keyframe.easing    = Xml::getAttribute(KEYFRAME_EASING_ATTRIBUTE_NAME, keyframeNode).as_string();
                     keyframe.transform = readTransform(keyframeNode);
                     track.addKeyframe(keyframe);
@@ -245,7 +246,7 @@ namespace Chicane
             }
 
             clipNode = root.append_child(CLIP_TAG);
-            Xml::addAttribute(clipNode, CLIP_DURATION_ATTRIBUTE_NAME, String::sprint("%f", m_clip.duration));
+            Xml::addAttribute(clipNode, CLIP_DURATION_ATTRIBUTE_NAME, String::sprint("%f", m_clip.duration.seconds()));
             Xml::addAttribute(clipNode, CLIP_LOOP_ATTRIBUTE_NAME, loopToString(m_clip.loop));
             Xml::addAttribute(clipNode, CLIP_ITERATIONS_ATTRIBUTE_NAME, String::sprint("%d", m_clip.iterations));
 
@@ -257,7 +258,7 @@ namespace Chicane
                 for (const AnimationKeyframe& keyframe : track.keyframes)
                 {
                     pugi::xml_node keyframeNode = trackNode.append_child(KEYFRAME_TAG);
-                    Xml::addAttribute(keyframeNode, KEYFRAME_TIME_ATTRIBUTE_NAME, String::sprint("%f", keyframe.time));
+                    Xml::addAttribute(keyframeNode, KEYFRAME_TIME_ATTRIBUTE_NAME, String::sprint("%f", keyframe.time.seconds()));
 
                     if (!keyframe.easing.isEmpty())
                     {

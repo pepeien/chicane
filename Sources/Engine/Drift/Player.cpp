@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Chicane/Core/Time.hpp"
+
 namespace Chicane
 {
     namespace Drift
@@ -89,7 +91,7 @@ namespace Chicane
                 m_elapsed += step;
             }
 
-            const float duration = std::max(0.0f, m_clip.duration);
+            const float duration = std::max(0.0f, m_clip.duration.miliseconds());
 
             if (duration <= 0.0f)
             {
@@ -227,12 +229,12 @@ namespace Chicane
 
         float Player::getProgress() const
         {
-            if (m_clip.duration <= 0.0f)
+            if (m_clip.duration.miliseconds() <= 0.0f)
             {
                 return 1.0f;
             }
 
-            return std::clamp(playbackTime() / m_clip.duration, 0.0f, 1.0f);
+            return std::clamp(playbackTime() / m_clip.duration.miliseconds(), 0.0f, 1.0f);
         }
 
         std::vector<float> Player::sample(const String& inTrack) const
@@ -244,7 +246,7 @@ namespace Chicane
                 return {};
             }
 
-            return track->sample(playbackTime());
+            return track->sample(Time::fromMilliseconds(playbackTime()));
         }
 
         Player::CompleteSubscription Player::watchComplete(
@@ -271,7 +273,7 @@ namespace Chicane
 
         float Player::playbackTime() const
         {
-            const float duration = std::max(0.0f, m_clip.duration);
+            const float duration = std::max(0.0f, m_clip.duration.miliseconds());
 
             if (isWaiting())
             {

@@ -6,6 +6,7 @@
 
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Time.hpp"
 
 namespace Chicane
 {
@@ -20,7 +21,7 @@ namespace Chicane
             AnimationKeyframe();
 
         public:
-            float     time;
+            Time      time;
             Transform transform;
             String    easing;
         };

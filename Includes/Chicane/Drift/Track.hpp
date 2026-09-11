@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Time.hpp"
 
 #include "Chicane/Drift.hpp"
 #include "Chicane/Drift/Easing/Curve.hpp"
@@ -23,10 +24,10 @@ namespace Chicane
 
         public:
             void addKeyframe(const Keyframe& inValue);
-            void addKeyframe(float inTime, const std::vector<float>& inValue);
-            void addKeyframe(float inTime, const std::vector<float>& inValue, const EasingCurve& inEasing);
+            void addKeyframe(const Time& inTime, const std::vector<float>& inValue);
+            void addKeyframe(const Time& inTime, const std::vector<float>& inValue, const EasingCurve& inEasing);
 
-            std::vector<float> sample(float inTime) const;
+            std::vector<float> sample(const Time& inTime) const;
 
         public:
             String         name;

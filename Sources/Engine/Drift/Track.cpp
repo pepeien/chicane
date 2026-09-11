@@ -30,17 +30,17 @@ namespace Chicane
             );
         }
 
-        void Track::addKeyframe(float inTime, const std::vector<float>& inValue)
+        void Track::addKeyframe(const Time& inTime, const std::vector<float>& inValue)
         {
             addKeyframe(Keyframe(inTime, inValue));
         }
 
-        void Track::addKeyframe(float inTime, const std::vector<float>& inValue, const EasingCurve& inEasing)
+        void Track::addKeyframe(const Time& inTime, const std::vector<float>& inValue, const EasingCurve& inEasing)
         {
             addKeyframe(Keyframe(inTime, inValue, inEasing));
         }
 
-        std::vector<float> Track::sample(float inTime) const
+        std::vector<float> Track::sample(const Time& inTime) const
         {
             if (keyframes.empty())
             {
@@ -67,14 +67,15 @@ namespace Chicane
                 }
 
                 const Keyframe& previous = keyframes.at(i - 1);
-                const float     span     = next.time - previous.time;
+                const Time      span     = next.time - previous.time;
 
-                if (span <= 0.0f)
+                if (span.miliseconds() <= 0.0f)
                 {
                     return next.value;
                 }
 
-                const float progress = previous.easing.evaluate((inTime - previous.time) / span);
+                const float progress =
+                    previous.easing.evaluate((inTime - previous.time).miliseconds() / span.miliseconds());
 
                 return mix(previous.value, next.value, progress);
             }

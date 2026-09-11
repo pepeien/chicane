@@ -5,6 +5,7 @@
 #include "Chicane/Box/Animation/Track.hpp"
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Time.hpp"
 
 namespace Chicane
 {
@@ -23,7 +24,7 @@ namespace Chicane
 
         public:
             String               name;
-            float                duration;
+            Time                 duration;
             AnimationLoop        loop;
             int                  iterations;
             AnimationTrack::List tracks;

@@ -8,6 +8,8 @@
 #include "Chicane/Box/Animation/Loop.hpp"
 #include "Chicane/Box/Animation/Track.hpp"
 
+#include "Chicane/Core/Time.hpp"
+
 namespace Chicane
 {
     namespace Box
@@ -103,7 +105,7 @@ namespace Chicane
                     for (const float time : times)
                     {
                         AnimationKeyframe keyframe;
-                        keyframe.time   = time;
+                        keyframe.time   = Time::fromSeconds(time);
                         keyframe.easing = step ? "Step" : "";
                         keyframe.transform.setTranslation(
                             sampleVector(nodeCurves.translation, rest.getTranslation(), time)
@@ -114,7 +116,10 @@ namespace Chicane
                         keyframe.transform.setScale(sampleVector(nodeCurves.scale, rest.getScale(), time));
                         track.addKeyframe(keyframe);
 
-                        clip.duration = (std::max)(clip.duration, time);
+                        if (clip.duration < keyframe.time)
+                        {
+                            clip.duration = keyframe.time;
+                        }
                     }
 
                     clip.addTrack(track);
