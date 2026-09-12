@@ -542,10 +542,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "enableFill",
-                "parameters": [],
+                "name": "enableFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_ENABLEFILL_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_ENABLEFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -557,10 +568,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "disableFill",
-                "parameters": [],
+                "name": "disableFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DISABLEFILL_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_DISABLEFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -572,10 +594,38 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "toggleFill",
-                "parameters": [],
+                "name": "toggleFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_TOGGLEFILL_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_TOGGLEFEATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RendererFeature",
+                    "suffix": "",
+                    "path": "Renderer/Feature",
+                    "templates": []
+                },
+                "name": "getFeature",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -587,212 +637,23 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasFill",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_HASFILL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "enableDebug",
+                "name": "hasFeature",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DebugMode",
+                            "name": "RendererFeature",
                             "suffix": "",
-                            "path": "Renderer/Debug/Mode",
+                            "path": "Renderer/Feature",
                             "templates": []
                         },
-                        "name": "inMode"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_ENABLEDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "disableDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DebugMode",
-                            "suffix": "",
-                            "path": "Renderer/Debug/Mode",
-                            "templates": []
-                        },
-                        "name": "inMode"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_DISABLEDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "toggleDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DebugMode",
-                            "suffix": "",
-                            "path": "Renderer/Debug/Mode",
-                            "templates": []
-                        },
-                        "name": "inMode"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_TOGGLEDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "DebugMode",
-                    "suffix": "",
-                    "path": "Renderer/Debug/Mode",
-                    "templates": []
-                },
-                "name": "getDebug",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_INSTANCE_GETDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DebugMode",
-                            "suffix": "",
-                            "path": "Renderer/Debug/Mode",
-                            "templates": []
-                        },
-                        "name": "inMode"
+                        "name": "inFeature"
                     }
                 ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_INSTANCE_HASDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "clearDebug",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DebugMode",
-                            "suffix": "",
-                            "path": "Renderer/Debug/Mode",
-                            "templates": []
-                        },
-                        "name": "inMode"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_CLEARDEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pushTrace",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vertex::List",
-                            "suffix": "&",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        },
-                        "name": "inVertices"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDuration"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_PUSHTRACE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vertex::List",
-                    "suffix": "",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "getTraceVertices",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_GETTRACEVERTICES_DESCRIPTION"
+                "description": "CHICANE_RENDERER_INSTANCE_HASFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1178,32 +1039,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_GETPOLYRESOURCE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pruneTraces",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inExpireOneFrame"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_INSTANCE_PRUNETRACES_DESCRIPTION"
             }
         ],
         "members": [
@@ -1343,27 +1178,6 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_bHasFill",
-                "description": "CHICANE_RENDERER_INSTANCE_M_BHASFILL_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::atomic",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
                             "name": "std::uint8_t",
                             "suffix": "",
                             "path": "",
@@ -1371,21 +1185,8 @@
                         }
                     ]
                 },
-                "name": "m_debug",
-                "description": "CHICANE_RENDERER_INSTANCE_M_DEBUG_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Debug::Trace::List",
-                    "suffix": "",
-                    "path": "Renderer/Debug/Trace",
-                    "templates": []
-                },
-                "name": "m_traces",
-                "description": "CHICANE_RENDERER_INSTANCE_M_TRACES_DESCRIPTION"
+                "name": "m_features",
+                "description": "CHICANE_RENDERER_INSTANCE_M_FEATURES_DESCRIPTION"
             },
             {
                 "accessor": "private",

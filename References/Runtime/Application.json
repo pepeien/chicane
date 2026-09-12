@@ -959,23 +959,23 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasSceneDebug",
+                "name": "hasSceneFeature",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Renderer::DebugMode",
+                            "name": "Renderer::RendererFeature",
                             "suffix": "",
-                            "path": "Renderer/Debug/Mode",
+                            "path": "Renderer/Feature",
                             "templates": []
                         },
-                        "name": "inMode"
+                        "name": "inFeature"
                     }
                 ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_APPLICATION_HASSCENEDEBUG_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_HASSCENEFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1678,8 +1678,8 @@
                         }
                     ]
                 },
-                "name": "m_debugFlags",
-                "description": "CHICANE_APPLICATION_M_DEBUGFLAGS_DESCRIPTION"
+                "name": "m_featureFlags",
+                "description": "CHICANE_APPLICATION_M_FEATUREFLAGS_DESCRIPTION"
             },
             {
                 "accessor": "private",

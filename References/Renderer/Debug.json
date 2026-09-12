@@ -15,6 +15,83 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getVertices",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "push",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDuration"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_PUSH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "prune",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInWillExpireOneFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DEBUG_PRUNE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",

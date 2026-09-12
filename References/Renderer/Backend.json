@@ -303,12 +303,23 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasFill",
-                "parameters": [],
+                "name": "hasFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_RENDERER_BACKEND_HASFILL_DESCRIPTION"
+                "description": "CHICANE_RENDERER_BACKEND_HASFEATURE_DESCRIPTION"
             },
             {
                 "accessor": "public",

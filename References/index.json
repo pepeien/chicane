@@ -6190,23 +6190,6 @@
                 },
                 "children": [
                     {
-                        "title": "Mode",
-                        "filename": "Mode",
-                        "path": "Renderer/Debug/Mode",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Debug/Mode.hpp",
-                            "namespace": "Chicane::Renderer::DebugMode",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Trace",
                         "filename": "Trace",
                         "path": "Renderer/Debug/Trace",
@@ -6744,6 +6727,23 @@
                         ]
                     }
                 ]
+            },
+            {
+                "title": "Feature",
+                "filename": "Feature",
+                "path": "Renderer/Feature",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Feature.hpp",
+                    "namespace": "Chicane::Renderer::RendererFeature",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
             },
             {
                 "title": "Frame",
