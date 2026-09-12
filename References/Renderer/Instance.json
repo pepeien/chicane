@@ -764,6 +764,16 @@
                             "templates": []
                         },
                         "name": "inVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDuration"
                     }
                 ],
                 "modifiers": [],
@@ -781,9 +791,7 @@
                 },
                 "name": "getTraceVertices",
                 "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_GETTRACEVERTICES_DESCRIPTION"
             },
             {
@@ -1170,6 +1178,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_INSTANCE_GETPOLYRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pruneTraces",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExpireOneFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_PRUNETRACES_DESCRIPTION"
             }
         ],
         "members": [
@@ -1345,18 +1379,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Debug::Trace::List",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vertex::List",
-                            "suffix": "",
-                            "path": "Core/Math/Vertex",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Renderer/Debug/Trace",
+                    "templates": []
                 },
                 "name": "m_traces",
                 "description": "CHICANE_RENDERER_INSTANCE_M_TRACES_DESCRIPTION"

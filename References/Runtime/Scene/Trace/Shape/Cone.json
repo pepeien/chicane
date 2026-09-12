@@ -39,6 +39,16 @@
                             "templates": []
                         },
                         "name": "inRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [],
@@ -179,6 +189,22 @@
         "members": [
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_SEGEMENT_COUNT",
+                "description": "CHICANE_SCENETRACESHAPECONE_DEFAULT_SEGEMENT_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -202,6 +228,19 @@
                 },
                 "name": "radius",
                 "description": "CHICANE_SCENETRACESHAPECONE_RADIUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "segmentCount",
+                "description": "CHICANE_SCENETRACESHAPECONE_SEGMENTCOUNT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENETRACESHAPECONE_DESCRIPTION"

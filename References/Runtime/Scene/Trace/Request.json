@@ -213,6 +213,16 @@
                             "templates": []
                         },
                         "name": "inCellSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [
@@ -271,6 +281,16 @@
                             "templates": []
                         },
                         "name": "inCellSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [
@@ -309,6 +329,16 @@
                             "templates": []
                         },
                         "name": "inCellSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [
@@ -367,6 +397,16 @@
                             "templates": []
                         },
                         "name": "inCellSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [
@@ -478,8 +518,40 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "DefaultCellSize",
-                "description": "CHICANE_SCENETRACEREQUEST_DEFAULTCELLSIZE_DESCRIPTION"
+                "name": "DEFAULT_CELL_SIZE",
+                "description": "CHICANE_SCENETRACEREQUEST_DEFAULT_CELL_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_DURATION",
+                "description": "CHICANE_SCENETRACEREQUEST_DEFAULT_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_SEGEMENT_COUNT",
+                "description": "CHICANE_SCENETRACEREQUEST_DEFAULT_SEGEMENT_COUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -514,6 +586,19 @@
                 },
                 "name": "cellSize",
                 "description": "CHICANE_SCENETRACEREQUEST_CELLSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "duration",
+                "description": "CHICANE_SCENETRACEREQUEST_DURATION_DESCRIPTION"
             },
             {
                 "accessor": "public",

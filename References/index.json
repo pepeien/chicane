@@ -1793,8 +1793,8 @@
                 "filename": "Math",
                 "path": "Core/Math",
                 "source": {
-                    "header": null,
-                    "namespace": null,
+                    "header": "Includes/Chicane/Core/Math.hpp",
+                    "namespace": "Chicane",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -6196,6 +6196,23 @@
                         "source": {
                             "header": "Includes/Chicane/Renderer/Debug/Mode.hpp",
                             "namespace": "Chicane::Renderer::DebugMode",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Trace",
+                        "filename": "Trace",
+                        "path": "Renderer/Debug/Trace",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Debug/Trace.hpp",
+                            "namespace": "Chicane::Renderer::Debug::Trace",
                             "types": [],
                             "enums": [],
                             "constructors": [],

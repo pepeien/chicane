@@ -3,15 +3,96 @@
     "filename": "Math",
     "path": "Core/Math",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Core/Math.hpp",
+        "namespace": "Chicane",
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [],
-        "description": null
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PI",
+                "description": "CHICANE_PI_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TWO_PI",
+                "description": "CHICANE_TWO_PI_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HALF_PI",
+                "description": "CHICANE_HALF_PI_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEG_TO_RAD",
+                "description": "CHICANE_DEG_TO_RAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RAD_TO_DEG",
+                "description": "CHICANE_RAD_TO_DEG_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_DESCRIPTION"
     },
     "children": []
 }

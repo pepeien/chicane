@@ -1,0 +1,106 @@
+{
+    "title": "Trace",
+    "filename": "Trace",
+    "path": "Renderer/Debug/Trace",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Debug/Trace.hpp",
+        "namespace": "Chicane::Renderer::Debug::Trace",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Trace",
+                            "suffix": "",
+                            "path": "Renderer/Debug/Trace",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_DURATION",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_DEFAULT_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "vertices",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "expireAt",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_EXPIREAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsPersistant",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_BISPERSISTANT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsForOneFrame",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_BISFORONEFRAME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DEBUG_TRACE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -361,6 +361,16 @@
                             "templates": []
                         },
                         "name": "inColor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [],
@@ -437,6 +447,16 @@
                             "templates": []
                         },
                         "name": "inColor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSegmentCount"
                     }
                 ],
                 "modifiers": [],
