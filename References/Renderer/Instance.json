@@ -1228,6 +1228,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "TextureStreamer",
+                    "suffix": "",
+                    "path": "Renderer/Texture/Streamer",
+                    "templates": []
+                },
+                "name": "m_textureStreamer",
+                "description": "CHICANE_RENDERER_INSTANCE_M_TEXTURESTREAMER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::atomic",
                     "suffix": "",
                     "path": "",

@@ -15,6 +15,19 @@
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
+                    "prefix": "const ",
+                    "name": "DrawTexture",
+                    "suffix": "*",
+                    "path": "Renderer/Draw/Texture",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
                     "prefix": "",
                     "name": "Image::Reference",
                     "suffix": "",
@@ -23,6 +36,19 @@
                 },
                 "name": "image",
                 "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "residentMinMip",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_RESIDENTMINMIP_DESCRIPTION"
             },
             {
                 "accessor": "public",

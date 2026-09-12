@@ -74,6 +74,34 @@
                 },
                 "name": "materials",
                 "description": "CHICANE_BOX_TEXTUREGLTF_PARSED_MATERIALS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "emissiveStrengths",
+                "description": "CHICANE_BOX_TEXTUREGLTF_PARSED_EMISSIVESTRENGTHS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_TEXTUREGLTF_PARSED_DESCRIPTION"

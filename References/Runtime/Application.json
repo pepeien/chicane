@@ -632,6 +632,55 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getScreenViewport",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_APPLICATION_GETSCREENVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getScreenViewportRect",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_APPLICATION_GETSCREENVIEWPORTRECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1138,38 +1187,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getScreenViewport",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_APPLICATION_GETSCREENVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -1503,6 +1520,48 @@
                 },
                 "name": "m_viewReadIndex",
                 "description": "CHICANE_APPLICATION_M_VIEWREADINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportX",
+                "description": "CHICANE_APPLICATION_M_SCREENVIEWPORTX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportY",
+                "description": "CHICANE_APPLICATION_M_SCREENVIEWPORTY_DESCRIPTION"
             },
             {
                 "accessor": "private",

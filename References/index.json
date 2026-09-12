@@ -1164,7 +1164,7 @@
                 "path": "Core/Image",
                 "source": {
                     "header": "Includes/Chicane/Core/Image.hpp",
-                    "namespace": "Chicane::Image",
+                    "namespace": "Chicane::Image::MipChain",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -4892,7 +4892,7 @@
                         "path": "Renderer/Backend/OpenGL",
                         "source": {
                             "header": "Includes/Chicane/Renderer/Backend/OpenGL.hpp",
-                            "namespace": "Chicane::Renderer::OpenGLBackend",
+                            "namespace": "Chicane::Renderer::OpenGLBackend::TextureTableEntry",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -6951,6 +6951,41 @@
                     "description": null
                 },
                 "children": []
+            },
+            {
+                "title": "Texture",
+                "filename": "Texture",
+                "path": "Renderer/Texture",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Streamer",
+                        "filename": "Streamer",
+                        "path": "Renderer/Texture/Streamer",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Texture/Streamer.hpp",
+                            "namespace": "Chicane::Renderer::TextureStreamer",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "Viewport",

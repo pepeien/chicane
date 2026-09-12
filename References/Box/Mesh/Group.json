@@ -607,6 +607,49 @@
                     "const"
                 ],
                 "description": "CHICANE_BOX_MESHGROUP_SAVETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getEmissiveStrength",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESHGROUP_GETEMISSIVESTRENGTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setEmissiveStrength",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESHGROUP_SETEMISSIVESTRENGTH_DESCRIPTION"
             }
         ],
         "members": [
@@ -675,6 +718,22 @@
                 "description": "CHICANE_BOX_MESHGROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EMISSIVE_STRENGTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MESHGROUP_EMISSIVE_STRENGTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
@@ -738,6 +797,19 @@
                 },
                 "name": "m_transform",
                 "description": "CHICANE_BOX_MESHGROUP_M_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_emissiveStrength",
+                "description": "CHICANE_BOX_MESHGROUP_M_EMISSIVESTRENGTH_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_MESHGROUP_DESCRIPTION"

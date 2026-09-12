@@ -29,6 +29,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bAnisotropy",
+                "description": "CHICANE_RENDERER_VULKANIMAGESAMPLERCREATEINFO_BANISOTROPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "maxAnisotropy",
+                "description": "CHICANE_RENDERER_VULKANIMAGESAMPLERCREATEINFO_MAXANISOTROPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "vk::SamplerAddressMode",
                     "suffix": "",
                     "path": "",

@@ -131,13 +131,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::int32_t",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "_pad0",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD0_DESCRIPTION"
+                "name": "emissiveStrength",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_EMISSIVESTRENGTH_DESCRIPTION"
             },
             {
                 "accessor": "public",

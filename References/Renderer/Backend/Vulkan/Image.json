@@ -557,6 +557,16 @@
                             "templates": []
                         },
                         "name": "inCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMipLevel"
                     }
                 ],
                 "modifiers": [],

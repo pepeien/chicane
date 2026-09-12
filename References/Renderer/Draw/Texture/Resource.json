@@ -127,6 +127,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "DrawTexture",
+                    "suffix": "*",
+                    "path": "Renderer/Draw/Texture",
+                    "templates": []
+                },
+                "name": "getDrawMutable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWTEXTURERESOURCE_GETDRAWMUTABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Draw::Id",
                     "suffix": "",
                     "path": "Renderer/Draw",

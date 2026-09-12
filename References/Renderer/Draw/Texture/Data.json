@@ -23,6 +23,40 @@
                 },
                 "name": "image",
                 "description": "CHICANE_RENDERER_DRAWTEXTUREDATA_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Image::MipChain",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "mips",
+                "description": "CHICANE_RENDERER_DRAWTEXTUREDATA_MIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bStreamable",
+                "description": "CHICANE_RENDERER_DRAWTEXTUREDATA_BSTREAMABLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWTEXTUREDATA_DESCRIPTION"

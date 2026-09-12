@@ -1,0 +1,307 @@
+{
+    "title": "Streamer",
+    "filename": "Streamer",
+    "path": "Renderer/Texture/Streamer",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Texture/Streamer.hpp",
+        "namespace": "Chicane::Renderer::TextureStreamer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawTextureResource",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Texture/Resource",
+                            "templates": []
+                        },
+                        "name": "inResources"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBudgetBytes"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inScreenHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pumpDecoded",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawTextureResource",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Texture/Resource",
+                            "templates": []
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PUMPDECODED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "requestDecode",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawTexture",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Texture",
+                            "templates": []
+                        },
+                        "name": "inTexture"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMip"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_REQUESTDECODE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mip",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_MIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Instance",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mutex",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_MAILBOX_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DecodeResult",
+                            "suffix": "",
+                            "path": "Renderer/Texture/Streamer",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "ready",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_MAILBOX_READY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "screenPx",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_SCREENPX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bPinned",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_BPINNED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_PROMOTIONS_PER_FRAME",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_MAX_PROMOTIONS_PER_FRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Mailbox",
+                            "suffix": "",
+                            "path": "Renderer/Texture/Streamer",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_mailbox",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_M_MAILBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_set",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_inFlight",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMER_M_INFLIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_TEXTURESTREAMER_DESCRIPTION"
+    },
+    "children": []
+}

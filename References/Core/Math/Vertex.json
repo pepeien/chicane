@@ -181,6 +181,19 @@
                 },
                 "name": "normal",
                 "description": "CHICANE_VERTEX_NORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "tangent",
+                "description": "CHICANE_VERTEX_TANGENT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_VERTEX_DESCRIPTION"

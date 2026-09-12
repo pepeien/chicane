@@ -247,6 +247,100 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isNormal",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_ISNORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setNormal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_SETNORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Image::MipChain",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getMipChain",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_GETMIPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bakeMips",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_BAKEMIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::size_t",
                     "suffix": "",
                     "path": "",
@@ -398,10 +492,83 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "rebuildMipChains",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_REBUILDMIPCHAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "bakePreview",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_BOX_TEXTURE_BAKEPREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeMipsToXML",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image::MipChain",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inChain"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_WRITEMIPSTOXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchMipsFromXML",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_TEXTURE_FETCHMIPSFROMXML_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "looksLikeNormal",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_TEXTURE_LOOKSLIKENORMAL_DESCRIPTION"
             }
         ],
         "members": [
@@ -452,6 +619,134 @@
                 },
                 "name": "VENDOR_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_TEXTURE_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WIDTH_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_TEXTURE_WIDTH_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "HEIGHT_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_TEXTURE_HEIGHT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MIPS_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_TEXTURE_MIPS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NORMAL_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_TEXTURE_NORMAL_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MIPS_TAG",
+                "description": "CHICANE_BOX_TEXTURE_MIPS_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MIP_TAG",
+                "description": "CHICANE_BOX_TEXTURE_MIP_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LEVEL_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_TEXTURE_LEVEL_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FORMAT_VERSION",
+                "description": "CHICANE_BOX_TEXTURE_FORMAT_VERSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -535,6 +830,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bNormal",
+                "description": "CHICANE_BOX_TEXTURE_M_BNORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Image::Instance",
                     "suffix": "",
                     "path": "Core/Image",
@@ -584,6 +892,35 @@
                 },
                 "name": "m_delays",
                 "description": "CHICANE_BOX_TEXTURE_M_DELAYS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Image::MipChain",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_chains",
+                "description": "CHICANE_BOX_TEXTURE_M_CHAINS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_TEXTURE_DESCRIPTION"

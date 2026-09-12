@@ -693,6 +693,42 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "writeTextureDescriptor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorImageInfo",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_WRITETEXTUREDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "destroyTextureData",
                 "parameters": [],
                 "modifiers": [],

@@ -179,13 +179,13 @@
                 ],
                 "type": {
                     "prefix": "const ",
-                    "name": "std::size_t",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURE_WIDTH",
-                "description": "CHICANE_RENDERER_TEXTURE_WIDTH_DESCRIPTION"
+                "name": "TEXTURE_MAX_SIZE",
+                "description": "CHICANE_RENDERER_TEXTURE_MAX_SIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -195,13 +195,93 @@
                 ],
                 "type": {
                     "prefix": "const ",
-                    "name": "std::size_t",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURE_HEIGHT",
-                "description": "CHICANE_RENDERER_TEXTURE_HEIGHT_DESCRIPTION"
+                "name": "TEXTURE_STREAM_TAIL",
+                "description": "CHICANE_RENDERER_TEXTURE_STREAM_TAIL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_SLOT_MAX",
+                "description": "CHICANE_RENDERER_TEXTURE_SLOT_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_TABLE_BINDING",
+                "description": "CHICANE_RENDERER_TEXTURE_TABLE_BINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_CLASS_COUNT",
+                "description": "CHICANE_RENDERER_TEXTURE_CLASS_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_CLASS_BINDING",
+                "description": "CHICANE_RENDERER_TEXTURE_CLASS_BINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_CLASS_SIZES",
+                "description": "CHICANE_RENDERER_TEXTURE_CLASS_SIZES_DESCRIPTION"
             },
             {
                 "accessor": "public",

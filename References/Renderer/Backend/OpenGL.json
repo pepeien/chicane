@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/OpenGL",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/OpenGL.hpp",
-        "namespace": "Chicane::Renderer::OpenGLBackend",
+        "namespace": "Chicane::Renderer::OpenGLBackend::TextureTableEntry",
         "types": [
             {
                 "name": "GpuQueries",
@@ -752,6 +752,295 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "bindTextureTable",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BINDTEXTURETABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "uploadTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawTexture",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Texture",
+                            "templates": []
+                        },
+                        "name": "inTexture"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_UPLOADTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "releaseTextureSlot",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TextureSlot",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_RELEASETEXTURESLOT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeTextureSlot",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inClass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_WRITETEXTURESLOT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "classFromResident",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_CLASSFROMRESIDENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "allocateLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inClass"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_ALLOCATELAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "growClass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inClass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayers"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_GROWCLASS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "createClassArray",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SizeClass",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        },
+                        "name": "inClass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayers"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_CREATECLASSARRAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fillWhiteLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SizeClass",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        },
+                        "name": "inClass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_FILLWHITELAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildTarget",
                 "parameters": [],
                 "modifiers": [],
@@ -1127,13 +1416,75 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "TextureSlot",
+                            "suffix": "",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_textures",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SizeClass",
+                            "suffix": "",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "TEXTURE_CLASS_COUNT",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a276b1b750be4c4d1480b8573b6965d60",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_classes",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_CLASSES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "m_texturesBuffer",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURESBUFFER_DESCRIPTION"
+                "name": "m_textureTable",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURETABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_maxArrayLayers",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_MAXARRAYLAYERS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1272,9 +1623,173 @@
                 },
                 "name": "m_gpuQueryWrite",
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_M_GPUQUERYWRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "allocated",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_ALLOCATED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "used",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_USED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "freeLayers",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_FREELAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "classIndex",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_CLASSINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_LAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sourceWidth",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_SOURCEWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sourceHeight",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_SOURCEHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "residentMinMip",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_RESIDENTMINMIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "classIndex",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_CLASSINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_LAYER_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_OPENGLBACKEND_DESCRIPTION"
+        "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_DESCRIPTION"
     },
     "children": []
 }
