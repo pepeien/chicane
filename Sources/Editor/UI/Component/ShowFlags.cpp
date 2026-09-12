@@ -15,7 +15,7 @@ namespace Editor
     ShowFlags::ShowFlags(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
           fillState("idle"),
-          meshesState("idle"),
+          wireframeState("idle"),
           boundsState("idle"),
           tracesState("idle"),
           collidersState("idle"),
@@ -33,35 +33,32 @@ namespace Editor
 
     void ShowFlags::onFillToggle()
     {
-        if (Chicane::Renderer::Instance* renderer = getRenderer())
-        {
-            renderer->toggleFill();
-        }
+        toggleFeature(Chicane::Renderer::RendererFeature::Fill);
     }
 
-    void ShowFlags::onMeshesToggle()
+    void ShowFlags::onWireframeToggle()
     {
-        toggleDebug(Chicane::Renderer::DebugMode::Meshes);
+        toggleFeature(Chicane::Renderer::RendererFeature::Wireframe);
     }
 
     void ShowFlags::onBoundsToggle()
     {
-        toggleDebug(Chicane::Renderer::DebugMode::Bounds);
+        toggleFeature(Chicane::Renderer::RendererFeature::Bounds);
     }
 
     void ShowFlags::onTracesToggle()
     {
-        toggleDebug(Chicane::Renderer::DebugMode::Traces);
+        toggleFeature(Chicane::Renderer::RendererFeature::Traces);
     }
 
     void ShowFlags::onCollidersToggle()
     {
-        toggleDebug(Chicane::Renderer::DebugMode::Colliders);
+        toggleFeature(Chicane::Renderer::RendererFeature::Colliders);
     }
 
     void ShowFlags::onSkeletonsToggle()
     {
-        toggleDebug(Chicane::Renderer::DebugMode::Skeletons);
+        toggleFeature(Chicane::Renderer::RendererFeature::Skeletons);
     }
 
     Chicane::Renderer::Instance* ShowFlags::getRenderer() const
@@ -73,19 +70,19 @@ namespace Editor
     {
         const Chicane::Renderer::Instance* renderer = getRenderer();
 
-        fillState      = flagState(renderer && renderer->hasFill());
-        meshesState    = flagState(renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Meshes));
-        boundsState    = flagState(renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Bounds));
-        tracesState    = flagState(renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Traces));
-        collidersState = flagState(renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Colliders));
-        skeletonsState = flagState(renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Skeletons));
+        fillState      = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Fill));
+        wireframeState = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Wireframe));
+        boundsState    = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Bounds));
+        tracesState    = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces));
+        collidersState = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Colliders));
+        skeletonsState = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Skeletons));
     }
 
-    void ShowFlags::toggleDebug(Chicane::Renderer::DebugMode inMode)
+    void ShowFlags::toggleFeature(Chicane::Renderer::RendererFeature inFeature)
     {
         if (Chicane::Renderer::Instance* renderer = getRenderer())
         {
-            renderer->toggleDebug(inMode);
+            renderer->toggleFeature(inFeature);
         }
     }
 }

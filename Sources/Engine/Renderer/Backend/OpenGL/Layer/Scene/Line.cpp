@@ -6,7 +6,6 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
-#include "Chicane/Renderer/Debug/Mode.hpp"
 #include "Chicane/Renderer/Draw/Poly.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 #include "Chicane/Renderer/Draw/Poly/Topology.hpp"
@@ -44,8 +43,7 @@ namespace Chicane
         bool OpenGLLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
             const Instance* renderer = getBackend()->getRenderer();
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) &&
-                (renderer->hasDebug(DebugMode::Meshes) || !renderer->hasFill()))
+            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) && renderer->hasFeature(RendererFeature::Wireframe))
             {
                 return true;
             }
@@ -130,7 +128,7 @@ namespace Chicane
                     drawBatch(DrawPolyMode::Line);
                 }
 
-                if (renderer->hasDebug(DebugMode::Meshes) || !renderer->hasFill())
+                if (renderer->hasFeature(RendererFeature::Wireframe))
                 {
                     for (const DrawPoly& draw : inFrame.getSceneDraws())
                     {

@@ -91,9 +91,14 @@ namespace Chicane
             return m_renderer;
         }
 
-        bool Backend::hasFill() const
+        bool Backend::hasFeature(RendererFeature inFeature) const
         {
-            return !m_renderer || m_renderer->hasFill();
+            if (!m_renderer)
+            {
+                return inFeature == RendererFeature::Fill;
+            }
+
+            return m_renderer->hasFeature(inFeature);
         }
 
         Viewport Backend::getLayerViewport(Layer* inLayer) const
@@ -157,8 +162,6 @@ namespace Chicane
                        getResourceSize(Resource::SceneLights);
 
             case Resource::Texture:
-                // Slot packing uses the always-resident RGBA8 tail. Streamer byte budget
-                // is the Texture VRAM fraction (see getResourceBudget), not this size.
                 return sizeof(Image::Pixel) * 4u * TEXTURE_STREAM_TAIL * TEXTURE_STREAM_TAIL;
 
             case Resource::UIIndices:

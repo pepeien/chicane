@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/View.hpp"
@@ -14,8 +13,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Debug/Mode.hpp"
-#include "Chicane/Renderer/Debug/Trace.hpp"
+#include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -88,22 +86,12 @@ namespace Chicane
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);
 
-            // Fill
-            void enableFill();
-            void disableFill();
-            void toggleFill();
-            bool hasFill() const;
-
-            // Debug
-            void enableDebug(DebugMode inMode);
-            void disableDebug(DebugMode inMode);
-            void toggleDebug(DebugMode inMode);
-            DebugMode getDebug() const;
-            bool hasDebug(DebugMode inMode) const;
-
-            void clearDebug(DebugMode inMode = DebugMode::All);
-            void pushTrace(const Vertex::List& inVertices, float inDuration = Debug::Trace::DEFAULT_DURATION);
-            Vertex::List getTraceVertices();
+            // Feature
+            void enableFeature(RendererFeature inFeature);
+            void disableFeature(RendererFeature inFeature);
+            void toggleFeature(RendererFeature inFeature);
+            RendererFeature getFeature() const;
+            bool hasFeature(RendererFeature inFeature) const;
 
             float getGpuDelta() const;
 
@@ -141,8 +129,6 @@ namespace Chicane
 
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 
-            void pruneTraces(bool inExpireOneFrame);
-
         private:
             // Window
             const Window*             m_window;
@@ -160,12 +146,8 @@ namespace Chicane
             DrawSkyResource           m_skyResource;
             TextureStreamer           m_textureStreamer;
 
-            // Fill
-            std::atomic<bool>         m_bHasFill;
-
-            // Debug
-            std::atomic<std::uint8_t> m_debug;
-            Debug::Trace::List        m_traces;
+            // Feature
+            std::atomic<std::uint8_t> m_features;
 
             // Backend
             std::unique_ptr<Backend>  m_backend;

@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Time.hpp"
 
 namespace Chicane
 {
@@ -11,6 +12,86 @@ namespace Chicane
     {
         namespace Debug
         {
+            static Trace::List g_traces = {};
+
+            Vertex::List getVertices()
+            {
+                prune(false);
+
+                Vertex::List result;
+                for (const Trace& trace : g_traces)
+                {
+                    result.insert(result.end(), trace.vertices.begin(), trace.vertices.end());
+                }
+
+                return result;
+            }
+
+            void push(const Vertex::List& inVertices, float inDuration)
+            {
+                if (inVertices.empty())
+                {
+                    return;
+                }
+
+                prune(false);
+
+                if (g_traces.size() >= TRACE_CAPACITY)
+                {
+                    g_traces.erase(g_traces.begin());
+                }
+
+                Trace trace;
+                trace.vertices = inVertices;
+
+                if (inDuration < 0.0f)
+                {
+                    trace.bIsPersistant = true;
+                }
+                else if (inDuration <= 0.0f)
+                {
+                    trace.bIsForOneFrame = true;
+                }
+                else
+                {
+                    trace.expireAt = Time() + Time::fromSeconds(inDuration);
+                }
+
+                g_traces.push_back(std::move(trace));
+            }
+
+            void prune(bool bInWillExpireOneFrame)
+            {
+                if (g_traces.empty())
+                {
+                    return;
+                }
+
+                const Time now;
+
+                g_traces.erase(
+                    std::remove_if(
+                        g_traces.begin(),
+                        g_traces.end(),
+                        [&](const Trace& inTrace)
+                        {
+                            if (inTrace.bIsPersistant)
+                            {
+                                return false;
+                            }
+
+                            if (inTrace.bIsForOneFrame)
+                            {
+                                return bInWillExpireOneFrame;
+                            }
+
+                            return now >= inTrace.expireAt;
+                        }
+                    ),
+                    g_traces.end()
+                );
+            }
+
             constexpr int SWEEP_RINGS = 4;
 
             static float lengthSquared(const Vec3& inValue)

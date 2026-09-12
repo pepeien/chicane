@@ -57,13 +57,8 @@ namespace Chicane
             buildTextureData(inResource.getDraw());
         }
 
-        bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
+        bool VulkanLSceneSky::onBeginRender(const Frame&)
         {
-            if (!getBackend()->hasFill() || inFrame.getSkyInstance().model.id <= Draw::InvalidId || !m_sky)
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -92,26 +87,21 @@ namespace Chicane
             beginInfo.pClearValues             = m_clear.data();
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
-            // Pipeline
-            m_graphicsPipeline.bind(commandBuffer);
-
-            // Frame
-            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-
-            // Texture
-            m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
-
-            // Draw
-            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-            vk::DeviceSize offsets[]       = {0};
-
-            commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-
-            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
+            if (m_sky && draw.id > Draw::InvalidId)
+            {
+                m_graphicsPipeline.bind(commandBuffer);
+                m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
 
-            commandBuffer.drawIndexed(draw.indexCount, 1, draw.indexStart, draw.vertexStart, 0);
+                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+                commandBuffer.drawIndexed(draw.indexCount, 1, draw.indexStart, draw.vertexStart, 0);
+            }
 
             commandBuffer.endRenderPass();
         }

@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <atomic>
 
-#include "Chicane/Core/Time.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 
@@ -26,9 +25,7 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_bHasFill(true),
-              m_debug(static_cast<std::uint8_t>(DebugMode::None)),
-              m_traces({}),
+              m_features(static_cast<std::uint8_t>(RendererFeature::Fill)),
               m_backend(nullptr)
         {}
 
@@ -79,7 +76,7 @@ namespace Chicane
 
             currentFrame.reset();
             resetResources();
-            pruneTraces(true);
+            Debug::prune(true);
 
             m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
@@ -176,157 +173,38 @@ namespace Chicane
             return m_skyResource.findId(sky.reference);
         }
 
-        void Instance::enableFill()
+        void Instance::enableFeature(RendererFeature inFeature)
         {
-            m_bHasFill.store(true, std::memory_order_relaxed);
+            m_features.fetch_or(static_cast<std::uint8_t>(inFeature), std::memory_order_relaxed);
         }
 
-        void Instance::disableFill()
+        void Instance::disableFeature(RendererFeature inFeature)
         {
-            m_bHasFill.store(false, std::memory_order_relaxed);
-        }
-
-        void Instance::toggleFill()
-        {
-            if (hasFill())
-            {
-                disableFill();
-
-                return;
-            }
-
-            enableFill();
-        }
-
-        bool Instance::hasFill() const
-        {
-            return m_bHasFill.load(std::memory_order_relaxed);
-        }
-
-        void Instance::enableDebug(DebugMode inMode)
-        {
-            m_debug.fetch_or(static_cast<std::uint8_t>(inMode), std::memory_order_relaxed);
-        }
-
-        void Instance::disableDebug(DebugMode inMode)
-        {
-            m_debug.fetch_and(static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inMode)), std::memory_order_relaxed);
-        }
-
-        void Instance::toggleDebug(DebugMode inMode)
-        {
-            if (hasDebug(inMode))
-            {
-                disableDebug(inMode);
-
-                return;
-            }
-
-            enableDebug(inMode);
-        }
-
-        DebugMode Instance::getDebug() const
-        {
-            return static_cast<DebugMode>(m_debug.load(std::memory_order_relaxed));
-        }
-
-        bool Instance::hasDebug(DebugMode inMode) const
-        {
-            return (getDebug() & inMode) == inMode;
-        }
-
-        void Instance::clearDebug(DebugMode inMode)
-        {
-            if ((inMode & DebugMode::Traces) != DebugMode::Traces)
-            {
-                return;
-            }
-
-            m_traces.clear();
-        }
-
-        void Instance::pushTrace(const Vertex::List& inVertices, float inDuration)
-        {
-            if (inVertices.empty())
-            {
-                return;
-            }
-
-            pruneTraces(false);
-
-            if (m_traces.size() >= Debug::TRACE_CAPACITY)
-            {
-                m_traces.erase(m_traces.begin());
-            }
-
-            Debug::Trace trace;
-            trace.vertices = inVertices;
-
-            if (inDuration < 0.0f)
-            {
-                trace.bIsPersistant = true;
-            }
-            else if (inDuration <= 0.0f)
-            {
-                trace.bIsForOneFrame = true;
-            }
-            else
-            {
-                trace.expireAt = Time() + Time::fromSeconds(inDuration);
-            }
-
-            m_traces.push_back(std::move(trace));
-        }
-
-        Vertex::List Instance::getTraceVertices()
-        {
-            pruneTraces(false);
-
-            Vertex::List result;
-
-            if (!hasDebug(DebugMode::Traces))
-            {
-                return result;
-            }
-
-            for (const Debug::Trace& trace : m_traces)
-            {
-                result.insert(result.end(), trace.vertices.begin(), trace.vertices.end());
-            }
-
-            return result;
-        }
-
-        void Instance::pruneTraces(bool inExpireOneFrame)
-        {
-            if (m_traces.empty())
-            {
-                return;
-            }
-
-            const Time now;
-
-            m_traces.erase(
-                std::remove_if(
-                    m_traces.begin(),
-                    m_traces.end(),
-                    [&](const Debug::Trace& inTrace)
-                    {
-                        if (inTrace.bIsPersistant)
-                        {
-                            return false;
-                        }
-
-                        if (inTrace.bIsForOneFrame)
-                        {
-                            return inExpireOneFrame;
-                        }
-
-                        return now >= inTrace.expireAt;
-                    }
-                ),
-                m_traces.end()
+            m_features.fetch_and(
+                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inFeature)), std::memory_order_relaxed
             );
+        }
+
+        void Instance::toggleFeature(RendererFeature inFeature)
+        {
+            if (hasFeature(inFeature))
+            {
+                disableFeature(inFeature);
+
+                return;
+            }
+
+            enableFeature(inFeature);
+        }
+
+        RendererFeature Instance::getFeature() const
+        {
+            return static_cast<RendererFeature>(m_features.load(std::memory_order_relaxed));
+        }
+
+        bool Instance::hasFeature(RendererFeature inFeature) const
+        {
+            return (getFeature() & inFeature) == inFeature;
         }
 
         float Instance::getGpuDelta() const

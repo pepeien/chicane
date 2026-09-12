@@ -3,7 +3,7 @@
         <Icon source="Assets/Editor/UI/Icons/Regular" name="Cube" class="show-flags__icon --regular"/>
         <Icon source="Assets/Editor/UI/Icons/Fill" name="Cube" class="show-flags__icon --fill"/>
     </Button>
-    <Button class="show-flags__item --{{ meshesState }}" onClick="{{ onMeshesToggle() }}">
+    <Button class="show-flags__item --{{ wireframeState }}" onClick="{{ onWireframeToggle() }}">
         <Icon source="Assets/Editor/UI/Icons/Regular" name="LineSegments" class="show-flags__icon --regular"/>
         <Icon source="Assets/Editor/UI/Icons/Fill" name="LineSegments" class="show-flags__icon --fill"/>
     </Button>

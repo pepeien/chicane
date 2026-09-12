@@ -12,7 +12,6 @@
 #include "Chicane/Core/Math/Vertex.hpp"
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Debug/Mode.hpp"
 #include "Chicane/Renderer/Debug/Trace.hpp"
 
 namespace Chicane
@@ -30,6 +29,11 @@ namespace Chicane
             static inline const Vec4            SKELETON_COLOR       = Vec4(0.0f, 0.82f, 1.0f, 1.0f);
             static inline const Vec4            SKELETON_JOINT_COLOR = Vec4(0.35f, 0.95f, 1.0f, 1.0f);
 
+            CHICANE_RENDERER                    Vertex::List getVertices();
+
+            CHICANE_RENDERER void push(const Vertex::List& inVertices, float inDuration = Trace::DEFAULT_DURATION);
+            CHICANE_RENDERER void prune(bool bInWillExpireOneFrame = false);
+
             CHICANE_RENDERER void appendSegment(
                 Vertex::List& outVertices, const Vec3& inStart, const Vec3& inEnd, const Vec4& inColor
             );
@@ -46,22 +50,22 @@ namespace Chicane
                 Vertex::List& outVertices, const Bounds3D& inBounds, const Vec4& inColor
             );
             CHICANE_RENDERER void appendRing(
-                Vertex::List&  outVertices,
-                const Vec3&    inCenter,
-                const Vec3&    inRight,
-                const Vec3&    inUp,
-                float          inRadius,
-                const Vec4&    inColor,
-                std::uint32_t  inSegmentCount = 16
+                Vertex::List& outVertices,
+                const Vec3&   inCenter,
+                const Vec3&   inRight,
+                const Vec3&   inUp,
+                float         inRadius,
+                const Vec4&   inColor,
+                std::uint32_t inSegmentCount = 16
             );
             CHICANE_RENDERER void appendRadial(
-                Vertex::List&  outVertices,
-                const Vec3&    inOrigin,
-                const Vec3&    inDestination,
-                float          inStartRadius,
-                float          inEndRadius,
-                const Vec4&    inColor,
-                std::uint32_t  inSegmentCount = 16
+                Vertex::List& outVertices,
+                const Vec3&   inOrigin,
+                const Vec3&   inDestination,
+                float         inStartRadius,
+                float         inEndRadius,
+                const Vec4&   inColor,
+                std::uint32_t inSegmentCount = 16
             );
             CHICANE_RENDERER void appendRectangle(
                 Vertex::List& outVertices,
@@ -85,6 +89,7 @@ namespace Chicane
                 float            inHalfHeight,
                 const Vec4&      inColor
             );
+
         }
     }
 }

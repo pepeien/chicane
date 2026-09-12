@@ -41,7 +41,7 @@ namespace Chicane
 
         bool VulkanLSceneShadow::onBeginRender(const Frame&)
         {
-            return getBackend()->hasFill();
+            return getBackend()->hasFeature(RendererFeature::Fill);
         }
 
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)

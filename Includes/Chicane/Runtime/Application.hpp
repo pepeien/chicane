@@ -159,7 +159,7 @@ namespace Chicane
         void render();
         void uploadPreviewTextures();
         void snapshotRendererState();
-        bool hasSceneDebug(Renderer::DebugMode inMode) const;
+        bool hasSceneFeature(Renderer::RendererFeature inFeature) const;
         Vec<2, std::uint32_t> getRendererResolution() const;
 
         // Scene
@@ -213,7 +213,7 @@ namespace Chicane
 
         // Renderer
         std::unique_ptr<Renderer::Instance>      m_renderer;
-        std::atomic<std::uint8_t>                m_debugFlags;
+        std::atomic<std::uint8_t>                m_featureFlags;
         std::atomic<std::uint32_t>               m_rendererWidth;
         std::atomic<std::uint32_t>               m_rendererHeight;
     };

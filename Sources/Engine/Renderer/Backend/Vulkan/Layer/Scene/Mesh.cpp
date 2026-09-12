@@ -41,18 +41,17 @@ namespace Chicane
 
         bool VulkanLSceneMesh::onBeginRender(const Frame& inFrame)
         {
-            if (!getBackend()->hasFill() || !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!getBackend()->hasFeature(RendererFeature::Fill))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
         }
 
         void VulkanLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
@@ -74,56 +73,55 @@ namespace Chicane
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
 
-            // Pipeline
-            m_graphicsPipeline.bind(commandBuffer);
-
-            // Frame
-            m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-
-            // Texture
-            m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
-
-            // Draw
-            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-            vk::DeviceSize offsets[]       = {0};
-
-            commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-
-            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
-
-            auto drawMeshes = [&]()
+            if (getBackend()->hasFeature(RendererFeature::Fill))
             {
-                for (const DrawPoly& draw : inFrame.getSceneDraws())
+                VulkanLScene* parent = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
+
+                m_graphicsPipeline.bind(commandBuffer);
+                m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
+                m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
+
+                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
+                vk::DeviceSize offsets[]       = {0};
+
+                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+
+                auto drawMeshes = [&]()
                 {
-                    commandBuffer.drawIndexed(
-                        draw.indexCount,
-                        draw.instanceCount,
-                        draw.indexStart,
-                        draw.vertexStart,
-                        draw.instanceStart
-                    );
-                }
-            };
+                    for (const DrawPoly& draw : inFrame.getSceneDraws())
+                    {
+                        commandBuffer.drawIndexed(
+                            draw.indexCount,
+                            draw.instanceCount,
+                            draw.indexStart,
+                            draw.vertexStart,
+                            draw.instanceStart
+                        );
+                    }
+                };
 
-            std::int32_t transparentPass = 0;
-            commandBuffer.pushConstants(
-                m_graphicsPipeline.layout,
-                vk::ShaderStageFlagBits::eFragment,
-                0,
-                sizeof(std::int32_t),
-                &transparentPass
-            );
-            drawMeshes();
+                std::int32_t transparentPass = 0;
+                commandBuffer.pushConstants(
+                    m_graphicsPipeline.layout,
+                    vk::ShaderStageFlagBits::eFragment,
+                    0,
+                    sizeof(std::int32_t),
+                    &transparentPass
+                );
+                drawMeshes();
 
-            transparentPass = 1;
-            commandBuffer.pushConstants(
-                m_graphicsPipeline.layout,
-                vk::ShaderStageFlagBits::eFragment,
-                0,
-                sizeof(std::int32_t),
-                &transparentPass
-            );
-            drawMeshes();
+                transparentPass = 1;
+                commandBuffer.pushConstants(
+                    m_graphicsPipeline.layout,
+                    vk::ShaderStageFlagBits::eFragment,
+                    0,
+                    sizeof(std::int32_t),
+                    &transparentPass
+                );
+                drawMeshes();
+            }
+
             commandBuffer.endRenderPass();
         }
 

@@ -32,7 +32,6 @@
 #include "Chicane/Grid/Component/Viewport.hpp"
 
 #include "Chicane/Renderer/Debug.hpp"
-#include "Chicane/Renderer/Debug/Mode.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
@@ -278,7 +277,7 @@ namespace Chicane
           m_viewObservable({}),
           m_window(nullptr),
           m_renderer(nullptr),
-          m_debugFlags(0),
+          m_featureFlags(0),
           m_rendererWidth(0),
           m_rendererHeight(0)
     {
@@ -389,7 +388,7 @@ namespace Chicane
     {
         if (!m_renderer)
         {
-            m_debugFlags.store(0, std::memory_order_relaxed);
+            m_featureFlags.store(0, std::memory_order_relaxed);
             m_rendererWidth.store(0, std::memory_order_relaxed);
             m_rendererHeight.store(0, std::memory_order_relaxed);
 
@@ -398,14 +397,15 @@ namespace Chicane
 
         const Vec<2, std::uint32_t> resolution = m_renderer->getResolution();
 
-        m_debugFlags.store(static_cast<std::uint8_t>(m_renderer->getDebug()), std::memory_order_relaxed);
+        m_featureFlags.store(static_cast<std::uint8_t>(m_renderer->getFeature()), std::memory_order_relaxed);
         m_rendererWidth.store(resolution.x, std::memory_order_relaxed);
         m_rendererHeight.store(resolution.y, std::memory_order_relaxed);
     }
 
-    bool Application::hasSceneDebug(Renderer::DebugMode inMode) const
+    bool Application::hasSceneFeature(Renderer::RendererFeature inFeature) const
     {
-        return (static_cast<Renderer::DebugMode>(m_debugFlags.load(std::memory_order_relaxed)) & inMode) == inMode;
+        return (static_cast<Renderer::RendererFeature>(m_featureFlags.load(std::memory_order_relaxed)) & inFeature) ==
+               inFeature;
     }
 
     Vec<2, std::uint32_t> Application::getRendererResolution() const
@@ -893,7 +893,7 @@ namespace Chicane
         Vertex::List debugLines;
         Vertex::List skeletonLines;
 
-        if (hasSceneDebug(Renderer::DebugMode::Bounds))
+        if (hasSceneFeature(Renderer::RendererFeature::Bounds))
         {
             for (Actor* actor : inScene->getActors())
             {
@@ -906,7 +906,7 @@ namespace Chicane
             }
         }
 
-        if (hasSceneDebug(Renderer::DebugMode::Colliders))
+        if (hasSceneFeature(Renderer::RendererFeature::Colliders))
         {
             for (CPhysics* physics : inScene->getComponents<CPhysics>())
             {
@@ -919,7 +919,7 @@ namespace Chicane
             }
         }
 
-        if (hasSceneDebug(Renderer::DebugMode::Skeletons))
+        if (hasSceneFeature(Renderer::RendererFeature::Skeletons))
         {
             for (CMesh* mesh : inScene->getComponents<CMesh>())
             {
@@ -987,12 +987,12 @@ namespace Chicane
             m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e3D, poly.data), poly.instance);
         }
 
-        if (!m_renderer->hasDebug(Renderer::DebugMode::Traces))
+        if (!m_renderer->hasFeature(Renderer::RendererFeature::Traces))
         {
             return;
         }
 
-        Vertex::List traces = m_renderer->getTraceVertices();
+        Vertex::List traces = Renderer::Debug::getVertices();
         if (traces.empty())
         {
             return;
@@ -1012,7 +1012,7 @@ namespace Chicane
         Vertex::List vertices;
         appendTrace(vertices, inRequest, Renderer::Debug::TRACE_COLOR);
 
-        m_renderer->pushTrace(vertices, inRequest.duration);
+        Renderer::Debug::push(vertices, inRequest.duration);
     }
 
     void Application::initUI()

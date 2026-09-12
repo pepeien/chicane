@@ -4,7 +4,7 @@
 #include <Chicane/Core/String.hpp>
 #include <Chicane/Core/Xml.hpp>
 #include <Chicane/Grid/Component/Container.hpp>
-#include <Chicane/Renderer/Debug/Mode.hpp>
+#include <Chicane/Renderer/Feature.hpp>
 #include <Chicane/Renderer/Instance.hpp>
 
 namespace Editor
@@ -24,7 +24,7 @@ namespace Editor
         void onFillToggle();
 
         CH_FUNCTION()
-        void onMeshesToggle();
+        void onWireframeToggle();
 
         CH_FUNCTION()
         void onBoundsToggle();
@@ -41,13 +41,13 @@ namespace Editor
     private:
         Chicane::Renderer::Instance* getRenderer() const;
         void syncFlags();
-        void toggleDebug(Chicane::Renderer::DebugMode inMode);
+        void toggleFeature(Chicane::Renderer::RendererFeature inFeature);
 
     public:
         CH_FIELD()
         Chicane::String fillState;
         CH_FIELD()
-        Chicane::String meshesState;
+        Chicane::String wireframeState;
         CH_FIELD()
         Chicane::String boundsState;
         CH_FIELD()

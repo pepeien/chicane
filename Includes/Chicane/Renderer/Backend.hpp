@@ -7,6 +7,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Status.hpp"
+#include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
@@ -56,7 +57,7 @@ namespace Chicane
         public:
             // Renderer
             const Instance* getRenderer() const;
-            bool hasFill() const;
+            bool hasFeature(RendererFeature inFeature) const;
 
             // Layer
             std::vector<Layer*> findLayers(std::function<bool(const Layer* inLayer)> inPredicate) const;

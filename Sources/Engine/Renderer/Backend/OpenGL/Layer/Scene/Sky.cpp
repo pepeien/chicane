@@ -42,7 +42,7 @@ namespace Chicane
 
         bool OpenGLLSceneSky::onBeginRender(const Frame& inFrame)
         {
-            if (!getBackend()->hasFill() || inFrame.getSkyInstance().model.id <= Draw::InvalidId)
+            if (inFrame.getSkyInstance().model.id <= Draw::InvalidId)
             {
                 return false;
             }
