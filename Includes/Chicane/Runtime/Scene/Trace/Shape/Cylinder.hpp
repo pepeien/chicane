@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Runtime/Scene/Trace/Shape.hpp"
 
 namespace Chicane
@@ -7,7 +9,10 @@ namespace Chicane
     class CHICANE_RUNTIME SceneTraceShapeCylinder : public SceneTraceShape
     {
     public:
-        explicit SceneTraceShapeCylinder(float inRadius);
+        static constexpr inline std::uint32_t DEFAULT_SEGEMENT_COUNT = 16;
+
+    public:
+        explicit SceneTraceShapeCylinder(float inRadius, std::uint32_t inSegmentCount = DEFAULT_SEGEMENT_COUNT);
         SceneTraceShapeCylinder() = default;
 
     public:
@@ -20,6 +25,7 @@ namespace Chicane
         float getRadiusAt(float inFraction) const;
 
     public:
-        float radius = 0.0f;
+        float         radius       = 0.0f;
+        std::uint32_t segmentCount = DEFAULT_SEGEMENT_COUNT;
     };
 }

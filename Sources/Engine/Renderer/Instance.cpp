@@ -1,7 +1,9 @@
 #include "Chicane/Renderer/Instance.hpp"
 
+#include <algorithm>
 #include <atomic>
 
+#include "Chicane/Core/Time.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 
@@ -77,6 +79,7 @@ namespace Chicane
 
             currentFrame.reset();
             resetResources();
+            pruneTraces(true);
 
             m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
@@ -207,10 +210,7 @@ namespace Chicane
 
         void Instance::disableDebug(DebugMode inMode)
         {
-            m_debug.fetch_and(
-                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inMode)),
-                std::memory_order_relaxed
-            );
+            m_debug.fetch_and(static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inMode)), std::memory_order_relaxed);
         }
 
         void Instance::toggleDebug(DebugMode inMode)
@@ -245,23 +245,43 @@ namespace Chicane
             m_traces.clear();
         }
 
-        void Instance::pushTrace(const Vertex::List& inVertices)
+        void Instance::pushTrace(const Vertex::List& inVertices, float inDuration)
         {
             if (inVertices.empty())
             {
                 return;
             }
 
+            pruneTraces(false);
+
             if (m_traces.size() >= Debug::TRACE_CAPACITY)
             {
                 m_traces.erase(m_traces.begin());
             }
 
-            m_traces.push_back(inVertices);
+            Debug::Trace trace;
+            trace.vertices = inVertices;
+
+            if (inDuration < 0.0f)
+            {
+                trace.bIsPersistant = true;
+            }
+            else if (inDuration <= 0.0f)
+            {
+                trace.bIsForOneFrame = true;
+            }
+            else
+            {
+                trace.expireAt = Time() + Time::fromSeconds(inDuration);
+            }
+
+            m_traces.push_back(std::move(trace));
         }
 
-        Vertex::List Instance::getTraceVertices() const
+        Vertex::List Instance::getTraceVertices()
         {
+            pruneTraces(false);
+
             Vertex::List result;
 
             if (!hasDebug(DebugMode::Traces))
@@ -269,12 +289,44 @@ namespace Chicane
                 return result;
             }
 
-            for (const Vertex::List& trace : m_traces)
+            for (const Debug::Trace& trace : m_traces)
             {
-                result.insert(result.end(), trace.begin(), trace.end());
+                result.insert(result.end(), trace.vertices.begin(), trace.vertices.end());
             }
 
             return result;
+        }
+
+        void Instance::pruneTraces(bool inExpireOneFrame)
+        {
+            if (m_traces.empty())
+            {
+                return;
+            }
+
+            const Time now;
+
+            m_traces.erase(
+                std::remove_if(
+                    m_traces.begin(),
+                    m_traces.end(),
+                    [&](const Debug::Trace& inTrace)
+                    {
+                        if (inTrace.bIsPersistant)
+                        {
+                            return false;
+                        }
+
+                        if (inTrace.bIsForOneFrame)
+                        {
+                            return inExpireOneFrame;
+                        }
+
+                        return now >= inTrace.expireAt;
+                    }
+                ),
+                m_traces.end()
+            );
         }
 
         float Instance::getGpuDelta() const

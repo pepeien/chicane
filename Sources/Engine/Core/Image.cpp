@@ -1,7 +1,6 @@
 #include "Chicane/Core/Image.hpp"
 
 #include <fstream>
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -18,6 +17,7 @@
 
 #include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 
 static void appendU32(std::vector<unsigned char>& outValue, std::uint32_t inValue)
@@ -710,7 +710,7 @@ namespace Chicane
 
     void Image::rotateBy(float inAngle)
     {
-        const float angle = inAngle * (M_PI / 180.0f);
+        const float angle = inAngle * DEG_TO_RAD;
         const float cosA  = std::cos(angle);
         const float sinA  = std::sin(angle);
 

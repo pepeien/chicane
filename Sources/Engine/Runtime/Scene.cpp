@@ -12,7 +12,7 @@ namespace Chicane
           m_componentCount(0),
           m_components({}),
           m_componentsObservable({}),
-          m_cellSize(SceneTraceRequest::DefaultCellSize),
+          m_cellSize(SceneTraceRequest::DEFAULT_CELL_SIZE),
           m_cells({}),
           m_objectCells({})
     {}

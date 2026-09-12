@@ -15,6 +15,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Debug/Trace.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -101,8 +102,8 @@ namespace Chicane
             bool hasDebug(DebugMode inMode) const;
 
             void clearDebug(DebugMode inMode = DebugMode::All);
-            void pushTrace(const Vertex::List& inVertices);
-            Vertex::List getTraceVertices() const;
+            void pushTrace(const Vertex::List& inVertices, float inDuration = Debug::Trace::DEFAULT_DURATION);
+            Vertex::List getTraceVertices();
 
             float getGpuDelta() const;
 
@@ -140,6 +141,8 @@ namespace Chicane
 
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 
+            void pruneTraces(bool inExpireOneFrame);
+
         private:
             // Window
             const Window*             m_window;
@@ -162,7 +165,7 @@ namespace Chicane
 
             // Debug
             std::atomic<std::uint8_t> m_debug;
-            std::vector<Vertex::List> m_traces;
+            Debug::Trace::List        m_traces;
 
             // Backend
             std::unique_ptr<Backend>  m_backend;

@@ -6,6 +6,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Renderer/Light/Type.hpp"
 
@@ -268,13 +269,11 @@ namespace Chicane
                     return Vec4::Zero();
                 }
 
-                constexpr float kDegreesToRadians = 3.14159265358979323846f / 180.0f;
-
                 const float outer = std::clamp(inLight.outerAngle, 0.0f, 89.9f);
                 const float inner = std::clamp(inLight.innerAngle, 0.0f, outer);
 
-                const float cosOuter = std::cos(outer * kDegreesToRadians);
-                const float cosInner = std::max(std::cos(inner * kDegreesToRadians), cosOuter + 1e-4f);
+                const float cosOuter = std::cos(outer * DEG_TO_RAD);
+                const float cosInner = std::max(std::cos(inner * DEG_TO_RAD), cosOuter + 1e-4f);
 
                 return Vec4(cosInner, cosOuter, 0.0f, 0.0f);
             }

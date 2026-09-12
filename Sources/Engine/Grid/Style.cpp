@@ -8,6 +8,8 @@
 
 #include "Chicane/Box/Font.hpp"
 
+#include "Chicane/Core/Math.hpp"
+
 #include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
@@ -1791,7 +1793,7 @@ namespace Chicane
 
             if (value.endsWith(TRANSFORM_RADIAN_UNIT))
             {
-                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal) * (180.0f / 3.14159265f);
+                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal) * RAD_TO_DEG;
             }
 
             if (value.endsWith(TRANSFORM_TURN_UNIT))

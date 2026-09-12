@@ -224,7 +224,8 @@ namespace Chicane
                 inRequest.destination,
                 cylinder->getRadiusAt(0.0f),
                 cylinder->getRadiusAt(1.0f),
-                inColor
+                inColor,
+                cylinder->segmentCount
             );
 
             return;
@@ -240,7 +241,8 @@ namespace Chicane
                 inRequest.destination,
                 cone->getRadiusAt(0.0f, length),
                 cone->getRadiusAt(1.0f, length),
-                inColor
+                inColor,
+                cone->segmentCount
             );
         }
     }
@@ -1010,7 +1012,7 @@ namespace Chicane
         Vertex::List vertices;
         appendTrace(vertices, inRequest, Renderer::Debug::TRACE_COLOR);
 
-        m_renderer->pushTrace(vertices);
+        m_renderer->pushTrace(vertices, inRequest.duration);
     }
 
     void Application::initUI()

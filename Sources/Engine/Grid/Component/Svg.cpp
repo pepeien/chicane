@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Component/Svg.reflected.hpp"
 
-#define _USE_MATH_DEFINES
-
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -11,11 +9,8 @@
 #include <string>
 #include <vector>
 
-#ifndef M_PI
-    #define M_PI 3.14159265358979323846
-#endif
-
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Contour.hpp"
 #include "Chicane/Core/Math/Curve.hpp"
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
@@ -30,11 +25,6 @@
 
 namespace Chicane
 {
-    static constexpr inline float PI         = static_cast<float>(M_PI);
-    static constexpr inline float TWO_PI     = PI * 2.0f;
-    static constexpr inline float HALF_PI    = PI * 0.5f;
-    static constexpr inline float DEG_TO_RAD = PI / 180.0f;
-
     namespace Grid
     {
         float degreesToRadians(float inDegrees)

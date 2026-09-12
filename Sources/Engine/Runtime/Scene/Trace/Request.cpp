@@ -49,40 +49,48 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cone(float inAngle, float inCellSize)
+    SceneTraceRequest SceneTraceRequest::Cone(float inAngle, float inCellSize, std::uint32_t inSegmentCount)
     {
         SceneTraceRequest request;
-        request.shape    = std::make_shared<SceneTraceShapeCone>(inAngle);
+        request.shape    = std::make_shared<SceneTraceShapeCone>(inAngle, 0.0f, inSegmentCount);
         request.cellSize = std::max(inCellSize, FLT_EPSILON);
 
         return request;
     }
 
     SceneTraceRequest SceneTraceRequest::Cone(
-        const Vec3& inOrigin, const Vec3& inDestination, float inAngle, float inCellSize
+        const Vec3&   inOrigin,
+        const Vec3&   inDestination,
+        float         inAngle,
+        float         inCellSize,
+        std::uint32_t inSegmentCount
     )
     {
-        SceneTraceRequest request = Cone(inAngle, inCellSize);
+        SceneTraceRequest request = Cone(inAngle, inCellSize, inSegmentCount);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cylinder(float inRadius, float inCellSize)
+    SceneTraceRequest SceneTraceRequest::Cylinder(float inRadius, float inCellSize, std::uint32_t inSegmentCount)
     {
         SceneTraceRequest request;
-        request.shape    = std::make_shared<SceneTraceShapeCylinder>(inRadius);
+        request.shape    = std::make_shared<SceneTraceShapeCylinder>(inRadius, inSegmentCount);
         request.cellSize = std::max(inCellSize, FLT_EPSILON);
 
         return request;
     }
 
     SceneTraceRequest SceneTraceRequest::Cylinder(
-        const Vec3& inOrigin, const Vec3& inDestination, float inRadius, float inCellSize
+        const Vec3&   inOrigin,
+        const Vec3&   inDestination,
+        float         inRadius,
+        float         inCellSize,
+        std::uint32_t inSegmentCount
     )
     {
-        SceneTraceRequest request = Cylinder(inRadius, inCellSize);
+        SceneTraceRequest request = Cylinder(inRadius, inCellSize, inSegmentCount);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 

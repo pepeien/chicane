@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Core/Math/Bounds/3D.hpp"
@@ -12,6 +13,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Debug/Mode.hpp"
+#include "Chicane/Renderer/Debug/Trace.hpp"
 
 namespace Chicane
 {
@@ -44,20 +46,22 @@ namespace Chicane
                 Vertex::List& outVertices, const Bounds3D& inBounds, const Vec4& inColor
             );
             CHICANE_RENDERER void appendRing(
-                Vertex::List& outVertices,
-                const Vec3&   inCenter,
-                const Vec3&   inRight,
-                const Vec3&   inUp,
-                float         inRadius,
-                const Vec4&   inColor
+                Vertex::List&  outVertices,
+                const Vec3&    inCenter,
+                const Vec3&    inRight,
+                const Vec3&    inUp,
+                float          inRadius,
+                const Vec4&    inColor,
+                std::uint32_t  inSegmentCount = 16
             );
             CHICANE_RENDERER void appendRadial(
-                Vertex::List& outVertices,
-                const Vec3&   inOrigin,
-                const Vec3&   inDestination,
-                float         inStartRadius,
-                float         inEndRadius,
-                const Vec4&   inColor
+                Vertex::List&  outVertices,
+                const Vec3&    inOrigin,
+                const Vec3&    inDestination,
+                float          inStartRadius,
+                float          inEndRadius,
+                const Vec4&    inColor,
+                std::uint32_t  inSegmentCount = 16
             );
             CHICANE_RENDERER void appendRectangle(
                 Vertex::List& outVertices,

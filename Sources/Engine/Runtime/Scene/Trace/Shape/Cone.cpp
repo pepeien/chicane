@@ -8,9 +8,10 @@
 
 namespace Chicane
 {
-    SceneTraceShapeCone::SceneTraceShapeCone(float inAngle, float inRadius)
+    SceneTraceShapeCone::SceneTraceShapeCone(float inAngle, float inRadius, std::uint32_t inSegmentCount)
         : angle(std::max(0.0f, inAngle)),
-          radius(std::max(0.0f, inRadius))
+          radius(std::max(0.0f, inRadius)),
+          segmentCount(std::max(3u, inSegmentCount))
     {}
 
     bool SceneTraceShapeCone::isValid() const

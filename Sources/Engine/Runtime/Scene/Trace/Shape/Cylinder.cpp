@@ -7,8 +7,9 @@
 
 namespace Chicane
 {
-    SceneTraceShapeCylinder::SceneTraceShapeCylinder(float inRadius)
-        : radius(std::max(0.0f, inRadius))
+    SceneTraceShapeCylinder::SceneTraceShapeCylinder(float inRadius, std::uint32_t inSegmentCount)
+        : radius(std::max(0.0f, inRadius)),
+          segmentCount(std::max(3u, inSegmentCount))
     {}
 
     bool SceneTraceShapeCylinder::isValid() const

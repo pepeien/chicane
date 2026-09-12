@@ -3,15 +3,15 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Chicane/Core/Math.hpp"
+
 namespace Chicane
 {
     namespace Renderer
     {
         namespace Debug
         {
-            constexpr int   kRingSegments = 16;
-            constexpr int   kSweepRings   = 4;
-            constexpr float kPi           = 3.14159265358979323846f;
+            constexpr int SWEEP_RINGS = 4;
 
             static float lengthSquared(const Vec3& inValue)
             {
@@ -263,7 +263,8 @@ namespace Chicane
                 const Vec3&   inRight,
                 const Vec3&   inUp,
                 float         inRadius,
-                const Vec4&   inColor
+                const Vec4&   inColor,
+                std::uint32_t inSegmentCount
             )
             {
                 if (inRadius <= 0.0f)
@@ -271,10 +272,12 @@ namespace Chicane
                     return;
                 }
 
-                for (int i = 0; i < kRingSegments; ++i)
+                const std::uint32_t segments = std::max(3u, inSegmentCount);
+
+                for (std::uint32_t i = 0; i < segments; ++i)
                 {
-                    const float angle0 = (kPi * 2.0f * static_cast<float>(i)) / static_cast<float>(kRingSegments);
-                    const float angle1 = (kPi * 2.0f * static_cast<float>(i + 1)) / static_cast<float>(kRingSegments);
+                    const float angle0 = (TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
+                    const float angle1 = (TWO_PI * static_cast<float>(i + 1)) / static_cast<float>(segments);
 
                     const Vec3 start =
                         inCenter + inRight * (std::cos(angle0) * inRadius) + inUp * (std::sin(angle0) * inRadius);
@@ -291,7 +294,8 @@ namespace Chicane
                 const Vec3&   inDestination,
                 float         inStartRadius,
                 float         inEndRadius,
-                const Vec4&   inColor
+                const Vec4&   inColor,
+                std::uint32_t inSegmentCount
             )
             {
                 const Vec3  direction = inDestination - inOrigin;
@@ -308,20 +312,22 @@ namespace Chicane
                     return;
                 }
 
+                const std::uint32_t segments = std::max(3u, inSegmentCount);
+
                 appendSegment(outVertices, inOrigin, inDestination, inColor);
 
-                for (int i = 0; i <= kSweepRings; ++i)
+                for (int i = 0; i <= SWEEP_RINGS; ++i)
                 {
-                    const float fraction = static_cast<float>(i) / static_cast<float>(kSweepRings);
+                    const float fraction = static_cast<float>(i) / static_cast<float>(SWEEP_RINGS);
                     const float radius   = inStartRadius + (inEndRadius - inStartRadius) * fraction;
                     const Vec3  center   = inOrigin + direction * fraction;
 
-                    appendRing(outVertices, center, right, up, radius, inColor);
+                    appendRing(outVertices, center, right, up, radius, inColor, segments);
                 }
 
-                for (int i = 0; i < 4; ++i)
+                for (std::uint32_t i = 0; i < segments; ++i)
                 {
-                    const float angle  = (kPi * 2.0f * static_cast<float>(i)) / 4.0f;
+                    const float angle  = (TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
                     const Vec3  offset = right * std::cos(angle) + up * std::sin(angle);
 
                     appendSegment(
@@ -451,7 +457,7 @@ namespace Chicane
 
                 for (int i = 0; i < 4; ++i)
                 {
-                    const float angle  = (kPi * 2.0f * static_cast<float>(i)) / 4.0f;
+                    const float angle  = (TWO_PI * static_cast<float>(i)) / 4.0f;
                     const Vec3  offset = right * std::cos(angle) + up * std::sin(angle);
 
                     appendSegment(outVertices, bottom + offset * radius, top + offset * radius, inColor);
@@ -459,7 +465,7 @@ namespace Chicane
                     Vec3 previous = bottom + offset * radius;
                     for (int step = 1; step <= 4; ++step)
                     {
-                        const float latitude   = (kPi * 0.5f * static_cast<float>(step)) / 4.0f;
+                        const float latitude   = (HALF_PI * static_cast<float>(step)) / 4.0f;
                         const float ringRadius = std::cos(latitude) * radius;
                         const float height     = std::sin(latitude) * radius;
                         const Vec3  point      = bottom - axis * height + offset * ringRadius;
@@ -471,7 +477,7 @@ namespace Chicane
                     previous = top + offset * radius;
                     for (int step = 1; step <= 4; ++step)
                     {
-                        const float latitude   = (kPi * 0.5f * static_cast<float>(step)) / 4.0f;
+                        const float latitude   = (HALF_PI * static_cast<float>(step)) / 4.0f;
                         const float ringRadius = std::cos(latitude) * radius;
                         const float height     = std::sin(latitude) * radius;
                         const Vec3  point      = top + axis * height + offset * ringRadius;
