@@ -96,8 +96,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bIsForOneFrame",
-                "description": "CHICANE_RENDERER_DEBUG_TRACE_BISFORONEFRAME_DESCRIPTION"
+                "name": "bInWillExpireOneFrame",
+                "description": "CHICANE_RENDERER_DEBUG_TRACE_BINWILLEXPIREONEFRAME_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DEBUG_TRACE_DESCRIPTION"

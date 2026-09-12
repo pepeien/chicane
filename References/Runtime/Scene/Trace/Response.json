@@ -47,8 +47,8 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "impactPoint",
-                "description": "CHICANE_SCENETRACERESPONSE_IMPACTPOINT_DESCRIPTION"
+                "name": "impact",
+                "description": "CHICANE_SCENETRACERESPONSE_IMPACT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -73,8 +73,8 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "traceStart",
-                "description": "CHICANE_SCENETRACERESPONSE_TRACESTART_DESCRIPTION"
+                "name": "start",
+                "description": "CHICANE_SCENETRACERESPONSE_START_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -86,8 +86,8 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "traceEnd",
-                "description": "CHICANE_SCENETRACERESPONSE_TRACEEND_DESCRIPTION"
+                "name": "end",
+                "description": "CHICANE_SCENETRACERESPONSE_END_DESCRIPTION"
             },
             {
                 "accessor": "public",
