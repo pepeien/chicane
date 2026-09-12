@@ -21,21 +21,6 @@ namespace Editor
         void onThemeSwitch(Chicane::String inValue);
 
         CH_FUNCTION()
-        void onDebugToggleMeshes();
-
-        CH_FUNCTION()
-        void onDebugToggleBounds();
-
-        CH_FUNCTION()
-        void onDebugToggleTraces();
-
-        CH_FUNCTION()
-        void onDebugToggleColliders();
-
-        CH_FUNCTION()
-        void onDebugToggleSkeletons();
-
-        CH_FUNCTION()
         void onItemSelection(Chicane::Object* inItem);
 
     public:

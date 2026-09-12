@@ -8,8 +8,12 @@
         gap: 0 0.25em;
 
         &__label {
-            width: 5em;
+            width: 3.5em;
             overflow: hidden;
+        }
+
+        Text {
+            font-size: 0.7em;
         }
     }
 }

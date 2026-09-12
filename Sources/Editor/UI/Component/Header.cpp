@@ -9,8 +9,6 @@
 #include <Chicane/Grid/Component/Button.hpp>
 #include <Chicane/Grid/Component/Input/Select.hpp>
 #include <Chicane/Grid/Component/Input/Select/Option.hpp>
-#include <Chicane/Renderer/Debug/Mode.hpp>
-#include <Chicane/Renderer/Instance.hpp>
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/UI/Component/Header/Menu.hpp"
@@ -272,89 +270,30 @@ namespace Editor
             themes.children.push_back(submenu);
         }
 
-        HeaderMenuItem debug = {};
-        debug.label          = "Debug";
-
-        HeaderMenuItem meshWireframe = {};
-        meshWireframe.label          = "Meshes";
-        meshWireframe.action         = "onDebugToggleMeshes()";
-        debug.children.push_back(meshWireframe);
-
-        HeaderMenuItem boundsWireframe = {};
-        boundsWireframe.label          = "Bounds";
-        boundsWireframe.action         = "onDebugToggleBounds()";
-        debug.children.push_back(boundsWireframe);
-
-        HeaderMenuItem traceShapes = {};
-        traceShapes.label          = "Traces";
-        traceShapes.action         = "onDebugToggleTraces()";
-        debug.children.push_back(traceShapes);
-
-        HeaderMenuItem colliders = {};
-        colliders.label          = "Colliders";
-        colliders.action         = "onDebugToggleColliders()";
-        debug.children.push_back(colliders);
-
-        HeaderMenuItem skeletons = {};
-        skeletons.label          = "Skeletons";
-        skeletons.action         = "onDebugToggleSkeletons()";
-        debug.children.push_back(skeletons);
-
         HeaderMenuItem root = {};
         root.label          = "Settings";
         root.children.push_back(themes);
-        root.children.push_back(debug);
 
         menus.push_back(root);
     }
 
     void Header::syncMenuChecks()
     {
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
-        std::shared_ptr<HomeView>    view     = Chicane::Application::getInstance().getView<HomeView>();
-        const Chicane::String        theme    = view ? view->theme : Chicane::String::empty();
+        std::shared_ptr<HomeView> view  = Chicane::Application::getInstance().getView<HomeView>();
+        const Chicane::String     theme = view ? view->theme : Chicane::String::empty();
 
         for (HeaderMenuItem& root : menus)
         {
             for (HeaderMenuItem& group : root.children)
             {
-                if (group.label.equals("Themes"))
-                {
-                    for (HeaderMenuItem& item : group.children)
-                    {
-                        item.isChecked = theme.equals(item.label.toLower());
-                    }
-
-                    continue;
-                }
-
-                if (!group.label.equals("Debug"))
+                if (!group.label.equals("Themes"))
                 {
                     continue;
                 }
 
                 for (HeaderMenuItem& item : group.children)
                 {
-                    if (item.label.equals("Meshes"))
-                    {
-                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Meshes);
-                    }
-                    else if (item.label.equals("Bounds"))
-                    {
-                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Bounds);
-                    }
-                    else if (item.label.equals("Traces"))
-                    {
-                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Traces);
-                    }
-                    else if (item.label.equals("Colliders"))
-                    {
-                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Colliders);
-                    }
-                    else if (item.label.equals("Skeletons"))
-                    {
-                        item.isChecked = renderer && renderer->hasDebug(Chicane::Renderer::DebugMode::Skeletons);
-                    }
+                    item.isChecked = theme.equals(item.label.toLower());
                 }
             }
         }

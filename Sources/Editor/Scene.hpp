@@ -14,6 +14,7 @@ namespace Editor
     public:
         void onLoad() override;
 
+    public:
         void setSelection(Chicane::Object* inItem);
 
     private:

@@ -2,8 +2,9 @@
     <Editor::Header />
     <Dock class="home__content">
         <DockPanel isGrabbable="false">
-            <Editor::Telemetry />
             <Viewport />
+            <Editor::Telemetry />
+            <Editor::ShowFlags />
         </DockPanel>
         <DockPanel side="left" size="15%" handle="outlinerHeader">
             <Editor::Outliner />

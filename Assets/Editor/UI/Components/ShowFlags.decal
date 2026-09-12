@@ -1,0 +1,57 @@
+Editor::ShowFlags {
+    overflow: visible;
+    z-index: 20;
+}
+
+.show-flags {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid $--light-grey;
+    border-radius: 5px;
+    background-color: $--white;
+    overflow: hidden;
+
+    &__icon {
+        width: 1.1em;
+        height: 1.1em;
+        margin: auto;
+        color: $--black;
+        transition: color 200ms ease-in-out;
+    }
+
+    &__item {
+        width: 2em;
+        height: 2em;
+        display: flex;
+        background-color: transparent;
+        overflow: hidden;
+        transition: background-color 200ms ease-in-out;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $--dark-grey;
+
+            .show-flags__icon {
+                color: $--grey;
+            }
+        }
+
+        &.--checked {
+            background-color: $--light-grey;
+
+            .show-flags__icon {
+                color: $--green;
+            }
+
+            .show-flags__icon.--regular {
+                display: none;
+            }
+        }
+
+        &.--idle {
+            .show-flags__icon.--fill {
+                display: none;
+            }
+        }
+    }
+}

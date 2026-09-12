@@ -1,0 +1,26 @@
+<Container class="show-flags">
+    <Button class="show-flags__item --{{ fillState }}" onClick="{{ onFillToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="Cube" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="Cube" class="show-flags__icon --fill"/>
+    </Button>
+    <Button class="show-flags__item --{{ meshesState }}" onClick="{{ onMeshesToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="LineSegments" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="LineSegments" class="show-flags__icon --fill"/>
+    </Button>
+    <Button class="show-flags__item --{{ boundsState }}" onClick="{{ onBoundsToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="BoundingBox" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="BoundingBox" class="show-flags__icon --fill"/>
+    </Button>
+    <Button class="show-flags__item --{{ tracesState }}" onClick="{{ onTracesToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="Path" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="Path" class="show-flags__icon --fill"/>
+    </Button>
+    <Button class="show-flags__item --{{ collidersState }}" onClick="{{ onCollidersToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="CubeFocus" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="CubeFocus" class="show-flags__icon --fill"/>
+    </Button>
+    <Button class="show-flags__item --{{ skeletonsState }}" onClick="{{ onSkeletonsToggle() }}">
+        <Icon source="Assets/Editor/UI/Icons/Regular" name="Bone" class="show-flags__icon --regular"/>
+        <Icon source="Assets/Editor/UI/Icons/Fill" name="Bone" class="show-flags__icon --fill"/>
+    </Button>
+</Container>

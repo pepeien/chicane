@@ -58,7 +58,7 @@ namespace Editor
 
     void Scene::spawnDefaultItem()
     {
-        createActor<Item>("Assets/Editor/Drone/Buster.bmsh");
+        createActor<Item>(Chicane::Box::Mesh::DEFAULT_SOURCE);
     }
 
     void Scene::spawnGizmo()

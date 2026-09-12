@@ -10,10 +10,8 @@
 #include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Attributes.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
+#include "Editor/UI/Component/ShowFlags.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
-
-#include <Chicane/Renderer/Debug/Mode.hpp>
-#include <Chicane/Renderer/Instance.hpp>
 
 namespace Editor
 {
@@ -28,6 +26,7 @@ namespace Editor
         import <Header>();
         import <Attributes>();
         import <Outliner>();
+        import <ShowFlags>();
         import <Telemetry>();
 
         load("Assets/Editor/UI/Views/Home.grid", "Assets/Editor/UI/Views/Home.decal");
@@ -108,46 +107,6 @@ namespace Editor
     void HomeView::onThemeSwitch(Chicane::String inValue)
     {
         theme = inValue;
-    }
-
-    void HomeView::onDebugToggleMeshes()
-    {
-        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
-        {
-            renderer->toggleDebug(Chicane::Renderer::DebugMode::Meshes);
-        }
-    }
-
-    void HomeView::onDebugToggleBounds()
-    {
-        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
-        {
-            renderer->toggleDebug(Chicane::Renderer::DebugMode::Bounds);
-        }
-    }
-
-    void HomeView::onDebugToggleTraces()
-    {
-        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
-        {
-            renderer->toggleDebug(Chicane::Renderer::DebugMode::Traces);
-        }
-    }
-
-    void HomeView::onDebugToggleColliders()
-    {
-        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
-        {
-            renderer->toggleDebug(Chicane::Renderer::DebugMode::Colliders);
-        }
-    }
-
-    void HomeView::onDebugToggleSkeletons()
-    {
-        if (Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer())
-        {
-            renderer->toggleDebug(Chicane::Renderer::DebugMode::Skeletons);
-        }
     }
 
     void HomeView::onItemSelection(Chicane::Object* inItem)
