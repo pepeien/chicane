@@ -32,23 +32,6 @@
                 },
                 "children": [
                     {
-                        "title": "AnimationLoop",
-                        "filename": "Loop",
-                        "path": "Box/Animation/Loop",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Animation/Loop.hpp",
-                            "namespace": "Chicane::Box::AnimationLoop",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Clip",
                         "filename": "Clip",
                         "path": "Box/Animation/Clip",
@@ -100,6 +83,23 @@
                         "children": []
                     },
                     {
+                        "title": "Loop",
+                        "filename": "Loop",
+                        "path": "Box/Animation/Loop",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Animation/Loop.hpp",
+                            "namespace": "Chicane::Box::AnimationLoop",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Track",
                         "filename": "Track",
                         "path": "Box/Animation/Track",
@@ -135,46 +135,29 @@
                 },
                 "children": [
                     {
-                        "title": "AssetLoad",
-                        "filename": "Load",
-                        "path": "Box/Asset/Load",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Asset/Load.hpp",
-                            "namespace": "Chicane::Box::AssetLoad",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "AssetType",
-                        "filename": "Type",
-                        "path": "Box/Asset/Type",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Asset/Type.hpp",
-                            "namespace": "Chicane::Box::AssetType",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Header",
                         "filename": "Header",
                         "path": "Box/Asset/Header",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Header.hpp",
                             "namespace": "Chicane::Box::AssetHeader",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Load",
+                        "filename": "Load",
+                        "path": "Box/Asset/Load",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Load.hpp",
+                            "namespace": "Chicane::Box::AssetLoad",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -270,6 +253,23 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "Type",
+                        "filename": "Type",
+                        "path": "Box/Asset/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Type.hpp",
+                            "namespace": "Chicane::Box::AssetType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     }
                 ]
             },
@@ -296,23 +296,6 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Font/Family.hpp",
                             "namespace": "Chicane::Box::FontFamily",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "FontVendor",
-                        "filename": "Vendor",
-                        "path": "Box/Font/Vendor",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Font/Vendor.hpp",
-                            "namespace": "Chicane::Box::FontVendor",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -400,6 +383,23 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Font/TrueType.hpp",
                             "namespace": "Chicane::Box::FontTrueType",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Vendor",
+                        "filename": "Vendor",
+                        "path": "Box/Font/Vendor",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Font/Vendor.hpp",
+                            "namespace": "Chicane::Box::FontVendor",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -498,23 +498,6 @@
                         "children": []
                     },
                     {
-                        "title": "ModelVendor",
-                        "filename": "Vendor",
-                        "path": "Box/Model/Vendor",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Model/Vendor.hpp",
-                            "namespace": "Chicane::Box::ModelVendor",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Parsed",
                         "filename": "Parsed",
                         "path": "Box/Model/Parsed",
@@ -538,6 +521,23 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Model/Raw.hpp",
                             "namespace": "Chicane::Box",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Vendor",
+                        "filename": "Vendor",
+                        "path": "Box/Model/Vendor",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Model/Vendor.hpp",
+                            "namespace": "Chicane::Box::ModelVendor",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -688,7 +688,7 @@
                         "children": []
                     },
                     {
-                        "title": "SkySide",
+                        "title": "Side",
                         "filename": "Side",
                         "path": "Box/Sky/Side",
                         "source": {
@@ -1051,7 +1051,7 @@
                         },
                         "children": [
                             {
-                                "title": "ItemType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Core/FileSystem/Item/Type",
                                 "source": {
@@ -1175,12 +1175,12 @@
                 },
                 "children": [
                     {
-                        "title": "ImageVendor",
-                        "filename": "Vendor",
-                        "path": "Core/Image/Vendor",
+                        "title": "Info",
+                        "filename": "Info",
+                        "path": "Core/Image/Info",
                         "source": {
-                            "header": "Includes/Chicane/Core/Image/Vendor.hpp",
-                            "namespace": "Chicane::ImageVendor",
+                            "header": "Includes/Chicane/Core/Image/Info.hpp",
+                            "namespace": "Chicane::ImageInfo",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -1192,12 +1192,12 @@
                         "children": []
                     },
                     {
-                        "title": "Info",
-                        "filename": "Info",
-                        "path": "Core/Image/Info",
+                        "title": "Vendor",
+                        "filename": "Vendor",
+                        "path": "Core/Image/Vendor",
                         "source": {
-                            "header": "Includes/Chicane/Core/Image/Info.hpp",
-                            "namespace": "Chicane::ImageInfo",
+                            "header": "Includes/Chicane/Core/Image/Vendor.hpp",
+                            "namespace": "Chicane::ImageVendor",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -1243,12 +1243,12 @@
                         },
                         "children": [
                             {
-                                "title": "DeviceType",
-                                "filename": "Type",
-                                "path": "Core/Input/Device/Type",
+                                "title": "Event",
+                                "filename": "Event",
+                                "path": "Core/Input/Device/Event",
                                 "source": {
-                                    "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
-                                    "namespace": "Chicane::Input::DeviceType",
+                                    "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
+                                    "namespace": "Chicane::Input::DeviceEvent",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -1260,12 +1260,12 @@
                                 "children": []
                             },
                             {
-                                "title": "Event",
-                                "filename": "Event",
-                                "path": "Core/Input/Device/Event",
+                                "title": "Type",
+                                "filename": "Type",
+                                "path": "Core/Input/Device/Type",
                                 "source": {
-                                    "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
-                                    "namespace": "Chicane::Input::DeviceEvent",
+                                    "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
+                                    "namespace": "Chicane::Input::DeviceType",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -1365,7 +1365,7 @@
                         },
                         "children": [
                             {
-                                "title": "GamepadAxis",
+                                "title": "Axis",
                                 "filename": "Axis",
                                 "path": "Core/Input/Gamepad/Axis",
                                 "source": {
@@ -1382,7 +1382,7 @@
                                 "children": []
                             },
                             {
-                                "title": "GamepadButton",
+                                "title": "Button",
                                 "filename": "Button",
                                 "path": "Core/Input/Gamepad/Button",
                                 "source": {
@@ -1470,24 +1470,7 @@
                         },
                         "children": [
                             {
-                                "title": "Event",
-                                "filename": "Event",
-                                "path": "Core/Input/Keyboard/Event",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-                                    "namespace": "Chicane::Input::KeyboardEvent",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "KeyboardButton",
+                                "title": "Button",
                                 "filename": "Button",
                                 "path": "Core/Input/Keyboard/Button",
                                 "source": {
@@ -1503,7 +1486,7 @@
                                 },
                                 "children": [
                                     {
-                                        "title": "KeyboardButtonModifier",
+                                        "title": "Modifier",
                                         "filename": "Modifier",
                                         "path": "Core/Input/Keyboard/Button/Modifier",
                                         "source": {
@@ -1520,6 +1503,23 @@
                                         "children": []
                                     }
                                 ]
+                            },
+                            {
+                                "title": "Event",
+                                "filename": "Event",
+                                "path": "Core/Input/Keyboard/Event",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
+                                    "namespace": "Chicane::Input::KeyboardEvent",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
                             }
                         ]
                     },
@@ -1539,6 +1539,41 @@
                             "description": null
                         },
                         "children": [
+                            {
+                                "title": "Button",
+                                "filename": "Button",
+                                "path": "Core/Input/Mouse/Button",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
+                                    "namespace": "Chicane::Input::MouseButton",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Event",
+                                        "filename": "Event",
+                                        "path": "Core/Input/Mouse/Button/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
+                                            "namespace": "Chicane::Input::MouseButtonEvent",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
                             {
                                 "title": "Motion",
                                 "filename": "Motion",
@@ -1562,41 +1597,6 @@
                                         "source": {
                                             "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
                                             "namespace": "Chicane::Input::MouseMotionEvent",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": [],
-                                            "description": null
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "MouseButton",
-                                "filename": "Button",
-                                "path": "Core/Input/Mouse/Button",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
-                                    "namespace": "Chicane::Input::MouseButton",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Event",
-                                        "filename": "Event",
-                                        "path": "Core/Input/Mouse/Button/Event",
-                                        "source": {
-                                            "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
-                                            "namespace": "Chicane::Input::MouseButtonEvent",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -1733,7 +1733,7 @@
                         },
                         "children": [
                             {
-                                "title": "ListPushStrategy",
+                                "title": "Strategy",
                                 "filename": "Strategy",
                                 "path": "Core/List/Push/Strategy",
                                 "source": {
@@ -2569,7 +2569,7 @@
                 },
                 "children": [
                     {
-                        "title": "SizeDirection",
+                        "title": "Direction",
                         "filename": "Direction",
                         "path": "Core/Size/Direction",
                         "source": {
@@ -2775,7 +2775,7 @@
                         },
                         "children": [
                             {
-                                "title": "ViewProjectionType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Core/View/Projection/Type",
                                 "source": {
@@ -2829,6 +2829,40 @@
                 },
                 "children": [
                     {
+                        "title": "Backend",
+                        "filename": "Backend",
+                        "path": "Core/Window/Backend",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Window/Backend.hpp",
+                            "namespace": "Chicane::WindowBackend",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Cursor",
+                        "filename": "Cursor",
+                        "path": "Core/Window/Cursor",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Window/Cursor.hpp",
+                            "namespace": "Chicane::WindowCursor",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Event",
                         "filename": "Event",
                         "path": "Core/Window/Event",
@@ -2845,7 +2879,7 @@
                         },
                         "children": [
                             {
-                                "title": "WindowEventType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Core/Window/Event/Type",
                                 "source": {
@@ -2881,41 +2915,7 @@
                         "children": []
                     },
                     {
-                        "title": "WindowBackend",
-                        "filename": "Backend",
-                        "path": "Core/Window/Backend",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Backend.hpp",
-                            "namespace": "Chicane::WindowBackend",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "WindowCursor",
-                        "filename": "Cursor",
-                        "path": "Core/Window/Cursor",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Cursor.hpp",
-                            "namespace": "Chicane::WindowCursor",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "WindowType",
+                        "title": "Type",
                         "filename": "Type",
                         "path": "Core/Window/Type",
                         "source": {
@@ -3379,23 +3379,6 @@
                         },
                         "children": [
                             {
-                                "title": "DockSide",
-                                "filename": "Side",
-                                "path": "Grid/Component/Dock/Side",
-                                "source": {
-                                    "header": "Includes/Chicane/Grid/Component/Dock/Side.hpp",
-                                    "namespace": "Chicane::Grid::DockSide",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": []
-                            },
-                            {
                                 "title": "Drag",
                                 "filename": "Drag",
                                 "path": "Grid/Component/Dock/Drag",
@@ -3487,6 +3470,23 @@
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Component/Dock/Resize.hpp",
                                     "namespace": "Chicane::Grid::DockResize",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Side",
+                                "filename": "Side",
+                                "path": "Grid/Component/Dock/Side",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Dock/Side.hpp",
+                                    "namespace": "Chicane::Grid::DockSide",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -3791,7 +3791,7 @@
                                 },
                                 "children": [
                                     {
-                                        "title": "SvgLineCap",
+                                        "title": "LineCap",
                                         "filename": "LineCap",
                                         "path": "Grid/Component/Svg/Paint/LineCap",
                                         "source": {
@@ -3808,7 +3808,7 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "SvgLineJoin",
+                                        "title": "LineJoin",
                                         "filename": "LineJoin",
                                         "path": "Grid/Component/Svg/Paint/LineJoin",
                                         "source": {
@@ -4122,7 +4122,7 @@
                         },
                         "children": [
                             {
-                                "title": "StyleBorderType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Grid/Style/Border/Type",
                                 "source": {
@@ -4147,6 +4147,23 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Corners.hpp",
                             "namespace": "Chicane::Grid::StyleCorners",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Display",
+                        "filename": "Display",
+                        "path": "Grid/Style/Display",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Display.hpp",
+                            "namespace": "Chicane::Grid::StyleDisplay",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4208,7 +4225,7 @@
                         },
                         "children": [
                             {
-                                "title": "StyleFlexDirection",
+                                "title": "Direction",
                                 "filename": "Direction",
                                 "path": "Grid/Style/Flex/Direction",
                                 "source": {
@@ -4225,7 +4242,7 @@
                                 "children": []
                             },
                             {
-                                "title": "StyleFlexWrap",
+                                "title": "Wrap",
                                 "filename": "Wrap",
                                 "path": "Grid/Style/Flex/Wrap",
                                 "source": {
@@ -4277,7 +4294,7 @@
                         },
                         "children": [
                             {
-                                "title": "StyleImportType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Grid/Style/Import/Type",
                                 "source": {
@@ -4329,7 +4346,7 @@
                         },
                         "children": [
                             {
-                                "title": "StyleLocationType",
+                                "title": "Type",
                                 "filename": "Type",
                                 "path": "Grid/Style/Location/Type",
                                 "source": {
@@ -4346,6 +4363,40 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Overflow",
+                        "filename": "Overflow",
+                        "path": "Grid/Style/Overflow",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Overflow.hpp",
+                            "namespace": "Chicane::Grid::StyleOverflow",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Position",
+                        "filename": "Position",
+                        "path": "Grid/Style/Position",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Position.hpp",
+                            "namespace": "Chicane::Grid::StylePosition",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     },
                     {
                         "title": "Property",
@@ -4487,57 +4538,6 @@
                         "children": []
                     },
                     {
-                        "title": "StyleDisplay",
-                        "filename": "Display",
-                        "path": "Grid/Style/Display",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Style/Display.hpp",
-                            "namespace": "Chicane::Grid::StyleDisplay",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "StyleOverflow",
-                        "filename": "Overflow",
-                        "path": "Grid/Style/Overflow",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Style/Overflow.hpp",
-                            "namespace": "Chicane::Grid::StyleOverflow",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "StylePosition",
-                        "filename": "Position",
-                        "path": "Grid/Style/Position",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Style/Position.hpp",
-                            "namespace": "Chicane::Grid::StylePosition",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Transform",
                         "filename": "Transform",
                         "path": "Grid/Style/Transform",
@@ -4608,12 +4608,12 @@
                 },
                 "children": [
                     {
-                        "title": "BodyShape",
-                        "filename": "Shape",
-                        "path": "Kerb/Body/Shape",
+                        "title": "CreateInfo",
+                        "filename": "CreateInfo",
+                        "path": "Kerb/Body/CreateInfo",
                         "source": {
-                            "header": "Includes/Chicane/Kerb/Body/Shape.hpp",
-                            "namespace": "Chicane::Kerb::BodyShape",
+                            "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
+                            "namespace": "Chicane::Kerb::BodyCreateInfo",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4625,12 +4625,12 @@
                         "children": []
                     },
                     {
-                        "title": "CreateInfo",
-                        "filename": "CreateInfo",
-                        "path": "Kerb/Body/CreateInfo",
+                        "title": "Shape",
+                        "filename": "Shape",
+                        "path": "Kerb/Body/Shape",
                         "source": {
-                            "header": "Includes/Chicane/Kerb/Body/CreateInfo.hpp",
-                            "namespace": "Chicane::Kerb::BodyCreateInfo",
+                            "header": "Includes/Chicane/Kerb/Body/Shape.hpp",
+                            "namespace": "Chicane::Kerb::BodyShape",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4660,7 +4660,24 @@
                 },
                 "children": [
                     {
-                        "title": "CollisionPreset",
+                        "title": "Group",
+                        "filename": "Group",
+                        "path": "Kerb/Collision/Group",
+                        "source": {
+                            "header": "Includes/Chicane/Kerb/Collision/Group.hpp",
+                            "namespace": "Chicane::Kerb::CollisionGroup",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Preset",
                         "filename": "Preset",
                         "path": "Kerb/Collision/Preset",
                         "source": {
@@ -4693,23 +4710,6 @@
                                 "children": []
                             }
                         ]
-                    },
-                    {
-                        "title": "Group",
-                        "filename": "Group",
-                        "path": "Kerb/Collision/Group",
-                        "source": {
-                            "header": "Includes/Chicane/Kerb/Collision/Group.hpp",
-                            "namespace": "Chicane::Kerb::CollisionGroup",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
                     }
                 ]
             },
@@ -4782,7 +4782,7 @@
                 },
                 "children": [
                     {
-                        "title": "MotionType",
+                        "title": "Type",
                         "filename": "Type",
                         "path": "Kerb/Motion/Type",
                         "source": {
@@ -4869,23 +4869,6 @@
                     "description": null
                 },
                 "children": [
-                    {
-                        "title": "BackendStatus",
-                        "filename": "Status",
-                        "path": "Renderer/Backend/Status",
-                        "source": {
-                            "header": "Includes/Chicane/Renderer/Backend/Status.hpp",
-                            "namespace": "Chicane::Renderer::BackendStatus",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
                     {
                         "title": "OpenGL",
                         "filename": "OpenGL",
@@ -5075,6 +5058,23 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "title": "Status",
+                        "filename": "Status",
+                        "path": "Renderer/Backend/Status",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Backend/Status.hpp",
+                            "namespace": "Chicane::Renderer::BackendStatus",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     },
                     {
                         "title": "Vulkan",
@@ -5455,7 +5455,7 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "VulkanGraphicsPipelineAttachmentType",
+                                                "title": "Type",
                                                 "filename": "Type",
                                                 "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
                                                 "source": {
@@ -6103,7 +6103,7 @@
                 },
                 "children": [
                     {
-                        "title": "BlendingFactor",
+                        "title": "Factor",
                         "filename": "Factor",
                         "path": "Renderer/Blending/Factor",
                         "source": {
@@ -6138,7 +6138,7 @@
                 },
                 "children": [
                     {
-                        "title": "CullingFrontFace",
+                        "title": "FrontFace",
                         "filename": "FrontFace",
                         "path": "Renderer/Culling/FrontFace",
                         "source": {
@@ -6155,7 +6155,7 @@
                         "children": []
                     },
                     {
-                        "title": "CullingMode",
+                        "title": "Mode",
                         "filename": "Mode",
                         "path": "Renderer/Culling/Mode",
                         "source": {
@@ -6225,7 +6225,7 @@
                 },
                 "children": [
                     {
-                        "title": "DepthCompare",
+                        "title": "Compare",
                         "filename": "Compare",
                         "path": "Renderer/Depth/Compare",
                         "source": {
@@ -6519,46 +6519,12 @@
                                 "children": []
                             },
                             {
-                                "title": "DrawPolyMode",
+                                "title": "Mode",
                                 "filename": "Mode",
                                 "path": "Renderer/Draw/Poly/Mode",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Mode.hpp",
                                     "namespace": "Chicane::Renderer::DrawPolyMode",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawPolyTopology",
-                                "filename": "Topology",
-                                "path": "Renderer/Draw/Poly/Topology",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Topology.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyTopology",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "DrawPolyType",
-                                "filename": "Type",
-                                "path": "Renderer/Draw/Poly/Type",
-                                "source": {
-                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
-                                    "namespace": "Chicane::Renderer::DrawPolyType",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -6576,6 +6542,40 @@
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Poly/Resource.hpp",
                                     "namespace": "Chicane::Renderer::DrawPolyResource",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Topology",
+                                "filename": "Topology",
+                                "path": "Renderer/Draw/Poly/Topology",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Topology.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyTopology",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Type",
+                                "filename": "Type",
+                                "path": "Renderer/Draw/Poly/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
+                                    "namespace": "Chicane::Renderer::DrawPolyType",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -6796,12 +6796,12 @@
                 },
                 "children": [
                     {
-                        "title": "LightType",
-                        "filename": "Type",
-                        "path": "Renderer/Light/Type",
+                        "title": "Scene",
+                        "filename": "Scene",
+                        "path": "Renderer/Light/Scene",
                         "source": {
-                            "header": "Includes/Chicane/Renderer/Light/Type.hpp",
-                            "namespace": "Chicane::LightType",
+                            "header": "Includes/Chicane/Renderer/Light/Scene.hpp",
+                            "namespace": "Chicane::Renderer::SceneLight",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -6813,12 +6813,12 @@
                         "children": []
                     },
                     {
-                        "title": "Scene",
-                        "filename": "Scene",
-                        "path": "Renderer/Light/Scene",
+                        "title": "Type",
+                        "filename": "Type",
+                        "path": "Renderer/Light/Type",
                         "source": {
-                            "header": "Includes/Chicane/Renderer/Light/Scene.hpp",
-                            "namespace": "Chicane::Renderer::SceneLight",
+                            "header": "Includes/Chicane/Renderer/Light/Type.hpp",
+                            "namespace": "Chicane::LightType",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -6882,7 +6882,7 @@
                 },
                 "children": [
                     {
-                        "title": "ShaderType",
+                        "title": "Type",
                         "filename": "Type",
                         "path": "Renderer/Shader/Type",
                         "source": {
@@ -7627,23 +7627,6 @@
                 },
                 "children": [
                     {
-                        "title": "DeviceType",
-                        "filename": "Type",
-                        "path": "Screech/Device/Type",
-                        "source": {
-                            "header": "Includes/Chicane/Screech/Device/Type.hpp",
-                            "namespace": "Chicane::Screech::DeviceType",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Format",
                         "filename": "Format",
                         "path": "Screech/Device/Format",
@@ -7667,6 +7650,23 @@
                         "source": {
                             "header": "Includes/Chicane/Screech/Device/Id.hpp",
                             "namespace": "Chicane::Screech::DeviceId",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Type",
+                        "filename": "Type",
+                        "path": "Screech/Device/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Screech/Device/Type.hpp",
+                            "namespace": "Chicane::Screech::DeviceType",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -7713,6 +7713,57 @@
                 },
                 "children": [
                     {
+                        "title": "Channel",
+                        "filename": "Channel",
+                        "path": "Screech/Sound/Channel",
+                        "source": {
+                            "header": "Includes/Chicane/Screech/Sound/Channel.hpp",
+                            "namespace": "Chicane::Screech::SoundChannel",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Flags",
+                        "filename": "Flags",
+                        "path": "Screech/Sound/Flags",
+                        "source": {
+                            "header": "Includes/Chicane/Screech/Sound/Flags.hpp",
+                            "namespace": "Chicane::Screech::SoundFlag",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Format",
+                        "filename": "Format",
+                        "path": "Screech/Sound/Format",
+                        "source": {
+                            "header": "Includes/Chicane/Screech/Sound/Format.hpp",
+                            "namespace": "Chicane::Screech::SoundFormat",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Settings",
                         "filename": "Settings",
                         "path": "Screech/Sound/Settings",
@@ -7730,58 +7781,7 @@
                         "children": []
                     },
                     {
-                        "title": "SoundChannel",
-                        "filename": "Channel",
-                        "path": "Screech/Sound/Channel",
-                        "source": {
-                            "header": "Includes/Chicane/Screech/Sound/Channel.hpp",
-                            "namespace": "Chicane::Screech::SoundChannel",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "SoundFlag",
-                        "filename": "Flags",
-                        "path": "Screech/Sound/Flags",
-                        "source": {
-                            "header": "Includes/Chicane/Screech/Sound/Flags.hpp",
-                            "namespace": "Chicane::Screech::SoundFlag",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "SoundFormat",
-                        "filename": "Format",
-                        "path": "Screech/Sound/Format",
-                        "source": {
-                            "header": "Includes/Chicane/Screech/Sound/Format.hpp",
-                            "namespace": "Chicane::Screech::SoundFormat",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "SoundStatus",
+                        "title": "Status",
                         "filename": "Status",
                         "path": "Screech/Sound/Status",
                         "source": {
@@ -7798,7 +7798,7 @@
                         "children": []
                     },
                     {
-                        "title": "SoundVendor",
+                        "title": "Vendor",
                         "filename": "Vendor",
                         "path": "Screech/Sound/Vendor",
                         "source": {

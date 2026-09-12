@@ -1,5 +1,5 @@
 {
-    "title": "KeyboardButtonModifier",
+    "title": "Modifier",
     "filename": "Modifier",
     "path": "Core/Input/Keyboard/Button/Modifier",
     "source": {
@@ -208,9 +208,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "KeyboardButtonModifier",
+                            "suffix": "",
+                            "path": "Core/Input/Keyboard/Button/Modifier",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

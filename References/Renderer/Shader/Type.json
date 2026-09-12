@@ -1,5 +1,5 @@
 {
-    "title": "ShaderType",
+    "title": "Type",
     "filename": "Type",
     "path": "Renderer/Shader/Type",
     "source": {
@@ -43,9 +43,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ShaderType",
+                            "suffix": "",
+                            "path": "Renderer/Shader/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_RENDERER_SHADERTYPE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []
 }

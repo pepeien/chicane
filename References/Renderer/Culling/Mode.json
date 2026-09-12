@@ -1,5 +1,5 @@
 {
-    "title": "CullingMode",
+    "title": "Mode",
     "filename": "Mode",
     "path": "Renderer/Culling/Mode",
     "source": {
@@ -54,9 +54,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CullingMode",
+                            "suffix": "",
+                            "path": "Renderer/Culling/Mode",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_RENDERER_CULLINGMODE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []
 }

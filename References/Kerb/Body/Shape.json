@@ -1,5 +1,5 @@
 {
-    "title": "BodyShape",
+    "title": "Shape",
     "filename": "Shape",
     "path": "Kerb/Body/Shape",
     "source": {
@@ -43,9 +43,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BodyShape",
+                            "suffix": "",
+                            "path": "Kerb/Body/Shape",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_KERB_BODYSHAPE_DESCRIPTION"
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

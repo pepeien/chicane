@@ -1,5 +1,5 @@
 {
-    "title": "DrawPolyTopology",
+    "title": "Topology",
     "filename": "Topology",
     "path": "Renderer/Draw/Poly/Topology",
     "source": {
@@ -131,9 +131,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyTopology",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Topology",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_RENDERER_DRAWPOLYTOPOLOGY_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DESCRIPTION"
     },
     "children": []
 }

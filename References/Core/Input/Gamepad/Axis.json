@@ -1,5 +1,5 @@
 {
-    "title": "GamepadAxis",
+    "title": "Axis",
     "filename": "Axis",
     "path": "Core/Input/Gamepad/Axis",
     "source": {
@@ -87,9 +87,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "GamepadAxis",
+                            "suffix": "",
+                            "path": "Core/Input/Gamepad/Axis",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_INPUT_GAMEPADAXIS_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

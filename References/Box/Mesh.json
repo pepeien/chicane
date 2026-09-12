@@ -511,40 +511,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "GROUP_TAG",
-                "description": "CHICANE_BOX_MESH_GROUP_TAG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "GROUP_ID_ATTRIBUTE_NAME",
-                "description": "CHICANE_BOX_MESH_GROUP_ID_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "GROUP_BONE_ATTRIBUTE_NAME",
-                "description": "CHICANE_BOX_MESH_GROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "DEFAULT_SOURCE",
+                "description": "CHICANE_BOX_MESH_DEFAULT_SOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -500,8 +500,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "SPHERE_SOURCE",
-                "description": "CHICANE_BOX_MODEL_SPHERE_SOURCE_DESCRIPTION"
+                "name": "DEFAULT_REFERENCE",
+                "description": "CHICANE_BOX_MODEL_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -516,8 +516,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "DEFAULT_REFERENCE",
-                "description": "CHICANE_BOX_MODEL_DEFAULT_REFERENCE_DESCRIPTION"
+                "name": "SPHERE_SOURCE",
+                "description": "CHICANE_BOX_MODEL_SPHERE_SOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

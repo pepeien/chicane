@@ -1,5 +1,5 @@
 {
-    "title": "SvgLineCap",
+    "title": "LineCap",
     "filename": "LineCap",
     "path": "Grid/Component/Svg/Paint/LineCap",
     "source": {
@@ -43,9 +43,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SvgLineCap",
+                            "suffix": "",
+                            "path": "Grid/Component/Svg/Paint/LineCap",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_GRID_SVGLINECAP_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

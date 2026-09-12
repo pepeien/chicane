@@ -1,5 +1,5 @@
 {
-    "title": "SoundFlag",
+    "title": "Flags",
     "filename": "Flags",
     "path": "Screech/Sound/Flags",
     "source": {
@@ -109,9 +109,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SoundFlag",
+                            "suffix": "",
+                            "path": "Screech/Sound/Flags",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCREECH_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_SCREECH_SOUNDFLAG_DESCRIPTION"
+        "description": "CHICANE_SCREECH_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "StyleFlexWrap",
+    "title": "Wrap",
     "filename": "Wrap",
     "path": "Grid/Style/Flex/Wrap",
     "source": {
@@ -32,9 +32,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleFlexWrap",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex/Wrap",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_GRID_STYLEFLEXWRAP_DESCRIPTION"
+        "description": "CHICANE_GRID_DESCRIPTION"
     },
     "children": []
 }

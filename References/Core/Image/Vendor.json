@@ -1,5 +1,5 @@
 {
-    "title": "ImageVendor",
+    "title": "Vendor",
     "filename": "Vendor",
     "path": "Core/Image/Vendor",
     "source": {
@@ -54,9 +54,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ImageVendor",
+                            "suffix": "",
+                            "path": "Core/Image/Vendor",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_IMAGEVENDOR_DESCRIPTION"
+        "description": "CHICANE_DESCRIPTION"
     },
     "children": []
 }

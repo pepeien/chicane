@@ -1,5 +1,5 @@
 {
-    "title": "SoundFormat",
+    "title": "Format",
     "filename": "Format",
     "path": "Screech/Sound/Format",
     "source": {
@@ -87,9 +87,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SoundFormat",
+                            "suffix": "",
+                            "path": "Screech/Sound/Format",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCREECH_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_SCREECH_SOUNDFORMAT_DESCRIPTION"
+        "description": "CHICANE_SCREECH_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "SoundChannel",
+    "title": "Channel",
     "filename": "Channel",
     "path": "Screech/Sound/Channel",
     "source": {
@@ -615,9 +615,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SoundChannel",
+                            "suffix": "",
+                            "path": "Screech/Sound/Channel",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCREECH_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_SCREECH_SOUNDCHANNEL_DESCRIPTION"
+        "description": "CHICANE_SCREECH_DESCRIPTION"
     },
     "children": []
 }

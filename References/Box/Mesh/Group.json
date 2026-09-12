@@ -666,6 +666,54 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "TAG",
+                "description": "CHICANE_BOX_MESHGROUP_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ID_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MESHGROUP_ID_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BONE_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MESHGROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TRANSLATION_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_MESHGROUP_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -700,22 +748,6 @@
                 },
                 "name": "SCALE_ATTRIBUTE_NAME",
                 "description": "CHICANE_BOX_MESHGROUP_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "BONE_ATTRIBUTE_NAME",
-                "description": "CHICANE_BOX_MESHGROUP_BONE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",

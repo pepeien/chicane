@@ -1,5 +1,5 @@
 {
-    "title": "ListPushStrategy",
+    "title": "Strategy",
     "filename": "Strategy",
     "path": "Core/List/Push/Strategy",
     "source": {
@@ -54,9 +54,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ListPushStrategy",
+                            "suffix": "",
+                            "path": "Core/List/Push/Strategy",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_LISTPUSHSTRATEGY_DESCRIPTION"
+        "description": "CHICANE_DESCRIPTION"
     },
     "children": []
 }

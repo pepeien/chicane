@@ -1,5 +1,5 @@
 {
-    "title": "ItemType",
+    "title": "Type",
     "filename": "Type",
     "path": "Core/FileSystem/Item/Type",
     "source": {
@@ -43,9 +43,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ItemType",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_FILESYSTEM_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_FILESYSTEM_ITEMTYPE_DESCRIPTION"
+        "description": "CHICANE_FILESYSTEM_DESCRIPTION"
     },
     "children": []
 }

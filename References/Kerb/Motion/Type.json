@@ -1,5 +1,5 @@
 {
-    "title": "MotionType",
+    "title": "Type",
     "filename": "Type",
     "path": "Kerb/Motion/Type",
     "source": {
@@ -43,9 +43,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "MotionType",
+                            "suffix": "",
+                            "path": "Kerb/Motion/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_KERB_MOTIONTYPE_DESCRIPTION"
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

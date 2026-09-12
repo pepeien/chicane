@@ -1,5 +1,5 @@
 {
-    "title": "KeyboardButton",
+    "title": "Button",
     "filename": "Button",
     "path": "Core/Input/Keyboard/Button",
     "source": {
@@ -2716,9 +2716,38 @@
         ],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "KeyboardButton",
+                            "suffix": "",
+                            "path": "Core/Input/Keyboard/Button",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+            }
+        ],
         "members": [],
-        "description": "CHICANE_INPUT_KEYBOARDBUTTON_DESCRIPTION"
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }
