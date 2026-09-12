@@ -25,6 +25,7 @@ namespace Chicane
             static constexpr inline const char* ROTATION_ATTRIBUTE_NAME    = "rotation";
             static constexpr inline const char* SCALE_ATTRIBUTE_NAME       = "scale";
             static constexpr inline const char* BONE_ATTRIBUTE_NAME        = "bone";
+            static constexpr inline const char* EMISSIVE_STRENGTH_ATTRIBUTE_NAME = "emissiveStrength";
 
         public:
             bool isValid() const;
@@ -54,12 +55,16 @@ namespace Chicane
             void setTransform(const pugi::xml_node& inNode);
             void saveTransform(pugi::xml_node& outNode) const;
 
+            float getEmissiveStrength() const;
+            void setEmissiveStrength(float inValue);
+
         private:
-            String         m_id        = "";
-            String         m_bone      = "";
-            AssetReference m_model     = {};
-            TextureMaps    m_textures  = {};
-            Transform      m_transform = {};
+            String         m_id               = "";
+            String         m_bone             = "";
+            AssetReference m_model            = {};
+            TextureMaps    m_textures         = {};
+            Transform      m_transform        = {};
+            float          m_emissiveStrength = 1.0f;
         };
     }
 }

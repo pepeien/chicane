@@ -1,14 +1,17 @@
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 
 #include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
-#include <iostream>
-#include <vector>
-
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
@@ -23,7 +26,10 @@ namespace Chicane
             : Backend(),
               frames({}),
               m_currentFrameIndex(0U),
-              m_texturesBuffer(0),
+              m_textures({}),
+              m_classes({}),
+              m_textureTable(0),
+              m_maxArrayLayers(2048),
               m_targetFramebuffer(0),
               m_targetColor(0),
               m_targetDepth(0),
@@ -34,7 +40,12 @@ namespace Chicane
               m_gpuQueries({}),
               m_gpuQueryPending({}),
               m_gpuQueryWrite(0)
-        {}
+        {
+            for (std::uint32_t index = 0; index < TEXTURE_CLASS_COUNT; index++)
+            {
+                m_classes[index].size = TEXTURE_CLASS_SIZES[index];
+            }
+        }
 
         OpenGLBackend::~OpenGLBackend()
         {
@@ -85,10 +96,16 @@ namespace Chicane
         {
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-            GLubyte zero[4] = {0, 0, 0, 0};
-            glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, zero);
+            Draw::Id maxId = Draw::InvalidId;
+            for (const DrawTexture& texture : inResources.getDraws())
+            {
+                maxId = std::max(maxId, texture.id);
+            }
 
-            std::vector<Image::Pixel> staging(TEXTURE_WIDTH * TEXTURE_HEIGHT * 4);
+            if (maxId > Draw::InvalidId && m_textures.size() < static_cast<std::size_t>(maxId) + 1)
+            {
+                m_textures.resize(static_cast<std::size_t>(maxId) + 1);
+            }
 
             for (const DrawTexture& texture : inResources.getDraws())
             {
@@ -99,38 +116,10 @@ namespace Chicane
                     continue;
                 }
 
-                if (const Image::Instance& image = texture.image)
-                {
-                    const void* pixels = image->getPixels();
-
-                    if (image->getWidth() != static_cast<int>(TEXTURE_WIDTH) ||
-                        image->getHeight() != static_cast<int>(TEXTURE_HEIGHT))
-                    {
-                        image->blit(staging.data(), static_cast<int>(TEXTURE_WIDTH), static_cast<int>(TEXTURE_HEIGHT));
-                        pixels = staging.data();
-                    }
-
-                    if (!pixels)
-                    {
-                        continue;
-                    }
-
-                    glTextureSubImage3D(
-                        m_texturesBuffer,
-                        0,
-                        0,
-                        0,
-                        texture.id,
-                        TEXTURE_WIDTH,
-                        TEXTURE_HEIGHT,
-                        1,
-                        GL_RGBA,
-                        GL_UNSIGNED_BYTE,
-                        pixels
-                    );
-                }
+                uploadTexture(texture);
             }
 
+            bindTextureTable();
             Backend::onLoad(inResources);
         }
 
@@ -151,7 +140,7 @@ namespace Chicane
 
             glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-            glBindTextureUnit(0, m_texturesBuffer);
+            bindTextureTable();
         }
 
         void OpenGLBackend::onRender(const Frame& inFrame)
@@ -165,7 +154,7 @@ namespace Chicane
             );
 
             presentTarget(!isScreenComposited(inFrame));
-            glBindTextureUnit(0, m_texturesBuffer);
+            bindTextureTable();
 
             renderLayers(
                 inFrame,
@@ -492,28 +481,373 @@ namespace Chicane
 
         void OpenGLBackend::buildTextureData()
         {
-            GLint hwMaxLayers = 0;
-            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &hwMaxLayers);
+            static_assert(sizeof(TextureTableEntry) == 8, "GLSL uvec2 table entries must be 8 bytes");
 
-            const std::size_t maxAccepted = std::min(
-                static_cast<std::size_t>(hwMaxLayers / 4),
-                static_cast<std::size_t>(getResourceBudgetCount(Resource::Texture))
+            GLint maxLayers = 2048;
+            glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
+            m_maxArrayLayers = static_cast<std::uint32_t>(std::max(8, maxLayers));
+
+            createClassArray(m_classes[0], 8);
+            fillWhiteLayer(m_classes[0], 0);
+            m_classes[0].used = 1;
+
+            const std::uint32_t slotCount = getResourceBudgetCount(Resource::Texture);
+            glCreateBuffers(1, &m_textureTable);
+            glNamedBufferStorage(
+                m_textureTable,
+                static_cast<GLsizeiptr>(sizeof(TextureTableEntry) * slotCount),
+                nullptr,
+                GL_DYNAMIC_STORAGE_BIT
             );
 
-            glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, TEXTURE_WIDTH, TEXTURE_HEIGHT, maxAccepted);
+            std::vector<TextureTableEntry> entries(slotCount);
+            glNamedBufferSubData(
+                m_textureTable,
+                0,
+                static_cast<GLsizeiptr>(entries.size() * sizeof(TextureTableEntry)),
+                entries.data()
+            );
 
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_REPEAT);
+            m_textures.clear();
         }
 
         void OpenGLBackend::destroyTextureData()
         {
-            glDeleteTextures(1, &m_texturesBuffer);
+            m_textures.clear();
+
+            for (SizeClass& sizeClass : m_classes)
+            {
+                if (sizeClass.texture != 0)
+                {
+                    glDeleteTextures(1, &sizeClass.texture);
+                    sizeClass.texture = 0;
+                }
+
+                sizeClass.allocated = 0;
+                sizeClass.used      = 0;
+                sizeClass.freeLayers.clear();
+            }
+
+            if (m_textureTable != 0)
+            {
+                glDeleteBuffers(1, &m_textureTable);
+                m_textureTable = 0;
+            }
+        }
+
+        void OpenGLBackend::bindTextureTable() const
+        {
+            if (m_textureTable == 0)
+            {
+                return;
+            }
+
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, TEXTURE_TABLE_BINDING, m_textureTable);
+
+            const std::uint32_t fallback = m_classes[0].texture;
+            for (std::uint32_t index = 0; index < TEXTURE_CLASS_COUNT; index++)
+            {
+                const std::uint32_t texture = m_classes[index].texture != 0 ? m_classes[index].texture : fallback;
+                if (texture == 0)
+                {
+                    continue;
+                }
+
+                glBindTextureUnit(TEXTURE_CLASS_BINDING + index, texture);
+            }
+        }
+
+        void OpenGLBackend::releaseTextureSlot(TextureSlot& inSlot)
+        {
+            if (inSlot.classIndex < TEXTURE_CLASS_COUNT)
+            {
+                SizeClass& sizeClass = m_classes[inSlot.classIndex];
+                if (inSlot.layer != 0 || inSlot.classIndex != 0)
+                {
+                    sizeClass.freeLayers.push_back(inSlot.layer);
+                }
+            }
+
+            inSlot.classIndex     = ~0u;
+            inSlot.layer          = 0;
+            inSlot.sourceWidth    = 0;
+            inSlot.sourceHeight   = 0;
+            inSlot.residentMinMip = ~0u;
+        }
+
+        void OpenGLBackend::writeTextureSlot(Draw::Id inId, std::uint32_t inClass, std::uint32_t inLayer)
+        {
+            if (inId <= Draw::InvalidId || m_textureTable == 0)
+            {
+                return;
+            }
+
+            const std::uint32_t slotCount = getResourceBudgetCount(Resource::Texture);
+            if (static_cast<std::uint32_t>(inId) >= slotCount)
+            {
+                return;
+            }
+
+            const TextureTableEntry entry{inClass, inLayer};
+            glNamedBufferSubData(
+                m_textureTable,
+                static_cast<GLintptr>(static_cast<std::size_t>(inId) * sizeof(TextureTableEntry)),
+                sizeof(TextureTableEntry),
+                &entry
+            );
+        }
+
+        std::uint32_t OpenGLBackend::classFromResident(std::uint32_t inWidth, std::uint32_t inHeight) const
+        {
+            const std::uint32_t dimension = std::max(inWidth, inHeight);
+            for (std::uint32_t index = 0; index < TEXTURE_CLASS_COUNT; index++)
+            {
+                if (dimension <= TEXTURE_CLASS_SIZES[index])
+                {
+                    return index;
+                }
+            }
+
+            return TEXTURE_CLASS_COUNT - 1;
+        }
+
+        void OpenGLBackend::createClassArray(SizeClass& inClass, std::uint32_t inLayers)
+        {
+            const std::uint32_t layers    = std::max(1u, std::min(inLayers, m_maxArrayLayers));
+            const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
+
+            std::uint32_t texture = 0;
+            glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &texture);
+            glTextureStorage3D(
+                texture,
+                static_cast<GLsizei>(mipLevels),
+                GL_RGBA8,
+                static_cast<GLsizei>(inClass.size),
+                static_cast<GLsizei>(inClass.size),
+                static_cast<GLsizei>(layers)
+            );
+            glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTextureParameteri(texture, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(texture, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+            GLfloat anisotropy = 1.0f;
+            glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &anisotropy);
+            if (anisotropy > 1.0f)
+            {
+                glTextureParameterf(texture, GL_TEXTURE_MAX_ANISOTROPY, anisotropy);
+            }
+
+            inClass.texture   = texture;
+            inClass.allocated = layers;
+        }
+
+        void OpenGLBackend::fillWhiteLayer(const SizeClass& inClass, std::uint32_t inLayer) const
+        {
+            if (inClass.texture == 0)
+            {
+                return;
+            }
+
+            const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
+            for (std::uint32_t level = 0; level < mipLevels; level++)
+            {
+                const std::uint32_t width = Image::mipDimension(inClass.size, level);
+                std::vector<unsigned char> pixels(static_cast<std::size_t>(width) * width * 4, 255);
+                glTextureSubImage3D(
+                    inClass.texture,
+                    static_cast<GLint>(level),
+                    0,
+                    0,
+                    static_cast<GLint>(inLayer),
+                    static_cast<GLsizei>(width),
+                    static_cast<GLsizei>(width),
+                    1,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    pixels.data()
+                );
+            }
+        }
+
+        void OpenGLBackend::growClass(std::uint32_t inClass, std::uint32_t inLayers)
+        {
+            SizeClass& sizeClass = m_classes[inClass];
+            const std::uint32_t layers = std::min(std::max(inLayers, sizeClass.allocated + 1), m_maxArrayLayers);
+            if (layers <= sizeClass.allocated && sizeClass.texture != 0)
+            {
+                return;
+            }
+
+            const std::uint32_t previous = sizeClass.texture;
+            const std::uint32_t oldCount = sizeClass.allocated;
+            const std::uint32_t mipLevels = Image::mipCount(sizeClass.size, sizeClass.size);
+            createClassArray(sizeClass, layers);
+
+            if (previous != 0 && oldCount > 0)
+            {
+                for (std::uint32_t level = 0; level < mipLevels; level++)
+                {
+                    const std::uint32_t width = Image::mipDimension(sizeClass.size, level);
+                    glCopyImageSubData(
+                        previous,
+                        GL_TEXTURE_2D_ARRAY,
+                        static_cast<GLint>(level),
+                        0,
+                        0,
+                        0,
+                        sizeClass.texture,
+                        GL_TEXTURE_2D_ARRAY,
+                        static_cast<GLint>(level),
+                        0,
+                        0,
+                        0,
+                        static_cast<GLsizei>(width),
+                        static_cast<GLsizei>(width),
+                        static_cast<GLsizei>(oldCount)
+                    );
+                }
+
+                glDeleteTextures(1, &previous);
+            }
+        }
+
+        std::uint32_t OpenGLBackend::allocateLayer(std::uint32_t inClass)
+        {
+            SizeClass& sizeClass = m_classes[inClass];
+            if (!sizeClass.freeLayers.empty())
+            {
+                const std::uint32_t layer = sizeClass.freeLayers.back();
+                sizeClass.freeLayers.pop_back();
+
+                return layer;
+            }
+
+            if (sizeClass.texture == 0)
+            {
+                createClassArray(sizeClass, 4);
+                sizeClass.used = 0;
+            }
+
+            if (sizeClass.used >= sizeClass.allocated)
+            {
+                const std::uint32_t next = std::min(
+                    std::max(sizeClass.allocated * 2, sizeClass.allocated + 4),
+                    m_maxArrayLayers
+                );
+                if (next <= sizeClass.allocated)
+                {
+                    return ~0u;
+                }
+
+                growClass(inClass, next);
+            }
+
+            if (sizeClass.texture == 0 || sizeClass.used >= sizeClass.allocated)
+            {
+                return ~0u;
+            }
+
+            const std::uint32_t layer = sizeClass.used;
+            sizeClass.used++;
+
+            return layer;
+        }
+
+        void OpenGLBackend::uploadTexture(const DrawTexture& inTexture)
+        {
+            if (inTexture.id <= Draw::InvalidId)
+            {
+                return;
+            }
+
+            if (m_textures.size() <= static_cast<std::size_t>(inTexture.id))
+            {
+                m_textures.resize(static_cast<std::size_t>(inTexture.id) + 1);
+            }
+
+            const std::uint32_t residentWidth =
+                std::max(1u, Image::mipDimension(inTexture.width, inTexture.residentMinMip));
+            const std::uint32_t residentHeight =
+                std::max(1u, Image::mipDimension(inTexture.height, inTexture.residentMinMip));
+            const std::uint32_t classIndex = classFromResident(residentWidth, residentHeight);
+
+            TextureSlot& slot = m_textures[static_cast<std::size_t>(inTexture.id)];
+            if (slot.classIndex == classIndex && slot.sourceWidth == inTexture.width &&
+                slot.sourceHeight == inTexture.height && slot.residentMinMip == inTexture.residentMinMip)
+            {
+                return;
+            }
+
+            releaseTextureSlot(slot);
+
+            const std::uint32_t layer     = allocateLayer(classIndex);
+            SizeClass&          sizeClass = m_classes[classIndex];
+            if (layer == ~0u || sizeClass.texture == 0)
+            {
+                writeTextureSlot(inTexture.id, 0, 0);
+
+                return;
+            }
+
+            const std::uint32_t mipLevels = Image::mipCount(sizeClass.size, sizeClass.size);
+
+            Image::Instance lastImage;
+            for (std::uint32_t gpuLevel = 0; gpuLevel < mipLevels; gpuLevel++)
+            {
+                Image::Instance image;
+                if (inTexture.mips)
+                {
+                    image = inTexture.mips->decode(inTexture.residentMinMip + gpuLevel);
+                }
+                else if (gpuLevel == 0)
+                {
+                    image = inTexture.image;
+                }
+
+                if (!image || !image->getPixels())
+                {
+                    image = lastImage;
+                }
+
+                const std::uint32_t levelWidth = Image::mipDimension(sizeClass.size, gpuLevel);
+                std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelWidth * 4, 255);
+                if (image && image->getPixels())
+                {
+                    if (image->getWidth() == static_cast<int>(levelWidth) &&
+                        image->getHeight() == static_cast<int>(levelWidth))
+                    {
+                        std::memcpy(staging.data(), image->getPixels(), staging.size());
+                    }
+                    else
+                    {
+                        image->blit(staging.data(), static_cast<int>(levelWidth), static_cast<int>(levelWidth));
+                    }
+                }
+
+                glTextureSubImage3D(
+                    sizeClass.texture,
+                    static_cast<GLint>(gpuLevel),
+                    0,
+                    0,
+                    static_cast<GLint>(layer),
+                    static_cast<GLsizei>(levelWidth),
+                    static_cast<GLsizei>(levelWidth),
+                    1,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    staging.data()
+                );
+
+                lastImage = image;
+            }
+
+            slot.classIndex     = classIndex;
+            slot.layer          = layer;
+            slot.sourceWidth    = inTexture.width;
+            slot.sourceHeight   = inTexture.height;
+            slot.residentMinMip = inTexture.residentMinMip;
+            writeTextureSlot(inTexture.id, classIndex, layer);
         }
 
         void OpenGLBackend::buildTarget()
@@ -637,37 +971,7 @@ namespace Chicane
 
         void OpenGLBackend::captureScreenTarget()
         {
-            if (m_screenTextureId <= Draw::InvalidId || m_targetFramebuffer == 0 || m_texturesBuffer == 0)
-            {
-                return;
-            }
-
-            glNamedFramebufferTextureLayer(
-                m_screenBlitFramebuffer,
-                GL_COLOR_ATTACHMENT0,
-                m_texturesBuffer,
-                0,
-                m_screenTextureId
-            );
-
-            glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
-            glReadBuffer(GL_COLOR_ATTACHMENT0);
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_screenBlitFramebuffer);
-            glDrawBuffer(GL_COLOR_ATTACHMENT0);
-            glBlitFramebuffer(
-                0,
-                0,
-                static_cast<GLint>(m_targetWidth),
-                static_cast<GLint>(m_targetHeight),
-                0,
-                0,
-                static_cast<GLint>(TEXTURE_WIDTH),
-                static_cast<GLint>(TEXTURE_HEIGHT),
-                GL_COLOR_BUFFER_BIT,
-                GL_LINEAR
-            );
-
-            glBindFramebuffer(GL_FRAMEBUFFER, m_targetFramebuffer);
+            return;
         }
 
         void OpenGLBackend::buildFrames()

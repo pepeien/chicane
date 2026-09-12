@@ -77,7 +77,8 @@ namespace Chicane
                 const vk::Image&         inDestinationImage,
                 std::uint32_t            inWidth,
                 std::uint32_t            inHeight,
-                std::uint32_t            inCount
+                std::uint32_t            inCount,
+                std::uint32_t            inMipLevel = 0
             );
         }
     }

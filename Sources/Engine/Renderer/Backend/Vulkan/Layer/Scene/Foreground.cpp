@@ -83,6 +83,15 @@ namespace Chicane
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
             commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
+            std::int32_t transparentPass = -1;
+            commandBuffer.pushConstants(
+                m_graphicsPipeline.layout,
+                vk::ShaderStageFlagBits::eFragment,
+                0,
+                sizeof(std::int32_t),
+                &transparentPass
+            );
+
             for (const DrawPoly& draw : inFrame.getForegroundDraws())
             {
                 commandBuffer.drawIndexed(
@@ -316,6 +325,11 @@ namespace Chicane
             rasterization.cullMode                = vk::CullModeFlagBits::eBack;
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
 
+            vk::PushConstantRange passPush;
+            passPush.stageFlags = vk::ShaderStageFlagBits::eFragment;
+            passPush.offset     = 0;
+            passPush.size       = sizeof(std::int32_t);
+
             VulkanGraphicsPipelineBuilder()
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
@@ -336,6 +350,7 @@ namespace Chicane
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .addDescriptorSetLayout(backend->textureDescriptor.setLayout)
+                .addPushConstant(passPush)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

@@ -70,8 +70,8 @@ namespace Chicane
                 createInfo.addressModeU            = inCreateInfo.addressMode;
                 createInfo.addressModeV            = inCreateInfo.addressMode;
                 createInfo.addressModeW            = inCreateInfo.addressMode;
-                createInfo.anisotropyEnable        = false;
-                createInfo.maxAnisotropy           = 1.0f;
+                createInfo.anisotropyEnable        = inCreateInfo.bAnisotropy && inCreateInfo.maxAnisotropy > 1.0f;
+                createInfo.maxAnisotropy           = std::max(1.0f, inCreateInfo.maxAnisotropy);
                 createInfo.borderColor             = inCreateInfo.borderColor;
                 createInfo.unnormalizedCoordinates = false;
                 createInfo.compareEnable           = false;
@@ -322,14 +322,15 @@ namespace Chicane
                 const vk::Image&         inDestinationImage,
                 std::uint32_t            inWidth,
                 std::uint32_t            inHeight,
-                std::uint32_t            inCount
+                std::uint32_t            inCount,
+                std::uint32_t            inMipLevel
             )
             {
                 VulkanCommandBufferWorker::startJob(inCommandBuffer);
 
                 vk::ImageSubresourceLayers imageSubresourceLayers;
                 imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
-                imageSubresourceLayers.mipLevel       = 0;
+                imageSubresourceLayers.mipLevel       = inMipLevel;
                 imageSubresourceLayers.baseArrayLayer = 0;
                 imageSubresourceLayers.layerCount     = inCount;
 

@@ -133,6 +133,11 @@ namespace Chicane
             glEnableVertexArrayAttrib(m_modelVertexArray, 3);
             glVertexArrayAttribFormat(m_modelVertexArray, 3, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
             glVertexArrayAttribBinding(m_modelVertexArray, 3, 0);
+
+            // Tangent (xyz) + handedness (w)
+            glEnableVertexArrayAttrib(m_modelVertexArray, 4);
+            glVertexArrayAttribFormat(m_modelVertexArray, 4, 4, GL_FLOAT, GL_FALSE, offsetof(Vertex, tangent));
+            glVertexArrayAttribBinding(m_modelVertexArray, 4, 0);
         }
 
         void OpenGLLScene::buildModelIndexBuffer()

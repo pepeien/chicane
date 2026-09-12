@@ -72,6 +72,11 @@ namespace Chicane
             {
                 groupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
             }
+            if (inGroup.getEmissiveStrength() != 1.0f)
+            {
+                groupNode.append_attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME)
+                    .set_value(inGroup.getEmissiveStrength());
+            }
 
             // Model
             pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
@@ -131,6 +136,25 @@ namespace Chicane
             else
             {
                 boneAttribute.set_value(inGroup.getBone().toStandard());
+            }
+
+            pugi::xml_attribute strengthAttribute =
+                foundGroupNode.attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME);
+            if (inGroup.getEmissiveStrength() == 1.0f)
+            {
+                if (!strengthAttribute.empty())
+                {
+                    foundGroupNode.remove_attribute(strengthAttribute);
+                }
+            }
+            else if (strengthAttribute.empty())
+            {
+                foundGroupNode.append_attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME)
+                    .set_value(inGroup.getEmissiveStrength());
+            }
+            else
+            {
+                strengthAttribute.set_value(inGroup.getEmissiveStrength());
             }
 
             // Model
@@ -307,6 +331,9 @@ namespace Chicane
                 MeshGroup group;
                 group.setId(Xml::getAttribute(GROUP_ID_ATTRIBUTE_NAME, groupNode).as_string());
                 group.setBone(Xml::getAttribute(GROUP_BONE_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setEmissiveStrength(
+                    Xml::getAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, groupNode).as_float(1.0f)
+                );
                 group.setTransform(groupNode);
 
                 for (const auto& assetNode : groupNode.children())

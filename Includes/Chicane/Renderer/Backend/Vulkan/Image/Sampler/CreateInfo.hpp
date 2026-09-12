@@ -13,7 +13,9 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanImageSamplerCreateInfo
         {
         public:
-            std::uint32_t          mipLevels = 1;
+            std::uint32_t          mipLevels      = 1;
+            bool                   bAnisotropy    = false;
+            float                  maxAnisotropy  = 1.0f;
 
             vk::SamplerAddressMode addressMode;
             vk::BorderColor        borderColor;

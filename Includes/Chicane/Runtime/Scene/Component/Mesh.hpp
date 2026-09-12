@@ -88,6 +88,7 @@ namespace Chicane
         void generateBounds();
         void bindSkeleton();
         void evaluatePose();
+        String resolveAnimationId(const String& inId) const;
         std::int32_t findBoundBone(const Box::MeshGroup& inGroup) const;
 
         void setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue);

@@ -3,6 +3,7 @@
 #include <atomic>
 #include <thread>
 
+#include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Window.hpp"
 
 #include "Chicane/Grid/Component/View.hpp"
@@ -127,6 +128,10 @@ namespace Chicane
         bool hasWindow() const;
         Window* getWindow() const;
 
+        // Viewport
+        Vec<2, std::uint32_t> getScreenViewport() const;
+        Bounds2D getScreenViewportRect() const;
+
         // Renderer
         bool hasRenderer() const;
         Renderer::Instance* getRenderer() const;
@@ -168,8 +173,9 @@ namespace Chicane
         void initUI();
         void shutdownUI();
         void tickUI();
+
         void snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView);
-        Vec<2, std::uint32_t> getScreenViewport() const;
+
         void buildUICommands(std::shared_ptr<Grid::View> inView);
         void renderUI();
 
@@ -196,6 +202,8 @@ namespace Chicane
         std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
         std::atomic<std::size_t>                 m_viewWriteIndex;
         std::atomic<std::size_t>                 m_viewReadIndex;
+        std::atomic<std::uint32_t>               m_screenViewportX;
+        std::atomic<std::uint32_t>               m_screenViewportY;
         std::atomic<std::uint32_t>               m_screenViewportWidth;
         std::atomic<std::uint32_t>               m_screenViewportHeight;
         ViewObservable                           m_viewObservable;

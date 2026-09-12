@@ -1,9 +1,49 @@
 #include "Chicane/Renderer/Draw/Texture/Resource.hpp"
 
+#include <algorithm>
+
 namespace Chicane
 {
     namespace Renderer
     {
+        static void populateDrawTexture(DrawTexture& outDraw, const DrawTextureData& inData)
+        {
+            outDraw.reference   = inData.reference;
+            outDraw.bIsVolatile = inData.bIsVolatile;
+            outDraw.image       = inData.image;
+            outDraw.mips        = inData.mips;
+            outDraw.bStreamable = inData.bStreamable;
+
+            if (!outDraw.mips && inData.image)
+            {
+                outDraw.mips =
+                    std::make_shared<Image::MipChain>(Image::makeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
+            }
+
+            if (outDraw.mips && !outDraw.mips->isEmpty())
+            {
+                outDraw.width  = outDraw.mips->getWidth();
+                outDraw.height = outDraw.mips->getHeight();
+            }
+            else if (inData.image)
+            {
+                outDraw.width  = static_cast<std::uint32_t>(std::max(0, inData.image->getWidth()));
+                outDraw.height = static_cast<std::uint32_t>(std::max(0, inData.image->getHeight()));
+            }
+
+            outDraw.residentMinMip = outDraw.getStreamTailMinMip();
+            outDraw.desiredMinMip  = outDraw.bStreamable ? outDraw.residentMinMip : 0;
+
+            if (outDraw.mips)
+            {
+                outDraw.mips->ensureDecoded(outDraw.residentMinMip);
+                if (Image::Instance image = outDraw.mips->decode(outDraw.residentMinMip))
+                {
+                    outDraw.image = image;
+                }
+            }
+        }
+
         bool DrawTextureResource::isEmpty() const
         {
             return m_draws.empty();
@@ -61,19 +101,39 @@ namespace Chicane
             return DrawTexture::empty();
         }
 
+        DrawTexture* DrawTextureResource::getDrawMutable(Draw::Id inId)
+        {
+            for (DrawTexture& draw : m_draws)
+            {
+                if (draw.id != inId)
+                {
+                    continue;
+                }
+
+                return &draw;
+            }
+
+            return nullptr;
+        }
+
         Draw::Id DrawTextureResource::add(const DrawTextureData& inData)
         {
-            Draw::Id id = findId(inData.reference);
-
-            if (id > Draw::InvalidId)
+            for (DrawTexture& draw : m_draws)
             {
-                return id;
+                if (!draw.reference.equals(inData.reference))
+                {
+                    continue;
+                }
+
+                populateDrawTexture(draw, inData);
+                markAsDirty();
+
+                return draw.id;
             }
 
             DrawTexture draw;
-            draw.id        = m_draws.size();
-            draw.reference = inData.reference;
-            draw.image     = inData.image;
+            draw.id = static_cast<Draw::Id>(m_draws.size());
+            populateDrawTexture(draw, inData);
 
             m_draws.push_back(draw);
 

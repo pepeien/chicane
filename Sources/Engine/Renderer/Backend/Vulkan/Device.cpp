@@ -80,6 +80,7 @@ namespace Chicane
                 vk::PhysicalDeviceFeatures features             = vk::PhysicalDeviceFeatures();
                 features.depthClamp                             = true;
                 features.fillModeNonSolid                       = true;
+                features.samplerAnisotropy                      = inPhysicalDevice.getFeatures().samplerAnisotropy;
                 features.shaderSampledImageArrayDynamicIndexing = true;
                 features.wideLines                              = inPhysicalDevice.getFeatures().wideLines;
 

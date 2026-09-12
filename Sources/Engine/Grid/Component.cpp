@@ -928,11 +928,15 @@ namespace Chicane
 
         bool Component::isDisplayable() const
         {
-            const bool bIsParentDisplyable = isRoot() ? true : m_parent->isDisplayable();
-            const bool bIsDisplayable =
-                !m_style.isDisplay(StyleDisplay::None) && !m_style.isDisplay(StyleDisplay::Hidden);
+            if (!isRoot())
+            {
+                if (!m_parent || !m_parent->isDisplayable())
+                {
+                    return false;
+                }
+            }
 
-            return bIsParentDisplyable && bIsDisplayable;
+            return !m_style.isDisplay(StyleDisplay::None) && !m_style.isDisplay(StyleDisplay::Hidden);
         }
 
         bool Component::isVisible() const
@@ -2226,7 +2230,7 @@ namespace Chicane
 
             for (Component* child : getChildrenFlat())
             {
-                if (!child->isDisplayable())
+                if (!child || !child->isDisplayable())
                 {
                     continue;
                 }

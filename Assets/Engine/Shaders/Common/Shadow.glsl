@@ -68,27 +68,60 @@ float ShadowCalculation(
     return shadow / 16.0;
 }
 
-vec3 applyTangentNormal(vec3 geometricNormal, vec3 tangentNormal, vec3 worldPosition, vec2 uv) {
-    vec3 q1  = dFdx(worldPosition);
-    vec3 q2  = dFdy(worldPosition);
-    vec2 st1 = dFdx(uv);
-    vec2 st2 = dFdy(uv);
+mat3 cotangentFrame(vec3 geometricNormal, vec3 worldPosition, vec2 uv) {
+    vec3 dp1  = dFdx(worldPosition);
+    vec3 dp2  = dFdy(worldPosition);
+    vec2 duv1 = dFdx(uv);
+    vec2 duv2 = dFdy(uv);
 
 #if defined(VULKAN)
-    q2  = -q2;
-    st2 = -st2;
+    dp2  = -dp2;
+    duv2 = -duv2;
 #endif
 
     vec3 n = normalize(geometricNormal);
-    vec3 t = q1 * st2.t - q2 * st1.t;
-    if (dot(t, t) < 1e-8) {
-        return n;
+    vec3 dp2perp = cross(dp2, n);
+    vec3 dp1perp = cross(n, dp1);
+    vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+    vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+
+    float maxLen = max(dot(T, T), dot(B, B));
+    if (maxLen < 1e-12) {
+        vec3 axis = abs(n.z) < 0.9 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
+        T = normalize(cross(axis, n));
+        B = cross(n, T);
+        return mat3(T, B, n);
     }
 
-    t = normalize(t - n * dot(n, t));
-    vec3 b = normalize(cross(n, t));
+    float invmax = inversesqrt(maxLen);
+    T = normalize(T * invmax);
+    B = normalize(B * invmax);
+    if (dot(cross(T, B), n) < 0.0) {
+        B = -B;
+    }
 
-    return normalize(mat3(t, b, n) * tangentNormal);
+    return mat3(T, B, n);
+}
+
+mat3 meshTangentFrame(vec3 geometricNormal, vec4 vertexTangent, vec3 worldPosition, vec2 uv) {
+    vec3 n = normalize(geometricNormal);
+    if (abs(vertexTangent.w) > 0.3 && dot(vertexTangent.xyz, vertexTangent.xyz) > 1e-8) {
+        vec3 T = normalize(vertexTangent.xyz);
+        T = normalize(T - n * dot(n, T));
+        vec3 B = cross(n, T) * sign(vertexTangent.w);
+        return mat3(T, B, n);
+    }
+
+    return cotangentFrame(n, worldPosition, uv);
+}
+
+vec3 applyTangentNormal(mat3 tbn, vec3 tangentNormal) {
+    vec3 tn = normalize(tangentNormal);
+    if (tn.z < 0.0) {
+        tn.z = abs(tn.z);
+    }
+
+    return normalize(tbn * tn);
 }
 
 vec3 resolveLightDirection(vec4 translation, vec4 direction, vec3 worldPosition) {
@@ -135,7 +168,8 @@ vec3 evaluateLightContribution(
     float metalness,
     vec3 specularColor,
     float shadow,
-    vec3 lightColor
+    vec3 lightColor,
+    float opacity
 ) {
     if (dot(lightDirection, lightDirection) < 0.00000001) {
         return vec3(0.0);
@@ -152,11 +186,34 @@ vec3 evaluateLightContribution(
     vec3 F0 = mix(vec3(0.04), albedo, metalness) * specularColor;
     vec3 F  = F0 + (vec3(1.0) - F0) * pow(1.0 - VdotH, 5.0);
 
-    float norm     = (shininess + 8.0) / (8.0 * 3.14159265);
+    float norm     = min((shininess + 8.0) / (8.0 * 3.14159265), 8.0);
     vec3  specular = norm * pow(NdotH, shininess) * F * lightColor * NdotL;
-    vec3  diffuse  = (vec3(1.0) - F) * (1.0 - metalness) * NdotL * lightColor;
+    vec3  diffuse  = (vec3(1.0) - F) * (1.0 - metalness) * NdotL * lightColor * opacity;
 
     return (1.0 - shadow) * (diffuse * albedo + specular);
+}
+
+float resolveMeshOpacity(float opacity, float NdotV, int transparentPass) {
+    if (transparentPass < 0) {
+        return opacity;
+    }
+
+    if (transparentPass == 0) {
+        return opacity < 0.99 ? -1.0 : opacity;
+    }
+
+    if (opacity >= 0.99) {
+        return -1.0;
+    }
+
+    // Near-opaque blend (the drone lens cover is authored at ~247/255):
+    // treat it as tinted glass so the inner lens can show through at facing angles.
+    if (opacity > 0.95) {
+        float fresnel = pow(clamp(1.0 - NdotV, 0.0, 1.0), 5.0);
+        return mix(0.07, 0.7, fresnel);
+    }
+
+    return opacity;
 }
 
 vec3 evaluateIBL(
@@ -168,7 +225,8 @@ vec3 evaluateIBL(
     float metalness,
     vec3 specularColor,
     float ambientOcclusion,
-    vec3 environmentColor
+    vec3 environmentColor,
+    float opacity
 ) {
     if (dot(environmentColor, environmentColor) < 0.00000001) {
         return vec3(0.0);
@@ -182,11 +240,10 @@ vec3 evaluateIBL(
 
     vec3 F0 = mix(vec3(0.04), albedo, metalness) * specularColor;
     float NdotV = max(dot(normal, viewDirection), 0.0);
-    vec3 F = F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - NdotV, 5.0);
+    vec3 F = F0 + (vec3(1.0) - F0) * pow(1.0 - NdotV, 5.0);
 
-    float specularWeight = (1.0 - roughness) * (1.0 - roughness);
-    vec3 diffuse  = (1.0 - F) * (1.0 - metalness) * irradiance * albedo;
-    vec3 specular = F * mix(irradiance, specularEnv, specularWeight) * specularWeight;
+    vec3 diffuse  = (1.0 - F) * (1.0 - metalness) * irradiance * albedo * opacity;
+    vec3 specular = F * specularEnv;
 
     return (diffuse + specular) * ambientOcclusion * environmentColor;
 }

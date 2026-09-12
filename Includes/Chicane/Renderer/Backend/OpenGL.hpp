@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <vector>
 
 #include <glad/gl.h>
@@ -12,6 +13,7 @@
 #include "Chicane/Renderer/Culling.hpp"
 #include "Chicane/Renderer/Depth.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Shader.hpp"
@@ -80,6 +82,30 @@ namespace Chicane
             std::uint32_t getTargetColor() const;
 
         private:
+            struct TextureSlot
+            {
+                std::uint32_t classIndex     = ~0u;
+                std::uint32_t layer          = 0;
+                std::uint32_t sourceWidth    = 0;
+                std::uint32_t sourceHeight   = 0;
+                std::uint32_t residentMinMip = ~0u;
+            };
+
+            struct SizeClass
+            {
+                std::uint32_t              size      = 1;
+                std::uint32_t              texture   = 0;
+                std::uint32_t              allocated = 0;
+                std::uint32_t              used      = 0;
+                std::vector<std::uint32_t> freeLayers;
+            };
+
+            struct TextureTableEntry
+            {
+                std::uint32_t classIndex = 0;
+                std::uint32_t layer      = 0;
+            };
+
             // OpenGL
             void buildContext();
             void destroyContext();
@@ -89,6 +115,15 @@ namespace Chicane
 
             void buildTextureData();
             void destroyTextureData();
+            void bindTextureTable() const;
+            void uploadTexture(const DrawTexture& inTexture);
+            void releaseTextureSlot(TextureSlot& inSlot);
+            void writeTextureSlot(Draw::Id inId, std::uint32_t inClass, std::uint32_t inLayer);
+            std::uint32_t classFromResident(std::uint32_t inWidth, std::uint32_t inHeight) const;
+            std::uint32_t allocateLayer(std::uint32_t inClass);
+            void growClass(std::uint32_t inClass, std::uint32_t inLayers);
+            void createClassArray(SizeClass& inClass, std::uint32_t inLayers);
+            void fillWhiteLayer(const SizeClass& inClass, std::uint32_t inLayer) const;
 
             void buildTarget();
             void destroyTarget();
@@ -121,10 +156,13 @@ namespace Chicane
             std::vector<OpenGLFrame> frames;
 
         private:
-            std::uint32_t     m_currentFrameIndex;
+            std::uint32_t             m_currentFrameIndex;
 
-            std::uint32_t     m_texturesBuffer;
-            std::uint32_t     m_targetFramebuffer;
+            std::vector<TextureSlot>                  m_textures;
+            std::array<SizeClass, TEXTURE_CLASS_COUNT> m_classes;
+            std::uint32_t                             m_textureTable;
+            std::uint32_t                             m_maxArrayLayers;
+            std::uint32_t             m_targetFramebuffer;
             std::uint32_t     m_targetColor;
             std::uint32_t     m_targetDepth;
             std::uint32_t     m_targetWidth;

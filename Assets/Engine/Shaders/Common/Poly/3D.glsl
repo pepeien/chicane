@@ -11,7 +11,7 @@ struct PolyInstance3D {
     ivec4 textures2; // Refraction, SelfIllumination, Bump, Reflection
 
     int flags;
-    int _pad0;
+    float emissiveStrength;
     int _pad1;
     int _pad2;
 };

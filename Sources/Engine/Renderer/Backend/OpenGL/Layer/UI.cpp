@@ -8,6 +8,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Shader.hpp"
 
 namespace Chicane
 {
@@ -206,62 +207,11 @@ namespace Chicane
 
         void OpenGLLUI::buildShader()
         {
-            GLint result = GL_FALSE;
+            Shader::List shaders;
+            shaders.push_back({"Assets/Engine/Shaders/OpenGL/UI.overt", ShaderType::Vertex});
+            shaders.push_back({"Assets/Engine/Shaders/OpenGL/UI.ofrag", ShaderType::Fragment});
 
-            // Vertex
-            const std::vector<char> vertexShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/UI.overt");
-
-            GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderBinary(
-                1,
-                &vertexShader,
-                GL_SHADER_BINARY_FORMAT_SPIR_V,
-                vertexShaderCode.data(),
-                vertexShaderCode.size()
-            );
-            glSpecializeShader(vertexShader, "main", 0, nullptr, nullptr);
-            glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed to load vertex shader");
-            }
-
-            result = GL_FALSE;
-
-            // Fragment
-            const std::vector<char> fragmentShaderCode = FileSystem::read("Assets/Engine/Shaders/OpenGL/UI.ofrag");
-
-            GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderBinary(
-                1,
-                &fragmentShader,
-                GL_SHADER_BINARY_FORMAT_SPIR_V,
-                fragmentShaderCode.data(),
-                fragmentShaderCode.size()
-            );
-            glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
-            glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed to load fragment shader");
-            }
-
-            result = GL_FALSE;
-
-            // Shader Program
-            m_shaderProgram = glCreateProgram();
-            glAttachShader(m_shaderProgram, vertexShader);
-            glAttachShader(m_shaderProgram, fragmentShader);
-            glLinkProgram(m_shaderProgram);
-
-            glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed link shader program");
-            }
-
-            glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
+            m_shaderProgram = getBackend<OpenGLBackend>()->initShader(shaders);
         }
 
         void OpenGLLUI::destroyShader()
@@ -352,7 +302,7 @@ namespace Chicane
         void OpenGLLUI::buildGlyphBuffer()
         {
             glCreateBuffers(1, &m_glyphBuffer);
-            glNamedBufferData(m_glyphBuffer, m_backend->getResourceBudget(Resource::UIGlyphs), nullptr, GL_STATIC_DRAW);
+            glNamedBufferData(m_glyphBuffer, m_backend->getResourceBudget(Resource::UIGlyphs), nullptr, GL_DYNAMIC_DRAW);
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, m_glyphBuffer);
         }

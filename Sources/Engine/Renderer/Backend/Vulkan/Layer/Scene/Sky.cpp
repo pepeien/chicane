@@ -295,9 +295,12 @@ namespace Chicane
             createInfo.descriptorPool      = m_textureDescriptor.pool;
             createInfo.descriptorSetLayout = m_textureDescriptor.setLayout;
 
+            std::vector<Image::Instance> faces;
+            faces.reserve(inData.textures.size());
             for (const DrawTexture& texture : inData.textures)
             {
-                createInfo.images.push_back(texture.image);
+                faces.push_back(texture.getSampleImage());
+                createInfo.images.push_back(faces.back());
             }
 
             m_sky.reset(new VulkanSky(createInfo));

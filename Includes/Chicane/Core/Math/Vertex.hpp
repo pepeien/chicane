@@ -22,7 +22,7 @@ namespace Chicane
         {
             return (
                 inLeft.position == inRight.position && inLeft.color == inRight.color && inLeft.uv == inRight.uv &&
-                inLeft.normal == inRight.normal
+                inLeft.normal == inRight.normal && inLeft.tangent == inRight.tangent
             );
         }
 
@@ -31,5 +31,6 @@ namespace Chicane
         Vec4 color    = Vec4::Zero();
         Vec2 uv       = Vec2::Zero();
         Vec3 normal   = Vec3::Zero();
+        Vec4 tangent  = Vec4::Zero();
     };
 }

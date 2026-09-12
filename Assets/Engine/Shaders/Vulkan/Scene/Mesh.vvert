@@ -25,8 +25,10 @@ layout(std430, set = 0, binding = 2) readonly buffer Scene {
 layout(location = 0) out Data {
     flat ivec4 textureMaps[3];
     flat int bIsLit;
+    flat float emissiveStrength;
     vec2 UV;
     vec3 normal;
+    vec4 tangent;
     vec4 color;
     vec3 meshPosition;
     vec3 cameraPosition;
@@ -37,22 +39,26 @@ layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
 layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
+layout(location = 4) in vec4 inTangent;
 
 void main() {
     PolyInstance3D mesh = instance.meshes[gl_InstanceIndex];
 
-    vec4 position = vec4(inPosition, 1.0);
+    vec4 position     = vec4(inPosition, 1.0);
+    mat3 normalMatrix = mat3(transpose(inverse(mesh.model)));
 
-    outData.textureMaps[0] = mesh.textures0;
-    outData.textureMaps[1] = mesh.textures1;
-    outData.textureMaps[2] = mesh.textures2;
-    outData.bIsLit         = (mesh.flags & POLY_FLAG_LIT) != 0 ? 1 : 0;
-    outData.UV             = inUV;
-    outData.normal         = mat3(transpose(inverse(mesh.model))) * inNormal;
-    outData.color          = inColor;
-    outData.meshPosition   = vec3(mesh.model * position);
-    outData.cameraPosition = camera.translation.xyz;
-    outData.viewDepth      = -(camera.view * vec4(outData.meshPosition, 1.0)).z;
+    outData.textureMaps[0]   = mesh.textures0;
+    outData.textureMaps[1]   = mesh.textures1;
+    outData.textureMaps[2]   = mesh.textures2;
+    outData.bIsLit           = (mesh.flags & POLY_FLAG_LIT) != 0 ? 1 : 0;
+    outData.emissiveStrength = mesh.emissiveStrength;
+    outData.UV               = inUV;
+    outData.normal           = normalMatrix * inNormal;
+    outData.tangent          = vec4(normalMatrix * inTangent.xyz, inTangent.w);
+    outData.color            = inColor;
+    outData.meshPosition     = vec3(mesh.model * position);
+    outData.cameraPosition   = camera.translation.xyz;
+    outData.viewDepth        = -(camera.view * vec4(outData.meshPosition, 1.0)).z;
 
     gl_Position = camera.projection * camera.view * mesh.model * position;
 }

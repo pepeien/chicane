@@ -8,6 +8,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Chicane/Renderer/Shader.hpp"
 
 namespace Chicane
 {
@@ -42,10 +43,8 @@ namespace Chicane
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_DEPTH_TEST);
-            glDepthMask(GL_TRUE);
             glDepthFunc(GL_LEQUAL);
 
-            glEnable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             glCullFace(GL_BACK);
 
@@ -63,18 +62,35 @@ namespace Chicane
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            for (const DrawPoly& draw : inFrame.getSceneDraws())
+            auto drawMeshes = [&inFrame]()
             {
-                glDrawElementsInstancedBaseVertexBaseInstance(
-                    GL_TRIANGLES,
-                    draw.indexCount,
-                    GL_UNSIGNED_INT,
-                    (void*)(sizeof(Vertex::Index) * draw.indexStart),
-                    draw.instanceCount,
-                    draw.vertexStart,
-                    draw.instanceStart
-                );
-            }
+                for (const DrawPoly& draw : inFrame.getSceneDraws())
+                {
+                    glDrawElementsInstancedBaseVertexBaseInstance(
+                        GL_TRIANGLES,
+                        draw.indexCount,
+                        GL_UNSIGNED_INT,
+                        (void*)(sizeof(Vertex::Index) * draw.indexStart),
+                        draw.instanceCount,
+                        draw.vertexStart,
+                        draw.instanceStart
+                    );
+                }
+            };
+
+            glEnable(GL_CULL_FACE);
+            glDepthMask(GL_TRUE);
+            glProgramUniform1i(m_shaderProgram, 10, 0);
+            drawMeshes();
+
+            glDisable(GL_CULL_FACE);
+            glDepthMask(GL_FALSE);
+            glProgramUniform1i(m_shaderProgram, 10, 1);
+            drawMeshes();
+
+            glDepthMask(GL_TRUE);
+            glEnable(GL_CULL_FACE);
+            glProgramUniform1i(m_shaderProgram, 10, -1);
         }
 
         void OpenGLLSceneMesh::onEndRender()
@@ -86,64 +102,11 @@ namespace Chicane
 
         void OpenGLLSceneMesh::buildShader()
         {
-            GLint result = GL_FALSE;
+            Shader::List shaders;
+            shaders.push_back({"Assets/Engine/Shaders/OpenGL/Scene/Mesh.overt", ShaderType::Vertex});
+            shaders.push_back({"Assets/Engine/Shaders/OpenGL/Scene/Mesh.ofrag", ShaderType::Fragment});
 
-            // Vertex
-            const std::vector<char> vertexShaderCode =
-                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Mesh.overt");
-
-            GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderBinary(
-                1,
-                &vertexShader,
-                GL_SHADER_BINARY_FORMAT_SPIR_V,
-                vertexShaderCode.data(),
-                vertexShaderCode.size()
-            );
-            glSpecializeShader(vertexShader, "main", 0, nullptr, nullptr);
-            glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed to load vertex shader");
-            }
-
-            result = GL_FALSE;
-
-            // Fragment
-            const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Assets/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
-
-            GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderBinary(
-                1,
-                &fragmentShader,
-                GL_SHADER_BINARY_FORMAT_SPIR_V,
-                fragmentShaderCode.data(),
-                fragmentShaderCode.size()
-            );
-            glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
-            glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed to load fragment shader");
-            }
-
-            result = GL_FALSE;
-
-            // Shader Program
-            m_shaderProgram = glCreateProgram();
-            glAttachShader(m_shaderProgram, vertexShader);
-            glAttachShader(m_shaderProgram, fragmentShader);
-            glLinkProgram(m_shaderProgram);
-
-            glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed link shader program");
-            }
-
-            glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
+            m_shaderProgram = getBackend<OpenGLBackend>()->initShader(shaders);
 
             for (OpenGLFrame& frame : getBackend<OpenGLBackend>()->frames)
             {

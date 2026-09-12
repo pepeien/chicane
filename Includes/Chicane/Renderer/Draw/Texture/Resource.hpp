@@ -23,6 +23,7 @@ namespace Chicane
 
             const DrawTexture& getDraw(const Draw::Reference& inReference);
             const DrawTexture& getDraw(Draw::Id inId);
+            DrawTexture* getDrawMutable(Draw::Id inId);
 
             Draw::Id add(const DrawTextureData& inData);
 

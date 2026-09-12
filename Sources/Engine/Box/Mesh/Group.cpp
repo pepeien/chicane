@@ -1,5 +1,6 @@
 #include "Chicane/Box/Mesh/Group.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 namespace Chicane
@@ -245,6 +246,16 @@ namespace Chicane
             writeVec3Attribute(outNode, TRANSLATION_ATTRIBUTE_NAME, m_transform.getTranslation());
             writeVec3Attribute(outNode, ROTATION_ATTRIBUTE_NAME, m_transform.getRotation().getAngles());
             writeVec3Attribute(outNode, SCALE_ATTRIBUTE_NAME, m_transform.getScale());
+        }
+
+        float MeshGroup::getEmissiveStrength() const
+        {
+            return m_emissiveStrength;
+        }
+
+        void MeshGroup::setEmissiveStrength(float inValue)
+        {
+            m_emissiveStrength = std::max(0.0f, inValue);
         }
     }
 }

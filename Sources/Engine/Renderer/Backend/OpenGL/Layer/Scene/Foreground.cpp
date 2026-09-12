@@ -41,6 +41,8 @@ namespace Chicane
 
             glBindTextureUnit(3, frame.getObject(SCENE_SKY_LAYER_ID));
 
+            glProgramUniform1i(frame.getObject(SCENE_MESH_LAYER_ID), 10, -1);
+
             Viewport viewport = backend->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 

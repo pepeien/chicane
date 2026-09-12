@@ -27,6 +27,7 @@
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Target.hpp"
+#include "Chicane/Renderer/Texture/Streamer.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -148,6 +149,7 @@ namespace Chicane
             DrawPolyResource::Map     m_polyResources;
             DrawTextureResource       m_textureResources;
             DrawSkyResource           m_skyResource;
+            TextureStreamer           m_textureStreamer;
 
             // Debug
             std::atomic<std::uint8_t> m_debug;

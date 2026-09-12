@@ -192,7 +192,7 @@ namespace Chicane
             int side = 0;
             for (const DrawTexture& texture : inValue.textures)
             {
-                if (const Image::Instance& image = texture.image)
+                if (const Image::Instance image = texture.getSampleImage())
                 {
                     glTextureSubImage3D(
                         m_texturesBuffer,

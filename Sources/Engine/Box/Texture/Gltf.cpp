@@ -1,5 +1,7 @@
 #include "Chicane/Box/Texture/Gltf.hpp"
 
+#include <algorithm>
+
 #include "../Gltf/Parser.hpp"
 
 #include "Chicane/Core/Base64.hpp"
@@ -225,6 +227,47 @@ namespace Chicane
                 outMaps[inMap] = index;
             }
 
+            static float emissiveStrength(const tg3_material& inMaterial)
+            {
+                const tg3_extras_ext& extras = inMaterial.ext;
+                for (std::uint32_t i = 0; i < extras.extensions_count; ++i)
+                {
+                    const tg3_extension& extension = extras.extensions[i];
+                    if (!equals(extension.name, "KHR_materials_emissive_strength"))
+                    {
+                        continue;
+                    }
+
+                    if (extension.value.type != TG3_VALUE_OBJECT || !extension.value.object_data)
+                    {
+                        break;
+                    }
+
+                    for (std::uint32_t k = 0; k < extension.value.object_count; ++k)
+                    {
+                        const tg3_kv_pair& field = extension.value.object_data[k];
+                        if (!equals(field.key, "emissiveStrength"))
+                        {
+                            continue;
+                        }
+
+                        if (field.value.type == TG3_VALUE_REAL)
+                        {
+                            return static_cast<float>(std::max(0.0, field.value.real_val));
+                        }
+
+                        if (field.value.type == TG3_VALUE_INT)
+                        {
+                            return static_cast<float>(std::max<std::int64_t>(0, field.value.int_val));
+                        }
+                    }
+
+                    break;
+                }
+
+                return 1.0f;
+            }
+
             Parsed parse(const FileSystem::Path& inFilepath)
             {
                 const Document   document(inFilepath);
@@ -266,6 +309,12 @@ namespace Chicane
                     );
                     assignMap(maps, TextureMap::AmbientOcclusion, model, material.occlusion_texture.index);
                     assignMap(maps, TextureMap::SelfIllumination, model, material.emissive_texture.index);
+
+                    const float strength = emissiveStrength(material);
+                    if (strength != 1.0f)
+                    {
+                        result.emissiveStrengths[static_cast<std::int32_t>(i)] = strength;
+                    }
                 }
 
                 return result;

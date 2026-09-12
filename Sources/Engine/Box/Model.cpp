@@ -1,7 +1,9 @@
 #include "Chicane/Box/Model.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <unordered_map>
+#include <vector>
 
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Model/Gltf.hpp"
@@ -260,6 +262,112 @@ namespace Chicane
             return normalizeData(result);
         }
 
+        static bool hasVertexTangents(const Vertex::List& inVertices)
+        {
+            for (const Vertex& vertex : inVertices)
+            {
+                if (std::fabs(vertex.tangent.w) > 0.5f)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        static void accumulateTriangleTangent(
+            std::vector<Vec3>& outTangents,
+            std::vector<Vec3>& outBitangents,
+            const Vertex::List& inVertices,
+            Vertex::Index inFirst,
+            Vertex::Index inSecond,
+            Vertex::Index inThird
+        )
+        {
+            if (
+                inFirst >= inVertices.size() || inSecond >= inVertices.size() || inThird >= inVertices.size()
+            )
+            {
+                return;
+            }
+
+            const Vertex& first  = inVertices[inFirst];
+            const Vertex& second = inVertices[inSecond];
+            const Vertex& third  = inVertices[inThird];
+
+            const Vec3 edge0 = second.position - first.position;
+            const Vec3 edge1 = third.position - first.position;
+            const Vec2 uv0   = second.uv - first.uv;
+            const Vec2 uv1   = third.uv - first.uv;
+
+            const float determinant = uv0.x * uv1.y - uv1.x * uv0.y;
+            if (std::fabs(determinant) < 1.0e-8f)
+            {
+                return;
+            }
+
+            const float inverse = 1.0f / determinant;
+            const Vec3  tangent   = (edge0 * uv1.y - edge1 * uv0.y) * inverse;
+            const Vec3  bitangent = (edge1 * uv0.x - edge0 * uv1.x) * inverse;
+
+            outTangents[inFirst] += tangent;
+            outTangents[inSecond] += tangent;
+            outTangents[inThird] += tangent;
+            outBitangents[inFirst] += bitangent;
+            outBitangents[inSecond] += bitangent;
+            outBitangents[inThird] += bitangent;
+        }
+
+        static void generateTangents(ModelParsed& outModel)
+        {
+            if (outModel.vertices.empty() || hasVertexTangents(outModel.vertices))
+            {
+                return;
+            }
+
+            std::vector<Vec3> tangents(outModel.vertices.size(), Vec3::Zero());
+            std::vector<Vec3> bitangents(outModel.vertices.size(), Vec3::Zero());
+
+            if (outModel.indices.size() >= 3)
+            {
+                for (std::size_t i = 0; i + 2 < outModel.indices.size(); i += 3)
+                {
+                    accumulateTriangleTangent(
+                        tangents,
+                        bitangents,
+                        outModel.vertices,
+                        outModel.indices[i],
+                        outModel.indices[i + 1],
+                        outModel.indices[i + 2]
+                    );
+                }
+            }
+            else
+            {
+                for (Vertex::Index i = 0; i + 2 < static_cast<Vertex::Index>(outModel.vertices.size()); i += 3)
+                {
+                    accumulateTriangleTangent(tangents, bitangents, outModel.vertices, i, i + 1, i + 2);
+                }
+            }
+
+            for (std::size_t i = 0; i < outModel.vertices.size(); ++i)
+            {
+                const Vec3 normal = outModel.vertices[i].normal.normalize();
+                Vec3       tangent = tangents[i];
+                tangent            = tangent - normal * normal.dot(tangent);
+                if (tangent.dot(tangent) < 1.0e-10f)
+                {
+                    const Vec3 axis = std::fabs(normal.z) < 0.9f ? Vec3::Up() : Vec3::Right();
+                    tangent         = normal.cross(axis);
+                }
+
+                tangent = tangent.normalize();
+                const float handedness =
+                    normal.cross(tangent).dot(bitangents[i]) < 0.0f ? -1.0f : 1.0f;
+                outModel.vertices[i].tangent = Vec4(tangent, handedness);
+            }
+        }
+
         ModelParsed::Map Model::normalizeData(const ModelParsed::Map& inValue) const
         {
             ModelParsed::Map result;
@@ -267,6 +375,7 @@ namespace Chicane
             for (const auto& [name, model] : inValue)
             {
                 result[name] = model;
+                generateTangents(result[name]);
             }
 
             return result;

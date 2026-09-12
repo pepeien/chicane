@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -21,9 +22,56 @@ namespace Chicane
         using Reference  = std::weak_ptr<const Image>;
         using References = std::vector<Reference>;
 
+        static constexpr inline const std::uint32_t MAX_SIZE     = 4096;
+        static constexpr inline const std::uint32_t STREAM_TAIL  = 128;
+
+        struct CHICANE_CORE Mip
+        {
+            int              width   = 0;
+            int              height  = 0;
+            Raw              encoded = {};
+            mutable Instance decoded = {};
+        };
+
+        struct CHICANE_CORE MipChain
+        {
+            std::vector<Mip> levels  = {};
+            bool             bNormal = false;
+
+            bool isEmpty() const;
+            std::uint32_t getWidth() const;
+            std::uint32_t getHeight() const;
+            std::uint32_t getCount() const;
+            std::uint32_t streamTailMinMip(std::uint32_t inTail = STREAM_TAIL) const;
+            std::size_t residentBytes(std::uint32_t inMinMip) const;
+
+            Instance decode(std::uint32_t inLevel) const;
+            void ensureDecoded(std::uint32_t inMinLevel) const;
+            void dropDecoded(std::uint32_t inEndLevel) const;
+        };
+
     public:
         static ImageVendor parseVendor(const String& inValue);
         static const String& getVendorExtension(ImageVendor inValue);
+
+        static std::uint32_t floorPowerOfTwo(std::uint32_t inValue);
+        static std::uint32_t mipCount(std::uint32_t inWidth, std::uint32_t inHeight);
+        static std::uint32_t mipDimension(std::uint32_t inSize, std::uint32_t inLevel);
+        static std::uint32_t streamTailMinMip(
+            std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inTail = STREAM_TAIL
+        );
+        static std::size_t mipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight);
+        static MipChain makeMipChain(
+            const Image& inSource, std::uint32_t inMaxSize = MAX_SIZE, bool inIsNormal = false
+        );
+        static MipChain makeMipChain(
+            const Pixel*  inPixels,
+            int           inWidth,
+            int           inHeight,
+            int           inChannel,
+            std::uint32_t inMaxSize  = MAX_SIZE,
+            bool          inIsNormal = false
+        );
 
     public:
         Image(const FileSystem::Path& inLocation);

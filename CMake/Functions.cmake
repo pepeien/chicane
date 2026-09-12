@@ -110,7 +110,7 @@ function(
             COMMAND
                 ${CMAKE_COMMAND} -E make_directory "${SPIRV_DIR}"
             COMMAND
-                ${GLSL_VALIDATOR} -S ${SHADER_STAGE} -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
+                ${GLSL_VALIDATOR} -S ${SHADER_STAGE} -${SHADER_VERSION} -I"${SOURCE_PATH}" ${GLSL} -o ${SPIRV}
             DEPENDS
                 "${GLSL}"
                 ${SHADER_INCLUDES}

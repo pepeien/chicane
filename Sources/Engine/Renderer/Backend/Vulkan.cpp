@@ -553,67 +553,95 @@ namespace Chicane
                 return;
             }
 
-            for (VulkanFrame& frame : frames)
-            {
-                frame.wait();
-            }
-
             VulkanTextureCreateInfo createInfo;
             createInfo.logicalDevice  = logicalDevice;
             createInfo.physicalDevice = physicalDevice;
             createInfo.commandBuffer  = mainCommandBuffer;
             createInfo.queue          = graphicsQueue;
 
-            std::vector<vk::DescriptorImageInfo> infos;
-            textures.clear();
-            m_screenTextureId = Draw::InvalidId;
+            Draw::Id maxId = Draw::InvalidId;
+            for (const DrawTexture& texture : inTextures)
+            {
+                maxId = std::max(maxId, texture.id);
+            }
+
+            if (maxId > Draw::InvalidId)
+            {
+                const std::size_t needed = static_cast<std::size_t>(maxId) + 1;
+                if (textures.size() < needed)
+                {
+                    textures.resize(needed);
+                }
+            }
+
+            const std::uint32_t slotCount = getResourceBudgetCount(Resource::Texture);
 
             for (const DrawTexture& texture : inTextures)
             {
+                if (texture.id <= Draw::InvalidId || static_cast<std::uint32_t>(texture.id) >= slotCount)
+                {
+                    continue;
+                }
+
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
 
                 const bool bIsScreen = texture.reference.equals(SCREEN_TARGET_ID);
-
-                if (bIsScreen && !swapchain.images.empty() && swapchain.images.front().targetImage.view)
+                if (bIsScreen)
                 {
-                    const VulkanImageInfo& target = swapchain.images.front().targetImage;
-                    info.imageView                = target.view;
-                    info.sampler                  = target.sampler;
-                    textures.push_back(nullptr);
                     m_screenTextureId = texture.id;
-                }
-                else
-                {
-                    createInfo.image = texture.image;
-                    textures.push_back(std::make_shared<VulkanTexture>(createInfo));
-                    info.imageView = textures.back()->view;
-                    info.sampler   = textures.back()->sampler;
+                    if (!swapchain.images.empty() && swapchain.images.front().targetImage.view)
+                    {
+                        const VulkanImageInfo& target = swapchain.images.front().targetImage;
+                        info.imageView                = target.view;
+                        info.sampler                  = target.sampler;
+                        textures[static_cast<std::size_t>(texture.id)] = nullptr;
+                        writeTextureDescriptor(texture.id, info);
+                    }
+
+                    continue;
                 }
 
-                infos.push_back(info);
+                std::shared_ptr<VulkanTexture>& slot = textures[static_cast<std::size_t>(texture.id)];
+                if (slot && slot->matches(texture))
+                {
+                    continue;
+                }
+
+                for (VulkanFrame& frame : frames)
+                {
+                    frame.wait();
+                }
+
+                createInfo.texture        = &texture;
+                createInfo.image          = texture.image;
+                createInfo.residentMinMip = texture.residentMinMip;
+                slot                      = std::make_shared<VulkanTexture>(createInfo);
+
+                info.imageView = slot->view;
+                info.sampler   = slot->sampler;
+                writeTextureDescriptor(texture.id, info);
+            }
+        }
+
+        void VulkanBackend::writeTextureDescriptor(Draw::Id inId, const vk::DescriptorImageInfo& inInfo)
+        {
+            if (inId <= Draw::InvalidId)
+            {
+                return;
             }
 
             for (vk::DescriptorSet set : textureDescriptorSets)
             {
-                for (std::size_t i = 0; i < infos.size(); ++i)
-                {
-                    const Draw::Id id = inTextures[i].id;
-                    if (id <= Draw::InvalidId)
-                    {
-                        continue;
-                    }
+                vk::WriteDescriptorSet write;
+                write.dstSet          = set;
+                write.dstBinding      = 0;
+                write.dstArrayElement = static_cast<std::uint32_t>(inId);
+                write.descriptorCount = 1;
+                write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                write.pImageInfo      = &inInfo;
 
-                    vk::WriteDescriptorSet write;
-                    write.dstSet          = set;
-                    write.dstBinding      = 0;
-                    write.dstArrayElement = static_cast<std::uint32_t>(id);
-                    write.descriptorCount = 1;
-                    write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                    write.pImageInfo      = &infos[i];
-
-                    logicalDevice.updateDescriptorSets(write, nullptr);
-                }
+                logicalDevice.updateDescriptorSets(write, nullptr);
             }
         }
 

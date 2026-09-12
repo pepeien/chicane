@@ -41,10 +41,10 @@ namespace Chicane
                 Draw::InvalidId,
                 Draw::InvalidId
             };
-            DrawPoly3DFlag flags = DrawPoly3DFlag::Lit | DrawPoly3DFlag::Shadow;
-            std::int32_t   _pad0 = 0;
-            std::int32_t   _pad1 = 0;
-            std::int32_t   _pad2 = 0;
+            DrawPoly3DFlag flags            = DrawPoly3DFlag::Lit | DrawPoly3DFlag::Shadow;
+            float          emissiveStrength = 1.0f;
+            std::int32_t   _pad1            = 0;
+            std::int32_t   _pad2            = 0;
         };
     }
 }

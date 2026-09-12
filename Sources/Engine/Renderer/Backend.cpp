@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Shadow/Light.hpp"
 
@@ -150,7 +152,9 @@ namespace Chicane
                        getResourceSize(Resource::SceneLights);
 
             case Resource::Texture:
-                return sizeof(Image::Pixel) * TEXTURE_WIDTH * TEXTURE_HEIGHT;
+                // Slot packing uses the always-resident RGBA8 tail. Streamer byte budget
+                // is the Texture VRAM fraction (see getResourceBudget), not this size.
+                return sizeof(Image::Pixel) * 4u * TEXTURE_STREAM_TAIL * TEXTURE_STREAM_TAIL;
 
             case Resource::UIIndices:
                 return sizeof(Vertex::Index);
@@ -182,6 +186,11 @@ namespace Chicane
                 return 0U;
             }
 
+            if (inType == Resource::Texture)
+            {
+                return static_cast<std::size_t>(budget.at(inType) * static_cast<float>(m_VRAM));
+            }
+
             return getResourceSize(inType) * getResourceBudgetCount(inType) * 0.5f;
         }
 
@@ -194,7 +203,13 @@ namespace Chicane
                 return 0U;
             }
 
-            return (budget.at(inType) * m_VRAM) / getResourceSize(inType);
+            std::uint32_t count = (budget.at(inType) * m_VRAM) / getResourceSize(inType);
+            if (inType == Resource::Texture)
+            {
+                count = std::min(count, TEXTURE_SLOT_MAX);
+            }
+
+            return count;
         }
 
         bool Backend::isStatus(BackendStatus inValue) const

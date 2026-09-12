@@ -91,16 +91,39 @@ namespace Chicane
 
             commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
-            for (const DrawPoly& draw : inFrame.getSceneDraws())
+            auto drawMeshes = [&]()
             {
-                commandBuffer.drawIndexed(
-                    draw.indexCount,
-                    draw.instanceCount,
-                    draw.indexStart,
-                    draw.vertexStart,
-                    draw.instanceStart
-                );
-            }
+                for (const DrawPoly& draw : inFrame.getSceneDraws())
+                {
+                    commandBuffer.drawIndexed(
+                        draw.indexCount,
+                        draw.instanceCount,
+                        draw.indexStart,
+                        draw.vertexStart,
+                        draw.instanceStart
+                    );
+                }
+            };
+
+            std::int32_t transparentPass = 0;
+            commandBuffer.pushConstants(
+                m_graphicsPipeline.layout,
+                vk::ShaderStageFlagBits::eFragment,
+                0,
+                sizeof(std::int32_t),
+                &transparentPass
+            );
+            drawMeshes();
+
+            transparentPass = 1;
+            commandBuffer.pushConstants(
+                m_graphicsPipeline.layout,
+                vk::ShaderStageFlagBits::eFragment,
+                0,
+                sizeof(std::int32_t),
+                &transparentPass
+            );
+            drawMeshes();
             commandBuffer.endRenderPass();
         }
 
@@ -332,6 +355,11 @@ namespace Chicane
             rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
 
             // Build
+            vk::PushConstantRange passPush;
+            passPush.stageFlags = vk::ShaderStageFlagBits::eFragment;
+            passPush.offset     = 0;
+            passPush.size       = sizeof(std::int32_t);
+
             VulkanGraphicsPipelineBuilder()
                 .addVertexBinding(VulkanVertex::getBindingDescription())
                 .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
@@ -343,7 +371,7 @@ namespace Chicane
                 .addDynamicState(vk::DynamicState::eLineWidth)
                 .addShaderStage(vertexShader, backend->logicalDevice)
                 .addShaderStage(fragmentShader, backend->logicalDevice)
-                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(true))
                 .addAttachment(colorAttachment)
                 .addSubpassDependecy(colorSubpassDepedency)
                 .setDepthStencil(depth)
@@ -352,6 +380,7 @@ namespace Chicane
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .addDescriptorSetLayout(backend->textureDescriptor.setLayout)
+                .addPushConstant(passPush)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

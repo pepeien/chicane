@@ -1047,6 +1047,12 @@ void Program::createFromGltf(
                         groupImage = texture.image;
                     }
                 }
+
+                const auto strength = textures.emissiveStrengths.find(data.material);
+                if (strength != textures.emissiveStrengths.end())
+                {
+                    group.setEmissiveStrength(strength->second);
+                }
             }
         }
 
@@ -1125,6 +1131,24 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
         if (!Chicane::Box::AssetHeader::isFileAsset(inPath))
         {
             return;
+        }
+
+        if (Chicane::Box::AssetHeader::getTypeFromExtension(inPath) == Chicane::Box::AssetType::Texture)
+        {
+            try
+            {
+                Chicane::Box::Texture texture(inPath);
+                if (texture.bakeMips())
+                {
+                    texture.saveXML();
+                    std::cout << "Baked mips for [" << inPath.toString() << "]" << std::endl;
+                }
+            }
+            catch (const std::exception& exception)
+            {
+                std::cerr << "Failed to bake mips for [" << inPath.toString() << "]: " << exception.what()
+                          << std::endl;
+            }
         }
 
         if (Chicane::Box::embedPreview(inPath))

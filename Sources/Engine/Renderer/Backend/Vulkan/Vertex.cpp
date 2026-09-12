@@ -58,6 +58,15 @@ namespace Chicane
 
                 attributeDescriptions.push_back(normalsDescription);
 
+                // Tangent (xyz) + handedness (w)
+                vk::VertexInputAttributeDescription tangentDescription;
+                tangentDescription.binding  = 0;
+                tangentDescription.location = 4;
+                tangentDescription.format   = vk::Format::eR32G32B32A32Sfloat;
+                tangentDescription.offset   = offsetof(Chicane::Vertex, tangent);
+
+                attributeDescriptions.push_back(tangentDescription);
+
                 return attributeDescriptions;
             }
         }

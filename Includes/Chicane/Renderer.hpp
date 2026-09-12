@@ -44,8 +44,16 @@ namespace Chicane
         static constexpr inline const char*         SCREEN_TARGET_ID = "Screen";
 
         // Resources
-        static constexpr inline const std::size_t   TEXTURE_WIDTH  = 512;
-        static constexpr inline const std::size_t   TEXTURE_HEIGHT = 512;
+        // Per-texture native POT size is clamped to TEXTURE_MAX_SIZE. GPU images are
+        // allocated at the currently resident mip, not a uniform 4K footprint — a 4K
+        // RGBA8 chain is ~85 MB, so the streamer must drop mips under VRAM pressure.
+        static constexpr inline const std::uint32_t TEXTURE_MAX_SIZE      = 4096;
+        static constexpr inline const std::uint32_t TEXTURE_STREAM_TAIL   = 128;
+        static constexpr inline const std::uint32_t TEXTURE_SLOT_MAX         = 4096;
+        static constexpr inline const std::uint32_t TEXTURE_TABLE_BINDING    = 5;
+        static constexpr inline const std::uint32_t TEXTURE_CLASS_COUNT      = 6;
+        static constexpr inline const std::uint32_t TEXTURE_CLASS_BINDING    = 6;
+        static constexpr inline const std::uint32_t TEXTURE_CLASS_SIZES[6]   = {128, 256, 512, 1024, 2048, 4096};
 
         // Images
         static constexpr inline const std::uint32_t SHADOW_MAP_WIDTH     = 2048;

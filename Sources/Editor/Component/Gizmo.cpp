@@ -9,7 +9,6 @@
 #include <Chicane/Core/Input/Mouse/Motion/Event.hpp>
 #include <Chicane/Core/Math/Quat/QuatFloat.hpp>
 #include <Chicane/Core/Window.hpp>
-#include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
@@ -867,26 +866,8 @@ namespace Editor
 
     bool Gizmo::makeRay(const Chicane::Vec2& inLocation, Chicane::Vec3& outOrigin, Chicane::Vec3& outDirection) const
     {
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
-        if (!view)
-        {
-            return false;
-        }
-
-        Chicane::Grid::Component* viewport = nullptr;
-        for (Chicane::Grid::Component* child : view->getChildrenFlat())
-        {
-            if (!child || !child->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
-            {
-                continue;
-            }
-
-            viewport = child;
-
-            break;
-        }
-
-        if (!viewport)
+        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        if (viewport.isEmpty())
         {
             return false;
         }
@@ -897,8 +878,8 @@ namespace Editor
             return false;
         }
 
-        const Chicane::Vec2 size = viewport->getSize();
-        const Chicane::Vec2 local(inLocation.x - viewport->getPosition().x, inLocation.y - viewport->getPosition().y);
+        const Chicane::Vec2 size(viewport.right - viewport.left, viewport.bottom - viewport.top);
+        const Chicane::Vec2 local(inLocation.x - viewport.left, inLocation.y - viewport.top);
 
         std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
         if (cameras.empty())
@@ -915,7 +896,8 @@ namespace Editor
             return false;
         }
 
-        outOrigin                 = camera->getTranslation();
+        outOrigin = camera->getTranslation();
+
         const Chicane::Vec3 delta = farPoint - outOrigin;
         if (delta.dot(delta) < 0.0001f)
         {
@@ -929,29 +911,13 @@ namespace Editor
 
     bool Gizmo::isOverViewport(const Chicane::Vec2& inLocation) const
     {
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
-        if (!view)
+        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        if (viewport.isEmpty())
         {
             return false;
         }
 
-        Chicane::Grid::Component* hit = view->getHitAt(inLocation);
-        while (hit)
-        {
-            if (hit->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
-            {
-                return true;
-            }
-
-            if (hit->isRoot() || !hit->hasParent())
-            {
-                break;
-            }
-
-            hit = hit->getParent();
-        }
-
-        return false;
+        return viewport.contains(inLocation);
     }
 
     void Gizmo::pickAt(const Chicane::Vec2& inLocation)

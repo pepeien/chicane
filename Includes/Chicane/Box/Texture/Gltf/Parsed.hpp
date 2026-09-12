@@ -17,8 +17,9 @@ namespace Chicane
         {
             struct CHICANE_BOX Parsed
             {
-                std::vector<Entry>                                                   images    = {};
-                std::unordered_map<std::int32_t, std::map<TextureMap, std::int32_t>> materials = {};
+                std::vector<Entry>                                                   images             = {};
+                std::unordered_map<std::int32_t, std::map<TextureMap, std::int32_t>> materials          = {};
+                std::unordered_map<std::int32_t, float>                              emissiveStrengths = {};
             };
         }
     }

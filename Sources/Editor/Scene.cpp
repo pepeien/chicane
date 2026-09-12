@@ -58,7 +58,7 @@ namespace Editor
 
     void Scene::spawnDefaultItem()
     {
-        createActor<Item>("Assets/Engine/Meshes/Shape/Cube.bmsh");
+        createActor<Item>("Assets/Editor/Drone/Buster.bmsh");
     }
 
     void Scene::spawnGizmo()

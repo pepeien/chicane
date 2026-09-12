@@ -85,6 +85,7 @@ namespace Chicane
 
             void buildTextureDescriptor();
             void buildTextureData(const DrawTexture::List& inTextures);
+            void writeTextureDescriptor(Draw::Id inId, const vk::DescriptorImageInfo& inInfo);
             void destroyTextureData();
             void bindScreenTarget(const VulkanImageInfo& inTarget);
 

@@ -122,6 +122,18 @@ namespace Chicane
                         document.readFloats(document.findAttribute(inPrimitive, "TEXCOORD_0"), uvs, uvComponents) &&
                         uvComponents >= 2 && (uvs.size() / static_cast<std::size_t>(uvComponents)) >= vertexCount;
 
+                    std::vector<float> tangents;
+                    std::int32_t       tangentComponents = 0;
+                    const bool         hasTangents =
+                        document.findAttribute(inPrimitive, "TANGENT") >= 0 &&
+                        document.readFloats(
+                            document.findAttribute(inPrimitive, "TANGENT"),
+                            tangents,
+                            tangentComponents
+                        ) &&
+                        tangentComponents >= 4 &&
+                        (tangents.size() / static_cast<std::size_t>(tangentComponents)) >= vertexCount;
+
                     std::vector<std::uint32_t> sourceIndices;
                     if (inPrimitive.indices >= 0)
                     {
@@ -182,6 +194,19 @@ namespace Chicane
                         vertex.position = convertVector(mapped.x, mapped.y, mapped.z);
                         vertex.normal   = convertVector(normal.x, normal.y, normal.z);
                         vertex.uv       = Vec2(u, v);
+                        if (hasTangents)
+                        {
+                            const std::size_t tangentOffset = i * static_cast<std::size_t>(tangentComponents);
+                            const glm::vec3   tangent       = glm::normalize(
+                                normalMatrix * glm::vec3(
+                                                   tangents[tangentOffset],
+                                                   tangents[tangentOffset + 1],
+                                                   tangents[tangentOffset + 2]
+                                               )
+                            );
+                            const Vec3 converted = convertVector(tangent.x, tangent.y, tangent.z);
+                            vertex.tangent       = Vec4(converted, tangents[tangentOffset + 3]);
+                        }
                         parsed.vertices.push_back(vertex);
                     }
 

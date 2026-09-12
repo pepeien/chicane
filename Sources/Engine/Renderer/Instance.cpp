@@ -3,6 +3,7 @@
 #include <atomic>
 
 #include "Chicane/Renderer/Debug.hpp"
+#include "Chicane/Renderer/Resource.hpp"
 
 #if CHICANE_OPENGL
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
@@ -55,6 +56,19 @@ namespace Chicane
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
+
+            m_textureStreamer.tick(
+                currentFrame,
+                m_textureResources,
+                m_backend->getResourceBudget(Resource::Texture),
+                getResolution().y
+            );
+
+            if (m_textureResources.isDirty())
+            {
+                m_backend->onLoad(m_textureResources);
+                m_textureResources.markAsClean();
+            }
 
             m_backend->onBeginRender();
             m_backend->onRender(currentFrame);
@@ -345,7 +359,8 @@ namespace Chicane
             m_backend->onInit();
 
             DrawTextureData screen;
-            screen.reference = SCREEN_TARGET_ID;
+            screen.reference   = SCREEN_TARGET_ID;
+            screen.bStreamable = false;
             loadTexture(screen);
 
             markResourcesAsDirty();

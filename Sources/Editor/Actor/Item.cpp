@@ -15,7 +15,10 @@ namespace Editor
     {
         m_asset = getScene()->createComponent<Chicane::CMesh>();
         m_asset->setMesh(m_mesh);
+        m_asset->addAnimation("Assets/Editor/Drone/Buster.bani");
         m_asset->attachTo(this);
         m_asset->activate();
+
+        m_asset->playAnimation("Start_Liftoff");
     }
 }

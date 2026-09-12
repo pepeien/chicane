@@ -269,6 +269,8 @@ namespace Chicane
           m_viewCommandBuffers({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
+          m_screenViewportX(0),
+          m_screenViewportY(0),
           m_screenViewportWidth(0),
           m_screenViewportHeight(0),
           m_viewObservable({}),
@@ -373,8 +375,9 @@ namespace Chicane
             }
 
             Renderer::DrawTextureData data;
-            data.reference = upload.reference;
-            data.image     = upload.image;
+            data.reference   = upload.reference;
+            data.image       = upload.image;
+            data.bStreamable = false;
 
             m_renderer->loadTexture(data);
         }
@@ -475,6 +478,43 @@ namespace Chicane
         }
 
         return m_window.get();
+    }
+
+    Vec<2, std::uint32_t> Application::getScreenViewport() const
+    {
+        const std::uint32_t width  = m_screenViewportWidth.load(std::memory_order_relaxed);
+        const std::uint32_t height = m_screenViewportHeight.load(std::memory_order_relaxed);
+
+        if (width > 0 && height > 0)
+        {
+            return {width, height};
+        }
+
+        return getRendererResolution();
+    }
+
+    Bounds2D Application::getScreenViewportRect() const
+    {
+        const std::uint32_t width  = m_screenViewportWidth.load(std::memory_order_relaxed);
+        const std::uint32_t height = m_screenViewportHeight.load(std::memory_order_relaxed);
+
+        if (width == 0 || height == 0)
+        {
+            return {};
+        }
+
+        const std::uint32_t x = m_screenViewportX.load(std::memory_order_relaxed);
+        const std::uint32_t y = m_screenViewportY.load(std::memory_order_relaxed);
+
+        Bounds2D result = {};
+        result.set(
+            static_cast<float>(y),
+            static_cast<float>(x),
+            static_cast<float>(y + height),
+            static_cast<float>(x + width)
+        );
+
+        return result;
     }
 
     bool Application::hasRenderer() const
@@ -592,8 +632,10 @@ namespace Chicane
                     for (std::size_t i = 0; i < count; i++)
                     {
                         Renderer::DrawTextureData data;
-                        data.reference = texture->getFrameId(i);
-                        data.image     = texture->getFrame(i).lock();
+                        data.reference   = texture->getFrameId(i);
+                        data.image       = texture->getFrame(i).lock();
+                        data.mips        = texture->getMipChain(i);
+                        data.bStreamable = true;
 
                         enqueuePending(g_pendingTextures, data);
                     }
@@ -786,7 +828,8 @@ namespace Chicane
                 Renderer::DrawPoly3DCommandMesh subcommand;
                 subcommand.model          = resolveModelDrawId(group.getModel());
                 subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
-                subcommand.instance.flags = mesh->getFlags();
+                subcommand.instance.flags            = mesh->getFlags();
+                subcommand.instance.emissiveStrength = group.getEmissiveStrength();
 
                 for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
                 {
@@ -1056,6 +1099,8 @@ namespace Chicane
         std::uint32_t width  = 0;
         std::uint32_t height = 0;
 
+        std::uint32_t x = 0;
+        std::uint32_t y = 0;
         if (inView)
         {
             for (Grid::Component* component : inView->getChildrenFlat())
@@ -1071,28 +1116,20 @@ namespace Chicane
                     continue;
                 }
 
-                width  = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.x)));
-                height = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.y)));
+                const Vec2& position = component->getPosition();
+                x                    = static_cast<std::uint32_t>(std::max(0.0f, std::round(position.x)));
+                y                    = static_cast<std::uint32_t>(std::max(0.0f, std::round(position.y)));
+                width                = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.x)));
+                height               = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.y)));
 
                 break;
             }
         }
 
+        m_screenViewportX.store(x, std::memory_order_relaxed);
+        m_screenViewportY.store(y, std::memory_order_relaxed);
         m_screenViewportWidth.store(width, std::memory_order_relaxed);
         m_screenViewportHeight.store(height, std::memory_order_relaxed);
-    }
-
-    Vec<2, std::uint32_t> Application::getScreenViewport() const
-    {
-        const std::uint32_t width  = m_screenViewportWidth.load(std::memory_order_relaxed);
-        const std::uint32_t height = m_screenViewportHeight.load(std::memory_order_relaxed);
-
-        if (width > 0 && height > 0)
-        {
-            return {width, height};
-        }
-
-        return getRendererResolution();
     }
 
     void Application::buildUICommands(std::shared_ptr<Grid::View> inView)

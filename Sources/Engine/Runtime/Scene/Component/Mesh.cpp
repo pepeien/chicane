@@ -326,12 +326,12 @@ namespace Chicane
 
     bool CMesh::hasAnimation(const String& inId) const
     {
-        return m_animationById.find(inId) != m_animationById.end();
+        return !resolveAnimationId(inId).isEmpty();
     }
 
     const Box::Animation* CMesh::getAnimation(const String& inId) const
     {
-        const auto found = m_animationById.find(inId);
+        const auto found = m_animationById.find(resolveAnimationId(inId));
         if (found == m_animationById.end())
         {
             return nullptr;
@@ -398,7 +398,8 @@ namespace Chicane
 
     void CMesh::removeAnimation(const String& inId)
     {
-        const auto found = m_animationById.find(inId);
+        const String id = resolveAnimationId(inId);
+        const auto   found = m_animationById.find(id);
         if (found == m_animationById.end())
         {
             return;
@@ -407,7 +408,7 @@ namespace Chicane
         const Box::Animation* animation = found->second;
         m_animations.erase(std::remove(m_animations.begin(), m_animations.end(), animation), m_animations.end());
         m_animationById.erase(found);
-        m_queue.remove(inId);
+        m_queue.remove(id);
 
         if (m_queue.isIdle())
         {
@@ -426,24 +427,26 @@ namespace Chicane
 
     void CMesh::playAnimation(const String& inId)
     {
-        if (!m_queue.has(inId))
+        const String id = resolveAnimationId(inId);
+        if (id.isEmpty())
         {
             return;
         }
 
-        m_queue.play(inId);
+        m_queue.play(id);
         setCanTick(true);
         evaluatePose();
     }
 
     void CMesh::queueAnimation(const String& inId)
     {
-        if (!m_queue.has(inId))
+        const String id = resolveAnimationId(inId);
+        if (id.isEmpty())
         {
             return;
         }
 
-        m_queue.enqueue(inId);
+        m_queue.enqueue(id);
         setCanTick(true);
         evaluatePose();
     }
@@ -498,6 +501,29 @@ namespace Chicane
         }
 
         m_skeleton = Box::load<Box::Skeleton>(m_asset->getSkeleton().getSource());
+    }
+
+    String CMesh::resolveAnimationId(const String& inId) const
+    {
+        if (inId.isEmpty())
+        {
+            return "";
+        }
+
+        if (m_queue.has(inId) || m_animationById.find(inId) != m_animationById.end())
+        {
+            return inId;
+        }
+
+        for (const auto& [id, animation] : m_animationById)
+        {
+            if (animation && animation->getClip().getTrack(inId))
+            {
+                return id;
+            }
+        }
+
+        return "";
     }
 
     std::int32_t CMesh::findBoundBone(const Box::MeshGroup& inGroup) const

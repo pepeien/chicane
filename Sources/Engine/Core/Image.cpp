@@ -69,6 +69,229 @@ static std::uint32_t adler32(const unsigned char* inData, std::size_t inSize)
     return (b << 16) | a;
 }
 
+static std::uint32_t bitReverse(std::uint32_t inValue, int inBits)
+{
+    std::uint32_t result = 0;
+    for (int i = 0; i < inBits; i++)
+    {
+        result = (result << 1) | (inValue & 1u);
+        inValue >>= 1;
+    }
+
+    return result;
+}
+
+static void writeBits(
+    std::vector<unsigned char>& outValue, std::uint32_t& outBuffer, int& outCount, std::uint32_t inBits, int inSize
+)
+{
+    outBuffer |= inBits << outCount;
+    outCount += inSize;
+    while (outCount >= 8)
+    {
+        outValue.push_back(static_cast<unsigned char>(outBuffer));
+        outBuffer >>= 8;
+        outCount -= 8;
+    }
+}
+
+static void writeFixedHuffman(
+    std::vector<unsigned char>& outValue, std::uint32_t& outBuffer, int& outCount, int inSymbol
+)
+{
+    if (inSymbol <= 143)
+    {
+        writeBits(outValue, outBuffer, outCount, bitReverse(0x30u + static_cast<std::uint32_t>(inSymbol), 8), 8);
+    }
+    else if (inSymbol <= 255)
+    {
+        writeBits(
+            outValue,
+            outBuffer,
+            outCount,
+            bitReverse(0x190u + static_cast<std::uint32_t>(inSymbol - 144), 9),
+            9
+        );
+    }
+    else if (inSymbol <= 279)
+    {
+        writeBits(
+            outValue,
+            outBuffer,
+            outCount,
+            bitReverse(static_cast<std::uint32_t>(inSymbol - 256), 7),
+            7
+        );
+    }
+    else
+    {
+        writeBits(
+            outValue,
+            outBuffer,
+            outCount,
+            bitReverse(0xC0u + static_cast<std::uint32_t>(inSymbol - 280), 8),
+            8
+        );
+    }
+}
+
+static void writeLengthDistance(
+    std::vector<unsigned char>& outValue,
+    std::uint32_t&              outBuffer,
+    int&                        outCount,
+    int                         inLength,
+    int                         inDistance
+)
+{
+    static const int lengthBase[29] = {3,  4,  5,  6,  7,  8,  9,  10, 11,  13,  15,  17,  19,  23, 27,
+                                       31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
+    static const int lengthExtra[29] =
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
+    static const int distanceBase[30] = {1,   2,   3,   4,   5,   7,    9,    13,   17,   25,
+                                         33,  49,  65,  97,  129, 193,  257,  385,  513,  769,
+                                         1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
+    static const int distanceExtra[30] =
+        {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
+
+    int lengthCode = 0;
+    for (int i = 0; i < 28; i++)
+    {
+        if (inLength >= lengthBase[i + 1])
+        {
+            lengthCode = i + 1;
+        }
+    }
+    writeFixedHuffman(outValue, outBuffer, outCount, 257 + lengthCode);
+    if (lengthExtra[lengthCode] > 0)
+    {
+        writeBits(
+            outValue,
+            outBuffer,
+            outCount,
+            static_cast<std::uint32_t>(inLength - lengthBase[lengthCode]),
+            lengthExtra[lengthCode]
+        );
+    }
+
+    int distanceCode = 0;
+    for (int i = 0; i < 29; i++)
+    {
+        if (inDistance >= distanceBase[i + 1])
+        {
+            distanceCode = i + 1;
+        }
+    }
+    writeBits(outValue, outBuffer, outCount, bitReverse(static_cast<std::uint32_t>(distanceCode), 5), 5);
+    if (distanceExtra[distanceCode] > 0)
+    {
+        writeBits(
+            outValue,
+            outBuffer,
+            outCount,
+            static_cast<std::uint32_t>(inDistance - distanceBase[distanceCode]),
+            distanceExtra[distanceCode]
+        );
+    }
+}
+
+static std::vector<unsigned char> deflateZlib(const unsigned char* inData, std::size_t inSize)
+{
+    std::vector<unsigned char> zlib;
+    zlib.push_back(0x78);
+    zlib.push_back(0x9C);
+
+    std::uint32_t bitBuffer = 0;
+    int           bitCount  = 0;
+    writeBits(zlib, bitBuffer, bitCount, 1, 1);
+    writeBits(zlib, bitBuffer, bitCount, 1, 2);
+
+    constexpr int kWindow = 32768;
+    constexpr int kHash   = 32768;
+    std::vector<int> head(kHash, -1);
+    std::vector<int> prev(kWindow, -1);
+
+    auto hashOf = [](const unsigned char* inBytes) -> int
+    {
+        return static_cast<int>(
+            ((static_cast<std::uint32_t>(inBytes[0]) << 16) ^ (static_cast<std::uint32_t>(inBytes[1]) << 8) ^
+             static_cast<std::uint32_t>(inBytes[2])) &
+            32767u
+        );
+    };
+
+    std::size_t index = 0;
+    while (index < inSize)
+    {
+        int bestLength   = 0;
+        int bestDistance = 0;
+        if (index + 2 < inSize)
+        {
+            const int hash     = hashOf(inData + index);
+            int       candidate = head[hash];
+            int       steps     = 0;
+            while (candidate >= 0 && steps < 64)
+            {
+                const int distance = static_cast<int>(index) - candidate;
+                if (distance <= 0 || distance > kWindow)
+                {
+                    break;
+                }
+
+                int match = 0;
+                while (index + static_cast<std::size_t>(match) < inSize && match < 258 &&
+                       inData[index + static_cast<std::size_t>(match)] ==
+                           inData[static_cast<std::size_t>(candidate) + static_cast<std::size_t>(match)])
+                {
+                    match++;
+                }
+
+                if (match > bestLength && match >= 3)
+                {
+                    bestLength   = match;
+                    bestDistance = distance;
+                    if (bestLength >= 258)
+                    {
+                        break;
+                    }
+                }
+
+                candidate = prev[candidate & (kWindow - 1)];
+                steps++;
+            }
+
+            prev[static_cast<std::size_t>(static_cast<int>(index) & (kWindow - 1))] = head[hash];
+            head[hash]                                                             = static_cast<int>(index);
+        }
+
+        if (bestLength >= 3)
+        {
+            writeLengthDistance(zlib, bitBuffer, bitCount, bestLength, bestDistance);
+            for (int offset = 1; offset < bestLength && index + static_cast<std::size_t>(offset) + 2 < inSize; offset++)
+            {
+                const int hash = hashOf(inData + index + static_cast<std::size_t>(offset));
+                prev[static_cast<std::size_t>((static_cast<int>(index) + offset) & (kWindow - 1))] = head[hash];
+                head[hash] = static_cast<int>(index) + offset;
+            }
+            index += static_cast<std::size_t>(bestLength);
+
+            continue;
+        }
+
+        writeFixedHuffman(zlib, bitBuffer, bitCount, inData[index]);
+        index++;
+    }
+
+    writeFixedHuffman(zlib, bitBuffer, bitCount, 256);
+    if (bitCount > 0)
+    {
+        zlib.push_back(static_cast<unsigned char>(bitBuffer));
+    }
+
+    appendU32(zlib, adler32(inData, inSize));
+
+    return zlib;
+}
+
 static void appendChunk(
     std::vector<unsigned char>& outValue, const char* inType, const unsigned char* inData, std::size_t inSize
 )
@@ -408,30 +631,7 @@ namespace Chicane
             std::memcpy(raw.data() + offset + 1, pixels + static_cast<std::size_t>(y) * rowBytes, rowBytes);
         }
 
-        std::vector<unsigned char> zlib;
-        zlib.push_back(0x78);
-        zlib.push_back(0x01);
-
-        std::size_t pos = 0;
-        while (pos < raw.size())
-        {
-            const std::size_t block = std::min<std::size_t>(65535, raw.size() - pos);
-            zlib.push_back(pos + block >= raw.size() ? 0x01 : 0x00);
-            zlib.push_back(static_cast<unsigned char>(block & 0xFF));
-            zlib.push_back(static_cast<unsigned char>((block >> 8) & 0xFF));
-
-            const std::uint16_t nlen = static_cast<std::uint16_t>(~static_cast<std::uint16_t>(block));
-            zlib.push_back(static_cast<unsigned char>(nlen & 0xFF));
-            zlib.push_back(static_cast<unsigned char>((nlen >> 8) & 0xFF));
-            zlib.insert(
-                zlib.end(),
-                raw.begin() + static_cast<std::ptrdiff_t>(pos),
-                raw.begin() + static_cast<std::ptrdiff_t>(pos + block)
-            );
-            pos += block;
-        }
-
-        appendU32(zlib, adler32(raw.data(), raw.size()));
+        std::vector<unsigned char> zlib = deflateZlib(raw.data(), raw.size());
 
         Raw                 png;
         const unsigned char signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
