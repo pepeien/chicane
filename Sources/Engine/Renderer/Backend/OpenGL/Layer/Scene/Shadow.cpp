@@ -28,7 +28,7 @@ namespace Chicane
 
         bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
+            if (!getBackend()->hasFill() || !inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
             {
                 return false;
             }

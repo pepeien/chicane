@@ -17,9 +17,13 @@ namespace Chicane
         class CHICANE_BOX Texture : public Asset
         {
         public:
-            static constexpr inline const char* EXTENSION = ".btex";
-            static constexpr inline const char* TAG       = "Texture";
+            // File
+            static constexpr inline const char*         EXTENSION = ".btex";
 
+            // Tag
+            static constexpr inline const char*         TAG = "Texture";
+
+            // Attributes
             static constexpr inline const char*         VENDOR_ATTRIBUTE_NAME = "vendor";
             static constexpr inline const char*         WIDTH_ATTRIBUTE_NAME  = "width";
             static constexpr inline const char*         HEIGHT_ATTRIBUTE_NAME = "height";
@@ -28,12 +32,13 @@ namespace Chicane
             static constexpr inline const char*         MIPS_TAG              = "Mips";
             static constexpr inline const char*         MIP_TAG               = "Mip";
             static constexpr inline const char*         LEVEL_ATTRIBUTE_NAME  = "level";
-            static constexpr inline const std::uint32_t FORMAT_VERSION        = 2;
 
-            static constexpr inline const char* DEFAULT_SOURCE    = "Assets/Engine/Textures/Checkered.btex";
-            static constexpr inline const char* DEFAULT_REFERENCE = "Checkered";
-            static constexpr inline const char* GREY_SOURCE       = "Assets/Engine/Textures/Color/Grey.btex";
-            static constexpr inline const char* GREY_REFERENCE    = "Color_Grey";
+            // Values
+            static constexpr inline const std::uint32_t FORMAT_VERSION    = 2;
+            static constexpr inline const char*         DEFAULT_SOURCE    = "Assets/Engine/Textures/Checkered.btex";
+            static constexpr inline const char*         DEFAULT_REFERENCE = "Checkered";
+            static constexpr inline const char*         GREY_SOURCE       = "Assets/Engine/Textures/Color/Grey.btex";
+            static constexpr inline const char*         GREY_REFERENCE    = "Color_Grey";
 
         public:
             static const Texture* getDefault();
@@ -76,12 +81,12 @@ namespace Chicane
             bool looksLikeNormal() const;
 
         private:
-            ImageVendor                                     m_vendor;
-            bool                                            m_bNormal;
-            Image::Instance                                 m_data;
-            std::vector<Image::Instance>                    m_frames;
-            std::vector<int>                                m_delays;
-            std::vector<std::shared_ptr<Image::MipChain>>   m_chains;
+            ImageVendor                                   m_vendor;
+            bool                                          m_bNormal;
+            Image::Instance                               m_data;
+            std::vector<Image::Instance>                  m_frames;
+            std::vector<int>                              m_delays;
+            std::vector<std::shared_ptr<Image::MipChain>> m_chains;
         };
     }
 }

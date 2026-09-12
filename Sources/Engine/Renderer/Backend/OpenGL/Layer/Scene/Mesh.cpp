@@ -30,7 +30,7 @@ namespace Chicane
 
         bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
         {
-            if (!inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!getBackend()->hasFill() || !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return false;
             }

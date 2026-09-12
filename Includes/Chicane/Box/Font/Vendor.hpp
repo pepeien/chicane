@@ -12,5 +12,23 @@ namespace Chicane
             OpenType,  // .otf
             TrueType   // .ttf
         };
+
+        inline String toString(FontVendor inValue)
+        {
+            switch (inValue)
+            {
+            case FontVendor::Undefined:
+                return "Undefined";
+
+            case FontVendor::OpenType:
+                return "OpenType";
+
+            case FontVendor::TrueType:
+                return "TrueType";
+
+            default:
+                return "";
+            }
+        }
     }
 }

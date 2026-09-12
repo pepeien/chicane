@@ -12,8 +12,11 @@ namespace Chicane
         class CHICANE_BOX Skeleton : public Asset
         {
         public:
+            // File
             static constexpr inline const char* EXTENSION = ".bskl";
-            static constexpr inline const char* TAG       = "Skeleton";
+
+            // Tag
+            static constexpr inline const char* TAG = "Skeleton";
 
         public:
             Skeleton(const FileSystem::Path& inFilepath);

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -13,5 +14,20 @@ namespace Chicane
             Pressed,
             Released
         };
+
+        inline String toString(Status inValue)
+        {
+            switch (inValue)
+            {
+            case Status::Pressed:
+                return "Pressed";
+
+            case Status::Released:
+                return "Released";
+
+            default:
+                return "";
+            }
+        }
     }
 }

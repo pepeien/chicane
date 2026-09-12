@@ -61,16 +61,16 @@ namespace Chicane
 
             pugi::xml_node root = getXML();
 
-            if (!Xml::isEmpty(root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar())))
+            if (!Xml::isEmpty(root.find_child_by_attribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar())))
             {
                 throw std::runtime_error("A group with the ID " + inGroup.getId().toStandard() + " already exists");
             }
 
-            pugi::xml_node groupNode = root.append_child(GROUP_TAG);
-            groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id.toStandard());
+            pugi::xml_node groupNode = root.append_child(MeshGroup::TAG);
+            groupNode.append_attribute(MeshGroup::ID_ATTRIBUTE_NAME).set_value(id.toStandard());
             if (!inGroup.getBone().isEmpty())
             {
-                groupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
+                groupNode.append_attribute(MeshGroup::BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
             }
             if (inGroup.getEmissiveStrength() != 1.0f)
             {
@@ -112,7 +112,7 @@ namespace Chicane
             String id = inGroup.getId();
 
             pugi::xml_node root           = getXML();
-            pugi::xml_node foundGroupNode = root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar());
+            pugi::xml_node foundGroupNode = root.find_child_by_attribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar());
 
             if (Xml::isEmpty(foundGroupNode))
             {
@@ -121,7 +121,7 @@ namespace Chicane
                 return;
             }
 
-            pugi::xml_attribute boneAttribute = foundGroupNode.attribute(GROUP_BONE_ATTRIBUTE_NAME);
+            pugi::xml_attribute boneAttribute = foundGroupNode.attribute(MeshGroup::BONE_ATTRIBUTE_NAME);
             if (inGroup.getBone().isEmpty())
             {
                 if (!boneAttribute.empty())
@@ -131,7 +131,8 @@ namespace Chicane
             }
             else if (boneAttribute.empty())
             {
-                foundGroupNode.append_attribute(GROUP_BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
+                foundGroupNode.append_attribute(MeshGroup::BONE_ATTRIBUTE_NAME)
+                    .set_value(inGroup.getBone().toStandard());
             }
             else
             {
@@ -323,14 +324,14 @@ namespace Chicane
             {
                 const String name = groupNode.name();
 
-                if (!name.equals(GROUP_TAG))
+                if (!name.equals(MeshGroup::TAG))
                 {
                     continue;
                 }
 
                 MeshGroup group;
-                group.setId(Xml::getAttribute(GROUP_ID_ATTRIBUTE_NAME, groupNode).as_string());
-                group.setBone(Xml::getAttribute(GROUP_BONE_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setId(Xml::getAttribute(MeshGroup::ID_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setBone(Xml::getAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, groupNode).as_string());
                 group.setEmissiveStrength(
                     Xml::getAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, groupNode).as_float(1.0f)
                 );

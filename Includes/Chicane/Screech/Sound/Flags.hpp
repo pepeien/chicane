@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Screech.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -29,5 +30,41 @@ namespace Chicane
                                                optimization. */
             NoSpatialization  = 0x00004000  /* Disable spatialization. */
         };
+
+        inline String toString(SoundFlag inValue)
+        {
+            switch (inValue)
+            {
+            case SoundFlag::Stream:
+                return "Stream";
+
+            case SoundFlag::Decode:
+                return "Decode";
+
+            case SoundFlag::Async:
+                return "Async";
+
+            case SoundFlag::WaitInit:
+                return "WaitInit";
+
+            case SoundFlag::UnknownLength:
+                return "UnknownLength";
+
+            case SoundFlag::Looping:
+                return "Looping";
+
+            case SoundFlag::DefaultAttachment:
+                return "DefaultAttachment";
+
+            case SoundFlag::NoPitch:
+                return "NoPitch";
+
+            case SoundFlag::NoSpatialization:
+                return "NoSpatialization";
+
+            default:
+                return "";
+            }
+        }
     }
 }

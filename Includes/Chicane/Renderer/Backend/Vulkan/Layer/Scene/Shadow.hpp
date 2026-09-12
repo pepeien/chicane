@@ -20,6 +20,7 @@ namespace Chicane
             void onRestart() override;
             void onDestruction() override;
 
+            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData = nullptr) override;
 
         private:

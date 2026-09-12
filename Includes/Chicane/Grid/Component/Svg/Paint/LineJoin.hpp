@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -14,5 +15,23 @@ namespace Chicane
             Round,
             Bevel
         };
+
+        inline String toString(SvgLineJoin inValue)
+        {
+            switch (inValue)
+            {
+            case SvgLineJoin::Miter:
+                return "Miter";
+
+            case SvgLineJoin::Round:
+                return "Round";
+
+            case SvgLineJoin::Bevel:
+                return "Bevel";
+
+            default:
+                return "";
+            }
+        }
     }
 }

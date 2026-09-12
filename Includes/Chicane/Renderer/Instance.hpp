@@ -87,6 +87,12 @@ namespace Chicane
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);
 
+            // Fill
+            void enableFill();
+            void disableFill();
+            void toggleFill();
+            bool hasFill() const;
+
             // Debug
             void enableDebug(DebugMode inMode);
             void disableDebug(DebugMode inMode);
@@ -150,6 +156,9 @@ namespace Chicane
             DrawTextureResource       m_textureResources;
             DrawSkyResource           m_skyResource;
             TextureStreamer           m_textureStreamer;
+
+            // Fill
+            std::atomic<bool>         m_bHasFill;
 
             // Debug
             std::atomic<std::uint8_t> m_debug;

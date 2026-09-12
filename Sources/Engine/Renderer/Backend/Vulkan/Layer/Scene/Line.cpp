@@ -94,7 +94,8 @@ namespace Chicane
         bool VulkanLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
             const Instance* renderer = getBackend()->getRenderer();
-            if (renderer->hasDebug(DebugMode::Meshes) && inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) &&
+                (renderer->hasDebug(DebugMode::Meshes) || !renderer->hasFill()))
             {
                 return true;
             }
@@ -198,7 +199,7 @@ namespace Chicane
                     drawBatch(DrawPolyMode::Line);
                 }
 
-                if (renderer->hasDebug(DebugMode::Meshes))
+                if (renderer->hasDebug(DebugMode::Meshes) || !renderer->hasFill())
                 {
                     for (const DrawPoly& draw : inFrame.getSceneDraws())
                     {

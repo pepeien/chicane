@@ -21,10 +21,15 @@ namespace Chicane
             using TextureMaps = std::map<TextureMap, AssetReference>;
 
         public:
-            static constexpr inline const char* TRANSLATION_ATTRIBUTE_NAME = "translation";
-            static constexpr inline const char* ROTATION_ATTRIBUTE_NAME    = "rotation";
-            static constexpr inline const char* SCALE_ATTRIBUTE_NAME       = "scale";
-            static constexpr inline const char* BONE_ATTRIBUTE_NAME        = "bone";
+            // Tag
+            static constexpr inline const char* TAG = "Group";
+
+            // Attributes
+            static constexpr inline const char* ID_ATTRIBUTE_NAME                = "id";
+            static constexpr inline const char* BONE_ATTRIBUTE_NAME              = "bone";
+            static constexpr inline const char* TRANSLATION_ATTRIBUTE_NAME       = "translation";
+            static constexpr inline const char* ROTATION_ATTRIBUTE_NAME          = "rotation";
+            static constexpr inline const char* SCALE_ATTRIBUTE_NAME             = "scale";
             static constexpr inline const char* EMISSIVE_STRENGTH_ATTRIBUTE_NAME = "emissiveStrength";
 
         public:

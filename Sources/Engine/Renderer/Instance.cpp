@@ -24,6 +24,7 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
+              m_bHasFill(true),
               m_debug(static_cast<std::uint8_t>(DebugMode::None)),
               m_traces({}),
               m_backend(nullptr)
@@ -170,6 +171,33 @@ namespace Chicane
             m_skyResource.add(sky);
 
             return m_skyResource.findId(sky.reference);
+        }
+
+        void Instance::enableFill()
+        {
+            m_bHasFill.store(true, std::memory_order_relaxed);
+        }
+
+        void Instance::disableFill()
+        {
+            m_bHasFill.store(false, std::memory_order_relaxed);
+        }
+
+        void Instance::toggleFill()
+        {
+            if (hasFill())
+            {
+                disableFill();
+
+                return;
+            }
+
+            enableFill();
+        }
+
+        bool Instance::hasFill() const
+        {
+            return m_bHasFill.load(std::memory_order_relaxed);
         }
 
         void Instance::enableDebug(DebugMode inMode)

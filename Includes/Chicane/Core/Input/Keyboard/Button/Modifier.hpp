@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -31,5 +32,68 @@ namespace Chicane
             Alt        = (LeftAlt | RightAlt),     /**< Any Alt key is down. */
             Gui        = (LeftGui | RightGui),     /**< Any GUI key is down. */
         };
+
+        inline String toString(KeyboardButtonModifier inValue)
+        {
+            switch (inValue)
+            {
+            case KeyboardButtonModifier::None:
+                return "None";
+
+            case KeyboardButtonModifier::LeftShift:
+                return "LeftShift";
+
+            case KeyboardButtonModifier::RightShift:
+                return "RightShift";
+
+            case KeyboardButtonModifier::Leve5:
+                return "Leve5";
+
+            case KeyboardButtonModifier::LeftCtrl:
+                return "LeftCtrl";
+
+            case KeyboardButtonModifier::RightCtrl:
+                return "RightCtrl";
+
+            case KeyboardButtonModifier::LeftAlt:
+                return "LeftAlt";
+
+            case KeyboardButtonModifier::RightAlt:
+                return "RightAlt";
+
+            case KeyboardButtonModifier::LeftGui:
+                return "LeftGui";
+
+            case KeyboardButtonModifier::RightGui:
+                return "RightGui";
+
+            case KeyboardButtonModifier::Num:
+                return "Num";
+
+            case KeyboardButtonModifier::Caps:
+                return "Caps";
+
+            case KeyboardButtonModifier::Mode:
+                return "Mode";
+
+            case KeyboardButtonModifier::Scroll:
+                return "Scroll";
+
+            case KeyboardButtonModifier::Ctrl:
+                return "Ctrl";
+
+            case KeyboardButtonModifier::Shift:
+                return "Shift";
+
+            case KeyboardButtonModifier::Alt:
+                return "Alt";
+
+            case KeyboardButtonModifier::Gui:
+                return "Gui";
+
+            default:
+                return "";
+            }
+        }
     }
 }

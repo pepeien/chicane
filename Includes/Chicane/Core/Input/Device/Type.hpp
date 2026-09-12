@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -14,5 +15,23 @@ namespace Chicane
             Keyboard,
             Mouse
         };
+
+        inline String toString(DeviceType inValue)
+        {
+            switch (inValue)
+            {
+            case DeviceType::Gamepad:
+                return "Gamepad";
+
+            case DeviceType::Keyboard:
+                return "Keyboard";
+
+            case DeviceType::Mouse:
+                return "Mouse";
+
+            default:
+                return "";
+            }
+        }
     }
 }

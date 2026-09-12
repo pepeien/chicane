@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -18,6 +19,36 @@ namespace Chicane
             Skeletons = 1 << 4,
             All       = Meshes | Bounds | Traces | Colliders | Skeletons
         };
+
+        inline String toString(DebugMode inValue)
+        {
+            switch (inValue)
+            {
+            case DebugMode::None:
+                return "None";
+
+            case DebugMode::Meshes:
+                return "Meshes";
+
+            case DebugMode::Bounds:
+                return "Bounds";
+
+            case DebugMode::Traces:
+                return "Traces";
+
+            case DebugMode::Colliders:
+                return "Colliders";
+
+            case DebugMode::Skeletons:
+                return "Skeletons";
+
+            case DebugMode::All:
+                return "All";
+
+            default:
+                return "";
+            }
+        }
 
         inline DebugMode operator|(DebugMode inLeft, DebugMode inRight)
         {

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -15,5 +16,23 @@ namespace Chicane
             Middle,
             Right
         };
+
+        inline String toString(MouseButton inValue)
+        {
+            switch (inValue)
+            {
+            case MouseButton::Left:
+                return "Left";
+
+            case MouseButton::Middle:
+                return "Middle";
+
+            case MouseButton::Right:
+                return "Right";
+
+            default:
+                return "";
+            }
+        }
     }
 }

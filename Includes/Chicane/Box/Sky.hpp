@@ -15,9 +15,11 @@ namespace Chicane
         class CHICANE_BOX Sky : public Asset
         {
         public:
+            // File
             static constexpr inline const char* EXTENSION = ".bsky";
-            static constexpr inline const char* TAG       = "Sky";
 
+            // Tag
+            static constexpr inline const char* TAG          = "Sky";
             static constexpr inline const char* TEXTURES_TAG = "Textures";
 
         public:

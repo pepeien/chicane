@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -15,5 +16,26 @@ namespace Chicane
             Scroll,  // Clip and allow scrolling
             Auto     // Clip and scroll only when content overflows
         };
+
+        inline String toString(StyleOverflow inValue)
+        {
+            switch (inValue)
+            {
+            case StyleOverflow::Visible:
+                return "Visible";
+
+            case StyleOverflow::Hidden:
+                return "Hidden";
+
+            case StyleOverflow::Scroll:
+                return "Scroll";
+
+            case StyleOverflow::Auto:
+                return "Auto";
+
+            default:
+                return "";
+            }
+        }
     }
 }

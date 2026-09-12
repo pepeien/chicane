@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Chicane/Core/String.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -11,5 +13,20 @@ namespace Chicane
             NoWrap,
             Wrap
         };
+
+        inline String toString(StyleFlexWrap inValue)
+        {
+            switch (inValue)
+            {
+            case StyleFlexWrap::NoWrap:
+                return "NoWrap";
+
+            case StyleFlexWrap::Wrap:
+                return "Wrap";
+
+            default:
+                return "";
+            }
+        }
     }
 }

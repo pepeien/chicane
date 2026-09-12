@@ -39,6 +39,11 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
+        bool VulkanLSceneShadow::onBeginRender(const Frame&)
+        {
+            return getBackend()->hasFill();
+        }
+
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();

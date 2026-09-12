@@ -15,6 +15,24 @@ namespace Chicane
             End
         };
 
+        inline String toString(StyleAlignment inValue)
+        {
+            switch (inValue)
+            {
+            case StyleAlignment::Start:
+                return "Start";
+
+            case StyleAlignment::Center:
+                return "Center";
+
+            case StyleAlignment::End:
+                return "End";
+
+            default:
+                return "";
+            }
+        }
+
         StyleAlignment toAlignment(const String& inText);
     }
 }

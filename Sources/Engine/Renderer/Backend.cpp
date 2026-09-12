@@ -91,6 +91,11 @@ namespace Chicane
             return m_renderer;
         }
 
+        bool Backend::hasFill() const
+        {
+            return !m_renderer || m_renderer->hasFill();
+        }
+
         Viewport Backend::getLayerViewport(Layer* inLayer) const
         {
             Vec<2, std::uint32_t>  resolution = m_renderer->getResolution();

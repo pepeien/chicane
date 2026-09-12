@@ -18,6 +18,11 @@ namespace Chicane
             using List = std::vector<AnimationKeyframe>;
 
         public:
+            static constexpr inline const char* TAG                   = "Keyframe";
+            static constexpr inline const char* TIME_ATTRIBUTE_NAME   = "time";
+            static constexpr inline const char* EASING_ATTRIBUTE_NAME = "easing";
+
+        public:
             AnimationKeyframe();
 
         public:

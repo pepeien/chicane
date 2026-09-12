@@ -17,9 +17,17 @@ namespace Chicane
             using List = std::vector<AnimationTrack>;
 
         public:
+            // Tag
+            static constexpr inline const char* TAG = "Track";
+
+            // Attributes
+            static constexpr inline const char* NAME_ATTRIBUTE_NAME = "name";
+
+        public:
             AnimationTrack();
             AnimationTrack(const String& inName);
 
+        public:
             void addKeyframe(const AnimationKeyframe& inValue);
 
         public:

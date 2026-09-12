@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -14,5 +15,23 @@ namespace Chicane
             Round,
             Square
         };
+
+        inline String toString(SvgLineCap inValue)
+        {
+            switch (inValue)
+            {
+            case SvgLineCap::Butt:
+                return "Butt";
+
+            case SvgLineCap::Round:
+                return "Round";
+
+            case SvgLineCap::Square:
+                return "Square";
+
+            default:
+                return "";
+            }
+        }
     }
 }

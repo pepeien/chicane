@@ -16,12 +16,17 @@ namespace Chicane
         class CHICANE_BOX Font : public Asset
         {
         public:
+            // File
             static constexpr inline const char* EXTENSION = ".bfon";
-            static constexpr inline const char* TAG       = "Font";
 
+            // Tag
+            static constexpr inline const char* TAG = "Font";
+
+            // Attributes
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
             static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Fonts/Lexend.bfon";
 
+            // Value
             static constexpr inline const float BASE_SIZE = 16.0f;
 
         public:

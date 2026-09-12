@@ -12,14 +12,15 @@ namespace Chicane
         class CHICANE_BOX Mesh : public Asset
         {
         public:
+            // File
             static constexpr inline const char* EXTENSION = ".bmsh";
-            static constexpr inline const char* TAG       = "Mesh";
 
-            static constexpr inline const char* GROUP_TAG                 = "Group";
-            static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME   = "id";
-            static constexpr inline const char* GROUP_BONE_ATTRIBUTE_NAME = "bone";
+            // Tag
+            static constexpr inline const char* TAG = "Mesh";
 
-            static constexpr inline const char* SPHERE_SOURCE = "Assets/Engine/Meshes/Shape/Sphere.bmsh";
+            // Values
+            static constexpr inline const char* DEFAULT_SOURCE = "Assets/Engine/Meshes/Shape/Cube.bmsh";
+            static constexpr inline const char* SPHERE_SOURCE  = "Assets/Engine/Meshes/Shape/Sphere.bmsh";
 
         public:
             Mesh(const FileSystem::Path& inFilepath);

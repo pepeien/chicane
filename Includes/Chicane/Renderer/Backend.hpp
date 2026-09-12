@@ -56,6 +56,7 @@ namespace Chicane
         public:
             // Renderer
             const Instance* getRenderer() const;
+            bool hasFill() const;
 
             // Layer
             std::vector<Layer*> findLayers(std::function<bool(const Layer* inLayer)> inPredicate) const;

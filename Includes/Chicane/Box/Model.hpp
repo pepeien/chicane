@@ -13,14 +13,20 @@ namespace Chicane
         class CHICANE_BOX Model : public Asset
         {
         public:
+            // File
             static constexpr inline const char* EXTENSION = ".bmdl";
-            static constexpr inline const char* TAG       = "Model";
 
+            // Tag
+            static constexpr inline const char* TAG = "Model";
+
+            // Attribute
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
-            static constexpr inline const char* DEFAULT_SOURCE        = "Assets/Engine/Models/Shape/Cube.bmdl";
-            static constexpr inline const char* SPHERE_SOURCE         = "Assets/Engine/Models/Shape/Sphere.bmdl";
-            static constexpr inline const char* DEFAULT_REFERENCE     = "Body";
-            static constexpr inline const char* SPHERE_REFERENCE      = "Sphere_Body";
+
+            // Values
+            static constexpr inline const char* DEFAULT_SOURCE    = "Assets/Engine/Models/Shape/Cube.bmdl";
+            static constexpr inline const char* DEFAULT_REFERENCE = "Body";
+            static constexpr inline const char* SPHERE_SOURCE     = "Assets/Engine/Models/Shape/Sphere.bmdl";
+            static constexpr inline const char* SPHERE_REFERENCE  = "Sphere_Body";
 
         public:
             static ModelVendor parseVendor(const String& inValue);

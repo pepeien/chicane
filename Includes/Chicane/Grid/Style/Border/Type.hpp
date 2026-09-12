@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -13,5 +14,20 @@ namespace Chicane
             None,
             Solid
         };
+
+        inline String toString(StyleBorderType inValue)
+        {
+            switch (inValue)
+            {
+            case StyleBorderType::None:
+                return "None";
+
+            case StyleBorderType::Solid:
+                return "Solid";
+
+            default:
+                return "";
+            }
+        }
     }
 }

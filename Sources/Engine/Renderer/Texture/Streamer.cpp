@@ -301,19 +301,30 @@ namespace Chicane
                 return;
             }
 
-            const Image::Raw encoded = inTexture.mips->levels[inMip].encoded;
-            if (encoded.empty())
+            if (inTexture.mips->levels[inMip].encoded.empty())
             {
                 return;
             }
 
-            const Draw::Id id = inTexture.id;
+            const Draw::Id                         id      = inTexture.id;
+            const std::shared_ptr<Image::MipChain> mips    = inTexture.mips;
+            const std::shared_ptr<Mailbox>         mailbox = m_mailbox;
             m_inFlight.insert(key);
 
-            const std::shared_ptr<Mailbox> mailbox = m_mailbox;
             Worker::submit(
-                [mailbox, encoded, id, inMip]()
+                [mailbox, mips, id, inMip]()
                 {
+                    if (!mailbox || !mips || inMip >= mips->levels.size())
+                    {
+                        return;
+                    }
+
+                    const Image::Raw& encoded = mips->levels[inMip].encoded;
+                    if (encoded.empty())
+                    {
+                        return;
+                    }
+
                     Image::Instance image = std::make_shared<Image>(encoded, ImageVendor::Png);
                     std::lock_guard<std::mutex> lock(mailbox->mutex);
                     mailbox->ready.push_back({id, inMip, image});

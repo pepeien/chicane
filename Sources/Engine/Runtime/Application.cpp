@@ -699,6 +699,7 @@ namespace Chicane
         Box::load(Box::Model::DEFAULT_SOURCE);
         Box::load(Box::Mesh::SPHERE_SOURCE);
         Box::load(Box::Texture::DEFAULT_SOURCE);
+
         uploadPreviewTextures();
     }
 
@@ -826,8 +827,8 @@ namespace Chicane
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
                 Renderer::DrawPoly3DCommandMesh subcommand;
-                subcommand.model          = resolveModelDrawId(group.getModel());
-                subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
+                subcommand.model                     = resolveModelDrawId(group.getModel());
+                subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
                 subcommand.instance.flags            = mesh->getFlags();
                 subcommand.instance.emissiveStrength = group.getEmissiveStrength();
 
@@ -918,8 +919,6 @@ namespace Chicane
 
         if (hasSceneDebug(Renderer::DebugMode::Skeletons))
         {
-            const Renderer::Draw::Reference sphereReference = Box::Model::SPHERE_REFERENCE;
-
             for (CMesh* mesh : inScene->getComponents<CMesh>())
             {
                 if (!mesh)
@@ -930,7 +929,7 @@ namespace Chicane
                 mesh->appendDebugWireframe(
                     skeletonLines,
                     command.meshes,
-                    sphereReference,
+                    Box::Model::SPHERE_REFERENCE,
                     Renderer::Debug::SKELETON_COLOR
                 );
             }

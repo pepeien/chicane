@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -16,6 +17,30 @@ namespace Chicane
             Foreground = 1 << 2,
             Outlined   = 1 << 3
         };
+
+        inline String toString(DrawPoly3DFlag inValue)
+        {
+            switch (inValue)
+            {
+            case DrawPoly3DFlag::None:
+                return "None";
+
+            case DrawPoly3DFlag::Lit:
+                return "Lit";
+
+            case DrawPoly3DFlag::Shadow:
+                return "Shadow";
+
+            case DrawPoly3DFlag::Foreground:
+                return "Foreground";
+
+            case DrawPoly3DFlag::Outlined:
+                return "Outlined";
+
+            default:
+                return "";
+            }
+        }
 
         inline constexpr DrawPoly3DFlag operator|(DrawPoly3DFlag inLeft, DrawPoly3DFlag inRight)
         {

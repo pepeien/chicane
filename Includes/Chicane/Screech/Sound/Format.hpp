@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Screech.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -26,5 +27,35 @@ namespace Chicane
             F32     = 5,
             Count
         };
+
+        inline String toString(SoundFormat inValue)
+        {
+            switch (inValue)
+            {
+            case SoundFormat::Unknown:
+                return "Unknown";
+
+            case SoundFormat::U8:
+                return "U8";
+
+            case SoundFormat::S16:
+                return "S16";
+
+            case SoundFormat::S24:
+                return "S24";
+
+            case SoundFormat::S32:
+                return "S32";
+
+            case SoundFormat::F32:
+                return "F32";
+
+            case SoundFormat::Count:
+                return "Count";
+
+            default:
+                return "";
+            }
+        }
     }
 }

@@ -75,21 +75,6 @@ namespace Chicane
             return AnimationLoop::Once;
         }
 
-        static const char* loopToString(AnimationLoop inValue)
-        {
-            switch (inValue)
-            {
-            case AnimationLoop::Repeat:
-                return "Repeat";
-
-            case AnimationLoop::PingPong:
-                return "PingPong";
-
-            default:
-                return "Once";
-            }
-        }
-
         static Transform readTransform(const pugi::xml_node& inNode)
         {
             Transform transform;
@@ -186,36 +171,40 @@ namespace Chicane
                 return;
             }
 
-            const pugi::xml_node clipNode = getXML().child(CLIP_TAG);
+            const pugi::xml_node clipNode = getXML().child(AnimationClip::TAG);
             if (Xml::isEmpty(clipNode))
             {
                 return;
             }
 
-            m_clip.duration   = Time::fromSeconds(Xml::getAttribute(CLIP_DURATION_ATTRIBUTE_NAME, clipNode).as_float());
-            m_clip.loop       = parseLoop(Xml::getAttribute(CLIP_LOOP_ATTRIBUTE_NAME, clipNode).as_string());
-            m_clip.iterations = Xml::getAttribute(CLIP_ITERATIONS_ATTRIBUTE_NAME, clipNode).as_int(1);
+            m_clip.duration =
+                Time::fromSeconds(Xml::getAttribute(AnimationClip::DURATION_ATTRIBUTE_NAME, clipNode).as_float());
+            m_clip.loop       = parseLoop(Xml::getAttribute(AnimationClip::LOOP_ATTRIBUTE_NAME, clipNode).as_string());
+            m_clip.iterations = Xml::getAttribute(AnimationClip::ITERATIONS_ATTRIBUTE_NAME, clipNode).as_int(1);
 
             for (const pugi::xml_node& trackNode : clipNode.children())
             {
-                if (!String(trackNode.name()).equals(TRACK_TAG))
+                if (!String(trackNode.name()).equals(AnimationTrack::TAG))
                 {
                     continue;
                 }
 
                 AnimationTrack track;
-                track.name = Xml::getAttribute(TRACK_NAME_ATTRIBUTE_NAME, trackNode).as_string();
+                track.name = Xml::getAttribute(AnimationTrack::NAME_ATTRIBUTE_NAME, trackNode).as_string();
 
                 for (const pugi::xml_node& keyframeNode : trackNode.children())
                 {
-                    if (!String(keyframeNode.name()).equals(KEYFRAME_TAG))
+                    if (!String(keyframeNode.name()).equals(AnimationKeyframe::TAG))
                     {
                         continue;
                     }
 
                     AnimationKeyframe keyframe;
-                    keyframe.time      = Time::fromSeconds(Xml::getAttribute(KEYFRAME_TIME_ATTRIBUTE_NAME, keyframeNode).as_float());
-                    keyframe.easing    = Xml::getAttribute(KEYFRAME_EASING_ATTRIBUTE_NAME, keyframeNode).as_string();
+                    keyframe.time = Time::fromSeconds(
+                        Xml::getAttribute(AnimationKeyframe::TIME_ATTRIBUTE_NAME, keyframeNode).as_float()
+                    );
+                    keyframe.easing =
+                        Xml::getAttribute(AnimationKeyframe::EASING_ATTRIBUTE_NAME, keyframeNode).as_string();
                     keyframe.transform = readTransform(keyframeNode);
                     track.addKeyframe(keyframe);
                 }
@@ -239,30 +228,42 @@ namespace Chicane
         void Animation::writeClip()
         {
             pugi::xml_node root     = getXML();
-            pugi::xml_node clipNode = root.child(CLIP_TAG);
+            pugi::xml_node clipNode = root.child(AnimationClip::TAG);
             if (!Xml::isEmpty(clipNode))
             {
                 root.remove_child(clipNode);
             }
 
-            clipNode = root.append_child(CLIP_TAG);
-            Xml::addAttribute(clipNode, CLIP_DURATION_ATTRIBUTE_NAME, String::sprint("%f", m_clip.duration.seconds()));
-            Xml::addAttribute(clipNode, CLIP_LOOP_ATTRIBUTE_NAME, loopToString(m_clip.loop));
-            Xml::addAttribute(clipNode, CLIP_ITERATIONS_ATTRIBUTE_NAME, String::sprint("%d", m_clip.iterations));
+            clipNode = root.append_child(AnimationClip::TAG);
+            Xml::addAttribute(
+                clipNode,
+                AnimationClip::DURATION_ATTRIBUTE_NAME,
+                String::sprint("%f", m_clip.duration.seconds())
+            );
+            Xml::addAttribute(clipNode, AnimationClip::LOOP_ATTRIBUTE_NAME, toString(m_clip.loop));
+            Xml::addAttribute(
+                clipNode,
+                AnimationClip::ITERATIONS_ATTRIBUTE_NAME,
+                String::sprint("%d", m_clip.iterations)
+            );
 
             for (const AnimationTrack& track : m_clip.tracks)
             {
-                pugi::xml_node trackNode = clipNode.append_child(TRACK_TAG);
-                Xml::addAttribute(trackNode, TRACK_NAME_ATTRIBUTE_NAME, track.name);
+                pugi::xml_node trackNode = clipNode.append_child(AnimationTrack::TAG);
+                Xml::addAttribute(trackNode, AnimationTrack::NAME_ATTRIBUTE_NAME, track.name);
 
                 for (const AnimationKeyframe& keyframe : track.keyframes)
                 {
-                    pugi::xml_node keyframeNode = trackNode.append_child(KEYFRAME_TAG);
-                    Xml::addAttribute(keyframeNode, KEYFRAME_TIME_ATTRIBUTE_NAME, String::sprint("%f", keyframe.time.seconds()));
+                    pugi::xml_node keyframeNode = trackNode.append_child(AnimationKeyframe::TAG);
+                    Xml::addAttribute(
+                        keyframeNode,
+                        AnimationKeyframe::TIME_ATTRIBUTE_NAME,
+                        String::sprint("%f", keyframe.time.seconds())
+                    );
 
                     if (!keyframe.easing.isEmpty())
                     {
-                        Xml::addAttribute(keyframeNode, KEYFRAME_EASING_ATTRIBUTE_NAME, keyframe.easing);
+                        Xml::addAttribute(keyframeNode, AnimationKeyframe::EASING_ATTRIBUTE_NAME, keyframe.easing);
                     }
 
                     writeTransform(keyframeNode, keyframe.transform);

@@ -59,7 +59,7 @@ namespace Chicane
 
         bool VulkanLSceneSky::onBeginRender(const Frame& inFrame)
         {
-            if (inFrame.getSkyInstance().model.id <= Draw::InvalidId || !m_sky)
+            if (!getBackend()->hasFill() || inFrame.getSkyInstance().model.id <= Draw::InvalidId || !m_sky)
             {
                 return false;
             }

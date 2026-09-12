@@ -4,6 +4,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -16,5 +17,23 @@ namespace Chicane
             Folder,
             File
         };
+
+        inline String toString(ItemType inValue)
+        {
+            switch (inValue)
+            {
+            case ItemType::Undefined:
+                return "Undefined";
+
+            case ItemType::Folder:
+                return "Folder";
+
+            case ItemType::File:
+                return "File";
+
+            default:
+                return "";
+            }
+        }
     }
 }
