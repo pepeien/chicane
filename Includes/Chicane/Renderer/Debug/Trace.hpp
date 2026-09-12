@@ -23,10 +23,10 @@ namespace Chicane
                 static constexpr inline float DEFAULT_DURATION = 2.0f;
 
             public:
-                Vertex::List vertices       = {};
-                Time         expireAt       = {};
-                bool         bIsPersistant  = false;
-                bool         bIsForOneFrame = false;
+                Vertex::List vertices              = {};
+                Time         expireAt              = {};
+                bool         bIsPersistant         = false;
+                bool         bInWillExpireOneFrame = false;
             };
         }
     }

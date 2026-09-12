@@ -117,12 +117,12 @@ namespace Chicane
             const Vec3  delta  = inDestination - inOrigin;
             const float length = std::sqrt(lengthSquared(delta));
 
-            outResponse.timestamp   = Time::Clock::now();
-            outResponse.traceStart  = inOrigin;
-            outResponse.traceEnd    = inDestination;
-            outResponse.distance    = inEnter * length;
-            outResponse.location    = inOrigin + delta * inEnter;
-            outResponse.impactPoint = closestPointOnBounds(outResponse.location, inBounds);
+            outResponse.timestamp = Time::Clock::now();
+            outResponse.start     = inOrigin;
+            outResponse.end       = inDestination;
+            outResponse.distance  = inEnter * length;
+            outResponse.location  = inOrigin + delta * inEnter;
+            outResponse.impact    = closestPointOnBounds(outResponse.location, inBounds);
         }
     }
 }

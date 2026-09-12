@@ -50,7 +50,7 @@ namespace Chicane
                 }
                 else if (inDuration <= 0.0f)
                 {
-                    trace.bIsForOneFrame = true;
+                    trace.bInWillExpireOneFrame = true;
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace Chicane
                                 return false;
                             }
 
-                            if (inTrace.bIsForOneFrame)
+                            if (inTrace.bInWillExpireOneFrame)
                             {
                                 return bInWillExpireOneFrame;
                             }
