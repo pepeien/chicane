@@ -1,0 +1,283 @@
+{
+    "title": "Engine",
+    "filename": "Engine",
+    "path": "Smoke/Engine",
+    "source": {
+        "header": "Includes/Chicane/Smoke/Engine.hpp",
+        "namespace": "Chicane::Smoke::Engine",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_ENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_ENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_ENGINE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_~ENGINE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "class",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_APPLICATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Smoke/Engine",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SMOKE_ENGINE_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Smoke/Engine",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Smoke/Engine",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_ENGINE_PLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Particle::List",
+                    "suffix": "",
+                    "path": "Smoke/Particle",
+                    "templates": []
+                },
+                "name": "getParticles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_ENGINE_GETPARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getParticleCount",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_ENGINE_GETPARTICLECOUNT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::unique_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "System",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_systems",
+                "description": "CHICANE_SMOKE_ENGINE_M_SYSTEMS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_ENGINE_DESCRIPTION"
+    },
+    "children": []
+}

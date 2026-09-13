@@ -1,0 +1,257 @@
+{
+    "title": "Module",
+    "filename": "Module",
+    "path": "Smoke/Module",
+    "source": {
+        "header": "Includes/Chicane/Smoke/Module.hpp",
+        "namespace": "Chicane::Smoke::Module",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::unique_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Module",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_SMOKE_MODULE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Module",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_MODULE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Module",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_MODULE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Module",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_~MODULE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Module",
+                    "suffix": "*",
+                    "path": "Smoke/Module",
+                    "templates": []
+                },
+                "name": "create",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SMOKE_MODULE_CREATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "inParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outDraws"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_MODULE_COLLECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTag",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_MODULE_GETTAG_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_tag",
+                "description": "CHICANE_SMOKE_MODULE_M_TAG_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_MODULE_DESCRIPTION"
+    },
+    "children": []
+}

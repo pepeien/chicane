@@ -1,0 +1,70 @@
+{
+    "title": "PlayInfo",
+    "filename": "PlayInfo",
+    "path": "Smoke/PlayInfo",
+    "source": {
+        "header": "Includes/Chicane/Smoke/PlayInfo.hpp",
+        "namespace": "Chicane::Smoke::PlayInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Transform",
+                    "suffix": "",
+                    "path": "Core/Math/Transform",
+                    "templates": []
+                },
+                "name": "transform",
+                "description": "CHICANE_SMOKE_PLAYINFO_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "origin",
+                "description": "CHICANE_SMOKE_PLAYINFO_ORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "destination",
+                "description": "CHICANE_SMOKE_PLAYINFO_DESTINATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasBeam",
+                "description": "CHICANE_SMOKE_PLAYINFO_BHASBEAM_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_PLAYINFO_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,263 @@
+{
+    "title": "Sprite",
+    "filename": "Sprite",
+    "path": "Smoke/Renderer/Sprite",
+    "source": {
+        "header": "Includes/Chicane/Smoke/Renderer/Sprite.hpp",
+        "namespace": "Chicane::Smoke::RendererSprite",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RendererSprite",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_RENDERERSPRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RendererSprite",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_RENDERERSPRITE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "inParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outDraws"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_COLLECT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TEXTURE_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_TEXTURE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADDITIVE",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_TYPE_ADDITIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADD",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_TYPE_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADDITIVE_LOWER",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_TYPE_ADDITIVE_LOWER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ADDITIVE_VALUE",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_ADDITIVE_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ALPHA_VALUE",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_ALPHA_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "blend",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_BLEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_SMOKE_RENDERERSPRITE_TEXTURE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_RENDERERSPRITE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,804 @@
+{
+    "title": "Spawn",
+    "filename": "Spawn",
+    "path": "Smoke/Spawn",
+    "source": {
+        "header": "Includes/Chicane/Smoke/Spawn.hpp",
+        "namespace": "Chicane::Smoke::Spawn",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Spawn",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SPAWN_SPAWN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Spawn",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SPAWN_SPAWN_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "emit",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SPAWN_EMIT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_SMOKE_SPAWN_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ORIGIN_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_ORIGIN_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RATE_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_RATE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BURST_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_BURST_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LIFETIME_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_LIFETIME_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPEED_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_SPEED_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SIZE_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_SIZE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SIZE_END_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_SIZE_END_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SPREAD_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_SPREAD_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RADIUS_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_RADIUS_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "COLOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "COLOR_END_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_COLOR_END_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_TYPE_POINT",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_TYPE_POINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_TYPE_SPHERE",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_TYPE_SPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_TYPE_BOX",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_TYPE_BOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_TYPE_CONE",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_TYPE_CONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_TYPE_ORIGIN",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_TYPE_ORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_TYPE_DESTINATION",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_TYPE_DESTINATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_TYPE_DESTINATION_LOWER",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_TYPE_DESTINATION_LOWER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_TYPE_IMPACT",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_TYPE_IMPACT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ANCHOR_TYPE_END",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_TYPE_END_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADDITIVE",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_TYPE_ADDITIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADD",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_TYPE_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_TYPE_ADDITIVE_LOWER",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_TYPE_ADDITIVE_LOWER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ADDITIVE_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_ADDITIVE_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLEND_ALPHA_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_BLEND_ALPHA_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LIFETIME_DEFAULT_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_LIFETIME_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LIFETIME_MIN_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_LIFETIME_MIN_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SIZE_DEFAULT_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_SIZE_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LENGTH_MIN_VALUE",
+                "description": "CHICANE_SMOKE_SPAWN_LENGTH_MIN_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "shape",
+                "description": "CHICANE_SMOKE_SPAWN_SHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "anchor",
+                "description": "CHICANE_SMOKE_SPAWN_ANCHOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rate",
+                "description": "CHICANE_SMOKE_SPAWN_RATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "burst",
+                "description": "CHICANE_SMOKE_SPAWN_BURST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "lifetime",
+                "description": "CHICANE_SMOKE_SPAWN_LIFETIME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "speed",
+                "description": "CHICANE_SMOKE_SPAWN_SPEED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_SMOKE_SPAWN_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "sizeEnd",
+                "description": "CHICANE_SMOKE_SPAWN_SIZEEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "spread",
+                "description": "CHICANE_SMOKE_SPAWN_SPREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "radius",
+                "description": "CHICANE_SMOKE_SPAWN_RADIUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_SMOKE_SPAWN_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "colorEnd",
+                "description": "CHICANE_SMOKE_SPAWN_COLOREND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "additive",
+                "description": "CHICANE_SMOKE_SPAWN_ADDITIVE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_SPAWN_DESCRIPTION"
+    },
+    "children": []
+}

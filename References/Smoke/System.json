@@ -1,0 +1,401 @@
+{
+    "title": "System",
+    "filename": "System",
+    "path": "Smoke/System",
+    "source": {
+        "header": "Includes/Chicane/Smoke/System.hpp",
+        "namespace": "Chicane::Smoke::System",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "System",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_SYSTEM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "System",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_SYSTEM_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~System",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_~SYSTEM_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setPlayInfo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_SETPLAYINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isAlive",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_SYSTEM_ISALIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outDraws"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SMOKE_SYSTEM_COLLECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_TICK_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_SMOKE_SYSTEM_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NAME_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SYSTEM_NAME_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DURATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SYSTEM_DURATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LOOPING_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_SYSTEM_LOOPING_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_SMOKE_SYSTEM_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "duration",
+                "description": "CHICANE_SMOKE_SYSTEM_DURATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "looping",
+                "description": "CHICANE_SMOKE_SYSTEM_LOOPING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "PlayInfo",
+                    "suffix": "",
+                    "path": "Smoke/PlayInfo",
+                    "templates": []
+                },
+                "name": "m_play",
+                "description": "CHICANE_SMOKE_SYSTEM_M_PLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Module::List",
+                    "suffix": "",
+                    "path": "Smoke/Module",
+                    "templates": []
+                },
+                "name": "m_modules",
+                "description": "CHICANE_SMOKE_SYSTEM_M_MODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Particle::List",
+                    "suffix": "",
+                    "path": "Smoke/Particle",
+                    "templates": []
+                },
+                "name": "m_particles",
+                "description": "CHICANE_SMOKE_SYSTEM_M_PARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_age",
+                "description": "CHICANE_SMOKE_SYSTEM_M_AGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_spawnAccumulator",
+                "description": "CHICANE_SMOKE_SYSTEM_M_SPAWNACCUMULATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bBurst",
+                "description": "CHICANE_SMOKE_SYSTEM_M_BBURST_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_SYSTEM_DESCRIPTION"
+    },
+    "children": []
+}

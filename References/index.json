@@ -7869,5 +7869,246 @@
                 ]
             }
         ]
+    },
+    {
+        "title": "Smoke",
+        "filename": "Smoke",
+        "path": "Smoke",
+        "source": {
+            "header": "Includes/Chicane/Smoke.hpp",
+            "namespace": "Chicane::Smoke",
+            "types": [],
+            "enums": [],
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": [],
+            "description": null
+        },
+        "children": [
+            {
+                "title": "Engine",
+                "filename": "Engine",
+                "path": "Smoke/Engine",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Engine.hpp",
+                    "namespace": "Chicane::Smoke::Engine",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Force",
+                "filename": "Force",
+                "path": "Smoke/Force",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Gravity",
+                        "filename": "Gravity",
+                        "path": "Smoke/Force/Gravity",
+                        "source": {
+                            "header": "Includes/Chicane/Smoke/Force/Gravity.hpp",
+                            "namespace": "Chicane::Smoke::ForceGravity",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Module",
+                "filename": "Module",
+                "path": "Smoke/Module",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Module.hpp",
+                    "namespace": "Chicane::Smoke::Module",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Parse",
+                "filename": "Parse",
+                "path": "Smoke/Parse",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Parse.hpp",
+                    "namespace": "Chicane::Smoke",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Particle",
+                "filename": "Particle",
+                "path": "Smoke/Particle",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Particle.hpp",
+                    "namespace": "Chicane::Smoke::Particle",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "PlayInfo",
+                "filename": "PlayInfo",
+                "path": "Smoke/PlayInfo",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/PlayInfo.hpp",
+                    "namespace": "Chicane::Smoke::PlayInfo",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Range",
+                "filename": "Range",
+                "path": "Smoke/Range",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Range.hpp",
+                    "namespace": "Chicane::Smoke::Range",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "Renderer",
+                "filename": "Renderer",
+                "path": "Smoke/Renderer",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Beam",
+                        "filename": "Beam",
+                        "path": "Smoke/Renderer/Beam",
+                        "source": {
+                            "header": "Includes/Chicane/Smoke/Renderer/Beam.hpp",
+                            "namespace": "Chicane::Smoke::RendererBeam",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Sprite",
+                        "filename": "Sprite",
+                        "path": "Smoke/Renderer/Sprite",
+                        "source": {
+                            "header": "Includes/Chicane/Smoke/Renderer/Sprite.hpp",
+                            "namespace": "Chicane::Smoke::RendererSprite",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Spawn",
+                "filename": "Spawn",
+                "path": "Smoke/Spawn",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/Spawn.hpp",
+                    "namespace": "Chicane::Smoke::Spawn",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
+                "title": "System",
+                "filename": "System",
+                "path": "Smoke/System",
+                "source": {
+                    "header": "Includes/Chicane/Smoke/System.hpp",
+                    "namespace": "Chicane::Smoke::System",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            }
+        ]
     }
 ]

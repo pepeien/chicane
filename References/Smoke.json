@@ -1,0 +1,74 @@
+{
+    "title": "Smoke",
+    "filename": "Smoke",
+    "path": "Smoke",
+    "source": {
+        "header": "Includes/Chicane/Smoke.hpp",
+        "namespace": "Chicane::Smoke",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_SMOKE void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_SMOKE void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdown",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SHUTDOWN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_SMOKE void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_TICK_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_SMOKE_DESCRIPTION"
+    },
+    "children": []
+}

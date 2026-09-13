@@ -1,0 +1,184 @@
+{
+    "title": "Gravity",
+    "filename": "Gravity",
+    "path": "Smoke/Force/Gravity",
+    "source": {
+        "header": "Includes/Chicane/Smoke/Force/Gravity.hpp",
+        "namespace": "Chicane::Smoke::ForceGravity",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ForceGravity",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_FORCEGRAVITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ForceGravity",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_FORCEGRAVITY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Particle::List",
+                            "suffix": "&",
+                            "path": "Smoke/Particle",
+                            "templates": []
+                        },
+                        "name": "outParticles"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PlayInfo",
+                            "suffix": "&",
+                            "path": "Smoke/PlayInfo",
+                            "templates": []
+                        },
+                        "name": "inPlay"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_TICK_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VALUE_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_VALUE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Z_ATTRIBUTE_NAME",
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_Z_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Z_DEFAULT_VALUE",
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_Z_DEFAULT_VALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "value",
+                "description": "CHICANE_SMOKE_FORCEGRAVITY_VALUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SMOKE_FORCEGRAVITY_DESCRIPTION"
+    },
+    "children": []
+}
