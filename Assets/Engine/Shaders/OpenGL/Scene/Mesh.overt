@@ -17,6 +17,7 @@ layout(location = 0) out Data {
     flat ivec4 textureMaps[3];
     flat int bIsLit;
     flat float emissiveStrength;
+    flat float tileSize;
     vec2 UV;
     vec3 normal;
     vec4 tangent;
@@ -44,6 +45,7 @@ void main() {
     outData.textureMaps[2]   = mesh.textures2;
     outData.bIsLit           = (mesh.flags & POLY_FLAG_LIT) != 0 ? 1 : 0;
     outData.emissiveStrength = mesh.emissiveStrength;
+    outData.tileSize         = mesh.tileSize;
     outData.UV               = inUV;
     outData.normal           = normalMatrix * inNormal;
     outData.tangent          = vec4(normalMatrix * inTangent.xyz, inTangent.w);

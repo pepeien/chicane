@@ -31,6 +31,7 @@ namespace Chicane
             static constexpr inline const char* ROTATION_ATTRIBUTE_NAME          = "rotation";
             static constexpr inline const char* SCALE_ATTRIBUTE_NAME             = "scale";
             static constexpr inline const char* EMISSIVE_STRENGTH_ATTRIBUTE_NAME = "emissiveStrength";
+            static constexpr inline const char* TILE_SIZE_ATTRIBUTE_NAME         = "tileSize";
 
         public:
             bool isValid() const;
@@ -63,6 +64,9 @@ namespace Chicane
             float getEmissiveStrength() const;
             void setEmissiveStrength(float inValue);
 
+            float getTileSize() const;
+            void setTileSize(float inValue);
+
         private:
             String         m_id               = "";
             String         m_bone             = "";
@@ -70,6 +74,7 @@ namespace Chicane
             TextureMaps    m_textures         = {};
             Transform      m_transform        = {};
             float          m_emissiveStrength = 1.0f;
+            float          m_tileSize         = 0.0f;
         };
     }
 }

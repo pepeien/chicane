@@ -10,6 +10,7 @@
 #include "../../Common/View.glsl"
 #include "../../Common/Shadow.glsl"
 #include "../../Common/Texture.glsl"
+#include "../../Common/Triplanar.glsl"
 
 layout(location = 0) out vec4 outColor;
 layout(location = 10) uniform int uTransparentPass;
@@ -27,6 +28,7 @@ layout(location = 0) in Data {
     flat ivec4 textureMaps[3];
     flat int bIsLit;
     flat float emissiveStrength;
+    flat float tileSize;
     vec2 UV;
     vec3 normal;
     vec4 tangent;
@@ -37,7 +39,17 @@ layout(location = 0) in Data {
 } inData;
 
 vec4 sampleMap(int index, vec2 uv) {
-    return sampleTextureSlot(index, uv);
+    float tileSize = inData.tileSize;
+    if (tileSize <= 0.0001) {
+        return sampleTextureSlot(index, uv);
+    }
+
+    vec3 worldPos = inData.meshPosition;
+    vec3 blend    = triplanarBlend(inData.normal);
+
+    return sampleTextureSlot(index, triplanarUvX(worldPos, tileSize)) * blend.x
+         + sampleTextureSlot(index, triplanarUvY(worldPos, tileSize)) * blend.y
+         + sampleTextureSlot(index, triplanarUvZ(worldPos, tileSize)) * blend.z;
 }
 
 void main() {
@@ -80,7 +92,7 @@ void main() {
     }
 
     vec3 normal = geometricNormal;
-    if (normalIndex >= 0) {
+    if (normalIndex >= 0 && inData.tileSize <= 0.0001) {
         mat3 tbn           = meshTangentFrame(geometricNormal, inData.tangent, inData.meshPosition, uv);
         vec3 tangentNormal = sampleMap(normalIndex, uv).xyz * 2.0 - 1.0;
         normal             = applyTangentNormal(tbn, tangentNormal);

@@ -155,6 +155,7 @@ namespace Chicane
         {
             AssetReference texture;
             texture.setFrom(inNode, inBase);
+
             m_textures[inMap] = texture;
         }
 
@@ -163,6 +164,7 @@ namespace Chicane
             AssetReference texture;
             texture.setSource(inSource);
             texture.setReference(inReference);
+
             m_textures[inMap] = texture;
         }
 
@@ -256,6 +258,16 @@ namespace Chicane
         void MeshGroup::setEmissiveStrength(float inValue)
         {
             m_emissiveStrength = std::max(0.0f, inValue);
+        }
+
+        float MeshGroup::getTileSize() const
+        {
+            return m_tileSize;
+        }
+
+        void MeshGroup::setTileSize(float inValue)
+        {
+            m_tileSize = std::max(0.0f, inValue);
         }
     }
 }

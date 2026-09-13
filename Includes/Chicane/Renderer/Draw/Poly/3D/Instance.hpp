@@ -43,7 +43,7 @@ namespace Chicane
             };
             DrawPoly3DFlag flags            = DrawPoly3DFlag::Lit | DrawPoly3DFlag::Shadow;
             float          emissiveStrength = 1.0f;
-            std::int32_t   _pad1            = 0;
+            float          tileSize         = 0.0f;
             std::int32_t   _pad2            = 0;
         };
     }

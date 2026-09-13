@@ -72,10 +72,16 @@ namespace Chicane
             {
                 groupNode.append_attribute(MeshGroup::BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
             }
+
             if (inGroup.getEmissiveStrength() != 1.0f)
             {
                 groupNode.append_attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME)
                     .set_value(inGroup.getEmissiveStrength());
+            }
+
+            if (inGroup.getTileSize() > 0.0f)
+            {
+                groupNode.append_attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME).set_value(inGroup.getTileSize());
             }
 
             // Model
@@ -156,6 +162,23 @@ namespace Chicane
             else
             {
                 strengthAttribute.set_value(inGroup.getEmissiveStrength());
+            }
+
+            pugi::xml_attribute tileSizeAttribute = foundGroupNode.attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME);
+            if (inGroup.getTileSize() <= 0.0f)
+            {
+                if (!tileSizeAttribute.empty())
+                {
+                    foundGroupNode.remove_attribute(tileSizeAttribute);
+                }
+            }
+            else if (tileSizeAttribute.empty())
+            {
+                foundGroupNode.append_attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME).set_value(inGroup.getTileSize());
+            }
+            else
+            {
+                tileSizeAttribute.set_value(inGroup.getTileSize());
             }
 
             // Model
@@ -335,6 +358,7 @@ namespace Chicane
                 group.setEmissiveStrength(
                     Xml::getAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, groupNode).as_float(1.0f)
                 );
+                group.setTileSize(Xml::getAttribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME, groupNode).as_float(0.0f));
                 group.setTransform(groupNode);
 
                 for (const auto& assetNode : groupNode.children())
