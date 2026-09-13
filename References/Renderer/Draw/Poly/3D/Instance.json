@@ -144,13 +144,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::int32_t",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "_pad1",
-                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PAD1_DESCRIPTION"
+                "name": "tileSize",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TILESIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
