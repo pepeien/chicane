@@ -1075,13 +1075,13 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
                             "templates": []
                         },
-                        "name": "inShouldPresentToWindow"
+                        "name": "inFrame"
                     }
                 ],
                 "modifiers": [
@@ -1103,6 +1103,51 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_CAPTURESCREENTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildBloom",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDBLOOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBloom",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYBLOOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBloomImages",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYBLOOMIMAGES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1563,6 +1608,114 @@
                 },
                 "name": "m_screenBlitFramebuffer",
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCREENBLITFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bloomColor",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLOOMCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bloomFramebuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLOOMFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_extractProgram",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_EXTRACTPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_blurProgram",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLURPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_compositeProgram",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_COMPOSITEPROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_postVertexArray",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_POSTVERTEXARRAY_DESCRIPTION"
             },
             {
                 "accessor": "private",

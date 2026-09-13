@@ -370,6 +370,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "VulkanBloom",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Bloom",
+                    "templates": []
+                },
+                "name": "bloom",
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAINIMAGE_BLOOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::unordered_map",
                     "suffix": "",
                     "path": "",

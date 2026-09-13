@@ -23,6 +23,19 @@
                 },
                 "name": "model",
                 "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "exposure",
+                "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_EXPOSURE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_DESCRIPTION"

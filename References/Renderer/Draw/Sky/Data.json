@@ -36,6 +36,19 @@
                 },
                 "name": "textures",
                 "description": "CHICANE_RENDERER_DRAWSKYDATA_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "exposure",
+                "description": "CHICANE_RENDERER_DRAWSKYDATA_EXPOSURE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWSKYDATA_DESCRIPTION"

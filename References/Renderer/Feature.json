@@ -92,6 +92,39 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "HDR",
+                "description": "CHICANE_RENDERER_RENDERERFEATURE_HDR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Light",
+                "description": "CHICANE_RENDERER_RENDERERFEATURE_LIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Default",
+                "description": "CHICANE_RENDERER_RENDERERFEATURE_DEFAULT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "All",
                 "description": "CHICANE_RENDERER_RENDERERFEATURE_ALL_DESCRIPTION"
             }

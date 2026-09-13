@@ -133,6 +133,23 @@
                 "description": "CHICANE_RENDERER_VULKANBACKEND_GETTEXTUREDESCRIPTORSET_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getSceneColorFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETSCENECOLORFORMAT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -762,6 +779,19 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBloomPass",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Bloom/Pass",
+                    "templates": []
+                },
+                "name": "bloom",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_BLOOM_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "modifiers": [],

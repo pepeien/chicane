@@ -1,0 +1,272 @@
+{
+    "title": "Bloom",
+    "filename": "Bloom",
+    "path": "Renderer/Backend/Vulkan/Bloom",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Bloom.hpp",
+        "namespace": "Chicane::Renderer::VulkanBloom",
+        "types": [
+            {
+                "name": "Images",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanImageInfo",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/Image/Info",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VULKANBLOOM_IMAGES_DESCRIPTION"
+            },
+            {
+                "name": "Framebuffers",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::Framebuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VULKANBLOOM_FRAMEBUFFERS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPhysicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOM_SETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOM_DESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildFramebuffers",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::RenderPass",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtractPass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::RenderPass",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBlurPass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::RenderPass",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCompositePass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanImageInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Image/Info",
+                            "templates": []
+                        },
+                        "name": "inColorImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOM_REBUILDFRAMEBUFFERS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Images",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Bloom",
+                    "templates": []
+                },
+                "name": "images",
+                "description": "CHICANE_RENDERER_VULKANBLOOM_IMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Framebuffers",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Bloom",
+                    "templates": []
+                },
+                "name": "framebuffers",
+                "description": "CHICANE_RENDERER_VULKANBLOOM_FRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Framebuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extractFramebuffer",
+                "description": "CHICANE_RENDERER_VULKANBLOOM_EXTRACTFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Framebuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "compositeFramebuffer",
+                "description": "CHICANE_RENDERER_VULKANBLOOM_COMPOSITEFRAMEBUFFER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANBLOOM_DESCRIPTION"
+    },
+    "children": []
+}

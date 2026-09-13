@@ -5093,6 +5093,41 @@
                         },
                         "children": [
                             {
+                                "title": "Bloom",
+                                "filename": "Bloom",
+                                "path": "Renderer/Backend/Vulkan/Bloom",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Bloom.hpp",
+                                    "namespace": "Chicane::Renderer::VulkanBloom",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Pass",
+                                        "filename": "Pass",
+                                        "path": "Renderer/Backend/Vulkan/Bloom/Pass",
+                                        "source": {
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/Bloom/Pass.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanBloomPass",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
                                 "title": "Buffer",
                                 "filename": "Buffer",
                                 "path": "Renderer/Backend/Vulkan/Buffer",

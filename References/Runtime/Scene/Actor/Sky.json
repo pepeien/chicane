@@ -96,12 +96,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "getEnvironmentIntensity",
+                "name": "getIntensity",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_ASKY_GETENVIRONMENTINTENSITY_DESCRIPTION"
+                "description": "CHICANE_ASKY_GETINTENSITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -113,7 +113,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setEnvironmentIntensity",
+                "name": "setIntensity",
                 "parameters": [
                     {
                         "type": {
@@ -123,11 +123,54 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inIntensity"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_ASKY_SETENVIRONMENTINTENSITY_DESCRIPTION"
+                "description": "CHICANE_ASKY_SETINTENSITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getExposure",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ASKY_GETEXPOSURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setExposure",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_SETEXPOSURE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -182,8 +225,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_environmentIntensity",
-                "description": "CHICANE_ASKY_M_ENVIRONMENTINTENSITY_DESCRIPTION"
+                "name": "m_intensity",
+                "description": "CHICANE_ASKY_M_INTENSITY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_exposure",
+                "description": "CHICANE_ASKY_M_EXPOSURE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ASKY_DESCRIPTION"

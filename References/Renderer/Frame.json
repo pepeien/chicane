@@ -638,6 +638,77 @@
                 "description": "CHICANE_RENDERER_FRAME_ISFOREGROUNDDRAW_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_SETFEATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RendererFeature",
+                    "suffix": "",
+                    "path": "Renderer/Feature",
+                    "templates": []
+                },
+                "name": "getFeature",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETFEATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASFEATURE_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {
@@ -929,6 +1000,19 @@
                 },
                 "name": "m_immediateIndices",
                 "description": "CHICANE_RENDERER_FRAME_M_IMMEDIATEINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RendererFeature",
+                    "suffix": "",
+                    "path": "Renderer/Feature",
+                    "templates": []
+                },
+                "name": "m_features",
+                "description": "CHICANE_RENDERER_FRAME_M_FEATURES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_FRAME_DESCRIPTION"

@@ -1,0 +1,242 @@
+{
+    "title": "Pass",
+    "filename": "Pass",
+    "path": "Renderer/Backend/Vulkan/Bloom/Pass",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Bloom/Pass.hpp",
+        "namespace": "Chicane::Renderer::VulkanBloomPass",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanBackend",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_DESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildFramebuffers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_REBUILDFRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "apply",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanFrame",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "templates": []
+                        },
+                        "name": "inGpuFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInShouldPresentToWindow"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_APPLY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initPipelines",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_INITPIPELINES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyPipelines",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_DESTROYPIPELINES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBackend",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/Vulkan",
+                    "templates": []
+                },
+                "name": "m_backend",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_BACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_extract",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_EXTRACT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_blur",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_BLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "m_composite",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_COMPOSITE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorBundle",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_extractDescriptor",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_EXTRACTDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorBundle",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_blurDescriptor",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_BLURDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorBundle",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_compositeDescriptor",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_COMPOSITEDESCRIPTOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANBLOOMPASS_DESCRIPTION"
+    },
+    "children": []
+}

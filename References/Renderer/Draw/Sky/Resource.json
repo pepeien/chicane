@@ -116,6 +116,19 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "exposure",
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_EXPOSURE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
