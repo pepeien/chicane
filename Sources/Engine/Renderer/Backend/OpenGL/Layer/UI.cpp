@@ -122,6 +122,7 @@ namespace Chicane
             glBindTextureUnit(2, backend->getTargetColor());
             glUniform1i(2, 2);
             glUniform1i(3, backend->getScreenTextureId());
+            glUniform1i(4, inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0);
 
             const DrawPoly2DInstance::List& instances = inFrame.getInstances2D();
 
@@ -302,7 +303,12 @@ namespace Chicane
         void OpenGLLUI::buildGlyphBuffer()
         {
             glCreateBuffers(1, &m_glyphBuffer);
-            glNamedBufferData(m_glyphBuffer, m_backend->getResourceBudget(Resource::UIGlyphs), nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(
+                m_glyphBuffer,
+                m_backend->getResourceBudget(Resource::UIGlyphs),
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, m_glyphBuffer);
         }

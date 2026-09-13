@@ -20,6 +20,8 @@ namespace Chicane
 
             m_immediateVertices.clear();
             m_immediateIndices.clear();
+
+            m_features = RendererFeature::Default;
         }
 
         void Frame::setup(const DrawPolyResource::Map& inResources)
@@ -74,7 +76,8 @@ namespace Chicane
 
         void Frame::setup(const DrawSkyResource& inResource)
         {
-            m_skyInstance.model = inResource.getDraw().model;
+            m_skyInstance.model    = inResource.getDraw().model;
+            m_skyInstance.exposure = inResource.exposure;
         }
 
         const View& Frame::getCamera() const
@@ -345,6 +348,21 @@ namespace Chicane
             }
 
             return m_3DInstancesFlat[inDraw.instanceStart].has(DrawPoly3DFlag::Foreground);
+        }
+
+        void Frame::setFeature(RendererFeature inValue)
+        {
+            m_features = inValue;
+        }
+
+        RendererFeature Frame::getFeature() const
+        {
+            return m_features;
+        }
+
+        bool Frame::hasFeature(RendererFeature inFeature) const
+        {
+            return (m_features & inFeature) == inFeature;
         }
 
         void Frame::resetCamera()

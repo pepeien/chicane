@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -89,6 +90,7 @@ namespace Chicane
             destroyGpuQueries();
             destroyTextureData();
             destroyTarget();
+            destroyBloom();
             destroyContext();
         }
 
@@ -153,7 +155,7 @@ namespace Chicane
                 [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
             );
 
-            presentTarget(!isScreenComposited(inFrame));
+            presentTarget(inFrame);
             bindTextureTable();
 
             renderLayers(
@@ -470,8 +472,8 @@ namespace Chicane
             // AMD
             if (GLAD_GL_ATI_meminfo)
             {
-                GLint mem[4];
-                glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem);
+                std::array<GLint, 4> mem = {};
+                glGetIntegerv(GL_TEXTURE_FREE_MEMORY_ATI, mem.data());
 
                 VRAM = static_cast<size_t>(mem[0]) * 1024;
             }
@@ -652,7 +654,7 @@ namespace Chicane
             const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
             for (std::uint32_t level = 0; level < mipLevels; level++)
             {
-                const std::uint32_t width = Image::mipDimension(inClass.size, level);
+                const std::uint32_t        width = Image::mipDimension(inClass.size, level);
                 std::vector<unsigned char> pixels(static_cast<std::size_t>(width) * width * 4, 255);
                 glTextureSubImage3D(
                     inClass.texture,
@@ -672,15 +674,15 @@ namespace Chicane
 
         void OpenGLBackend::growClass(std::uint32_t inClass, std::uint32_t inLayers)
         {
-            SizeClass& sizeClass = m_classes[inClass];
-            const std::uint32_t layers = std::min(std::max(inLayers, sizeClass.allocated + 1), m_maxArrayLayers);
+            SizeClass&          sizeClass = m_classes[inClass];
+            const std::uint32_t layers    = std::min(std::max(inLayers, sizeClass.allocated + 1), m_maxArrayLayers);
             if (layers <= sizeClass.allocated && sizeClass.texture != 0)
             {
                 return;
             }
 
-            const std::uint32_t previous = sizeClass.texture;
-            const std::uint32_t oldCount = sizeClass.allocated;
+            const std::uint32_t previous  = sizeClass.texture;
+            const std::uint32_t oldCount  = sizeClass.allocated;
             const std::uint32_t mipLevels = Image::mipCount(sizeClass.size, sizeClass.size);
             createClassArray(sizeClass, layers);
 
@@ -731,10 +733,8 @@ namespace Chicane
 
             if (sizeClass.used >= sizeClass.allocated)
             {
-                const std::uint32_t next = std::min(
-                    std::max(sizeClass.allocated * 2, sizeClass.allocated + 4),
-                    m_maxArrayLayers
-                );
+                const std::uint32_t next =
+                    std::min(std::max(sizeClass.allocated * 2, sizeClass.allocated + 4), m_maxArrayLayers);
                 if (next <= sizeClass.allocated)
                 {
                     return ~0u;
@@ -810,7 +810,7 @@ namespace Chicane
                     image = lastImage;
                 }
 
-                const std::uint32_t levelWidth = Image::mipDimension(sizeClass.size, gpuLevel);
+                const std::uint32_t       levelWidth = Image::mipDimension(sizeClass.size, gpuLevel);
                 std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelWidth * 4, 255);
                 if (image && image->getPixels())
                 {
@@ -864,7 +864,7 @@ namespace Chicane
             destroyTarget();
 
             glCreateTextures(GL_TEXTURE_2D, 1, &m_targetColor);
-            glTextureStorage2D(m_targetColor, 1, GL_RGBA8, width, height);
+            glTextureStorage2D(m_targetColor, 1, GL_RGBA16F, width, height);
             glTextureParameteri(m_targetColor, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTextureParameteri(m_targetColor, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_targetColor, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -886,10 +886,14 @@ namespace Chicane
 
             m_targetWidth  = width;
             m_targetHeight = height;
+
+            buildBloom();
         }
 
         void OpenGLBackend::destroyTarget()
         {
+            destroyBloomImages();
+
             if (m_screenBlitFramebuffer != 0)
             {
                 glDeleteFramebuffers(1, &m_screenBlitFramebuffer);
@@ -933,40 +937,177 @@ namespace Chicane
             return m_screenTextureId;
         }
 
-        void OpenGLBackend::presentTarget(bool inShouldPresentToWindow) const
+        void OpenGLBackend::presentTarget(const Frame& inFrame) const
         {
             if (m_targetFramebuffer == 0)
             {
                 return;
             }
 
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            glDrawBuffer(GL_BACK);
+            glDisable(GL_DEPTH_TEST);
+            glDisable(GL_BLEND);
+            glDisable(GL_CULL_FACE);
 
-            if (inShouldPresentToWindow)
+            const bool bShouldPresentToWindow = !isScreenComposited(inFrame);
+            if (!bShouldPresentToWindow || m_compositeProgram == 0)
             {
-                glBindFramebuffer(GL_READ_FRAMEBUFFER, m_targetFramebuffer);
-                glReadBuffer(GL_COLOR_ATTACHMENT0);
-                glBlitFramebuffer(
-                    0,
-                    0,
-                    static_cast<GLint>(m_targetWidth),
-                    static_cast<GLint>(m_targetHeight),
-                    0,
-                    0,
-                    static_cast<GLint>(m_targetWidth),
-                    static_cast<GLint>(m_targetHeight),
-                    GL_COLOR_BUFFER_BIT,
-                    GL_NEAREST
-                );
-            }
-            else
-            {
+                glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                glDrawBuffer(GL_BACK);
                 glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
+
+                return;
+            }
+
+            const bool bHdr = inFrame.hasFeature(RendererFeature::HDR);
+
+            glBindVertexArray(m_postVertexArray);
+
+            if (m_extractProgram != 0 && m_bloomColor.at(0) != 0)
+            {
+                const std::uint32_t bloomWidth  = std::max(1u, m_targetWidth / 2u);
+                const std::uint32_t bloomHeight = std::max(1u, m_targetHeight / 2u);
+
+                glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(0));
+                glViewport(0, 0, static_cast<GLsizei>(bloomWidth), static_cast<GLsizei>(bloomHeight));
+                glUseProgram(m_extractProgram);
+                glBindTextureUnit(0, m_targetColor);
+                glDrawArrays(GL_TRIANGLES, 0, 3);
+
+                auto blurPass = [&](std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY)
+                {
+                    glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(inDestination));
+                    glUseProgram(m_blurProgram);
+                    glProgramUniform2f(m_blurProgram, 1, inX, inY);
+                    glBindTextureUnit(0, m_bloomColor.at(inSource));
+                    glDrawArrays(GL_TRIANGLES, 0, 3);
+                };
+
+                blurPass(0, 1, 1.0f, 0.0f);
+                blurPass(1, 0, 0.0f, 1.0f);
+                blurPass(0, 1, 1.0f, 0.0f);
+                blurPass(1, 0, 0.0f, 1.0f);
             }
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glDrawBuffer(GL_BACK);
+            glViewport(0, 0, static_cast<GLsizei>(m_targetWidth), static_cast<GLsizei>(m_targetHeight));
+            glUseProgram(m_compositeProgram);
+            glProgramUniform1i(m_compositeProgram, 10, bHdr ? 1 : 0);
+            glBindTextureUnit(0, m_targetColor);
+            glBindTextureUnit(1, m_bloomColor.at(0) != 0 ? m_bloomColor.at(0) : m_targetColor);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+
+            glBindVertexArray(0);
+            glUseProgram(0);
+        }
+
+        void OpenGLBackend::buildBloom()
+        {
+            if (m_extractProgram == 0)
+            {
+                Shader::List extractShaders;
+                Shader       extractVertex;
+                extractVertex.type   = ShaderType::Vertex;
+                extractVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
+                extractShaders.push_back(extractVertex);
+                Shader extractFragment;
+                extractFragment.type   = ShaderType::Fragment;
+                extractFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Extract.ofrag";
+                extractShaders.push_back(extractFragment);
+
+                Shader::List blurShaders;
+                Shader       blurVertex;
+                blurVertex.type   = ShaderType::Vertex;
+                blurVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
+                blurShaders.push_back(blurVertex);
+                Shader blurFragment;
+                blurFragment.type   = ShaderType::Fragment;
+                blurFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Blur.ofrag";
+                blurShaders.push_back(blurFragment);
+
+                Shader::List compositeShaders;
+                Shader       compositeVertex;
+                compositeVertex.type   = ShaderType::Vertex;
+                compositeVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
+                compositeShaders.push_back(compositeVertex);
+                Shader compositeFragment;
+                compositeFragment.type   = ShaderType::Fragment;
+                compositeFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Composite.ofrag";
+                compositeShaders.push_back(compositeFragment);
+
+                m_extractProgram   = initShader(extractShaders);
+                m_blurProgram      = initShader(blurShaders);
+                m_compositeProgram = initShader(compositeShaders);
+                m_postVertexArray  = initVertexArray(0);
+            }
+
+            destroyBloomImages();
+
+            const std::uint32_t bloomWidth  = std::max(1u, m_targetWidth / 2u);
+            const std::uint32_t bloomHeight = std::max(1u, m_targetHeight / 2u);
+
+            glCreateTextures(GL_TEXTURE_2D, 2, m_bloomColor.data());
+            glCreateFramebuffers(2, m_bloomFramebuffer.data());
+
+            for (int index = 0; index < 2; ++index)
+            {
+                glTextureStorage2D(m_bloomColor.at(index), 1, GL_RGBA16F, bloomWidth, bloomHeight);
+                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glNamedFramebufferTexture(
+                    m_bloomFramebuffer.at(index),
+                    GL_COLOR_ATTACHMENT0,
+                    m_bloomColor.at(index),
+                    0
+                );
+            }
+        }
+
+        void OpenGLBackend::destroyBloomImages()
+        {
+            if (m_bloomFramebuffer.at(0) != 0)
+            {
+                glDeleteFramebuffers(2, m_bloomFramebuffer.data());
+                m_bloomFramebuffer.fill(0);
+            }
+
+            if (m_bloomColor.at(0) != 0)
+            {
+                glDeleteTextures(2, m_bloomColor.data());
+                m_bloomColor.fill(0);
+            }
+        }
+
+        void OpenGLBackend::destroyBloom()
+        {
+            destroyBloomImages();
+
+            if (m_extractProgram != 0)
+            {
+                destroyProgram(m_extractProgram);
+                m_extractProgram = 0;
+            }
+
+            if (m_blurProgram != 0)
+            {
+                destroyProgram(m_blurProgram);
+                m_blurProgram = 0;
+            }
+
+            if (m_compositeProgram != 0)
+            {
+                destroyProgram(m_compositeProgram);
+                m_compositeProgram = 0;
+            }
+
+            if (m_postVertexArray != 0)
+            {
+                destroyVertexArray(m_postVertexArray);
+                m_postVertexArray = 0;
+            }
         }
 
         void OpenGLBackend::captureScreenTarget()

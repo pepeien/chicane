@@ -127,8 +127,12 @@ namespace Chicane
 
             void buildTarget();
             void destroyTarget();
-            void presentTarget(bool inShouldPresentToWindow) const;
+            void presentTarget(const Frame& inFrame) const;
             void captureScreenTarget();
+
+            void buildBloom();
+            void destroyBloom();
+            void destroyBloomImages();
 
             // GPU timing
             void buildGpuQueries();
@@ -156,24 +160,30 @@ namespace Chicane
             std::vector<OpenGLFrame> frames;
 
         private:
-            std::uint32_t             m_currentFrameIndex;
+            std::uint32_t                              m_currentFrameIndex;
 
-            std::vector<TextureSlot>                  m_textures;
+            std::vector<TextureSlot>                   m_textures;
             std::array<SizeClass, TEXTURE_CLASS_COUNT> m_classes;
-            std::uint32_t                             m_textureTable;
-            std::uint32_t                             m_maxArrayLayers;
-            std::uint32_t             m_targetFramebuffer;
-            std::uint32_t     m_targetColor;
-            std::uint32_t     m_targetDepth;
-            std::uint32_t     m_targetWidth;
-            std::uint32_t     m_targetHeight;
-            std::uint32_t     m_screenBlitFramebuffer;
-            Draw::Id          m_screenTextureId;
+            std::uint32_t                              m_textureTable;
+            std::uint32_t                              m_maxArrayLayers;
+            std::uint32_t                              m_targetFramebuffer;
+            std::uint32_t                              m_targetColor;
+            std::uint32_t                              m_targetDepth;
+            std::uint32_t                              m_targetWidth;
+            std::uint32_t                              m_targetHeight;
+            std::uint32_t                              m_screenBlitFramebuffer;
+            std::array<std::uint32_t, 2>               m_bloomColor          = {};
+            std::array<std::uint32_t, 2>               m_bloomFramebuffer    = {};
+            std::uint32_t                              m_extractProgram      = 0;
+            std::uint32_t                              m_blurProgram         = 0;
+            std::uint32_t                              m_compositeProgram    = 0;
+            std::uint32_t                              m_postVertexArray     = 0;
+            Draw::Id                                   m_screenTextureId;
 
             // GPU timing
-            GpuQueries        m_gpuQueries;
-            std::vector<bool> m_gpuQueryPending;
-            std::uint32_t     m_gpuQueryWrite;
+            GpuQueries                                 m_gpuQueries;
+            std::vector<bool>                          m_gpuQueryPending;
+            std::uint32_t                              m_gpuQueryWrite;
         };
     }
 }

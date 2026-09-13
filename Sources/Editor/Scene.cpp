@@ -43,7 +43,8 @@ namespace Editor
     {
         Chicane::ASky* sky = createActor<Chicane::ASky>();
         sky->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Editor/Skies/Default.bsky"));
-        sky->setEnvironmentIntensity(0.30f);
+        sky->setIntensity(0.30f);
+        sky->setExposure(5.5f);
     }
 
     void Scene::spawnLights()

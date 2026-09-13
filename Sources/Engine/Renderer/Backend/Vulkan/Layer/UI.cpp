@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
@@ -144,18 +145,23 @@ namespace Chicane
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
 
-                const std::int32_t screenPush[4] = {backend->getScreenTextureId(), 0, 0, 0};
+                const std::array<std::int32_t, 4> screenPush = {
+                    backend->getScreenTextureId(),
+                    inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0,
+                    0,
+                    0
+                };
                 commandBuffer.pushConstants(
                     m_graphicsPipeline.layout,
                     vk::ShaderStageFlagBits::eFragment,
                     0,
                     sizeof(screenPush),
-                    screenPush
+                    screenPush.data()
                 );
 
-                vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                const std::array<vk::Buffer, 1>     vertexBuffers = {m_primitiveVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(m_primitiveIndexBuffer.instance, 0, vk::IndexType::eUint32);
                 commandBuffer.setViewport(0, 1, &viewport);
                 commandBuffer.setScissor(0, 1, &scissor);

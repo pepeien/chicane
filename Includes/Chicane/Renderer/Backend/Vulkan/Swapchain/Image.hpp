@@ -6,6 +6,7 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Bloom.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Buffer/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
@@ -54,6 +55,7 @@ namespace Chicane
             VulkanImageInfo                             colorImage;
             VulkanImageInfo                             targetImage;
             VulkanImageInfo                             depthImage;
+            VulkanBloom                                 bloom;
 
             // Buffer
             std::unordered_map<String, vk::Framebuffer> framebuffers;

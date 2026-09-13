@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 
 #include <algorithm>
+#include <array>
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
@@ -60,6 +61,8 @@ namespace Chicane
             buildTimestampQueries();
             buildTextureDescriptor();
             buildLayers();
+            bloom.init(this);
+            bloom.rebuildFramebuffers();
         }
 
         void VulkanBackend::onShutdown()
@@ -72,6 +75,8 @@ namespace Chicane
             Backend::onShutdown();
 
             logicalDevice.waitIdle();
+
+            bloom.destroy();
 
             // Vulkan
             destroyCommandPool();
@@ -141,7 +146,7 @@ namespace Chicane
                     &nextFrame,
                     [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
                 );
-                nextFrame.flushTarget(!isScreenComposited(inFrame));
+                bloom.apply(nextFrame, inFrame, !isScreenComposited(inFrame));
                 renderLayers(
                     inFrame,
                     &nextFrame,
@@ -152,12 +157,14 @@ namespace Chicane
             }
             nextFrame.end();
 
-            vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
+            const std::array<vk::PipelineStageFlags, 1> waitStages = {
+                vk::PipelineStageFlagBits::eColorAttachmentOutput
+            };
 
             vk::SubmitInfo submitInfo;
             submitInfo.waitSemaphoreCount   = 1;
             submitInfo.pWaitSemaphores      = &nextFrame.imageAvailableSemaphore;
-            submitInfo.pWaitDstStageMask    = waitStages;
+            submitInfo.pWaitDstStageMask    = waitStages.data();
             submitInfo.commandBufferCount   = 1;
             submitInfo.pCommandBuffers      = &nextFrame.commandBuffer;
             submitInfo.signalSemaphoreCount = 1;
@@ -209,6 +216,11 @@ namespace Chicane
             }
 
             return textureDescriptorSets.at(m_currentFrameIndex);
+        }
+
+        vk::Format VulkanBackend::getSceneColorFormat() const
+        {
+            return vk::Format::eR16G16B16A16Sfloat;
         }
 
         vk::Viewport VulkanBackend::getVkViewport(Layer* inLayer) const
@@ -334,7 +346,8 @@ namespace Chicane
 
                 // Images
                 image.setupColorImage(swapchain.colorFormat, swapchain.extent);
-                image.setupTargetImage(swapchain.colorFormat, swapchain.extent);
+                image.setupTargetImage(getSceneColorFormat(), swapchain.extent);
+                image.bloom.setup(logicalDevice, physicalDevice, getSceneColorFormat(), swapchain.extent);
                 image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
             }
         }
@@ -362,10 +375,13 @@ namespace Chicane
                 return;
             }
 
+            bloom.destroy();
             destroySwapchain();
             buildSwapchain();
 
             rebuildLayers();
+            bloom.init(this);
+            bloom.rebuildFramebuffers();
         }
 
         void VulkanBackend::buildFrames()
@@ -455,13 +471,13 @@ namespace Chicane
                 return;
             }
 
-            std::uint64_t timestamps[2] = {0, 0};
-            vk::Result    result        = logicalDevice.getQueryPoolResults(
+            std::array<std::uint64_t, 2> timestamps = {0, 0};
+            vk::Result                   result     = logicalDevice.getQueryPoolResults(
                 m_timestampQueryPool,
                 inFrameIndex * 2U,
                 2U,
                 sizeof(timestamps),
-                timestamps,
+                timestamps.data(),
                 sizeof(std::uint64_t),
                 vk::QueryResultFlagBits::e64
             );
@@ -592,9 +608,9 @@ namespace Chicane
                     m_screenTextureId = texture.id;
                     if (!swapchain.images.empty() && swapchain.images.front().targetImage.view)
                     {
-                        const VulkanImageInfo& target = swapchain.images.front().targetImage;
-                        info.imageView                = target.view;
-                        info.sampler                  = target.sampler;
+                        const VulkanImageInfo& target                  = swapchain.images.front().targetImage;
+                        info.imageView                                 = target.view;
+                        info.sampler                                   = target.sampler;
                         textures[static_cast<std::size_t>(texture.id)] = nullptr;
                         writeTextureDescriptor(texture.id, info);
                     }

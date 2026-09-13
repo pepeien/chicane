@@ -9,6 +9,7 @@
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Bloom/Pass.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
@@ -45,6 +46,9 @@ namespace Chicane
             vk::Viewport getVkViewport(Layer* inLayer) const;
             vk::Rect2D getVkScissor(Layer* inLayer) const;
             vk::DescriptorSet getTextureDescriptorSet() const;
+            vk::Format getSceneColorFormat() const;
+
+            VulkanBloomPass bloom;
 
         private:
             void buildInstance();

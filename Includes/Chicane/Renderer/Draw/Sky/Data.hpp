@@ -13,6 +13,7 @@ namespace Chicane
         public:
             Draw::Reference     model    = "";
             Draw::ReferenceList textures = {};
+            float               exposure = 1.0f;
         };
     }
 }

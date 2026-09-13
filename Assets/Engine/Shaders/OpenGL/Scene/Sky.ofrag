@@ -1,11 +1,13 @@
 #version 460
 
 layout(binding = 1) uniform samplerCube material;
+layout(location = 4) uniform float intensity;
 
 layout(location = 0) out vec4 outColor;
 
 layout(location = 0) in vec3 inUV;
 
 void main() {
-    outColor = texture(material, inUV);
+    vec3 sampleColor = texture(material, inUV).rgb;
+    outColor = vec4(sampleColor * intensity, 1.0);
 }

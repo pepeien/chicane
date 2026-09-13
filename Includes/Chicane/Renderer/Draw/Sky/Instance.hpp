@@ -11,7 +11,8 @@ namespace Chicane
         struct CHICANE_RENDERER DrawSkyInstance
         {
         public:
-            DrawPoly model = {};
+            DrawPoly model    = {};
+            float    exposure = 1.0f;
         };
     }
 }

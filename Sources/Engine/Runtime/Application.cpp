@@ -881,6 +881,7 @@ namespace Chicane
             Renderer::DrawSkyData data;
             data.reference = asset->getFilepath();
             data.model     = resolveModelDrawId(asset->getModel());
+            data.exposure  = sky->getExposure();
 
             for (const Box::AssetReference& texture : asset->getTextures())
             {

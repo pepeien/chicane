@@ -18,7 +18,11 @@ namespace Chicane
             Traces    = 1 << 3,
             Colliders = 1 << 4,
             Skeletons = 1 << 5,
-            All       = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons
+            HDR       = 1 << 6,
+            Light     = 1 << 7,
+
+            Default = Fill | Light,
+            All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light
         };
 
         inline String toString(RendererFeature inValue)
@@ -45,6 +49,15 @@ namespace Chicane
 
             case RendererFeature::Skeletons:
                 return "Skeletons";
+
+            case RendererFeature::HDR:
+                return "HDR";
+
+            case RendererFeature::Light:
+                return "Light";
+
+            case RendererFeature::Default:
+                return "Default";
 
             case RendererFeature::All:
                 return "All";

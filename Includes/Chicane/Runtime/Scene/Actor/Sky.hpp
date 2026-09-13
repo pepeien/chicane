@@ -25,12 +25,16 @@ namespace Chicane
 
         CLight* getEnvironmentLight() const;
 
-        float getEnvironmentIntensity() const;
-        void setEnvironmentIntensity(float inIntensity);
+        float getIntensity() const;
+        void setIntensity(float inValue);
+
+        float getExposure() const;
+        void setExposure(float inValue);
 
     protected:
         const Box::Sky* m_asset;
         CLight*         m_environment;
-        float           m_environmentIntensity;
+        float           m_intensity;
+        float           m_exposure;
     };
 }

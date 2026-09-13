@@ -165,7 +165,7 @@ namespace Editor
         // Render pass
         vk::AttachmentDescription colorAttachment;
         colorAttachment.flags         = vk::AttachmentDescriptionFlags();
-        colorAttachment.format        = backend->swapchain.colorFormat;
+        colorAttachment.format        = backend->getSceneColorFormat();
         colorAttachment.samples       = vk::SampleCountFlagBits::e1;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;

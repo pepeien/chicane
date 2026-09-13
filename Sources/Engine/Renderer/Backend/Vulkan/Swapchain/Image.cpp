@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
@@ -22,6 +24,7 @@ namespace Chicane
 
             destroyColorImage();
             destroyTargetImage();
+            bloom.destroy(logicalDevice);
             destroyDepthImage();
             destroySync();
         }

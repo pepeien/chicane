@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp"
 
+#include <array>
+
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
@@ -95,10 +97,19 @@ namespace Chicane
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
 
-                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
+                const float intensity = inFrame.getSkyInstance().exposure;
+                commandBuffer.pushConstants(
+                    m_graphicsPipeline.layout,
+                    vk::ShaderStageFlagBits::eFragment,
+                    0,
+                    sizeof(float),
+                    &intensity
+                );
 
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                const std::array<vk::Buffer, 1>     vertexBuffers = {parent->modelVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
+
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
                 commandBuffer.drawIndexed(draw.indexCount, 1, draw.indexStart, draw.vertexStart, 0);
             }
@@ -176,7 +187,7 @@ namespace Chicane
 
             // Attachments
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.format        = backend->getSceneColorFormat();
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
@@ -228,6 +239,7 @@ namespace Chicane
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
                 .addDescriptorSetLayout(m_textureDescriptor.setLayout)
+                .addPushConstant(vk::PushConstantRange(vk::ShaderStageFlagBits::eFragment, 0, sizeof(float)))
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

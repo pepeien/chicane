@@ -25,7 +25,7 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_features(static_cast<std::uint8_t>(RendererFeature::Fill)),
+              m_features(static_cast<std::uint8_t>(RendererFeature::Default)),
               m_backend(nullptr)
         {}
 
@@ -54,6 +54,7 @@ namespace Chicane
             syncDirtyResources();
 
             Frame& currentFrame = getCurrentFrame();
+            currentFrame.setFeature(getFeature());
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
@@ -148,6 +149,8 @@ namespace Chicane
 
         Draw::Id Instance::loadSky(const DrawSkyData& inData)
         {
+            m_skyResource.exposure = inData.exposure;
+
             if (findSky(inData.reference) != Draw::InvalidId)
             {
                 return m_skyResource.getDraw().id;
@@ -181,7 +184,8 @@ namespace Chicane
         void Instance::disableFeature(RendererFeature inFeature)
         {
             m_features.fetch_and(
-                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inFeature)), std::memory_order_relaxed
+                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inFeature)),
+                std::memory_order_relaxed
             );
         }
 

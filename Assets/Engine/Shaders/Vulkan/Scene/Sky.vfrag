@@ -2,10 +2,15 @@
 
 layout(set = 1, binding = 0) uniform samplerCube material;
 
+layout(push_constant) uniform SkyPush {
+    float intensity;
+} push;
+
 layout(location = 0) out vec4 outColor;
 
 layout(location = 0) in vec3 inUV;
 
 void main() {
-	outColor = texture(material, inUV);
+    vec3 sampleColor = texture(material, inUV).rgb;
+    outColor = vec4(sampleColor * push.intensity, 1.0);
 }

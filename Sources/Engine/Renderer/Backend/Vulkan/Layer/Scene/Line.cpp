@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstddef>
 #include <cstring>
 
@@ -92,8 +93,7 @@ namespace Chicane
 
         bool VulkanLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
-            const Instance* renderer = getBackend()->getRenderer();
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) && renderer->hasFeature(RendererFeature::Wireframe))
+            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) && inFrame.hasFeature(RendererFeature::Wireframe))
             {
                 return true;
             }
@@ -141,7 +141,6 @@ namespace Chicane
                 return;
             }
 
-            const Instance*   renderer      = backend->getRenderer();
             VulkanFrame&      frame         = *((VulkanFrame*)inData);
             vk::CommandBuffer commandBuffer = frame.commandBuffer;
 
@@ -168,9 +167,9 @@ namespace Chicane
                 m_meshPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 commandBuffer.setLineWidth(1.0f);
 
-                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                const std::array<vk::Buffer, 1>     vertexBuffers = {parent->modelVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 auto drawBatch = [&](DrawPolyMode inMode)
@@ -197,7 +196,7 @@ namespace Chicane
                     drawBatch(DrawPolyMode::Line);
                 }
 
-                if (renderer->hasFeature(RendererFeature::Wireframe))
+                if (inFrame.hasFeature(RendererFeature::Wireframe))
                 {
                     for (const DrawPoly& draw : inFrame.getSceneDraws())
                     {
@@ -217,22 +216,22 @@ namespace Chicane
                 m_outlineMaskPipeline.bind(commandBuffer);
                 m_outlineMaskPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
-                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                const std::array<vk::Buffer, 1>     vertexBuffers = {parent->modelVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 drawOutlineMeshes(inFrame, commandBuffer, m_outlineMaskPipeline.layout, 0.0f, 0.0f);
 
                 m_outlinePipeline.bind(commandBuffer);
                 m_outlinePipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 const float scaleX = viewport.width > 0.0f ? 4.0f / viewport.width : 0.0f;
                 const float scaleY = viewport.height > 0.0f ? 4.0f / viewport.height : 0.0f;
 
-                static const float meshesOffsets[8][2] = {
+                static const std::array<std::array<float, 2>, 8> meshesOffsets = {{
                     {1.0f,         0.0f        },
                     {-1.0f,        0.0f        },
                     {0.0f,         1.0f        },
@@ -241,9 +240,9 @@ namespace Chicane
                     {0.70710678f,  -0.70710678f},
                     {-0.70710678f, 0.70710678f },
                     {-0.70710678f, -0.70710678f}
-                };
+                }};
 
-                for (const float* offset : meshesOffsets)
+                for (const std::array<float, 2>& offset : meshesOffsets)
                 {
                     drawOutlineMeshes(
                         inFrame,
@@ -262,9 +261,9 @@ namespace Chicane
                     VulkanLSceneLineImmediateBuffer& immediateBuffer = immediateBufferFor(frame);
                     uploadImmediateGeometry(immediateBuffer, inFrame);
 
-                    vk::Buffer     vertexBuffers[] = {immediateBuffer.vertexBuffer.instance};
-                    vk::DeviceSize offsets[]       = {0};
-                    commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                    const std::array<vk::Buffer, 1>     vertexBuffers = {immediateBuffer.vertexBuffer.instance};
+                    const std::array<vk::DeviceSize, 1> offsets       = {0};
+                    commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
 
                     for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
                     {
@@ -379,7 +378,7 @@ namespace Chicane
             depth.maxDepthBounds        = 1.0f;
 
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.format        = backend->getSceneColorFormat();
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
@@ -646,7 +645,7 @@ namespace Chicane
             float              inOffsetY
         ) const
         {
-            const float push[8] = {
+            const std::array<float, 8> push = {
                 inOffsetX,
                 inOffsetY,
                 0.0f,
@@ -661,7 +660,7 @@ namespace Chicane
                 vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment,
                 0,
                 sizeof(push),
-                push
+                push.data()
             );
 
             for (const DrawPoly& draw : inFrame.getOutlineDraws())

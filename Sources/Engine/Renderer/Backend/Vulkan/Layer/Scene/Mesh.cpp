@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 
+#include <array>
+
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
@@ -63,7 +65,7 @@ namespace Chicane
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
 
-            if (getBackend()->hasFeature(RendererFeature::Fill))
+            if (inFrame.hasFeature(RendererFeature::Fill))
             {
                 VulkanLScene* parent = backend->getLayer<VulkanLScene>(SCENE_LAYER_ID);
 
@@ -71,10 +73,10 @@ namespace Chicane
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
 
-                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
+                const std::array<vk::Buffer, 1>     vertexBuffers = {parent->modelVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
 
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 auto drawMeshes = [&]()

@@ -38,6 +38,12 @@ namespace Editor
         CH_FUNCTION()
         void onSkeletonsToggle();
 
+        CH_FUNCTION()
+        void onLitToggle();
+
+        CH_FUNCTION()
+        void onHdrToggle();
+
     private:
         Chicane::Renderer::Instance* getRenderer() const;
         void syncFlags();
@@ -56,5 +62,9 @@ namespace Editor
         Chicane::String collidersState;
         CH_FIELD()
         Chicane::String skeletonsState;
+        CH_FIELD()
+        Chicane::String litState;
+        CH_FIELD()
+        Chicane::String hdrState;
     };
 }

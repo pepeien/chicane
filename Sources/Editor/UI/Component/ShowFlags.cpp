@@ -19,7 +19,9 @@ namespace Editor
           boundsState("idle"),
           tracesState("idle"),
           collidersState("idle"),
-          skeletonsState("idle")
+          skeletonsState("idle"),
+          litState("idle"),
+          hdrState("idle")
     {
         load("Assets/Editor/UI/Components/ShowFlags.grid", "Assets/Editor/UI/Components/ShowFlags.decal");
     }
@@ -61,6 +63,16 @@ namespace Editor
         toggleFeature(Chicane::Renderer::RendererFeature::Skeletons);
     }
 
+    void ShowFlags::onLitToggle()
+    {
+        toggleFeature(Chicane::Renderer::RendererFeature::Light);
+    }
+
+    void ShowFlags::onHdrToggle()
+    {
+        toggleFeature(Chicane::Renderer::RendererFeature::HDR);
+    }
+
     Chicane::Renderer::Instance* ShowFlags::getRenderer() const
     {
         return Chicane::Application::getInstance().getRenderer();
@@ -76,6 +88,8 @@ namespace Editor
         tracesState    = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces));
         collidersState = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Colliders));
         skeletonsState = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Skeletons));
+        litState       = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Light));
+        hdrState       = flagState(renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::HDR));
     }
 
     void ShowFlags::toggleFeature(Chicane::Renderer::RendererFeature inFeature)

@@ -1,8 +1,12 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 
+#include <cmath>
+#include <vector>
+
 #include <glad/gl.h>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Image.hpp"
 
 #include "Chicane/Renderer/Backend/OpenGL.hpp"
 
@@ -10,6 +14,15 @@ namespace Chicane
 {
     namespace Renderer
     {
+        static float srgbToLinear(float inValue)
+        {
+            if (inValue <= 0.04045f)
+            {
+                return inValue / 12.92f;
+            }
+
+            return std::pow((inValue + 0.055f) / 1.055f, 2.4f);
+        }
         OpenGLLSceneSky::OpenGLLSceneSky()
             : Layer(SCENE_SKY_LAYER_ID)
         {}
@@ -61,6 +74,7 @@ namespace Chicane
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
             glBindTextureUnit(1, m_texturesBuffer);
+            glProgramUniform1f(m_shaderProgram, 4, inFrame.getSkyInstance().exposure);
 
             Viewport viewport = getBackend<OpenGLBackend>()->getGLViewport(this);
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
@@ -159,7 +173,7 @@ namespace Chicane
             glTextureStorage2D(
                 m_texturesBuffer,
                 static_cast<GLsizei>(SKY_MIP_LEVELS),
-                GL_RGBA8,
+                GL_RGBA16F,
                 static_cast<GLsizei>(SKY_TEXTURE_SIZE),
                 static_cast<GLsizei>(SKY_TEXTURE_SIZE)
             );
@@ -183,29 +197,41 @@ namespace Chicane
         {
             for (std::uint32_t level = 0; level < SKY_MIP_LEVELS; ++level)
             {
-                glClearTexImage(m_texturesBuffer, static_cast<GLint>(level), GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                glClearTexImage(m_texturesBuffer, static_cast<GLint>(level), GL_RGBA, GL_FLOAT, nullptr);
             }
         }
 
         void OpenGLLSceneSky::updateTextureData(const DrawSky& inValue)
         {
+            std::vector<unsigned char> srgb(static_cast<std::size_t>(SKY_TEXTURE_SIZE) * SKY_TEXTURE_SIZE * 4u);
+            std::vector<float>         linear(srgb.size());
+
             int side = 0;
             for (const DrawTexture& texture : inValue.textures)
             {
                 if (const Image::Instance image = texture.getSampleImage())
                 {
+                    image->blit(srgb.data(), static_cast<int>(SKY_TEXTURE_SIZE), static_cast<int>(SKY_TEXTURE_SIZE));
+
+                    for (std::size_t index = 0; index < linear.size(); ++index)
+                    {
+                        const float channel = static_cast<float>(srgb[index]) / 255.0f;
+                        const bool  bAlpha  = (index % 4u) == 3u;
+                        linear[index]       = bAlpha ? channel : srgbToLinear(channel);
+                    }
+
                     glTextureSubImage3D(
                         m_texturesBuffer,
                         0,
                         0,
                         0,
                         side,
-                        image->getWidth(),
-                        image->getHeight(),
+                        static_cast<GLsizei>(SKY_TEXTURE_SIZE),
+                        static_cast<GLsizei>(SKY_TEXTURE_SIZE),
                         1,
                         GL_RGBA,
-                        GL_UNSIGNED_BYTE,
-                        image->getPixels()
+                        GL_FLOAT,
+                        linear.data()
                     );
                 }
 

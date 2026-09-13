@@ -45,6 +45,7 @@ layout(push_constant) uniform ScreenPush {
 #include "../Common/Glyph.glsl"
 #include "../Common/Rounded.glsl"
 #include "../Common/Filter.glsl"
+#include "../Common/Tonemap.glsl"
 
 vec2 getUITextureUV(int textureIndex, vec2 uv) {
     vec2 result = clamp(uv, 0.0, 1.0);
@@ -57,7 +58,12 @@ vec2 getUITextureUV(int textureIndex, vec2 uv) {
 }
 
 vec3 sampleUITexture(int textureIndex, vec2 uv) {
-    return texture(textures[nonuniformEXT(textureIndex)], getUITextureUV(textureIndex, uv)).rgb;
+    vec3 color = texture(textures[nonuniformEXT(textureIndex)], getUITextureUV(textureIndex, uv)).rgb;
+    if (textureIndex == screen.data.x) {
+        return screen.data.y != 0 ? acesTonemap(color) : clamp(color, 0.0, 1.0);
+    }
+
+    return color;
 }
 
 void main() {

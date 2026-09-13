@@ -14,6 +14,7 @@
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Sky/Instance.hpp"
 #include "Chicane/Renderer/Draw/Sky/Resource.hpp"
+#include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Light.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -65,6 +66,10 @@ namespace Chicane
 
             bool isForegroundDraw(const DrawPoly& inDraw) const;
 
+            void setFeature(RendererFeature inValue);
+            RendererFeature getFeature() const;
+            bool hasFeature(RendererFeature inFeature) const;
+
         protected:
             void resetCamera();
             void resetLights();
@@ -98,6 +103,8 @@ namespace Chicane
 
             Vertex::List             m_immediateVertices = {};
             Vertex::Indices          m_immediateIndices  = {};
+
+            RendererFeature          m_features = RendererFeature::Default;
         };
     }
 }

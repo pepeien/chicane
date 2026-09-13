@@ -21,6 +21,9 @@ namespace Chicane
 
             void reset();
 
+        public:
+            float exposure = 1.0f;
+
         private:
             DrawSky m_draw = {};
         };
