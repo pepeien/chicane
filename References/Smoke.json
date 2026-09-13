@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -30,7 +30,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -45,7 +45,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE void",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []

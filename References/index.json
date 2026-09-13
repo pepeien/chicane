@@ -274,6 +274,23 @@
                 ]
             },
             {
+                "title": "Effect",
+                "filename": "Effect",
+                "path": "Box/Effect",
+                "source": {
+                    "header": "Includes/Chicane/Box/Effect.hpp",
+                    "namespace": "Chicane::Box::Effect",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
                 "title": "Font",
                 "filename": "Font",
                 "path": "Box/Font",

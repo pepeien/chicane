@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE float",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -51,7 +51,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE float",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -66,9 +66,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKEVec3",
+                    "name": "Vec3",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
                 "name": "randomDirection",
@@ -81,9 +81,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKERange",
+                    "name": "Range",
                     "suffix": "",
-                    "path": "",
+                    "path": "Smoke/Range",
                     "templates": []
                 },
                 "name": "parseRange",
@@ -127,7 +127,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE float",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -173,7 +173,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE bool",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -219,7 +219,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKE std::uint32_t",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -265,9 +265,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKEString",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "parseString",
@@ -311,9 +311,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKEVec3",
+                    "name": "Vec3",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
                 "name": "parseVec3",
@@ -357,9 +357,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CHICANE_SMOKEVec4",
+                    "name": "Vec4",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vec/Vec4",
                     "templates": []
                 },
                 "name": "parseColor",

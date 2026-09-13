@@ -105,6 +105,17 @@
                 },
                 "name": "Sound",
                 "description": "CHICANE_BOX_ASSETTYPE_SOUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Effect",
+                "description": "CHICANE_BOX_ASSETTYPE_EFFECT_DESCRIPTION"
             }
         ],
         "constructors": [],
