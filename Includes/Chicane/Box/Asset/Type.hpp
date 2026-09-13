@@ -16,7 +16,8 @@ namespace Chicane
             Skeleton,  // Bone hierarchy referenced by `Mesh` and `Animation`
             Texture,   // Image
             Sky,       // `Texture`s compilation with a `Model` shape that produces a sky
-            Sound,     // Sound
+            Sound,     // Sound tracks
+            Effect,    // Visual effects
         };
 
         inline String toString(AssetType inValue)
@@ -49,6 +50,9 @@ namespace Chicane
 
             case AssetType::Sound:
                 return "Sound";
+
+            case AssetType::Effect:
+                return "Effect";
 
             default:
                 return "";

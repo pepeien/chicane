@@ -8,6 +8,7 @@
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Service.hpp"
+#include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
@@ -613,6 +614,21 @@ namespace Chicane
             return getAsset<Mesh>(inFilePath);
         }
 
+        const Effect* loadEffect(const FileSystem::Path& inFilePath)
+        {
+            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Effect)
+            {
+                throw std::runtime_error(inFilePath.toString() + " is not an effect");
+            }
+
+            if (!hasAsset(inFilePath))
+            {
+                return addAsset<Effect>(inFilePath);
+            }
+
+            return getAsset<Effect>(inFilePath);
+        }
+
         const Sky* loadSky(const FileSystem::Path& inFilePath)
         {
             if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sky)
@@ -745,6 +761,9 @@ namespace Chicane
 
             case AssetType::Texture:
                 return loadTexture(inFilePath);
+
+            case AssetType::Effect:
+                return loadEffect(inFilePath);
 
             default:
                 return nullptr;

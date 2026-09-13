@@ -79,6 +79,12 @@ private:
         const Chicane::FileSystem::Path&          inOutput
     );
 
+    void createEffect(
+        const Chicane::String&                    inId,
+        const Chicane::ProgramParam::Positionals& inSources,
+        const Chicane::FileSystem::Path&          inOutput
+    );
+
     void createFromGltf(
         const Chicane::String&           inId,
         const Chicane::FileSystem::Path& inSource,

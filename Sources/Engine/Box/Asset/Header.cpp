@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
@@ -22,7 +23,8 @@ namespace Chicane
             {AssetType::Skeleton,  Skeleton::TAG },
             {AssetType::Sky,       Sky::TAG      },
             {AssetType::Sound,     Sound::TAG    },
-            {AssetType::Texture,   Texture::TAG  }
+            {AssetType::Texture,   Texture::TAG  },
+            {AssetType::Effect,    Effect::TAG   }
         };
 
         const std::unordered_map<AssetType, String> EXTENSIONS = {
@@ -33,7 +35,8 @@ namespace Chicane
             {AssetType::Skeleton,  Skeleton::EXTENSION },
             {AssetType::Sky,       Sky::EXTENSION      },
             {AssetType::Sound,     Sound::EXTENSION    },
-            {AssetType::Texture,   Texture::EXTENSION  }
+            {AssetType::Texture,   Texture::EXTENSION  },
+            {AssetType::Effect,    Effect::EXTENSION   }
         };
 
         bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)

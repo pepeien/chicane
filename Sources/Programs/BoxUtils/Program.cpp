@@ -1,5 +1,6 @@
 #include "Program.hpp"
 
+#include <array>
 #include <cctype>
 #include <cstdint>
 #include <exception>
@@ -20,6 +21,7 @@
 #include <Chicane/Box/Animation/Gltf.hpp>
 #include <Chicane/Box/Animation/Loop.hpp>
 #include <Chicane/Box/Animation/Track.hpp>
+#include <Chicane/Box/Effect.hpp>
 #include <Chicane/Box/Font.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
@@ -191,6 +193,11 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
 
     case Chicane::Box::AssetType::Texture:
         createTexture(id, sources, output);
+
+        break;
+
+    case Chicane::Box::AssetType::Effect:
+        createEffect(id, sources, output);
 
         break;
 
@@ -638,6 +645,27 @@ void Program::createSkeleton(
     asset.saveXML();
 }
 
+void Program::createEffect(
+    const Chicane::String&                    inId,
+    const Chicane::ProgramParam::Positionals&,
+    const Chicane::FileSystem::Path&          inOutput
+)
+{
+    Chicane::FileSystem::Path output = inOutput;
+
+    if (output.isEmpty())
+    {
+        Chicane::String location = inId;
+        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Effect));
+
+        output = location;
+    }
+
+    Chicane::Box::Effect asset(output);
+    asset.setId(inId);
+    asset.saveXML();
+}
+
 void Program::createAnimation(
     const Chicane::String&                    inId,
     const Chicane::ProgramParam::Positionals& inSources,
@@ -908,8 +936,8 @@ void Program::createFromGltf(
 
     if (fallbackPath == Chicane::Box::Texture::DEFAULT_SOURCE && !Chicane::FileSystem::exists(fallbackPath))
     {
-        const unsigned char             pixel[4] = {255, 255, 255, 255};
-        const Chicane::Image            image(pixel, 1, 1, 4, 4);
+        const std::array<unsigned char, 4> pixel = {255, 255, 255, 255};
+        const Chicane::Image              image(pixel.data(), 1, 1, 4, 4);
         const Chicane::FileSystem::Path path =
             directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
 
