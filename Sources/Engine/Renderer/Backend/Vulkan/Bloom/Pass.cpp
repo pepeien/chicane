@@ -57,97 +57,6 @@ namespace Chicane
         {
             VulkanBackend* backend = m_backend;
 
-            auto makeFullscreen = [&](VulkanGraphicsPipeline&                     outPipeline,
-                                      const char*                                 inFragment,
-                                      const std::vector<vk::DescriptorSetLayout>& inLayouts,
-                                      vk::Format                                  inFormat,
-                                      bool                                        bInHasPush)
-            {
-                VulkanShaderStageCreateInfo vertexShader;
-                vertexShader.path = "Assets/Engine/Shaders/Vulkan/Post/Fullscreen.vvert";
-                vertexShader.type = vk::ShaderStageFlagBits::eVertex;
-
-                VulkanShaderStageCreateInfo fragmentShader;
-                fragmentShader.path = inFragment;
-                fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
-
-                vk::AttachmentDescription colorAttachment;
-                colorAttachment.format        = inFormat;
-                colorAttachment.samples       = vk::SampleCountFlagBits::e1;
-                colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
-                colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
-                colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-                colorAttachment.finalLayout   = vk::ImageLayout::eShaderReadOnlyOptimal;
-
-                vk::AttachmentReference colorReference;
-                colorReference.attachment = 0;
-                colorReference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
-
-                vk::SubpassDependency dependency;
-                dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-                dependency.dstSubpass = 0;
-                dependency.srcStageMask =
-                    vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader;
-                dependency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
-                dependency.srcAccessMask = vk::AccessFlagBits::eShaderRead;
-                dependency.dstAccessMask = vk::AccessFlagBits::eColorAttachmentWrite;
-
-                vk::SubpassDescription subpass;
-                subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
-                subpass.colorAttachmentCount = 1;
-                subpass.pColorAttachments    = &colorReference;
-
-                vk::PipelineRasterizationStateCreateInfo rasterization;
-                rasterization.polygonMode = vk::PolygonMode::eFill;
-                rasterization.cullMode    = vk::CullModeFlagBits::eNone;
-                rasterization.frontFace   = vk::FrontFace::eCounterClockwise;
-
-                vk::PipelineDepthStencilStateCreateInfo depth;
-                depth.depthTestEnable  = false;
-                depth.depthWriteEnable = false;
-
-                vk::Viewport viewport;
-                viewport.width    = static_cast<float>(backend->swapchain.extent.width);
-                viewport.height   = static_cast<float>(backend->swapchain.extent.height);
-                viewport.minDepth = 0.0f;
-                viewport.maxDepth = 1.0f;
-
-                vk::Rect2D scissor;
-                scissor.extent = backend->swapchain.extent;
-
-                auto builder =
-                    VulkanGraphicsPipelineBuilder()
-                        .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
-                        .addViewport(viewport)
-                        .addDynamicState(vk::DynamicState::eViewport)
-                        .addScissor(scissor)
-                        .addDynamicState(vk::DynamicState::eScissor)
-                        .addShaderStage(vertexShader, backend->logicalDevice)
-                        .addShaderStage(fragmentShader, backend->logicalDevice)
-                        .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
-                        .addAttachment(colorAttachment)
-                        .addSubpassDependecy(dependency)
-                        .addSubpass(subpass)
-                        .setDepthStencil(depth)
-                        .setRasterization(rasterization);
-
-                for (const vk::DescriptorSetLayout& layout : inLayouts)
-                {
-                    builder = builder.addDescriptorSetLayout(layout);
-                }
-
-                if (bInHasPush)
-                {
-                    vk::PushConstantRange range;
-                    range.stageFlags = vk::ShaderStageFlagBits::eFragment;
-                    range.offset     = 0;
-                    range.size       = sizeof(float) * 2;
-                    builder          = builder.addPushConstant(range);
-                }
-
-                builder.build(outPipeline, backend->logicalDevice);
-            };
-
             VulkanDescriptorSetLayoutBidingsCreateInfo extractBindings;
             extractBindings.count = 1;
             extractBindings.indices.push_back(0);
@@ -197,14 +106,14 @@ namespace Chicane
                 m_extractDescriptor.pool
             );
 
-            makeFullscreen(
+            initFullscreenPipeline(
                 m_extract,
                 "Assets/Engine/Shaders/Vulkan/Post/Extract.vfrag",
                 {m_extractDescriptor.setLayout},
                 backend->getSceneColorFormat(),
                 false
             );
-            makeFullscreen(
+            initFullscreenPipeline(
                 m_blur,
                 "Assets/Engine/Shaders/Vulkan/Post/Blur.vfrag",
                 {m_blurDescriptor.setLayout},
@@ -334,48 +243,6 @@ namespace Chicane
             VulkanSwapchainImage& image         = inGpuFrame.image;
             vk::CommandBuffer     commandBuffer = inGpuFrame.commandBuffer;
 
-            auto updateSample = [&](vk::DescriptorSet inSet, std::uint32_t inBinding, const VulkanImageInfo& inImage)
-            {
-                vk::DescriptorImageInfo info;
-                info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                info.imageView   = inImage.view;
-                info.sampler     = inImage.sampler;
-
-                vk::WriteDescriptorSet write;
-                write.dstSet          = inSet;
-                write.dstBinding      = inBinding;
-                write.descriptorCount = 1;
-                write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                write.pImageInfo      = &info;
-                m_backend->logicalDevice.updateDescriptorSets(write, nullptr);
-            };
-
-            auto beginPass =
-                [&](const VulkanGraphicsPipeline& inPipeline, vk::Framebuffer inFramebuffer, vk::Extent2D inExtent)
-            {
-                vk::Viewport viewport;
-                viewport.width    = static_cast<float>(inExtent.width);
-                viewport.height   = static_cast<float>(inExtent.height);
-                viewport.minDepth = 0.0f;
-                viewport.maxDepth = 1.0f;
-                commandBuffer.setViewport(0, 1, &viewport);
-
-                vk::Rect2D scissor;
-                scissor.extent = inExtent;
-                commandBuffer.setScissor(0, 1, &scissor);
-
-                vk::ClearValue clear;
-                clear.color = vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f);
-
-                vk::RenderPassBeginInfo beginInfo;
-                beginInfo.renderPass        = inPipeline.renderPass;
-                beginInfo.framebuffer       = inFramebuffer;
-                beginInfo.renderArea.extent = inExtent;
-                beginInfo.clearValueCount   = 1;
-                beginInfo.pClearValues      = &clear;
-                commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
-            };
-
             commandBuffer.pipelineBarrier(
                 vk::PipelineStageFlagBits::eColorAttachmentOutput,
                 vk::PipelineStageFlagBits::eFragmentShader,
@@ -435,49 +302,27 @@ namespace Chicane
                 return;
             }
 
-            const bool bHdr = inFrame.hasFeature(RendererFeature::HDR);
+            const bool bIsHDREnabled = inFrame.hasFeature(RendererFeature::HDR);
 
             updateSample(m_extractDescriptor.set, 0, image.targetImage);
-            beginPass(m_extract, image.bloom.extractFramebuffer, image.bloom.images.at(0).extent);
+            beginPass(commandBuffer, m_extract, image.bloom.extractFramebuffer, image.bloom.images.at(0).extent);
             m_extract.bind(commandBuffer);
             m_extract.bind(commandBuffer, 0, m_extractDescriptor.set);
             commandBuffer.draw(3, 1, 0, 0);
             commandBuffer.endRenderPass();
 
-            auto blurPass = [&](int inSource, int inDestination, float inX, float inY)
-            {
-                updateSample(m_blurDescriptor.set, 0, image.bloom.images.at(inSource));
-                beginPass(
-                    m_blur,
-                    image.bloom.framebuffers.at(inDestination),
-                    image.bloom.images.at(inDestination).extent
-                );
-                m_blur.bind(commandBuffer);
-                m_blur.bind(commandBuffer, 0, m_blurDescriptor.set);
-                const std::array<float, 2> direction = {inX, inY};
-                commandBuffer.pushConstants(
-                    m_blur.layout,
-                    vk::ShaderStageFlagBits::eFragment,
-                    0,
-                    sizeof(direction),
-                    direction.data()
-                );
-                commandBuffer.draw(3, 1, 0, 0);
-                commandBuffer.endRenderPass();
-            };
-
-            blurPass(0, 1, 1.0f, 0.0f);
-            blurPass(1, 0, 0.0f, 1.0f);
-            blurPass(0, 1, 1.0f, 0.0f);
-            blurPass(1, 0, 0.0f, 1.0f);
+            blurPass(commandBuffer, image, 0, 1, 1.0f, 0.0f);
+            blurPass(commandBuffer, image, 1, 0, 0.0f, 1.0f);
+            blurPass(commandBuffer, image, 0, 1, 1.0f, 0.0f);
+            blurPass(commandBuffer, image, 1, 0, 0.0f, 1.0f);
 
             updateSample(m_compositeDescriptor.set, 0, image.targetImage);
             updateSample(m_compositeDescriptor.set, 1, image.bloom.images.at(0));
 
-            beginPass(m_composite, image.bloom.compositeFramebuffer, image.colorImage.extent);
+            beginPass(commandBuffer, m_composite, image.bloom.compositeFramebuffer, image.colorImage.extent);
             m_composite.bind(commandBuffer);
             m_composite.bind(commandBuffer, 0, m_compositeDescriptor.set);
-            const std::int32_t hdrEnabled = bHdr ? 1 : 0;
+            const std::int32_t hdrEnabled = bIsHDREnabled ? 1 : 0;
             commandBuffer.pushConstants(
                 m_composite.layout,
                 vk::ShaderStageFlagBits::eFragment,
@@ -487,6 +332,179 @@ namespace Chicane
             );
             commandBuffer.draw(3, 1, 0, 0);
             commandBuffer.endRenderPass();
+        }
+
+        void VulkanBloomPass::initFullscreenPipeline(
+            VulkanGraphicsPipeline&                     outPipeline,
+            const char*                                 inFragment,
+            const std::vector<vk::DescriptorSetLayout>& inLayouts,
+            vk::Format                                  inFormat,
+            bool                                        bInHasPush
+        )
+        {
+            VulkanBackend* backend = m_backend;
+
+            VulkanShaderStageCreateInfo vertexShader;
+            vertexShader.path = "Assets/Engine/Shaders/Vulkan/Post/Fullscreen.vvert";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo fragmentShader;
+            fragmentShader.path = inFragment;
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
+
+            vk::AttachmentDescription colorAttachment;
+            colorAttachment.format        = inFormat;
+            colorAttachment.samples       = vk::SampleCountFlagBits::e1;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
+            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.finalLayout   = vk::ImageLayout::eShaderReadOnlyOptimal;
+
+            vk::AttachmentReference colorReference;
+            colorReference.attachment = 0;
+            colorReference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
+
+            vk::SubpassDependency dependency;
+            dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+            dependency.dstSubpass = 0;
+            dependency.srcStageMask =
+                vk::PipelineStageFlagBits::eColorAttachmentOutput | vk::PipelineStageFlagBits::eFragmentShader;
+            dependency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            dependency.srcAccessMask = vk::AccessFlagBits::eShaderRead;
+            dependency.dstAccessMask = vk::AccessFlagBits::eColorAttachmentWrite;
+
+            vk::SubpassDescription subpass;
+            subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
+            subpass.colorAttachmentCount = 1;
+            subpass.pColorAttachments    = &colorReference;
+
+            vk::PipelineRasterizationStateCreateInfo rasterization;
+            rasterization.polygonMode = vk::PolygonMode::eFill;
+            rasterization.cullMode    = vk::CullModeFlagBits::eNone;
+            rasterization.frontFace   = vk::FrontFace::eCounterClockwise;
+
+            vk::PipelineDepthStencilStateCreateInfo depth;
+            depth.depthTestEnable  = false;
+            depth.depthWriteEnable = false;
+
+            vk::Viewport viewport;
+            viewport.width    = static_cast<float>(backend->swapchain.extent.width);
+            viewport.height   = static_cast<float>(backend->swapchain.extent.height);
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
+
+            vk::Rect2D scissor;
+            scissor.extent = backend->swapchain.extent;
+
+            VulkanGraphicsPipelineBuilder builder =
+                VulkanGraphicsPipelineBuilder()
+                    .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
+                    .addViewport(viewport)
+                    .addDynamicState(vk::DynamicState::eViewport)
+                    .addScissor(scissor)
+                    .addDynamicState(vk::DynamicState::eScissor)
+                    .addShaderStage(vertexShader, backend->logicalDevice)
+                    .addShaderStage(fragmentShader, backend->logicalDevice)
+                    .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState(false))
+                    .addAttachment(colorAttachment)
+                    .addSubpassDependecy(dependency)
+                    .addSubpass(subpass)
+                    .setDepthStencil(depth)
+                    .setRasterization(rasterization);
+
+            for (const vk::DescriptorSetLayout& layout : inLayouts)
+            {
+                builder = builder.addDescriptorSetLayout(layout);
+            }
+
+            if (bInHasPush)
+            {
+                vk::PushConstantRange range;
+                range.stageFlags = vk::ShaderStageFlagBits::eFragment;
+                range.offset     = 0;
+                range.size       = sizeof(float) * 2;
+                builder          = builder.addPushConstant(range);
+            }
+
+            builder.build(outPipeline, backend->logicalDevice);
+        }
+
+        void VulkanBloomPass::updateSample(
+            vk::DescriptorSet inSet, std::uint32_t inBinding, const VulkanImageInfo& inImage
+        ) const
+        {
+            vk::DescriptorImageInfo info;
+            info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+            info.imageView   = inImage.view;
+            info.sampler     = inImage.sampler;
+
+            vk::WriteDescriptorSet write;
+            write.dstSet          = inSet;
+            write.dstBinding      = inBinding;
+            write.descriptorCount = 1;
+            write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            write.pImageInfo      = &info;
+            m_backend->logicalDevice.updateDescriptorSets(write, nullptr);
+        }
+
+        void VulkanBloomPass::beginPass(
+            vk::CommandBuffer             inCommandBuffer,
+            const VulkanGraphicsPipeline& inPipeline,
+            vk::Framebuffer               inFramebuffer,
+            vk::Extent2D                  inExtent
+        ) const
+        {
+            vk::Viewport viewport;
+            viewport.width    = static_cast<float>(inExtent.width);
+            viewport.height   = static_cast<float>(inExtent.height);
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
+            inCommandBuffer.setViewport(0, 1, &viewport);
+
+            vk::Rect2D scissor;
+            scissor.extent = inExtent;
+            inCommandBuffer.setScissor(0, 1, &scissor);
+
+            vk::ClearValue clear;
+            clear.color = vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f);
+
+            vk::RenderPassBeginInfo beginInfo;
+            beginInfo.renderPass        = inPipeline.renderPass;
+            beginInfo.framebuffer       = inFramebuffer;
+            beginInfo.renderArea.extent = inExtent;
+            beginInfo.clearValueCount   = 1;
+            beginInfo.pClearValues      = &clear;
+            inCommandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+        }
+
+        void VulkanBloomPass::blurPass(
+            vk::CommandBuffer     inCommandBuffer,
+            VulkanSwapchainImage& inImage,
+            int                   inSource,
+            int                   inDestination,
+            float                 inX,
+            float                 inY
+        )
+        {
+            updateSample(m_blurDescriptor.set, 0, inImage.bloom.images.at(inSource));
+            beginPass(
+                inCommandBuffer,
+                m_blur,
+                inImage.bloom.framebuffers.at(inDestination),
+                inImage.bloom.images.at(inDestination).extent
+            );
+            m_blur.bind(inCommandBuffer);
+            m_blur.bind(inCommandBuffer, 0, m_blurDescriptor.set);
+            const std::array<float, 2> direction = {inX, inY};
+            inCommandBuffer.pushConstants(
+                m_blur.layout,
+                vk::ShaderStageFlagBits::eFragment,
+                0,
+                sizeof(direction),
+                direction.data()
+            );
+            inCommandBuffer.draw(3, 1, 0, 0);
+            inCommandBuffer.endRenderPass();
         }
     }
 }

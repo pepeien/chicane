@@ -45,8 +45,7 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            if (!getBackend()->hasFeature(RendererFeature::Fill) ||
-                !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            if (!inFrame.hasFeature(RendererFeature::Fill) || !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
             {
                 return;
             }

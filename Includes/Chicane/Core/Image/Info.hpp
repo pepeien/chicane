@@ -15,7 +15,6 @@ namespace Chicane
         int getHeight() const;
         int getChannel() const;
         int getFormat() const;
-
         int getPitch() const;
         int getSize() const;
 

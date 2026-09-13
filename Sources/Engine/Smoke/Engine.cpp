@@ -41,10 +41,7 @@ namespace Chicane
                 }
             }
 
-            m_systems.erase(
-                std::remove_if(m_systems.begin(), m_systems.end(), isDeadSystem),
-                m_systems.end()
-            );
+            m_systems.erase(std::remove_if(m_systems.begin(), m_systems.end(), isDeadSystem), m_systems.end());
         }
 
         void Engine::clear()

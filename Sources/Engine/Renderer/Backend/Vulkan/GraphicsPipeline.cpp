@@ -127,6 +127,17 @@ namespace Chicane
             return createInfo;
         }
 
+        vk::PipelineColorBlendAttachmentState VulkanGraphicsPipeline::createAdditiveBlendAttachmentState()
+        {
+            vk::PipelineColorBlendAttachmentState createInfo = createBlendAttachmentState(true);
+            createInfo.srcColorBlendFactor                   = vk::BlendFactor::eOne;
+            createInfo.dstColorBlendFactor                   = vk::BlendFactor::eOne;
+            createInfo.srcAlphaBlendFactor                   = vk::BlendFactor::eOne;
+            createInfo.dstAlphaBlendFactor                   = vk::BlendFactor::eOne;
+
+            return createInfo;
+        }
+
         vk::PipelineColorBlendStateCreateInfo VulkanGraphicsPipeline::createColorBlendState()
         {
             vk::PipelineColorBlendStateCreateInfo createInfo;

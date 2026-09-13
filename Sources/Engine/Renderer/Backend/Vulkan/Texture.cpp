@@ -40,8 +40,8 @@ namespace Chicane
 
         bool VulkanTexture::matches(const DrawTexture& inTexture) const
         {
-            return m_sourceWidth == std::max(1u, inTexture.width) &&
-                   m_sourceHeight == std::max(1u, inTexture.height) && m_residentMinMip == inTexture.residentMinMip;
+            return m_sourceWidth == std::max(1u, inTexture.width) && m_sourceHeight == std::max(1u, inTexture.height) &&
+                   m_residentMinMip == inTexture.residentMinMip;
         }
 
         void VulkanTexture::initExtent(const VulkanTextureCreateInfo& inCreateInfo)
@@ -52,8 +52,8 @@ namespace Chicane
 
             if (inCreateInfo.texture)
             {
-                m_sourceWidth  = std::max(1u, inCreateInfo.texture->width);
-                m_sourceHeight = std::max(1u, inCreateInfo.texture->height);
+                m_sourceWidth    = std::max(1u, inCreateInfo.texture->width);
+                m_sourceHeight   = std::max(1u, inCreateInfo.texture->height);
                 m_residentMinMip = inCreateInfo.texture->residentMinMip;
             }
             else if (const Image::Instance image = inCreateInfo.image.lock())
@@ -73,12 +73,12 @@ namespace Chicane
         void VulkanTexture::initInstance()
         {
             VulkanImageCreateInfo createInfo;
-            createInfo.width         = extent.width;
-            createInfo.height        = extent.height;
-            createInfo.count         = 1;
-            createInfo.mipLevels     = m_mipLevels;
-            createInfo.tiling        = vk::ImageTiling::eOptimal;
-            createInfo.usage         = vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst |
+            createInfo.width     = extent.width;
+            createInfo.height    = extent.height;
+            createInfo.count     = 1;
+            createInfo.mipLevels = m_mipLevels;
+            createInfo.tiling    = vk::ImageTiling::eOptimal;
+            createInfo.usage     = vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst |
                                vk::ImageUsageFlagBits::eSampled;
             createInfo.format        = vk::Format::eR8G8B8A8Unorm;
             createInfo.logicalDevice = m_logicalDevice;
@@ -123,9 +123,8 @@ namespace Chicane
 
         void VulkanTexture::copyPixels(const VulkanTextureCreateInfo& inCreateInfo)
         {
-            const Image::MipChain* chain = inCreateInfo.texture && inCreateInfo.texture->mips
-                                               ? inCreateInfo.texture->mips.get()
-                                               : nullptr;
+            const ImageMipChain* chain =
+                inCreateInfo.texture && inCreateInfo.texture->mips ? inCreateInfo.texture->mips.get() : nullptr;
 
             std::uint32_t uploaded = 0;
             for (std::uint32_t gpuLevel = 0; gpuLevel < m_mipLevels; gpuLevel++)
@@ -142,10 +141,9 @@ namespace Chicane
                     image = inCreateInfo.image.lock();
                 }
 
-                const std::uint32_t levelWidth  = Image::mipDimension(extent.width, gpuLevel);
-                const std::uint32_t levelHeight = Image::mipDimension(extent.height, gpuLevel);
-                const vk::DeviceSize size =
-                    static_cast<vk::DeviceSize>(levelWidth) * levelHeight * 4;
+                const std::uint32_t  levelWidth  = Image::mipDimension(extent.width, gpuLevel);
+                const std::uint32_t  levelHeight = Image::mipDimension(extent.height, gpuLevel);
+                const vk::DeviceSize size        = static_cast<vk::DeviceSize>(levelWidth) * levelHeight * 4;
 
                 if (!image || !image->getPixels())
                 {

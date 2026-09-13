@@ -7,6 +7,8 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Image/Info.hpp"
+#include "Chicane/Core/Image/Mip.hpp"
+#include "Chicane/Core/Image/Mip/Chain.hpp"
 #include "Chicane/Core/Image/Vendor.hpp"
 
 namespace Chicane
@@ -22,33 +24,8 @@ namespace Chicane
         using Reference  = std::weak_ptr<const Image>;
         using References = std::vector<Reference>;
 
-        static constexpr inline const std::uint32_t MAX_SIZE     = 4096;
-        static constexpr inline const std::uint32_t STREAM_TAIL  = 128;
-
-        struct CHICANE_CORE Mip
-        {
-            int              width   = 0;
-            int              height  = 0;
-            Raw              encoded = {};
-            mutable Instance decoded = {};
-        };
-
-        struct CHICANE_CORE MipChain
-        {
-            std::vector<Mip> levels  = {};
-            bool             bNormal = false;
-
-            bool isEmpty() const;
-            std::uint32_t getWidth() const;
-            std::uint32_t getHeight() const;
-            std::uint32_t getCount() const;
-            std::uint32_t streamTailMinMip(std::uint32_t inTail = STREAM_TAIL) const;
-            std::size_t residentBytes(std::uint32_t inMinMip) const;
-
-            Instance decode(std::uint32_t inLevel) const;
-            void ensureDecoded(std::uint32_t inMinLevel) const;
-            void dropDecoded(std::uint32_t inEndLevel) const;
-        };
+        static constexpr inline const std::uint32_t MAX_SIZE    = 4096;
+        static constexpr inline const std::uint32_t STREAM_TAIL = 128;
 
     public:
         static ImageVendor parseVendor(const String& inValue);
@@ -61,10 +38,10 @@ namespace Chicane
             std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inTail = STREAM_TAIL
         );
         static std::size_t mipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight);
-        static MipChain makeMipChain(
+        static ImageMipChain makeMipChain(
             const Image& inSource, std::uint32_t inMaxSize = MAX_SIZE, bool inIsNormal = false
         );
-        static MipChain makeMipChain(
+        static ImageMipChain makeMipChain(
             const Pixel*  inPixels,
             int           inWidth,
             int           inHeight,

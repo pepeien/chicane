@@ -30,7 +30,7 @@ namespace Chicane
             {
                 float         f;
                 std::uint32_t u;
-            } bits { inValue };
+            } bits{inValue};
 
             const std::uint32_t sign = (bits.u >> 16u) & 0x8000u;
             std::int32_t        exp  = static_cast<std::int32_t>((bits.u >> 23u) & 0xFFu) - 127 + 15;
@@ -168,7 +168,7 @@ namespace Chicane
 
         void VulkanSky::copyPixels(const Image::References& inImages)
         {
-            const std::uint32_t faces = static_cast<std::uint32_t>(inImages.size());
+            const std::uint32_t  faces = static_cast<std::uint32_t>(inImages.size());
             const vk::DeviceSize faceBytes =
                 static_cast<vk::DeviceSize>(extent.width) * extent.height * sizeof(std::uint16_t) * 4u;
 
@@ -193,11 +193,7 @@ namespace Chicane
 
                 if (const Image::Instance instance = reference.lock())
                 {
-                    instance->blit(
-                        srgb.data(),
-                        static_cast<int>(extent.width),
-                        static_cast<int>(extent.height)
-                    );
+                    instance->blit(srgb.data(), static_cast<int>(extent.width), static_cast<int>(extent.height));
 
                     for (std::size_t index = 0; index < linear.size(); ++index)
                     {

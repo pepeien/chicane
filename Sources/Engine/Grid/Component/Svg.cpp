@@ -29,7 +29,7 @@ namespace Chicane
     {
         float degreesToRadians(float inDegrees)
         {
-            return inDegrees * DEG_TO_RAD;
+            return inDegrees * Math::DEG_TO_RAD;
         }
 
         Vec2 reflectControl(const Vec2& inCurrent, const Vec2& inLast)
@@ -515,15 +515,15 @@ namespace Chicane
 
             if (!inIsSweep && dTheta > 0.0f)
             {
-                dTheta -= TWO_PI;
+                dTheta -= Math::TWO_PI;
             }
 
             if (inIsSweep && dTheta < 0.0f)
             {
-                dTheta += TWO_PI;
+                dTheta += Math::TWO_PI;
             }
 
-            const int   segments = std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / HALF_PI)));
+            const int   segments = std::max(1, static_cast<int>(std::ceil(std::fabs(dTheta) / Math::HALF_PI)));
             const float deltaT   = dTheta / static_cast<float>(segments);
 
             for (int i = 0; i < segments; i++)
@@ -1090,7 +1090,7 @@ namespace Chicane
 
                 for (int i = 1; i <= SvgPaint::STROKE_ARC_SEGMENTS; i++)
                 {
-                    const float angle = PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
+                    const float angle = Math::PI * (static_cast<float>(i) / SvgPaint::STROKE_ARC_SEGMENTS);
                     const Vec2  curr  = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
                                       scaleVec(inOutbound, std::sin(angle) * half);
 
@@ -1146,17 +1146,17 @@ namespace Chicane
                 float start = std::atan2(from.y, from.x);
                 float delta = std::atan2(to.y, to.x) - start;
 
-                while (delta > PI)
+                while (delta > Math::PI)
                 {
-                    delta -= TWO_PI;
+                    delta -= Math::TWO_PI;
                 }
 
-                while (delta < -PI)
+                while (delta < -Math::PI)
                 {
-                    delta += TWO_PI;
+                    delta += Math::TWO_PI;
                 }
 
-                const float stepSize = PI / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
+                const float stepSize = Math::PI / static_cast<float>(SvgPaint::STROKE_ARC_SEGMENTS);
                 const int   steps    = std::max(1, static_cast<int>(std::ceil(std::fabs(delta) / stepSize)));
                 Vec2        prev     = fromP;
 

@@ -96,7 +96,8 @@ void main() {
     vec3 geometricNormal = normalize(inData.normal);
     vec3 viewDirection   = normalize(inData.cameraPosition - inData.meshPosition);
     float NdotV          = max(dot(geometricNormal, viewDirection), 0.0);
-    opacity              = resolveMeshOpacity(opacity, NdotV, meshPass.transparentPass);
+
+    opacity = resolveMeshOpacity(opacity, NdotV, meshPass.transparentPass);
     if (opacity < 0.0) {
         discard;
     }
@@ -111,7 +112,8 @@ void main() {
     if (normalIndex >= 0 && inData.tileSize <= 0.0001) {
         mat3 tbn           = meshTangentFrame(geometricNormal, inData.tangent, inData.meshPosition, uv);
         vec3 tangentNormal = sampleMap(normalIndex, uv).xyz * 2.0 - 1.0;
-        normal             = applyTangentNormal(tbn, tangentNormal);
+
+        normal = applyTangentNormal(tbn, tangentNormal);
     }
 
     int  lightCount    = int(light.info.x);
@@ -149,7 +151,8 @@ void main() {
         }
 
         vec3 lightDirection = resolveLightDirection(entry.translation, entry.direction, inData.meshPosition);
-        float attenuation   = resolveLightAttenuation(entry.translation, entry.direction, entry.cone, inData.meshPosition);
+
+        float attenuation = resolveLightAttenuation(entry.translation, entry.direction, entry.cone, inData.meshPosition);
         if (attenuation <= 0.0) {
             continue;
         }
@@ -159,6 +162,7 @@ void main() {
         float shadow = 0.0;
         if (index == shadowCaster) {
             int cascade = selectCascade(inData.viewDepth, light.splits);
+
             shadow = ShadowCalculation(
                 shadowMap,
                 cascade,
@@ -185,5 +189,6 @@ void main() {
     }
 
     lighting += emissive * inData.emissiveStrength;
+
     outColor = vec4(lighting, opacity);
 }

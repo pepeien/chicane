@@ -28,12 +28,12 @@ namespace Chicane
 
         public:
             Image::Instance                  image;
-            std::shared_ptr<Image::MipChain> mips;
-            std::uint32_t                    width           = 0;
-            std::uint32_t                    height          = 0;
-            std::uint32_t                    residentMinMip  = 0;
-            std::uint32_t                    desiredMinMip   = 0;
-            bool                             bStreamable     = true;
+            std::shared_ptr<ImageMipChain> mips;
+            std::uint32_t                    width          = 0;
+            std::uint32_t                    height         = 0;
+            std::uint32_t                    residentMinMip = 0;
+            std::uint32_t                    desiredMinMip  = 0;
+            bool                             bStreamable    = true;
 
             std::uint32_t getMipCount() const
             {

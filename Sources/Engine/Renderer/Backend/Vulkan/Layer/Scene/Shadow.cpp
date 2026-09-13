@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
 
+#include <array>
+
 #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
@@ -39,9 +41,9 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
-        bool VulkanLSceneShadow::onBeginRender(const Frame&)
+        bool VulkanLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            return getBackend()->hasFeature(RendererFeature::Fill);
+            return inFrame.hasFeature(RendererFeature::Fill) && inFrame.hasFeature(RendererFeature::Light);
         }
 
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
@@ -92,9 +94,9 @@ namespace Chicane
                     &cascade
                 );
 
-                vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
-                vk::DeviceSize offsets[]       = {0};
-                commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+                const std::array<vk::Buffer, 1>     vertexBuffers = {parent->modelVertexBuffer.instance};
+                const std::array<vk::DeviceSize, 1> offsets       = {0};
+                commandBuffer.bindVertexBuffers(0, vertexBuffers, offsets);
                 commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 for (const DrawPoly& draw : inFrame.getShadowDraws())

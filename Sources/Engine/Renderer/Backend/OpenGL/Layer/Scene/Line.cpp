@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 
+#include <array>
 #include <cstddef>
 
 #include <glad/gl.h>
@@ -42,8 +43,8 @@ namespace Chicane
 
         bool OpenGLLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
-            const Instance* renderer = getBackend()->getRenderer();
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) && renderer->hasFeature(RendererFeature::Wireframe))
+            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) &&
+                inFrame.hasFeature(RendererFeature::Wireframe))
             {
                 return true;
             }
@@ -84,9 +85,8 @@ namespace Chicane
 
         void OpenGLLSceneLine::onRender(const Frame& inFrame, void* inData)
         {
-            OpenGLBackend*  backend  = getBackend<OpenGLBackend>();
-            const Instance* renderer = backend->getRenderer();
-            OpenGLFrame&    frame    = *((OpenGLFrame*)inData);
+            OpenGLBackend* backend = getBackend<OpenGLBackend>();
+            OpenGLFrame&   frame   = *((OpenGLFrame*)inData);
 
             backend->useViewport(this);
 
@@ -128,7 +128,7 @@ namespace Chicane
                     drawBatch(DrawPolyMode::Line);
                 }
 
-                if (renderer->hasFeature(RendererFeature::Wireframe))
+                if (inFrame.hasFeature(RendererFeature::Wireframe))
                 {
                     for (const DrawPoly& draw : inFrame.getSceneDraws())
                     {
@@ -185,18 +185,18 @@ namespace Chicane
                 glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
                 glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-                static const float kOffsets[8][2] = {
-                    {1.0f,         0.0f        },
-                    {-1.0f,        0.0f        },
-                    {0.0f,         1.0f        },
-                    {0.0f,         -1.0f       },
-                    {0.70710678f,  0.70710678f },
-                    {0.70710678f,  -0.70710678f},
-                    {-0.70710678f, 0.70710678f },
-                    {-0.70710678f, -0.70710678f}
+                static const std::array<std::array<float, 2>, 8> kOffsets = {
+                    {{1.0f, 0.0f},
+                     {-1.0f, 0.0f},
+                     {0.0f, 1.0f},
+                     {0.0f, -1.0f},
+                     {0.70710678f, 0.70710678f},
+                     {0.70710678f, -0.70710678f},
+                     {-0.70710678f, 0.70710678f},
+                     {-0.70710678f, -0.70710678f}}
                 };
 
-                for (const float* offset : kOffsets)
+                for (const std::array<float, 2>& offset : kOffsets)
                 {
                     drawOutlineMeshes(inFrame, offset[0] * scaleX, offset[1] * scaleY);
                 }

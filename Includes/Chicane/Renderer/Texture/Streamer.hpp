@@ -33,16 +33,16 @@ namespace Chicane
         private:
             struct DecodeResult
             {
-                Draw::Id         id    = Draw::InvalidId;
-                std::uint32_t    mip   = 0;
-                Image::Instance  image = {};
+                Draw::Id        id    = Draw::InvalidId;
+                std::uint32_t   mip   = 0;
+                Image::Instance image = {};
             };
 
             struct Priority
             {
-                Draw::Id id        = Draw::InvalidId;
-                float    screenPx  = 0.0f;
-                bool     bPinned   = false;
+                Draw::Id id       = Draw::InvalidId;
+                float    screenPx = 0.0f;
+                bool     bPinned  = false;
             };
 
             void pumpDecoded(DrawTextureResource& inResources);
@@ -55,8 +55,8 @@ namespace Chicane
                 std::vector<DecodeResult> ready;
             };
 
-            std::shared_ptr<Mailbox>                  m_mailbox = std::make_shared<Mailbox>();
-            std::unordered_set<std::uint64_t>         m_inFlight;
+            std::shared_ptr<Mailbox>          m_mailbox = std::make_shared<Mailbox>();
+            std::unordered_set<std::uint64_t> m_inFlight;
         };
     }
 }

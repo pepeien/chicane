@@ -48,6 +48,7 @@ layout(location = 4) uniform int hdrEnabled;
 vec3 sampleUITexture(int textureIndex, vec2 uv) {
     vec2 texUV  = clamp(uv, 0.0, 1.0);
     vec3 screen = texture(screenTarget, texUV).rgb;
+
     if (textureIndex == screenTextureIndex) {
         return hdrEnabled != 0 ? acesTonemap(screen) : clamp(screen, 0.0, 1.0);
     }
@@ -62,8 +63,6 @@ vec3 sampleUITexture(int textureIndex, vec2 uv) {
 void main() {
     vec4 color = inData.color.rgba;
 
-    // Resolved outside the branch so the derivatives below stay in uniform control flow.
-    // The quad is grown by the dilation so the outline never reaches its own edge, where coverage would be clipped.
     int  offset    = max(inData.glyphIndex, 0);
     vec2 minBounds = getGlyphBoundsMin(offset) - inData.glyphDilation;
     vec2 maxBounds = getGlyphBoundsMax(offset) + inData.glyphDilation;
@@ -98,6 +97,7 @@ void main() {
 
     vec2 frag = vec2(gl_FragCoord.x, inData.view.y - gl_FragCoord.y);
     vec2 localFrag = frag;
+
     {
         vec2  center = mix(inData.box.xy, inData.box.zw, 0.5);
         mat2  linear = mat2(inData.linear.xy, inData.linear.zw);
@@ -107,18 +107,25 @@ void main() {
             localFrag = center + (inverse(linear) * (frag - center));
         }
     }
-    if (frag.x < inData.clip.x || frag.y < inData.clip.y ||
-        frag.x > inData.clip.z || frag.y > inData.clip.w) {
+
+    if (
+        frag.x < inData.clip.x || frag.y < inData.clip.y ||
+        frag.x > inData.clip.z || frag.y > inData.clip.w
+    ) {
         discard;
     }
 
-    if (hasRoundedCorners(inData.innerClipRadiusX, inData.innerClipRadiusY) &&
-        !insideRoundedRect(frag, inData.innerClip, inData.innerClipRadiusX, inData.innerClipRadiusY)) {
+    if (
+        hasRoundedCorners(inData.innerClipRadiusX, inData.innerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.innerClip, inData.innerClipRadiusX, inData.innerClipRadiusY)
+    ) {
         discard;
     }
 
-    if (hasRoundedCorners(inData.outerClipRadiusX, inData.outerClipRadiusY) &&
-        !insideRoundedRect(frag, inData.outerClip, inData.outerClipRadiusX, inData.outerClipRadiusY)) {
+    if (
+        hasRoundedCorners(inData.outerClipRadiusX, inData.outerClipRadiusY) &&
+        !insideRoundedRect(frag, inData.outerClip, inData.outerClipRadiusX, inData.outerClipRadiusY)
+    ) {
         discard;
     }
 

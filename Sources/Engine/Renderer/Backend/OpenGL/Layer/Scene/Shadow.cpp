@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 
+#include <array>
+
 #include <glad/gl.h>
 
 #include "Chicane/Core/FileSystem.hpp"
@@ -28,7 +30,8 @@ namespace Chicane
 
         bool OpenGLLSceneShadow::onBeginRender(const Frame& inFrame)
         {
-            if (!getBackend()->hasFeature(RendererFeature::Fill) || !inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
+            if (!inFrame.hasFeature(RendererFeature::Fill) || !inFrame.hasFeature(RendererFeature::Light) ||
+                !inFrame.hasShadowCasterLights() || !inFrame.hasShadowDraws())
             {
                 return false;
             }
@@ -153,8 +156,8 @@ namespace Chicane
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
-            float borderColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-            glTextureParameterfv(m_depthMapBuffer, GL_TEXTURE_BORDER_COLOR, borderColor);
+            const std::array<float, 4> borderColor = {1.0f, 1.0f, 1.0f, 1.0f};
+            glTextureParameterfv(m_depthMapBuffer, GL_TEXTURE_BORDER_COLOR, borderColor.data());
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
             glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, 0);

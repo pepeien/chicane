@@ -32,6 +32,7 @@ namespace Chicane
             );
             static vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
             static vk::PipelineColorBlendAttachmentState createBlendAttachmentState(bool bInIsEnabled = true);
+            static vk::PipelineColorBlendAttachmentState createAdditiveBlendAttachmentState();
             static vk::PipelineColorBlendStateCreateInfo createColorBlendState();
             static vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
             static vk::PipelineLayout createLayout(

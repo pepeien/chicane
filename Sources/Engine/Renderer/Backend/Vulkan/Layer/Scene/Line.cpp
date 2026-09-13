@@ -93,7 +93,8 @@ namespace Chicane
 
         bool VulkanLSceneLine::shouldDrawMeshWireframe(const Frame& inFrame) const
         {
-            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) && inFrame.hasFeature(RendererFeature::Wireframe))
+            if (inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill) &&
+                inFrame.hasFeature(RendererFeature::Wireframe))
             {
                 return true;
             }
@@ -231,16 +232,16 @@ namespace Chicane
                 const float scaleX = viewport.width > 0.0f ? 4.0f / viewport.width : 0.0f;
                 const float scaleY = viewport.height > 0.0f ? 4.0f / viewport.height : 0.0f;
 
-                static const std::array<std::array<float, 2>, 8> meshesOffsets = {{
-                    {1.0f,         0.0f        },
-                    {-1.0f,        0.0f        },
-                    {0.0f,         1.0f        },
-                    {0.0f,         -1.0f       },
-                    {0.70710678f,  0.70710678f },
-                    {0.70710678f,  -0.70710678f},
-                    {-0.70710678f, 0.70710678f },
-                    {-0.70710678f, -0.70710678f}
-                }};
+                static const std::array<std::array<float, 2>, 8> meshesOffsets = {
+                    {{1.0f, 0.0f},
+                     {-1.0f, 0.0f},
+                     {0.0f, 1.0f},
+                     {0.0f, -1.0f},
+                     {0.70710678f, 0.70710678f},
+                     {0.70710678f, -0.70710678f},
+                     {-0.70710678f, 0.70710678f},
+                     {-0.70710678f, -0.70710678f}}
+                };
 
                 for (const std::array<float, 2>& offset : meshesOffsets)
                 {

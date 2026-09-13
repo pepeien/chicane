@@ -7,6 +7,7 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
 #include "Chicane/Renderer/Draw/Poly.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
@@ -59,6 +60,11 @@ namespace Chicane
 
             const DrawSkyInstance& getSkyInstance() const;
 
+            const DrawParticle::List& getParticles() const;
+            bool hasParticles() const;
+            void drawParticle(const DrawParticle& inData);
+            void drawParticles(const DrawParticle::List& inData);
+
             bool hasImmediateVertices() const;
             const Vertex::List& getImmediateVertices() const;
             bool hasImmediateIndices() const;
@@ -100,6 +106,7 @@ namespace Chicane
             DrawPoly3DInstance::List m_3DInstancesFlat = {};
             DrawPoly2DInstance::List m_2DInstances     = {};
             DrawSkyInstance          m_skyInstance     = {};
+            DrawParticle::List       m_particles       = {};
 
             Vertex::List             m_immediateVertices = {};
             Vertex::Indices          m_immediateIndices  = {};

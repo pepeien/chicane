@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Shadow.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <limits>
 
@@ -25,7 +26,7 @@ namespace Chicane
                 return std::sqrt(inValue.dot(inValue));
             }
 
-            static void getFrustumCorners(const Mat4& inInverseViewProjection, Vec3 outCorners[8])
+            static void getFrustumCorners(const Mat4& inInverseViewProjection, std::array<Vec3, 8>& outCorners)
             {
                 std::uint32_t index = 0;
                 for (std::uint32_t z = 0; z < 2; ++z)
@@ -53,7 +54,7 @@ namespace Chicane
                 const float cameraFar = std::max(inCamera.clip.y, nearClip + 1.0f);
                 const float farClip   = std::max(std::min(cameraFar, kMaxShadowDistance), nearClip + 1.0f);
 
-                float splits[SHADOW_CASCADE_COUNT] = {};
+                std::array<float, SHADOW_CASCADE_COUNT> splits = {};
                 for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
                 {
                     const float progress = static_cast<float>(cascade + 1) / static_cast<float>(SHADOW_CASCADE_COUNT);
@@ -64,9 +65,9 @@ namespace Chicane
 
                 outLight.splits = Vec4(splits[0], splits[1], splits[2], splits[3]);
 
-                const Mat4 cameraViewProjection  = inCamera.projection * inCamera.view;
-                const Mat4 inverseViewProjection = cameraViewProjection.inverse();
-                Vec3       fullFrustumCorners[8] = {};
+                const Mat4          cameraViewProjection  = inCamera.projection * inCamera.view;
+                const Mat4          inverseViewProjection = cameraViewProjection.inverse();
+                std::array<Vec3, 8> fullFrustumCorners    = {};
                 getFrustumCorners(inverseViewProjection, fullFrustumCorners);
 
                 Vec3 up = Vec3::Up();
@@ -80,8 +81,8 @@ namespace Chicane
                 float lastSplit = 0.0f;
                 for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
                 {
-                    const float split      = std::clamp((splits[cascade] - nearClip) / cameraRange, 0.0f, 1.0f);
-                    Vec3        corners[8] = {};
+                    const float         split   = std::clamp((splits[cascade] - nearClip) / cameraRange, 0.0f, 1.0f);
+                    std::array<Vec3, 8> corners = {};
 
                     for (std::uint32_t corner = 0; corner < 4; ++corner)
                     {
@@ -272,8 +273,8 @@ namespace Chicane
                 const float outer = std::clamp(inLight.outerAngle, 0.0f, 89.9f);
                 const float inner = std::clamp(inLight.innerAngle, 0.0f, outer);
 
-                const float cosOuter = std::cos(outer * DEG_TO_RAD);
-                const float cosInner = std::max(std::cos(inner * DEG_TO_RAD), cosOuter + 1e-4f);
+                const float cosOuter = std::cos(outer * Math::DEG_TO_RAD);
+                const float cosInner = std::max(std::cos(inner * Math::DEG_TO_RAD), cosOuter + 1e-4f);
 
                 return Vec4(cosInner, cosOuter, 0.0f, 0.0f);
             }
@@ -291,7 +292,7 @@ namespace Chicane
                 return -1;
             }
 
-            ShadowLight build(const View& inCamera, const Light::List& inLights)
+            ShadowLight build(const View& inCamera, const Light::List& inLights, bool bInCastShadows)
             {
                 ShadowLight result = {};
                 result.info.z      = -1.0f;
@@ -322,9 +323,15 @@ namespace Chicane
                     result.lights[index].cone  = getCone(source);
                 }
 
+                result.info.w = static_cast<float>(findEnvironmentLight(lights, count));
+
+                if (!bInCastShadows)
+                {
+                    return result;
+                }
+
                 const int caster = findShadowCaster(lights, count);
                 result.info.z    = static_cast<float>(caster);
-                result.info.w    = static_cast<float>(findEnvironmentLight(lights, count));
 
                 if (caster >= 0)
                 {

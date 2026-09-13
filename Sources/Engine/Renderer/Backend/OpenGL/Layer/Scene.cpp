@@ -6,6 +6,7 @@
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Foreground.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Line.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Particle.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 #include "Chicane/Renderer/Shadow.hpp"
@@ -55,7 +56,7 @@ namespace Chicane
         bool OpenGLLScene::onBeginRender(const Frame& inFrame)
         {
             const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
-            if (instances.empty() && inFrame.getLights().empty())
+            if (instances.empty() && inFrame.getLights().empty() && !inFrame.hasParticles())
             {
                 return false;
             }
@@ -72,7 +73,8 @@ namespace Chicane
             View camera = inFrame.getCamera();
             camera.depthZeroToOne();
 
-            m_light = Shadow::build(inFrame.getCamera(), inFrame.getLights());
+            m_light =
+                Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
             for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
                 Mat4 depth                   = Mat4::One;
@@ -190,6 +192,7 @@ namespace Chicane
             m_backend->addLayer<OpenGLLSceneSky>(settings);
             m_backend->addLayer<OpenGLLSceneShadow>(settings);
             m_backend->addLayer<OpenGLLSceneMesh>(settings);
+            m_backend->addLayer<OpenGLLSceneParticle>(settings);
             m_backend->addLayer<OpenGLLSceneLine>(settings);
             m_backend->addLayer<OpenGLLSceneForeground>(settings);
         }

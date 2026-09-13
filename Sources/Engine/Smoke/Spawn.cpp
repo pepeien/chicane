@@ -54,8 +54,8 @@ namespace Chicane
             if (!blend.isEmpty())
             {
                 additive = blend.equals(BLEND_TYPE_ADDITIVE, BLEND_TYPE_ADD, BLEND_TYPE_ADDITIVE_LOWER)
-                    ? BLEND_ADDITIVE_VALUE
-                    : BLEND_ALPHA_VALUE;
+                               ? BLEND_ADDITIVE_VALUE
+                               : BLEND_ALPHA_VALUE;
             }
         }
 

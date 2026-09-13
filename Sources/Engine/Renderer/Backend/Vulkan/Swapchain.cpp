@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
 #include <algorithm>
+#include <array>
 
 namespace Chicane
 {
@@ -120,14 +121,14 @@ namespace Chicane
 
                 if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
                 {
-                    std::uint32_t queueFamilyIndices[] = {
+                    const std::array<std::uint32_t, 2> queueFamilyIndices = {
                         familyIndices.graphicsFamily.value(),
                         familyIndices.presentFamily.value()
                     };
 
                     createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
                     createInfo.queueFamilyIndexCount = 2;
-                    createInfo.pQueueFamilyIndices   = queueFamilyIndices;
+                    createInfo.pQueueFamilyIndices   = queueFamilyIndices.data();
                 }
 
                 createInfo.preTransform   = supportDetails.capabilities.currentTransform;

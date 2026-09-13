@@ -20,6 +20,7 @@ namespace Chicane
 
             m_immediateVertices.clear();
             m_immediateIndices.clear();
+            m_particles.clear();
 
             m_features = RendererFeature::Default;
         }
@@ -318,6 +319,26 @@ namespace Chicane
         const DrawSkyInstance& Frame::getSkyInstance() const
         {
             return m_skyInstance;
+        }
+
+        const DrawParticle::List& Frame::getParticles() const
+        {
+            return m_particles;
+        }
+
+        bool Frame::hasParticles() const
+        {
+            return !m_particles.empty();
+        }
+
+        void Frame::drawParticle(const DrawParticle& inData)
+        {
+            m_particles.push_back(inData);
+        }
+
+        void Frame::drawParticles(const DrawParticle::List& inData)
+        {
+            m_particles.insert(m_particles.end(), inData.begin(), inData.end());
         }
 
         bool Frame::hasImmediateVertices() const

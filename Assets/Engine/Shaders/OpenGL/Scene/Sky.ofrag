@@ -9,5 +9,6 @@ layout(location = 0) in vec3 inUV;
 
 void main() {
     vec3 sampleColor = texture(material, inUV).rgb;
+
     outColor = vec4(sampleColor * intensity, 1.0);
 }

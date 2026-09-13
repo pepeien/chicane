@@ -33,8 +33,9 @@ namespace Chicane
 
         public:
             virtual void tick(float inDeltaTime, Particle::List& outParticles, const PlayInfo& inPlay);
-            virtual void collect(const Particle::List& inParticles, const PlayInfo& inPlay, Particle::List& outDraws)
-                const;
+            virtual void collect(
+                const Particle::List& inParticles, const PlayInfo& inPlay, Particle::List& outDraws
+            ) const;
 
             const String& getTag() const;
 

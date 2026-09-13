@@ -86,6 +86,9 @@ namespace Chicane
             Draw::Id findSky(const Draw::Reference& inReference);
             Draw::Id loadSky(const DrawSkyData& inData);
 
+            void drawParticle(const DrawParticle& inData);
+            void drawParticles(const DrawParticle::List& inData);
+
             // Feature
             void enableFeature(RendererFeature inFeature);
             void disableFeature(RendererFeature inFeature);

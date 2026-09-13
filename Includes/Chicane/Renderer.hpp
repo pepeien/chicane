@@ -17,6 +17,7 @@
     #define CHICANE_RENDERER
 #endif
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -35,6 +36,7 @@ namespace Chicane
         static constexpr inline const char*         SCENE_SKY_LAYER_ID        = "Engine_Scene_Sky";
         static constexpr inline const char*         SCENE_SHADOW_LAYER_ID     = "Engine_Scene_Shadow";
         static constexpr inline const char*         SCENE_MESH_LAYER_ID       = "Engine_Scene_Mesh";
+        static constexpr inline const char*         SCENE_PARTICLE_LAYER_ID   = "Engine_Scene_Particle";
         static constexpr inline const char*         SCENE_LINE_LAYER_ID       = "Engine_Scene_Line";
         static constexpr inline const char*         SCENE_FOREGROUND_LAYER_ID = "Engine_Scene_Foreground";
 
@@ -44,18 +46,18 @@ namespace Chicane
         static constexpr inline const char*         SCREEN_TARGET_ID = "Screen";
 
         // Resources
-        // Per-texture native POT size is clamped to TEXTURE_MAX_SIZE. GPU images are
-        // allocated at the currently resident mip, not a uniform 4K footprint — a 4K
-        // RGBA8 chain is ~85 MB, so the streamer must drop mips under VRAM pressure.
-        static constexpr inline const std::uint32_t TEXTURE_MAX_SIZE      = 4096;
-        static constexpr inline const std::uint32_t TEXTURE_STREAM_TAIL   = 128;
-        static constexpr inline const std::uint32_t TEXTURE_SLOT_MAX         = 4096;
-        static constexpr inline const std::uint32_t TEXTURE_TABLE_BINDING    = 5;
-        static constexpr inline const std::uint32_t TEXTURE_CLASS_COUNT      = 6;
-        static constexpr inline const std::uint32_t TEXTURE_CLASS_BINDING    = 6;
-        static constexpr inline const std::uint32_t TEXTURE_CLASS_SIZES[6]   = {128, 256, 512, 1024, 2048, 4096};
+        static constexpr inline const std::uint32_t TEXTURE_MAX_SIZE                                     = 4096;
+        static constexpr inline const std::uint32_t TEXTURE_STREAM_TAIL                                  = 128;
+        static constexpr inline const std::uint32_t TEXTURE_SLOT_MAX                                     = 4096;
+        static constexpr inline const std::uint32_t TEXTURE_TABLE_BINDING                                = 5;
+        static constexpr inline const std::uint32_t TEXTURE_CLASS_COUNT                                  = 6;
+        static constexpr inline const std::uint32_t TEXTURE_CLASS_BINDING                                = 6;
+        static constexpr inline const std::array<std::uint32_t, TEXTURE_CLASS_COUNT> TEXTURE_CLASS_SIZES = {
+            128, 256, 512, 1024, 2048, 4096
+        };
 
         // Images
+        static constexpr inline const std::uint32_t MAX_PARTICLES        = 4096;
         static constexpr inline const std::uint32_t SHADOW_MAP_WIDTH     = 2048;
         static constexpr inline const std::uint32_t SHADOW_MAP_HEIGHT    = 2048;
         static constexpr inline const std::uint32_t SHADOW_CASCADE_COUNT = 4;

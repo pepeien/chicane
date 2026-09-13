@@ -404,6 +404,7 @@ namespace Chicane
                 frame.setupLightData();
                 frame.setup2DData(getResourceBudget(Resource::UIInstances));
                 frame.setup3DData(getResourceBudget(Resource::SceneInstances));
+                frame.setupParticleData(sizeof(DrawParticle) * MAX_PARTICLES);
             }
         }
 

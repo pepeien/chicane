@@ -33,6 +33,12 @@ namespace Chicane
                 const VulkanImageInfo& inColorImage
             );
 
+        private:
+            static void destroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer);
+            static vk::Framebuffer makeFramebuffer(
+                vk::Device inLogicalDevice, vk::RenderPass inPass, vk::ImageView inView, vk::Extent2D inExtent
+            );
+
         public:
             Images          images               = {};
             Framebuffers    framebuffers         = {};

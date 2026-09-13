@@ -8,8 +8,9 @@
 #include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Foreground.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Line.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Particle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp"
 
@@ -340,6 +341,7 @@ namespace Chicane
             m_backend->addLayer<VulkanLSceneSky>(settings);
             m_backend->addLayer<VulkanLSceneShadow>(settings);
             m_backend->addLayer<VulkanLSceneMesh>(settings);
+            m_backend->addLayer<VulkanLSceneParticle>(settings);
             m_backend->addLayer<VulkanLSceneLine>(settings);
             m_backend->addLayer<VulkanLSceneForeground>(settings);
         }

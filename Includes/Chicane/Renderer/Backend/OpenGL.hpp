@@ -133,6 +133,7 @@ namespace Chicane
             void buildBloom();
             void destroyBloom();
             void destroyBloomImages();
+            void blurBloomPass(std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY) const;
 
             // GPU timing
             void buildGpuQueries();
@@ -172,12 +173,12 @@ namespace Chicane
             std::uint32_t                              m_targetWidth;
             std::uint32_t                              m_targetHeight;
             std::uint32_t                              m_screenBlitFramebuffer;
-            std::array<std::uint32_t, 2>               m_bloomColor          = {};
-            std::array<std::uint32_t, 2>               m_bloomFramebuffer    = {};
-            std::uint32_t                              m_extractProgram      = 0;
-            std::uint32_t                              m_blurProgram         = 0;
-            std::uint32_t                              m_compositeProgram    = 0;
-            std::uint32_t                              m_postVertexArray     = 0;
+            std::array<std::uint32_t, 2>               m_bloomColor       = {};
+            std::array<std::uint32_t, 2>               m_bloomFramebuffer = {};
+            std::uint32_t                              m_extractProgram   = 0;
+            std::uint32_t                              m_blurProgram      = 0;
+            std::uint32_t                              m_compositeProgram = 0;
+            std::uint32_t                              m_postVertexArray  = 0;
             Draw::Id                                   m_screenTextureId;
 
             // GPU timing

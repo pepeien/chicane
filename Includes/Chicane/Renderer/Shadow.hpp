@@ -12,7 +12,8 @@ namespace Chicane
     {
         namespace Shadow
         {
-            CHICANE_RENDERER ShadowLight build(const View& inCamera, const Light::List& inLights);
+            CHICANE_RENDERER ShadowLight
+            build(const View& inCamera, const Light::List& inLights, bool bInCastShadows = true);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Chicane
                 return false;
             }
 
-            const std::shared_ptr<Image::MipChain> chain = getMipChain(0);
+            const std::shared_ptr<ImageMipChain> chain = getMipChain(0);
 
             return !chain || chain->isEmpty();
         }
@@ -103,7 +103,7 @@ namespace Chicane
             setAttribute(NORMAL_ATTRIBUTE_NAME, inValue ? "true" : "false");
         }
 
-        std::shared_ptr<Image::MipChain> Texture::getMipChain(std::size_t inIndex) const
+        std::shared_ptr<ImageMipChain> Texture::getMipChain(std::size_t inIndex) const
         {
             if (m_chains.empty())
             {
@@ -140,7 +140,7 @@ namespace Chicane
                 return false;
             }
 
-            auto chain = std::make_shared<Image::MipChain>(
+            auto chain = std::make_shared<ImageMipChain>(
                 Image::makeMipChain(*source, Image::MAX_SIZE, m_bNormal || looksLikeNormal())
             );
             if (chain->isEmpty())
@@ -204,9 +204,9 @@ namespace Chicane
                 return;
             }
 
-            m_vendor  = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
-            m_bNormal = String(getAttribute(NORMAL_ATTRIBUTE_NAME).as_string()).toLower().equals("true") ||
-                        looksLikeNormal();
+            m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
+            m_bNormal =
+                String(getAttribute(NORMAL_ATTRIBUTE_NAME).as_string()).toLower().equals("true") || looksLikeNormal();
         }
 
         void Texture::fetchDataFromXML()
@@ -277,7 +277,7 @@ namespace Chicane
             if (m_frames.empty() && m_data)
             {
                 m_chains.push_back(
-                    std::make_shared<Image::MipChain>(Image::makeMipChain(*m_data, Image::MAX_SIZE, bNormal))
+                    std::make_shared<ImageMipChain>(Image::makeMipChain(*m_data, Image::MAX_SIZE, bNormal))
                 );
                 m_chains.back()->ensureDecoded(m_chains.back()->streamTailMinMip());
 
@@ -293,7 +293,7 @@ namespace Chicane
                     continue;
                 }
 
-                auto chain = std::make_shared<Image::MipChain>(Image::makeMipChain(*frame, Image::MAX_SIZE, bNormal));
+                auto chain = std::make_shared<ImageMipChain>(Image::makeMipChain(*frame, Image::MAX_SIZE, bNormal));
                 chain->ensureDecoded(chain->streamTailMinMip());
                 m_chains.push_back(std::move(chain));
             }
@@ -309,7 +309,7 @@ namespace Chicane
             AssetPreview::write(getXML(), AssetType::Texture, *m_data);
         }
 
-        void Texture::writeMipsToXML(const Image::MipChain& inChain)
+        void Texture::writeMipsToXML(const ImageMipChain& inChain)
         {
             pugi::xml_node root = getXML();
             if (root.empty() || inChain.isEmpty())
@@ -340,7 +340,7 @@ namespace Chicane
             mips = root.append_child(MIPS_TAG);
             for (std::uint32_t level = 0; level < inChain.getCount(); level++)
             {
-                const Image::Mip& mip = inChain.levels[level];
+                const ImageMip& mip = inChain.levels[level];
                 if (mip.encoded.empty())
                 {
                     continue;
@@ -367,7 +367,7 @@ namespace Chicane
                 return false;
             }
 
-            auto chain     = std::make_shared<Image::MipChain>();
+            auto chain     = std::make_shared<ImageMipChain>();
             chain->bNormal = m_bNormal || looksLikeNormal();
 
             std::uint32_t width  = getAttribute(WIDTH_ATTRIBUTE_NAME).as_uint();
@@ -382,7 +382,7 @@ namespace Chicane
                     chain->levels.resize(level + 1);
                 }
 
-                Image::Mip& mip = chain->levels[level];
+                ImageMip& mip = chain->levels[level];
                 mip.encoded     = Base64::decodeToUnsigned(node.text().as_string());
             }
 
@@ -425,7 +425,7 @@ namespace Chicane
 
             for (std::uint32_t level = 0; level < chain->levels.size(); level++)
             {
-                Image::Mip& mip = chain->levels[level];
+                ImageMip& mip = chain->levels[level];
                 mip.width       = static_cast<int>(Image::mipDimension(width, level));
                 mip.height      = static_cast<int>(Image::mipDimension(height, level));
             }

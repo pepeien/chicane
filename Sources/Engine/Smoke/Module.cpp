@@ -51,9 +51,11 @@ namespace Chicane
 
         Module::~Module() = default;
 
-        void Module::tick(float, Particle::List&, const PlayInfo&) {}
+        void Module::tick(float, Particle::List&, const PlayInfo&)
+        {}
 
-        void Module::collect(const Particle::List&, const PlayInfo&, Particle::List&) const {}
+        void Module::collect(const Particle::List&, const PlayInfo&, Particle::List&) const
+        {}
 
         const String& Module::getTag() const
         {

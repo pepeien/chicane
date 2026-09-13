@@ -12,10 +12,10 @@ namespace Chicane
         struct CHICANE_SMOKE PlayInfo
         {
         public:
-            Transform transform    = {};
-            Vec3      origin       = Vec3::Zero();
-            Vec3      destination  = Vec3::Zero();
-            bool      bHasBeam     = false;
+            Transform transform   = {};
+            Vec3      origin      = Vec3::Zero();
+            Vec3      destination = Vec3::Zero();
+            bool      bHasBeam    = false;
         };
     }
 }

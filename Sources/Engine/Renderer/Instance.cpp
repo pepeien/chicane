@@ -176,6 +176,16 @@ namespace Chicane
             return m_skyResource.findId(sky.reference);
         }
 
+        void Instance::drawParticle(const DrawParticle& inData)
+        {
+            getCurrentFrame().drawParticle(inData);
+        }
+
+        void Instance::drawParticles(const DrawParticle::List& inData)
+        {
+            getCurrentFrame().drawParticles(inData);
+        }
+
         void Instance::enableFeature(RendererFeature inFeature)
         {
             m_features.fetch_or(static_cast<std::uint8_t>(inFeature), std::memory_order_relaxed);

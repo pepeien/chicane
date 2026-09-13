@@ -17,7 +17,7 @@ namespace Chicane
             if (!outDraw.mips && inData.image)
             {
                 outDraw.mips =
-                    std::make_shared<Image::MipChain>(Image::makeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
+                    std::make_shared<ImageMipChain>(Image::makeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
             }
 
             if (outDraw.mips && !outDraw.mips->isEmpty())

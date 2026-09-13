@@ -80,7 +80,8 @@ void main() {
     vec3 geometricNormal = normalize(inData.normal);
     vec3 viewDirection   = normalize(inData.cameraPosition - inData.meshPosition);
     float NdotV          = max(dot(geometricNormal, viewDirection), 0.0);
-    opacity              = resolveMeshOpacity(opacity, NdotV, uTransparentPass);
+
+    opacity = resolveMeshOpacity(opacity, NdotV, uTransparentPass);
     if (opacity < 0.0) {
         discard;
     }

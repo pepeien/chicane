@@ -23,14 +23,16 @@ namespace Chicane
 
         CHICANE_SMOKE float randomFloat(float inFrom, float inTo);
         CHICANE_SMOKE float randomFloat();
-        CHICANE_SMOKE Vec3  randomDirection();
+        CHICANE_SMOKE Vec3 randomDirection();
 
-        CHICANE_SMOKE Range         parseRange(const pugi::xml_node& inNode, const char* inName, const Range& inFallback);
-        CHICANE_SMOKE float         parseFloat(const pugi::xml_node& inNode, const char* inName, float inFallback);
-        CHICANE_SMOKE bool          parseBool(const pugi::xml_node& inNode, const char* inName, bool inFallback);
-        CHICANE_SMOKE std::uint32_t parseUint(const pugi::xml_node& inNode, const char* inName, std::uint32_t inFallback);
-        CHICANE_SMOKE String        parseString(const pugi::xml_node& inNode, const char* inName, const String& inFallback);
-        CHICANE_SMOKE Vec3          parseVec3(const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback);
-        CHICANE_SMOKE Vec4          parseColor(const pugi::xml_node& inNode, const char* inName, const Vec4& inFallback);
+        CHICANE_SMOKE Range parseRange(const pugi::xml_node& inNode, const char* inName, const Range& inFallback);
+        CHICANE_SMOKE float parseFloat(const pugi::xml_node& inNode, const char* inName, float inFallback);
+        CHICANE_SMOKE bool parseBool(const pugi::xml_node& inNode, const char* inName, bool inFallback);
+        CHICANE_SMOKE std::uint32_t parseUint(
+            const pugi::xml_node& inNode, const char* inName, std::uint32_t inFallback
+        );
+        CHICANE_SMOKE String parseString(const pugi::xml_node& inNode, const char* inName, const String& inFallback);
+        CHICANE_SMOKE Vec3 parseVec3(const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback);
+        CHICANE_SMOKE Vec4 parseColor(const pugi::xml_node& inNode, const char* inName, const Vec4& inFallback);
     }
 }

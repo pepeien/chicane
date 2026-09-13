@@ -276,17 +276,15 @@ namespace Chicane
         }
 
         static void accumulateTriangleTangent(
-            std::vector<Vec3>& outTangents,
-            std::vector<Vec3>& outBitangents,
+            std::vector<Vec3>&  outTangents,
+            std::vector<Vec3>&  outBitangents,
             const Vertex::List& inVertices,
-            Vertex::Index inFirst,
-            Vertex::Index inSecond,
-            Vertex::Index inThird
+            Vertex::Index       inFirst,
+            Vertex::Index       inSecond,
+            Vertex::Index       inThird
         )
         {
-            if (
-                inFirst >= inVertices.size() || inSecond >= inVertices.size() || inThird >= inVertices.size()
-            )
+            if (inFirst >= inVertices.size() || inSecond >= inVertices.size() || inThird >= inVertices.size())
             {
                 return;
             }
@@ -306,7 +304,7 @@ namespace Chicane
                 return;
             }
 
-            const float inverse = 1.0f / determinant;
+            const float inverse   = 1.0f / determinant;
             const Vec3  tangent   = (edge0 * uv1.y - edge1 * uv0.y) * inverse;
             const Vec3  bitangent = (edge1 * uv0.x - edge0 * uv1.x) * inverse;
 
@@ -352,7 +350,7 @@ namespace Chicane
 
             for (std::size_t i = 0; i < outModel.vertices.size(); ++i)
             {
-                const Vec3 normal = outModel.vertices[i].normal.normalize();
+                const Vec3 normal  = outModel.vertices[i].normal.normalize();
                 Vec3       tangent = tangents[i];
                 tangent            = tangent - normal * normal.dot(tangent);
                 if (tangent.dot(tangent) < 1.0e-10f)
@@ -361,9 +359,8 @@ namespace Chicane
                     tangent         = normal.cross(axis);
                 }
 
-                tangent = tangent.normalize();
-                const float handedness =
-                    normal.cross(tangent).dot(bitangents[i]) < 0.0f ? -1.0f : 1.0f;
+                tangent                      = tangent.normalize();
+                const float handedness       = normal.cross(tangent).dot(bitangents[i]) < 0.0f ? -1.0f : 1.0f;
                 outModel.vertices[i].tangent = Vec4(tangent, handedness);
             }
         }

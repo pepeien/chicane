@@ -1,0 +1,78 @@
+#version 460
+
+#extension GL_ARB_shading_language_include : require
+
+#include "../../Common/Particle.glsl"
+#include "../../Common/View.glsl"
+
+layout(set = 0, binding = 0) uniform Camera {
+    vec4 clip;
+
+    mat4 view;
+    mat4 projection;
+
+    vec4 up;
+    vec4 right;
+    vec4 forward;
+
+    vec4 translation;
+} camera;
+
+layout(std430, set = 0, binding = 1) readonly buffer Particles {
+    GpuParticle particles[];
+} data;
+
+layout(location = 0) out Data {
+    vec2 uv;
+    vec4 color;
+    float additive;
+} outData;
+
+vec2 quadCorner(uint inIndex) {
+    if (inIndex == 0u) {
+        return vec2(-0.5, -0.5);
+    }
+    if (inIndex == 1u) {
+        return vec2(0.5, -0.5);
+    }
+    if (inIndex == 2u) {
+        return vec2(-0.5, 0.5);
+    }
+
+    return vec2(0.5, 0.5);
+}
+
+void main() {
+    GpuParticle particle = data.particles[gl_InstanceIndex];
+
+    vec3 position = particle.positionRotation.xyz;
+    float rotation = particle.positionRotation.w;
+    vec2 size = particle.sizeAge.xy;
+    vec3 axis = particle.axis.xyz;
+
+    vec2 corner = quadCorner(uint(gl_VertexIndex));
+    vec2 uv = corner + vec2(0.5);
+
+    vec3 offset = vec3(0.0);
+    if (dot(axis, axis) > 0.0001) {
+        vec3 along = normalize(axis);
+        vec3 toCamera = camera.translation.xyz - position;
+        vec3 side = cross(along, toCamera);
+        if (dot(side, side) < 0.0001) {
+            side = camera.right.xyz;
+        }
+        side = normalize(side);
+        offset = along * (corner.x * size.x) + side * (corner.y * size.y);
+    } else {
+        float cosine = cos(rotation);
+        float sine = sin(rotation);
+        vec2 rotated = vec2(corner.x * cosine - corner.y * sine, corner.x * sine + corner.y * cosine);
+        offset = camera.right.xyz * (rotated.x * size.x) + camera.up.xyz * (rotated.y * size.y);
+    }
+
+    outData.uv = uv;
+    outData.color = particle.color;
+    outData.additive = particle.sizeAge.w;
+
+    gl_Position = camera.projection * camera.view * vec4(position + offset, 1.0);
+}

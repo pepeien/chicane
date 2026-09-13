@@ -16,7 +16,7 @@ namespace Chicane
         {
         public:
             Image::Instance                  image;
-            std::shared_ptr<Image::MipChain> mips;
+            std::shared_ptr<ImageMipChain> mips;
             bool                             bStreamable = true;
         };
     }

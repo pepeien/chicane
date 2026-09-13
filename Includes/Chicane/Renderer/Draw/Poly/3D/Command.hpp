@@ -5,6 +5,7 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Mesh.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command/Poly.hpp"
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
@@ -27,6 +28,7 @@ namespace Chicane
 
                 lights.clear();
                 meshes.clear();
+                particles.clear();
                 polys.clear();
             }
 
@@ -40,6 +42,9 @@ namespace Chicane
 
             // Mesh
             DrawPoly3DCommandMesh::List meshes = {};
+
+            // Particles
+            DrawParticle::List          particles = {};
 
             // Immediate
             DrawPoly3DCommandPoly::List polys = {};

@@ -105,53 +105,31 @@ static void writeFixedHuffman(
     }
     else if (inSymbol <= 255)
     {
-        writeBits(
-            outValue,
-            outBuffer,
-            outCount,
-            bitReverse(0x190u + static_cast<std::uint32_t>(inSymbol - 144), 9),
-            9
-        );
+        writeBits(outValue, outBuffer, outCount, bitReverse(0x190u + static_cast<std::uint32_t>(inSymbol - 144), 9), 9);
     }
     else if (inSymbol <= 279)
     {
-        writeBits(
-            outValue,
-            outBuffer,
-            outCount,
-            bitReverse(static_cast<std::uint32_t>(inSymbol - 256), 7),
-            7
-        );
+        writeBits(outValue, outBuffer, outCount, bitReverse(static_cast<std::uint32_t>(inSymbol - 256), 7), 7);
     }
     else
     {
-        writeBits(
-            outValue,
-            outBuffer,
-            outCount,
-            bitReverse(0xC0u + static_cast<std::uint32_t>(inSymbol - 280), 8),
-            8
-        );
+        writeBits(outValue, outBuffer, outCount, bitReverse(0xC0u + static_cast<std::uint32_t>(inSymbol - 280), 8), 8);
     }
 }
 
 static void writeLengthDistance(
-    std::vector<unsigned char>& outValue,
-    std::uint32_t&              outBuffer,
-    int&                        outCount,
-    int                         inLength,
-    int                         inDistance
+    std::vector<unsigned char>& outValue, std::uint32_t& outBuffer, int& outCount, int inLength, int inDistance
 )
 {
-    static const int lengthBase[29] = {3,  4,  5,  6,  7,  8,  9,  10, 11,  13,  15,  17,  19,  23, 27,
-                                       31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
-    static const int lengthExtra[29] =
-        {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
-    static const int distanceBase[30] = {1,   2,   3,   4,   5,   7,    9,    13,   17,   25,
-                                         33,  49,  65,  97,  129, 193,  257,  385,  513,  769,
-                                         1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
-    static const int distanceExtra[30] =
-        {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
+    static const int lengthBase[29]    = {3,  4,  5,  6,  7,  8,  9,  10, 11,  13,  15,  17,  19,  23, 27,
+                                          31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
+    static const int lengthExtra[29]   = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2,
+                                          2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
+    static const int distanceBase[30]  = {1,    2,    3,    4,    5,    7,    9,    13,    17,    25,
+                                          33,   49,   65,   97,   129,  193,  257,  385,   513,   769,
+                                          1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
+    static const int distanceExtra[30] = {0, 0, 0, 0, 1, 1, 2, 2,  3,  3,  4,  4,  5,  5,  6,
+                                          6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
 
     int lengthCode = 0;
     for (int i = 0; i < 28; i++)
@@ -205,8 +183,8 @@ static std::vector<unsigned char> deflateZlib(const unsigned char* inData, std::
     writeBits(zlib, bitBuffer, bitCount, 1, 1);
     writeBits(zlib, bitBuffer, bitCount, 1, 2);
 
-    constexpr int kWindow = 32768;
-    constexpr int kHash   = 32768;
+    constexpr int    kWindow = 32768;
+    constexpr int    kHash   = 32768;
     std::vector<int> head(kHash, -1);
     std::vector<int> prev(kWindow, -1);
 
@@ -226,7 +204,7 @@ static std::vector<unsigned char> deflateZlib(const unsigned char* inData, std::
         int bestDistance = 0;
         if (index + 2 < inSize)
         {
-            const int hash     = hashOf(inData + index);
+            const int hash      = hashOf(inData + index);
             int       candidate = head[hash];
             int       steps     = 0;
             while (candidate >= 0 && steps < 64)
@@ -260,7 +238,7 @@ static std::vector<unsigned char> deflateZlib(const unsigned char* inData, std::
             }
 
             prev[static_cast<std::size_t>(static_cast<int>(index) & (kWindow - 1))] = head[hash];
-            head[hash]                                                             = static_cast<int>(index);
+            head[hash]                                                              = static_cast<int>(index);
         }
 
         if (bestLength >= 3)
@@ -710,7 +688,7 @@ namespace Chicane
 
     void Image::rotateBy(float inAngle)
     {
-        const float angle = inAngle * DEG_TO_RAD;
+        const float angle = inAngle * Math::DEG_TO_RAD;
         const float cosA  = std::cos(angle);
         const float sinA  = std::sin(angle);
 

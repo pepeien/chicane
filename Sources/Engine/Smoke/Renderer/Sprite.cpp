@@ -25,8 +25,8 @@ namespace Chicane
         void RendererSprite::collect(const Particle::List& inParticles, const PlayInfo&, Particle::List& outDraws) const
         {
             const float additive = blend.equals(BLEND_TYPE_ADDITIVE, BLEND_TYPE_ADD, BLEND_TYPE_ADDITIVE_LOWER)
-                ? BLEND_ADDITIVE_VALUE
-                : BLEND_ALPHA_VALUE;
+                                       ? BLEND_ADDITIVE_VALUE
+                                       : BLEND_ALPHA_VALUE;
 
             for (const Particle& particle : inParticles)
             {

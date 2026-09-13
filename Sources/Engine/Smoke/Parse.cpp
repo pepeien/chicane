@@ -13,7 +13,7 @@ namespace Chicane
     {
         static std::mt19937& rng()
         {
-            static thread_local std::mt19937 instance(std::random_device {}());
+            static thread_local std::mt19937 instance(std::random_device{}());
 
             return instance;
         }

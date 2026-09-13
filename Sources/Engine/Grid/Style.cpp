@@ -1793,7 +1793,7 @@ namespace Chicane
 
             if (value.endsWith(TRANSFORM_RADIAN_UNIT))
             {
-                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal) * RAD_TO_DEG;
+                return parseSize(value.substr(0, value.size() - 3), SizeDirection::Horizontal) * Math::RAD_TO_DEG;
             }
 
             if (value.endsWith(TRANSFORM_TURN_UNIT))

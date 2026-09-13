@@ -11,6 +11,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 #include "Chicane/Renderer/Frame.hpp"
@@ -48,7 +49,7 @@ namespace Chicane
             void destroyCameraData();
 
             void setupLightData();
-            void updateLightData(const View& inCamera, const Light::List& inLights);
+            void updateLightData(const Frame& inFrame);
             void destroyLightData();
 
             void setup2DData(std::size_t inBudget);
@@ -58,6 +59,10 @@ namespace Chicane
             void setup3DData(std::size_t inBudget);
             void update3DData(const DrawPoly3DInstance::List& inData);
             void destroy3DData();
+
+            void setupParticleData(std::size_t inBudget);
+            void updateParticleData(const DrawParticle::List& inData);
+            void destroyParticleData();
 
             // Descriptor
             void addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet);
@@ -82,6 +87,7 @@ namespace Chicane
             ShadowLight                             lightData = {};
             VulkanFrameResource<DrawPoly2DInstance> poly2DResource;
             VulkanFrameResource<DrawPoly3DInstance> poly3DResource;
+            VulkanFrameResource<DrawParticle>       particleResource;
 
             // Descriptor
             DescriptorSets                          descriptorSets;

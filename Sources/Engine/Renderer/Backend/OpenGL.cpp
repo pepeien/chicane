@@ -959,7 +959,7 @@ namespace Chicane
                 return;
             }
 
-            const bool bHdr = inFrame.hasFeature(RendererFeature::HDR);
+            const bool bIsHDREnabled = inFrame.hasFeature(RendererFeature::HDR);
 
             glBindVertexArray(m_postVertexArray);
 
@@ -974,32 +974,34 @@ namespace Chicane
                 glBindTextureUnit(0, m_targetColor);
                 glDrawArrays(GL_TRIANGLES, 0, 3);
 
-                auto blurPass = [&](std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY)
-                {
-                    glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(inDestination));
-                    glUseProgram(m_blurProgram);
-                    glProgramUniform2f(m_blurProgram, 1, inX, inY);
-                    glBindTextureUnit(0, m_bloomColor.at(inSource));
-                    glDrawArrays(GL_TRIANGLES, 0, 3);
-                };
-
-                blurPass(0, 1, 1.0f, 0.0f);
-                blurPass(1, 0, 0.0f, 1.0f);
-                blurPass(0, 1, 1.0f, 0.0f);
-                blurPass(1, 0, 0.0f, 1.0f);
+                blurBloomPass(0, 1, 1.0f, 0.0f);
+                blurBloomPass(1, 0, 0.0f, 1.0f);
+                blurBloomPass(0, 1, 1.0f, 0.0f);
+                blurBloomPass(1, 0, 0.0f, 1.0f);
             }
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glDrawBuffer(GL_BACK);
             glViewport(0, 0, static_cast<GLsizei>(m_targetWidth), static_cast<GLsizei>(m_targetHeight));
             glUseProgram(m_compositeProgram);
-            glProgramUniform1i(m_compositeProgram, 10, bHdr ? 1 : 0);
+            glProgramUniform1i(m_compositeProgram, 10, bIsHDREnabled ? 1 : 0);
             glBindTextureUnit(0, m_targetColor);
             glBindTextureUnit(1, m_bloomColor.at(0) != 0 ? m_bloomColor.at(0) : m_targetColor);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
             glBindVertexArray(0);
             glUseProgram(0);
+        }
+
+        void OpenGLBackend::blurBloomPass(
+            std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY
+        ) const
+        {
+            glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(inDestination));
+            glUseProgram(m_blurProgram);
+            glProgramUniform2f(m_blurProgram, 1, inX, inY);
+            glBindTextureUnit(0, m_bloomColor.at(inSource));
+            glDrawArrays(GL_TRIANGLES, 0, 3);
         }
 
         void OpenGLBackend::buildBloom()

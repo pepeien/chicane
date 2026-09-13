@@ -53,7 +53,7 @@ namespace Chicane
             pumpDecoded(inResources);
 
             std::unordered_map<Draw::Id, Priority> priorities;
-            auto consider = [&](Draw::Id inId, float inScreenPx, bool inPinned)
+            auto                                   consider = [&](Draw::Id inId, float inScreenPx, bool inPinned)
             {
                 if (inId <= Draw::InvalidId)
                 {
@@ -77,15 +77,14 @@ namespace Chicane
                 const float scale = std::max(
                     {columnLength(instance.model, 0), columnLength(instance.model, 1), columnLength(instance.model, 2)}
                 );
-                const float radius = std::max(scale * 0.5f, 0.01f);
-                const Vec3  origin = instance.model.getTranslation();
-                const float dx     = origin.x - camera.x;
-                const float dy     = origin.y - camera.y;
-                const float dz     = origin.z - camera.z;
+                const float radius        = std::max(scale * 0.5f, 0.01f);
+                const Vec3  origin        = instance.model.getTranslation();
+                const float dx            = origin.x - camera.x;
+                const float dy            = origin.y - camera.y;
+                const float dz            = origin.z - camera.z;
                 const float dist          = std::max(std::sqrt(dx * dx + dy * dy + dz * dz), 0.01f);
                 const float distToSurface = std::max(dist - radius, 0.01f);
-                const float screen =
-                    (radius / distToSurface) * static_cast<float>(std::max(1u, inScreenHeight));
+                const float screen        = (radius / distToSurface) * static_cast<float>(std::max(1u, inScreenHeight));
 
                 for (std::uint8_t map = 0; map < TEXTURE_MAP_COUNT; map++)
                 {
@@ -179,8 +178,8 @@ namespace Chicane
                     continue;
                 }
 
-                if (texture->mips && want < texture->mips->levels.size() &&
-                    !texture->mips->levels[want].decoded && !texture->mips->levels[want].encoded.empty())
+                if (texture->mips && want < texture->mips->levels.size() && !texture->mips->levels[want].decoded &&
+                    !texture->mips->levels[want].encoded.empty())
                 {
                     requestDecode(*texture, want);
                 }
@@ -307,7 +306,7 @@ namespace Chicane
             }
 
             const Draw::Id                         id      = inTexture.id;
-            const std::shared_ptr<Image::MipChain> mips    = inTexture.mips;
+            const std::shared_ptr<ImageMipChain> mips    = inTexture.mips;
             const std::shared_ptr<Mailbox>         mailbox = m_mailbox;
             m_inFlight.insert(key);
 
@@ -325,7 +324,7 @@ namespace Chicane
                         return;
                     }
 
-                    Image::Instance image = std::make_shared<Image>(encoded, ImageVendor::Png);
+                    Image::Instance             image = std::make_shared<Image>(encoded, ImageVendor::Png);
                     std::lock_guard<std::mutex> lock(mailbox->mutex);
                     mailbox->ready.push_back({id, inMip, image});
                 }

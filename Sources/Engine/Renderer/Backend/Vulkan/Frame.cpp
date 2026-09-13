@@ -34,9 +34,10 @@ namespace Chicane
             commandBuffer.reset();
 
             updateCameraData(inFrame.getCamera());
-            updateLightData(inFrame.getCamera(), inFrame.getLights());
+            updateLightData(inFrame);
             update2DData(inFrame.getInstances2D());
             update3DData(inFrame.getInstances3D());
+            updateParticleData(inFrame.getParticles());
 
             image = inImage;
 
@@ -210,6 +211,7 @@ namespace Chicane
             destroyLightData();
             destroy2DData();
             destroy3DData();
+            destroyParticleData();
             destroySync();
         }
 
@@ -270,9 +272,10 @@ namespace Chicane
             lightResource.setup(bufferCreateInfo);
         }
 
-        void VulkanFrame::updateLightData(const View& inCamera, const Light::List& inLights)
+        void VulkanFrame::updateLightData(const Frame& inFrame)
         {
-            lightData = Shadow::build(inCamera, inLights);
+            lightData =
+                Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
             for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
             {
                 lightData.projections[cascade][1][1] *= -1.0f;
@@ -345,6 +348,34 @@ namespace Chicane
         void VulkanFrame::destroy3DData()
         {
             poly3DResource.destroy(logicalDevice);
+        }
+
+        void VulkanFrame::setupParticleData(std::size_t inBudget)
+        {
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.size  = inBudget;
+            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
+
+            particleResource.setup(bufferCreateInfo);
+        }
+
+        void VulkanFrame::updateParticleData(const DrawParticle::List& inData)
+        {
+            if (inData.empty())
+            {
+                return;
+            }
+
+            particleResource.copyToBuffer(inData.data(), sizeof(DrawParticle) * inData.size());
+        }
+
+        void VulkanFrame::destroyParticleData()
+        {
+            particleResource.destroy(logicalDevice);
         }
 
         void VulkanFrame::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)

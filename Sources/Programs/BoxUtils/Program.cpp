@@ -646,9 +646,7 @@ void Program::createSkeleton(
 }
 
 void Program::createEffect(
-    const Chicane::String&                    inId,
-    const Chicane::ProgramParam::Positionals&,
-    const Chicane::FileSystem::Path&          inOutput
+    const Chicane::String& inId, const Chicane::ProgramParam::Positionals&, const Chicane::FileSystem::Path& inOutput
 )
 {
     Chicane::FileSystem::Path output = inOutput;
@@ -937,8 +935,8 @@ void Program::createFromGltf(
     if (fallbackPath == Chicane::Box::Texture::DEFAULT_SOURCE && !Chicane::FileSystem::exists(fallbackPath))
     {
         const std::array<unsigned char, 4> pixel = {255, 255, 255, 255};
-        const Chicane::Image              image(pixel.data(), 1, 1, 4, 4);
-        const Chicane::FileSystem::Path path =
+        const Chicane::Image               image(pixel.data(), 1, 1, 4, 4);
+        const Chicane::FileSystem::Path    path =
             directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
 
         ensureParent(path);
@@ -1174,8 +1172,7 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
             }
             catch (const std::exception& exception)
             {
-                std::cerr << "Failed to bake mips for [" << inPath.toString() << "]: " << exception.what()
-                          << std::endl;
+                std::cerr << "Failed to bake mips for [" << inPath.toString() << "]: " << exception.what() << std::endl;
             }
         }
 

@@ -62,25 +62,40 @@ namespace Chicane
             }
         }
 
+        void VulkanBloom::destroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer)
+        {
+            if (!inFramebuffer)
+            {
+                return;
+            }
+
+            inLogicalDevice.destroyFramebuffer(inFramebuffer);
+            inFramebuffer = nullptr;
+        }
+
+        vk::Framebuffer VulkanBloom::makeFramebuffer(
+            vk::Device inLogicalDevice, vk::RenderPass inPass, vk::ImageView inView, vk::Extent2D inExtent
+        )
+        {
+            vk::FramebufferCreateInfo info;
+            info.renderPass      = inPass;
+            info.attachmentCount = 1;
+            info.pAttachments    = &inView;
+            info.width           = inExtent.width;
+            info.height          = inExtent.height;
+            info.layers          = 1;
+
+            return inLogicalDevice.createFramebuffer(info);
+        }
+
         void VulkanBloom::destroy(vk::Device inLogicalDevice)
         {
-            auto destroyFramebuffer = [&](vk::Framebuffer& inFramebuffer)
-            {
-                if (!inFramebuffer)
-                {
-                    return;
-                }
-
-                inLogicalDevice.destroyFramebuffer(inFramebuffer);
-                inFramebuffer = nullptr;
-            };
-
-            destroyFramebuffer(extractFramebuffer);
+            destroyFramebuffer(inLogicalDevice, extractFramebuffer);
             for (vk::Framebuffer& framebuffer : framebuffers)
             {
-                destroyFramebuffer(framebuffer);
+                destroyFramebuffer(inLogicalDevice, framebuffer);
             }
-            destroyFramebuffer(compositeFramebuffer);
+            destroyFramebuffer(inLogicalDevice, compositeFramebuffer);
 
             for (VulkanImageInfo& image : images)
             {
@@ -115,41 +130,19 @@ namespace Chicane
             const VulkanImageInfo& inColorImage
         )
         {
-            auto destroyFramebuffer = [&](vk::Framebuffer& inFramebuffer)
-            {
-                if (!inFramebuffer)
-                {
-                    return;
-                }
-
-                inLogicalDevice.destroyFramebuffer(inFramebuffer);
-                inFramebuffer = nullptr;
-            };
-
-            destroyFramebuffer(extractFramebuffer);
+            destroyFramebuffer(inLogicalDevice, extractFramebuffer);
             for (vk::Framebuffer& framebuffer : framebuffers)
             {
-                destroyFramebuffer(framebuffer);
+                destroyFramebuffer(inLogicalDevice, framebuffer);
             }
-            destroyFramebuffer(compositeFramebuffer);
+            destroyFramebuffer(inLogicalDevice, compositeFramebuffer);
 
-            auto makeFramebuffer = [&](vk::RenderPass inPass, vk::ImageView inView, vk::Extent2D inExtent)
-            {
-                vk::FramebufferCreateInfo info;
-                info.renderPass      = inPass;
-                info.attachmentCount = 1;
-                info.pAttachments    = &inView;
-                info.width           = inExtent.width;
-                info.height          = inExtent.height;
-                info.layers          = 1;
-
-                return inLogicalDevice.createFramebuffer(info);
-            };
-
-            extractFramebuffer   = makeFramebuffer(inExtractPass, images.at(0).view, images.at(0).extent);
-            framebuffers.at(0)   = makeFramebuffer(inBlurPass, images.at(0).view, images.at(0).extent);
-            framebuffers.at(1)   = makeFramebuffer(inBlurPass, images.at(1).view, images.at(1).extent);
-            compositeFramebuffer = makeFramebuffer(inCompositePass, inColorImage.view, inColorImage.extent);
+            extractFramebuffer =
+                makeFramebuffer(inLogicalDevice, inExtractPass, images.at(0).view, images.at(0).extent);
+            framebuffers.at(0) = makeFramebuffer(inLogicalDevice, inBlurPass, images.at(0).view, images.at(0).extent);
+            framebuffers.at(1) = makeFramebuffer(inLogicalDevice, inBlurPass, images.at(1).view, images.at(1).extent);
+            compositeFramebuffer =
+                makeFramebuffer(inLogicalDevice, inCompositePass, inColorImage.view, inColorImage.extent);
         }
     }
 }

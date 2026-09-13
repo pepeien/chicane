@@ -145,12 +145,8 @@ namespace Chicane
                 m_graphicsPipeline.bind(commandBuffer, 0, frame.getDescriptorSet(m_id));
                 m_graphicsPipeline.bind(commandBuffer, 1, backend->getTextureDescriptorSet());
 
-                const std::array<std::int32_t, 4> screenPush = {
-                    backend->getScreenTextureId(),
-                    inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0,
-                    0,
-                    0
-                };
+                const std::array<std::int32_t, 4> screenPush =
+                    {backend->getScreenTextureId(), inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0, 0, 0};
                 commandBuffer.pushConstants(
                     m_graphicsPipeline.layout,
                     vk::ShaderStageFlagBits::eFragment,

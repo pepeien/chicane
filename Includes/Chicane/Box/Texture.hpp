@@ -62,7 +62,7 @@ namespace Chicane
             bool isNormal() const;
             void setNormal(bool inValue);
 
-            std::shared_ptr<Image::MipChain> getMipChain(std::size_t inIndex = 0) const;
+            std::shared_ptr<ImageMipChain> getMipChain(std::size_t inIndex = 0) const;
             bool bakeMips();
 
             std::size_t getFrameCount() const;
@@ -76,7 +76,7 @@ namespace Chicane
             void rebuildFrames();
             void rebuildMipChains();
             void bakePreview();
-            void writeMipsToXML(const Image::MipChain& inChain);
+            void writeMipsToXML(const ImageMipChain& inChain);
             bool fetchMipsFromXML();
             bool looksLikeNormal() const;
 
@@ -86,7 +86,7 @@ namespace Chicane
             Image::Instance                               m_data;
             std::vector<Image::Instance>                  m_frames;
             std::vector<int>                              m_delays;
-            std::vector<std::shared_ptr<Image::MipChain>> m_chains;
+            std::vector<std::shared_ptr<ImageMipChain>> m_chains;
         };
     }
 }

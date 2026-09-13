@@ -126,11 +126,8 @@ namespace Chicane
                     std::int32_t       tangentComponents = 0;
                     const bool         hasTangents =
                         document.findAttribute(inPrimitive, "TANGENT") >= 0 &&
-                        document.readFloats(
-                            document.findAttribute(inPrimitive, "TANGENT"),
-                            tangents,
-                            tangentComponents
-                        ) &&
+                        document
+                            .readFloats(document.findAttribute(inPrimitive, "TANGENT"), tangents, tangentComponents) &&
                         tangentComponents >= 4 &&
                         (tangents.size() / static_cast<std::size_t>(tangentComponents)) >= vertexCount;
 

@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Debug.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 #include "Chicane/Core/Math.hpp"
@@ -13,6 +14,11 @@ namespace Chicane
         namespace Debug
         {
             static Trace::List g_traces = {};
+
+            static Vec3 toWorld(const Vec3& inCenter, const QuatFloat& inRotation, const Vec3& inLocal)
+            {
+                return inCenter + inRotation * inLocal;
+            }
 
             Vertex::List getVertices()
             {
@@ -161,86 +167,71 @@ namespace Chicane
                 return inValue / length;
             }
 
+            static void emitSphereTriangle(Vertex::List& outVertices, const Vec3& inA, const Vec3& inB, const Vec3& inC)
+            {
+                Vertex vertex;
+                vertex.position = inA;
+                vertex.normal   = inA;
+                outVertices.push_back(vertex);
+
+                vertex.position = inB;
+                vertex.normal   = inB;
+                outVertices.push_back(vertex);
+
+                vertex.position = inC;
+                vertex.normal   = inC;
+                outVertices.push_back(vertex);
+            }
+
+            static Vertex::List buildUnitSphereTriangles()
+            {
+                constexpr float kGolden = 1.6180339887498948482f;
+
+                const std::array<Vec3, 12> poles = {
+                    normalized(Vec3(-1.0f, kGolden, 0.0f)),
+                    normalized(Vec3(1.0f, kGolden, 0.0f)),
+                    normalized(Vec3(-1.0f, -kGolden, 0.0f)),
+                    normalized(Vec3(1.0f, -kGolden, 0.0f)),
+                    normalized(Vec3(0.0f, -1.0f, kGolden)),
+                    normalized(Vec3(0.0f, 1.0f, kGolden)),
+                    normalized(Vec3(0.0f, -1.0f, -kGolden)),
+                    normalized(Vec3(0.0f, 1.0f, -kGolden)),
+                    normalized(Vec3(kGolden, 0.0f, -1.0f)),
+                    normalized(Vec3(kGolden, 0.0f, 1.0f)),
+                    normalized(Vec3(-kGolden, 0.0f, -1.0f)),
+                    normalized(Vec3(-kGolden, 0.0f, 1.0f))
+                };
+
+                constexpr std::array<std::array<int, 3>, 20> faces = {
+                    {{0, 11, 5},  {0, 5, 1},  {0, 1, 7},  {0, 7, 10}, {0, 10, 11}, {1, 5, 9}, {5, 11, 4},
+                     {11, 10, 2}, {10, 7, 6}, {7, 1, 8},  {3, 9, 4},  {3, 4, 2},   {3, 2, 6}, {3, 6, 8},
+                     {3, 8, 9},   {4, 9, 5},  {2, 4, 11}, {6, 2, 10}, {8, 6, 7},   {9, 8, 1}}
+                };
+
+                Vertex::List result;
+                result.reserve(80 * 3);
+
+                for (const std::array<int, 3>& face : faces)
+                {
+                    const Vec3 a  = poles[face[0]];
+                    const Vec3 b  = poles[face[1]];
+                    const Vec3 c  = poles[face[2]];
+                    const Vec3 ab = normalized(a + b);
+                    const Vec3 bc = normalized(b + c);
+                    const Vec3 ca = normalized(c + a);
+
+                    emitSphereTriangle(result, a, ab, ca);
+                    emitSphereTriangle(result, b, bc, ab);
+                    emitSphereTriangle(result, c, ca, bc);
+                    emitSphereTriangle(result, ab, bc, ca);
+                }
+
+                return result;
+            }
+
             static const Vertex::List& unitSphereTriangles()
             {
-                static const Vertex::List vertices = []()
-                {
-                    constexpr float kGolden = 1.6180339887498948482f;
-
-                    const Vec3 poles[] = {
-                        normalized(Vec3(-1.0f, kGolden, 0.0f)),
-                        normalized(Vec3(1.0f, kGolden, 0.0f)),
-                        normalized(Vec3(-1.0f, -kGolden, 0.0f)),
-                        normalized(Vec3(1.0f, -kGolden, 0.0f)),
-                        normalized(Vec3(0.0f, -1.0f, kGolden)),
-                        normalized(Vec3(0.0f, 1.0f, kGolden)),
-                        normalized(Vec3(0.0f, -1.0f, -kGolden)),
-                        normalized(Vec3(0.0f, 1.0f, -kGolden)),
-                        normalized(Vec3(kGolden, 0.0f, -1.0f)),
-                        normalized(Vec3(kGolden, 0.0f, 1.0f)),
-                        normalized(Vec3(-kGolden, 0.0f, -1.0f)),
-                        normalized(Vec3(-kGolden, 0.0f, 1.0f))
-                    };
-
-                    constexpr int faces[][3] = {
-                        {0,  11, 5 },
-                        {0,  5,  1 },
-                        {0,  1,  7 },
-                        {0,  7,  10},
-                        {0,  10, 11},
-                        {1,  5,  9 },
-                        {5,  11, 4 },
-                        {11, 10, 2 },
-                        {10, 7,  6 },
-                        {7,  1,  8 },
-                        {3,  9,  4 },
-                        {3,  4,  2 },
-                        {3,  2,  6 },
-                        {3,  6,  8 },
-                        {3,  8,  9 },
-                        {4,  9,  5 },
-                        {2,  4,  11},
-                        {6,  2,  10},
-                        {8,  6,  7 },
-                        {9,  8,  1 }
-                    };
-
-                    Vertex::List result;
-                    result.reserve(80 * 3);
-
-                    auto emit = [&result](const Vec3& inA, const Vec3& inB, const Vec3& inC)
-                    {
-                        Vertex vertex;
-                        vertex.position = inA;
-                        vertex.normal   = inA;
-                        result.push_back(vertex);
-
-                        vertex.position = inB;
-                        vertex.normal   = inB;
-                        result.push_back(vertex);
-
-                        vertex.position = inC;
-                        vertex.normal   = inC;
-                        result.push_back(vertex);
-                    };
-
-                    for (const int* face : faces)
-                    {
-                        const Vec3 a  = poles[face[0]];
-                        const Vec3 b  = poles[face[1]];
-                        const Vec3 c  = poles[face[2]];
-                        const Vec3 ab = normalized(a + b);
-                        const Vec3 bc = normalized(b + c);
-                        const Vec3 ca = normalized(c + a);
-
-                        emit(a, ab, ca);
-                        emit(b, bc, ab);
-                        emit(c, ca, bc);
-                        emit(ab, bc, ca);
-                    }
-
-                    return result;
-                }();
+                static const Vertex::List vertices = buildUnitSphereTriangles();
 
                 return vertices;
             }
@@ -317,22 +308,11 @@ namespace Chicane
                     return;
                 }
 
-                static constexpr int edges[12][2] = {
-                    {0, 1},
-                    {1, 2},
-                    {2, 3},
-                    {3, 0},
-                    {4, 5},
-                    {5, 6},
-                    {6, 7},
-                    {7, 4},
-                    {0, 4},
-                    {1, 5},
-                    {2, 6},
-                    {3, 7}
+                static constexpr std::array<std::array<int, 2>, 12> edges = {
+                    {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {4, 5}, {5, 6}, {6, 7}, {7, 4}, {0, 4}, {1, 5}, {2, 6}, {3, 7}}
                 };
 
-                for (const int (&edge)[2] : edges)
+                for (const std::array<int, 2>& edge : edges)
                 {
                     appendSegment(outVertices, corners[edge[0]].position, corners[edge[1]].position, inColor);
                 }
@@ -357,8 +337,8 @@ namespace Chicane
 
                 for (std::uint32_t i = 0; i < segments; ++i)
                 {
-                    const float angle0 = (TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
-                    const float angle1 = (TWO_PI * static_cast<float>(i + 1)) / static_cast<float>(segments);
+                    const float angle0 = (Math::TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
+                    const float angle1 = (Math::TWO_PI * static_cast<float>(i + 1)) / static_cast<float>(segments);
 
                     const Vec3 start =
                         inCenter + inRight * (std::cos(angle0) * inRadius) + inUp * (std::sin(angle0) * inRadius);
@@ -408,7 +388,7 @@ namespace Chicane
 
                 for (std::uint32_t i = 0; i < segments; ++i)
                 {
-                    const float angle  = (TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
+                    const float angle  = (Math::TWO_PI * static_cast<float>(i)) / static_cast<float>(segments);
                     const Vec3  offset = right * std::cos(angle) + up * std::sin(angle);
 
                     appendSegment(
@@ -445,13 +425,13 @@ namespace Chicane
                 const float hx = std::max(0.0f, inHalfExtent.x);
                 const float hy = std::max(0.0f, inHalfExtent.y);
 
-                const Vec3 startCorners[4] = {
+                const std::array<Vec3, 4> startCorners = {
                     inOrigin + right * hx + up * hy,
                     inOrigin + right * hx - up * hy,
                     inOrigin - right * hx - up * hy,
                     inOrigin - right * hx + up * hy
                 };
-                const Vec3 endCorners[4] = {
+                const std::array<Vec3, 4> endCorners = {
                     inDestination + right * hx + up * hy,
                     inDestination + right * hx - up * hy,
                     inDestination - right * hx - up * hy,
@@ -482,35 +462,22 @@ namespace Chicane
                     std::max(0.05f, inHalfExtents.z)
                 );
 
-                auto toWorld = [&](const Vec3& inLocal) { return inCenter + inRotation * inLocal; };
-
-                const Vec3 corners[8] = {
-                    toWorld(Vec3(-half.x, -half.y, -half.z)),
-                    toWorld(Vec3(half.x, -half.y, -half.z)),
-                    toWorld(Vec3(half.x, half.y, -half.z)),
-                    toWorld(Vec3(-half.x, half.y, -half.z)),
-                    toWorld(Vec3(-half.x, -half.y, half.z)),
-                    toWorld(Vec3(half.x, -half.y, half.z)),
-                    toWorld(Vec3(half.x, half.y, half.z)),
-                    toWorld(Vec3(-half.x, half.y, half.z))
+                const std::array<Vec3, 8> corners = {
+                    toWorld(inCenter, inRotation, Vec3(-half.x, -half.y, -half.z)),
+                    toWorld(inCenter, inRotation, Vec3(half.x, -half.y, -half.z)),
+                    toWorld(inCenter, inRotation, Vec3(half.x, half.y, -half.z)),
+                    toWorld(inCenter, inRotation, Vec3(-half.x, half.y, -half.z)),
+                    toWorld(inCenter, inRotation, Vec3(-half.x, -half.y, half.z)),
+                    toWorld(inCenter, inRotation, Vec3(half.x, -half.y, half.z)),
+                    toWorld(inCenter, inRotation, Vec3(half.x, half.y, half.z)),
+                    toWorld(inCenter, inRotation, Vec3(-half.x, half.y, half.z))
                 };
 
-                static constexpr int edges[12][2] = {
-                    {0, 1},
-                    {1, 2},
-                    {2, 3},
-                    {3, 0},
-                    {4, 5},
-                    {5, 6},
-                    {6, 7},
-                    {7, 4},
-                    {0, 4},
-                    {1, 5},
-                    {2, 6},
-                    {3, 7}
+                static constexpr std::array<std::array<int, 2>, 12> edges = {
+                    {{0, 1}, {1, 2}, {2, 3}, {3, 0}, {4, 5}, {5, 6}, {6, 7}, {7, 4}, {0, 4}, {1, 5}, {2, 6}, {3, 7}}
                 };
 
-                for (const int (&edge)[2] : edges)
+                for (const std::array<int, 2>& edge : edges)
                 {
                     appendSegment(outVertices, corners[edge[0]], corners[edge[1]], inColor);
                 }
@@ -538,7 +505,7 @@ namespace Chicane
 
                 for (int i = 0; i < 4; ++i)
                 {
-                    const float angle  = (TWO_PI * static_cast<float>(i)) / 4.0f;
+                    const float angle  = (Math::TWO_PI * static_cast<float>(i)) / 4.0f;
                     const Vec3  offset = right * std::cos(angle) + up * std::sin(angle);
 
                     appendSegment(outVertices, bottom + offset * radius, top + offset * radius, inColor);
@@ -546,7 +513,7 @@ namespace Chicane
                     Vec3 previous = bottom + offset * radius;
                     for (int step = 1; step <= 4; ++step)
                     {
-                        const float latitude   = (HALF_PI * static_cast<float>(step)) / 4.0f;
+                        const float latitude   = (Math::HALF_PI * static_cast<float>(step)) / 4.0f;
                         const float ringRadius = std::cos(latitude) * radius;
                         const float height     = std::sin(latitude) * radius;
                         const Vec3  point      = bottom - axis * height + offset * ringRadius;
@@ -558,7 +525,7 @@ namespace Chicane
                     previous = top + offset * radius;
                     for (int step = 1; step <= 4; ++step)
                     {
-                        const float latitude   = (HALF_PI * static_cast<float>(step)) / 4.0f;
+                        const float latitude   = (Math::HALF_PI * static_cast<float>(step)) / 4.0f;
                         const float ringRadius = std::cos(latitude) * radius;
                         const float height     = std::sin(latitude) * radius;
                         const Vec3  point      = top + axis * height + offset * ringRadius;
