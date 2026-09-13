@@ -292,6 +292,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "vk::PipelineColorBlendAttachmentState",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "createAdditiveBlendAttachmentState",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_CREATEADDITIVEBLENDATTACHMENTSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "vk::PipelineColorBlendStateCreateInfo",
                     "suffix": "",
                     "path": "",

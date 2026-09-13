@@ -545,6 +545,92 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "DrawParticle::List",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Particle",
+                    "templates": []
+                },
+                "name": "getParticles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETPARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasParticles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_HASPARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawParticle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawParticle",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Particle",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_DRAWPARTICLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawParticles",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawParticle::List",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Particle",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_DRAWPARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "bool",
                     "suffix": "",
@@ -974,6 +1060,19 @@
                 },
                 "name": "m_skyInstance",
                 "description": "CHICANE_RENDERER_FRAME_M_SKYINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawParticle::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Particle",
+                    "templates": []
+                },
+                "name": "m_particles",
+                "description": "CHICANE_RENDERER_FRAME_M_PARTICLES_DESCRIPTION"
             },
             {
                 "accessor": "protected",

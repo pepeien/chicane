@@ -1,0 +1,90 @@
+{
+    "title": "Particle",
+    "filename": "Particle",
+    "path": "Renderer/Draw/Particle",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Particle.hpp",
+        "namespace": "Chicane::Renderer::DrawParticle",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawParticle",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Particle",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPARTICLE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "positionRotation",
+                "description": "CHICANE_RENDERER_DRAWPARTICLE_POSITIONROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "sizeAge",
+                "description": "CHICANE_RENDERER_DRAWPARTICLE_SIZEAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_DRAWPARTICLE_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "axis",
+                "description": "CHICANE_RENDERER_DRAWPARTICLE_AXIS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPARTICLE_DESCRIPTION"
+    },
+    "children": []
+}

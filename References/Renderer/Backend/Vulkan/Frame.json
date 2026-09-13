@@ -320,22 +320,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View",
+                            "name": "Frame",
                             "suffix": "&",
-                            "path": "Core/View",
+                            "path": "Renderer/Frame",
                             "templates": []
                         },
-                        "name": "inCamera"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Light::List",
-                            "suffix": "&",
-                            "path": "Renderer/Light",
-                            "templates": []
-                        },
-                        "name": "inLights"
+                        "name": "inFrame"
                     }
                 ],
                 "modifiers": [],
@@ -489,6 +479,73 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANFRAME_DESTROY3DDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupParticleData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBudget"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANFRAME_SETUPPARTICLEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateParticleData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawParticle::List",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Particle",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANFRAME_UPDATEPARTICLEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyParticleData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANFRAME_DESTROYPARTICLEDATA_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -758,6 +815,27 @@
                 },
                 "name": "poly3DResource",
                 "description": "CHICANE_RENDERER_VULKANFRAME_POLY3DRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanFrameResource",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Frame/Resource",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawParticle",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Particle",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "particleResource",
+                "description": "CHICANE_RENDERER_VULKANFRAME_PARTICLERESOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

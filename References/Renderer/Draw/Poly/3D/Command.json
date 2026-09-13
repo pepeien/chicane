@@ -106,6 +106,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawParticle::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Particle",
+                    "templates": []
+                },
+                "name": "particles",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DCOMMAND_PARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "DrawPoly3DCommandPoly::List",
                     "suffix": "",
                     "path": "Renderer/Draw/Poly/3D/Command/Poly",

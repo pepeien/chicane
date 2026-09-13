@@ -141,6 +141,262 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBLOOMPASS_DESTROYPIPELINES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initFullscreenPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanGraphicsPipeline",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                            "templates": []
+                        },
+                        "name": "outPipeline"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFragment"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "vk::DescriptorSetLayout",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inLayouts"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInHasPush"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_INITFULLSCREENPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateSample",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSet"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBinding"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanImageInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Image/Info",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_UPDATESAMPLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginPass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanGraphicsPipeline",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                            "templates": []
+                        },
+                        "name": "inPipeline"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Framebuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFramebuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Extent2D",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_BEGINPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "blurPass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanSwapchainImage",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Swapchain/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_BLURPASS_DESCRIPTION"
             }
         ],
         "members": [

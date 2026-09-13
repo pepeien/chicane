@@ -4,7 +4,7 @@
     "path": "Core/Image",
     "source": {
         "header": "Includes/Chicane/Core/Image.hpp",
-        "namespace": "Chicane::Image::MipChain",
+        "namespace": "Chicane::Image",
         "types": [
             {
                 "name": "Raw",
@@ -520,9 +520,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "MipChain",
+                    "name": "ImageMipChain",
                     "suffix": "",
-                    "path": "Core/Image",
+                    "path": "Core/Image/Mip/Chain",
                     "templates": []
                 },
                 "name": "makeMipChain",
@@ -568,9 +568,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "MipChain",
+                    "name": "ImageMipChain",
                     "suffix": "",
-                    "path": "Core/Image",
+                    "path": "Core/Image/Mip/Chain",
                     "templates": []
                 },
                 "name": "makeMipChain",
@@ -964,214 +964,6 @@
                     "const"
                 ],
                 "description": "CHICANE_IMAGE_GETFRAMESTRIDE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isEmpty",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_ISEMPTY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getWidth",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_GETWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getHeight",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_GETHEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getCount",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_GETCOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "streamTailMinMip",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inTail"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_STREAMTAILMINMIP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "residentBytes",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inMinMip"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_RESIDENTBYTES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Instance",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "decode",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inLevel"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_DECODE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "ensureDecoded",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inMinLevel"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_ENSUREDECODED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "dropDecoded",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inEndLevel"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_MIPCHAIN_DROPDECODED_DESCRIPTION"
             }
         ],
         "members": [
@@ -1266,95 +1058,9 @@
                 },
                 "name": "m_delays",
                 "description": "CHICANE_IMAGE_M_DELAYS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "width",
-                "description": "CHICANE_IMAGE_MIP_WIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "height",
-                "description": "CHICANE_IMAGE_MIP_HEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Raw",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "encoded",
-                "description": "CHICANE_IMAGE_MIP_ENCODED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Instance",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "decoded",
-                "description": "CHICANE_IMAGE_MIP_DECODED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Mip",
-                            "suffix": "",
-                            "path": "Core/Image",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "levels",
-                "description": "CHICANE_IMAGE_MIPCHAIN_LEVELS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "bNormal",
-                "description": "CHICANE_IMAGE_MIPCHAIN_BNORMAL_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_IMAGE_MIPCHAIN_DESCRIPTION"
+        "description": "CHICANE_IMAGE_DESCRIPTION"
     },
     "children": []
 }

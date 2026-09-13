@@ -41,6 +41,16 @@
                             "templates": []
                         },
                         "name": "inLights"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInCastShadows"
                     }
                 ],
                 "modifiers": [],

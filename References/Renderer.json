@@ -120,6 +120,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "SCENE_PARTICLE_LAYER_ID",
+                "description": "CHICANE_RENDERER_SCENE_PARTICLE_LAYER_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "SCENE_LINE_LAYER_ID",
                 "description": "CHICANE_RENDERER_SCENE_LINE_LAYER_ID_DESCRIPTION"
             },
@@ -275,13 +291,44 @@
                 ],
                 "type": {
                     "prefix": "const ",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "TEXTURE_CLASS_COUNT",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a276b1b750be4c4d1480b8573b6965d60",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "TEXTURE_CLASS_SIZES",
+                "description": "CHICANE_RENDERER_TEXTURE_CLASS_SIZES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURE_CLASS_SIZES",
-                "description": "CHICANE_RENDERER_TEXTURE_CLASS_SIZES_DESCRIPTION"
+                "name": "MAX_PARTICLES",
+                "description": "CHICANE_RENDERER_MAX_PARTICLES_DESCRIPTION"
             },
             {
                 "accessor": "public",

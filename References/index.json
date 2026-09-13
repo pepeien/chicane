@@ -1181,7 +1181,7 @@
                 "path": "Core/Image",
                 "source": {
                     "header": "Includes/Chicane/Core/Image.hpp",
-                    "namespace": "Chicane::Image::MipChain",
+                    "namespace": "Chicane::Image",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -1207,6 +1207,41 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "Mip",
+                        "filename": "Mip",
+                        "path": "Core/Image/Mip",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Image/Mip.hpp",
+                            "namespace": "Chicane::ImageMip",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Chain",
+                                "filename": "Chain",
+                                "path": "Core/Image/Mip/Chain",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Image/Mip/Chain.hpp",
+                                    "namespace": "Chicane::ImageMipChain",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "Vendor",
@@ -1811,7 +1846,7 @@
                 "path": "Core/Math",
                 "source": {
                     "header": "Includes/Chicane/Core/Math.hpp",
-                    "namespace": "Chicane",
+                    "namespace": "Chicane::Math",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -5020,6 +5055,23 @@
                                                 "children": []
                                             },
                                             {
+                                                "title": "Particle",
+                                                "filename": "Particle",
+                                                "path": "Renderer/Backend/OpenGL/Layer/Scene/Particle",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/OpenGL/Layer/Scene/Particle.hpp",
+                                                    "namespace": "Chicane::Renderer::OpenGLLSceneParticle",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
                                                 "title": "Shadow",
                                                 "filename": "Shadow",
                                                 "path": "Renderer/Backend/OpenGL/Layer/Scene/Shadow",
@@ -5820,6 +5872,23 @@
                                                 "children": []
                                             },
                                             {
+                                                "title": "Particle",
+                                                "filename": "Particle",
+                                                "path": "Renderer/Backend/Vulkan/Layer/Scene/Particle",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Renderer/Backend/Vulkan/Layer/Scene/Particle.hpp",
+                                                    "namespace": "Chicane::Renderer::VulkanLSceneParticle",
+                                                    "types": [],
+                                                    "enums": [],
+                                                    "constructors": [],
+                                                    "destructors": [],
+                                                    "functions": [],
+                                                    "members": [],
+                                                    "description": null
+                                                },
+                                                "children": []
+                                            },
+                                            {
                                                 "title": "Shadow",
                                                 "filename": "Shadow",
                                                 "path": "Renderer/Backend/Vulkan/Layer/Scene/Shadow",
@@ -6362,6 +6431,23 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Particle",
+                        "filename": "Particle",
+                        "path": "Renderer/Draw/Particle",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Draw/Particle.hpp",
+                            "namespace": "Chicane::Renderer::DrawParticle",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     },
                     {
                         "title": "Poly",

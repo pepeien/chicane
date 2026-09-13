@@ -210,6 +210,102 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBLOOM_REBUILDFRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyFramebuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Framebuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFramebuffer"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOM_DESTROYFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Framebuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "makeFramebuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::RenderPass",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPass"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::ImageView",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Extent2D",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOM_MAKEFRAMEBUFFER_DESCRIPTION"
             }
         ],
         "members": [

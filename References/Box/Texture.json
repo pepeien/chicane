@@ -296,9 +296,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Image::MipChain",
+                            "name": "ImageMipChain",
                             "suffix": "",
-                            "path": "Core/Image",
+                            "path": "Core/Image/Mip/Chain",
                             "templates": []
                         }
                     ]
@@ -527,9 +527,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Image::MipChain",
+                            "name": "ImageMipChain",
                             "suffix": "&",
-                            "path": "Core/Image",
+                            "path": "Core/Image/Mip/Chain",
                             "templates": []
                         },
                         "name": "inChain"
@@ -910,7 +910,7 @@
                             "templates": [
                                 {
                                     "prefix": "",
-                                    "name": "Image::MipChain",
+                                    "name": "ImageMipChain",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []

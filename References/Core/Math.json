@@ -4,7 +4,7 @@
     "path": "Core/Math",
     "source": {
         "header": "Includes/Chicane/Core/Math.hpp",
-        "namespace": "Chicane",
+        "namespace": "Chicane::Math",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -25,7 +25,7 @@
                     "templates": []
                 },
                 "name": "PI",
-                "description": "CHICANE_PI_DESCRIPTION"
+                "description": "CHICANE_MATH_PI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -41,7 +41,7 @@
                     "templates": []
                 },
                 "name": "TWO_PI",
-                "description": "CHICANE_TWO_PI_DESCRIPTION"
+                "description": "CHICANE_MATH_TWO_PI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -57,7 +57,7 @@
                     "templates": []
                 },
                 "name": "HALF_PI",
-                "description": "CHICANE_HALF_PI_DESCRIPTION"
+                "description": "CHICANE_MATH_HALF_PI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -73,7 +73,7 @@
                     "templates": []
                 },
                 "name": "DEG_TO_RAD",
-                "description": "CHICANE_DEG_TO_RAD_DESCRIPTION"
+                "description": "CHICANE_MATH_DEG_TO_RAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -89,10 +89,10 @@
                     "templates": []
                 },
                 "name": "RAD_TO_DEG",
-                "description": "CHICANE_RAD_TO_DEG_DESCRIPTION"
+                "description": "CHICANE_MATH_RAD_TO_DEG_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_DESCRIPTION"
+        "description": "CHICANE_MATH_DESCRIPTION"
     },
     "children": []
 }
