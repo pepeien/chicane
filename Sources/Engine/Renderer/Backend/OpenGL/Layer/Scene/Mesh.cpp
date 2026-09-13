@@ -28,16 +28,6 @@ namespace Chicane
             destroyShader();
         }
 
-        bool OpenGLLSceneMesh::onBeginRender(const Frame& inFrame)
-        {
-            if (!getBackend()->hasFeature(RendererFeature::Fill) || !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
             glUseProgram(m_shaderProgram);
@@ -54,6 +44,12 @@ namespace Chicane
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
             glClear(GL_DEPTH_BUFFER_BIT);
+
+            if (!getBackend()->hasFeature(RendererFeature::Fill) ||
+                !inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill))
+            {
+                return;
+            }
 
             OpenGLFrame& frame = *((OpenGLFrame*)inData);
 

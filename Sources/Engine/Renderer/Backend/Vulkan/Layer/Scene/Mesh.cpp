@@ -39,16 +39,6 @@ namespace Chicane
             m_graphicsPipeline.destroy();
         }
 
-        bool VulkanLSceneMesh::onBeginRender(const Frame& inFrame)
-        {
-            if (!getBackend()->hasFeature(RendererFeature::Fill))
-            {
-                return true;
-            }
-
-            return inFrame.hasDraws(DrawPolyType::e3D, DrawPolyMode::Fill);
-        }
-
         void VulkanLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
@@ -297,7 +287,7 @@ namespace Chicane
 
             // Render pass
             vk::AttachmentDescription colorAttachment;
-            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.format        = backend->getSceneColorFormat();
             colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;

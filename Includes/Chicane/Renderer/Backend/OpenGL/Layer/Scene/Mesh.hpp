@@ -16,7 +16,6 @@ namespace Chicane
             void onInit() override;
             void onDestruction() override;
 
-            bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
             void onEndRender() override;
 
