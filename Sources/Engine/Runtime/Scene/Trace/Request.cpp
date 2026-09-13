@@ -59,11 +59,7 @@ namespace Chicane
     }
 
     SceneTraceRequest SceneTraceRequest::Cone(
-        const Vec3&   inOrigin,
-        const Vec3&   inDestination,
-        float         inAngle,
-        float         inCellSize,
-        std::uint32_t inSegmentCount
+        const Vec3& inOrigin, const Vec3& inDestination, float inAngle, float inCellSize, std::uint32_t inSegmentCount
     )
     {
         SceneTraceRequest request = Cone(inAngle, inCellSize, inSegmentCount);
@@ -83,11 +79,7 @@ namespace Chicane
     }
 
     SceneTraceRequest SceneTraceRequest::Cylinder(
-        const Vec3&   inOrigin,
-        const Vec3&   inDestination,
-        float         inRadius,
-        float         inCellSize,
-        std::uint32_t inSegmentCount
+        const Vec3& inOrigin, const Vec3& inDestination, float inRadius, float inCellSize, std::uint32_t inSegmentCount
     )
     {
         SceneTraceRequest request = Cylinder(inRadius, inCellSize, inSegmentCount);

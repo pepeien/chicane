@@ -29,10 +29,15 @@
 
 #include "Chicane/Screech.hpp"
 
+#include "Chicane/Smoke.hpp"
+#include "Chicane/Smoke/Engine.hpp"
+#include "Chicane/Smoke/Particle.hpp"
+
 #include "Chicane/Grid/Component/Viewport.hpp"
 
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Draw/Glyph/Data.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Flag.hpp"
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Mode.hpp"
@@ -294,6 +299,7 @@ namespace Chicane
         initKerb();
         initDrift();
         initScreech();
+        initSmoke();
 
         if (inCreateInfo.onSetup)
         {
@@ -320,6 +326,7 @@ namespace Chicane
         shutdownScene();
         shutdownUI();
         shutdownDrift();
+        shutdownSmoke();
 
         shutdownRenderer();
     }
@@ -725,6 +732,16 @@ namespace Chicane
         Screech::init();
     }
 
+    void Application::initSmoke()
+    {
+        Smoke::init();
+    }
+
+    void Application::shutdownSmoke()
+    {
+        Smoke::shutdown();
+    }
+
     void Application::initScene()
     {
         m_sceneThread = std::thread(&Application::tickScene, this);
@@ -770,6 +787,8 @@ namespace Chicane
                 m_telemetry.scene.start();
                 {
                     scene->tick(telemetry.frame.delta);
+
+                    Smoke::tick(telemetry.frame.delta * 0.001f);
 
                     buildSceneCommands(scene);
                 }
@@ -833,6 +852,7 @@ namespace Chicane
                 subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
                 subcommand.instance.flags            = mesh->getFlags();
                 subcommand.instance.emissiveStrength = group.getEmissiveStrength();
+                subcommand.instance.tileSize         = group.getTileSize();
 
                 for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
                 {
@@ -891,9 +911,18 @@ namespace Chicane
             command.sky = data;
         }
 
-        Vertex::List debugLines;
-        Vertex::List skeletonLines;
+        for (const Smoke::Particle& particle : Smoke::Engine::getInstance().getParticles())
+        {
+            Renderer::DrawParticle draw;
+            draw.positionRotation = Vec4(particle.position, particle.rotation);
+            draw.sizeAge          = Vec4(particle.size.x, particle.size.y, particle.age, particle.additive);
+            draw.color            = particle.color;
+            draw.axis             = Vec4(particle.axis, 0.0f);
 
+            command.particles.push_back(draw);
+        }
+
+        Vertex::List debugLines;
         if (hasSceneFeature(Renderer::RendererFeature::Bounds))
         {
             for (Actor* actor : inScene->getActors())
@@ -920,6 +949,7 @@ namespace Chicane
             }
         }
 
+        Vertex::List skeletonLines;
         if (hasSceneFeature(Renderer::RendererFeature::Skeletons))
         {
             for (CMesh* mesh : inScene->getComponents<CMesh>())
@@ -968,9 +998,18 @@ namespace Chicane
         m_renderer->addLight(command.lights);
         m_renderer->loadSky(command.sky);
 
+        for (const Renderer::DrawParticle& particle : command.particles)
+        {
+            m_renderer->drawParticle(particle);
+        }
+
         for (const Renderer::DrawPoly3DCommandMesh& mesh : command.meshes)
         {
             Renderer::DrawPoly3DInstance instance = mesh.instance;
+            if (!m_renderer->hasFeature(Renderer::RendererFeature::Light))
+            {
+                instance.flags &= ~Renderer::DrawPoly3DFlag::Lit;
+            }
             for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
             {
                 instance.textures[slot] = resolveTextureId(
@@ -1098,40 +1137,28 @@ namespace Chicane
 
     void Application::snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView)
     {
-        std::uint32_t width  = 0;
-        std::uint32_t height = 0;
+        Vec<2, std::uint32_t> size     = {0, 0};
+        Vec<2, std::uint32_t> position = {0, 0};
 
-        std::uint32_t x = 0;
-        std::uint32_t y = 0;
         if (inView)
         {
-            for (Grid::Component* component : inView->getChildrenFlat())
-            {
-                if (!component || !component->getTag().equals(Grid::Viewport::TAG_ID) || !component->isDisplayable())
-                {
-                    continue;
-                }
+            Vec2 viewSize     = inView->getSize();
+            Vec2 viewPosition = inView->getPosition();
 
-                const Vec2& size = component->getSize();
-                if (size.x <= 0.0f || size.y <= 0.0f)
-                {
-                    continue;
-                }
-
-                const Vec2& position = component->getPosition();
-                x                    = static_cast<std::uint32_t>(std::max(0.0f, std::round(position.x)));
-                y                    = static_cast<std::uint32_t>(std::max(0.0f, std::round(position.y)));
-                width                = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.x)));
-                height               = static_cast<std::uint32_t>(std::max(1.0f, std::round(size.y)));
-
-                break;
-            }
+            size = {
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewSize.x))),
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewSize.y)))
+            };
+            position = {
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewPosition.x))),
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewPosition.y)))
+            };
         }
 
-        m_screenViewportX.store(x, std::memory_order_relaxed);
-        m_screenViewportY.store(y, std::memory_order_relaxed);
-        m_screenViewportWidth.store(width, std::memory_order_relaxed);
-        m_screenViewportHeight.store(height, std::memory_order_relaxed);
+        m_screenViewportX.store(position.x, std::memory_order_relaxed);
+        m_screenViewportY.store(position.y, std::memory_order_relaxed);
+        m_screenViewportWidth.store(size.x, std::memory_order_relaxed);
+        m_screenViewportHeight.store(size.y, std::memory_order_relaxed);
     }
 
     void Application::buildUICommands(std::shared_ptr<Grid::View> inView)

@@ -150,10 +150,16 @@ namespace Chicane
 
         // Systems
         void initBox();
+
         void initKerb();
+
         void initDrift();
-        void initScreech();
         void shutdownDrift();
+
+        void initScreech();
+
+        void initSmoke();
+        void shutdownSmoke();
 
         // Lifecycle
         void render();
@@ -166,6 +172,7 @@ namespace Chicane
         void initScene();
         void shutdownScene();
         void tickScene();
+
         void buildSceneCommands(std::shared_ptr<Scene> inScene);
         void renderScene();
 

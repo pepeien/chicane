@@ -74,6 +74,7 @@ target_link_libraries(
         Chicane::Kerb
         Chicane::Renderer
         Chicane::Screech
+        Chicane::Smoke
 )
 
 CH_ADD_COMPILER(${CHICANE_ENGINE_RUNTIME_TARGET_NAME})

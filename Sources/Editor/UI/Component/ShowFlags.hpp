@@ -42,7 +42,7 @@ namespace Editor
         void onLitToggle();
 
         CH_FUNCTION()
-        void onHdrToggle();
+        void onHDRToggle();
 
     private:
         Chicane::Renderer::Instance* getRenderer() const;

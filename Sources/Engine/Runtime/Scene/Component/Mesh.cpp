@@ -311,10 +311,10 @@ namespace Chicane
             transform.setScale(jointRadius);
 
             Renderer::DrawPoly3DCommandMesh joint;
-            joint.model          = inSphereReference;
+            joint.model                                                 = inSphereReference;
             joint.textures[static_cast<std::uint8_t>(TextureMap::Base)] = Box::Texture::GREY_REFERENCE;
-            joint.instance.model = transform.getMatrix();
-            joint.instance.flags = Renderer::DrawPoly3DFlag::Foreground;
+            joint.instance.model                                        = transform.getMatrix();
+            joint.instance.flags                                        = Renderer::DrawPoly3DFlag::Foreground;
             outMeshes.push_back(joint);
         }
     }
@@ -398,7 +398,7 @@ namespace Chicane
 
     void CMesh::removeAnimation(const String& inId)
     {
-        const String id = resolveAnimationId(inId);
+        const String id    = resolveAnimationId(inId);
         const auto   found = m_animationById.find(id);
         if (found == m_animationById.end())
         {

@@ -27,7 +27,7 @@
         <Icon source="Assets/Editor/UI/Icons/Regular" name="Lightbulb" class="show-flags__icon --regular"/>
         <Icon source="Assets/Editor/UI/Icons/Fill" name="Lightbulb" class="show-flags__icon --fill"/>
     </Button>
-    <Button class="show-flags__item --{{ hdrState }}" onClick="{{ onHdrToggle() }}">
+    <Button class="show-flags__item --{{ hdrState }}" onClick="{{ onHDRToggle() }}">
         <Icon source="Assets/Editor/UI/Icons/Regular" name="Sun" class="show-flags__icon --regular"/>
         <Icon source="Assets/Editor/UI/Icons/Fill" name="Sun" class="show-flags__icon --fill"/>
     </Button>

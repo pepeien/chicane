@@ -82,6 +82,7 @@ namespace Editor
         dialog.addFilter("Textures", {".btex"});
         dialog.addFilter("Skies", {".bsky"});
         dialog.addFilter("Sounds", {".bsnd"});
+        dialog.addFilter("Effects", {".bvfx"});
 
         dialog.open(
             [](const Chicane::FileSystem::Item::List& inFiles)

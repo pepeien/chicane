@@ -840,16 +840,19 @@ namespace Editor
             case Chicane::Input::KeyboardButton::Number1:
             case Chicane::Input::KeyboardButton::T:
                 setType(GizmoType::Translation);
+
                 break;
 
             case Chicane::Input::KeyboardButton::Number2:
             case Chicane::Input::KeyboardButton::R:
                 setType(GizmoType::Rotation);
+
                 break;
 
             case Chicane::Input::KeyboardButton::Number3:
             case Chicane::Input::KeyboardButton::E:
                 setType(GizmoType::Scale);
+
                 break;
 
             default:

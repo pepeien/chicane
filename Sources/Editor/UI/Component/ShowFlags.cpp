@@ -68,7 +68,7 @@ namespace Editor
         toggleFeature(Chicane::Renderer::RendererFeature::Light);
     }
 
-    void ShowFlags::onHdrToggle()
+    void ShowFlags::onHDRToggle()
     {
         toggleFeature(Chicane::Renderer::RendererFeature::HDR);
     }

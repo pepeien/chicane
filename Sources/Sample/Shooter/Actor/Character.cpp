@@ -76,6 +76,7 @@ void Character::onLoad()
 void Character::onInput()
 {
     refreshMoveInput();
+
     Chicane::ACharacter::onInput();
 }
 
@@ -289,8 +290,6 @@ void Character::onShoot()
     {
         return;
     }
-
-    application.pushTrace(request);
 
     for (const Chicane::SceneTraceResponse& hit : response)
     {
