@@ -39,6 +39,12 @@ set(CHICANE_ENGINE_SCREECH_TARGET_NAME  "${CHICANE_ENGINE_TARGET_NAME}-Screech")
 set(CHICANE_ENGINE_SCREECH_INCLUDES_DIR "${CHICANE_ENGINE_INCLUDES_DIR}/Screech")
 set(CHICANE_ENGINE_SCREECH_SOURCES_DIR  "${CHICANE_ENGINE_SOURCES_DIR}/Screech")
 
+## Smoke
+set(CHICANE_ENGINE_SMOKE_TARGET_NAME  "${CHICANE_ENGINE_TARGET_NAME}-Smoke")
+set(CHICANE_ENGINE_SMOKE_INCLUDES_DIR "${CHICANE_ENGINE_INCLUDES_DIR}/Smoke")
+set(CHICANE_ENGINE_SMOKE_SOURCES_DIR  "${CHICANE_ENGINE_SOURCES_DIR}/Smoke")
+
+
 ######################### Directories #########################
 add_subdirectory(Box)
 add_subdirectory(Core)
@@ -48,3 +54,4 @@ add_subdirectory(Kerb)
 add_subdirectory(Renderer)
 add_subdirectory(Runtime)
 add_subdirectory(Screech)
+add_subdirectory(Smoke)
