@@ -3,8 +3,11 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Mesh.hpp"
+#include "Chicane/Box/Skeleton.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
@@ -22,21 +25,20 @@
 
 namespace Chicane
 {
-    namespace Box
-    {
-        class Animation;
-        class Skeleton;
-    }
-
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Mesh")
     class CHICANE_RUNTIME CMesh : public Component
     {
     public:
+        static constexpr inline const char* TAG_ID = "CMesh";
+
+    public:
+        CH_CONSTRUCTOR()
         CMesh();
 
     protected:
         void onAttachment(Object* inRoot) override;
         void onTick(float inDeltaTime) override;
+        void onPropertyEdited(const String& inName) override;
 
     public:
         bool isDrawable() const;
@@ -92,6 +94,10 @@ namespace Chicane
         std::int32_t findBoundBone(const Box::MeshGroup& inGroup) const;
 
         void setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue);
+
+    public:
+        CH_FIELD()
+        FileSystem::Path mesh;
 
     protected:
         bool                                              m_bIsVisible;

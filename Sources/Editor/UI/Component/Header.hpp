@@ -53,6 +53,7 @@ namespace Editor
         void bindMoveHitTest();
         void unbindMoveHitTest();
 
+        void initFileMenu();
         void initSettingsMenu();
         void syncMenuChecks();
 

@@ -1,0 +1,17 @@
+#include "Editor/UI/Component/Attributes/Field.reflected.hpp"
+
+#include "Editor/UI/Component/Attributes/Field/Type.reflected.hpp"
+
+namespace Editor
+{
+    AttributeField::AttributeField()
+        : bIsChecked(false),
+          name(Chicane::String::empty()),
+          label(Chicane::String::empty()),
+          group(Chicane::String::empty()),
+          type(AttributeFieldType::Text),
+          text(Chicane::String::empty()),
+          vector(Chicane::Vec3::Zero()),
+          options({})
+    {}
+}

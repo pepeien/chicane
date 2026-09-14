@@ -27,10 +27,21 @@ namespace Chicane
             CH_CONSTRUCTOR()
             Icon(const pugi::xml_node& inNode);
 
+        protected:
+            void onRefresh() override;
+            void onTick(float inDeltaTime) override;
+
         private:
             String toCamelCase(const String& inValue) const;
             FileSystem::Path resolveSource(const String& inName, const String& inFolder) const;
-            void applySource(const FileSystem::Path& inPath, const pugi::xml_node& inUsage);
+            void applySource(const FileSystem::Path& inPath);
+            void refreshSource();
+
+        private:
+            String          m_nameBinding;
+            String          m_sourceBinding;
+            String          m_resolvedName;
+            Xml::Attributes m_usageAttributes;
         };
     }
 }

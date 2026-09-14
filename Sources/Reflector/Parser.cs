@@ -304,6 +304,27 @@ namespace Reflector
             return parts;
         }
 
+        static FieldModel WithDefaultGroup(FieldModel field, string group)
+        {
+            if (!string.IsNullOrEmpty(field.Group) || string.IsNullOrEmpty(group))
+            {
+                return field;
+            }
+
+            return field with { Group = group };
+        }
+
+        static string TypeGroup(CXCursor cursor)
+        {
+            string annotation = FindAnnotation(cursor, Annotation.Type);
+            if (string.IsNullOrWhiteSpace(annotation))
+            {
+                return "";
+            }
+
+            return MacroArgs.Group(MacroArgs.Parse(AnnotationArgs(annotation)));
+        }
+
         static unsafe void CollectMembers(
             CXCursor cursor,
             List<string> args,
@@ -314,6 +335,7 @@ namespace Reflector
             bool isAutomatic = MacroArgs.IsAutomatic(MacroArgs.Parse(args));
             bool isPublic = cursor.Kind == CXCursorKind.CXCursor_StructDecl ||
                             cursor.Kind == CXCursorKind.CXCursor_UnionDecl;
+            string typeGroup = TypeGroup(cursor);
 
             cursor.VisitChildren(
                 (child, _, _) =>
@@ -346,7 +368,7 @@ namespace Reflector
                         case CXCursorKind.CXCursor_FieldDecl:
                             if (HasAnnotation(child, Annotation.Field) || (isAutomatic && isPublic))
                             {
-                                fields.Add(ParseField(child));
+                                fields.Add(WithDefaultGroup(ParseField(child), typeGroup));
                             }
 
                             break;
@@ -354,7 +376,7 @@ namespace Reflector
                         case CXCursorKind.CXCursor_UnionDecl:
                             if (isAutomatic && isPublic)
                             {
-                                fields.Add(ParseField(child));
+                                fields.Add(WithDefaultGroup(ParseField(child), typeGroup));
                             }
 
                             break;
@@ -526,6 +548,7 @@ namespace Reflector
             var constructors = new List<ConstructorModel>();
             var methods = new List<FunctionModel>();
             var fields = new List<FieldModel>();
+            string typeGroup = MacroArgs.Group(parsed);
 
             bool isAutomatic = MacroArgs.IsAutomatic(parsed);
             bool isPublic = kind == "struct" || kind == "union";
@@ -554,7 +577,7 @@ namespace Reflector
                         case CXCursorKind.CXCursor_FieldDecl:
                             if (HasAnnotation(child, Annotation.Field) || (isAutomatic && isPublic))
                             {
-                                fields.Add(ParseField(child));
+                                fields.Add(WithDefaultGroup(ParseField(child), typeGroup));
                             }
 
                             break;
@@ -581,7 +604,7 @@ namespace Reflector
                 default
             );
 
-            return new(kind, names, constructors, methods, fields);
+            return new(kind, names, constructors, methods, fields, typeGroup);
         }
 
         static unsafe ConstructorModel ParseConstructor(CXCursor cursor)
@@ -659,7 +682,9 @@ namespace Reflector
                 names.Add(cursor.Spelling.CString);
             }
 
-            foreach (string alias in MacroArgs.Aliases(MacroArgs.Parse(FindAnnotation(cursor, Annotation.Field))))
+            var fieldArgs = MacroArgs.Parse(FindAnnotation(cursor, Annotation.Field));
+
+            foreach (string alias in MacroArgs.Aliases(fieldArgs))
             {
                 if (!names.Contains(alias))
                 {
@@ -686,7 +711,8 @@ namespace Reflector
                 isPointer,
                 isIterable,
                 elementName,
-                isElementPointer
+                isElementPointer,
+                MacroArgs.Group(fieldArgs)
             );
         }
 

@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Transform")
     struct CHICANE_CORE SpatialTransform : public Transform
     {
     public:

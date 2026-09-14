@@ -1,11 +1,11 @@
 #include "Editor/Scene.hpp"
 
+#include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Runtime/Application.hpp>
-#include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
+#include <Chicane/Runtime/Track.hpp>
 
 #include "Editor/Actor/Character.hpp"
-#include "Editor/Actor/Item.hpp"
 #include "Editor/Actor/Studio.hpp"
 
 namespace Editor
@@ -17,18 +17,18 @@ namespace Editor
 
     void Scene::onLoad()
     {
-        spawnSky();
         spawnLights();
         spawnCharacter();
-        spawnDefaultItem();
         spawnGizmo();
+        open(DEFAULT_TRACK);
     }
 
     void Scene::setSelection(Chicane::Object* inItem)
     {
         for (Chicane::CMesh* mesh : getComponents<Chicane::CMesh>())
         {
-            mesh->setIsOutlined(inItem != nullptr && mesh->getParent() == inItem);
+            const bool bSelected = inItem != nullptr && (mesh == inItem || mesh->getParent() == inItem);
+            mesh->setIsOutlined(bSelected);
         }
 
         if (!m_gizmo)
@@ -39,31 +39,48 @@ namespace Editor
         m_gizmo->setTarget(inItem);
     }
 
-    void Scene::spawnSky()
+    Gizmo* Scene::getGizmo() const
     {
-        Chicane::ASky* sky = createActor<Chicane::ASky>();
-        sky->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Editor/Skies/Default.bsky"));
-        sky->setIntensity(0.30f);
-        sky->setExposure(5.5f);
+        return m_gizmo;
+    }
+
+    void Scene::setGizmoType(GizmoType inType)
+    {
+        if (!m_gizmo)
+        {
+            return;
+        }
+
+        m_gizmo->setType(inType);
+    }
+
+    Chicane::Actor* Scene::spawnMeshActor(const Chicane::FileSystem::Path& inMesh)
+    {
+        Chicane::Actor* actor = createActor<Chicane::Actor>();
+        Chicane::CMesh* mesh  = createComponent<Chicane::CMesh>();
+        mesh->setMesh(inMesh.isEmpty() ? Chicane::Box::Mesh::DEFAULT_SOURCE : inMesh);
+        mesh->attachTo(actor);
+        mesh->activate();
+
+        return actor;
     }
 
     void Scene::spawnLights()
     {
-        createActor<Studio>();
+        Studio* studio = createActor<Studio>();
+        studio->setIsTransient(true);
     }
 
     void Scene::spawnCharacter()
     {
-        Chicane::Application::getInstance().getController()->attachTo(createActor<Character>());
-    }
-
-    void Scene::spawnDefaultItem()
-    {
-        createActor<Item>(Chicane::Box::Mesh::DEFAULT_SOURCE);
+        Character* character = createActor<Character>();
+        character->setIsTransient(true);
+        Chicane::Application::getInstance().getController()->attachTo(character);
     }
 
     void Scene::spawnGizmo()
     {
         m_gizmo = createComponent<Gizmo>(GizmoType::Translation);
+        m_gizmo->setIsTransient(true);
     }
 }

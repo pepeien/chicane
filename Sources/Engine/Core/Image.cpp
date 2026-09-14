@@ -1,5 +1,6 @@
 #include "Chicane/Core/Image.hpp"
 
+#include <array>
 #include <fstream>
 #include <cmath>
 #include <cstdint>
@@ -121,53 +122,53 @@ static void writeLengthDistance(
     std::vector<unsigned char>& outValue, std::uint32_t& outBuffer, int& outCount, int inLength, int inDistance
 )
 {
-    static const int lengthBase[29]    = {3,  4,  5,  6,  7,  8,  9,  10, 11,  13,  15,  17,  19,  23, 27,
-                                          31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
-    static const int lengthExtra[29]   = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2,
-                                          2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
-    static const int distanceBase[30]  = {1,    2,    3,    4,    5,    7,    9,    13,    17,    25,
-                                          33,   49,   65,   97,   129,  193,  257,  385,   513,   769,
-                                          1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
-    static const int distanceExtra[30] = {0, 0, 0, 0, 1, 1, 2, 2,  3,  3,  4,  4,  5,  5,  6,
-                                          6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
+    static const std::array<int, 29> lengthBase    = {3,  4,  5,  6,  7,  8,  9,  10, 11,  13,  15,  17,  19,  23, 27,
+                                                      31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258};
+    static const std::array<int, 29> lengthExtra   = {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2,
+                                                      2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0};
+    static const std::array<int, 30> distanceBase  = {1,    2,    3,    4,    5,    7,    9,    13,    17,    25,
+                                                      33,   49,   65,   97,   129,  193,  257,  385,   513,   769,
+                                                      1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
+    static const std::array<int, 30> distanceExtra = {0, 0, 0, 0, 1, 1, 2, 2,  3,  3,  4,  4,  5,  5,  6,
+                                                      6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13};
 
     int lengthCode = 0;
-    for (int i = 0; i < 28; i++)
+    for (std::size_t i = 0; i < 28; i++)
     {
-        if (inLength >= lengthBase[i + 1])
+        if (inLength >= lengthBase.at(i + 1))
         {
-            lengthCode = i + 1;
+            lengthCode = static_cast<int>(i + 1);
         }
     }
     writeFixedHuffman(outValue, outBuffer, outCount, 257 + lengthCode);
-    if (lengthExtra[lengthCode] > 0)
+    if (lengthExtra.at(static_cast<std::size_t>(lengthCode)) > 0)
     {
         writeBits(
             outValue,
             outBuffer,
             outCount,
-            static_cast<std::uint32_t>(inLength - lengthBase[lengthCode]),
-            lengthExtra[lengthCode]
+            static_cast<std::uint32_t>(inLength - lengthBase.at(static_cast<std::size_t>(lengthCode))),
+            lengthExtra.at(static_cast<std::size_t>(lengthCode))
         );
     }
 
     int distanceCode = 0;
-    for (int i = 0; i < 29; i++)
+    for (std::size_t i = 0; i < 29; i++)
     {
-        if (inDistance >= distanceBase[i + 1])
+        if (inDistance >= distanceBase.at(i + 1))
         {
-            distanceCode = i + 1;
+            distanceCode = static_cast<int>(i + 1);
         }
     }
     writeBits(outValue, outBuffer, outCount, bitReverse(static_cast<std::uint32_t>(distanceCode), 5), 5);
-    if (distanceExtra[distanceCode] > 0)
+    if (distanceExtra.at(static_cast<std::size_t>(distanceCode)) > 0)
     {
         writeBits(
             outValue,
             outBuffer,
             outCount,
-            static_cast<std::uint32_t>(inDistance - distanceBase[distanceCode]),
-            distanceExtra[distanceCode]
+            static_cast<std::uint32_t>(inDistance - distanceBase.at(static_cast<std::size_t>(distanceCode))),
+            distanceExtra.at(static_cast<std::size_t>(distanceCode))
         );
     }
 }
@@ -270,6 +271,12 @@ static std::vector<unsigned char> deflateZlib(const unsigned char* inData, std::
     return zlib;
 }
 
+static constexpr std::size_t PNG_CHUNK_TYPE_SIZE = 4;
+
+static constexpr const char* PNG_IHDR_CHUNK_TYPE = "IHDR";
+static constexpr const char* PNG_IDAT_CHUNK_TYPE = "IDAT";
+static constexpr const char* PNG_IEND_CHUNK_TYPE = "IEND";
+
 static void appendChunk(
     std::vector<unsigned char>& outValue, const char* inType, const unsigned char* inData, std::size_t inSize
 )
@@ -277,13 +284,13 @@ static void appendChunk(
     appendU32(outValue, static_cast<std::uint32_t>(inSize));
 
     const std::size_t crcStart = outValue.size();
-    outValue.insert(outValue.end(), inType, inType + 4);
+    outValue.insert(outValue.end(), inType, inType + PNG_CHUNK_TYPE_SIZE);
     if (inData != nullptr && inSize > 0)
     {
         outValue.insert(outValue.end(), inData, inData + inSize);
     }
 
-    appendU32(outValue, crc32(outValue.data() + crcStart, 4 + inSize));
+    appendU32(outValue, crc32(outValue.data() + crcStart, PNG_CHUNK_TYPE_SIZE + inSize));
 }
 
 namespace Chicane
@@ -611,24 +618,24 @@ namespace Chicane
 
         std::vector<unsigned char> zlib = deflateZlib(raw.data(), raw.size());
 
-        Raw                 png;
-        const unsigned char signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-        png.insert(png.end(), signature, signature + 8);
+        Raw                                png;
+        const std::array<unsigned char, 8> signature = {137, 80, 78, 71, 13, 10, 26, 10};
+        png.insert(png.end(), signature.begin(), signature.end());
 
-        unsigned char ihdr[13] = {};
-        ihdr[0]                = static_cast<unsigned char>((m_width >> 24) & 0xFF);
-        ihdr[1]                = static_cast<unsigned char>((m_width >> 16) & 0xFF);
-        ihdr[2]                = static_cast<unsigned char>((m_width >> 8) & 0xFF);
-        ihdr[3]                = static_cast<unsigned char>(m_width & 0xFF);
-        ihdr[4]                = static_cast<unsigned char>((m_height >> 24) & 0xFF);
-        ihdr[5]                = static_cast<unsigned char>((m_height >> 16) & 0xFF);
-        ihdr[6]                = static_cast<unsigned char>((m_height >> 8) & 0xFF);
-        ihdr[7]                = static_cast<unsigned char>(m_height & 0xFF);
-        ihdr[8]                = 8;
-        ihdr[9]                = channels == 4 ? 6 : (channels == 3 ? 2 : (channels == 2 ? 4 : 0));
-        appendChunk(png, "IHDR", ihdr, sizeof(ihdr));
-        appendChunk(png, "IDAT", zlib.data(), zlib.size());
-        appendChunk(png, "IEND", nullptr, 0);
+        std::array<unsigned char, 13> ihdr = {};
+        ihdr.at(0)                         = static_cast<unsigned char>((m_width >> 24) & 0xFF);
+        ihdr.at(1)                         = static_cast<unsigned char>((m_width >> 16) & 0xFF);
+        ihdr.at(2)                         = static_cast<unsigned char>((m_width >> 8) & 0xFF);
+        ihdr.at(3)                         = static_cast<unsigned char>(m_width & 0xFF);
+        ihdr.at(4)                         = static_cast<unsigned char>((m_height >> 24) & 0xFF);
+        ihdr.at(5)                         = static_cast<unsigned char>((m_height >> 16) & 0xFF);
+        ihdr.at(6)                         = static_cast<unsigned char>((m_height >> 8) & 0xFF);
+        ihdr.at(7)                         = static_cast<unsigned char>(m_height & 0xFF);
+        ihdr.at(8)                         = 8;
+        ihdr.at(9)                         = channels == 4 ? 6 : (channels == 3 ? 2 : (channels == 2 ? 4 : 0));
+        appendChunk(png, PNG_IHDR_CHUNK_TYPE, ihdr.data(), ihdr.size());
+        appendChunk(png, PNG_IDAT_CHUNK_TYPE, zlib.data(), zlib.size());
+        appendChunk(png, PNG_IEND_CHUNK_TYPE, nullptr, 0);
 
         return png;
     }

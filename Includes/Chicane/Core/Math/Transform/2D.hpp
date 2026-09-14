@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Transform")
     struct CHICANE_CORE Transform2D : public Changeable
     {
     public:
@@ -47,13 +47,13 @@ namespace Chicane
         void refresh();
 
     public:
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         Vec2 translation;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         float rotation;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         Vec2 scale;
 
     protected:

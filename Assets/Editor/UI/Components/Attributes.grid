@@ -1,24 +1,41 @@
 <Container class="attributes">
     <Editor::DockHeader id="attributesHeader" label="Attributes" />
     <Container dir:if="{{ bIsItemSelected }}" class="attributes__content">
-        <Editor::AttributesTab class="attributes__transforms" label="Transform">
-            <Container class="attributes__transform">
-                <Container class="attributes__transform__label">
-                    <Text>Translation</Text>
-                </Container>
-                <Editor::Vec3 value="{{ selectedItem.translation }}" />
-            </Container>
-            <Container class="attributes__transform">
-                <Container class="attributes__transform__label">
-                    <Text>Rotation</Text>
-                </Container>
-                <Editor::Vec3 value="{{ selectedItem.rotation }}" />
-            </Container>
-            <Container class="attributes__transform">
-                <Container class="attributes__transform__label">
-                    <Text>Scale</Text>
-                </Container>
-                <Editor::Vec3 value="{{ selectedItem.scale }}" />
+        <Editor::AttributesTab
+            dir:for="group : attributeGroups"
+            label="{{ group.label }}"
+        >
+            <Container
+                dir:for="attribute : group.fields"
+                class="attributes__field"
+            >
+                <Text class="attributes__field__label">{{ attribute.label }}</Text>
+                <Input::Text
+                    dir:if="{{ attribute.type == Text }}"
+                    value="{{ attribute.text }}"
+                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                />
+                <Button::Check
+                    dir:if="{{ attribute.type == Bool }}"
+                    checked="{{ attribute.checked }}"
+                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                />
+                <Input::Select
+                    dir:if="{{ attribute.type == Enum }}"
+                    value="{{ attribute.text }}"
+                    items="{{ attribute.options }}"
+                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                />
+                <Input::Text
+                    dir:if="{{ attribute.type == Float }}"
+                    value="{{ attribute.text }}"
+                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                />
+                <Input::Text
+                    dir:if="{{ attribute.type == Vec3 }}"
+                    value="{{ attribute.text }}"
+                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                />
             </Container>
         </Editor::AttributesTab>
     </Container>

@@ -1519,6 +1519,12 @@ namespace Chicane
             setSize(size);
         }
 
+        void Svg::invalidateGeometry()
+        {
+            m_signature   = String::empty();
+            m_syncedScale = UNSYNCED_SCALE;
+        }
+
         void Svg::applySizeAttributes()
         {
             if (m_style.width.value.getRaw().isEmpty())

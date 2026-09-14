@@ -2,7 +2,10 @@
 
 #include <algorithm>
 
+#include "Chicane/Box/Font.hpp"
+
 #include "Chicane/Core/Color.hpp"
+
 #include "Chicane/Grid/Component/Dock.hpp"
 #include "Chicane/Grid/Component/Dock/Handle.hpp"
 #include "Chicane/Grid/Component/Dock/Region.hpp"
@@ -13,8 +16,12 @@ namespace Chicane
     {
         const Color::Rgba HANDLE_COLOR(0, 0, 0, 70);
 
+        constexpr float PORTRAIT_ENTER_EM = 32.0f;
+        constexpr float PORTRAIT_LEAVE_EM = 38.0f;
+
         DockPanel::DockPanel(const pugi::xml_node& inNode)
             : Container(inNode),
+              orientation(ORIENTATION_LANDSCAPE),
               m_side(DockSide::Fill),
               m_size(String::empty()),
               m_minSize(String::empty()),
@@ -278,11 +285,13 @@ namespace Chicane
                     std::max(0.0f, slot->box.right - slot->box.left),
                     std::max(0.0f, slot->box.bottom - slot->box.top)
                 );
-
-                return;
+            }
+            else
+            {
+                Component::refreshSize();
             }
 
-            Component::refreshSize();
+            refreshOrientation();
         }
 
         void DockPanel::refreshPosition()
@@ -338,6 +347,27 @@ namespace Chicane
             Bounds2D box;
             box.set(0.0f, 0.0f, std::min(Dock::HANDLE_THICKNESS, size.y), size.x);
             m_handle->configure(box, HANDLE_COLOR);
+        }
+
+        void DockPanel::refreshOrientation()
+        {
+            const Vec2 size = getSize();
+            if (size.x <= 1.0f || size.y <= 1.0f)
+            {
+                return;
+            }
+
+            const float em      = getStyle().font.size.get() > 0.0f ? getStyle().font.size.get() : Box::Font::BASE_SIZE;
+            const float widthEm = size.x / em;
+            const bool  bIsPortrait =
+                orientation.equals(ORIENTATION_PORTRAIT) ? widthEm < PORTRAIT_LEAVE_EM : widthEm < PORTRAIT_ENTER_EM;
+            const String next = bIsPortrait ? ORIENTATION_PORTRAIT : ORIENTATION_LANDSCAPE;
+            if (orientation.equals(next))
+            {
+                return;
+            }
+
+            orientation = next;
         }
 
         void DockPanel::refreshAttributes()

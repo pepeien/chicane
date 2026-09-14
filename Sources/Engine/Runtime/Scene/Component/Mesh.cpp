@@ -163,6 +163,7 @@ namespace Chicane
 
     CMesh::CMesh()
         : Component(),
+          mesh(),
           m_bIsVisible(false),
           m_flags(Renderer::DrawPoly3DFlag::Lit | Renderer::DrawPoly3DFlag::Shadow),
           m_asset(nullptr),
@@ -173,6 +174,14 @@ namespace Chicane
           m_bones({}),
           m_skins({})
     {}
+
+    void CMesh::onPropertyEdited(const String& inName)
+    {
+        if (inName.equals("mesh"))
+        {
+            setMesh(mesh);
+        }
+    }
 
     void CMesh::onAttachment(Object* inParent)
     {
@@ -196,6 +205,8 @@ namespace Chicane
 
     void CMesh::setMesh(const FileSystem::Path& inFilePath)
     {
+        mesh = inFilePath;
+
         if (inFilePath.isEmpty())
         {
             return;

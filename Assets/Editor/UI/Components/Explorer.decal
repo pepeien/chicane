@@ -1,5 +1,4 @@
 $explorerHeaderHeight: 1.65em;
-$explorerFolder: #d4a017;
 $explorerToolbarHeight: 2.15em;
 $explorerFooterHeight: 2.4em;
 $explorerChromeHeight: 5.25em;
@@ -15,7 +14,6 @@ $explorerSliderThumb: 0.72em;
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: $--white;
     overflow: hidden;
 
     &__body {
@@ -28,15 +26,14 @@ $explorerSliderThumb: 0.72em;
 
     &__tree {
         width: $explorerTreeWidth;
-        height: calc(100% - 0.5em);
+        height: 100%;
         display: flex;
         flex-direction: column;
-        padding: 0.6em 0.35em;
+        padding: 0.35em;
         overflow: hidden;
         overflow-y: auto;
         gap: 0.25em;
         border-right: 1px solid $--light-grey;
-        margin: auto 0;
 
         &__item {
             width: calc(100% - ref(entry.indent));
@@ -64,7 +61,7 @@ $explorerSliderThumb: 0.72em;
                 width: 0.95em;
                 height: 0.95em;
                 margin: auto 0;
-                color: $explorerFolder;
+                color: $--orange;
             }
 
             &__name {
@@ -78,6 +75,7 @@ $explorerSliderThumb: 0.72em;
                 height: 0.55em;
                 margin: auto 0;
                 color: $--grey;
+                transform: rotate(0deg);
                 transform-origin: center;
                 transition: transform 200ms ease-in-out;
 
@@ -231,11 +229,15 @@ $explorerSliderThumb: 0.72em;
         Text {
             font-size: 0.7em;
             margin: auto;
-            color: $--white;
+            color: $--black;
         }
 
         &.--active {
             background-color: $--green;
+
+            Text {
+                color: $--white;
+            }
         }
     }
 

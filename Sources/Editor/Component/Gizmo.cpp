@@ -11,9 +11,9 @@
 #include <Chicane/Core/Window.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
+#include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
-#include "Editor/Actor/Item.hpp"
 #include "Editor/Component/Gizmo/PlaneHandle.hpp"
 #include "Editor/UI/View/Home.hpp"
 
@@ -571,12 +571,14 @@ namespace Editor
         m_mesh->setCanCastShadows(false);
         m_mesh->setIsLit(false);
         m_mesh->setIsForeground(true);
+        m_mesh->setIsTransient(true);
         m_mesh->attachTo(this);
 
         m_origin = getScene()->createComponent<Chicane::CMesh>();
         m_origin->setCanCastShadows(false);
         m_origin->setIsLit(false);
         m_origin->setIsForeground(true);
+        m_origin->setIsTransient(true);
         m_origin->setMesh("Assets/Editor/Meshes/Gizmo/Origin.bmsh");
         m_origin->attachTo(this);
         m_origin->deactivate();
@@ -948,16 +950,28 @@ namespace Editor
             return;
         }
 
-        const Chicane::Vec3         destination = origin + direction * 1000.0f;
-        Chicane::SceneTraceRequest  request     = Chicane::SceneTraceRequest::Line(origin, destination);
-        Chicane::SceneTraceResponse hit;
-        Chicane::Object*            target = nullptr;
+        const Chicane::Vec3        destination = origin + direction * 1000.0f;
+        Chicane::SceneTraceRequest request     = Chicane::SceneTraceRequest::Line(origin, destination);
+        Chicane::Object*           target      = nullptr;
+        float                      best        = 1.0e9f;
 
         Chicane::Application::getInstance().pushTrace(request);
 
-        if (scene->trace<Item>(hit, request, {}))
+        for (Chicane::Actor* actor : scene->getActors())
         {
-            target = hit.actor;
+            if (!actor || actor->isTransient())
+            {
+                continue;
+            }
+
+            float enter = 0.0f;
+            if (!request.intersects(actor->getBounds(), enter) || enter >= best)
+            {
+                continue;
+            }
+
+            best   = enter;
+            target = actor;
         }
 
         if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())

@@ -1140,18 +1140,45 @@ namespace Chicane
         Vec<2, std::uint32_t> size     = {0, 0};
         Vec<2, std::uint32_t> position = {0, 0};
 
+        Grid::Component* viewport = nullptr;
         if (inView)
         {
-            Vec2 viewSize     = inView->getSize();
-            Vec2 viewPosition = inView->getPosition();
+            if (auto* viewViewport = dynamic_cast<Grid::Viewport*>(inView.get()))
+            {
+                if (viewViewport->isDisplayable())
+                {
+                    viewport = viewViewport;
+                }
+            }
+
+            if (!viewport)
+            {
+                for (Grid::Component* child : inView->getChildrenFlat())
+                {
+                    auto* candidate = dynamic_cast<Grid::Viewport*>(child);
+                    if (!candidate || !candidate->isDisplayable())
+                    {
+                        continue;
+                    }
+
+                    viewport = candidate;
+
+                    break;
+                }
+            }
+        }
+
+        if (viewport)
+        {
+            const Bounds2D bounds = viewport->getDrawBounds();
 
             size = {
-                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewSize.x))),
-                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewSize.y)))
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.right - bounds.left))),
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.bottom - bounds.top)))
             };
             position = {
-                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewPosition.x))),
-                static_cast<std::uint32_t>(std::max(0.0f, std::round(viewPosition.y)))
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.left))),
+                static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.top)))
             };
         }
 

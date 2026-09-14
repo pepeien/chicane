@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Runtime/Track.hpp"
+
 namespace Chicane
 {
     Scene::Scene()
@@ -12,6 +15,7 @@ namespace Chicane
           m_componentCount(0),
           m_components({}),
           m_componentsObservable({}),
+          m_filepath(),
           m_cellSize(SceneTraceRequest::DEFAULT_CELL_SIZE),
           m_cells({}),
           m_objectCells({})
@@ -77,6 +81,170 @@ namespace Chicane
         flushSpatial();
 
         onTick(inDeltaTime);
+    }
+
+    void Scene::open(const FileSystem::Path& inFilepath)
+    {
+        Track::open(*this, inFilepath);
+    }
+
+    void Scene::save(const FileSystem::Path& inFilepath) const
+    {
+        Track::save(*this, inFilepath);
+    }
+
+    void Scene::save() const
+    {
+        Track::save(*this, m_filepath);
+    }
+
+    const FileSystem::Path& Scene::getFilepath() const
+    {
+        return m_filepath;
+    }
+
+    void Scene::setFilepath(const FileSystem::Path& inFilepath)
+    {
+        m_filepath = inFilepath;
+    }
+
+    void Scene::clearSerializable()
+    {
+        std::vector<Component*> components = getComponents();
+        for (Component* component : components)
+        {
+            if (!component || component->isTransient())
+            {
+                continue;
+            }
+
+            bool bKeep = false;
+            for (Object* parent = component->getParent(); parent;)
+            {
+                if (parent->isTransient())
+                {
+                    bKeep = true;
+
+                    break;
+                }
+
+                Component* asComponent = dynamic_cast<Component*>(parent);
+                parent                 = asComponent ? asComponent->getParent() : nullptr;
+            }
+
+            if (bKeep)
+            {
+                continue;
+            }
+
+            component->detach();
+            removeComponent(component);
+            delete component;
+        }
+
+        std::vector<Actor*> actors = getActors();
+        for (Actor* actor : actors)
+        {
+            if (!actor || actor->isTransient())
+            {
+                continue;
+            }
+
+            removeActor(actor);
+            delete actor;
+        }
+    }
+
+    Actor* Scene::createActorFromTag(const String& inTypeName)
+    {
+        const ReflectionTypeInfo* type = Track::findType(inTypeName);
+        if (!type)
+        {
+            throw std::runtime_error("Unknown actor type [" + inTypeName.toStandard() + "]");
+        }
+
+        Object* instance = type->create<Object>({});
+        Actor*  actor    = dynamic_cast<Actor*>(instance);
+        if (!actor)
+        {
+            delete instance;
+
+            throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not an actor");
+        }
+
+        return adoptActor(actor);
+    }
+
+    Component* Scene::createComponentFromTag(const String& inTypeName)
+    {
+        const ReflectionTypeInfo* type = Track::findType(inTypeName);
+        if (!type)
+        {
+            throw std::runtime_error("Unknown component type [" + inTypeName.toStandard() + "]");
+        }
+
+        Object*    instance  = type->create<Object>({});
+        Component* component = dynamic_cast<Component*>(instance);
+        if (!component)
+        {
+            delete instance;
+
+            throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not a component");
+        }
+
+        return adoptComponent(component);
+    }
+
+    Actor* Scene::adoptActor(Actor* inActor)
+    {
+        if (!inActor)
+        {
+            return nullptr;
+        }
+
+        auto& typed = m_actors[std::type_index(typeid(*inActor))];
+        typed.push_back(inActor);
+        m_actorCount++;
+
+        attachObject(inActor, Actor::TAG_ID);
+
+        if (isLoaded())
+        {
+            inActor->onLoad();
+        }
+
+        if (!m_actorsObservable.isEmpty())
+        {
+            m_actorsObservable.next(getActors());
+        }
+
+        return inActor;
+    }
+
+    Component* Scene::adoptComponent(Component* inComponent)
+    {
+        if (!inComponent)
+        {
+            return nullptr;
+        }
+
+        auto& typed = m_components[std::type_index(typeid(*inComponent))];
+        typed.push_back(inComponent);
+        m_componentCount++;
+
+        attachObject(inComponent, Component::TAG_ID);
+
+        if (isLoaded())
+        {
+            inComponent->onLoad();
+        }
+
+        if (!m_componentsObservable.isEmpty())
+        {
+            m_componentsObservable.next(getComponents());
+        }
+
+        return inComponent;
     }
 
     bool Scene::hasActors() const
@@ -261,7 +429,11 @@ namespace Chicane
 
         ensureUniqueId(inObject->getId(), inObject);
         inObject->setScene(this);
-        assignUniqueId(inObject, inFallback);
+
+        if (inObject->m_id.isEmpty())
+        {
+            assignUniqueId(inObject, inFallback);
+        }
     }
 
     void Scene::ensureUniqueId(const String& inId, const Object* inIgnored) const

@@ -383,7 +383,7 @@ namespace Chicane
                 }
 
                 ImageMip& mip = chain->levels[level];
-                mip.encoded     = Base64::decodeToUnsigned(node.text().as_string());
+                mip.encoded   = Base64::decodeToUnsigned(node.text().as_string());
             }
 
             if (chain->levels.empty())
@@ -426,8 +426,8 @@ namespace Chicane
             for (std::uint32_t level = 0; level < chain->levels.size(); level++)
             {
                 ImageMip& mip = chain->levels[level];
-                mip.width       = static_cast<int>(Image::mipDimension(width, level));
-                mip.height      = static_cast<int>(Image::mipDimension(height, level));
+                mip.width     = static_cast<int>(Image::mipDimension(width, level));
+                mip.height    = static_cast<int>(Image::mipDimension(height, level));
             }
 
             chain->ensureDecoded(chain->streamTailMinMip());

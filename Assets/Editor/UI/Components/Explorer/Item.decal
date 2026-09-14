@@ -10,7 +10,7 @@
 
     &__preview {
         width: 100%;
-        height: calc(100% - 1.35em);
+        height: calc(100% - 1em);
         position: relative;
         display: flex;
         background-color: $--dark-grey;

@@ -12,7 +12,8 @@ namespace Chicane
         bool                    bInIsPointer,
         bool                    bInIsIterable,
         TypeIndex               inElementIndex,
-        ReflectionFieldIterable inIterable
+        ReflectionFieldIterable inIterable,
+        String                  inGroup
     )
         : names(std::move(inNames)),
           typeName(std::move(inTypeName)),
@@ -23,7 +24,8 @@ namespace Chicane
           bIsPointer(std::move(bInIsPointer)),
           bIsIterable(std::move(bInIsIterable)),
           elementIndex(std::move(inElementIndex)),
-          iterable(std::move(inIterable))
+          iterable(std::move(inIterable)),
+          group(std::move(inGroup))
     {}
 
     ReflectionFieldInfo::ReflectionFieldInfo()
@@ -36,7 +38,8 @@ namespace Chicane
           bIsPointer(false),
           bIsIterable(false),
           elementIndex(std::nullopt),
-          iterable({})
+          iterable({}),
+          group("")
     {}
 
     bool ReflectionFieldInfo::containsName(const String& inValue) const

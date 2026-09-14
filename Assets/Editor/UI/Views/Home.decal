@@ -1,10 +1,13 @@
-$headerSize: 3.5em;
+$contentPadding: 0.5em;
+$contentPaddingDouble: calc($contentPadding * 2);
 
 .--light {
     $--green: #0b997d;
+    $--orange: #d4a017;
 
     $--grey: #aaaaaa;
-    $--light-grey: #524e4e;
+    $--lighter-grey: #524e4e;
+    $--light-grey: #373434;
     $--dark-grey: #323232;
 
     $--black: #252525;
@@ -13,9 +16,11 @@ $headerSize: 3.5em;
 
 .--dark {
     $--green: #0b997d;
+    $--orange: #d4a017;
 
     $--grey: #aaaaaa;
-    $--light-grey: #524e4e;
+    $--lighter-grey: #524e4e;
+    $--light-grey: #373434;
     $--dark-grey: #323232;
 
     $--black: #f7f7f7;
@@ -25,24 +30,23 @@ $headerSize: 3.5em;
 .home {
     display: flex;
     flex-direction: column;
-    gap: 0.25em;
     transition: background-color 200ms ease-in-out;
     background-color: $--white;
 
-    Editor::Header {
-        width: 100%;
-        height: $headerSize;
-        overflow: visible;
-    }
-
     &__content {
-        width: calc(100% - 1em);
-        height: calc(100% - $headerSize - 1.45em);
+        width: 100%;
+        height: 100%;
+        padding: $contentPadding;
         gap: 0.5em;
-        margin: auto;
+        background-color: $--light-grey;
+
+        Text {
+            color: $--black;
+        }
 
         DockPanel {
-            border: 1px solid $--light-grey;
+            background-color: $--white;
+            border: 1px solid $--lighter-grey;
             border-radius: 4px;
         }
 
@@ -67,31 +71,22 @@ $headerSize: 3.5em;
         Editor::Outliner {
             width: 100%;
             height: 100%;
-
-            Text {
-                color: $--black;
-            }
         }
 
         Editor::Attributes {
             width: 100%;
             height: 100%;
-
-            Text {
-                color: $--black;
-            }
         }
 
         Editor::Explorer {
             width: 100%;
             height: 100%;
             overflow: hidden;
+        }
 
-            .explorer {
-                Text {
-                    color: $--black;
-                }
-            }
+        Editor::AssetManager {
+            width: 100%;
+            height: 100%;
         }
     }
 }

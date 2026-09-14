@@ -319,6 +319,9 @@ namespace Chicane
 
         void VulkanLScene::setSkyImageInfo(const vk::DescriptorImageInfo& inInfo)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            backend->releaseBoundDescriptors();
+
             skyImageInfo = inInfo;
 
             if (VulkanLSceneMesh* mesh = m_backend->getLayer<VulkanLSceneMesh>(SCENE_MESH_LAYER_ID))

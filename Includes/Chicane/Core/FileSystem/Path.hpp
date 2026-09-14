@@ -25,7 +25,7 @@ namespace Chicane
             {}
 
             inline Path(const char* inPath)
-                : m_path(inPath)
+                : m_path(inPath ? inPath : std::filesystem::path())
             {}
 
         public:

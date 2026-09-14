@@ -11,8 +11,9 @@
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 #include "Chicane/Grid/Component/Dock/Drag.hpp"
+#include "Chicane/Grid/Component/Dock/Drop.hpp"
 #include "Chicane/Grid/Component/Dock/Panel.hpp"
 #include "Chicane/Grid/Component/Dock/Region.hpp"
 #include "Chicane/Grid/Component/Dock/Resize.hpp"
@@ -22,10 +23,8 @@ namespace Chicane
 {
     namespace Grid
     {
-        class DockDrop;
-
         CH_TYPE(Manual)
-        class CHICANE_GRID Dock : public Component
+        class CHICANE_GRID Dock : public Container
         {
         public:
             // Tag
@@ -48,7 +47,9 @@ namespace Chicane
 
         public:
             bool onEvent(const WindowEvent& inEvent) override;
+
             void tick(float inDeltaTime) override;
+
             std::vector<Component*> getChildrenFlat() const override;
 
         protected:

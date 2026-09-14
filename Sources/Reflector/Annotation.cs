@@ -32,5 +32,7 @@ namespace Reflector
         Type,
         [StringValue("Alias")]
         Alias,
+        [StringValue("Group")]
+        Group,
     }
 }

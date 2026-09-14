@@ -11,6 +11,11 @@ namespace Chicane
           m_parentSubscription({})
     {}
 
+    Component::~Component()
+    {
+        detach();
+    }
+
     bool Component::isActive() const
     {
         return m_bIsActive;
@@ -48,6 +53,7 @@ namespace Chicane
         }
 
         m_parent = inParent;
+        m_parent->addAttachment(this);
 
         m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
 
@@ -63,6 +69,8 @@ namespace Chicane
 
         m_parentSubscription.complete();
 
-        m_parent = nullptr;
+        Object* parent = m_parent;
+        m_parent       = nullptr;
+        parent->removeAttachment(this);
     }
 }

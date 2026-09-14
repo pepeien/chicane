@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -46,6 +47,18 @@ namespace Chicane
         void unload();
 
         void tick(float inDeltaTime);
+
+        void open(const FileSystem::Path& inFilepath);
+        void save(const FileSystem::Path& inFilepath) const;
+        void save() const;
+        const FileSystem::Path& getFilepath() const;
+        void setFilepath(const FileSystem::Path& inFilepath);
+        void clearSerializable();
+
+        Actor* createActorFromTag(const String& inTypeName);
+        Component* createComponentFromTag(const String& inTypeName);
+        Actor* adoptActor(Actor* inActor);
+        Component* adoptComponent(Component* inComponent);
 
         // Actors
         bool hasActors() const;
@@ -383,6 +396,8 @@ namespace Chicane
         std::size_t                                                  m_componentCount;
         std::unordered_map<std::type_index, std::vector<Component*>> m_components;
         ComponentsObservable                                         m_componentsObservable;
+
+        FileSystem::Path                                             m_filepath;
 
         float                                                        m_cellSize;
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;

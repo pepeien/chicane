@@ -81,11 +81,11 @@ namespace Chicane
             bool looksLikeNormal() const;
 
         private:
-            ImageVendor                                   m_vendor;
-            bool                                          m_bNormal;
-            Image::Instance                               m_data;
-            std::vector<Image::Instance>                  m_frames;
-            std::vector<int>                              m_delays;
+            ImageVendor                                 m_vendor;
+            bool                                        m_bNormal;
+            Image::Instance                             m_data;
+            std::vector<Image::Instance>                m_frames;
+            std::vector<int>                            m_delays;
             std::vector<std::shared_ptr<ImageMipChain>> m_chains;
         };
     }

@@ -1,6 +1,9 @@
 <View path="home" class="home --{{ theme }}">
     <Editor::Header />
-    <Dock class="home__content">
+    <Dock dir:if="{{ bIsViewportWorkspace }}" class="home__content">
+        <DockPanel side="top" max-size="6em" handle="toolbarHeader" isResizable="false">
+            <Editor::Toolbar />
+        </DockPanel>
         <DockPanel isGrabbable="false">
             <Viewport />
             <Editor::Telemetry />
@@ -12,8 +15,16 @@
         <DockPanel side="right" size="20%" handle="attributesHeader">
             <Editor::Attributes />
         </DockPanel>
-        <DockPanel side="bottom" size="22em" handle="explorerHeader">
+        <DockPanel side="bottom" size="18em" handle="explorerHeader">
             <Editor::Explorer />
+        </DockPanel>
+    </Dock>
+    <Dock dir:if="{{ bIsAssetsWorkspace }}" class="home__content">
+        <DockPanel side="left" size="25%" handle="explorerHeader">
+            <Editor::Explorer />
+        </DockPanel>
+        <DockPanel isGrabbable="false" handle="assetManagerHeader">
+            <Editor::AssetManager />
         </DockPanel>
     </Dock>
 </View>

@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Backend/Vulkan/Bloom/Pass.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 
@@ -80,31 +81,51 @@ namespace Chicane
             compositeBindings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
             VulkanDescriptorSetLayout::init(m_compositeDescriptor.setLayout, backend->logicalDevice, compositeBindings);
 
+            const std::uint32_t frameCount   = std::max(1U, static_cast<std::uint32_t>(backend->frames.size()));
+            const std::uint32_t setsPerFrame = 2U + BLUR_PASS_COUNT;
+
             VulkanDescriptorPoolCreateInfo poolCreateInfo;
-            poolCreateInfo.maxSets = 8;
-            poolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 16});
+            poolCreateInfo.maxSets = frameCount * setsPerFrame;
+            poolCreateInfo.sizes.push_back(
+                {vk::DescriptorType::eCombinedImageSampler, frameCount * (1U + BLUR_PASS_COUNT + 2U)}
+            );
             VulkanDescriptorPool::init(m_extractDescriptor.pool, backend->logicalDevice, poolCreateInfo);
             m_blurDescriptor.pool      = m_extractDescriptor.pool;
             m_compositeDescriptor.pool = m_extractDescriptor.pool;
 
-            VulkanDescriptorSetLayout::allocate(
-                m_extractDescriptor.set,
-                backend->logicalDevice,
-                m_extractDescriptor.setLayout,
-                m_extractDescriptor.pool
-            );
-            VulkanDescriptorSetLayout::allocate(
-                m_blurDescriptor.set,
-                backend->logicalDevice,
-                m_blurDescriptor.setLayout,
-                m_extractDescriptor.pool
-            );
-            VulkanDescriptorSetLayout::allocate(
-                m_compositeDescriptor.set,
-                backend->logicalDevice,
-                m_compositeDescriptor.setLayout,
-                m_extractDescriptor.pool
-            );
+            m_extractSets.resize(frameCount);
+            m_compositeSets.resize(frameCount);
+            m_blurSets.resize(static_cast<std::size_t>(frameCount) * BLUR_PASS_COUNT);
+
+            for (std::uint32_t frame = 0; frame < frameCount; ++frame)
+            {
+                VulkanDescriptorSetLayout::allocate(
+                    m_extractSets[frame],
+                    backend->logicalDevice,
+                    m_extractDescriptor.setLayout,
+                    m_extractDescriptor.pool
+                );
+                VulkanDescriptorSetLayout::allocate(
+                    m_compositeSets[frame],
+                    backend->logicalDevice,
+                    m_compositeDescriptor.setLayout,
+                    m_extractDescriptor.pool
+                );
+
+                for (std::uint32_t pass = 0; pass < BLUR_PASS_COUNT; ++pass)
+                {
+                    VulkanDescriptorSetLayout::allocate(
+                        m_blurSets[static_cast<std::size_t>(frame) * BLUR_PASS_COUNT + pass],
+                        backend->logicalDevice,
+                        m_blurDescriptor.setLayout,
+                        m_extractDescriptor.pool
+                    );
+                }
+            }
+
+            m_extractDescriptor.set   = m_extractSets.front();
+            m_blurDescriptor.set      = m_blurSets.front();
+            m_compositeDescriptor.set = m_compositeSets.front();
 
             initFullscreenPipeline(
                 m_extract,
@@ -208,6 +229,13 @@ namespace Chicane
             m_blur.destroy();
             m_composite.destroy();
 
+            m_extractSets.clear();
+            m_compositeSets.clear();
+            m_blurSets.clear();
+            m_extractDescriptor.set   = nullptr;
+            m_blurDescriptor.set      = nullptr;
+            m_compositeDescriptor.set = nullptr;
+
             m_backend->logicalDevice.destroyDescriptorSetLayout(m_extractDescriptor.setLayout);
             m_backend->logicalDevice.destroyDescriptorSetLayout(m_blurDescriptor.setLayout);
             m_backend->logicalDevice.destroyDescriptorSetLayout(m_compositeDescriptor.setLayout);
@@ -302,26 +330,29 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsHDREnabled = inFrame.hasFeature(RendererFeature::HDR);
+            const bool              bIsHDREnabled = inFrame.hasFeature(RendererFeature::HDR);
+            const std::uint32_t     gpuFrame      = frameIndex(inGpuFrame);
+            const vk::DescriptorSet extract       = extractSet(gpuFrame);
+            const vk::DescriptorSet composite     = compositeSet(gpuFrame);
 
-            updateSample(m_extractDescriptor.set, 0, image.targetImage);
+            updateSample(extract, 0, image.targetImage);
             beginPass(commandBuffer, m_extract, image.bloom.extractFramebuffer, image.bloom.images.at(0).extent);
             m_extract.bind(commandBuffer);
-            m_extract.bind(commandBuffer, 0, m_extractDescriptor.set);
+            m_extract.bind(commandBuffer, 0, extract);
             commandBuffer.draw(3, 1, 0, 0);
             commandBuffer.endRenderPass();
 
-            blurPass(commandBuffer, image, 0, 1, 1.0f, 0.0f);
-            blurPass(commandBuffer, image, 1, 0, 0.0f, 1.0f);
-            blurPass(commandBuffer, image, 0, 1, 1.0f, 0.0f);
-            blurPass(commandBuffer, image, 1, 0, 0.0f, 1.0f);
+            blurPass(commandBuffer, image, blurSet(gpuFrame, 0), 0, 1, 1.0f, 0.0f);
+            blurPass(commandBuffer, image, blurSet(gpuFrame, 1), 1, 0, 0.0f, 1.0f);
+            blurPass(commandBuffer, image, blurSet(gpuFrame, 2), 0, 1, 1.0f, 0.0f);
+            blurPass(commandBuffer, image, blurSet(gpuFrame, 3), 1, 0, 0.0f, 1.0f);
 
-            updateSample(m_compositeDescriptor.set, 0, image.targetImage);
-            updateSample(m_compositeDescriptor.set, 1, image.bloom.images.at(0));
+            updateSample(composite, 0, image.targetImage);
+            updateSample(composite, 1, image.bloom.images.at(0));
 
             beginPass(commandBuffer, m_composite, image.bloom.compositeFramebuffer, image.colorImage.extent);
             m_composite.bind(commandBuffer);
-            m_composite.bind(commandBuffer, 0, m_compositeDescriptor.set);
+            m_composite.bind(commandBuffer, 0, composite);
             const std::int32_t hdrEnabled = bIsHDREnabled ? 1 : 0;
             commandBuffer.pushConstants(
                 m_composite.layout,
@@ -477,16 +508,61 @@ namespace Chicane
             inCommandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
         }
 
+        vk::DescriptorSet VulkanBloomPass::extractSet(std::uint32_t inFrameIndex) const
+        {
+            return m_extractSets.empty() ? m_extractDescriptor.set
+                                         : m_extractSets.at(inFrameIndex % m_extractSets.size());
+        }
+
+        vk::DescriptorSet VulkanBloomPass::compositeSet(std::uint32_t inFrameIndex) const
+        {
+            return m_compositeSets.empty() ? m_compositeDescriptor.set
+                                           : m_compositeSets.at(inFrameIndex % m_compositeSets.size());
+        }
+
+        vk::DescriptorSet VulkanBloomPass::blurSet(std::uint32_t inFrameIndex, std::uint32_t inPass) const
+        {
+            if (m_blurSets.empty())
+            {
+                return m_blurDescriptor.set;
+            }
+
+            const std::uint32_t pass = inPass % BLUR_PASS_COUNT;
+            const std::size_t   index =
+                static_cast<std::size_t>(inFrameIndex % m_extractSets.size()) * BLUR_PASS_COUNT + pass;
+
+            return m_blurSets.at(index);
+        }
+
+        std::uint32_t VulkanBloomPass::frameIndex(const VulkanFrame& inGpuFrame) const
+        {
+            if (!m_backend)
+            {
+                return 0;
+            }
+
+            for (std::uint32_t i = 0; i < m_backend->frames.size(); ++i)
+            {
+                if (&m_backend->frames.at(i) == &inGpuFrame)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
+        }
+
         void VulkanBloomPass::blurPass(
             vk::CommandBuffer     inCommandBuffer,
             VulkanSwapchainImage& inImage,
+            vk::DescriptorSet     inSet,
             int                   inSource,
             int                   inDestination,
             float                 inX,
             float                 inY
         )
         {
-            updateSample(m_blurDescriptor.set, 0, inImage.bloom.images.at(inSource));
+            updateSample(inSet, 0, inImage.bloom.images.at(inSource));
             beginPass(
                 inCommandBuffer,
                 m_blur,
@@ -494,7 +570,7 @@ namespace Chicane
                 inImage.bloom.images.at(inDestination).extent
             );
             m_blur.bind(inCommandBuffer);
-            m_blur.bind(inCommandBuffer, 0, m_blurDescriptor.set);
+            m_blur.bind(inCommandBuffer, 0, inSet);
             const std::array<float, 2> direction = {inX, inY};
             inCommandBuffer.pushConstants(
                 m_blur.layout,

@@ -1,0 +1,4 @@
+<Svg viewBox="0 0 256 256" fill="currentColor">
+    <SvgRect width="256" height="256" fill="none"/>
+    <SvgPath d="M216,80H176V56a48,48,0,0,0-96,0V80H40A16,16,0,0,0,24,96v16a104,104,0,0,0,208,0V96A16,16,0,0,0,216,80ZM96,56a32,32,0,0,1,64,0V80H96Z"/>
+</Svg>

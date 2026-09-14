@@ -352,7 +352,7 @@ namespace Chicane
 
             VulkanGraphicsPipelineBuilder()
                 .addVertexBinding(VulkanVertex::getBindingDescription())
-                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions(true))
                 .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
                 .addViewport(backend->getVkViewport(this))
                 .addDynamicState(vk::DynamicState::eViewport)

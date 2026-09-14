@@ -15,9 +15,9 @@ namespace Chicane
         struct CHICANE_RENDERER DrawTextureData : public DrawData
         {
         public:
-            Image::Instance                  image;
+            Image::Instance                image;
             std::shared_ptr<ImageMipChain> mips;
-            bool                             bStreamable = true;
+            bool                           bStreamable = true;
         };
     }
 }

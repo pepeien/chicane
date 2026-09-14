@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <vector>
 
 #include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/Reflection.hpp"
@@ -11,11 +12,13 @@
 namespace Chicane
 {
     class Scene;
+    class Component;
 
     CH_TYPE(Manual)
     class CHICANE_RUNTIME Object : public Transformable
     {
         friend Scene;
+        friend Component;
 
     public:
         Object();
@@ -28,6 +31,7 @@ namespace Chicane
         inline virtual void onLoad() { return; }
         inline virtual void onUnload() { return; }
         inline virtual void onTick(float inDeltaTime) { return; }
+        inline virtual void onPropertyEdited(const String& inName) { (void)inName; }
 
     public:
         CH_FUNCTION()
@@ -39,10 +43,17 @@ namespace Chicane
         CH_FUNCTION()
         String getTypeName() const;
 
+        CH_FUNCTION()
+        bool isTransient() const;
+
+        const std::vector<Component*>& getAttachments() const;
+
     public:
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
         void setId(const String& inId);
+        void setIsTransient(bool inValue);
+        void notifyPropertyEdited(const String& inName);
 
     protected:
         template <typename T = Scene>
@@ -60,12 +71,17 @@ namespace Chicane
         void setScene(Scene* inScene);
         void markSpatialDirty();
         bool consumeSpatialDirty();
+        void addAttachment(Component* inComponent);
+        void removeAttachment(Component* inComponent);
 
     protected:
-        bool   m_bCanTick;
-        bool   m_bCanCollide;
+        bool                    m_bCanTick;
+        bool                    m_bCanCollide;
+        bool                    m_bIsTransient;
 
-        String m_id;
+        String                  m_id;
+
+        std::vector<Component*> m_attachments;
 
     private:
         Scene*            m_scene;

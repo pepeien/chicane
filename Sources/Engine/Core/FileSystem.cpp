@@ -207,7 +207,7 @@ namespace Chicane
                 return;
             }
 
-            ListingService::instance().enqueue(inDir.lexicallyNormal());
+            ListingService::instance().enqueue(inDir);
         }
 
         void pumpLs(std::vector<Listing>& outReady)

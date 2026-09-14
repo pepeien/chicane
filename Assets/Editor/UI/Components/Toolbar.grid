@@ -1,0 +1,26 @@
+<Container class="toolbar --{{ orientation }}">
+    <Editor::DockHeader id="toolbarHeader" label="Toolbar" />
+    <Container class="toolbar__items">
+        <Button class="toolbar__item --idle" onClick="{{ onTrackSave() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="FloppyDisk" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="FloppyDisk" class="toolbar__icon --fill"/>
+            <Text>Save</Text>
+        </Button>
+        <Container class="toolbar__separator"/>
+        <Button class="toolbar__item --{{ translateState }}" onClick="{{ onGizmoTranslate() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOutCardinal" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOutCardinal" class="toolbar__icon --fill"/>
+            <Text>Move</Text>
+        </Button>
+        <Button class="toolbar__item --{{ rotateState }}" onClick="{{ onGizmoRotate() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowClockwise" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowClockwise" class="toolbar__icon --fill"/>
+            <Text>Rotate</Text>
+        </Button>
+        <Button class="toolbar__item --{{ scaleState }}" onClick="{{ onGizmoScale() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOut" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOut" class="toolbar__icon --fill"/>
+            <Text>Scale</Text>
+        </Button>
+    </Container>
+</Container>

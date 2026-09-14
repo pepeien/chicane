@@ -1,0 +1,8 @@
+<Track version="1" id="Default">
+    <ASky id="Sky" sky="Assets/Editor/Skies/Default.bsky" intensity="0.3" exposure="5.5">
+        <CLight id="Environment" type="Environment" intensity="0.3" color="1,1,1" castShadows="false"/>
+    </ASky>
+    <Actor id="Cube">
+        <CMesh id="Mesh" mesh="Assets/Engine/Meshes/Shape/Cube.bmsh"/>
+    </Actor>
+</Track>

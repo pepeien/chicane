@@ -1,10 +1,12 @@
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 
+#include <cstdint>
 #include <cstdio>
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
+#include "Chicane/Core/Reflection/Enum/Registry.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 namespace Chicane
@@ -224,6 +226,58 @@ namespace Chicane
             result.append(']');
 
             return result;
+        }
+
+        const ReflectionEnumInfo* enumeration = ReflectionEnumRegistry::getInstance().find(typeName);
+        if (!enumeration)
+        {
+            const std::size_t split = typeName.lastOf(':');
+            if (split != String::npos)
+            {
+                enumeration = ReflectionEnumRegistry::getInstance().find(typeName.substr(split + 1));
+            }
+        }
+
+        if (enumeration)
+        {
+            const char* address = this->address(inInstance);
+            int         value   = 0;
+            if (address)
+            {
+                switch (size)
+                {
+                case 1:
+                    value = static_cast<int>(*reinterpret_cast<const std::uint8_t*>(address));
+                    break;
+
+                case 2:
+                    value = static_cast<int>(*reinterpret_cast<const std::uint16_t*>(address));
+                    break;
+
+                case 4:
+                    value = *reinterpret_cast<const int*>(address);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+            for (const ReflectionEnumeratorInfo& enumerator : enumeration->enumerators)
+            {
+                if (enumerator.value != value)
+                {
+                    continue;
+                }
+
+                const std::size_t split = enumerator.name.lastOf(':');
+                if (split == String::npos)
+                {
+                    return enumerator.name;
+                }
+
+                return enumerator.name.substr(split + 1);
+            }
         }
 
         if (isType<Vec2>())

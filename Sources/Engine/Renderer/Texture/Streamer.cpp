@@ -305,9 +305,9 @@ namespace Chicane
                 return;
             }
 
-            const Draw::Id                         id      = inTexture.id;
+            const Draw::Id                       id      = inTexture.id;
             const std::shared_ptr<ImageMipChain> mips    = inTexture.mips;
-            const std::shared_ptr<Mailbox>         mailbox = m_mailbox;
+            const std::shared_ptr<Mailbox>       mailbox = m_mailbox;
             m_inFlight.insert(key);
 
             Worker::submit(

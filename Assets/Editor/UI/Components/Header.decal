@@ -1,18 +1,26 @@
 .header {
     width: 100%;
+    height: auto;
     display: flex;
-    flex-direction: row;
-    gap: 0.25em;
+    flex-direction: column;
+    border-bottom: 3px solid $--lighter-grey;
     overflow: visible;
 
     &:drag {
         cursor: grabbing;
     }
 
-    Editor::Logo {
-        width: 3em;
-        height: 3em;
-        margin: auto 0 auto 0.25em;
+    &__heading {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.25em;
+
+        Editor::Logo {
+            width: 3em;
+            height: 3em;
+            margin: auto 0 auto 0.25em;
+        }
     }
 
     &__menus {
@@ -20,10 +28,10 @@
         height: 1.2em;
         overflow: visible;
         margin-top: 0.35em;
-    }
 
-    Text {
-        color: $--black;
+        Text {
+            color: $--black;
+        }
     }
 
     &__theme {
@@ -96,6 +104,46 @@
             .header__control__icon {
                 color: #ffffff;
             }
+        }
+    }
+
+    &__tabs {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.25em;
+        overflow: hidden;
+        padding: 0 0.5em;
+        margin-top: auto;
+    }
+
+    &__tab {
+        display: flex;
+        flex-direction: row;
+        gap:  0.7em;
+        padding: 0.35em 0.75em;
+        border-radius: 4px 4px 0 0;
+        background-color: $--dark-grey;
+        color: $--black;
+        transition: background-color 200ms ease-in-out;
+
+        Text {
+            font-size: 0.7em;
+            color: $--black;
+        }
+
+        Icon {
+            width: 1em;
+            height: 1em;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: $--light-grey;
+        }
+
+        &.--active {
+            background-color: $--lighter-grey;
         }
     }
 }

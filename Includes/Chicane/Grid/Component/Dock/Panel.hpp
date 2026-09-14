@@ -45,6 +45,9 @@ namespace Chicane
             static constexpr inline const char* DEFAULT_SIZE     = "25%";
             static constexpr inline const char* DEFAULT_MIN_SIZE = "4em";
 
+            static constexpr inline const char* ORIENTATION_LANDSCAPE = "landscape";
+            static constexpr inline const char* ORIENTATION_PORTRAIT  = "portrait";
+
             static DockPanel* findFrom(Component* inComponent);
 
         public:
@@ -62,6 +65,9 @@ namespace Chicane
             void refreshPosition() override;
 
         public:
+            CH_FIELD()
+            String orientation;
+
             DockSide getSide() const;
             void setSide(DockSide inSide);
             bool isFill() const;
@@ -96,6 +102,7 @@ namespace Chicane
 
             void refreshAttributes();
             void refreshHandle();
+            void refreshOrientation();
             const DockRegion* region() const;
             DockSide parseSide(const String& inValue) const;
             String toSideString(DockSide inSide) const;

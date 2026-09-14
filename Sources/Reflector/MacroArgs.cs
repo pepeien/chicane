@@ -25,6 +25,12 @@ namespace Reflector
             "Name"
         ];
 
+        static readonly string[] GroupKeys =
+        [
+            Enum.GetStringValue(AnnotationParam.Group),
+            "Category"
+        ];
+
         public static List<string> Split(string value)
         {
             var parts = new List<string>();
@@ -160,6 +166,19 @@ namespace Reflector
             }
 
             return false;
+        }
+
+        public static string Group(IEnumerable<MacroArg> args)
+        {
+            foreach (MacroArg arg in args)
+            {
+                if (arg.IsNamed && Matches(arg.Name, GroupKeys))
+                {
+                    return arg.Value;
+                }
+            }
+
+            return "";
         }
 
         public static List<string> Aliases(IEnumerable<MacroArg> args)

@@ -97,6 +97,7 @@ namespace Chicane
             void onRefresh() override;
             void refreshSize() override;
             void refreshPosition() override;
+            void invalidateGeometry();
 
         private:
             void applySizeAttributes();

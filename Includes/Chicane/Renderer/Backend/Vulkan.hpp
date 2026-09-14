@@ -47,6 +47,7 @@ namespace Chicane
             vk::Rect2D getVkScissor(Layer* inLayer) const;
             vk::DescriptorSet getTextureDescriptorSet() const;
             vk::Format getSceneColorFormat() const;
+            void releaseBoundDescriptors();
 
             VulkanBloomPass bloom;
 
@@ -90,6 +91,7 @@ namespace Chicane
             void buildTextureDescriptor();
             void buildTextureData(const DrawTexture::List& inTextures);
             void writeTextureDescriptor(Draw::Id inId, const vk::DescriptorImageInfo& inInfo);
+            bool needsTextureUpload(const DrawTexture& inTexture) const;
             void destroyTextureData();
             void bindScreenTarget(const VulkanImageInfo& inTarget);
 

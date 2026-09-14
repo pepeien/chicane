@@ -12,6 +12,10 @@ namespace Chicane
     class CHICANE_RUNTIME Actor : public Object
     {
     public:
+        static constexpr inline const char* TAG_ID = "Actor";
+
+    public:
+        CH_CONSTRUCTOR()
         Actor();
 
     protected:

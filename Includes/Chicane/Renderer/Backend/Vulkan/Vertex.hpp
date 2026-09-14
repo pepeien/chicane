@@ -11,7 +11,9 @@ namespace Chicane
         namespace VulkanVertex
         {
             CHICANE_RENDERER vk::VertexInputBindingDescription getBindingDescription();
-            CHICANE_RENDERER std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
+            CHICANE_RENDERER std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions(
+                bool bIncludeTangent = false
+            );
         }
     }
 }

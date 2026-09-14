@@ -11,5 +11,90 @@ $outlinerHeaderHeight: 1.65em;
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        overflow-y: auto;
+        gap: 0.15em;
+    }
+
+    &__item {
+        width: calc(100% - ref(node.indent));
+        height: 1.55em;
+        margin-left: ref(node.indent);
+        padding: 0 0.25em;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: row;
+        gap: 0.15em;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $--light-grey;
+        }
+
+        &.--selected {
+            background-color: $--light-grey;
+        }
+
+        &.--idle {
+            background-color: transparent;
+        }
+
+        &__caret {
+            width: 0.9em;
+            height: 100%;
+            display: flex;
+            background-color: transparent;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.--leaf {
+                width: 0.9em;
+                height: 0.55em;
+                margin: auto 0;
+                opacity: 0;
+                color: $--grey;
+            }
+
+            &__icon {
+                width: 0.55em;
+                height: 0.55em;
+                margin: auto;
+                color: $--grey;
+                transform-origin: center;
+                transform: rotate(0deg);
+                transition: transform 200ms ease-in-out;
+
+                &.--expanded  {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        &__body {
+            width: calc(100% - 0.9em);
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 0.25em;
+            background-color: transparent;
+            overflow: hidden;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        &__icon {
+            width: 0.9em;
+            height: 0.9em;
+            margin: auto 0;
+            color: $--grey;
+        }
+
+        Text {
+            font-size: 0.7em;
+            margin: auto 0;
+        }
     }
 }

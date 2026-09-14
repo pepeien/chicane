@@ -1,0 +1,34 @@
+<Container class="asset-manager">
+    <Editor::DockHeader id="assetManagerHeader" label="Asset Manager" />
+    <Container class="asset-manager__toolbar">
+        <Button class="asset-manager__action" onClick="{{ onCreateTexture() }}"><Text>Texture</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateMesh() }}"><Text>Mesh</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateSky() }}"><Text>Sky</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateModel() }}"><Text>Model</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateSound() }}"><Text>Sound</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateEffect() }}"><Text>Effect</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onImport() }}"><Text>Import</Text></Button>
+    </Container>
+    <Container dir:if="{{ bHasAsset }}" class="asset-manager__editor">
+        <Container class="asset-manager__row">
+            <Text class="asset-manager__label">Type</Text>
+            <Text>{{ assetType }}</Text>
+        </Container>
+        <Container class="asset-manager__row">
+            <Text class="asset-manager__label">Path</Text>
+            <Text>{{ assetPath }}</Text>
+        </Container>
+        <Container class="asset-manager__row">
+            <Text class="asset-manager__label">Id</Text>
+            <Input::Text value="{{ assetId }}"/>
+        </Container>
+        <Container class="asset-manager__row">
+            <Text class="asset-manager__label">Source</Text>
+            <Input::Text value="{{ assetSource }}"/>
+        </Container>
+        <Button class="asset-manager__save" onClick="{{ onSave() }}"><Text>Save</Text></Button>
+    </Container>
+    <Container dir:if="{{ bIsAssetEmpty }}" class="asset-manager__empty">
+        <Text>Select or create an asset.</Text>
+    </Container>
+</Container>

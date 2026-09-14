@@ -30,7 +30,8 @@ namespace Chicane
             TypeIdex            inTypeIndex,
             const Constructors& inConstructors,
             const Methods&      inMethods,
-            const Fields&       inFields
+            const Fields&       inFields,
+            String              inGroup = {}
         );
         ReflectionTypeInfo();
 
@@ -60,9 +61,15 @@ namespace Chicane
                 {
                     continue;
                 }
-                catch (const std::runtime_error&)
+                catch (const std::runtime_error& error)
                 {
-                    continue;
+                    const std::string message = error.what();
+                    if (message.find("Missing reflected constructor") != std::string::npos)
+                    {
+                        continue;
+                    }
+
+                    throw std::runtime_error("Failed to construct [" + getName() + "]: " + message);
                 }
             }
 
@@ -76,5 +83,6 @@ namespace Chicane
         Constructors constructors;
         Methods      methods;
         Fields       fields;
+        String       group;
     };
 }

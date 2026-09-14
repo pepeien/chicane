@@ -1,7 +1,8 @@
-#include "Chicane/Grid/Component/Dock/Handle.hpp"
+#include "Chicane/Grid/Component/Dock/Handle.reflected.hpp"
 
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
+
 #include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Style.hpp"
 

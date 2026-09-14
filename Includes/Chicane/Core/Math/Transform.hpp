@@ -11,7 +11,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Transform")
     struct CHICANE_CORE Transform : public Changeable
     {
     public:
@@ -79,13 +79,13 @@ namespace Chicane
         void refresh();
 
     public:
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         Vec3 translation;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         Rotator rotation;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Transform")
         Vec3 scale;
 
     protected:

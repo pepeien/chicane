@@ -13,14 +13,16 @@ namespace Chicane
         TypeIdex            inTypeIndex,
         const Constructors& inConstructors,
         const Methods&      inMethods,
-        const Fields&       inFields
+        const Fields&       inFields,
+        String              inGroup
     )
         : names(std::move(inNames)),
           size(inSize),
           typeIndex(inTypeIndex),
           constructors(std::move(inConstructors)),
           methods(std::move(inMethods)),
-          fields(std::move(inFields))
+          fields(std::move(inFields)),
+          group(std::move(inGroup))
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
@@ -29,7 +31,8 @@ namespace Chicane
           typeIndex(std::nullopt),
           constructors({}),
           methods({}),
-          fields({})
+          fields({}),
+          group("")
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const

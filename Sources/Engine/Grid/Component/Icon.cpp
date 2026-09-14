@@ -13,8 +13,9 @@ namespace Chicane
         {
             static std::unordered_map<std::string, std::unique_ptr<pugi::xml_document>> cache;
 
-            const std::string key   = inPath.toString().toStandard();
-            auto              found = cache.find(key);
+            const std::string key = inPath.toString().toStandard();
+
+            auto found = cache.find(key);
 
             if (found == cache.end())
             {
@@ -33,23 +34,91 @@ namespace Chicane
         }
 
         Icon::Icon(const pugi::xml_node& inNode)
-            : Svg(inNode)
+            : Svg(inNode),
+              m_nameBinding(getAttribute(NAME_ATTRIBUTE_NAME)),
+              m_sourceBinding(getAttribute(SOURCE_ATTRIBUTE_NAME)),
+              m_resolvedName(String::empty()),
+              m_usageAttributes(m_attributes)
         {
             importStyleFile("Assets/Engine/UI/Components/Icon.decal");
 
-            const String name = parseText(getAttribute(NAME_ATTRIBUTE_NAME)).trim();
-            if (name.isEmpty())
+            refreshSource();
+        }
+
+        void Icon::onRefresh()
+        {
+            refreshSource();
+
+            Svg::onRefresh();
+        }
+
+        void Icon::onTick(float inDeltaTime)
+        {
+            if (isReference(m_nameBinding) || isReference(m_sourceBinding))
+            {
+                refreshSource();
+            }
+
+            Svg::onTick(inDeltaTime);
+        }
+
+        void Icon::refreshSource()
+        {
+            const String name = parseText(m_nameBinding).trim();
+            if (name.isEmpty() || name.equals(m_resolvedName))
             {
                 return;
             }
 
-            const String source = parseText(getAttribute(SOURCE_ATTRIBUTE_NAME)).trim();
+            const bool bIsBound = isReference(m_nameBinding) || isReference(m_sourceBinding);
+
+            const String source = parseText(m_sourceBinding).trim();
             if (source.isEmpty())
             {
+                if (bIsBound)
+                {
+                    return;
+                }
+
                 throw std::runtime_error("Icon source folder is required");
             }
 
-            applySource(resolveSource(name, source), inNode);
+            FileSystem::Path path;
+            try
+            {
+                path = resolveSource(name, source);
+            }
+            catch (const std::runtime_error&)
+            {
+                if (bIsBound)
+                {
+                    return;
+                }
+
+                throw;
+            }
+
+            if (!path.exists())
+            {
+                if (bIsBound)
+                {
+                    return;
+                }
+
+                throw std::runtime_error("Icon source does not exist [" + path.toString() + "]");
+            }
+
+            const bool bDidLoad = !m_resolvedName.isEmpty();
+
+            m_resolvedName = name;
+
+            applySource(path);
+
+            if (bDidLoad)
+            {
+                markStyleDirtySubtree();
+                markLayoutDirty();
+            }
         }
 
         String Icon::toCamelCase(const String& inValue) const
@@ -106,7 +175,7 @@ namespace Chicane
             return folder / FileSystem::Path(name + ".grid");
         }
 
-        void Icon::applySource(const FileSystem::Path& inPath, const pugi::xml_node& inUsage)
+        void Icon::applySource(const FileSystem::Path& inPath)
         {
             const pugi::xml_node root = findSource(inPath);
             if (root.empty())
@@ -117,28 +186,30 @@ namespace Chicane
             m_sourceDocument.reset();
             m_sourceNode = m_sourceDocument.append_copy(root);
 
-            for (pugi::xml_attribute attribute : inUsage.attributes())
+            for (const auto& [key, value] : m_usageAttributes)
             {
-                const String key = attribute.name();
                 if (key.equals(NAME_ATTRIBUTE_NAME, SOURCE_ATTRIBUTE_NAME))
                 {
                     continue;
                 }
 
-                pugi::xml_attribute existing = m_sourceNode.attribute(attribute.name());
+                pugi::xml_attribute existing = m_sourceNode.attribute(key.toChar());
                 if (!existing.empty())
                 {
-                    existing.set_value(attribute.value());
+                    existing.set_value(value.toChar());
 
                     continue;
                 }
 
-                m_sourceNode.append_attribute(attribute.name()).set_value(attribute.value());
+                m_sourceNode.append_attribute(key.toChar()).set_value(value.toChar());
             }
 
             m_attributes = Xml::getAttributes(m_sourceNode);
+
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
+
+            invalidateGeometry();
         }
     }
 }

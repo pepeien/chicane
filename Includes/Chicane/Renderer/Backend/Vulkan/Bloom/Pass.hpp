@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Renderer.hpp"
@@ -44,19 +45,29 @@ namespace Chicane
             void blurPass(
                 vk::CommandBuffer     inCommandBuffer,
                 VulkanSwapchainImage& inImage,
+                vk::DescriptorSet     inSet,
                 int                   inSource,
                 int                   inDestination,
                 float                 inX,
                 float                 inY
             );
+            vk::DescriptorSet extractSet(std::uint32_t inFrameIndex) const;
+            vk::DescriptorSet compositeSet(std::uint32_t inFrameIndex) const;
+            vk::DescriptorSet blurSet(std::uint32_t inFrameIndex, std::uint32_t inPass) const;
+            std::uint32_t frameIndex(const VulkanFrame& inGpuFrame) const;
 
-            VulkanBackend*         m_backend = nullptr;
-            VulkanGraphicsPipeline m_extract;
-            VulkanGraphicsPipeline m_blur;
-            VulkanGraphicsPipeline m_composite;
-            VulkanDescriptorBundle m_extractDescriptor;
-            VulkanDescriptorBundle m_blurDescriptor;
-            VulkanDescriptorBundle m_compositeDescriptor;
+            static constexpr std::uint32_t BLUR_PASS_COUNT = 4;
+
+            VulkanBackend*                 m_backend = nullptr;
+            VulkanGraphicsPipeline         m_extract;
+            VulkanGraphicsPipeline         m_blur;
+            VulkanGraphicsPipeline         m_composite;
+            VulkanDescriptorBundle         m_extractDescriptor;
+            VulkanDescriptorBundle         m_blurDescriptor;
+            VulkanDescriptorBundle         m_compositeDescriptor;
+            std::vector<vk::DescriptorSet> m_extractSets;
+            std::vector<vk::DescriptorSet> m_compositeSets;
+            std::vector<vk::DescriptorSet> m_blurSets;
         };
     }
 }

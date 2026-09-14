@@ -77,7 +77,6 @@ namespace Editor
         Chicane::Grid::Component* findGridContent();
 
         void refreshToggleStates();
-        void refreshOrientation();
 
         void refreshFilterLabel();
 
@@ -116,9 +115,6 @@ namespace Editor
         Chicane::String layoutHorizontalState;
         CH_FIELD()
         Chicane::String layoutVerticalState;
-
-        CH_FIELD()
-        Chicane::String orientation;
 
         CH_FIELD()
         Chicane::String sortBy;

@@ -1,6 +1,7 @@
 #include "Chicane/Core/Image/Mip/Chain.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <vector>
 
@@ -31,8 +32,8 @@ namespace Chicane
                 const int srcX0 = (x * inSourceWidth) / inWidth;
                 const int srcX1 = std::max(srcX0 + 1, ((x + 1) * inSourceWidth) / inWidth);
 
-                std::uint32_t acc[4] = {0, 0, 0, 0};
-                std::uint32_t count  = 0;
+                std::array<std::uint32_t, 4> acc   = {0, 0, 0, 0};
+                std::uint32_t                count = 0;
 
                 for (int srcY = srcY0; srcY < srcY1 && srcY < inSourceHeight; srcY++)
                 {
@@ -41,49 +42,43 @@ namespace Chicane
                         const Image::Pixel* source =
                             inSource + (static_cast<std::size_t>(srcY) * inSourceWidth + srcX) * srcChannel;
 
-                        acc[0] += source[0];
-                        acc[1] += srcChannel > 1 ? source[1] : source[0];
-                        acc[2] += srcChannel > 2 ? source[2] : source[0];
-                        acc[3] += srcChannel > 3 ? source[3] : 255;
+                        acc.at(0) += source[0];
+                        acc.at(1) += srcChannel > 1 ? source[1] : source[0];
+                        acc.at(2) += srcChannel > 2 ? source[2] : source[0];
+                        acc.at(3) += srcChannel > 3 ? source[3] : 255;
                         count++;
                     }
                 }
 
+                std::array<Image::Pixel, 4> pixel = {0, 0, 0, 255};
+                if (count > 0)
+                {
+                    pixel.at(0) = static_cast<Image::Pixel>(acc.at(0) / count);
+                    pixel.at(1) = static_cast<Image::Pixel>(acc.at(1) / count);
+                    pixel.at(2) = static_cast<Image::Pixel>(acc.at(2) / count);
+                    pixel.at(3) = static_cast<Image::Pixel>(acc.at(3) / count);
+                }
+
+                if (inIsNormal && count > 0)
+                {
+                    float       nx     = pixel.at(0) / 255.0f * 2.0f - 1.0f;
+                    float       ny     = pixel.at(1) / 255.0f * 2.0f - 1.0f;
+                    float       nz     = pixel.at(2) / 255.0f * 2.0f - 1.0f;
+                    const float length = std::sqrt(nx * nx + ny * ny + nz * nz);
+                    if (length > 1.0e-6f)
+                    {
+                        nx /= length;
+                        ny /= length;
+                        nz /= length;
+                    }
+
+                    pixel.at(0) = static_cast<Image::Pixel>(std::clamp(nx * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
+                    pixel.at(1) = static_cast<Image::Pixel>(std::clamp(ny * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
+                    pixel.at(2) = static_cast<Image::Pixel>(std::clamp(nz * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
+                }
+
                 Image::Pixel* destination = outPixels + (static_cast<std::size_t>(y) * inWidth + x) * 4;
-                if (count == 0)
-                {
-                    destination[0] = 0;
-                    destination[1] = 0;
-                    destination[2] = 0;
-                    destination[3] = 255;
-
-                    continue;
-                }
-
-                destination[0] = static_cast<Image::Pixel>(acc[0] / count);
-                destination[1] = static_cast<Image::Pixel>(acc[1] / count);
-                destination[2] = static_cast<Image::Pixel>(acc[2] / count);
-                destination[3] = static_cast<Image::Pixel>(acc[3] / count);
-
-                if (!inIsNormal)
-                {
-                    continue;
-                }
-
-                float       nx     = destination[0] / 255.0f * 2.0f - 1.0f;
-                float       ny     = destination[1] / 255.0f * 2.0f - 1.0f;
-                float       nz     = destination[2] / 255.0f * 2.0f - 1.0f;
-                const float length = std::sqrt(nx * nx + ny * ny + nz * nz);
-                if (length > 1.0e-6f)
-                {
-                    nx /= length;
-                    ny /= length;
-                    nz /= length;
-                }
-
-                destination[0] = static_cast<Image::Pixel>(std::clamp(nx * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
-                destination[1] = static_cast<Image::Pixel>(std::clamp(ny * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
-                destination[2] = static_cast<Image::Pixel>(std::clamp(nz * 0.5f + 0.5f, 0.0f, 1.0f) * 255.0f + 0.5f);
+                std::copy(pixel.begin(), pixel.end(), destination);
             }
         }
     }
@@ -215,7 +210,7 @@ namespace Chicane
         const std::uint32_t end = std::min(inEndLevel, getCount());
         for (std::uint32_t level = 0; level < end; level++)
         {
-            levels[level].decoded.reset();
+            levels.at(level).decoded.reset();
         }
     }
 

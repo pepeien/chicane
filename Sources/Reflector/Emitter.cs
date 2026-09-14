@@ -40,6 +40,9 @@ namespace Reflector
             return sb.ToString();
         }
 
+        static string EmitString(string value)
+            => (value ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"");
+
         static string SafeIdentifier(string qualifiedName)
             => qualifiedName.Replace("::", "_");
 
@@ -153,7 +156,7 @@ namespace Reflector
                     $"\t\t\t{{\n" +
                     $"\t\t\t\tif (inParams.size() < {c.ParamTypes.Count()})\n" +
                     $"\t\t\t\t{{\n" +
-                    $"\t\t\t\t\tthrow std::runtime_error(\"Missing reflected constructor [{t.Name}] parameters [{string.Join(", ", c.ParamTypes)}]\");\n" +
+                    $"\t\t\t\t\treturn static_cast<void*>(nullptr);\n" +
                     $"\t\t\t\t}}\n" +
                     $"\t\n" +
                     $"\t\t\t\treturn static_cast<void*>(\n" +
@@ -241,10 +244,13 @@ namespace Reflector
                     $"\t\t\t\t{(f.IsIterable ? "true" : "false")},\n" +
                     $"\t\t\t\t{(string.IsNullOrEmpty(f.ElementName) ? "std::nullopt" : $"std::type_index(typeid({f.ElementName}))")},\n" +
                     EmitIterable(f.TypeName, f.IsIterable, f.ElementName, f.IsElementPointer) +
+                    $",\n" +
+                    $"\t\t\t\t\"{EmitString(f.Group)}\"\n" +
                     $"\t\t\t}},"
                 );
             }
-            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t\t},");
+            sb.AppendLine($"\t\t\"{EmitString(t.Group)}\"");
             sb.AppendLine("\t)");
             sb.AppendLine(");");
             sb.AppendLine();

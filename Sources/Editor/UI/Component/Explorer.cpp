@@ -23,19 +23,17 @@ namespace Editor
 
     static constexpr float TREE_INDENT_EM = 0.85f;
 
-    static constexpr float              GRID_GAP_EM        = 0.55f;
-    static constexpr float              LIST_GAP_EM        = 0.2f;
-    static constexpr float              LIST_ROW_EM        = 2.5f;
-    static constexpr int                TILE_OVERSCAN_ROWS = 6;
-    static constexpr inline const char* GRID_CONTENT_ID    = "explorerGridContent";
+    static constexpr float GRID_GAP_EM        = 0.55f;
+    static constexpr float LIST_GAP_EM        = 0.2f;
+    static constexpr float LIST_ROW_EM        = 2.5f;
+    static constexpr int   TILE_OVERSCAN_ROWS = 6;
+
+    static constexpr inline const char* EXPLORER_MAIN_ID = "explorerMain";
+    static constexpr inline const char* EXPLORER_TREE_ID = "explorerTree";
+    static constexpr inline const char* GRID_CONTENT_ID  = "explorerGridContent";
 
     static constexpr inline const char* LAYOUT_HORIZONTAL = "horizontal";
     static constexpr inline const char* LAYOUT_VERTICAL   = "vertical";
-
-    static constexpr inline const char* ORIENTATION_LANDSCAPE = "landscape";
-    static constexpr inline const char* ORIENTATION_PORTRAIT  = "portrait";
-    static constexpr float              PORTRAIT_ENTER_EM     = 32.0f;
-    static constexpr float              PORTRAIT_LEAVE_EM     = 38.0f;
 
     static constexpr inline const char* SORT_MATCH = "match";
     static constexpr inline const char* SORT_NAME  = "name";
@@ -49,6 +47,10 @@ namespace Editor
 
     static constexpr inline const char* SELECTED = "selected";
 
+    static constexpr inline const char* ICON_DEFAULT_SIZE            = "7em";
+    static constexpr inline float       ICON_DEFAULT_SIZE_PERCENTAGE = 40.0f;
+    static constexpr inline float       ICON_DEFAULT_SIZE_FACTOR     = 0.25f;
+
     Explorer::Explorer(const pugi::xml_node& inNode)
         : Chicane::Grid::Container(inNode),
           explorerFolder({}),
@@ -60,19 +62,18 @@ namespace Editor
           layout(LAYOUT_HORIZONTAL),
           layoutHorizontalState(STATE_ACTIVE),
           layoutVerticalState(STATE_IDLE),
-          orientation(ORIENTATION_LANDSCAPE),
           sortBy(SORT_MATCH),
           sortMatchState(STATE_ACTIVE),
           sortNameState(STATE_IDLE),
-          iconSize("7em"),
-          iconSizePercent(40.0f),
+          iconSize(ICON_DEFAULT_SIZE),
+          iconSizePercent(ICON_DEFAULT_SIZE_PERCENTAGE),
           selectedFolderPath(Chicane::String::empty()),
           selectedAssetName(Chicane::String::empty()),
           m_rootFolder({}),
           m_expandedPaths({}),
           m_listedPaths({}),
           m_filter(ExplorerFilter::All),
-          m_iconSizeFactor(0.4f),
+          m_iconSizeFactor(ICON_DEFAULT_SIZE_FACTOR),
           m_pointer(Chicane::Vec2::Zero()),
           m_tiles({}),
           m_gridContent(nullptr),
@@ -93,6 +94,7 @@ namespace Editor
         explorerFolder = m_rootFolder;
 
         setIconSizeFactor(m_iconSizeFactor);
+        pumpListings();
         rebuildTree();
         refreshGrid();
         refreshToggleStates();
@@ -159,7 +161,7 @@ namespace Editor
 
         isSearchEmpty = searchQuery.isEmpty();
 
-        refreshOrientation();
+        ensureListed(m_rootFolder);
         pumpListings();
         syncGridTiles();
     }
@@ -414,39 +416,23 @@ namespace Editor
         sortNameState  = bIsMatch ? STATE_IDLE : STATE_ACTIVE;
     }
 
-    void Explorer::refreshOrientation()
-    {
-        const Chicane::Vec2 size = getSize();
-        if (size.x <= 1.0f || size.y <= 1.0f)
-        {
-            return;
-        }
-
-        const float em = getStyle().font.size.get() > 0.0f ? getStyle().font.size.get() : Chicane::Box::Font::BASE_SIZE;
-        const float widthEm = size.x / em;
-        const bool  bIsPortrait =
-            orientation.equals(ORIENTATION_PORTRAIT) ? widthEm < PORTRAIT_LEAVE_EM : widthEm < PORTRAIT_ENTER_EM;
-        const Chicane::String next = bIsPortrait ? ORIENTATION_PORTRAIT : ORIENTATION_LANDSCAPE;
-        if (orientation.equals(next))
-        {
-            return;
-        }
-
-        orientation = next;
-    }
-
     void Explorer::refreshFilterLabel()
     {
         switch (m_filter)
         {
         case ExplorerFilter::Folders:
             filterLabel = "Folder Resource";
+
             break;
+
         case ExplorerFilter::Files:
             filterLabel = "File Resource";
+
             break;
+
         default:
             filterLabel = "All Resources";
+
             break;
         }
     }
@@ -474,11 +460,11 @@ namespace Editor
                 continue;
             }
 
-            if (child->getId().equals("explorerMain"))
+            if (child->getId().equals(EXPLORER_MAIN_ID))
             {
                 main = dynamic_cast<Chicane::Grid::Scrollable*>(child);
             }
-            else if (child->getId().equals("explorerTree"))
+            else if (child->getId().equals(EXPLORER_TREE_ID))
             {
                 tree = dynamic_cast<Chicane::Grid::Scrollable*>(child);
             }
@@ -556,10 +542,11 @@ namespace Editor
             return;
         }
 
+        const Chicane::Grid::Style& style = content->getStyle();
+        const Chicane::Vec2         inner = content->getInnerLayoutSize();
+
         const bool          bIsVertical       = layout.equals(LAYOUT_VERTICAL);
         const bool          bHasLayoutChanged = !layout.equals(m_gridLayout);
-        const auto&         style             = content->getStyle();
-        const Chicane::Vec2 inner             = content->getInnerLayoutSize();
         const Chicane::Vec2 view(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
         const float         em = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
         const float         iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);

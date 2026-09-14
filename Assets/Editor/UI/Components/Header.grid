@@ -1,18 +1,33 @@
 <Container class="header">
-    <Editor::Logo />
-    <Container class="header__menus">
-        <Editor::HeaderMenu dir:for="menu : menus" />
+    <Container class="header__heading">
+        <Editor::Logo />
+        <Container class="header__menus">
+            <Editor::HeaderMenu dir:for="menu : menus" />
+        </Container>
+        <Container class="header__controls">
+            <Button class="header__control" onClick="{{ onMinimize() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Minus" class="header__control__icon"/>
+            </Button>
+            <Button class="header__control --{{ maximizeState }}" onClick="{{ onMaximize() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Square" class="header__control__icon --maximize"/>
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Copy" class="header__control__icon --restore"/>
+            </Button>
+            <Button class="header__control --close" onClick="{{ onClose() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="X" class="header__control__icon"/>
+            </Button>
+        </Container>
     </Container>
-    <Container class="header__controls">
-        <Button class="header__control" onClick="{{ onMinimize() }}">
-            <Icon source="Assets/Editor/UI/Icons/Regular" name="Minus" class="header__control__icon"/>
-        </Button>
-        <Button class="header__control --{{ maximizeState }}" onClick="{{ onMaximize() }}">
-            <Icon source="Assets/Editor/UI/Icons/Regular" name="Square" class="header__control__icon --maximize"/>
-            <Icon source="Assets/Editor/UI/Icons/Regular" name="Copy" class="header__control__icon --restore"/>
-        </Button>
-        <Button class="header__control --close" onClick="{{ onClose() }}">
-            <Icon source="Assets/Editor/UI/Icons/Regular" name="X" class="header__control__icon"/>
-        </Button>
+    <Container class="header__footer">
+        <Container class="header__tabs">
+            <Button class="header__tab --viewport --{{ viewportTabState }}" onClick="{{ onWorkspaceViewport() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Factory" />
+                <Text>Viewport</Text>
+            </Button>
+            <Button class="header__tab --asset --{{ assetsTabState }}" onClick="{{ onWorkspaceAssets() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Folder" />
+                <Text>Asset Manager</Text>
+            </Button>
+        </Container>
+        <Container class="header__separator" />
     </Container>
 </Container>

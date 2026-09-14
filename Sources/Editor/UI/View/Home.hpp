@@ -1,9 +1,16 @@
 #pragma once
 
+#include <unordered_set>
+
 #include <Chicane/Core/Reflection.hpp>
+#include <Chicane/Core/String.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Object.hpp>
+
+#include "Editor/UI/Component/Attributes/Field.hpp"
+#include "Editor/UI/Component/Attributes/Group.hpp"
+#include "Editor/UI/Component/Outliner/Node.hpp"
 
 namespace Editor
 {
@@ -11,7 +18,16 @@ namespace Editor
     class HomeView : public Chicane::Grid::View
     {
     public:
+        static constexpr inline const char* WORKSPACE_VIEWPORT = "viewport";
+        static constexpr inline const char* WORKSPACE_ASSETS   = "assets";
+        static constexpr inline const char* STATE_ACTIVE       = "active";
+        static constexpr inline const char* STATE_IDLE         = "idle";
+
+    public:
         HomeView();
+
+    protected:
+        void onTick(float inDeltaTime) override;
 
     public:
         CH_FUNCTION()
@@ -23,9 +39,66 @@ namespace Editor
         CH_FUNCTION()
         void onItemSelection(Chicane::Object* inItem);
 
+        CH_FUNCTION()
+        void onItemToggle(Chicane::Object* inItem);
+
+        CH_FUNCTION()
+        void onWorkspaceViewport();
+
+        CH_FUNCTION()
+        void onWorkspaceAssets();
+
+        CH_FUNCTION()
+        void onTrackNew();
+
+        CH_FUNCTION()
+        void onTrackOpen();
+
+        CH_FUNCTION()
+        void onTrackSave();
+
+        CH_FUNCTION()
+        void onTrackSaveAs();
+
+        CH_FUNCTION()
+        void onAttributeCommit(Chicane::String inName);
+
+        CH_FUNCTION()
+        void onSpawnActor();
+
+        CH_FUNCTION()
+        void onSpawnMesh();
+
+        CH_FUNCTION()
+        void onGizmoTranslate();
+
+        CH_FUNCTION()
+        void onGizmoRotate();
+
+        CH_FUNCTION()
+        void onGizmoScale();
+
+    private:
+        void bindScene();
+        void rebuildOutliner();
+        void appendOutlinerNode(
+            Chicane::Object* inObject, int inDepth, bool inIsVisible, std::unordered_set<Chicane::Object*>& outLive
+        );
+        void expandOutlinerAncestors(Chicane::Object* inItem);
+        void rebuildAttributes();
+        void syncAttributeValues();
+        bool hasSelectedItem() const;
+        void setWorkspace(const Chicane::String& inValue);
+
     public:
         CH_FIELD()
-        std::vector<Chicane::Actor*> outlinerActors;
+        OutlinerNode::List outlinerNodes;
+
+        CH_FIELD()
+        AttributeField::List attributeFields;
+
+        CH_FIELD()
+        AttributeGroup::List attributeGroups;
 
         CH_FIELD()
         bool bIsItemSelected;
@@ -34,5 +107,26 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String theme;
+
+        CH_FIELD()
+        Chicane::String workspace;
+        CH_FIELD()
+        bool bIsViewportWorkspace;
+        CH_FIELD()
+        bool bIsAssetsWorkspace;
+        CH_FIELD()
+        Chicane::String viewportTabState;
+        CH_FIELD()
+        Chicane::String assetsTabState;
+
+        CH_FIELD()
+        Chicane::String translateState;
+        CH_FIELD()
+        Chicane::String rotateState;
+        CH_FIELD()
+        Chicane::String scaleState;
+
+    private:
+        std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;
     };
 }

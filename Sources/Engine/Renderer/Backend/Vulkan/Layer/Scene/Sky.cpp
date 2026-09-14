@@ -287,6 +287,7 @@ namespace Chicane
         void VulkanLSceneSky::buildTextureData(const DrawSky& inData)
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
+            backend->releaseBoundDescriptors();
 
             VulkanSkyCreateInfo createInfo;
             createInfo.images;

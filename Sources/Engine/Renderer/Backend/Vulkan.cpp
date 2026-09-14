@@ -135,6 +135,7 @@ namespace Chicane
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
 
+            nextFrame.commandBuffer.reset();
             bindScreenTarget(nextImage.targetImage);
 
             nextFrame.begin(inFrame, nextImage);
@@ -216,6 +217,15 @@ namespace Chicane
             }
 
             return textureDescriptorSets.at(m_currentFrameIndex);
+        }
+
+        void VulkanBackend::releaseBoundDescriptors()
+        {
+            for (VulkanFrame& frame : frames)
+            {
+                frame.wait();
+                frame.commandBuffer.reset();
+            }
         }
 
         vk::Format VulkanBackend::getSceneColorFormat() const
@@ -563,18 +573,35 @@ namespace Chicane
             textureDescriptor.set = textureDescriptorSets.front();
         }
 
+        bool VulkanBackend::needsTextureUpload(const DrawTexture& inTexture) const
+        {
+            if (inTexture.id <= Draw::InvalidId)
+            {
+                return false;
+            }
+
+            if (inTexture.reference.equals(SCREEN_TARGET_ID))
+            {
+                return m_screenTextureId != inTexture.id;
+            }
+
+            const std::size_t index = static_cast<std::size_t>(inTexture.id);
+            if (index >= textures.size())
+            {
+                return true;
+            }
+
+            const std::shared_ptr<VulkanTexture>& slot = textures[index];
+
+            return !slot || !slot->matches(inTexture);
+        }
+
         void VulkanBackend::buildTextureData(const DrawTexture::List& inTextures)
         {
             if (inTextures.empty())
             {
                 return;
             }
-
-            VulkanTextureCreateInfo createInfo;
-            createInfo.logicalDevice  = logicalDevice;
-            createInfo.physicalDevice = physicalDevice;
-            createInfo.commandBuffer  = mainCommandBuffer;
-            createInfo.queue          = graphicsQueue;
 
             Draw::Id maxId = Draw::InvalidId;
             for (const DrawTexture& texture : inTextures)
@@ -591,11 +618,44 @@ namespace Chicane
                 }
             }
 
-            const std::uint32_t slotCount = getResourceBudgetCount(Resource::Texture);
+            const std::uint32_t slotCount    = getResourceBudgetCount(Resource::Texture);
+            bool                bNeedsUpload = false;
+            for (const DrawTexture& texture : inTextures)
+            {
+                if (texture.id <= Draw::InvalidId || static_cast<std::uint32_t>(texture.id) >= slotCount)
+                {
+                    continue;
+                }
+
+                if (needsTextureUpload(texture))
+                {
+                    bNeedsUpload = true;
+
+                    break;
+                }
+            }
+
+            if (!bNeedsUpload)
+            {
+                return;
+            }
+
+            releaseBoundDescriptors();
+
+            VulkanTextureCreateInfo createInfo;
+            createInfo.logicalDevice  = logicalDevice;
+            createInfo.physicalDevice = physicalDevice;
+            createInfo.commandBuffer  = mainCommandBuffer;
+            createInfo.queue          = graphicsQueue;
 
             for (const DrawTexture& texture : inTextures)
             {
                 if (texture.id <= Draw::InvalidId || static_cast<std::uint32_t>(texture.id) >= slotCount)
+                {
+                    continue;
+                }
+
+                if (!needsTextureUpload(texture))
                 {
                     continue;
                 }
@@ -620,20 +680,10 @@ namespace Chicane
                 }
 
                 std::shared_ptr<VulkanTexture>& slot = textures[static_cast<std::size_t>(texture.id)];
-                if (slot && slot->matches(texture))
-                {
-                    continue;
-                }
-
-                for (VulkanFrame& frame : frames)
-                {
-                    frame.wait();
-                }
-
-                createInfo.texture        = &texture;
-                createInfo.image          = texture.image;
-                createInfo.residentMinMip = texture.residentMinMip;
-                slot                      = std::make_shared<VulkanTexture>(createInfo);
+                createInfo.texture                   = &texture;
+                createInfo.image                     = texture.image;
+                createInfo.residentMinMip            = texture.residentMinMip;
+                slot                                 = std::make_shared<VulkanTexture>(createInfo);
 
                 info.imageView = slot->view;
                 info.sampler   = slot->sampler;

@@ -1,12 +1,27 @@
 <Container class="outliner">
     <Editor::DockHeader id="outlinerHeader" label="Outliner" />
     <Container class="outliner__items">
-        <Button
-            dir:for="actor : outlinerActors"
-            class="outliner__item"
-            onClick="{{ onItemSelection(actor) }}"
+        <Container
+            dir:for="node : outlinerNodes"
+            class="outliner__item --{{ node.selectedState }}"
         >
-            <Text>{{ actor.getId() }}</Text>
-        </Button>
+            <Button
+                dir:if="{{ node.bHasChildren }}"
+                class="outliner__item__caret --{{ node.expandState }}"
+                onClick="{{ onItemToggle(node.item) }}"
+            >
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="CaretDown" class="outliner__item__caret__icon --{{ node.expandState }}"/>
+            </Button>
+            <Icon
+                dir:if="{{ node.bIsLeaf }}"
+                source="Assets/Editor/UI/Icons/Fill"
+                name="CaretDown"
+                class="outliner__item__caret --leaf"
+            />
+            <Button class="outliner__item__body" onClick="{{ onItemSelection(node.item) }}">
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="{{ node.icon }}" class="outliner__item__icon"/>
+                <Text>{{ node.label }}</Text>
+            </Button>
+        </Container>
     </Container>
 </Container>

@@ -10,10 +10,14 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Light")
     class CHICANE_RUNTIME CLight : public CView
     {
     public:
+        static constexpr inline const char* TAG_ID = "CLight";
+
+    public:
+        CH_CONSTRUCTOR()
         CLight();
 
     public:
@@ -40,13 +44,26 @@ namespace Chicane
 
         Renderer::Light getLight() const;
 
-    private:
-        LightType m_type            = LightType::Directional;
-        Vec3      m_color           = Vec3(1.0f);
-        float     m_intensity       = 1.0f;
-        float     m_range           = 50.0f;
-        float     m_innerAngle      = 25.0f;
-        float     m_outerAngle      = 40.0f;
-        bool      m_bCanCastShadows = false;
+    public:
+        CH_FIELD()
+        LightType type = LightType::Directional;
+
+        CH_FIELD()
+        Vec3 color = Vec3(1.0f);
+
+        CH_FIELD()
+        float intensity = 1.0f;
+
+        CH_FIELD()
+        float range = 50.0f;
+
+        CH_FIELD()
+        float innerAngle = 25.0f;
+
+        CH_FIELD()
+        float outerAngle = 40.0f;
+
+        CH_FIELD()
+        bool castShadows = false;
     };
 }

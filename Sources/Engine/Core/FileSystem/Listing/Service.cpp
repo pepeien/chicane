@@ -16,30 +16,41 @@ namespace Chicane
 
         void ListingService::enqueue(const Path& inDir)
         {
+            const Path dir = inDir.lexicallyNormal();
+
             {
                 std::lock_guard<std::mutex> lock(m_mutex);
-                if (m_inFlight.find(inDir) != m_inFlight.end())
+
+                const auto cached = m_cache.find(dir);
+                if (cached != m_cache.end())
+                {
+                    m_ready.push_back({dir, cached->second});
+
+                    return;
+                }
+
+                if (m_inFlight.find(dir) != m_inFlight.end())
                 {
                     return;
                 }
 
-                m_inFlight.insert(inDir);
+                m_inFlight.insert(dir);
             }
 
             Worker::submit(
-                [inDir]()
+                [dir]()
                 {
                     Item::List children;
                     try
                     {
-                        children = ls(inDir, 1);
+                        children = ls(dir, 1);
                     }
                     catch (...)
                     {
                         children.clear();
                     }
 
-                    ListingService::instance().finish(inDir, std::move(children));
+                    ListingService::instance().finish(dir, std::move(children));
                 }
             );
         }
@@ -58,6 +69,7 @@ namespace Chicane
         void ListingService::finish(const Path& inDir, Item::List inChildren)
         {
             std::lock_guard<std::mutex> lock(m_mutex);
+            m_cache[inDir] = inChildren;
             m_ready.push_back({inDir, std::move(inChildren)});
         }
     }

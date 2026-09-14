@@ -12,7 +12,13 @@ namespace Chicane
     class CHICANE_RUNTIME Component : public Object
     {
     public:
+        static constexpr inline const char* TAG_ID = "Component";
+
+    public:
+        CH_CONSTRUCTOR()
         Component();
+
+        ~Component() override;
 
     protected:
         inline virtual void onActivation() { return; }

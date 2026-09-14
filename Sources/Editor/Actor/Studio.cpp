@@ -33,6 +33,7 @@ namespace Editor
             light->activate();
 
             m_lights.at(index) = light;
+            light->setIsTransient(true);
         }
 
         syncLights();

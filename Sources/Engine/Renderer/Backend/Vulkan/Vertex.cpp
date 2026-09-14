@@ -18,7 +18,7 @@ namespace Chicane
                 return bindingDescription;
             }
 
-            std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions()
+            std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions(bool bIncludeTangent)
             {
                 std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
 
@@ -57,6 +57,11 @@ namespace Chicane
                 normalsDescription.offset   = offsetof(Chicane::Vertex, normal);
 
                 attributeDescriptions.push_back(normalsDescription);
+
+                if (!bIncludeTangent)
+                {
+                    return attributeDescriptions;
+                }
 
                 // Tangent (xyz) + handedness (w)
                 vk::VertexInputAttributeDescription tangentDescription;

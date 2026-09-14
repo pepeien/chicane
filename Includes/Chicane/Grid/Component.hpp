@@ -85,17 +85,31 @@ namespace Chicane
             Drift::Clip makeAnimationClip(const StyleKeyframe::List& inKeyframes) const override;
 
         public:
+            // Status
             virtual bool isDrawable() const;
             virtual bool isFocusable() const;
+
+            // Event
             virtual bool onEvent(const WindowEvent& inEvent);
+
+            // Lifecycle
             virtual void tick(float inDelta);
             virtual void refresh();
+
+            // Depth
             virtual float getDepth() const;
+
+            // Draw
             virtual Vec2 getDrawPosition() const;
             virtual Vec2 getTransformPivot() const;
+
+            // Scroll
             virtual Vec2 getScrollOffset() const;
             virtual std::uint64_t getScrollGeneration() const;
             virtual Vec2 getScrollBarGutter() const;
+
+            // Hierarchy
+            virtual std::vector<Component*> getChildrenFlat() const;
 
         protected:
             // Lifescycle Events
@@ -118,9 +132,6 @@ namespace Chicane
             virtual void refreshStyleRuleset();
             virtual void refreshSize();
             virtual void refreshPosition();
-
-            // Children
-            virtual std::vector<Component*> getChildrenFlat() const;
 
         public:
             // Checkers

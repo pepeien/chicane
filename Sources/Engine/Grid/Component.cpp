@@ -916,11 +916,6 @@ namespace Chicane
             }
         }
 
-        std::vector<Component*> Component::getChildrenFlat() const
-        {
-            return m_flatChildren;
-        }
-
         bool Component::isRoot() const
         {
             return (!m_parent && !m_root) || (m_parent == this && m_root == this);
@@ -2185,6 +2180,11 @@ namespace Chicane
             return Vec2::Zero();
         }
 
+        std::vector<Component*> Component::getChildrenFlat() const
+        {
+            return m_flatChildren;
+        }
+
         void Component::cacheAttributeFlags()
         {
             m_bHasClassBinding = isReference(getAttribute(CLASS_ATTRIBUTE_NAME));
@@ -3406,6 +3406,15 @@ namespace Chicane
 
         String Component::parseReference(const String& inValue) const
         {
+            const std::size_t equals = inValue.firstOf("==");
+            if (equals != String::npos)
+            {
+                const String left  = parseReference(inValue.substr(0, equals).trim());
+                const String right = parseReference(inValue.substr(equals + 2).trim());
+
+                return left.equals(right) ? "true" : "false";
+            }
+
             if (isMethod(inValue))
             {
                 return parseMethod(inValue);
@@ -3739,7 +3748,22 @@ namespace Chicane
 
                     if (expected.endsWith('*'))
                     {
-                        outMethod.addParam(const_cast<void*>(static_cast<const void*>(accessor.address(instance))));
+                        const void* fieldAddr = accessor.address(instance);
+                        void*       pointer   = nullptr;
+
+                        if (fieldAddr)
+                        {
+                            if (accessor.size == sizeof(void*))
+                            {
+                                pointer = *reinterpret_cast<void* const*>(fieldAddr);
+                            }
+                            else
+                            {
+                                pointer = const_cast<void*>(fieldAddr);
+                            }
+                        }
+
+                        outMethod.addParam(pointer);
 
                         continue;
                     }

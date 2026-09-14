@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Smoke/Parse.hpp"

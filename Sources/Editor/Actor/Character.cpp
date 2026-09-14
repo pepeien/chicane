@@ -18,6 +18,7 @@ namespace Editor
 
         m_camera = getScene()->createComponent<Chicane::CCamera>();
         m_camera->attachTo(this);
+        m_camera->setIsTransient(true);
         m_camera->activate();
 
         m_navigation.attach(this, m_camera);

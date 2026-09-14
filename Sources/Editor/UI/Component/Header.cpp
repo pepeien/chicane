@@ -31,6 +31,7 @@ namespace Editor
 
         load("Assets/Editor/UI/Components/Header.grid", "Assets/Editor/UI/Components/Header.decal");
 
+        initFileMenu();
         initSettingsMenu();
     }
 
@@ -253,6 +254,37 @@ namespace Editor
         }
 
         m_moveWindow = nullptr;
+    }
+
+    void Header::initFileMenu()
+    {
+        HeaderMenuItem file = {};
+        file.label          = "File";
+
+        HeaderMenuItem create = {};
+        create.label          = "New Track";
+        create.shortcut       = "Ctrl+N";
+        create.action         = "onTrackNew()";
+        file.children.push_back(create);
+
+        HeaderMenuItem open = {};
+        open.label          = "Open Track";
+        open.shortcut       = "Ctrl+O";
+        open.action         = "onTrackOpen()";
+        file.children.push_back(open);
+
+        HeaderMenuItem save = {};
+        save.label          = "Save Track";
+        save.shortcut       = "Ctrl+S";
+        save.action         = "onTrackSave()";
+        file.children.push_back(save);
+
+        HeaderMenuItem saveAs = {};
+        saveAs.label          = "Save Track As";
+        saveAs.action         = "onTrackSaveAs()";
+        file.children.push_back(saveAs);
+
+        menus.push_back(file);
     }
 
     void Header::initSettingsMenu()
