@@ -645,6 +645,21 @@
                 "accessor": "private",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshOrientation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCKPANEL_REFRESHORIENTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "DockRegion",
                     "suffix": "*",
@@ -1025,6 +1040,51 @@
                 },
                 "name": "DEFAULT_MIN_SIZE",
                 "description": "CHICANE_GRID_DOCKPANEL_DEFAULT_MIN_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ORIENTATION_LANDSCAPE",
+                "description": "CHICANE_GRID_DOCKPANEL_ORIENTATION_LANDSCAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ORIENTATION_PORTRAIT",
+                "description": "CHICANE_GRID_DOCKPANEL_ORIENTATION_PORTRAIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "orientation",
+                "description": "CHICANE_GRID_DOCKPANEL_ORIENTATION_DESCRIPTION"
             },
             {
                 "accessor": "private",

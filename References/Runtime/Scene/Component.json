@@ -24,7 +24,23 @@
                 "description": "CHICANE_COMPONENT_COMPONENT_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Component",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_COMPONENT_~COMPONENT_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -213,6 +229,22 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_COMPONENT_TAG_ID_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "modifiers": [],

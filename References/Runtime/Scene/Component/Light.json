@@ -347,7 +347,23 @@
         ],
         "members": [
             {
-                "accessor": "private",
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_CLIGHT_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -356,11 +372,11 @@
                     "path": "Renderer/Light/Type",
                     "templates": []
                 },
-                "name": "m_type",
-                "description": "CHICANE_CLIGHT_M_TYPE_DESCRIPTION"
+                "name": "type",
+                "description": "CHICANE_CLIGHT_TYPE_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -369,11 +385,11 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "m_color",
-                "description": "CHICANE_CLIGHT_M_COLOR_DESCRIPTION"
+                "name": "color",
+                "description": "CHICANE_CLIGHT_COLOR_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -382,11 +398,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_intensity",
-                "description": "CHICANE_CLIGHT_M_INTENSITY_DESCRIPTION"
+                "name": "intensity",
+                "description": "CHICANE_CLIGHT_INTENSITY_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -395,11 +411,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_range",
-                "description": "CHICANE_CLIGHT_M_RANGE_DESCRIPTION"
+                "name": "range",
+                "description": "CHICANE_CLIGHT_RANGE_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -408,11 +424,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_innerAngle",
-                "description": "CHICANE_CLIGHT_M_INNERANGLE_DESCRIPTION"
+                "name": "innerAngle",
+                "description": "CHICANE_CLIGHT_INNERANGLE_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -421,11 +437,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_outerAngle",
-                "description": "CHICANE_CLIGHT_M_OUTERANGLE_DESCRIPTION"
+                "name": "outerAngle",
+                "description": "CHICANE_CLIGHT_OUTERANGLE_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -434,8 +450,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bCanCastShadows",
-                "description": "CHICANE_CLIGHT_M_BCANCASTSHADOWS_DESCRIPTION"
+                "name": "castShadows",
+                "description": "CHICANE_CLIGHT_CASTSHADOWS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CLIGHT_DESCRIPTION"

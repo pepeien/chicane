@@ -44,7 +44,18 @@
                     ]
                 },
                 "name": "getAttributeDescriptions",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bIncludeTangent"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANVERTEX_GETATTRIBUTEDESCRIPTIONS_DESCRIPTION"
             }

@@ -7746,6 +7746,23 @@
                         "children": []
                     }
                 ]
+            },
+            {
+                "title": "Track",
+                "filename": "Track",
+                "path": "Runtime/Track",
+                "source": {
+                    "header": "Includes/Chicane/Runtime/Track.hpp",
+                    "namespace": "Chicane::Track",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
             }
         ]
     },

@@ -158,6 +158,16 @@
                             "templates": []
                         },
                         "name": "inIterable"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inGroup"
                     }
                 ],
                 "modifiers": [],
@@ -340,6 +350,19 @@
                 },
                 "name": "iterable",
                 "description": "CHICANE_REFLECTIONFIELDINFO_ITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "group",
+                "description": "CHICANE_REFLECTIONFIELDINFO_GROUP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION"

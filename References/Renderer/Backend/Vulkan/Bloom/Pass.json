@@ -357,6 +357,16 @@
                     {
                         "type": {
                             "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSet"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
                             "name": "int",
                             "suffix": "",
                             "path": "",
@@ -397,9 +407,147 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBLOOMPASS_BLURPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSet",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extractSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_EXTRACTSET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSet",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "compositeSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_COMPOSITESET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSet",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "blurSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPass"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_BLURSET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "frameIndex",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanFrame",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "templates": []
+                        },
+                        "name": "inGpuFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_FRAMEINDEX_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "private",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BLUR_PASS_COUNT",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_BLUR_PASS_COUNT_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -490,6 +638,69 @@
                 },
                 "name": "m_compositeDescriptor",
                 "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_COMPOSITEDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_extractSets",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_EXTRACTSETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_compositeSets",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_COMPOSITESETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_blurSets",
+                "description": "CHICANE_RENDERER_VULKANBLOOMPASS_M_BLURSETS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANBLOOMPASS_DESCRIPTION"

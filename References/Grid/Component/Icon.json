@@ -38,6 +38,47 @@
         "destructors": [],
         "functions": [
             {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ICON_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ICON_ONTICK_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -124,20 +165,25 @@
                             "templates": []
                         },
                         "name": "inPath"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inUsage"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_ICON_APPLYSOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSource",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ICON_REFRESHSOURCE_DESCRIPTION"
             }
         ],
         "members": [
@@ -188,6 +234,58 @@
                 },
                 "name": "SOURCE_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_ICON_SOURCE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_nameBinding",
+                "description": "CHICANE_GRID_ICON_M_NAMEBINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_sourceBinding",
+                "description": "CHICANE_GRID_ICON_M_SOURCEBINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_resolvedName",
+                "description": "CHICANE_GRID_ICON_M_RESOLVEDNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Xml::Attributes",
+                    "suffix": "",
+                    "path": "Core/Xml",
+                    "templates": []
+                },
+                "name": "m_usageAttributes",
+                "description": "CHICANE_GRID_ICON_M_USAGEATTRIBUTES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_ICON_DESCRIPTION"

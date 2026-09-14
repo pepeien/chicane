@@ -180,6 +180,34 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Item::List",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Item",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_cache",
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_CACHE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
