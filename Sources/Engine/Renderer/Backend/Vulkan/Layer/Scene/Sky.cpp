@@ -44,8 +44,6 @@ namespace Chicane
             destroyFrameResources();
             destroyTextureData();
 
-            m_sky.reset();
-
             m_graphicsPipeline.destroy();
         }
 
@@ -289,6 +287,9 @@ namespace Chicane
             VulkanBackend* backend = getBackend<VulkanBackend>();
             backend->releaseBoundDescriptors();
 
+            m_sky.reset();
+            backend->logicalDevice.resetDescriptorPool(m_textureDescriptor.pool);
+
             VulkanSkyCreateInfo createInfo;
             createInfo.images;
             createInfo.logicalDevice       = backend->logicalDevice;
@@ -318,6 +319,7 @@ namespace Chicane
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
+            m_sky.reset();
             backend->logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
             backend->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
         }
