@@ -1,5 +1,4 @@
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
-#include "Chicane/Grid/Component/Input/Text.hpp"
 
 namespace Chicane
 {
@@ -101,11 +100,6 @@ namespace Chicane
             }
 
             m_style.background.color.set(inColor);
-
-            if (hasParent() && getParent()->getTag().equals(InputText::TAG_ID))
-            {
-                m_style.zIndex.set(1.0f);
-            }
 
             const float scale    = inFontSize;
             const float height   = m_glyph->height * scale;

@@ -88,6 +88,7 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
             virtual bool isFocusable() const;
+            virtual bool escapesOverflow() const;
 
             // Event
             virtual bool onEvent(const WindowEvent& inEvent);
@@ -245,6 +246,7 @@ namespace Chicane
             bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
+            void releaseChild(Component* inComponent);
             void removeChild(Component* inComponent);
 
             Vec2 getChildrenContentSizeBlock() const;
@@ -300,6 +302,7 @@ namespace Chicane
                 Vec4& outSecondRadiusX,
                 Vec4& outSecondRadiusY
             ) const;
+            void getPaintRadius(Vec4& outRadiusX, Vec4& outRadiusY) const;
 
             // Draw
             bool hasPrimitive() const;

@@ -29,6 +29,11 @@ namespace Chicane
             return true;
         }
 
+        bool InputSelect::escapesOverflow() const
+        {
+            return isOpen;
+        }
+
         bool InputSelect::onEvent(const WindowEvent& inEvent)
         {
             if (Scrollable::onEvent(inEvent))
@@ -198,6 +203,7 @@ namespace Chicane
             isOpen = true;
             refreshHighlight();
             refreshStyleSubtree();
+            markLayoutDirtySubtree();
         }
 
         void InputSelect::close()
@@ -211,6 +217,7 @@ namespace Chicane
             m_highlighted = INVALID_HIGHLIGHT;
 
             refreshStyleSubtree();
+            markLayoutDirtySubtree();
         }
 
         void InputSelect::choose(String inValue)

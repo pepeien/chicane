@@ -34,6 +34,7 @@ namespace Chicane
 
         public:
             bool isFocusable() const override;
+            bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
             void tick(float inDeltaTime) override;
 

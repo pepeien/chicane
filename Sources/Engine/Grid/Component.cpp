@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <unordered_map>
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
@@ -526,6 +527,11 @@ namespace Chicane
             return false;
         }
 
+        bool Component::escapesOverflow() const
+        {
+            return false;
+        }
+
         bool Component::onEvent(const WindowEvent&)
         {
             return false;
@@ -558,26 +564,38 @@ namespace Chicane
                 files.push_back(file);
             };
 
+            addFile(m_styleFile);
+            if (m_bHasOwnStyle)
+            {
+                addFile(m_styles.get());
+            }
+
             std::vector<StyleFile*> ancestors;
-            for (Component* ancestor = m_parent; ancestor && ancestor != this; ancestor = ancestor->m_parent)
+            for (Component* ancestor = m_parent; ancestor && ancestor != this;)
             {
                 if (ancestor->m_styleFile)
                 {
                     ancestors.push_back(ancestor->m_styleFile);
                 }
 
-                if (ancestor->isRoot())
+                if (ancestor->m_bHasOwnStyle)
+                {
+                    ancestors.push_back(ancestor->m_styles.get());
+                }
+
+                Component* next = ancestor->m_parent;
+                if (!next || next == ancestor)
                 {
                     break;
                 }
+
+                ancestor = next;
             }
 
             for (auto it = ancestors.rbegin(); it != ancestors.rend(); ++it)
             {
                 addFile(*it);
             }
-
-            addFile(m_styleFile);
 
             if (files.empty())
             {
@@ -586,9 +604,21 @@ namespace Chicane
                 return;
             }
 
-            StyleRuleset::Properties properties;
+            struct StyleMatch
+            {
+                std::uint32_t       origin      = 0;
+                std::uint32_t       specificity = 0;
+                std::uint32_t       order       = 0;
+                const StyleRuleset* source      = nullptr;
+            };
+
+            std::vector<StyleMatch> matches;
+            std::uint32_t           order = 0;
+
             for (StyleFile* file : files)
             {
+                const std::uint32_t origin = file == m_styleFile ? 0U : 1U;
+
                 for (const StyleRuleset& source : file->getRulesets())
                 {
                     if (source.isEmpty())
@@ -596,7 +626,8 @@ namespace Chicane
                         continue;
                     }
 
-                    bool bHasMatched = false;
+                    bool          bHasMatched = false;
+                    std::uint32_t specificity = 0;
 
                     if (!source.compiled.empty())
                     {
@@ -608,8 +639,7 @@ namespace Chicane
                             }
 
                             bHasMatched = true;
-
-                            break;
+                            specificity = std::max(specificity, selector.specificity());
                         }
                     }
                     else
@@ -622,8 +652,6 @@ namespace Chicane
                             }
 
                             bHasMatched = true;
-
-                            break;
                         }
                     }
 
@@ -632,23 +660,53 @@ namespace Chicane
                         continue;
                     }
 
-                    for (const auto& [key, value] : source.properties)
+                    matches.push_back({origin, specificity, order++, &source});
+                }
+            }
+
+            std::stable_sort(
+                matches.begin(),
+                matches.end(),
+                [](const StyleMatch& inLeft, const StyleMatch& inRight)
+                {
+                    if (inLeft.origin != inRight.origin)
                     {
-                        if (key.startsWith(Style::VARIABLE_KEYWORD))
-                        {
-                            m_styleVariables[key.substr(1)] = value;
-
-                            continue;
-                        }
-
-                        properties[key] = value;
+                        return inLeft.origin < inRight.origin;
                     }
+
+                    if (inLeft.specificity != inRight.specificity)
+                    {
+                        return inLeft.specificity < inRight.specificity;
+                    }
+
+                    return inLeft.order < inRight.order;
+                }
+            );
+
+            StyleRuleset::Properties properties;
+            for (const StyleMatch& match : matches)
+            {
+                for (const auto& [key, value] : match.source->properties)
+                {
+                    if (key.startsWith(Style::VARIABLE_KEYWORD))
+                    {
+                        m_styleVariables[key.substr(1)] = value;
+
+                        continue;
+                    }
+
+                    properties[key] = value;
                 }
             }
 
             if (!properties.empty())
             {
                 addStyleProperties(properties);
+            }
+
+            if (hasParent() && !isRoot() && properties.find(Style::FOREGROUND_COLOR_ATTRIBUTE_NAME) == properties.end())
+            {
+                m_style.foregroundColor.copyValue(m_parent->getStyle().foregroundColor);
             }
 
             m_styleBindingSource = {};
@@ -936,12 +994,14 @@ namespace Chicane
 
         bool Component::isVisible() const
         {
-            const bool bIsBackgroundImageVisible = !m_style.background.image.getRaw().isEmpty();
-            const bool bIsBackgroundColorVisible = m_style.background.color.get().a > 0.0f;
-            const bool bIsBackdropVisible        = m_style.backdrop.blur.get() > 0.0f;
-            const bool bIsBorderVisible          = m_style.border.isVisible();
+            const bool bIsBackgroundImageVisible    = !m_style.background.image.getRaw().isEmpty();
+            const bool bIsBackgroundColorVisible    = m_style.background.color.get().a > 0.0f;
+            const bool bIsBackgroundGradientVisible = m_style.background.gradient.isActive();
+            const bool bIsBackdropVisible           = m_style.backdrop.blur.get() > 0.0f;
+            const bool bIsBorderVisible             = m_style.border.isVisible();
 
-            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackdropVisible || bIsBorderVisible) &&
+            return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackgroundGradientVisible ||
+                    bIsBackdropVisible || bIsBorderVisible) &&
                    getOpacity() > 0.0f;
         }
 
@@ -1801,22 +1861,22 @@ namespace Chicane
                 return true;
             }
 
-            if (!hasParent())
-            {
-                return false;
-            }
-
-            Component* ancestor = getParent();
-
-            int index = static_cast<int>(parts.size()) - 2;
-            while (ancestor && index >= 0)
+            Component* ancestor = m_parent;
+            int        index    = static_cast<int>(parts.size()) - 2;
+            while (ancestor && ancestor != this && index >= 0)
             {
                 if (ancestor->hasLocalSelector(parts[index].trim()))
                 {
                     index--;
                 }
 
-                ancestor = ancestor->getParent();
+                Component* next = ancestor->m_parent;
+                if (!next || next == ancestor)
+                {
+                    break;
+                }
+
+                ancestor = next;
             }
 
             return index < 0;
@@ -1839,22 +1899,23 @@ namespace Chicane
                 return true;
             }
 
-            if (!hasParent())
-            {
-                return false;
-            }
-
-            Component* ancestor = getParent();
+            Component* ancestor = m_parent;
             int        index    = static_cast<int>(inSelector.chain.size()) - 2;
 
-            while (ancestor && index >= 0)
+            while (ancestor && ancestor != this && index >= 0)
             {
                 if (ancestor->matchesCompiledPart(inSelector.chain[static_cast<std::size_t>(index)]))
                 {
                     index--;
                 }
 
-                ancestor = ancestor->getParent();
+                Component* next = ancestor->m_parent;
+                if (!next || next == ancestor)
+                {
+                    break;
+                }
+
+                ancestor = next;
             }
 
             return index < 0;
@@ -2291,6 +2352,11 @@ namespace Chicane
                 return false;
             }
 
+            if (escapesOverflow())
+            {
+                return true;
+            }
+
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
@@ -2303,7 +2369,7 @@ namespace Chicane
                     return false;
                 }
 
-                if (ancestor->isRoot())
+                if (ancestor->escapesOverflow() || ancestor->isRoot())
                 {
                     break;
                 }
@@ -2414,6 +2480,30 @@ namespace Chicane
             if (!adoptChild(inComponent, inIndex))
             {
                 return;
+            }
+
+            markFlatDirty();
+            markLayoutDirty();
+        }
+
+        void Component::releaseChild(Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return;
+            }
+
+            const auto found = std::find(m_children.begin(), m_children.end(), inComponent);
+            if (found == m_children.end())
+            {
+                return;
+            }
+
+            m_children.erase(found);
+
+            if (inComponent->m_parent == this)
+            {
+                inComponent->m_parent = nullptr;
             }
 
             markFlatDirty();
@@ -2973,20 +3063,23 @@ namespace Chicane
                 m_cachedDrawBounds   = result;
                 m_cachedOverflowClip = Bounds2D::unconstrained();
 
-                const Component* ancestor = m_parent;
-                while (ancestor && ancestor != this)
+                if (!escapesOverflow())
                 {
-                    if (ancestor->getStyle().isClippingOverflow())
+                    const Component* ancestor = m_parent;
+                    while (ancestor && ancestor != this)
                     {
-                        m_cachedOverflowClip = m_cachedOverflowClip.intersect(ancestor->getDrawBounds());
-                    }
+                        if (ancestor->getStyle().isClippingOverflow())
+                        {
+                            m_cachedOverflowClip = m_cachedOverflowClip.intersect(ancestor->getDrawBounds());
+                        }
 
-                    if (ancestor->isRoot())
-                    {
-                        break;
-                    }
+                        if (ancestor->escapesOverflow() || ancestor->isRoot())
+                        {
+                            break;
+                        }
 
-                    ancestor = ancestor->getParent();
+                        ancestor = ancestor->getParent();
+                    }
                 }
 
                 m_bIsDrawCacheValid = true;
@@ -3025,6 +3118,11 @@ namespace Chicane
 
             std::uint32_t filled = 0;
 
+            if (escapesOverflow())
+            {
+                return;
+            }
+
             const Component* ancestor = m_parent;
             while (ancestor && ancestor != this)
             {
@@ -3053,12 +3151,76 @@ namespace Chicane
                     filled++;
                 }
 
-                if (ancestor->isRoot())
+                if (ancestor->escapesOverflow() || ancestor->isRoot())
                 {
                     break;
                 }
 
                 ancestor = ancestor->getParent();
+            }
+        }
+
+        void Component::getPaintRadius(Vec4& outRadiusX, Vec4& outRadiusY) const
+        {
+            outRadiusX = m_style.radius.horizontal();
+            outRadiusY = m_style.radius.vertical();
+
+            const Bounds2D self = getDrawBounds();
+
+            const Component* ancestor = m_parent;
+            while (ancestor && ancestor != this)
+            {
+                const Style& style = ancestor->getStyle();
+                if (!style.radius.isZero())
+                {
+                    const Bounds2D box     = ancestor->getDrawBounds();
+                    const Vec4     radiusX = style.radius.horizontal();
+                    const Vec4     radiusY = style.radius.vertical();
+                    const float    insetL  = style.padding.left.get() + style.border.paintedLeft();
+                    const float    insetR  = style.padding.right.get() + style.border.paintedRight();
+                    const float    insetT  = style.padding.top.get() + style.border.paintedTop();
+                    const float    insetB  = style.padding.bottom.get() + style.border.paintedBottom();
+                    const float    eps =
+                        std::max(2.5f, std::max(std::max(insetL, insetR), std::max(insetT, insetB)) + 1.0f);
+
+                    const auto flush = [eps](float inLeft, float inRight) { return std::abs(inLeft - inRight) <= eps; };
+
+                    const bool flushLeft   = flush(self.left, box.left) || flush(self.left, box.left + insetL);
+                    const bool flushRight  = flush(self.right, box.right) || flush(self.right, box.right - insetR);
+                    const bool flushTop    = flush(self.top, box.top) || flush(self.top, box.top + insetT);
+                    const bool flushBottom = flush(self.bottom, box.bottom) || flush(self.bottom, box.bottom - insetB);
+
+                    if (flushTop && flushLeft)
+                    {
+                        outRadiusX.x = std::max(outRadiusX.x, radiusX.x);
+                        outRadiusY.x = std::max(outRadiusY.x, radiusY.x);
+                    }
+
+                    if (flushTop && flushRight)
+                    {
+                        outRadiusX.y = std::max(outRadiusX.y, radiusX.y);
+                        outRadiusY.y = std::max(outRadiusY.y, radiusY.y);
+                    }
+
+                    if (flushBottom && flushRight)
+                    {
+                        outRadiusX.z = std::max(outRadiusX.z, radiusX.z);
+                        outRadiusY.z = std::max(outRadiusY.z, radiusY.z);
+                    }
+
+                    if (flushBottom && flushLeft)
+                    {
+                        outRadiusX.w = std::max(outRadiusX.w, radiusX.w);
+                        outRadiusY.w = std::max(outRadiusY.w, radiusY.w);
+                    }
+                }
+
+                if (ancestor->escapesOverflow() || ancestor->isRoot())
+                {
+                    break;
+                }
+
+                ancestor = ancestor->m_parent;
             }
         }
 
