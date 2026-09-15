@@ -64,6 +64,23 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "escapesOverflow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTSELECT_ESCAPESOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onEvent",
                 "parameters": [
                     {

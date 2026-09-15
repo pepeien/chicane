@@ -270,6 +270,23 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "escapesOverflow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ESCAPESOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onEvent",
                 "parameters": [
                     {
@@ -2013,6 +2030,32 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "releaseChild",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_RELEASECHILD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "removeChild",
                 "parameters": [
                     {
@@ -2985,6 +3028,44 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETOVERFLOWROUNDCLIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getPaintRadius",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outRadiusX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "outRadiusY"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETPAINTRADIUS_DESCRIPTION"
             },
             {
                 "accessor": "public",
