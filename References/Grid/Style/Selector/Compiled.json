@@ -9,7 +9,25 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "specificity",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLECOMPILEDSELECTOR_SPECIFICITY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
