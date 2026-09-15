@@ -33,6 +33,9 @@
         - JPG  (.jpg);
         - JPEG (.jpeg);
         - PNG  (.png).
+- Animation system (`Chicane::Drift`):
+    - 2D animations;
+    - 3D animations.
 - UI system (`Chicane::Grid`):
     - Button:
       - Check;
@@ -54,6 +57,12 @@
     - Text;
     - View;
     - Window.
+- Physics system (`Chicane::Kerb`):
+    - Collision bodies:
+        - Box;
+        - Capsule;
+        - Polygon.
+    - Gravity simulation.
 - Rendering system (`Chicane::Renderer`):
     - Culling;
     - HDR;
@@ -73,6 +82,12 @@
         - Roughness;
         - Specular;
         - Self Illumination.
+- Sound system (`Chicane::Screech`):
+    - Sound replay.
+- VFX system (`Chicane::Smoke`):
+    - Beam;
+    - Sprite;
+    - Particle.
 
 ## Compiling
 This project uses CMake to generate and build files, it should pretty straight forward both on linux and windows platforms.

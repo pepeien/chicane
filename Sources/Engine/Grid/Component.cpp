@@ -1230,6 +1230,8 @@ namespace Chicane
             refreshBounds();
             invalidateDrawCacheSubtree();
             refreshCullSubtree();
+
+            m_bIsLayoutDirty = false;
         }
 
         void Component::refresh()

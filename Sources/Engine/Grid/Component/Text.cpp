@@ -372,7 +372,19 @@ namespace Chicane
                 return;
             }
 
+            const bool bHadInsets = m_bHasInsetsApplied;
+
             setSize(bIsWidthAuto ? m_contentSize.x : m_size.x, bIsHeightAuto ? m_contentSize.y : m_size.y);
+
+            if (bHadInsets)
+            {
+                addSize(
+                    bIsWidthAuto ? m_style.insetHorizontal() : 0.0f,
+                    bIsHeightAuto ? m_style.insetVertical() : 0.0f
+                );
+
+                m_bHasInsetsApplied = true;
+            }
         }
 
         void Text::refreshPosition()
@@ -397,11 +409,14 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
+            const float       innerWidth    = (!m_style.width.isAuto() || m_bHasInsetsApplied)
+                                                  ? std::max(0.0f, m_size.x - m_style.insetHorizontal())
+                                                  : m_size.x;
             const String      signature =
                 value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
                 std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
                 std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a) + "|" +
-                std::to_string(static_cast<int>(m_style.align.get())) + "|" + std::to_string(m_size.x);
+                std::to_string(static_cast<int>(m_style.align.get())) + "|" + std::to_string(innerWidth);
 
             if (signature.equals(m_layoutSignature))
             {
