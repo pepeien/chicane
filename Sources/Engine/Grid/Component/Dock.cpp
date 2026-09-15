@@ -148,6 +148,11 @@ namespace Chicane
             return &found->second;
         }
 
+        bool Dock::isHorizontal(DockSide inSide) const
+        {
+            return inSide == DockSide::Left || inSide == DockSide::Right;
+        }
+
         void Dock::refreshSize()
         {
             Component::refreshSize();
@@ -955,11 +960,6 @@ namespace Chicane
         SizeDirection Dock::axisOf(DockSide inSide) const
         {
             return isHorizontal(inSide) ? SizeDirection::Horizontal : SizeDirection::Vertical;
-        }
-
-        bool Dock::isHorizontal(DockSide inSide) const
-        {
-            return inSide == DockSide::Left || inSide == DockSide::Right;
         }
     }
 }

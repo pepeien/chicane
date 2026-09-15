@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Component/Svg/Shape.hpp"
 
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
 
 namespace Chicane
 {
@@ -39,21 +40,47 @@ namespace Chicane
                 return;
             }
 
-            const Vec2&        size   = inParent->getSize();
-            const StyleRadius& radius = inParent->getStyle().radius;
-
-            setSize(size);
-            setScale(inScale, inScale);
+            setSize(inParent->getSize());
             setPosition(inParent->getPosition());
 
-            m_style.radius.x.top.copyValue(radius.x.top);
-            m_style.radius.x.right.copyValue(radius.x.right);
-            m_style.radius.x.bottom.copyValue(radius.x.bottom);
-            m_style.radius.x.left.copyValue(radius.x.left);
-            m_style.radius.y.top.copyValue(radius.y.top);
-            m_style.radius.y.right.copyValue(radius.y.right);
-            m_style.radius.y.bottom.copyValue(radius.y.bottom);
-            m_style.radius.y.left.copyValue(radius.y.left);
+            Primitive primitive = getPrimitive();
+            if (!primitive.outline.empty())
+            {
+                const float scale    = std::max(std::fabs(inScale), 1e-4f);
+                const float dilation = 1.0f / scale;
+                primitive.dilation   = dilation;
+
+                const Vec2 min(primitive.outlineMin.x - dilation, primitive.outlineMin.y - dilation);
+                const Vec2 max(primitive.outlineMax.x + dilation, primitive.outlineMax.y + dilation);
+                const Vec2 center((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f);
+
+                setScale(std::max(max.x - min.x, 1e-6f) * scale, std::max(max.y - min.y, 1e-6f) * scale);
+                setOffset(center.x * scale, -center.y * scale);
+
+                primitive.indices = {0, 1, 2, 2, 3, 0};
+                primitive.vertices.clear();
+
+                auto push = [&](float inX, float inY, float inU, float inV)
+                {
+                    Vertex vertex;
+                    vertex.position.x = inX;
+                    vertex.position.y = inY;
+                    vertex.uv         = Vec2(inU, inV);
+                    primitive.vertices.push_back(vertex);
+                };
+
+                push(-0.5f, -0.5f, 0.0f, 0.0f);
+                push(0.5f, -0.5f, 1.0f, 0.0f);
+                push(0.5f, 0.5f, 1.0f, 1.0f);
+                push(-0.5f, 0.5f, 0.0f, 1.0f);
+
+                setPrimitive(primitive);
+            }
+            else
+            {
+                setScale(std::max(std::fabs(inScale), 1e-4f), std::max(std::fabs(inScale), 1e-4f));
+                setOffset(0.0f, 0.0f);
+            }
 
             refreshBounds();
         }

@@ -1,0 +1,285 @@
+#include "Chicane/Grid/Component/Window.reflected.hpp"
+
+#include "Chicane/Core/Input/Mouse/Button.hpp"
+#include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Window/Event/Type.hpp"
+
+#include "Chicane/Grid/Component/Button.hpp"
+
+namespace Chicane
+{
+    namespace Grid
+    {
+        Window::Window(const pugi::xml_node& inNode)
+            : Container(inNode),
+              bIsVisible(true),
+              hasTitle(false),
+              title(String::empty()),
+              m_handleId(String::empty()),
+              m_bIsGrabbable(true),
+              m_bIsMoving(false),
+              m_move(Vec2::Zero()),
+              m_moveCursor(Vec2::Zero())
+        {
+            load("Assets/Engine/UI/Components/Window.grid", "Assets/Engine/UI/Components/Window.decal");
+        }
+
+        Window* Window::findFrom(Component* inComponent)
+        {
+            Component* node = inComponent;
+            while (node)
+            {
+                if (node->getTag().equals(TAG_ID))
+                {
+                    return static_cast<Window*>(node);
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+
+                node = node->getParent();
+            }
+
+            return nullptr;
+        }
+
+        bool Window::isFocusable() const
+        {
+            return false;
+        }
+
+        bool Window::escapesOverflow() const
+        {
+            return true;
+        }
+
+        bool Window::onEvent(const WindowEvent& inEvent)
+        {
+            if (inEvent.type == WindowEventType::MouseButtonUp)
+            {
+                if (!m_bIsMoving)
+                {
+                    return false;
+                }
+
+                endMove();
+
+                return true;
+            }
+
+            if (inEvent.type == WindowEventType::MouseButtonDown)
+            {
+                if (!inEvent.data)
+                {
+                    return false;
+                }
+
+                const Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                if (event.button != Input::MouseButton::Left || !containsPoint(event.location))
+                {
+                    return false;
+                }
+
+                Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                if (!canMoveFrom(hit))
+                {
+                    return false;
+                }
+
+                beginMove(event.location);
+
+                return true;
+            }
+
+            if (inEvent.type == WindowEventType::MouseMotion)
+            {
+                if (!m_bIsMoving || !inEvent.data)
+                {
+                    return false;
+                }
+
+                const Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+                updateMove(event.location);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        void Window::onTick(float inDeltaTime)
+        {
+            Container::onTick(inDeltaTime);
+
+            refreshAttributes();
+        }
+
+        void Window::refreshPosition()
+        {
+            Container::refreshPosition();
+            addPosition(m_move);
+        }
+
+        void Window::dismiss()
+        {
+            endMove();
+            bIsVisible = false;
+            getMethod(getAttribute(ON_CLOSE_ATTRIBUTE_NAME)).invoke();
+        }
+
+        bool Window::isGrabbable() const
+        {
+            return m_bIsGrabbable;
+        }
+
+        void Window::setGrabbable(bool inValue)
+        {
+            m_bIsGrabbable                            = inValue;
+            m_attributes[IS_GRABBABLE_ATTRIBUTE_NAME] = inValue ? "true" : "false";
+        }
+
+        bool Window::hasAssignedHandle() const
+        {
+            return findAssignedHandle() != nullptr;
+        }
+
+        bool Window::isAssignedHandle(const Component* inComponent) const
+        {
+            if (!inComponent || m_handleId.isEmpty())
+            {
+                return false;
+            }
+
+            return inComponent->getId().equals(m_handleId);
+        }
+
+        Component* Window::findAssignedHandle() const
+        {
+            if (m_handleId.isEmpty())
+            {
+                return nullptr;
+            }
+
+            if (getId().equals(m_handleId))
+            {
+                return const_cast<Window*>(this);
+            }
+
+            for (Component* child : Component::getChildrenFlat())
+            {
+                if (child && child->getId().equals(m_handleId))
+                {
+                    return child;
+                }
+            }
+
+            return nullptr;
+        }
+
+        void Window::refreshAttributes()
+        {
+            const String open = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
+            if (open.isEmpty())
+            {
+                bIsVisible = true;
+            }
+            else
+            {
+                bIsVisible = parseText(open).equals("true", "1");
+            }
+
+            m_handleId     = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
+            m_bIsGrabbable = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
+            title          = parseText(getAttribute(TITLE_ATTRIBUTE_NAME)).trim();
+            hasTitle       = !title.isEmpty() && !hasAssignedHandle();
+        }
+
+        bool Window::parseFlag(const String& inValue, bool inFallback) const
+        {
+            const String value = parseText(inValue).trim().toLower();
+            if (value.isEmpty())
+            {
+                return inFallback;
+            }
+
+            if (value.equals("true", "1", "yes"))
+            {
+                return true;
+            }
+
+            if (value.equals("false", "0", "no"))
+            {
+                return false;
+            }
+
+            return inFallback;
+        }
+
+        bool Window::canMoveFrom(Component* inHit) const
+        {
+            if (!inHit || !isGrabbable())
+            {
+                return false;
+            }
+
+            if (inHit->getTag().equals(Button::TAG_ID) && !isAssignedHandle(inHit))
+            {
+                return false;
+            }
+
+            for (Component* node = inHit; node != nullptr; node = node->getParent())
+            {
+                if (isAssignedHandle(node))
+                {
+                    return true;
+                }
+
+                if (!hasAssignedHandle() && node->getClassName().contains(BAR_CLASS_NAME))
+                {
+                    return true;
+                }
+
+                if (node == this)
+                {
+                    return !hasAssignedHandle() && !hasTitle;
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+            }
+
+            return false;
+        }
+
+        void Window::beginMove(const Vec2& inLocation)
+        {
+            m_bIsMoving  = true;
+            m_moveCursor = inLocation;
+            setDragging(true);
+        }
+
+        void Window::updateMove(const Vec2& inLocation)
+        {
+            m_move.x += inLocation.x - m_moveCursor.x;
+            m_move.y += inLocation.y - m_moveCursor.y;
+            m_moveCursor = inLocation;
+            markLayoutDirtySubtree();
+        }
+
+        void Window::endMove()
+        {
+            if (!m_bIsMoving)
+            {
+                return;
+            }
+
+            m_bIsMoving = false;
+            setDragging(false);
+        }
+    }
+}
