@@ -1,1 +1,4 @@
-<Container class="text-input__caret" />
+<Container class="input-text__chrome">
+    <Container class="input-text__selection" />
+    <Container class="input-text__caret" />
+</Container>

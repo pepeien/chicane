@@ -9,7 +9,7 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Editor/Scene.hpp"
+#include "Editor/Actor/Character.hpp"
 #include "Editor/UI/View/Home.hpp"
 
 #if CHICANE_OPENGL
@@ -22,9 +22,20 @@
 
 namespace Editor
 {
-    Application::Application()
-        : m_controller(nullptr)
+    Application* Application::s_instance = nullptr;
+
+    Application& Application::getInstance()
     {
+        return *s_instance;
+    }
+
+    Application::Application()
+        : m_controller(nullptr),
+          m_homeScene(nullptr),
+          m_viewerScene(nullptr)
+    {
+        s_instance = this;
+
         Chicane::ApplicationCreateInfo createInfo;
 
         // Window
@@ -44,6 +55,30 @@ namespace Editor
         };
 
         Chicane::Application::getInstance().run(createInfo);
+
+        s_instance = nullptr;
+    }
+
+    std::shared_ptr<Scene> Application::getHomeScene() const
+    {
+        return m_homeScene;
+    }
+
+    std::shared_ptr<ViewerScene> Application::getViewerScene() const
+    {
+        return m_viewerScene;
+    }
+
+    void Application::activateHomeScene()
+    {
+        Chicane::Application::getInstance().setScene(m_homeScene);
+        possess(m_homeScene);
+    }
+
+    void Application::activateViewerScene()
+    {
+        Chicane::Application::getInstance().setScene(m_viewerScene);
+        possess(m_viewerScene);
     }
 
     void Application::initController()
@@ -55,7 +90,13 @@ namespace Editor
 
     void Application::initScene()
     {
-        Chicane::Application::getInstance().setScene<Scene>();
+        m_homeScene = std::make_shared<Scene>();
+        m_homeScene->load();
+
+        m_viewerScene = std::make_shared<ViewerScene>();
+        m_viewerScene->load();
+
+        activateHomeScene();
     }
 
     void Application::initView()
@@ -94,5 +135,36 @@ namespace Editor
                 }
             }
         );
+    }
+
+    void Application::possess(const std::shared_ptr<Chicane::Scene>& inScene)
+    {
+        Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+        if (!controller)
+        {
+            return;
+        }
+
+        if (controller->isAttached())
+        {
+            controller->deattach();
+        }
+
+        if (!inScene)
+        {
+            return;
+        }
+
+        for (Character* character : inScene->getActors<Character>())
+        {
+            if (!character)
+            {
+                continue;
+            }
+
+            controller->attachTo(character);
+
+            return;
+        }
     }
 }

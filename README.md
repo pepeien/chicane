@@ -13,28 +13,66 @@
 - Multi graphical API support:
     - OpenGL;
     - Vulkan.
-- Asset system (`Chicane::Box`): 
+- Asset system (`Chicane::Box`):
+    - Animation:
+        - gLTF (.glb).
     - Audio:
         - Waves Audio (.wav).
+    - Effects:
+        - gLTF (.glb).
     - Fonts:
         - OpenType Font (.otf);
         - TrueType Font (.ttf).
     - 3D Models:
+        - gLTF      (.gltf/.glb);
         - Wavefront (.obj).
+    - Skeleton:
+        - gLTF (.glb).
     - Textures:
+        - GIF  (.gif);
         - JPG  (.jpg);
         - JPEG (.jpeg);
         - PNG  (.png).
 - UI system (`Chicane::Grid`):
-    - Button;
+    - Button:
+      - Check;
+      - Radio.
     - Container;
+    - Dock:
+      - Panel.
+    - Icon;
+    - Input:
+      - Text;
+      - Color;
+      - Select;
+      - Slider.
+    - Logger;
     - Popup;
-    - Text:
-        - Input;
-        - Character;
-    - View.
+    - Progress:
+      - Bar;
+      - Spinner.
+    - Text;
+    - View;
+    - Window.
 - Rendering system (`Chicane::Renderer`):
-    - Shadow Mapping.
+    - Culling;
+    - HDR;
+    - Lines;
+    - Particles;
+    - Render to Texture;
+    - Shadow Mapping;
+    - Texture Mapping:
+        - Ambient Occlusion;
+        - Bump;
+        - Height;
+        - Metalness;
+        - Normal;
+        - Opacity;
+        - Reflection;
+        - Refraction;
+        - Roughness;
+        - Specular;
+        - Self Illumination.
 
 ## Compiling
 This project uses CMake to generate and build files, it should pretty straight forward both on linux and windows platforms.

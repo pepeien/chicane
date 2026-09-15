@@ -42,7 +42,8 @@ Editor::HeaderMenu {
 
     &__shortcut {
         margin: auto 0 auto 1.5em;
-        color: $--grey;
+        color: $--lighter-grey;
+        font-size: 0.6em;
     }
 
     &__chevron {
@@ -50,6 +51,7 @@ Editor::HeaderMenu {
         height: 0.45em;
         margin: auto 0 auto auto;
         color: $--grey;
+        transition: color 200ms ease-in-out;
     }
 
     &__list {
@@ -58,7 +60,7 @@ Editor::HeaderMenu {
         flex-direction: column;
         gap: 0.25em;
         overflow: visible;
-        margin: calc(100% + 0.15em) 0 0 0;
+        margin: calc(100% + 0.2em) 0 0 0;
         padding: 0.5em;
         width: 14em;
         border-radius: 5px;
@@ -101,12 +103,12 @@ Editor::HeaderMenu {
                 transition: padding-left 200ms ease-in-out, border-color 250ms ease-in-out;
 
                 &:hover {
-                    padding-left: 0.8em;
-                    border-color: $--light-grey;
+                    padding-left: 0.9em;
+                    border-color: $--grey;
                     background-color: transparent;
 
                     Text, Icon {
-                        color: $--light-grey;
+                        color: $--grey;
                     }
                 }
             }

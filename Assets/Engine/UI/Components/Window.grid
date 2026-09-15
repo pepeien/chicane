@@ -1,0 +1,11 @@
+<Container class="window" dir:if="{{ bIsVisible }}">
+    <Container dir:if="{{ hasTitle }}" class="window__bar">
+        <Text class="window__title">{{ title }}</Text>
+        <Button class="window__close" onClick="{{ dismiss() }}">
+            <Text>x</Text>
+        </Button>
+    </Container>
+    <Container class="window__body">
+        <Content />
+    </Container>
+</Container>

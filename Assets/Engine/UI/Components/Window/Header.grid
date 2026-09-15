@@ -1,0 +1,6 @@
+<Container class="window-header">
+    <Text class="window-header__label">{{ label }}</Text>
+    <Button class="window-header__close" onClick="{{ onClose() }}">
+        <Text>x</Text>
+    </Button>
+</Container>

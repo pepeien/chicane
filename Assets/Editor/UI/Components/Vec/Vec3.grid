@@ -1,14 +1,14 @@
 <Container class="vector-3d">
     <Container class="vector-3d__value">
-        <Container class="vector-3d__value__label --x" />
+        <Text class="vector-3d__value__label --x">X</Text>
         <Input::Text value="{{ value.x }}" onInput="{{ commit() }}"/>
     </Container>
     <Container class="vector-3d__value">
-        <Container class="vector-3d__value__label --y" />
+        <Text class="vector-3d__value__label --y">Y</Text>
         <Input::Text value="{{ value.y }}" onInput="{{ commit() }}"/>
     </Container>
     <Container class="vector-3d__value">
-        <Container class="vector-3d__value__label --z" />
+        <Text class="vector-3d__value__label --z">Z</Text>
         <Input::Text value="{{ value.z }}" onInput="{{ commit() }}"/>
     </Container>
 </Container>

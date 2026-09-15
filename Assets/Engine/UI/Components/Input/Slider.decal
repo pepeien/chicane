@@ -2,9 +2,7 @@ $sliderThumb: 0.75em;
 
 Input::Slider {
     width: 100%;
-    height: 1.1em;
-    cursor: pointer;
-    overflow: visible;
+    height: 100%;
 }
 
 .input-slider {
@@ -13,25 +11,41 @@ Input::Slider {
     position: relative;
     overflow: visible;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     &__track {
         width: 100%;
         height: 0.28em;
         margin: auto 0;
         border-radius: 1em;
-        overflow: hidden;
+        overflow: visible;
+        background-color: #524e4e;
     }
 
     &__fill {
+        position: relative;
         width: ref(percentage)%;
         height: 100%;
+        background-color: #0b997d;
+        overflow: visible;
     }
 
     &__thumb {
         position: absolute;
         width: $sliderThumb;
         height: $sliderThumb;
-        margin-top: calc(calc(100% - $sliderThumb) * 0.5);
-        margin-left: calc(calc(100% - $sliderThumb) * ref(percentage) / 100);
-        border-radius: 1em;
+        margin: auto 0 auto auto;
+        background-color: #f7f7f7;
+        z-index: 2;
     }
+}
+
+Input::Slider.--overlay {
+    width: 78%;
+    height: 1.15em;
+    position: absolute;
+    cursor: ew-resize;
+    overflow: visible;
 }

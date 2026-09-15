@@ -8,13 +8,26 @@ Input::Text {
     cursor: text;
     overflow: hidden;
 
+    .input-text__selection {
+        position: absolute;
+        margin-left: ref(selection.x);
+        margin-top: ref(selection.y);
+        width: ref(selectionWidth);
+        height: 1em;
+        background-color: #3d8bfd;
+        overflow: hidden;
+    }
+
     .input-text__caret {
         position: absolute;
-        width: 0.1em;
+        width: 0.08em;
+        min-width: 1px;
         height: 1em;
-        background-color: #FFFFFFFF;
-        margin-left: ref(caretX);
+        background-color: ref(caretColor);
+        margin-left: ref(caret.x);
+        margin-top: ref(caret.y);
         opacity: 0;
+        z-index: 1;
         animation-name: none;
     }
 

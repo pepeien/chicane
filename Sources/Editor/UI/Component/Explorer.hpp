@@ -23,6 +23,11 @@ namespace Editor
     CH_TYPE(Type = (Manual), Alias = (Editor::Explorer))
     class Explorer : public Chicane::Grid::Container
     {
+    public:
+        static constexpr inline const char* ORIENTATION_ATTRIBUTE = "orientation";
+        static constexpr inline const char* ON_FOLDER_ATTRIBUTE   = "onFolder";
+        static constexpr inline const char* ON_ASSET_ATTRIBUTE    = "onAsset";
+
     private:
         static bool isListedFolder(const Chicane::FileSystem::Item& inItem);
         static bool isListedItem(const Chicane::FileSystem::Item& inItem);
@@ -132,6 +137,9 @@ namespace Editor
         Chicane::String selectedFolderPath;
         CH_FIELD()
         Chicane::String selectedAssetName;
+
+        CH_FIELD()
+        Chicane::String orientation;
 
     private:
         Chicane::FileSystem::Item       m_rootFolder;

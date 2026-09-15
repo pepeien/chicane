@@ -1,6 +1,9 @@
 #include "Editor/Layer/OpenGL/Grid.hpp"
 
 #include <Chicane/Renderer/Backend/OpenGL.hpp>
+#include <Chicane/Runtime/Application.hpp>
+
+#include "Editor/Viewer/Scene.hpp"
 
 namespace Editor
 {
@@ -19,6 +22,13 @@ namespace Editor
     {
         destroyVertexArray();
         destroyShader();
+    }
+
+    bool OpenGLLUI::onBeginRender(const Chicane::Renderer::Frame& inFrame)
+    {
+        (void)inFrame;
+
+        return dynamic_cast<ViewerScene*>(Chicane::Application::getInstance().getScene().get()) == nullptr;
     }
 
     void OpenGLLUI::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)

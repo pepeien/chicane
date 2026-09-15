@@ -75,7 +75,14 @@ namespace Editor
     {
         Character* character = createActor<Character>();
         character->setIsTransient(true);
-        Chicane::Application::getInstance().getController()->attachTo(character);
+
+        Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+        if (!controller || controller->isAttached())
+        {
+            return;
+        }
+
+        controller->attachTo(character);
     }
 
     void Scene::spawnGizmo()

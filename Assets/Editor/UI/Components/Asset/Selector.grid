@@ -1,0 +1,13 @@
+<Container class="asset-selector">
+    <Container class="asset-selector__preview">
+        <Image dir:if="{{ hasPreview }}" src="{{ value }}" load="Preview" class="asset-selector__image"/>
+        <Text dir:if="{{ isEmpty }}" class="asset-selector__empty">None</Text>
+    </Container>
+    <Container class="asset-selector__body">
+        <Text class="asset-selector__label">{{ label }}</Text>
+        <Container class="asset-selector__actions">
+            <Button class="asset-selector__action" onClick="{{ onBrowse() }}"><Text>Browse</Text></Button>
+            <Button dir:if="{{ hasValue }}" class="asset-selector__action" onClick="{{ onClear() }}"><Text>Clear</Text></Button>
+        </Container>
+    </Container>
+</Container>

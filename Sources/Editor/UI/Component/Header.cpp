@@ -13,7 +13,7 @@
 
 #include "Editor/UI/Component/Header/Menu.hpp"
 #include "Editor/UI/Component/Logo.hpp"
-#include "Editor/UI/View/Home.hpp"
+#include "Editor/UI/Prop.hpp"
 
 namespace Editor
 {
@@ -21,6 +21,9 @@ namespace Editor
         : Chicane::Grid::Container(inNode),
           maximizeState("restored"),
           menus({}),
+          theme(Chicane::String::empty()),
+          viewportTabState(Chicane::String::empty()),
+          assetsTabState(Chicane::String::empty()),
           m_moveWindow(nullptr),
           m_moveHitMutex(),
           m_moveBounds({}),
@@ -97,6 +100,10 @@ namespace Editor
         Chicane::Window* window = Chicane::Application::getInstance().getWindow();
         maximizeState           = window && window->isMaximized() ? "maximized" : "restored";
 
+        Prop::copy(this, THEME_ATTRIBUTE, theme);
+        Prop::copy(this, VIEWPORT_TAB_STATE_ATTRIBUTE, viewportTabState);
+        Prop::copy(this, ASSETS_TAB_STATE_ATTRIBUTE, assetsTabState);
+
         syncMenuChecks();
         bindMoveHitTest();
     }
@@ -128,6 +135,16 @@ namespace Editor
         {
             window->close();
         }
+    }
+
+    void Header::onWorkspaceViewport()
+    {
+        Prop::invoke(this, ON_WORKSPACE_VIEWPORT_ATTRIBUTE);
+    }
+
+    void Header::onWorkspaceAssets()
+    {
+        Prop::invoke(this, ON_WORKSPACE_ASSETS_ATTRIBUTE);
     }
 
     bool Header::isControl(const Chicane::Grid::Component* inComponent) const
@@ -258,31 +275,37 @@ namespace Editor
 
     void Header::initFileMenu()
     {
-        HeaderMenuItem file = {};
-        file.label          = "File";
+        // Level
+        HeaderMenuItem level = {};
+        level.label          = "Level";
 
         HeaderMenuItem create = {};
-        create.label          = "New Track";
+        create.label          = "New";
         create.shortcut       = "Ctrl+N";
         create.action         = "onTrackNew()";
-        file.children.push_back(create);
+        level.children.push_back(create);
 
         HeaderMenuItem open = {};
-        open.label          = "Open Track";
+        open.label          = "Open";
         open.shortcut       = "Ctrl+O";
         open.action         = "onTrackOpen()";
-        file.children.push_back(open);
+        level.children.push_back(open);
 
         HeaderMenuItem save = {};
-        save.label          = "Save Track";
+        save.label          = "Save";
         save.shortcut       = "Ctrl+S";
         save.action         = "onTrackSave()";
-        file.children.push_back(save);
+        level.children.push_back(save);
 
         HeaderMenuItem saveAs = {};
-        saveAs.label          = "Save Track As";
+        saveAs.label          = "Save As";
         saveAs.action         = "onTrackSaveAs()";
-        file.children.push_back(saveAs);
+        level.children.push_back(saveAs);
+
+        // Root
+        HeaderMenuItem file = {};
+        file.label          = "File";
+        file.children.push_back(level);
 
         menus.push_back(file);
     }
@@ -311,9 +334,6 @@ namespace Editor
 
     void Header::syncMenuChecks()
     {
-        std::shared_ptr<HomeView> view  = Chicane::Application::getInstance().getView<HomeView>();
-        const Chicane::String     theme = view ? view->theme : Chicane::String::empty();
-
         for (HeaderMenuItem& root : menus)
         {
             for (HeaderMenuItem& group : root.children)

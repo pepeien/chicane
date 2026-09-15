@@ -3,6 +3,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 
     &__items {
         display: flex;
@@ -26,6 +27,7 @@
         Icon {
             width: 1.1em;
             height: 1.1em;
+            transition: color 200ms ease-in-out;
         }
 
         Text {
@@ -35,14 +37,13 @@
         Icon, Text {
             margin: 0 auto;
             color: $--black;
-            transition: color 200ms ease-in-out;
         }
 
         &:hover {
             cursor: pointer;
             background-color: $--dark-grey;
 
-            Icon, Text {
+            Icon {
                 color: $--grey;
             }
         }

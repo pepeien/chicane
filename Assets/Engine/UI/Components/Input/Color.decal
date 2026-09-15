@@ -1,0 +1,245 @@
+Input::Color {
+    width: 100%;
+    min-height: 1.6em;
+    position: relative;
+    overflow: visible;
+}
+
+.input-color {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+
+    &__swatch {
+        width: 1.6em;
+        height: 1.6em;
+        min-width: 1.6em;
+        padding: 0.12em;
+        border-radius: 0.25em;
+        cursor: pointer;
+        overflow: hidden;
+        border: 1px solid white;
+    }
+
+    &__swatch__fill {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.16em;
+        background-color: ref(hex);
+    }
+
+    &__popup {
+        width: 18em;
+        margin-top: 1.85em;
+        overflow: visible;
+        z-index: 50;
+    }
+
+    &__preview {
+        width: 100%;
+        height: 6.2em;
+        overflow: hidden;
+        cursor: default;
+    }
+
+    &__preview__fill {
+        width: 100%;
+        height: 100%;
+        background-color: ref(hex);
+    }
+
+    &__body {
+        width: 100%;
+        padding: 0.7em 0.75em 0.8em 0.75em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65em;
+        background-color: transparent;
+
+        Text {
+            color: black;
+        }
+    }
+
+    &__toolbar {
+        width: 100%;
+        height: 1.5em;
+        display: flex;
+        flex-direction: row;
+        gap: 0.4em;
+        overflow: visible;
+    }
+
+    &__hex {
+        width: 5em;
+        height: 1.5em;
+        color: black;
+        overflow: hidden;
+    }
+
+    &__model {
+        width: 20%;
+        height: 1.5em;
+        color: grey;
+        overflow: visible;
+        margin-left: auto;
+        background-color: blue;
+
+        .input-select__list {
+            background-color: white;
+            border: 1px solid grey;
+            border-radius: 0.3em;
+            overflow: visible;
+            z-index: 200;
+        }
+
+        .input-select__label {
+            color: grey;
+        }
+    }
+
+    &__channels {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55em;
+        overflow: visible;
+    }
+
+    &__channel {
+        width: 100%;
+        height: 1.15em;
+        display: flex;
+        flex-direction: row;
+        gap: 0.45em;
+        position: relative;
+        overflow: visible;
+    }
+
+    &__ramp {
+        width: 78%;
+        height: 0.62em;
+        margin: auto 0;
+        overflow: hidden;
+        border-radius: 1em;
+    }
+
+    &__alpha-fill {
+        width: 100%;
+        height: 100%;
+        background-color: linear-gradient(to right, transparent, ref(vividHex));
+    }
+
+    &__slider {
+        width: 90%;
+        cursor: ew-resize;
+        overflow: visible;
+
+        .input-slider__track {
+            height: 0.62em;
+            background-color: transparent;
+        }
+
+        &.--hue .input-slider__track {
+            background-color: linear-gradient(to right, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+        }
+
+        &.--sat .input-slider__track  {
+            background-color: linear-gradient(to right, ref(grayHex), ref(vividHex));
+        }
+
+        &.--light .input-slider__track  {
+            background-color: linear-gradient(to right, #000000, ref(toneHex), #ffffff);
+        }
+
+        &.--value .input-slider__track  {
+            background-color: linear-gradient(to right, #000000, ref(vividHex));
+        }
+
+        &.--red .input-slider__track  {
+            background-color: linear-gradient(to right, #000000, #ff0000);
+        }
+
+        &.--green .input-slider__track  {
+            background-color: linear-gradient(to right, #000000, #00ff00);
+        }
+
+        &.--blue .input-slider__track  {
+            background-color: linear-gradient(to right, #000000, #0000ff);
+        }
+
+        &.--alpha .input-slider__track  {
+            background-color: #d0d0d0;
+        }
+
+        .input-slider__fill {
+            background-color: transparent;
+        }
+
+        .input-slider__thumb {
+            width: 0.95em;
+            height: 0.95em;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+    }
+
+    &__readout {
+        width: 100%;
+        height: 1.15em;
+        color: white;
+        font-size: 0.8em;
+        alignment: right;
+    }
+
+    &__palette {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45em;
+        overflow: visible;
+    }
+
+    &__palette__label {
+        color: white;
+        font-size: 0.8em;
+    }
+
+    &__chips {
+        width: 100%;
+        height: 1.7em;
+        display: flex;
+        flex-direction: row;
+        gap: 0.4em;
+        overflow: visible;
+    }
+
+    &__chip {
+        width: 1.7em;
+        height: 1.7em;
+        min-width: 1.7em;
+        padding: 0;
+        border-radius: 0.35em;
+        cursor: pointer;
+        overflow: hidden;
+
+        &__fill {
+            width: 100%;
+            height: 100%;
+            background-color: ref(swatch);
+        }
+
+        &.--add {
+            border-radius: 4px;
+            border: 1px solid white;
+            overflow: hidden;
+        }
+
+        &__plus {
+            margin: auto;
+            color: black;
+            font-size: 1.1em;
+        }
+    }
+}

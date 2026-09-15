@@ -11,7 +11,46 @@ namespace Editor
     class Toolbar : public Chicane::Grid::Container
     {
     public:
+        static constexpr inline const char* ORIENTATION_ATTRIBUTE        = "orientation";
+        static constexpr inline const char* TRANSLATE_STATE_ATTRIBUTE    = "translateState";
+        static constexpr inline const char* ROTATE_STATE_ATTRIBUTE       = "rotateState";
+        static constexpr inline const char* SCALE_STATE_ATTRIBUTE        = "scaleState";
+        static constexpr inline const char* ON_TRACK_SAVE_ATTRIBUTE      = "onTrackSave";
+        static constexpr inline const char* ON_GIZMO_TRANSLATE_ATTRIBUTE = "onGizmoTranslate";
+        static constexpr inline const char* ON_GIZMO_ROTATE_ATTRIBUTE    = "onGizmoRotate";
+        static constexpr inline const char* ON_GIZMO_SCALE_ATTRIBUTE     = "onGizmoScale";
+
+    public:
         CH_CONSTRUCTOR()
         Toolbar(const pugi::xml_node& inNode);
+
+    protected:
+        void onTick(float inDeltaTime) override;
+
+    public:
+        CH_FUNCTION()
+        void onTrackSave();
+
+        CH_FUNCTION()
+        void onGizmoTranslate();
+
+        CH_FUNCTION()
+        void onGizmoRotate();
+
+        CH_FUNCTION()
+        void onGizmoScale();
+
+    public:
+        CH_FIELD()
+        Chicane::String orientation;
+
+        CH_FIELD()
+        Chicane::String translateState;
+
+        CH_FIELD()
+        Chicane::String rotateState;
+
+        CH_FIELD()
+        Chicane::String scaleState;
     };
 }

@@ -13,6 +13,10 @@ namespace Editor
     class AssetManager : public Chicane::Grid::Container
     {
     public:
+        static constexpr inline const char* SELECTED_FOLDER_ATTRIBUTE = "selectedFolderPath";
+        static constexpr inline const char* SELECTED_ASSET_ATTRIBUTE  = "selectedAssetName";
+
+    public:
         CH_CONSTRUCTOR()
         AssetManager(const pugi::xml_node& inNode);
 
@@ -47,6 +51,7 @@ namespace Editor
     private:
         void createAsset(Chicane::Box::AssetType inType, const Chicane::String& inExtension);
         void refreshFromExplorer();
+        void syncViewer();
         Chicane::FileSystem::Path selectedAssetPath() const;
 
     public:
@@ -55,6 +60,8 @@ namespace Editor
         CH_FIELD()
         bool bIsAssetEmpty;
         CH_FIELD()
+        bool bIsMeshAsset;
+        CH_FIELD()
         Chicane::String assetPath;
         CH_FIELD()
         Chicane::String assetId;
@@ -62,5 +69,13 @@ namespace Editor
         Chicane::String assetSource;
         CH_FIELD()
         Chicane::String assetType;
+
+        CH_FIELD()
+        Chicane::String selectedFolderPath;
+        CH_FIELD()
+        Chicane::String selectedAssetName;
+
+    private:
+        Chicane::String m_viewerAsset;
     };
 }

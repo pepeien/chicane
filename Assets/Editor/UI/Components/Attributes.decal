@@ -9,31 +9,10 @@ $attributesHeaderHeight: 1.65em;
         height: calc(100% - $attributesHeaderHeight);
         padding: 0.5em;
         overflow: auto;
+        overflow-x: visible;
         display: flex;
         flex-direction: column;
         gap: 0.35em;
-    }
-
-    &__transforms {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25em;
-    }
-
-    &__transform {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-
-        &__label {
-            width: 40%;
-            max-width: 6em;
-        }
-
-        Editor::Vec3 {
-            width: 100%;
-        }
     }
 
     &__field {
@@ -41,16 +20,104 @@ $attributesHeaderHeight: 1.65em;
         display: flex;
         flex-direction: row;
         gap: 0.4em;
-        alignment: center;
+        overflow: visible;
 
         &__label {
             width: 40%;
             max-width: 7em;
         }
 
-        Input::Text, Input::Select {
+        Input::Text, Input::Color, Editor::Vec3, Editor::AssetSelector {
             width: 100%;
-            color: $--black;
+            min-height: 1.2em;
+        }
+
+        Editor::AssetSelector, Input::Color {
+            padding: 0.15em;
+            overflow: visible;
+        }
+
+        .input-color {
+            overflow-x: visible;
+            overflow-y: visible;
+            font-size: 1em;
+            padding: 0.1em;
+            border: none;
+
+            Input::Text, Input::Select {
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                color: $--black;
+                font-size: 0.85em;
+                overflow: visible;
+                overflow-x: visible;
+                overflow-y: visible;
+                min-height: 1.4em;
+            }
+
+            &__popup {
+                border-radius: 8px;
+                background-color: $--dark-grey;
+                overflow: hidden;
+
+                .window {
+                    border-radius: 8px;
+                }
+
+                .window-header {
+                    background-color: $--dark-grey;
+                    border-bottom: 1px solid $--light-grey;
+                    border-radius: 8px 8px 0 0;
+
+                    Text {
+                        color: $--grey;
+                    }
+                }
+            }
+
+            &__body {
+                padding: 0.8em 1.6em;
+            }
+
+            &__hex {
+                width: 30%;
+                background-color: $--grey;
+            }
+
+            &__model {
+                .input-select__list {
+                    padding: 0.5em;
+                    width: 8em;
+                    border-radius: 4px;
+                    background-color: $--light-grey;
+                    margin: 1.25em 0 0 50%;
+                }
+            }
+
+            &__slider {
+                .input-slider {
+                    &__track {
+                        border-radius: 12px;
+                        height: 1.25em;
+                        padding: 0 0.1em;
+                    }
+
+                    &__thumb {
+                        border: 2.5px solid white;
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            Input::Text, .input-select__label, &__hex, &__model, &__readout, &__palette__label, &__chip__plus {
+                color: $--grey;
+            }
+
+            &__swatch {
+                border: 1px solid $--lighter-grey;
+                background-color: $--white;
+            }
         }
     }
 }

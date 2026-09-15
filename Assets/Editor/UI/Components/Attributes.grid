@@ -13,28 +13,39 @@
                 <Input::Text
                     dir:if="{{ attribute.type == Text }}"
                     value="{{ attribute.text }}"
-                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                    onInput="{{ onAttributeCommit(attribute.name, value) }}"
                 />
                 <Button::Check
                     dir:if="{{ attribute.type == Bool }}"
-                    checked="{{ attribute.checked }}"
-                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                    checked="{{ attribute.bIsChecked }}"
+                    onInput="{{ onAttributeCommit(attribute.name, isChecked) }}"
                 />
                 <Input::Select
                     dir:if="{{ attribute.type == Enum }}"
                     value="{{ attribute.text }}"
                     items="{{ attribute.options }}"
-                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                    onInput="{{ onAttributeCommit(attribute.name, value) }}"
                 />
                 <Input::Text
                     dir:if="{{ attribute.type == Float }}"
                     value="{{ attribute.text }}"
-                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                    onInput="{{ onAttributeCommit(attribute.name, value) }}"
                 />
-                <Input::Text
+                <Editor::Vec3
                     dir:if="{{ attribute.type == Vec3 }}"
+                    value="{{ attribute.vector }}"
+                    onInput="{{ onAttributeCommit(attribute.name, value) }}"
+                />
+                <Input::Color
+                    dir:if="{{ attribute.type == Color }}"
+                    value="{{ attribute.vector }}"
+                    onInput="{{ onAttributeCommit(attribute.name, hex) }}"
+                />
+                <Editor::AssetSelector
+                    dir:if="{{ attribute.type == Asset }}"
                     value="{{ attribute.text }}"
-                    onInput="{{ onAttributeCommit(attribute.name) }}"
+                    kind="{{ attribute.kind }}"
+                    onInput="{{ onAttributeCommit(attribute.name, value) }}"
                 />
             </Container>
         </Editor::AttributesTab>

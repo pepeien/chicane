@@ -145,17 +145,17 @@ $explorerSliderThumb: 0.72em;
         border-radius: 4px;
         cursor: pointer;
 
-        &__icon {
+        Icon {
             width: 0.85em;
             height: 0.85em;
             margin: auto 0;
-            color: $--white;
+            color: $--black;
         }
 
         Text {
             font-size: 0.78em;
             margin: auto 0;
-            color: $--white;
+            color: $--black;
         }
     }
 
@@ -177,17 +177,6 @@ $explorerSliderThumb: 0.72em;
                 flex-wrap: nowrap;
                 gap: 0.2em;
             }
-        }
-    }
-
-    Editor::ExplorerItem {
-        width: ref(iconSize);
-        height: ref(iconSize);
-        overflow: hidden;
-
-        &.--vertical {
-            width: 100%;
-            height: 2.5em;
         }
     }
 
@@ -243,8 +232,7 @@ $explorerSliderThumb: 0.72em;
 
     &__slider {
         width: 12em;
-        height: 1.2em;
-        cursor: ew-resize;
+        height: 2em;
 
         .input-slider {
             &__track {
@@ -258,8 +246,9 @@ $explorerSliderThumb: 0.72em;
             &__thumb {
                 width: $explorerSliderThumb;
                 height: $explorerSliderThumb;
-                margin-top: 0.24em;
                 background-color: $--green;
+                border-radius: 50%;
+                transform: translateY(-25%);
             }
         }
     }

@@ -9,6 +9,9 @@
 #include <Chicane/Core/Input/Mouse/Motion/Event.hpp>
 #include <Chicane/Core/Math/Quat/QuatFloat.hpp>
 #include <Chicane/Core/Window.hpp>
+#include <Chicane/Grid/Component.hpp>
+#include <Chicane/Grid/Component/View.hpp>
+#include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
@@ -772,6 +775,16 @@ namespace Editor
 
     void Gizmo::onWindowEvent(const Chicane::WindowEvent& inEvent)
     {
+        if (getScene() != Chicane::Application::getInstance().getScene().get())
+        {
+            if (isDragging())
+            {
+                endDrag();
+            }
+
+            return;
+        }
+
         Chicane::Window* window = Chicane::Application::getInstance().getWindow();
         if (!window || window->isFocused() || window->isTextInputActive())
         {
@@ -917,12 +930,37 @@ namespace Editor
     bool Gizmo::isOverViewport(const Chicane::Vec2& inLocation) const
     {
         const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
-        if (viewport.isEmpty())
+        if (viewport.isEmpty() || !viewport.contains(inLocation))
         {
             return false;
         }
 
-        return viewport.contains(inLocation);
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        if (!view)
+        {
+            return true;
+        }
+
+        Chicane::Grid::Component* hit = view->getHitAt(inLocation);
+        if (!hit)
+        {
+            return true;
+        }
+
+        for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
+        {
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
+            {
+                return true;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 
     void Gizmo::pickAt(const Chicane::Vec2& inLocation)

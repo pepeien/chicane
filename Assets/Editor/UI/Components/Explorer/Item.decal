@@ -1,4 +1,4 @@
-.explorer__tile {
+.explorer__item {
     width: ref(iconSize);
     height: ref(iconSize);
     display: flex;
@@ -21,8 +21,8 @@
 
     &__badge {
         position: absolute;
-        width: 0.7em;
-        height: 0.7em;
+        width: 1em;
+        height: 1em;
         margin: 0.25em;
         color: $--grey;
         z-index: 2;
@@ -54,42 +54,55 @@
         overflow: hidden;
     }
 
-    &.--selected .explorer__tile__preview {
+    &.--selected .explorer__item__preview {
+        background-color: $--light-grey;
+    }
+
+    &:hover .explorer__item__preview {
         background-color: $--light-grey;
     }
 
     &.--vertical {
         width: 100%;
-        height: 2.5em;
+        height: calc(ref(iconSize) * 0.37 + 0.5em);
         flex-direction: row;
+        padding: 0 0.25em;
         gap: 0.45em;
+        transition: background-color 200ms ease-in-out;
 
-        .explorer__tile__preview {
-            width: 2.2em;
-            height: 2.2em;
-            margin: auto 0;
+
+        &:hover {
+            background-color: $--light-grey;
+
+            .explorer__item__preview {
+                background-color: $--dark-grey;
+            }
         }
 
-        .explorer__tile__glyph {
-            width: 1.15em;
-            height: 1.15em;
-        }
+        .explorer__item {
+            &__preview {
+                width: calc(ref(iconSize) * 0.37);
+                height: calc(ref(iconSize) * 0.37);
+                margin: auto 0;
+            }
 
-        .explorer__tile__badge {
-            width: 0.55em;
-            height: 0.55em;
-            margin: 0.15em;
-        }
+            &__glyph {
+                width: 52%;
+                height: 52%;
+            }
 
-        .explorer__tile__name {
-            width: calc(100% - 2.65em);
-            height: auto;
-            margin: auto 0;
-            font-size: 0.75em;
-        }
-    }
+            &__badge {
+                width: 25%;
+                height: 25%;
+                margin: 7%;
+            }
 
-    &:hover .explorer__tile__preview {
-        background-color: $--light-grey;
+            &__name {
+                width: calc(100% - ref(iconSize) * 0.37 - 0.45em);
+                height: auto;
+                margin: auto 0;
+                font-size: 0.75em;
+            }
+        }
     }
 }

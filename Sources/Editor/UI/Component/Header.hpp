@@ -19,6 +19,13 @@ namespace Editor
     class Header : public Chicane::Grid::Container
     {
     public:
+        static constexpr inline const char* THEME_ATTRIBUTE                 = "theme";
+        static constexpr inline const char* VIEWPORT_TAB_STATE_ATTRIBUTE    = "viewportTabState";
+        static constexpr inline const char* ASSETS_TAB_STATE_ATTRIBUTE      = "assetsTabState";
+        static constexpr inline const char* ON_WORKSPACE_VIEWPORT_ATTRIBUTE = "onWorkspaceViewport";
+        static constexpr inline const char* ON_WORKSPACE_ASSETS_ATTRIBUTE   = "onWorkspaceAssets";
+
+    public:
         CH_CONSTRUCTOR()
         Header(const pugi::xml_node& inNode);
 
@@ -44,6 +51,12 @@ namespace Editor
         CH_FUNCTION()
         void onClose();
 
+        CH_FUNCTION()
+        void onWorkspaceViewport();
+
+        CH_FUNCTION()
+        void onWorkspaceAssets();
+
     private:
         bool isControl(const Chicane::Grid::Component* inComponent) const;
         bool isControlHit(const Chicane::Vec2& inLocation) const;
@@ -63,6 +76,15 @@ namespace Editor
 
         CH_FIELD()
         HeaderMenuItem::List menus;
+
+        CH_FIELD()
+        Chicane::String theme;
+
+        CH_FIELD()
+        Chicane::String viewportTabState;
+
+        CH_FIELD()
+        Chicane::String assetsTabState;
 
     private:
         void*                          m_moveWindow;

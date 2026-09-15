@@ -10,6 +10,7 @@ namespace Editor
           label(Chicane::String::empty()),
           group(Chicane::String::empty()),
           type(AttributeFieldType::Text),
+          kind(Chicane::String::empty()),
           text(Chicane::String::empty()),
           vector(Chicane::Vec3::Zero()),
           options({})

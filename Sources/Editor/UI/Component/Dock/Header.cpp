@@ -1,6 +1,7 @@
 #include "Editor/UI/Component/Dock/Header.reflected.hpp"
 
 #include <Chicane/Grid/Component/Dock/Panel.hpp>
+#include <Chicane/Grid/Component/Window.hpp>
 
 namespace Editor
 {
@@ -32,6 +33,10 @@ namespace Editor
         {
             panel->setGrabbable(!isPinned());
         }
+        else if (Chicane::Grid::Window* window = Chicane::Grid::Window::findFrom(this))
+        {
+            window->setGrabbable(!isPinned());
+        }
     }
 
     void DockHeader::onClose()
@@ -39,6 +44,10 @@ namespace Editor
         if (Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::findFrom(this))
         {
             panel->addClassName("--closed");
+        }
+        else if (Chicane::Grid::Window* window = Chicane::Grid::Window::findFrom(this))
+        {
+            window->dismiss();
         }
     }
 

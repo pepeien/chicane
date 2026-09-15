@@ -9,6 +9,9 @@
 #include <Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp>
 #include <Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp>
 #include <Chicane/Renderer/Backend/Vulkan/Vertex.hpp>
+#include <Chicane/Runtime/Application.hpp>
+
+#include "Editor/Viewer/Scene.hpp"
 
 namespace Editor
 {
@@ -37,6 +40,11 @@ namespace Editor
         destroyFrameResources();
 
         m_graphicsPipeline.destroy();
+    }
+
+    bool VulkanLUI::onBeginRender(const Chicane::Renderer::Frame& inFrame)
+    {
+        return dynamic_cast<ViewerScene*>(Chicane::Application::getInstance().getScene().get()) == nullptr;
     }
 
     void VulkanLUI::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)

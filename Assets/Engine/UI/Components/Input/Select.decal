@@ -25,21 +25,26 @@ Input::Select {
     &__list {
         position: absolute;
         width: 100%;
-        margin-top: 100%;
-        z-index: 20;
+        margin-top: 1.25em;
+        z-index: 200;
         display: flex;
         flex-direction: column;
-        overflow: auto;
+        overflow: visible;
+        background-color: #ffffff;
+        border: 1px solid #d8d8d8;
+        border-radius: 0.3em;
     }
 }
 
 Input::Select::Option {
     width: 100%;
+    min-height: 1.4em;
+    height: 1.4em;
     display: flex;
     cursor: pointer;
     overflow: hidden;
 
     Text {
-        margin: 0.25em 0.4em;
+        margin: auto 0.4em;
     }
 }

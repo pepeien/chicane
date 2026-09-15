@@ -2,6 +2,7 @@
 
 #include <Chicane/Box/Asset.hpp>
 #include <Chicane/Box/Asset/Header.hpp>
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Effect.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
@@ -10,10 +11,11 @@
 #include <Chicane/Box/Texture.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
-#include <Chicane/Grid/Component.hpp>
 
+#include "Editor/Application.hpp"
 #include "Editor/UI/Component/Dock/Header.hpp"
-#include "Editor/UI/Component/Explorer.hpp"
+#include "Editor/UI/Prop.hpp"
+#include "Editor/Viewer/Scene.hpp"
 
 namespace Editor
 {
@@ -21,10 +23,14 @@ namespace Editor
         : Chicane::Grid::Container(inNode),
           bHasAsset(false),
           bIsAssetEmpty(true),
+          bIsMeshAsset(false),
           assetPath(Chicane::String::empty()),
           assetId(Chicane::String::empty()),
           assetSource(Chicane::String::empty()),
-          assetType(Chicane::String::empty())
+          assetType(Chicane::String::empty()),
+          selectedFolderPath(Chicane::String::empty()),
+          selectedAssetName(Chicane::String::empty()),
+          m_viewerAsset(Chicane::String::empty())
     {
         import <DockHeader>();
 
@@ -34,6 +40,9 @@ namespace Editor
     void AssetManager::onTick(float inDeltaTime)
     {
         Chicane::Grid::Container::onTick(inDeltaTime);
+
+        Prop::copy(this, SELECTED_FOLDER_ATTRIBUTE, selectedFolderPath);
+        Prop::copy(this, SELECTED_ASSET_ATTRIBUTE, selectedAssetName);
 
         refreshFromExplorer();
     }
@@ -88,6 +97,15 @@ namespace Editor
         }
 
         asset.saveXML();
+
+        if (bIsMeshAsset)
+        {
+            if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+            {
+                viewer->commitGroups();
+            }
+        }
+
         refreshFromExplorer();
     }
 
@@ -225,9 +243,11 @@ namespace Editor
             {
                 bHasAsset     = false;
                 bIsAssetEmpty = true;
+                bIsMeshAsset  = false;
                 assetId       = Chicane::String::empty();
                 assetSource   = Chicane::String::empty();
                 assetType     = Chicane::String::empty();
+                syncViewer();
             }
 
             return;
@@ -241,9 +261,40 @@ namespace Editor
         Chicane::Box::Asset asset(path);
         bHasAsset     = true;
         bIsAssetEmpty = false;
+        bIsMeshAsset  = asset.getType() == Chicane::Box::AssetType::Mesh;
         assetId       = asset.getId();
         assetSource   = asset.getPayload();
         assetType     = Chicane::Box::toString(asset.getType());
+
+        syncViewer();
+    }
+
+    void AssetManager::syncViewer()
+    {
+        std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene();
+        if (!viewer)
+        {
+            return;
+        }
+
+        if (!bIsMeshAsset)
+        {
+            if (!m_viewerAsset.isEmpty())
+            {
+                viewer->clearAsset();
+                m_viewerAsset = Chicane::String::empty();
+            }
+
+            return;
+        }
+
+        if (m_viewerAsset.equals(assetPath))
+        {
+            return;
+        }
+
+        m_viewerAsset = assetPath;
+        viewer->setAsset(Chicane::FileSystem::Path(assetPath));
     }
 
     Chicane::FileSystem::Path AssetManager::selectedAssetPath() const
@@ -253,23 +304,11 @@ namespace Editor
             return Chicane::FileSystem::Path(assetPath);
         }
 
-        Chicane::Grid::Component* root = getRoot();
-        if (!root)
+        if (selectedFolderPath.isEmpty() || selectedAssetName.isEmpty())
         {
             return {};
         }
 
-        for (Chicane::Grid::Component* child : root->getChildrenFlat())
-        {
-            Explorer* explorer = dynamic_cast<Explorer*>(child);
-            if (!explorer || explorer->selectedAssetName.isEmpty())
-            {
-                continue;
-            }
-
-            return Chicane::FileSystem::Path(explorer->selectedFolderPath) / explorer->selectedAssetName;
-        }
-
-        return {};
+        return Chicane::FileSystem::Path(selectedFolderPath) / selectedAssetName;
     }
 }

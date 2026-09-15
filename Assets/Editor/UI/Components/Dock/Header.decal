@@ -7,6 +7,7 @@ $dockHeaderHeight: 1.65em;
     flex-direction: row;
     padding: 0 0.35em;
     background-color: $--dark-grey;
+    border-radius: 4px 4px 0 0;
     cursor: grab;
 
     &.--pinned {
@@ -42,8 +43,8 @@ $dockHeaderHeight: 1.65em;
         margin: auto 0;
 
         &__icon {
-            width: 0.72em;
-            height: 0.72em;
+            width: 1em;
+            height: 1em;
             margin: auto;
             color: $--grey;
             transform-origin: center;

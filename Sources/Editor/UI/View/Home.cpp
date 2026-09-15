@@ -1,9 +1,14 @@
 #include "Editor/UI/View/Home.reflected.hpp"
 
+#include <cstdlib>
+#include <exception>
+
 #include <Chicane/Box/Mesh.hpp>
+#include <Chicane/Core/Color.hpp>
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
+#include <Chicane/Core/Math/Rotator.hpp>
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Core/Reflection/Enum/Registry.hpp>
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
@@ -25,6 +30,8 @@
 #include <Chicane/Runtime/Track.hpp>
 
 #include "Editor/Scene.hpp"
+#include "Editor/Application.hpp"
+#include "Editor/Viewer/Scene.hpp"
 #include "Editor/UI/Component/Asset/Manager.hpp"
 #include "Editor/UI/Component/Attributes.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
@@ -65,14 +72,66 @@ namespace Editor
             return Chicane::String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
         }
 
-        bool isTransformField(const Chicane::String& inName)
+        Chicane::Vec3 parseVec3(const Chicane::String& inValue, const Chicane::Vec3& inFallback)
         {
-            return inName.equals("translation", "rotation", "scale");
+            Chicane::String raw = inValue.trim();
+            if (raw.startsWith("["))
+            {
+                raw = raw.substr(1);
+            }
+
+            if (raw.endsWith("]"))
+            {
+                raw = raw.substr(0, raw.size() - 1);
+            }
+
+            const std::vector<Chicane::String> parts = raw.split(',');
+            if (parts.size() < 3)
+            {
+                return inFallback;
+            }
+
+            try
+            {
+                return Chicane::Vec3(
+                    std::stof(parts.at(0).trim().toStandard()),
+                    std::stof(parts.at(1).trim().toStandard()),
+                    std::stof(parts.at(2).trim().toStandard())
+                );
+            }
+            catch (const std::exception&)
+            {
+                return inFallback;
+            }
+        }
+
+        bool isCompleteFloat(const Chicane::String& inValue)
+        {
+            const Chicane::String trimmed = inValue.trim();
+            if (trimmed.isEmpty() || trimmed.equals("-", ".", "-."))
+            {
+                return false;
+            }
+
+            char* end = nullptr;
+            std::strtof(trimmed.toChar(), &end);
+
+            return end && end != trimmed.toChar() && *end == '\0';
         }
 
         std::shared_ptr<Scene> editorScene()
         {
-            return Chicane::Application::getInstance().getScene<Scene>();
+            return Application::getInstance().getHomeScene();
+        }
+
+        std::shared_ptr<Scene> workspaceScene(bool bIsAssetsWorkspace)
+        {
+            if (bIsAssetsWorkspace)
+            {
+                return Application::getInstance().getViewerScene();
+            }
+
+            return Application::getInstance().getHomeScene();
         }
 
         static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
@@ -88,7 +147,7 @@ namespace Editor
         static constexpr inline const char* OUTLINER_ICON_SOUND     = "SpeakerHigh";
         static constexpr inline const char* OUTLINER_ICON_VIEW      = "Eye";
         static constexpr inline const char* OUTLINER_ICON_CAMERA    = "Camera";
-        static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Weight";
+        static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Bone";
 
         Chicane::String outlinerIcon(const Chicane::Object* inObject)
         {
@@ -185,10 +244,38 @@ namespace Editor
 
         void commitAttributeField(Chicane::Object& inItem, AttributeField& inField)
         {
+            if (inField.name.equals("translation"))
+            {
+                inItem.setAbsoluteTranslation(inField.vector);
+                inItem.notifyPropertyEdited(inField.name);
+
+                return;
+            }
+
+            if (inField.name.equals("rotation"))
+            {
+                inItem.setAbsoluteRotation(inField.vector);
+                inItem.notifyPropertyEdited(inField.name);
+
+                return;
+            }
+
+            if (inField.name.equals("scale"))
+            {
+                inItem.setAbsoluteScale(inField.vector);
+                inItem.notifyPropertyEdited(inField.name);
+
+                return;
+            }
+
             Chicane::String value = inField.text;
             if (inField.type == AttributeFieldType::Bool)
             {
                 value = inField.bIsChecked ? "true" : "false";
+            }
+            else if (inField.type == AttributeFieldType::Vec3 || inField.type == AttributeFieldType::Color)
+            {
+                value = formatVec3(inField.vector);
             }
 
             Chicane::Track::applyField(inItem, inField.name, value);
@@ -213,6 +300,46 @@ namespace Editor
             }
 
             if (ioField.type == AttributeFieldType::Vec3)
+            {
+                if (ioField.name.equals("translation"))
+                {
+                    ioField.vector = inItem.getAbsoluteTranslation();
+                    ioField.text   = formatVec3(ioField.vector);
+
+                    return;
+                }
+
+                if (ioField.name.equals("rotation"))
+                {
+                    ioField.vector = inItem.getAbsoluteRotation().getAngles();
+                    ioField.text   = formatVec3(ioField.vector);
+
+                    return;
+                }
+
+                if (ioField.name.equals("scale"))
+                {
+                    ioField.vector = inItem.getAbsoluteScale();
+                    ioField.text   = formatVec3(ioField.vector);
+
+                    return;
+                }
+
+                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
+                {
+                    ioField.vector = *value;
+                    ioField.text   = formatVec3(*value);
+                }
+                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
+                {
+                    ioField.vector = rotator->getAngles();
+                    ioField.text   = formatVec3(ioField.vector);
+                }
+
+                return;
+            }
+
+            if (ioField.type == AttributeFieldType::Color)
             {
                 if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
                 {
@@ -255,6 +382,8 @@ namespace Editor
           translateState(STATE_ACTIVE),
           rotateState(STATE_IDLE),
           scaleState(STATE_IDLE),
+          selectedFolderPath(Chicane::String::empty()),
+          selectedAssetName(Chicane::String::empty()),
           m_collapsedOutlinerItems({})
     {
         import <AssetManager>();
@@ -273,9 +402,9 @@ namespace Editor
 
     void HomeView::onTick(float inDeltaTime)
     {
-        Chicane::Grid::View::onTick(inDeltaTime);
+        syncAttributeValues();
 
-        if (std::shared_ptr<Scene> scene = editorScene())
+        if (std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace))
         {
             if (Gizmo* gizmo = scene->getGizmo())
             {
@@ -284,27 +413,25 @@ namespace Editor
                 scaleState     = gizmo->getType() == GizmoType::Scale ? STATE_ACTIVE : STATE_IDLE;
             }
         }
+
+        Chicane::Grid::View::onTick(inDeltaTime);
     }
 
     void HomeView::bindScene()
     {
-        Chicane::Application::getInstance().watchScene(
-            [&](std::shared_ptr<Chicane::Scene> inScene)
+        auto bind = [this](const std::shared_ptr<Scene>& scene)
+        {
+            if (!scene)
             {
-                if (!inScene)
-                {
-                    outlinerNodes.clear();
-                    m_collapsedOutlinerItems.clear();
-                    onItemSelection(nullptr);
-
-                    return;
-                }
-
-                inScene->watchActors([&](std::vector<Chicane::Actor*>) { rebuildOutliner(); });
-
-                inScene->watchComponents([&](std::vector<Chicane::Component*>) { rebuildOutliner(); });
+                return;
             }
-        );
+
+            scene->watchActors([this](std::vector<Chicane::Actor*>) { rebuildOutliner(); });
+            scene->watchComponents([this](std::vector<Chicane::Component*>) { rebuildOutliner(); });
+        };
+
+        bind(Application::getInstance().getHomeScene());
+        bind(Application::getInstance().getViewerScene());
     }
 
     void HomeView::onAssetImport()
@@ -350,7 +477,7 @@ namespace Editor
         selectedItem    = inItem;
         bIsItemSelected = selectedItem != nullptr;
 
-        if (std::shared_ptr<Scene> scene = editorScene())
+        if (std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace))
         {
             scene->setSelection(selectedItem);
         }
@@ -392,6 +519,31 @@ namespace Editor
         bIsAssetsWorkspace   = workspace.equals(WORKSPACE_ASSETS);
         viewportTabState     = bIsViewportWorkspace ? STATE_ACTIVE : STATE_IDLE;
         assetsTabState       = bIsAssetsWorkspace ? STATE_ACTIVE : STATE_IDLE;
+
+        if (std::shared_ptr<Scene> home = Application::getInstance().getHomeScene())
+        {
+            home->setSelection(nullptr);
+        }
+
+        if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+        {
+            viewer->setSelection(nullptr);
+        }
+
+        selectedItem    = nullptr;
+        bIsItemSelected = false;
+
+        if (bIsAssetsWorkspace)
+        {
+            Application::getInstance().activateViewerScene();
+        }
+        else
+        {
+            Application::getInstance().activateHomeScene();
+        }
+
+        rebuildOutliner();
+        rebuildAttributes();
     }
 
     void HomeView::onTrackNew()
@@ -486,37 +638,82 @@ namespace Editor
         );
     }
 
-    void HomeView::onAttributeCommit(Chicane::String inName)
+    void HomeView::onAttributeCommit(Chicane::String inName, Chicane::String inValue)
     {
         if (!selectedItem || inName.isEmpty())
         {
             return;
         }
 
-        for (AttributeField& field : attributeFields)
+        auto apply = [&](AttributeField& field) -> bool
         {
             if (!field.name.equals(inName))
             {
-                continue;
+                return false;
+            }
+
+            if (field.type == AttributeFieldType::Bool)
+            {
+                field.bIsChecked = inValue.toBool() || inValue.equals("true", "1", "yes", "checked");
+            }
+            else if (field.type == AttributeFieldType::Vec3)
+            {
+                field.vector = parseVec3(inValue, field.vector);
+                field.text   = formatVec3(field.vector);
+            }
+            else if (field.type == AttributeFieldType::Color)
+            {
+                const Chicane::String color = inValue.trim();
+                if (color.startsWith("#") || color.startsWith("rgb"))
+                {
+                    const Chicane::Color::Rgba rgba = Chicane::Color::toRgba(color);
+                    field.vector                    = Chicane::Vec3(
+                        static_cast<float>(rgba.r) / 255.0f,
+                        static_cast<float>(rgba.g) / 255.0f,
+                        static_cast<float>(rgba.b) / 255.0f
+                    );
+                }
+                else
+                {
+                    field.vector = parseVec3(inValue, field.vector);
+                }
+
+                field.text = formatVec3(field.vector);
+            }
+            else if (field.type == AttributeFieldType::Float)
+            {
+                field.text = inValue;
+                if (!isCompleteFloat(inValue))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                field.text = inValue;
             }
 
             commitAttributeField(*selectedItem, field);
 
-            return;
+            return true;
+        };
+
+        for (AttributeField& field : attributeFields)
+        {
+            if (apply(field))
+            {
+                return;
+            }
         }
 
         for (AttributeGroup& group : attributeGroups)
         {
             for (AttributeField& field : group.fields)
             {
-                if (!field.name.equals(inName))
+                if (apply(field))
                 {
-                    continue;
+                    return;
                 }
-
-                commitAttributeField(*selectedItem, field);
-
-                return;
             }
         }
     }
@@ -539,7 +736,7 @@ namespace Editor
 
     void HomeView::onGizmoTranslate()
     {
-        if (std::shared_ptr<Scene> scene = editorScene())
+        if (std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace))
         {
             scene->setGizmoType(GizmoType::Translation);
         }
@@ -547,7 +744,7 @@ namespace Editor
 
     void HomeView::onGizmoRotate()
     {
-        if (std::shared_ptr<Scene> scene = editorScene())
+        if (std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace))
         {
             scene->setGizmoType(GizmoType::Rotation);
         }
@@ -555,17 +752,28 @@ namespace Editor
 
     void HomeView::onGizmoScale()
     {
-        if (std::shared_ptr<Scene> scene = editorScene())
+        if (std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace))
         {
             scene->setGizmoType(GizmoType::Scale);
         }
+    }
+
+    void HomeView::onExplorerFolder(Chicane::String inPath)
+    {
+        selectedFolderPath = inPath;
+        selectedAssetName  = Chicane::String::empty();
+    }
+
+    void HomeView::onExplorerAsset(Chicane::String inName)
+    {
+        selectedAssetName = inName;
     }
 
     void HomeView::rebuildOutliner()
     {
         outlinerNodes.clear();
 
-        std::shared_ptr<Scene> scene = editorScene();
+        std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
         if (!scene)
         {
             m_collapsedOutlinerItems.clear();
@@ -600,7 +808,9 @@ namespace Editor
         {
             selectedItem    = nullptr;
             bIsItemSelected = false;
+
             scene->setSelection(nullptr);
+
             rebuildAttributes();
         }
     }
@@ -691,7 +901,7 @@ namespace Editor
             }
 
             const Chicane::String name = info.names.front();
-            if (isTransformField(name))
+            if (name.equals("angles", "right", "forward", "up"))
             {
                 continue;
             }
@@ -728,14 +938,40 @@ namespace Editor
                 const bool* value = accessor.getValue<bool>(selectedItem);
                 field.bIsChecked  = value && *value;
             }
-            else if (accessor.isType<Chicane::Vec3>())
+            else if (name.equals("color"))
             {
-                field.type = AttributeFieldType::Vec3;
+                field.type = AttributeFieldType::Color;
                 if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(selectedItem))
                 {
                     field.vector = *value;
                     field.text   = formatVec3(*value);
                 }
+            }
+            else if (accessor.isType<Chicane::Vec3>() || accessor.isType<Chicane::Rotator>())
+            {
+                field.type = AttributeFieldType::Vec3;
+                if (name.equals("translation"))
+                {
+                    field.vector = selectedItem->getAbsoluteTranslation();
+                }
+                else if (name.equals("rotation"))
+                {
+                    field.vector = selectedItem->getAbsoluteRotation().getAngles();
+                }
+                else if (name.equals("scale"))
+                {
+                    field.vector = selectedItem->getAbsoluteScale();
+                }
+                else if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(selectedItem))
+                {
+                    field.vector = *value;
+                }
+                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(selectedItem))
+                {
+                    field.vector = rotator->getAngles();
+                }
+
+                field.text = formatVec3(field.vector);
             }
             else if (accessor.isType<float>())
             {
@@ -750,6 +986,8 @@ namespace Editor
                 {
                     const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(selectedItem);
                     field.text                            = path ? path->toString() : Chicane::String::empty();
+                    field.type                            = AttributeFieldType::Asset;
+                    field.kind                            = name;
                 }
                 else
                 {
@@ -763,9 +1001,12 @@ namespace Editor
 
             if (field.group.isEmpty())
             {
-                attributeFields.push_back(field);
+                field.group = type->group;
+            }
 
-                continue;
+            if (field.group.isEmpty())
+            {
+                field.group = "Properties";
             }
 
             AttributeGroup* group = nullptr;

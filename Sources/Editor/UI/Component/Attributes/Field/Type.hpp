@@ -13,6 +13,8 @@ namespace Editor
         Bool,
         Enum,
         Vec3,
-        Float
+        Float,
+        Color,
+        Asset
     };
 }

@@ -9,6 +9,11 @@
         <Button class="asset-manager__action" onClick="{{ onCreateEffect() }}"><Text>Effect</Text></Button>
         <Button class="asset-manager__action" onClick="{{ onImport() }}"><Text>Import</Text></Button>
     </Container>
+    <Container dir:if="{{ bIsMeshAsset }}" class="asset-manager__stage">
+        <Container class="asset-manager__viewport">
+            <Viewport />
+        </Container>
+    </Container>
     <Container dir:if="{{ bHasAsset }}" class="asset-manager__editor">
         <Container class="asset-manager__row">
             <Text class="asset-manager__label">Type</Text>

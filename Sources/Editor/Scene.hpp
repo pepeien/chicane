@@ -28,7 +28,7 @@ namespace Editor
 
         Chicane::Actor* spawnMeshActor(const Chicane::FileSystem::Path& inMesh);
 
-    private:
+    protected:
         void spawnLights();
         void spawnCharacter();
         void spawnGizmo();

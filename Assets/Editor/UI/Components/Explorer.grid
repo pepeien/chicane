@@ -19,7 +19,7 @@
                     <Input::Text value="{{ searchQuery }}" onInput="{{ onSearch() }}"/>
                 </Container>
                 <Button class="explorer__filter" onClick="{{ onToggleFilter() }}">
-                    <Icon source="Assets/Editor/UI/Icons/Fill" name="Funnel" class="explorer__filter__icon"/>
+                    <Icon source="Assets/Editor/UI/Icons/Fill" name="Funnel" />
                     <Text>{{ filterLabel }}</Text>
                 </Button>
             </Container>

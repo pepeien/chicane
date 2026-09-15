@@ -26,6 +26,20 @@ $assetManagerHeaderHeight: 1.65em;
         }
     }
 
+    &__stage {
+        width: 100%;
+        height: calc(100% - 12em);
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+    }
+
+    &__viewport {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
     &__editor, &__empty {
         width: 100%;
         padding: 0.6em;
@@ -45,6 +59,11 @@ $assetManagerHeaderHeight: 1.65em;
     &__label {
         width: 5em;
         color: $--black;
+    }
+
+    Viewport {
+        width: 100%;
+        height: 100%;
     }
 
     Input::Text {

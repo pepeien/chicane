@@ -61,7 +61,7 @@ namespace Editor
         void onTrackSaveAs();
 
         CH_FUNCTION()
-        void onAttributeCommit(Chicane::String inName);
+        void onAttributeCommit(Chicane::String inName, Chicane::String inValue);
 
         CH_FUNCTION()
         void onSpawnActor();
@@ -77,6 +77,12 @@ namespace Editor
 
         CH_FUNCTION()
         void onGizmoScale();
+
+        CH_FUNCTION()
+        void onExplorerFolder(Chicane::String inPath);
+
+        CH_FUNCTION()
+        void onExplorerAsset(Chicane::String inName);
 
     private:
         void bindScene();
@@ -125,6 +131,11 @@ namespace Editor
         Chicane::String rotateState;
         CH_FIELD()
         Chicane::String scaleState;
+
+        CH_FIELD()
+        Chicane::String selectedFolderPath;
+        CH_FIELD()
+        Chicane::String selectedAssetName;
 
     private:
         std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;

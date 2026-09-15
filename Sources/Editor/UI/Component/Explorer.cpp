@@ -15,6 +15,7 @@
 
 #include "Editor/UI/Component/Dock/Header.hpp"
 #include "Editor/UI/Component/Explorer/Item.hpp"
+#include "Editor/UI/Prop.hpp"
 
 namespace Editor
 {
@@ -25,7 +26,8 @@ namespace Editor
 
     static constexpr float GRID_GAP_EM        = 0.55f;
     static constexpr float LIST_GAP_EM        = 0.2f;
-    static constexpr float LIST_ROW_EM        = 2.5f;
+    static constexpr float LIST_ICON_SCALE    = 0.37f;
+    static constexpr float LIST_ROW_PAD_EM    = 0.3f;
     static constexpr int   TILE_OVERSCAN_ROWS = 6;
 
     static constexpr inline const char* EXPLORER_MAIN_ID = "explorerMain";
@@ -69,6 +71,7 @@ namespace Editor
           iconSizePercent(ICON_DEFAULT_SIZE_PERCENTAGE),
           selectedFolderPath(Chicane::String::empty()),
           selectedAssetName(Chicane::String::empty()),
+          orientation(Chicane::String::empty()),
           m_rootFolder({}),
           m_expandedPaths({}),
           m_listedPaths({}),
@@ -158,6 +161,8 @@ namespace Editor
     void Explorer::onTick(float inDeltaTime)
     {
         Chicane::Grid::Container::onTick(inDeltaTime);
+
+        Prop::copy(this, ORIENTATION_ATTRIBUTE, orientation);
 
         isSearchEmpty = searchQuery.isEmpty();
 
@@ -256,11 +261,15 @@ namespace Editor
 
         rebuildTree();
         refreshGrid();
+
+        Prop::invoke(this, ON_FOLDER_ATTRIBUTE, selectedFolderPath);
     }
 
     void Explorer::onActivateItem(Chicane::String inName)
     {
         selectedAssetName = inName;
+
+        Prop::invoke(this, ON_ASSET_ATTRIBUTE, selectedAssetName);
     }
 
     bool Explorer::isListedFolder(const Chicane::FileSystem::Item& inItem)
@@ -549,12 +558,13 @@ namespace Editor
         const bool          bHasLayoutChanged = !layout.equals(m_gridLayout);
         const Chicane::Vec2 view(std::max(0.0f, inner.x), std::max(0.0f, inner.y));
         const float         em = style.font.size.get() > 0.0f ? style.font.size.get() : Chicane::Box::Font::BASE_SIZE;
-        const float         iconEm = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
+        const float         iconEm     = ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM);
+        const float         listIconEm = iconEm * LIST_ICON_SCALE;
         const bool          bHasIconSizeChanged = std::abs(iconEm - m_gridIconEm) > 0.001f;
         const Chicane::Vec2 gap(bIsVertical ? 0.0f : GRID_GAP_EM * em, (bIsVertical ? LIST_GAP_EM : GRID_GAP_EM) * em);
         const Chicane::Vec2 cell(
             bIsVertical ? std::max(view.x, 1.0f) : iconEm * em,
-            bIsVertical ? LIST_ROW_EM * em : (iconEm * em)
+            bIsVertical ? (listIconEm + LIST_ROW_PAD_EM) * em : (iconEm * em)
         );
 
         m_gridLayout = layout;

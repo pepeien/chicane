@@ -3,11 +3,16 @@
     height: auto;
     display: flex;
     flex-direction: column;
+    gap: 0.25em;
     border-bottom: 3px solid $--lighter-grey;
     overflow: visible;
 
     &:drag {
         cursor: grabbing;
+    }
+
+    Editor::Logo {
+        margin-top: 0.25em;
     }
 
     &__heading {

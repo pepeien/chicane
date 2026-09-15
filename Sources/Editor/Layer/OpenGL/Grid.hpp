@@ -14,6 +14,7 @@ namespace Editor
         void onInit() override;
         void onDestruction() override;
 
+        bool onBeginRender(const Chicane::Renderer::Frame& inFrame) override;
         void onRender(const Chicane::Renderer::Frame& inFrame, void* inData) override;
         void onEndRender() override;
 

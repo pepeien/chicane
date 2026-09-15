@@ -16,19 +16,20 @@
         overflow: hidden;
 
         &__label {
-            height: 1em;
-            width: 2px;
+            height: 100%;
+            padding: 0.15em;
+            font-size: 0.55em;
 
             &.--x {
-                background-color: red;
+                background-color: #CF1C46;
             }
 
             &.--y {
-                background-color: green;
+                background-color: #60AB80;
             }
 
             &.--z {
-                background-color: blue;
+                background-color: #4875CA;
             }
         }
 

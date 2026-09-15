@@ -11,7 +11,8 @@ namespace Editor
     class Vec3 : public Chicane::Grid::Container
     {
     public:
-        static constexpr inline const char* VALUE_ATTRIBUTE_NAME = "value";
+        static constexpr inline const char* VALUE_ATTRIBUTE_NAME    = "value";
+        static constexpr inline const char* ON_INPUT_ATTRIBUTE_NAME = "onInput";
 
     public:
         CH_CONSTRUCTOR()
@@ -29,6 +30,7 @@ namespace Editor
         bool resolveBinding(Chicane::ReflectionFieldAccessor& outAccessor, void*& outInstance);
         void refreshValue();
         void applyValue();
+        void emitInput();
 
     public:
         CH_FIELD()

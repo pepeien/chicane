@@ -60,6 +60,7 @@ namespace Editor
     void Vec3::commit()
     {
         applyValue();
+        emitInput();
     }
 
     bool Vec3::isEditing() const
@@ -178,5 +179,10 @@ namespace Editor
         {
             rotator->set(value);
         }
+    }
+
+    void Vec3::emitInput()
+    {
+        getMethod(getAttribute(ON_INPUT_ATTRIBUTE_NAME)).invoke();
     }
 }

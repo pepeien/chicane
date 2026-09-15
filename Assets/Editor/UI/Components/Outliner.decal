@@ -27,7 +27,7 @@ $outlinerHeaderHeight: 1.65em;
 
         &:hover {
             cursor: pointer;
-            background-color: $--light-grey;
+            background-color: $--lighter-grey;
         }
 
         &.--selected {
@@ -79,10 +79,6 @@ $outlinerHeaderHeight: 1.65em;
             gap: 0.25em;
             background-color: transparent;
             overflow: hidden;
-
-            &:hover {
-                cursor: pointer;
-            }
         }
 
         &__icon {
