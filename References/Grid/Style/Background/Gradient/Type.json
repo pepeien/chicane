@@ -1,0 +1,80 @@
+{
+    "title": "Type",
+    "filename": "Type",
+    "path": "Grid/Style/Background/Gradient/Type",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Background/Gradient/Type.hpp",
+        "namespace": "Chicane::Grid::StyleGradientType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_GRID_STYLEGRADIENTTYPE_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Linear",
+                "description": "CHICANE_GRID_STYLEGRADIENTTYPE_LINEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Radial",
+                "description": "CHICANE_GRID_STYLEGRADIENTTYPE_RADIAL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StyleGradientType",
+                            "suffix": "",
+                            "path": "Grid/Style/Background/Gradient/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_DESCRIPTION"
+    },
+    "children": []
+}

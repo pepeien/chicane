@@ -185,6 +185,19 @@
                 },
                 "name": "image",
                 "description": "CHICANE_GRID_STYLEBACKGROUND_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleGradient",
+                    "suffix": "",
+                    "path": "Grid/Style/Background/Gradient",
+                    "templates": []
+                },
+                "name": "gradient",
+                "description": "CHICANE_GRID_STYLEBACKGROUND_GRADIENT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLEBACKGROUND_DESCRIPTION"

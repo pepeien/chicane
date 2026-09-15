@@ -1,0 +1,211 @@
+{
+    "title": "Gradient",
+    "filename": "Gradient",
+    "path": "Grid/Style/Background/Gradient",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Background/Gradient.hpp",
+        "namespace": "Chicane::Grid::StyleGradient",
+        "types": [
+            {
+                "name": "ColorParser",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba(const String &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEGRADIENT_COLORPARSER_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDeclaration",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEGRADIENT_ISDECLARATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleGradient",
+                    "suffix": "",
+                    "path": "Grid/Style/Background/Gradient",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ColorParser",
+                            "suffix": "&",
+                            "path": "Grid/Style/Background/Gradient",
+                            "templates": []
+                        },
+                        "name": "inParseColor"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEGRADIENT_PARSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isActive",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEGRADIENT_ISACTIVE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_GRID_STYLEGRADIENT_STOP_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "description": "CHICANE_GRID_STYLEGRADIENT_STOP_OFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_STOPS",
+                "description": "CHICANE_GRID_STYLEGRADIENT_MAX_STOPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleGradientType",
+                    "suffix": "",
+                    "path": "Grid/Style/Background/Gradient/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_GRID_STYLEGRADIENT_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "axis",
+                "description": "CHICANE_GRID_STYLEGRADIENT_AXIS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Stop",
+                            "suffix": "",
+                            "path": "Grid/Style/Background/Gradient",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "stops",
+                "description": "CHICANE_GRID_STYLEGRADIENT_STOPS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEGRADIENT_DESCRIPTION"
+    },
+    "children": []
+}

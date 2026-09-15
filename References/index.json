@@ -4155,7 +4155,43 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "Gradient",
+                                "filename": "Gradient",
+                                "path": "Grid/Style/Background/Gradient",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Background/Gradient.hpp",
+                                    "namespace": "Chicane::Grid::StyleGradient",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Type",
+                                        "filename": "Type",
+                                        "path": "Grid/Style/Background/Gradient/Type",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Style/Background/Gradient/Type.hpp",
+                                            "namespace": "Chicane::Grid::StyleGradientType",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "title": "Border",

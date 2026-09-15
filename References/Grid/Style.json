@@ -1275,6 +1275,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "StyleGradient",
+                    "suffix": "",
+                    "path": "Grid/Style/Background/Gradient",
+                    "templates": []
+                },
+                "name": "parseGradient",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_PARSEGRADIENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -2833,6 +2861,38 @@
                 },
                 "name": "BACKGROUND_IMAGE_DEFAULT_COLOR",
                 "description": "CHICANE_GRID_STYLE_BACKGROUND_IMAGE_DEFAULT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LINEAR_GRADIENT_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_LINEAR_GRADIENT_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RADIAL_GRADIENT_KEYWORD",
+                "description": "CHICANE_GRID_STYLE_RADIAL_GRADIENT_KEYWORD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -4982,6 +5042,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "ALIGNMENT_TYPE_LEFT",
+                "description": "CHICANE_GRID_STYLE_ALIGNMENT_TYPE_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "ALIGNMENT_TYPE_CENTER",
                 "description": "CHICANE_GRID_STYLE_ALIGNMENT_TYPE_CENTER_DESCRIPTION"
             },
@@ -5000,6 +5076,22 @@
                 },
                 "name": "ALIGNMENT_TYPE_END",
                 "description": "CHICANE_GRID_STYLE_ALIGNMENT_TYPE_END_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ALIGNMENT_TYPE_RIGHT",
+                "description": "CHICANE_GRID_STYLE_ALIGNMENT_TYPE_RIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",

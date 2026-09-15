@@ -453,6 +453,42 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScene",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_APPLICATION_SETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "SceneSubscription",
                     "suffix": "",
                     "path": "Runtime/Application",
