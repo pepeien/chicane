@@ -6,7 +6,10 @@
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
+#include <map>
+#include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "Chicane/Core/Color.hpp"
@@ -393,6 +396,101 @@ namespace Chicane
             const Vec2 local = ((inPoint - inView.origin) - (Svg::HALF * inView.size)) * (1.0f / extent);
 
             return {local.x, -local.y};
+        }
+
+        void appendLineGlyph(std::vector<Vec2>& outPoints, const Vec2& inStart, const Vec2& inEnd)
+        {
+            outPoints.push_back(inStart);
+            outPoints.push_back(Vec2((inStart.x + inEnd.x) * Svg::HALF, (inStart.y + inEnd.y) * Svg::HALF));
+            outPoints.push_back(inEnd);
+        }
+
+        void appendContourGlyph(std::vector<Vec2>& outPoints, const std::vector<Vec2>& inContour)
+        {
+            if (inContour.size() < Svg::MIN_CONTOUR_POINTS)
+            {
+                return;
+            }
+
+            for (std::size_t i = 1; i < inContour.size(); i++)
+            {
+                appendLineGlyph(outPoints, inContour.at(i - 1), inContour.at(i));
+            }
+
+            const Vec2& first = inContour.front();
+            const Vec2& last  = inContour.back();
+            const float dx    = last.x - first.x;
+            const float dy    = last.y - first.y;
+
+            if (inContour.size() >= Svg::MIN_CLOSED_POINTS && ((dx * dx) + (dy * dy)) > Svg::MIN_LENGTH)
+            {
+                appendLineGlyph(outPoints, last, first);
+            }
+        }
+
+        void writeGlyphQuad(Primitive& outPrimitive)
+        {
+            outPrimitive.indices = {0, 1, 2, 2, 3, 0};
+            outPrimitive.vertices.clear();
+
+            auto push = [&](float inX, float inY, float inU, float inV)
+            {
+                Vertex vertex;
+                vertex.position.x = inX;
+                vertex.position.y = inY;
+                vertex.uv         = Vec2(inU, inV);
+                outPrimitive.vertices.push_back(vertex);
+            };
+
+            push(-Svg::HALF, -Svg::HALF, 0.0f, 0.0f);
+            push(Svg::HALF, -Svg::HALF, 1.0f, 0.0f);
+            push(Svg::HALF, Svg::HALF, 1.0f, 1.0f);
+            push(-Svg::HALF, Svg::HALF, 0.0f, 1.0f);
+        }
+
+        Primitive makeGlyphPrimitive(const std::vector<Vec2>& inSegments)
+        {
+            Primitive primitive;
+            if (inSegments.size() < 3)
+            {
+                return primitive;
+            }
+
+            Vec2 min = inSegments.front();
+            Vec2 max = inSegments.front();
+            for (const Vec2& point : inSegments)
+            {
+                min.x = std::min(min.x, point.x);
+                min.y = std::min(min.y, point.y);
+                max.x = std::max(max.x, point.x);
+                max.y = std::max(max.y, point.y);
+            }
+
+            primitive.outline    = inSegments;
+            primitive.outlineMin = min;
+            primitive.outlineMax = max;
+            primitive.dilation   = 0.05f;
+            primitive.reference  = "Svg_Glyph_Quad";
+            writeGlyphQuad(primitive);
+
+            return primitive;
+        }
+
+        Primitive contoursToGlyph(const Curve::List& inContours)
+        {
+            std::vector<Vec2> segments;
+
+            for (const Curve& contour : inContours)
+            {
+                if (contour.getPoints().size() < Svg::MIN_CLOSED_POINTS)
+                {
+                    continue;
+                }
+
+                appendContourGlyph(segments, contour.getPoints());
+            }
+
+            return makeGlyphPrimitive(segments);
         }
 
         SvgViewBox parseViewBox(const String& inValue)
@@ -939,6 +1037,11 @@ namespace Chicane
         Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
         {
             const Curve::List local = toLocalContours(inContours, inPaint, inView);
+            Primitive         glyph = contoursToGlyph(local);
+            if (!glyph.outline.empty())
+            {
+                return glyph;
+            }
 
             Contour mesh;
             mesh.triangulate(local, inPaint.bIsEvenOdd);
@@ -990,7 +1093,19 @@ namespace Chicane
                 return *hit;
             }
 
-            tess.request(key, [inContours, inPaint, inView]() { return buildFill(inContours, inPaint, inView); });
+            tess.request(
+                key,
+                [inContours, inPaint, inView, key]()
+                {
+                    Primitive primitive = buildFill(inContours, inPaint, inView);
+                    if (!primitive.outline.empty())
+                    {
+                        primitive.glyph = key;
+                    }
+
+                    return primitive;
+                }
+            );
 
             return empty;
         }
@@ -1021,39 +1136,61 @@ namespace Chicane
                 return primitive;
             }
 
+            constexpr float kRibbon = 1.0f;
+            constexpr float kRadial = 2.0f;
+
             auto vecLength = [](const Vec2& inValue) -> float
             { return std::sqrt((inValue.x * inValue.x) + (inValue.y * inValue.y)); };
 
             auto scaleVec = [](const Vec2& inValue, float inScale) -> Vec2
             { return Vec2(inValue.x * inScale, inValue.y * inScale); };
 
-            auto push = [&](const Vec2& inPoint)
+            auto push = [&](const Vec2& inPoint, const Vec2& inUV, float inMode)
             {
-                Vertex vertex;
-                vertex.position.x = inPoint.x;
-                vertex.position.y = inPoint.y;
-                vertex.uv         = inPoint + Svg::HALF;
+                Vertex     vertex;
+                const Vec2 local  = toLocal(inPoint, inView);
+                vertex.position.x = local.x;
+                vertex.position.y = local.y;
+                vertex.uv         = inUV;
+                vertex.normal.x   = inMode;
                 primitive.vertices.push_back(vertex);
             };
 
-            auto emitTriangle = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC)
+            auto emitTriangle = [&](const Vec2& inA,
+                                    const Vec2& inB,
+                                    const Vec2& inC,
+                                    const Vec2& inUvA,
+                                    const Vec2& inUvB,
+                                    const Vec2& inUvC,
+                                    float       inMode)
             {
                 const std::uint32_t index = static_cast<std::uint32_t>(primitive.vertices.size());
 
-                push(toLocal(inA, inView));
-                push(toLocal(inB, inView));
-                push(toLocal(inC, inView));
+                push(inA, inUvA, inMode);
+                push(inB, inUvB, inMode);
+                push(inC, inUvC, inMode);
 
                 primitive.indices.push_back(index);
                 primitive.indices.push_back(index + 1);
                 primitive.indices.push_back(index + 2);
             };
 
-            auto emitQuad = [&](const Vec2& inA, const Vec2& inB, const Vec2& inC, const Vec2& inD)
+            auto emitQuad = [&](const Vec2& inLeftA, const Vec2& inLeftB, const Vec2& inRightB, const Vec2& inRightA)
             {
-                emitTriangle(inA, inB, inC);
-                emitTriangle(inA, inC, inD);
+                emitTriangle(inLeftA, inLeftB, inRightB, Vec2(0.0f, 0.0f), Vec2(0.0f, 1.0f), Vec2(1.0f, 1.0f), kRibbon);
+                emitTriangle(
+                    inLeftA,
+                    inRightB,
+                    inRightA,
+                    Vec2(0.0f, 0.0f),
+                    Vec2(1.0f, 1.0f),
+                    Vec2(1.0f, 0.0f),
+                    kRibbon
+                );
             };
+
+            auto emitRadial = [&](const Vec2& inCenter, const Vec2& inFrom, const Vec2& inTo)
+            { emitTriangle(inCenter, inFrom, inTo, Vec2(0.0f, 0.0f), Vec2(1.0f, 0.0f), Vec2(1.0f, 0.0f), kRadial); };
 
             auto sideNormal = [&](const Vec2& inDelta) -> Vec2
             {
@@ -1094,7 +1231,7 @@ namespace Chicane
                     const Vec2  curr  = inCenter + scaleVec(inNormal, -std::cos(angle) * half) +
                                       scaleVec(inOutbound, std::sin(angle) * half);
 
-                    emitTriangle(inCenter, prev, curr);
+                    emitRadial(inCenter, prev, curr);
 
                     prev = curr;
                 }
@@ -1138,7 +1275,7 @@ namespace Chicane
 
                 if (inPaint.lineJoin == SvgLineJoin::Bevel)
                 {
-                    emitTriangle(inCenter, fromP, toP);
+                    emitRadial(inCenter, fromP, toP);
 
                     return;
                 }
@@ -1166,7 +1303,7 @@ namespace Chicane
                     const float a    = start + (delta * t);
                     const Vec2  curr = inCenter + Vec2(std::cos(a) * half, std::sin(a) * half);
 
-                    emitTriangle(inCenter, prev, curr);
+                    emitRadial(inCenter, prev, curr);
 
                     prev = curr;
                 }
@@ -1707,7 +1844,7 @@ namespace Chicane
                         continue;
                     }
 
-                    if (paint.bIsFillEnabled &&
+                    if (paint.bIsFillEnabled && !tag.equals(LINE_TAG) &&
                         Color::isVisible(withOpacity(paint.fill, paint.fillOpacity * paint.opacity)))
                     {
                         const Primitive& primitive = cachedFill(contours, paint, view);
