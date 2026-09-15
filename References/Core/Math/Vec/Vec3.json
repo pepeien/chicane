@@ -1021,10 +1021,33 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "std::enable_if_t",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::is_arithmetic_v",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Vec3",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "operator/",
                 "parameters": [
@@ -1059,10 +1082,33 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "std::enable_if_t",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::is_arithmetic_v",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Vec3",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "operator/",
                 "parameters": [

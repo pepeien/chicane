@@ -288,6 +288,64 @@
                 "return": {
                     "prefix": "",
                     "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "operator/",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_PATH_OPERATOR/_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "operator/",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_PATH_OPERATOR/_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Path",
                     "suffix": "&",
                     "path": "Core/FileSystem/Path",
                     "templates": []
@@ -300,6 +358,34 @@
                             "name": "Path",
                             "suffix": "&",
                             "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_FILESYSTEM_PATH_OPERATOR/=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Path",
+                    "suffix": "&",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "operator/=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inOther"

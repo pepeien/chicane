@@ -48,6 +48,36 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_SMOKE_SYSTEM_SYSTEM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "System",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_SYSTEM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "System",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_SYSTEM_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -68,6 +98,36 @@
             }
         ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "System",
+                    "suffix": "&",
+                    "path": "Smoke/System",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "System",
+                    "suffix": "&",
+                    "path": "Smoke/System",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_SYSTEM_OPERATOR=_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
