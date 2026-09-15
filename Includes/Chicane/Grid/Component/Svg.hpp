@@ -101,6 +101,7 @@ namespace Chicane
 
         private:
             void applySizeAttributes();
+
             void rebuildShapes();
             void syncShapes();
             SvgShape* acquireShape(std::size_t inIndex);

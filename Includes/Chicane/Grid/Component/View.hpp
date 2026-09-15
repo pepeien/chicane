@@ -54,9 +54,11 @@ namespace Chicane
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
             void handle(const WindowEvent& inEvent);
             void pump();
+
             WindowCursor resolvePointer() const;
             Component* resolveHit(Component* inHit) const;
             Component* resolveFocus(Component* inHit) const;
+
             void syncHovered(Component* inComponent);
             void syncFocused(Component* inComponent);
             void syncDragging(Component* inComponent);

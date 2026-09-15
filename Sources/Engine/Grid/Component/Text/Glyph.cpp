@@ -1,4 +1,5 @@
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
+#include "Chicane/Grid/Component/Input/Text.hpp"
 
 namespace Chicane
 {
@@ -76,6 +77,11 @@ namespace Chicane
             return;
         }
 
+        bool TextGlyph::isLive() const
+        {
+            return m_glyph != nullptr;
+        }
+
         void TextGlyph::configure(
             const Box::FontGlyph* inGlyph,
             float                 inFontSize,
@@ -95,6 +101,11 @@ namespace Chicane
             }
 
             m_style.background.color.set(inColor);
+
+            if (hasParent() && getParent()->getTag().equals(InputText::TAG_ID))
+            {
+                m_style.zIndex.set(1.0f);
+            }
 
             const float scale    = inFontSize;
             const float height   = m_glyph->height * scale;
@@ -122,6 +133,18 @@ namespace Chicane
             refreshPrimitive();
         }
 
+        void TextGlyph::clear()
+        {
+            m_glyph    = nullptr;
+            m_advance  = 0.0f;
+            m_dilation = 0.0f;
+            m_relative = Vec2::Zero();
+
+            clearPrimitive();
+
+            setSize(0.0f, 0.0f);
+        }
+
         float TextGlyph::getAdvance() const
         {
             return m_advance;
@@ -132,15 +155,9 @@ namespace Chicane
             return m_relative;
         }
 
-        void TextGlyph::clear()
+        void TextGlyph::setRelative(const Vec2& inValue)
         {
-            m_glyph    = nullptr;
-            m_advance  = 0.0f;
-            m_dilation = 0.0f;
-            m_relative = Vec2::Zero();
-
-            clearPrimitive();
-            setSize(0.0f, 0.0f);
+            m_relative = inValue;
         }
 
         void TextGlyph::syncPosition()

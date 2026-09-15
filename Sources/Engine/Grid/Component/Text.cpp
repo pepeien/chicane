@@ -189,24 +189,19 @@ namespace Chicane
             return m_contentSize;
         }
 
-        Vec2 Text::getTransformPivot() const
+        std::size_t Text::getGlyphCount() const
         {
-            Vec2 min;
-            Vec2 max;
+            std::size_t count = 0;
 
-            if (!getGlyphVisualBounds(min, max))
+            for (const TextGlyph* glyph : m_glyphs)
             {
-                return Component::getTransformPivot();
+                if (glyph && glyph->isLive())
+                {
+                    count++;
+                }
             }
 
-            const Vec2 visualSize(max.x - min.x, max.y - min.y);
-
-            return getDrawPosition() + min + getStyle().getTransformOrigin(visualSize);
-        }
-
-        bool Text::hasFont() const
-        {
-            return m_font != nullptr;
+            return count;
         }
 
         bool Text::getGlyphVisualBounds(Vec2& outMin, Vec2& outMax) const
@@ -220,7 +215,7 @@ namespace Chicane
 
             for (const TextGlyph* glyph : m_glyphs)
             {
-                if (!glyph)
+                if (!glyph || !glyph->isLive())
                 {
                     continue;
                 }
@@ -249,6 +244,84 @@ namespace Chicane
             }
 
             return hasGlyph;
+        }
+
+        float Text::getInsertionX(std::size_t inIndex) const
+        {
+            std::size_t live = 0;
+            float       endX = 0.0f;
+
+            for (const TextGlyph* glyph : m_glyphs)
+            {
+                if (!glyph || !glyph->isLive())
+                {
+                    continue;
+                }
+
+                const float left  = glyph->getRelative().x;
+                const float right = left + glyph->getAdvance();
+
+                if (live == 0)
+                {
+                    endX = left;
+                }
+
+                if (live == inIndex)
+                {
+                    return left;
+                }
+
+                endX = right;
+                live++;
+            }
+
+            return endX;
+        }
+
+        std::size_t Text::getInsertionIndexAt(float inLocalX) const
+        {
+            std::size_t live = 0;
+
+            for (const TextGlyph* glyph : m_glyphs)
+            {
+                if (!glyph || !glyph->isLive())
+                {
+                    continue;
+                }
+
+                const float left    = glyph->getRelative().x;
+                const float advance = glyph->getAdvance();
+                const float mid     = left + (advance * 0.5f);
+
+                if (inLocalX < mid)
+                {
+                    return live;
+                }
+
+                live++;
+            }
+
+            return live;
+        }
+
+        Vec2 Text::getTransformPivot() const
+        {
+            Vec2 min;
+            Vec2 max;
+
+            if (!getGlyphVisualBounds(min, max))
+            {
+                return Component::getTransformPivot();
+            }
+
+            const Vec2 visualSize(max.x - min.x, max.y - min.y);
+
+            return getDrawPosition() + min + getStyle().getTransformOrigin(visualSize);
+        }
+
+        bool Text::hasFont() const
+        {
+            return m_font != nullptr;
         }
 
         void Text::refreshFont()
@@ -305,6 +378,7 @@ namespace Chicane
         void Text::refreshPosition()
         {
             Component::refreshPosition();
+
             syncGlyphs();
         }
 
@@ -313,6 +387,7 @@ namespace Chicane
             if (!hasFont())
             {
                 m_contentSize = Vec2::Zero();
+
                 applyContentSize();
 
                 return;
@@ -325,7 +400,8 @@ namespace Chicane
             const String      signature =
                 value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
                 std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
-                std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a);
+                std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a) + "|" +
+                std::to_string(static_cast<int>(m_style.align.get())) + "|" + std::to_string(m_size.x);
 
             if (signature.equals(m_layoutSignature))
             {
@@ -349,8 +425,16 @@ namespace Chicane
             float       maxWidth     = 0.0f;
             std::size_t lineCount    = 1;
             std::size_t glyphIndex   = 0;
+            std::size_t lineStart    = 0;
             char32_t    previousCode = 0U;
             bool        hasPrevious  = false;
+
+            auto flushLine = [&]()
+            {
+                applyTextAlignment(lineStart, glyphIndex, cursor.x);
+
+                lineStart = glyphIndex;
+            };
 
             for (std::size_t i = 0; i < codepoints.size(); ++i)
             {
@@ -359,8 +443,13 @@ namespace Chicane
                 if (codepoint == U'\n')
                 {
                     maxWidth = std::max(maxWidth, cursor.x);
+
+                    flushLine();
+
                     cursor.x = 0.0f;
+
                     lineCount++;
+
                     hasPrevious = false;
 
                     continue;
@@ -390,6 +479,8 @@ namespace Chicane
                 hasPrevious  = true;
             }
 
+            maxWidth = std::max(maxWidth, cursor.x);
+
             for (std::size_t i = glyphIndex; i < m_glyphs.size(); ++i)
             {
                 m_glyphs.at(i)->clear();
@@ -416,6 +507,52 @@ namespace Chicane
             }
 
             applyContentSize();
+            flushLine();
+        }
+
+        void Text::applyTextAlignment(std::size_t inStart, std::size_t inEnd, float inLineWidth)
+        {
+            if (inStart >= inEnd || inLineWidth <= 0.0f)
+            {
+                return;
+            }
+
+            const float inner = std::max(0.0f, m_size.x - m_style.insetHorizontal());
+            float       shift = 0.0f;
+
+            switch (m_style.align.get())
+            {
+            case StyleAlignment::Center:
+                shift = std::max(0.0f, (inner - inLineWidth) * 0.5f);
+
+                break;
+
+            case StyleAlignment::End:
+                shift = std::max(0.0f, inner - inLineWidth);
+
+                break;
+
+            default:
+                return;
+            }
+
+            if (shift <= 0.0f)
+            {
+                return;
+            }
+
+            for (std::size_t i = inStart; i < inEnd && i < m_glyphs.size(); ++i)
+            {
+                TextGlyph* glyph = m_glyphs.at(i);
+                if (!glyph)
+                {
+                    continue;
+                }
+
+                const Vec2 relative = glyph->getRelative();
+
+                glyph->setRelative(Vec2(relative.x + shift, relative.y));
+            }
         }
 
         void Text::syncGlyphs()

@@ -42,6 +42,7 @@ namespace Chicane
             void refreshSource();
             void refreshLoad();
             void refreshPlaybackRate();
+
             void bindFrame();
             void advanceFrame(float inDeltaTime);
 

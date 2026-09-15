@@ -46,13 +46,20 @@ namespace Chicane
 
             const Vec2& getContentSize() const;
 
+            std::size_t getGlyphCount() const;
+            float getInsertionX(std::size_t inIndex) const;
+            std::size_t getInsertionIndexAt(float inLocalX) const;
+
         private:
             bool hasFont() const;
             bool getGlyphVisualBounds(Vec2& outMin, Vec2& outMax) const;
 
             void refreshFont();
             void refreshText();
+
             void applyContentSize();
+            void applyTextAlignment(std::size_t inStart, std::size_t inEnd, float inLineWidth);
+
             void syncGlyphs();
             TextGlyph* acquireGlyph(std::size_t inIndex);
 

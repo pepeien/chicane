@@ -33,6 +33,7 @@ namespace Chicane
 
         private:
             String toCamelCase(const String& inValue) const;
+
             FileSystem::Path resolveSource(const String& inName, const String& inFolder) const;
             void applySource(const FileSystem::Path& inPath);
             void refreshSource();

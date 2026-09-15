@@ -59,6 +59,8 @@ namespace Chicane
             const DockRegion* findRegion(const DockPanel* inPanel) const;
 
         private:
+            bool isHorizontal(DockSide inSide) const;
+
             DockPanel* asPanel(Component* inComponent) const;
             void collectPanels(
                 std::vector<DockPanel*>& outEdges, std::vector<DockPanel*>& outFills, std::vector<DockPanel*>& outFloats
@@ -100,7 +102,6 @@ namespace Chicane
             ) const;
             float parseExtent(const String& inValue, SizeDirection inDirection, const Vec2& inContent) const;
             SizeDirection axisOf(DockSide inSide) const;
-            bool isHorizontal(DockSide inSide) const;
 
         private:
             std::unordered_map<const DockPanel*, DockRegion> m_regions;

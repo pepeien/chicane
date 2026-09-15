@@ -313,7 +313,7 @@ namespace Chicane
                 return;
             }
 
-            ViewInputQueueEvent& slot = queue.events[write];
+            ViewInputQueueEvent& slot = queue.events.at(write);
             slot.type                 = inEvent.type;
 
             if (inEvent.data)
@@ -363,7 +363,7 @@ namespace Chicane
 
             while (read != write)
             {
-                ViewInputQueueEvent& slot = queue.events[read];
+                ViewInputQueueEvent& slot = queue.events.at(read);
 
                 if (slot.type == WindowEventType::MouseMotion)
                 {
@@ -371,7 +371,7 @@ namespace Chicane
                     bool        bHasLaterMotion = false;
                     while (peek != write)
                     {
-                        if (queue.events[peek].type == WindowEventType::MouseMotion)
+                        if (queue.events.at(peek).type == WindowEventType::MouseMotion)
                         {
                             bHasLaterMotion = true;
 

@@ -31,6 +31,8 @@ namespace Chicane
             void refreshStyleRuleset() override;
 
         public:
+            bool isLive() const;
+
             void configure(
                 const Box::FontGlyph* inGlyph,
                 float                 inFontSize,
@@ -39,10 +41,13 @@ namespace Chicane
                 const Vec2&           inRelative,
                 float                 inAscender
             );
-            float getAdvance() const;
-            const Vec2& getRelative() const;
-
             void clear();
+
+            float getAdvance() const;
+
+            const Vec2& getRelative() const;
+            void setRelative(const Vec2& inValue);
+
             void syncPosition();
 
         private:

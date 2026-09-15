@@ -16,9 +16,12 @@ namespace Chicane
             static constexpr std::size_t CAPACITY = 2048;
 
         public:
-            ViewInputQueueEvent      events[CAPACITY];
-            std::atomic<std::size_t> write = {0};
-            std::atomic<std::size_t> read  = {0};
+            using Events = std::array<ViewInputQueueEvent, CAPACITY>;
+
+        public:
+            Events                   events = {};
+            std::atomic<std::size_t> write  = {0};
+            std::atomic<std::size_t> read   = {0};
         };
     }
 }
