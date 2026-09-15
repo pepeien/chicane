@@ -141,6 +141,38 @@
                 "description": "CHICANE_GRID_INPUTTEXT_REFRESHSIZE_DESCRIPTION"
             },
             {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPosition",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_REFRESHPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSelection",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTTEXT_HASSELECTION_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -154,6 +186,36 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_INPUTTEXT_REFRESHVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshChrome",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_REFRESHCHROME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hoistChrome",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_HOISTCHROME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -195,6 +257,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_INPUTTEXT_ERASE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "eraseForward",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_ERASEFORWARD_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -251,6 +328,258 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_INPUTTEXT_SETTEXTINPUTACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCaret",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inShouldSelect"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_SETCARET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "moveCaret",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inShouldSelect"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_MOVECARET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "codepointCount",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTTEXT_CODEPOINTCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "toContentPoint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTTEXT_TOCONTENTPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hitIndex",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTTEXT_HITINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "selectAll",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_SELECTALL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "collapseSelection",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_COLLAPSESELECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "deleteSelection",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_DELETESELECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginSelect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inShouldExtend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_BEGINSELECT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateSelect",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTTEXT_UPDATESELECT_DESCRIPTION"
             }
         ],
         "members": [
@@ -320,13 +649,52 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "caret",
+                "description": "CHICANE_GRID_INPUTTEXT_CARET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "selection",
+                "description": "CHICANE_GRID_INPUTTEXT_SELECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "caretX",
-                "description": "CHICANE_GRID_INPUTTEXT_CARETX_DESCRIPTION"
+                "name": "selectionWidth",
+                "description": "CHICANE_GRID_INPUTTEXT_SELECTIONWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "caretColor",
+                "description": "CHICANE_GRID_INPUTTEXT_CARETCOLOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -351,8 +719,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bShouldReplaceOnInput",
-                "description": "CHICANE_GRID_INPUTTEXT_M_BSHOULDREPLACEONINPUT_DESCRIPTION"
+                "name": "m_bIsSelecting",
+                "description": "CHICANE_GRID_INPUTTEXT_M_BISSELECTING_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -366,6 +734,32 @@
                 },
                 "name": "m_pendingText",
                 "description": "CHICANE_GRID_INPUTTEXT_M_PENDINGTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_caret",
+                "description": "CHICANE_GRID_INPUTTEXT_M_CARET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_anchor",
+                "description": "CHICANE_GRID_INPUTTEXT_M_ANCHOR_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_INPUTTEXT_DESCRIPTION"

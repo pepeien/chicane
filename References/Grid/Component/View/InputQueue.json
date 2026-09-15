@@ -5,7 +5,34 @@
     "source": {
         "header": "Includes/Chicane/Grid/Component/View/InputQueue.hpp",
         "namespace": "Chicane::Grid::ViewInputQueue",
-        "types": [],
+        "types": [
+            {
+                "name": "Events",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ViewInputQueueEvent",
+                            "suffix": "",
+                            "path": "Grid/Component/View/InputQueue/Event",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "CAPACITY",
+                            "suffix": "",
+                            "path": "d6/df1/structChicane_1_1Grid_1_1ViewInputQueue_1affea75a592b3aa0590aafe98e2b7fac8",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_VIEWINPUTQUEUE_EVENTS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -32,9 +59,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "ViewInputQueueEvent",
+                    "name": "Events",
                     "suffix": "",
-                    "path": "Grid/Component/View/InputQueue/Event",
+                    "path": "Grid/Component/View/InputQueue",
                     "templates": []
                 },
                 "name": "events",

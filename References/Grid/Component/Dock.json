@@ -178,6 +178,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isHorizontal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DockSide",
+                            "suffix": "",
+                            "path": "Grid/Component/Dock/Side",
+                            "templates": []
+                        },
+                        "name": "inSide"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_DOCK_ISHORIZONTAL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "DockPanel",
                     "suffix": "*",
                     "path": "Grid/Component/Dock/Panel",
@@ -1133,34 +1161,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_DOCK_AXISOF_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isHorizontal",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "DockSide",
-                            "suffix": "",
-                            "path": "Grid/Component/Dock/Side",
-                            "templates": []
-                        },
-                        "name": "inSide"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCK_ISHORIZONTAL_DESCRIPTION"
             }
         ],
         "members": [
