@@ -3602,6 +3602,23 @@
                         },
                         "children": [
                             {
+                                "title": "Color",
+                                "filename": "Color",
+                                "path": "Grid/Component/Input/Color",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Input/Color.hpp",
+                                    "namespace": "Chicane::Grid::InputColor",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
                                 "title": "Select",
                                 "filename": "Select",
                                 "path": "Grid/Component/Input/Select",
@@ -4070,6 +4087,41 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "Window",
+                        "filename": "Window",
+                        "path": "Grid/Component/Window",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Window.hpp",
+                            "namespace": "Chicane::Grid::Window",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Header",
+                                "filename": "Header",
+                                "path": "Grid/Component/Window/Header",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Window/Header.hpp",
+                                    "namespace": "Chicane::Grid::WindowHeader",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             },
