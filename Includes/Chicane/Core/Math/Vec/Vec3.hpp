@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
@@ -185,13 +187,13 @@ namespace Chicane
         friend inline Vec3 operator/(Vec3 inLeft, Vec3 inRight) { return inLeft /= inRight; }
 
         template <typename T>
-        friend inline Vec3 operator/(Vec3 inValue, T inScalar)
+        friend inline std::enable_if_t<std::is_arithmetic_v<T>, Vec3> operator/(Vec3 inValue, T inScalar)
         {
             return inValue /= inScalar;
         }
 
         template <typename T>
-        friend inline Vec3 operator/(T inScalar, Vec3 inValue)
+        friend inline std::enable_if_t<std::is_arithmetic_v<T>, Vec3> operator/(T inScalar, Vec3 inValue)
         {
             return inValue /= inScalar;
         }

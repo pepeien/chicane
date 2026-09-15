@@ -18,7 +18,8 @@ namespace Chicane
         System::System(const pugi::xml_node& inNode)
             : System()
         {
-            m_tag    = inNode.name();
+            m_tag = inNode.name();
+
             name     = parseString(inNode, NAME_ATTRIBUTE_NAME, name);
             duration = parseFloat(inNode, DURATION_ATTRIBUTE_NAME, duration);
             looping  = parseBool(inNode, LOOPING_ATTRIBUTE_NAME, looping);

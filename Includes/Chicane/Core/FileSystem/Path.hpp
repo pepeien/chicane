@@ -40,9 +40,19 @@ namespace Chicane
 
             // Concatenation
             inline Path operator/(const Path& inOther) const { return Path(m_path / inOther.m_path); }
+            inline Path operator/(const String& inOther) const { return Path(m_path / inOther.toStandard()); }
+            inline Path operator/(const char* inOther) const
+            {
+                return Path(m_path / std::filesystem::path(inOther ? inOther : ""));
+            }
             inline Path& operator/=(const Path& inOther)
             {
                 m_path /= inOther.m_path;
+                return *this;
+            }
+            inline Path& operator/=(const String& inOther)
+            {
+                m_path /= inOther.toStandard();
                 return *this;
             }
 
