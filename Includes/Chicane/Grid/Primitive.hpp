@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -18,24 +21,20 @@ namespace Chicane
             }
 
         public:
-            inline bool isEmpty() const { return (vertices.empty() || indices.empty()) && reference.isEmpty(); }
+            bool isEmpty() const;
+            bool hasGlyph() const;
 
-            inline void clear()
-            {
-                reference = "";
-                glyph     = "";
-                dilation  = 0.0f;
-
-                vertices.clear();
-                indices.clear();
-            }
+            void clear();
 
         public:
-            String          reference = "";
-            Vertex::List    vertices  = {};
-            Vertex::Indices indices   = {};
-            String          glyph     = "";
-            float           dilation  = 0.0f;
+            String            reference  = String::empty();
+            Vertex::List      vertices   = {};
+            Vertex::Indices   indices    = {};
+            String            glyph      = String::empty();
+            float             dilation   = 0.0f;
+            Vec2              outlineMin = Vec2::Zero();
+            Vec2              outlineMax = Vec2::Zero();
+            std::vector<Vec2> outline    = {};
         };
     }
 }

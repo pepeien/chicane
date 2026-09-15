@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Grid.hpp"
@@ -11,6 +12,9 @@ namespace Chicane
     {
         struct CHICANE_GRID StyleCompiledSelector
         {
+        public:
+            std::uint32_t specificity() const;
+
         public:
             std::vector<StyleSelectorPart> chain = {};
         };

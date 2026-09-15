@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
@@ -12,6 +13,9 @@ namespace Chicane
     {
         struct CHICANE_GRID StyleSelectorPart
         {
+        public:
+            std::uint32_t specificity() const;
+
         public:
             bool                bCanHover = false;
             bool                bCanFocus = false;
