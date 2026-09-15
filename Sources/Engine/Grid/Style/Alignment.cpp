@@ -8,17 +8,19 @@ namespace Chicane
     {
         StyleAlignment toAlignment(const String& inValue)
         {
-            if (inValue.equals(Style::ALIGNMENT_TYPE_CENTER))
+            const String value = inValue.trim().toLower();
+
+            if (value.equals(Style::ALIGNMENT_TYPE_CENTER, "middle"))
             {
                 return StyleAlignment::Center;
             }
 
-            if (inValue.equals(Style::ALIGNMENT_TYPE_START))
+            if (value.equals(Style::ALIGNMENT_TYPE_END, Style::ALIGNMENT_TYPE_RIGHT))
             {
-                return StyleAlignment::Start;
+                return StyleAlignment::End;
             }
 
-            return StyleAlignment::End;
+            return StyleAlignment::Start;
         }
     }
 }

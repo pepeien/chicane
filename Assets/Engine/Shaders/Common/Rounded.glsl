@@ -3,91 +3,6 @@ bool hasRoundedCorners(vec4 inRadiusX, vec4 inRadiusY) {
            max(max(inRadiusY.x, inRadiusY.y), max(inRadiusY.z, inRadiusY.w)) > 0.0;
 }
 
-bool insideRoundedRect(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
-    if (inPoint.x < inBox.x || inPoint.y < inBox.y || inPoint.x > inBox.z || inPoint.y > inBox.w) {
-        return false;
-    }
-
-    if (!hasRoundedCorners(inRadiusX, inRadiusY)) {
-        return true;
-    }
-
-    vec2 local = inPoint - inBox.xy;
-    vec2 size  = inBox.zw - inBox.xy;
-    vec2 radius = vec2(0.0);
-    vec2 center = vec2(0.0);
-    bool corner = false;
-
-    if (local.x < inRadiusX.x && local.y < inRadiusY.x) {
-        radius = vec2(inRadiusX.x, inRadiusY.x);
-        center = radius;
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x > size.x - inRadiusX.y && local.y < inRadiusY.y) {
-        radius = vec2(inRadiusX.y, inRadiusY.y);
-        center = vec2(size.x - radius.x, radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x > size.x - inRadiusX.z && local.y > size.y - inRadiusY.z) {
-        radius = vec2(inRadiusX.z, inRadiusY.z);
-        center = vec2(size.x - radius.x, size.y - radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x < inRadiusX.w && local.y > size.y - inRadiusY.w) {
-        radius = vec2(inRadiusX.w, inRadiusY.w);
-        center = vec2(radius.x, size.y - radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    }
-
-    if (!corner) {
-        return true;
-    }
-
-    vec2 offset = (local - center) / radius;
-
-    return dot(offset, offset) <= 1.0;
-}
-
-float roundedRectCoverage(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
-    if (inPoint.x < inBox.x || inPoint.y < inBox.y || inPoint.x > inBox.z || inPoint.y > inBox.w) {
-        return 0.0;
-    }
-
-    if (!hasRoundedCorners(inRadiusX, inRadiusY)) {
-        return 1.0;
-    }
-
-    vec2 local = inPoint - inBox.xy;
-    vec2 size  = inBox.zw - inBox.xy;
-    vec2 radius = vec2(0.0);
-    vec2 center = vec2(0.0);
-    bool corner = false;
-
-    if (local.x < inRadiusX.x && local.y < inRadiusY.x) {
-        radius = vec2(inRadiusX.x, inRadiusY.x);
-        center = radius;
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x > size.x - inRadiusX.y && local.y < inRadiusY.y) {
-        radius = vec2(inRadiusX.y, inRadiusY.y);
-        center = vec2(size.x - radius.x, radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x > size.x - inRadiusX.z && local.y > size.y - inRadiusY.z) {
-        radius = vec2(inRadiusX.z, inRadiusY.z);
-        center = vec2(size.x - radius.x, size.y - radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    } else if (local.x < inRadiusX.w && local.y > size.y - inRadiusY.w) {
-        radius = vec2(inRadiusX.w, inRadiusY.w);
-        center = vec2(radius.x, size.y - radius.y);
-        corner = radius.x > 0.0 && radius.y > 0.0;
-    }
-
-    if (!corner) {
-        return 1.0;
-    }
-
-    vec2  offset = (local - center) / radius;
-    float dist   = (length(offset) - 1.0) * min(radius.x, radius.y);
-
-    return 1.0 - smoothstep(-0.75, 0.75, dist);
-}
-
 float roundedRectSDF(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
     vec2 size     = max(inBox.zw - inBox.xy, vec2(1e-4));
     vec2 p        = inPoint - mix(inBox.xy, inBox.zw, 0.5);
@@ -100,44 +15,56 @@ float roundedRectSDF(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
         radius = (p.y < 0.0) ? vec2(inRadiusX.y, inRadiusY.y) : vec2(inRadiusX.z, inRadiusY.z);
     }
 
-    radius = min(max(radius, vec2(0.0)), halfSize);
+    float r = min(min(max(radius.x, 0.0), max(radius.y, 0.0)), min(halfSize.x, halfSize.y));
+    vec2  q = abs(p) - halfSize + r;
 
-    vec2 q      = abs(p);
-    vec2 inner  = halfSize - radius;
-    vec2 corner = q - inner;
-
-    if (radius.x > 0.0 && radius.y > 0.0 && corner.x > 0.0 && corner.y > 0.0) {
-        vec2 n = corner / radius;
-
-        return (length(n) - 1.0) * min(radius.x, radius.y);
-    }
-
-    vec2 d = q - halfSize;
-
-    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+    return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
 }
 
-vec4 pickBorderColor(vec2 inPoint, vec4 inBox, vec4 inColorTop, vec4 inColorRight, vec4 inColorBottom, vec4 inColorLeft) {
+float sdCoverage(float inDistance) {
+    return clamp(0.5 - inDistance / max(fwidth(inDistance), 1e-4), 0.0, 1.0);
+}
+
+bool insideRoundedRect(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
+    float distance = roundedRectSDF(inPoint, inBox, inRadiusX, inRadiusY);
+
+    return distance <= max(0.5 * fwidth(distance), 0.5);
+}
+
+float roundedRectCoverage(vec2 inPoint, vec4 inBox, vec4 inRadiusX, vec4 inRadiusY) {
+    return sdCoverage(roundedRectSDF(inPoint, inBox, inRadiusX, inRadiusY));
+}
+
+vec4 pickBorderColor(
+    vec2 inPoint,
+    vec4 inBox,
+    vec4 inWidth,
+    vec4 inColorTop,
+    vec4 inColorRight,
+    vec4 inColorBottom,
+    vec4 inColorLeft
+) {
     vec2 size = max(inBox.zw - inBox.xy, vec2(1e-4));
     vec2 local = inPoint - inBox.xy;
-    float dTop = local.y;
-    float dRight = size.x - local.x;
-    float dBottom = size.y - local.y;
-    float dLeft = local.x;
-    float nearest = dTop;
-    vec4 color = inColorTop;
+    float nearest = 1e9;
+    vec4 color = inColorBottom;
 
-    if (dRight < nearest) {
-        nearest = dRight;
+    if (inWidth.x > 0.0) {
+        nearest = local.y;
+        color = inColorTop;
+    }
+
+    if (inWidth.y > 0.0 && (size.x - local.x) < nearest) {
+        nearest = size.x - local.x;
         color = inColorRight;
     }
 
-    if (dBottom < nearest) {
-        nearest = dBottom;
+    if (inWidth.z > 0.0 && (size.y - local.y) < nearest) {
+        nearest = size.y - local.y;
         color = inColorBottom;
     }
 
-    if (dLeft < nearest) {
+    if (inWidth.w > 0.0 && local.x < nearest) {
         color = inColorLeft;
     }
 
@@ -173,14 +100,26 @@ vec4 applyRoundedBorder(
 
     vec4 innerRadiusX = max(inRadiusX - vec4(inWidth.w, inWidth.y, inWidth.y, inWidth.w), vec4(0.0));
     vec4 innerRadiusY = max(inRadiusY - vec4(inWidth.x, inWidth.x, inWidth.z, inWidth.z), vec4(0.0));
-    float innerCoverage = roundedRectCoverage(inPoint, innerBox, innerRadiusX, innerRadiusY);
-    float ring = 1.0 - innerCoverage;
+
+    float outerDistance = roundedRectSDF(inPoint, inBox, inRadiusX, inRadiusY);
+    float innerDistance = roundedRectSDF(inPoint, innerBox, innerRadiusX, innerRadiusY);
+    float outerCoverage = sdCoverage(outerDistance);
+    float innerCoverage = sdCoverage(innerDistance);
+    float ring          = clamp(outerCoverage - innerCoverage, 0.0, 1.0);
 
     if (ring <= 0.0) {
         return inFill;
     }
 
-    vec4 borderColor = pickBorderColor(inPoint, inBox, inColorTop, inColorRight, inColorBottom, inColorLeft);
+    vec4 borderColor = pickBorderColor(
+        inPoint,
+        inBox,
+        inWidth,
+        inColorTop,
+        inColorRight,
+        inColorBottom,
+        inColorLeft
+    );
 
-    return mix(inFill, borderColor, ring);
+    return mix(inFill, borderColor, ring / max(outerCoverage, 1e-4));
 }

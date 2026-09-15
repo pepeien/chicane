@@ -75,6 +75,7 @@ namespace Chicane
 
             return std::static_pointer_cast<T>(scene);
         }
+
         template <class T, typename... Params>
         void setScene(Params... inParams)
         {
@@ -90,6 +91,19 @@ namespace Chicane
 
             m_sceneObservable.next(getScene());
         }
+
+        void setScene(std::shared_ptr<Scene> inScene)
+        {
+            if (!inScene || getScene() == inScene)
+            {
+                return;
+            }
+
+            std::atomic_store_explicit(&m_scene, inScene, std::memory_order_release);
+
+            m_sceneObservable.next(getScene());
+        }
+
         SceneSubscription watchScene(
             SceneSubscription::NextCallback     inNext,
             SceneSubscription::ErrorCallback    inError    = nullptr,
@@ -109,6 +123,7 @@ namespace Chicane
 
             return std::static_pointer_cast<T>(view);
         }
+
         template <class T, typename... Params>
         void setView(Params... inParams)
         {
@@ -118,6 +133,7 @@ namespace Chicane
 
             m_viewObservable.next(getView());
         }
+
         ViewSubscription watchView(
             ViewSubscription::NextCallback     inNext,
             ViewSubscription::ErrorCallback    inError    = nullptr,

@@ -4,6 +4,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Style/Background/Gradient.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 
@@ -30,6 +31,7 @@ namespace Chicane
         public:
             StyleProperty<Color::Rgba> color;
             StyleProperty<String>      image;
+            StyleGradient              gradient;
         };
     }
 }

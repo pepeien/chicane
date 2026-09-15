@@ -13,7 +13,6 @@ namespace Chicane
     {
         namespace Debug
         {
-
             struct CHICANE_RENDERER Trace
             {
             public:

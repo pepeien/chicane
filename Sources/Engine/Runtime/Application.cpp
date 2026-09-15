@@ -1254,8 +1254,7 @@ namespace Chicane
             subcommand.instance.transformX = {paint[0][0], paint[0][1]};
             subcommand.instance.transformY = {paint[1][0], paint[1][1]};
             subcommand.instance.clip       = {clip.left, clip.top, clip.right, clip.bottom};
-            subcommand.instance.radiusX    = style.radius.horizontal();
-            subcommand.instance.radiusY    = style.radius.vertical();
+            component->getPaintRadius(subcommand.instance.radiusX, subcommand.instance.radiusY);
             component->getOverflowRoundClips(
                 subcommand.instance.innerClip,
                 subcommand.instance.innerClipRadiusX,
@@ -1265,8 +1264,9 @@ namespace Chicane
                 subcommand.instance.outerClipRadiusY
             );
             const String backgroundImage = style.background.image.getRaw();
+            const bool   bImageGradient  = Grid::StyleGradient::isDeclaration(backgroundImage);
 
-            if (!backgroundImage.isEmpty())
+            if (!backgroundImage.isEmpty() && !bImageGradient)
             {
                 subcommand.instance.texture = m_renderer->findTexture(backgroundImage);
 
@@ -1275,14 +1275,60 @@ namespace Chicane
                     subcommand.instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
                 }
             }
-            subcommand.instance.glyph        = m_renderer->findGlyph(primitive.glyph);
+            subcommand.instance.glyph = m_renderer->findGlyph(primitive.glyph);
+            if (subcommand.instance.glyph <= Renderer::Draw::InvalidId && !primitive.outline.empty())
+            {
+                Renderer::DrawGlyphData data;
+                data.reference            = primitive.glyph;
+                data.boundsMin            = primitive.outlineMin;
+                data.boundsMax            = primitive.outlineMax;
+                data.points               = primitive.outline;
+                subcommand.instance.glyph = m_renderer->loadGlyph(data);
+            }
             subcommand.instance.dilation     = primitive.dilation;
             subcommand.instance.filterBlur   = blur;
             subcommand.instance.backdropBlur = style.backdrop.blur.get();
             subcommand.instance.color        = style.background.color.get();
+
+            const Grid::StyleGradient& gradient = style.background.gradient;
+            if (gradient.isActive())
+            {
+                const std::uint32_t count = static_cast<std::uint32_t>(
+                    std::min(gradient.stops.size(), static_cast<std::size_t>(Grid::StyleGradient::MAX_STOPS))
+                );
+
+                subcommand.instance.gradientType      = static_cast<std::int32_t>(gradient.type);
+                subcommand.instance.gradientStopCount = static_cast<std::int32_t>(count);
+                subcommand.instance.gradientAxis      = gradient.axis;
+
+                float offsets[Grid::StyleGradient::MAX_STOPS] = {};
+                for (std::uint32_t i = 0; i < count; i++)
+                {
+                    subcommand.instance.gradientStops[i] = gradient.stops.at(i).color;
+                    offsets[i]                           = gradient.stops.at(i).offset;
+                }
+
+                subcommand.instance.gradientOffsets0 = Vec4(offsets[0], offsets[1], offsets[2], offsets[3]);
+                subcommand.instance.gradientOffsets1 = Vec4(offsets[4], offsets[5], offsets[6], offsets[7]);
+
+                if (count > 0)
+                {
+                    subcommand.instance.color = subcommand.instance.gradientStops[0];
+                }
+            }
+
+            const float opacity = component->getOpacity();
             subcommand.instance.color.a =
                 (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
-                component->getOpacity();
+                opacity;
+
+            if (subcommand.instance.gradientStopCount > 0)
+            {
+                for (std::int32_t i = 0; i < subcommand.instance.gradientStopCount; i++)
+                {
+                    subcommand.instance.gradientStops[i].a *= opacity;
+                }
+            }
             subcommand.instance.borderWidth = style.border.paintedWidths();
 
             auto borderColor = [&](const auto& inProperty) -> Vec4

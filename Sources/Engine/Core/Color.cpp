@@ -11,24 +11,24 @@ namespace Chicane
             {HEX_COLOR_RED,          Rgba(255U, 0U,   0U,   255U)},
             {HEX_COLOR_GREEN,        Rgba(0U,   255U, 0U,   255U)},
             {HEX_COLOR_BLUE,         Rgba(0U,   0U,   255U, 255U)},
-            {HEX_COLOR_LIME,         Rgba(7U,   232U, 183U, 255U)},
-            {HEX_COLOR_YELLOW,       Rgba(232U, 232U, 5U,   255U)},
-            {HEX_COLOR_ORANGE,       Rgba(252U, 133U, 13U,  255U)},
-            {HEX_COLOR_CYAN,         Rgba(5U,   174U, 176U, 255U)},
+            {HEX_COLOR_LIME,         Rgba(0U,   255U, 128U, 255U)},
+            {HEX_COLOR_YELLOW,       Rgba(255U, 255U, 0U,   255U)},
+            {HEX_COLOR_ORANGE,       Rgba(255U, 165U, 0U,   255U)},
+            {HEX_COLOR_CYAN,         Rgba(0U,   255U, 255U, 255U)},
             {HEX_COLOR_WHITE,        Rgba(255U, 255U, 255U, 255U)},
-            {HEX_COLOR_GRAY,         Rgba(123U, 123U, 123U, 255U)},
+            {HEX_COLOR_GRAY,         Rgba(128U, 128U, 128U, 255U)},
             {HEX_COLOR_BLACK,        Rgba(0U,   0U,   0U,   255U)},
 
             {TEXT_COLOR_TRANSPARENT, Rgba(0U,   0U,   0U,   0U)  },
             {TEXT_COLOR_RED,         Rgba(255U, 0U,   0U,   255U)},
             {TEXT_COLOR_GREEN,       Rgba(0U,   255U, 0U,   255U)},
             {TEXT_COLOR_BLUE,        Rgba(0U,   0U,   255U, 255U)},
-            {TEXT_COLOR_LIME,        Rgba(7U,   232U, 183U, 255U)},
-            {TEXT_COLOR_YELLOW,      Rgba(232U, 232U, 5U,   255U)},
-            {TEXT_COLOR_ORANGE,      Rgba(252U, 133U, 13U,  255U)},
-            {TEXT_COLOR_CYAN,        Rgba(5U,   174U, 176U, 255U)},
+            {TEXT_COLOR_LIME,        Rgba(0U,   255U, 128U, 255U)},
+            {TEXT_COLOR_YELLOW,      Rgba(255U, 255U, 0U,   255U)},
+            {TEXT_COLOR_ORANGE,      Rgba(255U, 165U, 0U,   255U)},
+            {TEXT_COLOR_CYAN,        Rgba(0U,   255U, 255U, 255U)},
             {TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U)},
-            {TEXT_COLOR_GRAY,        Rgba(123U, 123U, 123U, 255U)},
+            {TEXT_COLOR_GRAY,        Rgba(128U, 128U, 128U, 255U)},
             {TEXT_COLOR_BLACK,       Rgba(0U,   0U,   0U,   255U)},
         };
 
@@ -113,13 +113,17 @@ namespace Chicane
             if (inValue.startsWith(HEX_KEYWORD))
             {
                 String color = inValue.trim().toUpper();
+                if (g_colors.find(color) != g_colors.end())
+                {
+                    return g_colors.at(color);
+                }
 
                 const bool bIsTransparent = color.equals(HEX_COLOR_TRANSPARENT);
                 const bool bIsNotHex      = color.size() < 7 || color.size() > 9;
 
                 if (bIsTransparent || bIsNotHex)
                 {
-                    color = HEX_COLOR_TRANSPARENT;
+                    return g_colors.at(HEX_COLOR_TRANSPARENT);
                 }
 
                 color = color.substr(1);

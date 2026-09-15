@@ -236,7 +236,7 @@ namespace Chicane
             bidings.indices.push_back(0);
             bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
             bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment);
 
             // Glyph
             bidings.indices.push_back(1);

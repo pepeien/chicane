@@ -148,6 +148,9 @@ namespace Chicane
             static constexpr inline const char* BACKGROUND_IMAGE_ATTRIBUTE_NAME = "background-image";
             static constexpr inline const char* BACKGROUND_IMAGE_DEFAULT_COLOR  = "";
 
+            static constexpr inline const char* LINEAR_GRADIENT_KEYWORD = "linear-gradient";
+            static constexpr inline const char* RADIAL_GRADIENT_KEYWORD = "radial-gradient";
+
             // Color
             static constexpr inline const char  HEX_KEYWORD  = '#';
             static constexpr inline const char* RGB_KEYWORD  = "rgb";
@@ -350,8 +353,10 @@ namespace Chicane
              */
             static constexpr inline const char* ALIGNMENT_ATTRIBUTE_NAME = "alignment";
             static constexpr inline const char* ALIGNMENT_TYPE_START     = "start";
+            static constexpr inline const char* ALIGNMENT_TYPE_LEFT      = "left";
             static constexpr inline const char* ALIGNMENT_TYPE_CENTER    = "center";
             static constexpr inline const char* ALIGNMENT_TYPE_END       = "end";
+            static constexpr inline const char* ALIGNMENT_TYPE_RIGHT     = "right";
 
             /*
              * Template 1: "`SINGLE_RADIUS`"
@@ -485,6 +490,7 @@ namespace Chicane
             StyleBorderType parseBorderType(const String& inValue) const;
             WindowCursor parseCursor(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
+            StyleGradient parseGradient(const String& inValue) const;
             float parseFilter(const String& inValue) const;
             StyleTransform parseTransform(const String& inValue) const;
             Vec2 parseTranslation(const String& inValue) const;

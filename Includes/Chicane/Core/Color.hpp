@@ -30,15 +30,15 @@ namespace Chicane
 
         // Hex
         static constexpr inline const char* HEX_COLOR_TRANSPARENT = "#00000000";
-        static constexpr inline const char* HEX_COLOR_RED         = "#F73B3BFF";
-        static constexpr inline const char* HEX_COLOR_GREEN       = "#1FED4FFF";
-        static constexpr inline const char* HEX_COLOR_BLUE        = "#4E8DDEFF";
-        static constexpr inline const char* HEX_COLOR_LIME        = "#07E8B7FF";
-        static constexpr inline const char* HEX_COLOR_YELLOW      = "#E8E805FF";
-        static constexpr inline const char* HEX_COLOR_ORANGE      = "#FC850DFF";
-        static constexpr inline const char* HEX_COLOR_CYAN        = "#05AEB0FF";
+        static constexpr inline const char* HEX_COLOR_RED         = "#FF0000FF";
+        static constexpr inline const char* HEX_COLOR_GREEN       = "#00FF00FF";
+        static constexpr inline const char* HEX_COLOR_BLUE        = "#0000FFFF";
+        static constexpr inline const char* HEX_COLOR_LIME        = "#00FF80FF";
+        static constexpr inline const char* HEX_COLOR_YELLOW      = "#FFFF00FF";
+        static constexpr inline const char* HEX_COLOR_ORANGE      = "#FFA500FF";
+        static constexpr inline const char* HEX_COLOR_CYAN        = "#00FFFFFF";
         static constexpr inline const char* HEX_COLOR_WHITE       = "#FFFFFFFF";
-        static constexpr inline const char* HEX_COLOR_GRAY        = "#7B7B7BFF";
+        static constexpr inline const char* HEX_COLOR_GRAY        = "#808080FF";
         static constexpr inline const char* HEX_COLOR_BLACK       = "#000000FF";
 
         // Text

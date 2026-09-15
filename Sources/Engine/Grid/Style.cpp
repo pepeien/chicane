@@ -526,6 +526,7 @@ namespace Chicane
 
             background.color.copyValue(inStyle.background.color);
             background.image.copyValue(inStyle.background.image);
+            background.gradient = inStyle.background.gradient;
 
             foregroundColor.copyValue(inStyle.foregroundColor);
             opacity.copyValue(inStyle.opacity);
@@ -1562,6 +1563,22 @@ namespace Chicane
         void Style::refreshBackground()
         {
             background.refresh();
+
+            const String colorRaw = parseText(background.color.getRaw());
+            const String imageRaw = parseText(background.image.getRaw());
+
+            if (StyleGradient::isDeclaration(colorRaw))
+            {
+                background.gradient = parseGradient(colorRaw);
+            }
+            else if (StyleGradient::isDeclaration(imageRaw))
+            {
+                background.gradient = parseGradient(imageRaw);
+            }
+            else
+            {
+                background.gradient = {};
+            }
         }
 
         void Style::refreshForegroundColor()
@@ -2087,6 +2104,14 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
+        StyleGradient Style::parseGradient(const String& inValue) const
+        {
+            return StyleGradient::parse(
+                parseText(inValue),
+                [this](const String& inColor) { return parseColor(inColor); }
+            );
+        }
+
         Vec2 percentContainingSize(const Component* inBox)
         {
             if (!inBox)
@@ -2336,10 +2361,28 @@ namespace Chicane
 
             value = expanded.trim();
 
-            if (value.startsWith(REFERENCE_KEYWORD))
+            String previous;
+            do
             {
-                value = parseReference(value);
-            }
+                previous = value;
+
+                const std::size_t ref = value.find("ref(");
+                if (ref == String::npos)
+                {
+                    break;
+                }
+
+                String converted;
+                converted.append(value.substr(0, ref));
+                converted.append(parseReference(value.substr(ref)));
+
+                if (converted.equals(previous))
+                {
+                    break;
+                }
+
+                value = converted;
+            } while (!value.equals(previous));
 
             return m_parent->parseText(value);
         }

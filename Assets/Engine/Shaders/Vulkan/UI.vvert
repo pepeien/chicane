@@ -7,6 +7,7 @@
 layout(location = 0) out Data {
     flat int textureIndex;
     flat int glyphIndex;
+    flat int instanceIndex;
     flat float glyphDilation;
     flat vec4 clip;
     flat vec4 view;
@@ -51,6 +52,7 @@ void main() {
 
     outData.textureIndex      = component.textureIndex;
     outData.glyphIndex        = component.glyphIndex;
+    outData.instanceIndex     = gl_InstanceIndex;
     outData.glyphDilation     = component.glyphDilation;
     outData.clip              = component.clip;
     outData.view              = vec4(component.view, component.filterBlur, component.backdropBlur);
@@ -69,7 +71,7 @@ void main() {
     outData.borderColorRight  = normalize2DColor(component.borderColorRight);
     outData.borderColorBottom = normalize2DColor(component.borderColorBottom);
     outData.borderColorLeft   = normalize2DColor(component.borderColorLeft);
-    outData.UV                = get2DFilterUV(inUV, originalScale, blurredScale);
+    outData.UV                = inNormal.x >= 0.5 ? inUV : get2DFilterUV(inUV, originalScale, blurredScale);
     outData.normal            = inNormal;
     outData.color             = normalize2DColor(component.color);
 
