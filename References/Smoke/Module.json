@@ -126,6 +126,21 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onAttributeSync",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_ONATTRIBUTESYNC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -222,21 +237,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "syncProperties",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_MODULE_SYNCPROPERTIES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "const ",
                     "name": "String",
                     "suffix": "&",
@@ -249,6 +249,32 @@
                     "const"
                 ],
                 "description": "CHICANE_SMOKE_MODULE_GETTAG_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "watchRefresh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_WATCHREFRESH_DESCRIPTION"
             }
         ],
         "members": [
@@ -264,6 +290,19 @@
                 },
                 "name": "m_tag",
                 "description": "CHICANE_SMOKE_MODULE_M_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsRefreshing",
+                "description": "CHICANE_SMOKE_MODULE_M_BISREFRESHING_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SMOKE_MODULE_DESCRIPTION"
