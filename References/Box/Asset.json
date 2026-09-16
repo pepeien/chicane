@@ -318,9 +318,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "pugi::xml_node",
+                    "name": "XmlNode",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Xml/Node",
                     "templates": []
                 },
                 "name": "getXML",
@@ -389,16 +389,31 @@
                 "description": "CHICANE_BOX_ASSET_SAVEXML_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "type": "standard",
+                "accessor": "public",
+                "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "pugi::xml_attribute",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "getAttribute",
+                "name": "syncProperties",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_SYNCPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getXmlAttribute",
                 "parameters": [
                     {
                         "type": {
@@ -411,8 +426,10 @@
                         "name": "inId"
                     }
                 ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_GETATTRIBUTE_DESCRIPTION"
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ASSET_GETXMLATTRIBUTE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -424,7 +441,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setAttribute",
+                "name": "setXmlAttribute",
                 "parameters": [
                     {
                         "type": {
@@ -448,7 +465,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_SETATTRIBUTE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSET_SETXMLATTRIBUTE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -596,19 +613,6 @@
                 },
                 "name": "m_header",
                 "description": "CHICANE_BOX_ASSET_M_HEADER_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "pugi::xml_document",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_xml",
-                "description": "CHICANE_BOX_ASSET_M_XML_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_ASSET_DESCRIPTION"
