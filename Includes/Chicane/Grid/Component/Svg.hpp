@@ -89,9 +89,9 @@ namespace Chicane
             ~Svg() override;
 
         public:
-            void refresh() override;
-            std::vector<Component*> getChildrenFlat() const override;
+            void onRefresh() override;
             void invalidateDrawCacheSubtree() override;
+            std::vector<Component*> getChildrenFlat() const override;
 
         protected:
             void onRefresh() override;

@@ -34,6 +34,14 @@ namespace Chicane
         Serializable& operator=(Serializable&&)      = default;
 
     public:
+        virtual void onRefresh();
+
+        virtual void onAttributeSync();
+
+    protected:
+        virtual void onAttributeChange(const String& inName, const String& inValue);
+
+    public:
         void load(const FileSystem::Path& inFilepath);
         void save();
         void save(const FileSystem::Path& inFilepath);
@@ -63,13 +71,11 @@ namespace Chicane
         Vec3 getVec3(const String& inName, const Vec3& inFallback) const;
         Vec4 getColor(const String& inName, const Vec4& inFallback) const;
 
-        AttributeSubscription watch(const String& inName, const AttributeCallback& inCallback);
-
-        virtual void syncProperties();
-        virtual void refresh() { return; }
+        AttributeSubscription watchAttribute(const String& inName, const AttributeCallback& inCallback);
 
     protected:
         void bindSource(const XmlNode& inNode);
+
         void syncAttributes();
         void emitAttribute(const String& inName, const String& inValue);
         void writeAttributesToSource();

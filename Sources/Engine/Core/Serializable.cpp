@@ -15,8 +15,27 @@ namespace Chicane
         setFilepath(inFilepath);
 
         m_document = XmlDocument::load(inFilepath);
+
         bindSource(m_document.getFirstChild());
-        syncProperties();
+
+        onAttributeSync();
+    }
+
+    void Serializable::onRefresh()
+    {
+        return;
+    }
+
+    void Serializable::onAttributeSync()
+    {
+        syncAttributes();
+
+        onRefresh();
+    }
+
+    void Serializable::onAttributeChange(const String&, const String&)
+    {
+        return;
     }
 
     void Serializable::save()
@@ -35,14 +54,14 @@ namespace Chicane
     {
         m_document.reset();
         bindSource(inNode.isEmpty() ? XmlNode() : m_document.appendCopy(inNode));
-        syncProperties();
+        onAttributeSync();
     }
 
     XmlNode Serializable::createRoot(const String& inName)
     {
         m_document.reset();
         bindSource(m_document.appendChild(inName));
-        syncProperties();
+        onAttributeSync();
 
         return m_source;
     }
@@ -118,7 +137,7 @@ namespace Chicane
         }
 
         emitAttribute(inName, inValue);
-        refresh();
+        onRefresh();
     }
 
     void Serializable::removeAttribute(const String& inName)
@@ -135,7 +154,7 @@ namespace Chicane
         }
 
         emitAttribute(inName, String::empty());
-        refresh();
+        onRefresh();
     }
 
     float Serializable::getFloat(const String& inName, float inFallback) const
@@ -198,17 +217,11 @@ namespace Chicane
         return Xml::parseColor(getAttribute(inName), inFallback);
     }
 
-    Serializable::AttributeSubscription Serializable::watch(
+    Serializable::AttributeSubscription Serializable::watchAttribute(
         const String& inName, const AttributeCallback& inCallback
     )
     {
         return m_watchers[inName].subscribe(inCallback).next(getAttribute(inName));
-    }
-
-    void Serializable::syncProperties()
-    {
-        syncAttributes();
-        refresh();
     }
 
     void Serializable::bindSource(const XmlNode& inNode)
@@ -218,9 +231,12 @@ namespace Chicane
 
     void Serializable::syncAttributes()
     {
-        const AttributeMap next = m_source.isEmpty() ? AttributeMap{} : m_source.getAttributes();
+        const AttributeMap previous = m_attributes;
+        const AttributeMap next     = m_source.isEmpty() ? AttributeMap{} : m_source.getAttributes();
 
-        for (const auto& [name, value] : m_attributes)
+        m_attributes = next;
+
+        for (const auto& [name, value] : previous)
         {
             if (next.find(name) != next.end())
             {
@@ -232,27 +248,25 @@ namespace Chicane
 
         for (const auto& [name, value] : next)
         {
-            const auto found = m_attributes.find(name);
-            if (found != m_attributes.end() && found->second.equals(value))
+            const auto found = previous.find(name);
+            if (found != previous.end() && found->second.equals(value))
             {
                 continue;
             }
 
             emitAttribute(name, value);
         }
-
-        m_attributes = next;
     }
 
     void Serializable::emitAttribute(const String& inName, const String& inValue)
     {
         const auto found = m_watchers.find(inName);
-        if (found == m_watchers.end())
+        if (found != m_watchers.end())
         {
-            return;
+            found->second.next(inValue);
         }
 
-        found->second.next(inValue);
+        onAttributeChange(inName, inValue);
     }
 
     void Serializable::writeAttributesToSource()

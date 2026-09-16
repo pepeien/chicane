@@ -43,7 +43,6 @@ namespace Chicane
             bool onEvent(const WindowEvent& inEvent) override;
 
         protected:
-            void onTick(float inDeltaTime) override;
             void refreshPosition() override;
 
         public:
@@ -58,9 +57,7 @@ namespace Chicane
             Component* findAssignedHandle() const;
 
         private:
-            void refreshAttributes();
-
-            bool parseFlag(const String& inValue, bool inFallback) const;
+            void refreshTitleVisibility();
 
             bool canMoveFrom(Component* inHit) const;
             void beginMove(const Vec2& inLocation);

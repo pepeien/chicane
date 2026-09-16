@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component/Container.hpp"

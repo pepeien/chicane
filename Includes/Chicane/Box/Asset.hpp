@@ -50,8 +50,6 @@ namespace Chicane
             bool setPayload(const String& inData);
             void saveXML();
 
-            void syncProperties() override;
-
         protected:
             String getXmlAttribute(const String& inId) const;
             void setXmlAttribute(const String& inId, const String& inData);

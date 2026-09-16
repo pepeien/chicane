@@ -1,52 +1,27 @@
 #include "Chicane/Grid/Component/Progress/Spinner.reflected.hpp"
 
+#include "Chicane/Core/Xml.hpp"
+
 namespace Chicane
 {
     namespace Grid
     {
         ProgressSpinner::ProgressSpinner(const XmlNode& inNode)
             : Container(inNode),
-              isSpinning(true),
-              spinState(STATE_SPINNING)
+              bIsSpinning(true)
         {
             load(
                 "Assets/Engine/UI/Components/Progress/Spinner.grid",
                 "Assets/Engine/UI/Components/Progress/Spinner.decal"
             );
-        }
 
-        void ProgressSpinner::onTick(float inDeltaTime)
-        {
-            Container::onTick(inDeltaTime);
-
-            refreshSpinning();
-        }
-
-        void ProgressSpinner::refreshSpinning()
-        {
-            isSpinning = parseSpinning(getAttribute(SPINNING_ATTRIBUTE_NAME), true);
-            spinState  = isSpinning ? STATE_SPINNING : STATE_IDLE;
-        }
-
-        bool ProgressSpinner::parseSpinning(const String& inValue, bool inFallback) const
-        {
-            const String value = parseText(inValue).trim().toLower();
-            if (value.isEmpty())
-            {
-                return inFallback;
-            }
-
-            if (value.equals("true", "1", "yes", "spinning"))
-            {
-                return true;
-            }
-
-            if (value.equals("false", "0", "no", "idle"))
-            {
-                return false;
-            }
-
-            return inFallback;
+            watchAttribute(
+                IS_SPINNING_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    bIsSpinning = Xml::parseBool(parseText(inValue).trim(), true);
+                }
+            );
         }
     }
 }

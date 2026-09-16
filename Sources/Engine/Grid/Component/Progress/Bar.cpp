@@ -1,5 +1,8 @@
 #include "Chicane/Grid/Component/Progress/Bar.reflected.hpp"
 
+#include <algorithm>
+#include <cstdlib>
+
 namespace Chicane
 {
     namespace Grid
@@ -15,7 +18,7 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
-            if (!isReference(getAttribute(PERCENTAGE_ATTRIBUTE_NAME)) && !m_bIsLaidOutThisFrame)
+            if (!isReference(getAttribute(PERCENTAGE_ATTRIBUTE_NAME)) && !hasFlag(ComponentFlag::LaidOut))
             {
                 return;
             }

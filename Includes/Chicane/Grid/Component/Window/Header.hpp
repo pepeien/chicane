@@ -23,15 +23,9 @@ namespace Chicane
             CH_CONSTRUCTOR()
             WindowHeader(const XmlNode& inNode);
 
-        protected:
-            void onTick(float inDeltaTime) override;
-
         public:
             CH_FUNCTION()
             void onClose();
-
-        private:
-            void refreshLabel();
 
         public:
             CH_FIELD()

@@ -5,7 +5,37 @@ namespace Chicane
     namespace Box
     {
         Asset::Asset(const FileSystem::Path& inSource)
+            : Serializable(),
+              m_header()
         {
+            watchAttribute(
+                VERSION_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        return;
+                    }
+
+                    const std::uint32_t version = Xml::parseUint(inValue, m_header.version);
+                    if (version > 0)
+                    {
+                        m_header.version = version;
+                    }
+                }
+            );
+
+            watchAttribute(
+                ID_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    if (!inValue.isEmpty())
+                    {
+                        m_header.id = inValue;
+                    }
+                }
+            );
+
             if (inSource.isEmpty())
             {
                 return;
@@ -108,29 +138,6 @@ namespace Chicane
         void Asset::saveXML()
         {
             save(getFilepath());
-        }
-
-        void Asset::syncProperties()
-        {
-            Serializable::syncProperties();
-
-            if (hasAttribute(VERSION_ATTRIBUTE_NAME))
-            {
-                const std::uint32_t version = getUint(VERSION_ATTRIBUTE_NAME, m_header.version);
-                if (version > 0)
-                {
-                    m_header.version = version;
-                }
-            }
-
-            if (hasAttribute(ID_ATTRIBUTE_NAME))
-            {
-                const String id = getString(ID_ATTRIBUTE_NAME, m_header.id);
-                if (!id.isEmpty())
-                {
-                    m_header.id = id;
-                }
-            }
         }
 
         String Asset::getXmlAttribute(const String& inId) const

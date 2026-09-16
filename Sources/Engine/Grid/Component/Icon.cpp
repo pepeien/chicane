@@ -25,7 +25,7 @@ namespace Chicane
                 }
 
                 std::unique_ptr<XmlDocument> document = std::make_unique<XmlDocument>();
-                *document                                    = Xml::load(inPath);
+                *document                             = Xml::load(inPath);
 
                 found = cache.emplace(key, std::move(document)).first;
             }

@@ -4,6 +4,7 @@
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Window/Event/Type.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid/Component/Button.hpp"
 
@@ -23,6 +24,44 @@ namespace Chicane
               m_moveCursor(Vec2::Zero())
         {
             load("Assets/Engine/UI/Components/Window.grid", "Assets/Engine/UI/Components/Window.decal");
+
+            watchAttribute(
+                IS_OPEN_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    if (inValue.isEmpty())
+                    {
+                        bIsVisible = true;
+                    }
+                    else
+                    {
+                        bIsVisible = Xml::parseBool(parseText(inValue).trim(), true);
+                    }
+                }
+            );
+
+            watchAttribute(
+                TITLE_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    title = parseText(inValue).trim();
+                    refreshTitleVisibility();
+                }
+            );
+
+            watchAttribute(
+                HANDLE_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    m_handleId = parseText(inValue).trim();
+                    refreshTitleVisibility();
+                }
+            );
+
+            watchAttribute(
+                IS_GRABBABLE_ATTRIBUTE_NAME,
+                [this](const String& inValue) { m_bIsGrabbable = Xml::parseBool(parseText(inValue).trim(), true); }
+            );
         }
 
         Window* Window::findFrom(Component* inComponent)
@@ -110,13 +149,6 @@ namespace Chicane
             return false;
         }
 
-        void Window::onTick(float inDeltaTime)
-        {
-            Container::onTick(inDeltaTime);
-
-            refreshAttributes();
-        }
-
         void Window::refreshPosition()
         {
             Container::refreshPosition();
@@ -179,43 +211,9 @@ namespace Chicane
             return nullptr;
         }
 
-        void Window::refreshAttributes()
+        void Window::refreshTitleVisibility()
         {
-            const String open = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
-            if (open.isEmpty())
-            {
-                bIsVisible = true;
-            }
-            else
-            {
-                bIsVisible = parseText(open).equals("true", "1");
-            }
-
-            m_handleId     = parseText(getAttribute(HANDLE_ATTRIBUTE_NAME)).trim();
-            m_bIsGrabbable = parseFlag(getAttribute(IS_GRABBABLE_ATTRIBUTE_NAME), true);
-            title          = parseText(getAttribute(TITLE_ATTRIBUTE_NAME)).trim();
-            hasTitle       = !title.isEmpty() && !hasAssignedHandle();
-        }
-
-        bool Window::parseFlag(const String& inValue, bool inFallback) const
-        {
-            const String value = parseText(inValue).trim().toLower();
-            if (value.isEmpty())
-            {
-                return inFallback;
-            }
-
-            if (value.equals("true", "1", "yes"))
-            {
-                return true;
-            }
-
-            if (value.equals("false", "0", "no"))
-            {
-                return false;
-            }
-
-            return inFallback;
+            hasTitle = !title.isEmpty() && !hasAssignedHandle();
         }
 
         bool Window::canMoveFrom(Component* inHit) const

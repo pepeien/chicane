@@ -1,6 +1,8 @@
 #include "Chicane/Grid/Component.reflected.hpp"
 
 #include <algorithm>
+#include <functional>
+#include <string>
 #include <cmath>
 #include <cstdint>
 #include <unordered_map>
@@ -316,7 +318,6 @@ namespace Chicane
             : Component(inNode.getName())
         {
             parse(inNode);
-            cacheAttributeFlags();
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
@@ -353,7 +354,7 @@ namespace Chicane
                 FOR_DIRECTIVE_KEYWORD,
                 [&](const String& inValue)
                 {
-                    if (m_bShouldSkipForDirective || inValue.isEmpty())
+                    if (inValue.isEmpty())
                     {
                         return;
                     }
@@ -445,6 +446,10 @@ namespace Chicane
               m_tag(inTag),
               m_id(String::empty()),
               m_className(String::empty()),
+              m_status(ComponentStatus::None),
+              m_flags(ComponentFlag::Style | ComponentFlag::Layout),
+              m_live(String::empty()),
+              m_liveHash(0),
               m_directives({}),
               m_variables({}),
               m_style({}),
@@ -466,29 +471,10 @@ namespace Chicane
               m_layoutParentSize(Vec2(-1.0f)),
               m_layoutParentFontSize(-1.0f),
               m_primitive({}),
+              m_draw({}),
               m_forInstances({}),
               m_forVariable(String::empty()),
-              m_forSource({}),
-              m_bShouldSkipForDirective(false),
-              m_bIsHovered(false),
-              m_bIsFocused(false),
-              m_bIsDragging(false),
-              m_bIsStyleDirty(true),
-              m_bIsLayoutDirty(true),
-              m_bIsCulled(false),
-              m_bIsLaidOutThisFrame(false),
-              m_bHasInsetsApplied(false),
-              m_bHasClassBinding(false),
-              m_bHasStyleBinding(false),
-              m_styleBindingSource(String::empty()),
-              m_styleBindingResolved(String::empty()),
-              m_bHasIfDirective(false),
-              m_bIsDrawCacheValid(false),
-              m_bHasDrawPosition(false),
-              m_cachedDrawPosition(Vec2::Zero()),
-              m_cachedPaintMatrix(1.0f),
-              m_cachedDrawBounds({}),
-              m_cachedOverflowClip(Bounds2D::unconstrained())
+              m_forSource({})
         {
             m_style.setParent(this);
         }
@@ -516,7 +502,7 @@ namespace Chicane
 
         bool Component::isDrawable() const
         {
-            return isDisplayable() && isVisible() && isSolid() && hasPrimitive() && !m_bIsCulled;
+            return isDisplayable() && isVisible() && isSolid() && hasPrimitive() && !isCulled();
         }
 
         bool Component::isFocusable() const
@@ -706,21 +692,21 @@ namespace Chicane
                 m_style.foregroundColor.copyValue(m_parent->getStyle().foregroundColor);
             }
 
-            m_styleBindingSource = {};
-            m_bHasStyleBinding   = false;
+            m_live = String::empty();
             for (const auto& [key, value] : properties)
             {
                 if (value.contains("ref(") || isReference(value))
                 {
-                    m_bHasStyleBinding = true;
-                    if (!m_styleBindingSource.isEmpty())
+                    if (!m_live.isEmpty())
                     {
-                        m_styleBindingSource.append('\n');
+                        m_live.append('\n');
                     }
 
-                    m_styleBindingSource.append(value);
+                    m_live.append(value);
                 }
             }
+
+            setFlag(ComponentFlag::LiveBind, isReference(getAttribute(CLASS_ATTRIBUTE_NAME)) || !m_live.isEmpty());
 
             m_style.restore();
         }
@@ -732,8 +718,8 @@ namespace Chicane
                 return;
             }
 
-            if (hasParent() && m_parent->m_bIsLaidOutThisFrame && !m_style.isPosition(StylePosition::Absolute) &&
-                isFlexNowrap(m_parent->getStyle()) &&
+            if (hasParent() && m_parent->hasFlag(ComponentFlag::LaidOut) &&
+                !m_style.isPosition(StylePosition::Absolute) && isFlexNowrap(m_parent->getStyle()) &&
                 (m_style.isFillPercent(m_style.width.value.getRaw()) ||
                  m_style.isFillPercent(m_style.height.value.getRaw())))
             {
@@ -782,7 +768,6 @@ namespace Chicane
 
             m_style.clampSize(width, height);
             setSize(width, height);
-            m_bHasInsetsApplied = false;
         }
 
         void Component::refreshPosition()
@@ -1009,22 +994,49 @@ namespace Chicane
 
         bool Component::isHovered() const
         {
-            return m_bIsHovered;
+            return hasStatus(ComponentStatus::Hovered);
         }
 
         bool Component::isFocused() const
         {
-            return m_bIsFocused;
+            return hasStatus(ComponentStatus::Focused);
         }
 
         bool Component::isDragging() const
         {
-            return m_bIsDragging;
+            return hasStatus(ComponentStatus::Dragging);
         }
 
         bool Component::isCulled() const
         {
-            return m_bIsCulled;
+            return hasStatus(ComponentStatus::Culled);
+        }
+
+        ComponentStatus Component::getStatus() const
+        {
+            return m_status;
+        }
+
+        bool Component::hasStatus(ComponentStatus inStatus) const
+        {
+            return has(m_status, inStatus);
+        }
+
+        bool Component::hasFlag(ComponentFlag inFlag) const
+        {
+            return has(m_flags, inFlag);
+        }
+
+        void Component::setFlag(ComponentFlag inFlag, bool inEnabled)
+        {
+            if (inEnabled)
+            {
+                m_flags |= inFlag;
+            }
+            else
+            {
+                m_flags &= ~inFlag;
+            }
         }
 
         bool Component::canAdopt(Component* inComponent) const
@@ -1083,12 +1095,19 @@ namespace Chicane
 
         void Component::setHovered(bool inValue, bool bShouldInvalidateSubtree)
         {
-            if (m_bIsHovered == inValue)
+            if (isHovered() == inValue)
             {
                 return;
             }
 
-            m_bIsHovered = inValue;
+            if (inValue)
+            {
+                m_status |= ComponentStatus::Hovered;
+            }
+            else
+            {
+                m_status &= ~ComponentStatus::Hovered;
+            }
 
             if (bShouldInvalidateSubtree)
             {
@@ -1111,12 +1130,19 @@ namespace Chicane
 
         void Component::setFocused(bool inValue, bool bShouldInvalidateSubtree)
         {
-            if (m_bIsFocused == inValue)
+            if (isFocused() == inValue)
             {
                 return;
             }
 
-            m_bIsFocused = inValue;
+            if (inValue)
+            {
+                m_status |= ComponentStatus::Focused;
+            }
+            else
+            {
+                m_status &= ~ComponentStatus::Focused;
+            }
 
             if (bShouldInvalidateSubtree)
             {
@@ -1139,12 +1165,19 @@ namespace Chicane
 
         void Component::setDragging(bool inValue, bool bShouldInvalidateSubtree)
         {
-            if (m_bIsDragging == inValue)
+            if (isDragging() == inValue)
             {
                 return;
             }
 
-            m_bIsDragging = inValue;
+            if (inValue)
+            {
+                m_status |= ComponentStatus::Dragging;
+            }
+            else
+            {
+                m_status &= ~ComponentStatus::Dragging;
+            }
 
             if (bShouldInvalidateSubtree)
             {
@@ -1165,12 +1198,29 @@ namespace Chicane
             endDrag();
         }
 
+        void Component::setCulled(bool inValue)
+        {
+            if (isCulled() == inValue)
+            {
+                return;
+            }
+
+            if (inValue)
+            {
+                m_status |= ComponentStatus::Culled;
+            }
+            else
+            {
+                m_status &= ~ComponentStatus::Culled;
+            }
+        }
+
         void Component::tick(float inDeltaTime)
         {
-            m_animationDelta      = inDeltaTime;
-            m_bIsLaidOutThisFrame = false;
+            m_animationDelta = inDeltaTime;
+            setFlag(ComponentFlag::LaidOut, false);
 
-            refresh();
+            onRefresh();
 
             m_animationDelta = 0.0f;
 
@@ -1179,7 +1229,7 @@ namespace Chicane
                 return;
             }
 
-            if (m_bIsCulled && !m_bIsLaidOutThisFrame && m_animator.isIdle())
+            if (isCulled() && !hasFlag(ComponentFlag::LaidOut) && m_animator.isIdle())
             {
                 return;
             }
@@ -1191,7 +1241,7 @@ namespace Chicane
                 m_children.at(i)->tick(inDeltaTime);
             }
 
-            if (!m_bIsLaidOutThisFrame)
+            if (!hasFlag(ComponentFlag::LaidOut))
             {
                 return;
             }
@@ -1214,13 +1264,13 @@ namespace Chicane
 
             reflowChildPositions();
 
-            if (!m_bHasInsetsApplied)
+            if (!hasFlag(ComponentFlag::Insets))
             {
                 addSize(
                     bIsWidthAuto ? m_style.insetHorizontal() : 0.0f,
                     bIsHeightAuto ? m_style.insetVertical() : 0.0f
                 );
-                m_bHasInsetsApplied = true;
+                setFlag(ComponentFlag::Insets);
             }
 
             applyLaidOutRadius(m_style, m_size);
@@ -1228,48 +1278,45 @@ namespace Chicane
             invalidateDrawCacheSubtree();
             refreshCullSubtree();
 
-            m_bIsLayoutDirty = false;
+            setFlag(ComponentFlag::Layout, false);
         }
 
-        void Component::syncProperties()
+        void Component::onAttributeSync()
         {
             syncAttributes();
         }
 
-        void Component::refresh()
+        void Component::onRefresh()
         {
-            Vec2  parentSize       = Vec2::Zero();
-            float parentFont       = 0.0f;
-            bool  bIsParentLaidOut = false;
+            Vec2  parentSize     = Vec2::Zero();
+            float parentFont     = 0.0f;
+            bool  bParentLaidOut = false;
             if (hasParent() && !isRoot())
             {
-                parentSize       = m_parent->getInnerLayoutSize();
-                parentFont       = m_parent->getStyle().font.size.get();
-                bIsParentLaidOut = m_parent->m_bIsLaidOutThisFrame;
+                parentSize     = m_parent->getInnerLayoutSize();
+                parentFont     = m_parent->getStyle().font.size.get();
+                bParentLaidOut = m_parent->hasFlag(ComponentFlag::LaidOut);
             }
 
-            const bool bHasParentSizeChanged =
-                parentSize.x != m_layoutParentSize.x || parentSize.y != m_layoutParentSize.y;
-            if (bHasParentSizeChanged)
+            if (parentSize.x != m_layoutParentSize.x || parentSize.y != m_layoutParentSize.y)
             {
                 m_layoutParentSize = parentSize;
 
-                if (bIsParentLaidOut || isRoot())
+                if (bParentLaidOut || isRoot())
                 {
-                    m_bIsLayoutDirty = true;
-                    m_bIsStyleDirty  = true;
+                    markStyleDirty();
+                    markLayoutDirty();
                 }
             }
 
-            const bool bHasParentFontChanged = parentFont != m_layoutParentFontSize;
-            if (bHasParentFontChanged)
+            if (parentFont != m_layoutParentFontSize)
             {
                 m_layoutParentFontSize = parentFont;
 
-                if (bIsParentLaidOut || isRoot())
+                if (bParentLaidOut || isRoot())
                 {
-                    m_bIsStyleDirty  = true;
-                    m_bIsLayoutDirty = true;
+                    markStyleDirty();
+                    markLayoutDirty();
                 }
             }
 
@@ -1278,28 +1325,28 @@ namespace Chicane
                 return;
             }
 
-            if (bIsParentLaidOut)
+            if (bParentLaidOut)
             {
-                m_bIsLayoutDirty = true;
+                markLayoutDirty();
             }
 
-            if (!m_bIsLayoutDirty && (isWidthAuto(m_style) || isHeightAuto(m_style)))
+            if (!hasFlag(ComponentFlag::Layout) && (isWidthAuto(m_style) || isHeightAuto(m_style)))
             {
                 for (Component* child : m_children)
                 {
-                    if (child && child->m_bIsLayoutDirty)
+                    if (child && child->hasFlag(ComponentFlag::Layout))
                     {
-                        m_bIsLayoutDirty = true;
+                        markLayoutDirty();
 
                         break;
                     }
                 }
             }
 
-            if (m_bHasStyleBinding)
+            if (hasFlag(ComponentFlag::LiveBind) && !m_live.isEmpty())
             {
                 String resolved;
-                for (const String& part : m_styleBindingSource.split('\n'))
+                for (const String& part : m_live.split('\n'))
                 {
                     if (part.isEmpty())
                     {
@@ -1310,32 +1357,39 @@ namespace Chicane
                     resolved.append('\n');
                 }
 
-                if (!resolved.equals(m_styleBindingResolved))
+                std::uint64_t hash = 14695981039346656037ull;
+                for (std::size_t i = 0; i < resolved.size(); i++)
                 {
-                    m_styleBindingResolved = resolved;
-                    m_bIsStyleDirty        = true;
-                    m_bIsLayoutDirty       = true;
+                    hash ^= static_cast<std::uint64_t>(static_cast<unsigned char>(resolved.at(i)));
+                    hash *= 1099511628211ull;
+                }
+
+                if (hash != m_liveHash)
+                {
+                    m_liveHash = hash;
+                    markStyleDirty();
+                    markLayoutDirty();
                 }
             }
 
-            if (m_bHasClassBinding || m_bIsStyleDirty)
+            if (hasFlag(ComponentFlag::LiveBind) || hasFlag(ComponentFlag::Style))
             {
                 refreshClassName();
             }
 
-            const bool bHasStyleRefreshed = m_bIsStyleDirty;
+            const bool bStyleRefreshed = hasFlag(ComponentFlag::Style);
 
-            if (m_bIsStyleDirty)
+            if (bStyleRefreshed)
             {
                 const LayoutMetrics before = captureLayoutMetrics(m_style);
 
                 refreshStyleRuleset();
-                m_bIsStyleDirty = false;
+                setFlag(ComponentFlag::Style, false);
                 refreshStyle();
 
                 if (!(before == captureLayoutMetrics(m_style)))
                 {
-                    m_bIsLayoutDirty = true;
+                    markLayoutDirty();
                 }
             }
             else
@@ -1346,7 +1400,7 @@ namespace Chicane
 
                 if (previousDisplay != m_style.display.get())
                 {
-                    m_bIsLayoutDirty = true;
+                    markLayoutDirty();
                 }
             }
 
@@ -1354,18 +1408,18 @@ namespace Chicane
 
             if (m_style.isDisplay(StyleDisplay::None))
             {
-                m_bIsCulled      = false;
-                m_bIsLayoutDirty = false;
+                setCulled(false);
+                setFlag(ComponentFlag::Layout, false);
 
                 return;
             }
 
-            const bool bIsAnimating    = !m_animator.isIdle();
-            const bool bIsAbsolute     = m_style.isPosition(StylePosition::Absolute);
-            const bool bIsFlowLocked   = hasParent() && !isRoot() && !bIsParentLaidOut && !bIsAbsolute;
-            const bool bHadLayoutTween = hasLayoutTween(m_animator);
+            const bool bIsAnimating  = !m_animator.isIdle();
+            const bool bIsAbsolute   = m_style.isPosition(StylePosition::Absolute);
+            const bool bIsFlowLocked = hasParent() && !isRoot() && !bParentLaidOut && !bIsAbsolute;
+            const bool bHadTween     = hasLayoutTween(m_animator);
 
-            if (bIsAnimating || bHasStyleRefreshed || !m_bIsAnimationReady)
+            if (bIsAnimating || bStyleRefreshed || !m_bIsAnimationReady)
             {
                 tickAnimation(m_style, m_animationDelta);
 
@@ -1375,12 +1429,12 @@ namespace Chicane
                 }
             }
 
-            if (bHadLayoutTween || hasLayoutTween(m_animator))
+            if (bHadTween || hasLayoutTween(m_animator))
             {
-                m_bIsLayoutDirty = true;
+                markLayoutDirty();
             }
 
-            if (m_bIsLayoutDirty && bIsFlowLocked)
+            if (hasFlag(ComponentFlag::Layout) && bIsFlowLocked)
             {
                 const Vec2 previousContent = getContentSize();
 
@@ -1389,8 +1443,8 @@ namespace Chicane
                 refreshBounds();
                 invalidateDrawCache();
 
-                m_bIsLayoutDirty      = false;
-                m_bIsLaidOutThisFrame = true;
+                setFlag(ComponentFlag::Layout, false);
+                setFlag(ComponentFlag::LaidOut);
 
                 for (Component* child : m_children)
                 {
@@ -1406,14 +1460,14 @@ namespace Chicane
                     m_parent->markLayoutDirty();
                 }
             }
-            else if (m_bIsLayoutDirty)
+            else if (hasFlag(ComponentFlag::Layout))
             {
                 refreshSize();
                 refreshPosition();
                 refreshBounds();
                 invalidateDrawCache();
-                m_bIsLayoutDirty      = false;
-                m_bIsLaidOutThisFrame = true;
+                setFlag(ComponentFlag::Layout, false);
+                setFlag(ComponentFlag::LaidOut);
 
                 for (Component* child : m_children)
                 {
@@ -1424,7 +1478,7 @@ namespace Chicane
                 }
             }
 
-            if (m_bIsLaidOutThisFrame)
+            if (hasFlag(ComponentFlag::LaidOut))
             {
                 if (m_animator.isIdle() && m_style.transform.getRaw().contains('%'))
                 {
@@ -1437,7 +1491,7 @@ namespace Chicane
 
             onRefresh();
 
-            m_bIsCulled = isCulledByAncestor();
+            setCulled(isCulledByAncestor());
         }
 
         const String& Component::getTag() const
@@ -1512,11 +1566,6 @@ namespace Chicane
 
         void Component::refreshDirectives()
         {
-            if (m_bShouldSkipForDirective)
-            {
-                return;
-            }
-
             for (const auto& [key, directive] : m_directives)
             {
                 runDirective(key, getAttribute(key));
@@ -1725,17 +1774,17 @@ namespace Chicane
                 value = value.substr(0, at) + value.substr(at + std::strlen(token));
             }
 
-            if (bIsHover && !m_bIsHovered)
+            if (bIsHover && !isHovered())
             {
                 return false;
             }
 
-            if (bIsFocus && !m_bIsFocused)
+            if (bIsFocus && !isFocused())
             {
                 return false;
             }
 
-            if (bIsDrag && !m_bIsDragging)
+            if (bIsDrag && !isDragging())
             {
                 return false;
             }
@@ -1915,17 +1964,17 @@ namespace Chicane
 
         bool Component::matchesCompiledPart(const StyleSelectorPart& inPart) const
         {
-            if (inPart.bCanHover && !m_bIsHovered)
+            if (inPart.bCanHover && !isHovered())
             {
                 return false;
             }
 
-            if (inPart.bCanFocus && !m_bIsFocused)
+            if (inPart.bCanFocus && !isFocused())
             {
                 return false;
             }
 
-            if (inPart.bCanDrag && !m_bIsDragging)
+            if (inPart.bCanDrag && !isDragging())
             {
                 return false;
             }
@@ -2170,12 +2219,12 @@ namespace Chicane
 
         void Component::markStyleDirty()
         {
-            m_bIsStyleDirty = true;
+            setFlag(ComponentFlag::Style);
         }
 
         void Component::markLayoutDirty()
         {
-            m_bIsLayoutDirty = true;
+            setFlag(ComponentFlag::Layout);
             invalidateDrawCache();
         }
 
@@ -2201,8 +2250,7 @@ namespace Chicane
 
         void Component::invalidateDrawCache()
         {
-            m_bIsDrawCacheValid = false;
-            m_bHasDrawPosition  = false;
+            m_draw.bIsValid = false;
         }
 
         void Component::invalidateDrawCacheSubtree()
@@ -2238,19 +2286,8 @@ namespace Chicane
             return m_flatChildren;
         }
 
-        void Component::cacheAttributeFlags()
-        {
-            m_bHasClassBinding = isReference(getAttribute(CLASS_ATTRIBUTE_NAME));
-            m_bHasIfDirective  = !getAttribute(IF_DIRECTIVE_KEYWORD).isEmpty();
-        }
-
         bool Component::hideIfDirective()
         {
-            if (!m_bHasIfDirective)
-            {
-                return false;
-            }
-
             const String& attribute = getAttribute(IF_DIRECTIVE_KEYWORD);
             if (attribute.isEmpty())
             {
@@ -2262,17 +2299,17 @@ namespace Chicane
             {
                 if (m_style.isDisplay(StyleDisplay::None))
                 {
-                    m_bIsStyleDirty  = true;
-                    m_bIsLayoutDirty = true;
+                    markStyleDirty();
+                    markLayoutDirty();
                 }
 
                 return false;
             }
 
             m_style.display.set(StyleDisplay::None);
-            m_bIsCulled      = false;
-            m_bIsStyleDirty  = false;
-            m_bIsLayoutDirty = false;
+            setCulled(false);
+            setFlag(ComponentFlag::Style, false);
+            setFlag(ComponentFlag::Layout, false);
 
             return true;
         }
@@ -2683,12 +2720,12 @@ namespace Chicane
         {
             Vec2 size = m_size;
 
-            if (!isWidthAuto(m_style) || m_bHasInsetsApplied)
+            if (!isWidthAuto(m_style) || hasFlag(ComponentFlag::Insets))
             {
                 size.x = std::max(0.0f, size.x - m_style.insetHorizontal());
             }
 
-            if (!isHeightAuto(m_style) || m_bHasInsetsApplied)
+            if (!isHeightAuto(m_style) || hasFlag(ComponentFlag::Insets))
             {
                 size.y = std::max(0.0f, size.y - m_style.insetVertical());
             }
@@ -2708,12 +2745,12 @@ namespace Chicane
         {
             Vec2 size = m_size;
 
-            if (isWidthAuto(m_style) && !m_bHasInsetsApplied)
+            if (isWidthAuto(m_style) && !hasFlag(ComponentFlag::Insets))
             {
                 size.x += m_style.insetHorizontal();
             }
 
-            if (isHeightAuto(m_style) && !m_bHasInsetsApplied)
+            if (isHeightAuto(m_style) && !hasFlag(ComponentFlag::Insets))
             {
                 size.y += m_style.insetVertical();
             }
@@ -2814,11 +2851,11 @@ namespace Chicane
                 return;
             }
 
-            m_size.x            = width;
-            m_size.y            = height;
-            m_bHasInsetsApplied = false;
+            m_size.x = width;
+            m_size.y = height;
+            setFlag(ComponentFlag::Insets, false);
             invalidateDrawCache();
-            m_bIsLayoutDirty = true;
+            markLayoutDirty();
         }
 
         const Vec2& Component::getScale() const
@@ -2892,13 +2929,12 @@ namespace Chicane
 
         Vec2 Component::getDrawPosition() const
         {
-            if (!m_bHasDrawPosition)
+            if (!m_draw.bIsValid)
             {
-                m_cachedDrawPosition = computeDrawPosition();
-                m_bHasDrawPosition   = true;
+                m_draw.position = computeDrawPosition();
             }
 
-            return m_cachedDrawPosition;
+            return m_draw.position;
         }
 
         Vec2 Component::computeDrawPosition() const
@@ -2930,12 +2966,12 @@ namespace Chicane
 
         Mat3 Component::getPaintMatrix() const
         {
-            if (!m_bIsDrawCacheValid)
+            if (!m_draw.bIsValid)
             {
-                m_cachedPaintMatrix = computePaintMatrix();
+                m_draw.matrix = computePaintMatrix();
             }
 
-            return m_cachedPaintMatrix;
+            return m_draw.matrix;
         }
 
         Mat3 Component::computePaintMatrix() const
@@ -3036,7 +3072,7 @@ namespace Chicane
 
         Bounds2D Component::getDrawBounds() const
         {
-            if (!m_bIsDrawCacheValid)
+            if (!m_draw.bIsValid)
             {
                 Bounds2D result;
 
@@ -3047,13 +3083,11 @@ namespace Chicane
                 result.right  = position.x + m_size.x;
                 result.bottom = position.y + m_size.y;
 
-                const Mat3 paint = getPaintMatrix();
-
                 result.set(result.top, result.left, result.bottom, result.right);
-                result.transform(paint);
+                result.transform(getPaintMatrix());
 
-                m_cachedDrawBounds   = result;
-                m_cachedOverflowClip = Bounds2D::unconstrained();
+                m_draw.bounds = result;
+                m_draw.clip   = Bounds2D::unconstrained();
 
                 if (!escapesOverflow())
                 {
@@ -3062,7 +3096,7 @@ namespace Chicane
                     {
                         if (ancestor->getStyle().isClippingOverflow())
                         {
-                            m_cachedOverflowClip = m_cachedOverflowClip.intersect(ancestor->getDrawBounds());
+                            m_draw.clip = m_draw.clip.intersect(ancestor->getDrawBounds());
                         }
 
                         if (ancestor->escapesOverflow() || ancestor->isRoot())
@@ -3074,20 +3108,20 @@ namespace Chicane
                     }
                 }
 
-                m_bIsDrawCacheValid = true;
+                m_draw.bIsValid = true;
             }
 
-            return m_cachedDrawBounds;
+            return m_draw.bounds;
         }
 
         Bounds2D Component::getOverflowClip() const
         {
-            if (!m_bIsDrawCacheValid)
+            if (!m_draw.bIsValid)
             {
                 getDrawBounds();
             }
 
-            return m_cachedOverflowClip;
+            return m_draw.clip;
         }
 
         void Component::getOverflowRoundClips(
@@ -3326,7 +3360,6 @@ namespace Chicane
             if (String(root.getName()).equals(getTag()))
             {
                 parse(root);
-                cacheAttributeFlags();
                 setId(getAttribute(ID_ATTRIBUTE_NAME));
                 setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
                 addChildren(getSource());
@@ -3421,7 +3454,6 @@ namespace Chicane
 
                 child->refreshPosition();
                 child->refreshBounds();
-                child->invalidateDrawCache();
                 child->reflowChildPositions();
             }
         }
@@ -3430,12 +3462,12 @@ namespace Chicane
         {
             if (m_style.isDisplay(StyleDisplay::None))
             {
-                m_bIsCulled = false;
+                setCulled(false);
 
                 return;
             }
 
-            m_bIsCulled = isCulledByAncestor();
+            setCulled(isCulledByAncestor());
 
             for (Component* child : m_children)
             {
@@ -3677,7 +3709,6 @@ namespace Chicane
                 return nullptr;
             }
 
-            clone->m_bShouldSkipForDirective = true;
             clone->removeAttribute(FOR_DIRECTIVE_KEYWORD);
 
             if (clone->m_className.isEmpty() && !m_className.isEmpty())

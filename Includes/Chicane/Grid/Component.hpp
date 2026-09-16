@@ -29,6 +29,9 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Animatable.hpp"
+#include "Chicane/Grid/Component/DrawCache.hpp"
+#include "Chicane/Grid/Component/Flag.hpp"
+#include "Chicane/Grid/Component/Status.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/Style/File.hpp"
@@ -96,8 +99,8 @@ namespace Chicane
 
             // Lifecycle
             virtual void tick(float inDelta);
-            virtual void syncProperties() override;
-            virtual void refresh();
+            virtual void onAttributeSync() override;
+            virtual void onRefresh();
 
             // Depth
             virtual float getDepth() const;
@@ -147,6 +150,12 @@ namespace Chicane
             bool isDragging() const;
             bool isCulled() const;
 
+            ComponentStatus getStatus() const;
+            bool hasStatus(ComponentStatus inStatus) const;
+
+            bool hasFlag(ComponentFlag inFlag) const;
+            void setFlag(ComponentFlag inFlag, bool inEnabled = true);
+
             bool canAdopt(Component* inComponent) const;
 
             // Mouse Events
@@ -161,6 +170,7 @@ namespace Chicane
             void setHovered(bool inValue, bool bShouldInvalidateSubtree = true);
             void setFocused(bool inValue, bool bShouldInvalidateSubtree = true);
             void setDragging(bool inValue, bool bShouldInvalidateSubtree = true);
+            void setCulled(bool inValue);
 
             // Properties
             const String& getTag() const;
@@ -371,7 +381,6 @@ namespace Chicane
             bool isCulledByAncestor() const;
             bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void rebuildFlatChildren();
-            void cacheAttributeFlags();
             bool hideIfDirective();
             Vec2 computeDrawPosition() const;
             Mat3 computePaintMatrix() const;
@@ -381,6 +390,14 @@ namespace Chicane
             String                                                m_tag;
             String                                                m_id;
             String                                                m_className;
+
+            // Status
+            ComponentStatus                                       m_status;
+            ComponentFlag                                         m_flags;
+
+            // Hash
+            String                                                m_live;
+            std::uint64_t                                         m_liveHash;
 
             // Modifier
             Directives                                            m_directives;
@@ -416,31 +433,12 @@ namespace Chicane
 
             // Draw
             Primitive                                             m_primitive;
+            mutable DrawCache                                     m_draw;
 
             // For-loop
             std::vector<Component*>                               m_forInstances;
             String                                                m_forVariable;
             std::any                                              m_forSource;
-            bool                                                  m_bShouldSkipForDirective;
-            bool                                                  m_bIsHovered;
-            bool                                                  m_bIsFocused;
-            bool                                                  m_bIsDragging;
-            bool                                                  m_bIsStyleDirty;
-            bool                                                  m_bIsLayoutDirty;
-            bool                                                  m_bIsCulled;
-            bool                                                  m_bIsLaidOutThisFrame;
-            bool                                                  m_bHasInsetsApplied;
-            bool                                                  m_bHasClassBinding;
-            bool                                                  m_bHasStyleBinding;
-            String                                                m_styleBindingSource;
-            String                                                m_styleBindingResolved;
-            bool                                                  m_bHasIfDirective;
-            mutable bool                                          m_bIsDrawCacheValid;
-            mutable bool                                          m_bHasDrawPosition;
-            mutable Vec2                                          m_cachedDrawPosition;
-            mutable Mat3                                          m_cachedPaintMatrix;
-            mutable Bounds2D                                      m_cachedDrawBounds;
-            mutable Bounds2D                                      m_cachedOverflowClip;
         };
     }
 }

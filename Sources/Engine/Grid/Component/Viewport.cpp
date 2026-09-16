@@ -24,7 +24,8 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
-            if (!isReference(getAttribute(TARGET_ATTRIBUTE_NAME)) && !target.isEmpty() && !m_bIsLaidOutThisFrame)
+            if (!isReference(getAttribute(TARGET_ATTRIBUTE_NAME)) && !target.isEmpty() &&
+                !hasFlag(ComponentFlag::LaidOut))
             {
                 return;
             }

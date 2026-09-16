@@ -11,13 +11,14 @@ namespace Chicane
               label(String::empty())
         {
             load("Assets/Engine/UI/Components/Window/Header.grid", "Assets/Engine/UI/Components/Window/Header.decal");
-        }
 
-        void WindowHeader::onTick(float inDeltaTime)
-        {
-            Container::onTick(inDeltaTime);
-
-            refreshLabel();
+            watchAttribute(
+                LABEL_ATTRIBUTE_NAME,
+                [this](const String& inValue)
+                {
+                    label = parseText(inValue).trim();
+                }
+            );
         }
 
         void WindowHeader::onClose()
@@ -26,11 +27,6 @@ namespace Chicane
             {
                 window->dismiss();
             }
-        }
-
-        void WindowHeader::refreshLabel()
-        {
-            label = parseText(getAttribute(LABEL_ATTRIBUTE_NAME)).trim();
         }
     }
 }

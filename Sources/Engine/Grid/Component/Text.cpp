@@ -111,7 +111,7 @@ namespace Chicane
 
         void Text::refresh()
         {
-            Component::refresh();
+            Component::onRefresh();
 
             if (m_style.isDisplay(StyleDisplay::None))
             {
@@ -158,7 +158,7 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(m_text) && !m_bIsLaidOutThisFrame && !m_layoutSignature.isEmpty())
+            if (!isReference(m_text) && !hasFlag(ComponentFlag::LaidOut) && !m_layoutSignature.isEmpty())
             {
                 return;
             }
@@ -372,7 +372,7 @@ namespace Chicane
                 return;
             }
 
-            const bool bHadInsets = m_bHasInsetsApplied;
+            const bool bHadInsets = hasFlag(ComponentFlag::Insets);
 
             setSize(bIsWidthAuto ? m_contentSize.x : m_size.x, bIsHeightAuto ? m_contentSize.y : m_size.y);
 
@@ -383,7 +383,7 @@ namespace Chicane
                     bIsHeightAuto ? m_style.insetVertical() : 0.0f
                 );
 
-                m_bHasInsetsApplied = true;
+                setFlag(ComponentFlag::Insets);
             }
         }
 
@@ -409,7 +409,7 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
-            const float       innerWidth    = (!m_style.width.isAuto() || m_bHasInsetsApplied)
+            const float       innerWidth    = (!m_style.width.isAuto() || hasFlag(ComponentFlag::Insets))
                                                   ? std::max(0.0f, m_size.x - m_style.insetHorizontal())
                                                   : m_size.x;
             const String      signature =
