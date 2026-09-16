@@ -66,9 +66,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -111,9 +111,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -217,6 +217,21 @@
                     "const"
                 ],
                 "description": "CHICANE_SMOKE_MODULE_COLLECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncProperties",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_SYNCPROPERTIES_DESCRIPTION"
             },
             {
                 "accessor": "public",

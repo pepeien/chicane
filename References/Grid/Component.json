@@ -114,9 +114,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -185,9 +185,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -213,9 +213,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -331,7 +331,22 @@
             },
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncProperties",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SYNCPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -1082,34 +1097,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETDIRECTIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "getAttribute",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETATTRIBUTE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1973,9 +1960,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -3593,9 +3580,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inSlot"
@@ -4721,45 +4708,6 @@
                 },
                 "name": "m_primitive",
                 "description": "CHICANE_GRID_COMPONENT_M_PRIMITIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Xml::Attributes",
-                    "suffix": "",
-                    "path": "Core/Xml",
-                    "templates": []
-                },
-                "name": "m_attributes",
-                "description": "CHICANE_GRID_COMPONENT_M_ATTRIBUTES_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "pugi::xml_document",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_sourceDocument",
-                "description": "CHICANE_GRID_COMPONENT_M_SOURCEDOCUMENT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "pugi::xml_node",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_sourceNode",
-                "description": "CHICANE_GRID_COMPONENT_M_SOURCENODE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

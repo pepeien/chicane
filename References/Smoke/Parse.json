@@ -91,9 +91,45 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Range",
+                            "suffix": "&",
+                            "path": "Smoke/Range",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_PARSERANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Range",
+                    "suffix": "",
+                    "path": "Smoke/Range",
+                    "templates": []
+                },
+                "name": "parseRange",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -121,366 +157,9 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_SMOKE_PARSERANGE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "parseFloat",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSEFLOAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "parseBool",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSEBOOL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "parseUint",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSEUINT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "parseString",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSESTRING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "parseVec3",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSEVEC3_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec4",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec4",
-                    "templates": []
-                },
-                "name": "parseColor",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "pugi::xml_node",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "char",
-                            "suffix": "*",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec4",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec4",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SMOKE_PARSECOLOR_DESCRIPTION"
             }
         ],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "BOOLEAN_TRUE_VALUE",
-                "description": "CHICANE_SMOKE_BOOLEAN_TRUE_VALUE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "BOOLEAN_TRUE_ONE_VALUE",
-                "description": "CHICANE_SMOKE_BOOLEAN_TRUE_ONE_VALUE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "BOOLEAN_TRUE_YES_VALUE",
-                "description": "CHICANE_SMOKE_BOOLEAN_TRUE_YES_VALUE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "COLOR_CHANNEL_MAX_VALUE",
-                "description": "CHICANE_SMOKE_COLOR_CHANNEL_MAX_VALUE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "COLOR_ALPHA_DEFAULT_VALUE",
-                "description": "CHICANE_SMOKE_COLOR_ALPHA_DEFAULT_VALUE_DESCRIPTION"
-            }
-        ],
+        "members": [],
         "description": "CHICANE_SMOKE_DESCRIPTION"
     },
     "children": []

@@ -114,31 +114,6 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "std::vector",
-                    "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getAttachments",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_OBJECT_GETATTACHMENTS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -266,6 +241,31 @@
                 "description": "CHICANE_OBJECT_NOTIFYPROPERTYEDITED_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getAttachments",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETATTACHMENTS_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -369,6 +369,32 @@
                     "inline"
                 ],
                 "description": "CHICANE_OBJECT_ONPROPERTYEDITED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyLookAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_APPLYLOOKAT_DESCRIPTION"
             },
             {
                 "accessor": "protected",

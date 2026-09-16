@@ -23,9 +23,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
