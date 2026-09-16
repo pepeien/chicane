@@ -9,7 +9,7 @@
 #include <limits>
 #include <vector>
 
-#include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Asset/Type.hpp"
 
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Xml.hpp"
@@ -62,22 +62,22 @@ namespace Chicane
         }
 
         static std::unique_ptr<AssetPreview> parsePreviewNode(
-            const pugi::xml_node& inNode, const FileSystem::Path& inAsset
+            const XmlNode& inNode, const FileSystem::Path& inAsset
         )
         {
-            if (inNode.empty() || !String(inNode.name()).equals(AssetPreview::TAG))
+            if (inNode.empty() || !String(inNode.getName()).equals(AssetPreview::TAG))
             {
                 return nullptr;
             }
 
-            const int width  = Xml::getAttribute(AssetPreview::WIDTH_ATTRIBUTE_NAME, inNode).as_int();
-            const int height = Xml::getAttribute(AssetPreview::HEIGHT_ATTRIBUTE_NAME, inNode).as_int();
+            const int width  = Xml::parseInt(inNode.getAttribute(AssetPreview::WIDTH_ATTRIBUTE_NAME), 0);
+            const int height = Xml::parseInt(inNode.getAttribute(AssetPreview::HEIGHT_ATTRIBUTE_NAME), 0);
             if (width <= 0 || height <= 0)
             {
                 return nullptr;
             }
 
-            const Image::Raw encoded = Base64::decodeToUnsigned(inNode.text().as_string());
+            const Image::Raw encoded = Base64::decodeToUnsigned(inNode.getText());
             if (encoded.empty())
             {
                 return nullptr;
@@ -124,7 +124,7 @@ namespace Chicane
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
             result->type =
-                AssetHeader::getTypeFromTag(Xml::getAttribute(AssetPreview::TYPE_ATTRIBUTE_NAME, inNode).as_string());
+                getTypeFromTag(Xml::getAttribute(AssetPreview::TYPE_ATTRIBUTE_NAME, inNode));
             result->image = image;
 
             return result;
@@ -1018,7 +1018,7 @@ namespace Chicane
             return result;
         }
 
-        bool AssetPreview::write(pugi::xml_node inRoot, AssetType inType, const Image& inImage)
+        bool AssetPreview::write(XmlNode inRoot, AssetType inType, const Image& inImage)
         {
             if (inRoot.empty())
             {
@@ -1031,20 +1031,20 @@ namespace Chicane
                 return false;
             }
 
-            pugi::xml_node node = inRoot.child(TAG);
+            XmlNode node = inRoot.getChild(TAG);
             if (!node.empty())
             {
-                inRoot.remove_child(node);
+                inRoot.removeChild(node);
             }
 
-            node = inRoot.prepend_child(TAG);
+            node = inRoot.prependChild(TAG);
             if (node.empty())
             {
                 return false;
             }
 
             const Image& image = *preview->image;
-            Xml::addAttribute(node, TYPE_ATTRIBUTE_NAME, AssetHeader::getTypeTag(inType));
+            Xml::addAttribute(node, TYPE_ATTRIBUTE_NAME, getTypeTag(inType));
             Xml::addAttribute(node, WIDTH_ATTRIBUTE_NAME, String(std::to_string(image.getWidth())));
             Xml::addAttribute(node, HEIGHT_ATTRIBUTE_NAME, String(std::to_string(image.getHeight())));
 
@@ -1065,7 +1065,7 @@ namespace Chicane
             const String payload = Base64::encode(encoded);
             if (payload.isEmpty())
             {
-                inRoot.remove_child(node);
+                inRoot.removeChild(node);
 
                 return false;
             }
@@ -1084,8 +1084,8 @@ namespace Chicane
 
             try
             {
-                pugi::xml_document document = Xml::load(inAsset);
-                pugi::xml_node     root     = document.first_child();
+                XmlDocument document = Xml::load(inAsset);
+                XmlNode     root     = document.getFirstChild();
                 if (root.empty() || !write(root, inType, inImage))
                 {
                     return false;
@@ -1138,17 +1138,13 @@ namespace Chicane
                     }
 
                     const std::size_t  close = end + std::strlen(CLOSE_TAG);
-                    pugi::xml_document document;
-                    if (!document.load_buffer(
-                            buffer.data() + start,
-                            close - start,
-                            pugi::parse_default | pugi::parse_fragment
-                        ))
+                    XmlDocument document;
+                    if (!document.loadBuffer(buffer.data() + start, close - start))
                     {
                         return nullptr;
                     }
 
-                    return parsePreviewNode(document.first_child(), inAsset);
+                    return parsePreviewNode(document.getFirstChild(), inAsset);
                 }
 
                 return nullptr;
@@ -1159,19 +1155,19 @@ namespace Chicane
             }
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::read(const pugi::xml_node& inRoot)
+        std::unique_ptr<AssetPreview> AssetPreview::read(const XmlNode& inRoot)
         {
             if (inRoot.empty())
             {
                 return nullptr;
             }
 
-            if (String(inRoot.name()).equals(TAG))
+            if (String(inRoot.getName()).equals(TAG))
             {
                 return parsePreviewNode(inRoot, {});
             }
 
-            return parsePreviewNode(inRoot.child(TAG), {});
+            return parsePreviewNode(inRoot.getChild(TAG), {});
         }
 
         String AssetPreview::textureId() const

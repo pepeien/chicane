@@ -204,9 +204,9 @@ namespace Chicane
                 return;
             }
 
-            m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
+            m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
             m_bNormal =
-                String(getAttribute(NORMAL_ATTRIBUTE_NAME).as_string()).toLower().equals("true") || looksLikeNormal();
+                String(getAttribute(NORMAL_ATTRIBUTE_NAME)).toLower().equals("true") || looksLikeNormal();
         }
 
         void Texture::fetchDataFromXML()
@@ -311,7 +311,7 @@ namespace Chicane
 
         void Texture::writeMipsToXML(const ImageMipChain& inChain)
         {
-            pugi::xml_node root = getXML();
+            XmlNode root = getXML();
             if (root.empty() || inChain.isEmpty())
             {
                 return;
@@ -325,19 +325,19 @@ namespace Chicane
                 setNormal(true);
             }
 
-            pugi::xml_node value = root.child(VALUE_TAG);
+            XmlNode value = root.getChild(VALUE_TAG);
             if (!value.empty())
             {
-                root.remove_child(value);
+                root.removeChild(value);
             }
 
-            pugi::xml_node mips = root.child(MIPS_TAG);
+            XmlNode mips = root.getChild(MIPS_TAG);
             if (!mips.empty())
             {
-                root.remove_child(mips);
+                root.removeChild(mips);
             }
 
-            mips = root.append_child(MIPS_TAG);
+            mips = root.appendChild(MIPS_TAG);
             for (std::uint32_t level = 0; level < inChain.getCount(); level++)
             {
                 const ImageMip& mip = inChain.levels[level];
@@ -346,22 +346,21 @@ namespace Chicane
                     continue;
                 }
 
-                pugi::xml_node node = mips.append_child(MIP_TAG);
-                node.append_attribute(LEVEL_ATTRIBUTE_NAME).set_value(level);
-                const String encoded = Base64::encode(mip.encoded);
-                node.text().set(encoded.toChar(), encoded.size());
+                XmlNode node = mips.appendChild(MIP_TAG);
+                node.setAttribute(LEVEL_ATTRIBUTE_NAME, String(std::to_string(level)));
+                node.setText(Base64::encode(mip.encoded));
             }
         }
 
         bool Texture::fetchMipsFromXML()
         {
-            pugi::xml_node root = getXML();
+            XmlNode root = getXML();
             if (root.empty())
             {
                 return false;
             }
 
-            pugi::xml_node mips = root.child(MIPS_TAG);
+            XmlNode mips = root.getChild(MIPS_TAG);
             if (mips.empty())
             {
                 return false;
@@ -370,20 +369,20 @@ namespace Chicane
             auto chain     = std::make_shared<ImageMipChain>();
             chain->bNormal = m_bNormal || looksLikeNormal();
 
-            std::uint32_t width  = getAttribute(WIDTH_ATTRIBUTE_NAME).as_uint();
-            std::uint32_t height = getAttribute(HEIGHT_ATTRIBUTE_NAME).as_uint();
-            std::uint32_t count  = getAttribute(MIPS_ATTRIBUTE_NAME).as_uint();
+            std::uint32_t width  = getUint(WIDTH_ATTRIBUTE_NAME, 0);
+            std::uint32_t height = getUint(HEIGHT_ATTRIBUTE_NAME, 0);
+            std::uint32_t count  = getUint(MIPS_ATTRIBUTE_NAME, 0);
 
-            for (pugi::xml_node node = mips.child(MIP_TAG); node; node = node.next_sibling(MIP_TAG))
+            for (XmlNode node = mips.getChild(MIP_TAG); node; node = node.getNextSibling(MIP_TAG))
             {
-                const std::uint32_t level = node.attribute(LEVEL_ATTRIBUTE_NAME).as_uint();
+                const std::uint32_t level = node.parseUint(LEVEL_ATTRIBUTE_NAME, 0);
                 if (chain->levels.size() <= level)
                 {
                     chain->levels.resize(level + 1);
                 }
 
                 ImageMip& mip = chain->levels[level];
-                mip.encoded   = Base64::decodeToUnsigned(node.text().as_string());
+                mip.encoded   = Base64::decodeToUnsigned(node.getText());
             }
 
             if (chain->levels.empty())

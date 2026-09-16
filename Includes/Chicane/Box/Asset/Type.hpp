@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Box.hpp"
 
 namespace Chicane
@@ -58,5 +60,16 @@ namespace Chicane
                 return "";
             }
         }
+
+        CHICANE_BOX bool isFileAsset(const FileSystem::Path& inFilepath);
+
+        CHICANE_BOX AssetType getTypeFromExtension(const FileSystem::Path& inFilepath);
+        CHICANE_BOX AssetType getTypeFromTag(const String& inValue);
+
+        CHICANE_BOX std::vector<String> getTypeTags();
+        CHICANE_BOX const String& getTypeTag(AssetType inValue);
+
+        CHICANE_BOX std::vector<String> getTypeExtensions();
+        CHICANE_BOX const String& getTypeExtension(AssetType inValue);
     }
 }

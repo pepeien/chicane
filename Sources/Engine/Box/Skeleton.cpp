@@ -113,9 +113,9 @@ namespace Chicane
                 return;
             }
 
-            for (const pugi::xml_node& child : getXML().children())
+            for (const XmlNode& child : getXML().getChildren())
             {
-                if (!String(child.name()).equals(SkeletonBone::TAG))
+                if (!String(child.getName()).equals(SkeletonBone::TAG))
                 {
                     continue;
                 }
@@ -157,13 +157,13 @@ namespace Chicane
 
         void Skeleton::writeBones()
         {
-            pugi::xml_node root = getXML();
-            for (pugi::xml_node child = root.first_child(); child;)
+            XmlNode root = getXML();
+            for (XmlNode child = root.getFirstChild(); child;)
             {
-                pugi::xml_node next = child.next_sibling();
-                if (String(child.name()).equals(SkeletonBone::TAG))
+                XmlNode next = child.getNextSibling();
+                if (String(child.getName()).equals(SkeletonBone::TAG))
                 {
-                    root.remove_child(child);
+                    root.removeChild(child);
                 }
 
                 child = next;
@@ -171,7 +171,7 @@ namespace Chicane
 
             for (const SkeletonBone& bone : m_bones)
             {
-                pugi::xml_node boneNode = root.append_child(SkeletonBone::TAG);
+                XmlNode boneNode = root.appendChild(SkeletonBone::TAG);
                 bone.saveTo(boneNode);
             }
         }

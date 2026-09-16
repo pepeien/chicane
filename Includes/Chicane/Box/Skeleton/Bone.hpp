@@ -28,8 +28,8 @@ namespace Chicane
         public:
             SkeletonBone();
 
-            void setFrom(const pugi::xml_node& inNode);
-            void saveTo(pugi::xml_node& outNode) const;
+            void setFrom(const XmlNode& inNode);
+            void saveTo(XmlNode& outNode) const;
 
         public:
             String    id;

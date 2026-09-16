@@ -180,7 +180,7 @@ namespace Chicane
                 return;
             }
 
-            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME).as_string());
+            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
         }
 
         void Model::fetchDataFromXML()

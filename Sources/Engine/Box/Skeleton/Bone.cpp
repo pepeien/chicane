@@ -31,38 +31,14 @@ namespace Chicane
             return String::sprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
         }
 
-        static Vec3 readVec3Attribute(const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback)
+        static Vec3 readVec3Attribute(const XmlNode& inNode, const char* inName, const Vec3& inFallback)
         {
-            const pugi::xml_attribute attribute = Xml::getAttribute(inName, inNode);
-            if (attribute.empty())
-            {
-                return inFallback;
-            }
-
-            const std::vector<String> values = String(attribute.as_string()).split(',');
-            if (values.size() < 3)
-            {
-                return inFallback;
-            }
-
-            return Vec3(
-                std::stof(values.at(0).toStandard()),
-                std::stof(values.at(1).toStandard()),
-                std::stof(values.at(2).toStandard())
-            );
+            return inNode.parseVec3(inName, inFallback);
         }
 
-        static void writeVec3Attribute(pugi::xml_node& outNode, const char* inName, const Vec3& inValue)
+        static void writeVec3Attribute(XmlNode& outNode, const char* inName, const Vec3& inValue)
         {
-            pugi::xml_attribute attribute = outNode.attribute(inName);
-            if (attribute.empty())
-            {
-                Xml::addAttribute(outNode, inName, toAttribute(inValue));
-
-                return;
-            }
-
-            attribute.set_value(toAttribute(inValue).toStandard());
+            outNode.setAttribute(inName, toAttribute(inValue));
         }
 
         SkeletonBone::SkeletonBone()
@@ -78,9 +54,9 @@ namespace Chicane
               inverseBind(Mat4::One)
         {}
 
-        void SkeletonBone::setFrom(const pugi::xml_node& inNode)
+        void SkeletonBone::setFrom(const XmlNode& inNode)
         {
-            id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+            id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode);
 
             Transform rest;
             rest.setTranslation(readVec3Attribute(inNode, TRANSLATION_ATTRIBUTE_NAME, Vec3::Zero()));
@@ -89,9 +65,9 @@ namespace Chicane
             transform.setTransform(rest);
 
             children.clear();
-            for (const pugi::xml_node& childNode : inNode.children())
+            for (const XmlNode& childNode : inNode.getChildren())
             {
-                if (!String(childNode.name()).equals(TAG))
+                if (!String(childNode.getName()).equals(TAG))
                 {
                     continue;
                 }
@@ -102,7 +78,7 @@ namespace Chicane
             }
         }
 
-        void SkeletonBone::saveTo(pugi::xml_node& outNode) const
+        void SkeletonBone::saveTo(XmlNode& outNode) const
         {
             Xml::addAttribute(outNode, ID_ATTRIBUTE_NAME, id);
 
@@ -115,7 +91,7 @@ namespace Chicane
 
             for (const SkeletonBone& child : children)
             {
-                pugi::xml_node childNode = outNode.append_child(TAG);
+                XmlNode childNode = outNode.appendChild(TAG);
                 child.saveTo(childNode);
             }
         }

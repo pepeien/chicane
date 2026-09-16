@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 #include "Chicane/Box/Animation.hpp"
-#include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Asset/Type.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Service.hpp"
 #include "Chicane/Box/Effect.hpp"
@@ -135,7 +135,7 @@ namespace Chicane
 
         std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inShouldUseStored)
         {
-            switch (AssetHeader::getTypeFromExtension(inFilePath))
+            switch (getTypeFromExtension(inFilePath))
             {
             case AssetType::Texture:
                 return decodeTexturePreview(inFilePath, inShouldUseStored);
@@ -442,7 +442,7 @@ namespace Chicane
 
         const Sound* loadSound(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sound)
+            if (getTypeFromExtension(inFilePath) != AssetType::Sound)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not a audio");
             }
@@ -457,7 +457,7 @@ namespace Chicane
 
         const Font* loadFont(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Font)
+            if (getTypeFromExtension(inFilePath) != AssetType::Font)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not a font");
             }
@@ -472,7 +472,7 @@ namespace Chicane
 
         const Model* loadModel(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Model)
+            if (getTypeFromExtension(inFilePath) != AssetType::Model)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not a model");
             }
@@ -501,7 +501,7 @@ namespace Chicane
 
         const Texture* loadTexture(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Texture)
+            if (getTypeFromExtension(inFilePath) != AssetType::Texture)
             {
                 throw std::runtime_error(inFilePath.toString() + "is not a texture");
             }
@@ -530,7 +530,7 @@ namespace Chicane
 
         const Skeleton* loadSkeleton(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Skeleton)
+            if (getTypeFromExtension(inFilePath) != AssetType::Skeleton)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not a skeleton");
             }
@@ -545,7 +545,7 @@ namespace Chicane
 
         const Animation* loadAnimation(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Animation)
+            if (getTypeFromExtension(inFilePath) != AssetType::Animation)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not an animation");
             }
@@ -579,7 +579,7 @@ namespace Chicane
 
         const Mesh* loadMesh(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Mesh)
+            if (getTypeFromExtension(inFilePath) != AssetType::Mesh)
             {
                 throw std::runtime_error(inFilePath.toString() + "is not a mesh");
             }
@@ -616,7 +616,7 @@ namespace Chicane
 
         const Effect* loadEffect(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Effect)
+            if (getTypeFromExtension(inFilePath) != AssetType::Effect)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not an effect");
             }
@@ -631,7 +631,7 @@ namespace Chicane
 
         const Sky* loadSky(const FileSystem::Path& inFilePath)
         {
-            if (AssetHeader::getTypeFromExtension(inFilePath) != AssetType::Sky)
+            if (getTypeFromExtension(inFilePath) != AssetType::Sky)
             {
                 throw std::runtime_error(inFilePath.toString() + " is not a skybox");
             }
@@ -729,14 +729,14 @@ namespace Chicane
                 return cached;
             }
 
-            if (!AssetHeader::isFileAsset(inFilePath))
+            if (!isFileAsset(inFilePath))
             {
                 Log::warning("File [%s] is not a valid asset", inFilePath.toChar());
 
                 return nullptr;
             }
 
-            switch (AssetHeader::getTypeFromExtension(inFilePath))
+            switch (getTypeFromExtension(inFilePath))
             {
             case AssetType::Animation:
                 return loadAnimation(inFilePath);
@@ -782,7 +782,7 @@ namespace Chicane
 
         bool embedPreview(const FileSystem::Path& inFilePath)
         {
-            if (inFilePath.isEmpty() || !FileSystem::exists(inFilePath) || !AssetHeader::isFileAsset(inFilePath))
+            if (inFilePath.isEmpty() || !FileSystem::exists(inFilePath) || !isFileAsset(inFilePath))
             {
                 return false;
             }

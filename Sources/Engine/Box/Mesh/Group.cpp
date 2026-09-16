@@ -31,57 +31,33 @@ namespace Chicane
             return String::sprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
         }
 
-        static Vec3 readVec3Attribute(const pugi::xml_node& inNode, const char* inName, const Vec3& inFallback)
+        static Vec3 readVec3Attribute(const XmlNode& inNode, const char* inName, const Vec3& inFallback)
         {
-            const pugi::xml_attribute attribute = Xml::getAttribute(inName, inNode);
-            if (attribute.empty())
-            {
-                return inFallback;
-            }
-
-            const std::vector<String> values = String(attribute.as_string()).split(',');
-            if (values.size() < 3)
-            {
-                return inFallback;
-            }
-
-            return Vec3(
-                std::stof(values.at(0).toStandard()),
-                std::stof(values.at(1).toStandard()),
-                std::stof(values.at(2).toStandard())
-            );
+            return inNode.parseVec3(inName, inFallback);
         }
 
-        static void writeVec3Attribute(pugi::xml_node& outNode, const char* inName, const Vec3& inValue)
+        static void writeVec3Attribute(XmlNode& outNode, const char* inName, const Vec3& inValue)
         {
-            pugi::xml_attribute attribute = outNode.attribute(inName);
-            if (attribute.empty())
-            {
-                Xml::addAttribute(outNode, inName, toAttribute(inValue));
-
-                return;
-            }
-
-            attribute.set_value(toAttribute(inValue).toStandard());
+            outNode.setAttribute(inName, toAttribute(inValue));
         }
 
-        static void clearTransformAttributes(pugi::xml_node& outNode)
+        static void clearTransformAttributes(XmlNode& outNode)
         {
-            outNode.remove_attribute(MeshGroup::TRANSLATION_ATTRIBUTE_NAME);
-            outNode.remove_attribute(MeshGroup::ROTATION_ATTRIBUTE_NAME);
-            outNode.remove_attribute(MeshGroup::SCALE_ATTRIBUTE_NAME);
+            outNode.removeAttribute(MeshGroup::TRANSLATION_ATTRIBUTE_NAME);
+            outNode.removeAttribute(MeshGroup::ROTATION_ATTRIBUTE_NAME);
+            outNode.removeAttribute(MeshGroup::SCALE_ATTRIBUTE_NAME);
         }
 
-        static void clearTextureNodes(pugi::xml_node& outNode)
+        static void clearTextureNodes(XmlNode& outNode)
         {
-            for (pugi::xml_node child = outNode.first_child(); child;)
+            for (XmlNode child = outNode.getFirstChild(); child;)
             {
-                pugi::xml_node next = child.next_sibling();
+                XmlNode next = child.getNextSibling();
 
-                const TextureMap map = toTextureMap(child.name());
+                const TextureMap map = toTextureMap(child.getName());
                 if (map != TextureMap::Count)
                 {
-                    outNode.remove_child(child);
+                    outNode.removeChild(child);
                 }
 
                 child = next;
@@ -119,7 +95,7 @@ namespace Chicane
             return m_model;
         }
 
-        void MeshGroup::setModel(const pugi::xml_node& inNode, const FileSystem::Path& inBase)
+        void MeshGroup::setModel(const XmlNode& inNode, const FileSystem::Path& inBase)
         {
             m_model.setFrom(inNode, inBase);
         }
@@ -151,7 +127,7 @@ namespace Chicane
             return found->second;
         }
 
-        void MeshGroup::setTexture(TextureMap inMap, const pugi::xml_node& inNode, const FileSystem::Path& inBase)
+        void MeshGroup::setTexture(TextureMap inMap, const XmlNode& inNode, const FileSystem::Path& inBase)
         {
             AssetReference texture;
             texture.setFrom(inNode, inBase);
@@ -168,7 +144,7 @@ namespace Chicane
             m_textures[inMap] = texture;
         }
 
-        void MeshGroup::setTexture(const pugi::xml_node& inNode, const FileSystem::Path& inBase)
+        void MeshGroup::setTexture(const XmlNode& inNode, const FileSystem::Path& inBase)
         {
             setTexture(TextureMap::Base, inNode, inBase);
         }
@@ -178,7 +154,7 @@ namespace Chicane
             setTexture(TextureMap::Base, inSource, inReference);
         }
 
-        void MeshGroup::saveTextures(pugi::xml_node& outNode) const
+        void MeshGroup::saveTextures(XmlNode& outNode) const
         {
             if (Xml::isEmpty(outNode))
             {
@@ -194,7 +170,7 @@ namespace Chicane
                     continue;
                 }
 
-                pugi::xml_node textureNode = outNode.append_child(toString(map).toChar());
+                XmlNode textureNode = outNode.appendChild(toString(map).toChar());
                 texture.saveTo(textureNode);
             }
         }
@@ -214,7 +190,7 @@ namespace Chicane
             m_transform.setTransform(inTransform);
         }
 
-        void MeshGroup::setTransform(const pugi::xml_node& inNode)
+        void MeshGroup::setTransform(const XmlNode& inNode)
         {
             if (Xml::isEmpty(inNode))
             {
@@ -231,7 +207,7 @@ namespace Chicane
             m_transform.setTransform(transform);
         }
 
-        void MeshGroup::saveTransform(pugi::xml_node& outNode) const
+        void MeshGroup::saveTransform(XmlNode& outNode) const
         {
             if (Xml::isEmpty(outNode))
             {

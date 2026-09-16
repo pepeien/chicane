@@ -26,8 +26,8 @@ namespace Chicane
         public:
             bool isValid() const;
 
-            void saveTo(pugi::xml_node& outNode) const;
-            void setFrom(const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
+            void saveTo(XmlNode& outNode) const;
+            void setFrom(const XmlNode& inNode, const FileSystem::Path& inBase = {});
 
             const FileSystem::Path& getSource() const;
             void setSource(const FileSystem::Path& inValue);

@@ -11,7 +11,7 @@
 #include <unordered_map>
 
 #include <Chicane/Box.hpp>
-#include <Chicane/Box/Asset/Header.hpp>
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Asset/Preview.hpp>
 #include <Chicane/Core/Image.hpp>
 #include <Chicane/Core/Math/Mat/Mat4.hpp>
@@ -47,7 +47,7 @@ Program::Program()
     typeOption.bIsRequired = false;
     typeOption.name        = TYPE_OPTION_NAME;
     typeOption.description = TYPE_OPTION_DESCRIPTION;
-    typeOption.validValues = Chicane::Box::AssetHeader::getTypeTags();
+    typeOption.validValues = Chicane::Box::getTypeTags();
     addOption(typeOption);
 
     Chicane::ProgramOptionSetting outputOption;
@@ -154,7 +154,7 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
     const Chicane::FileSystem::Path&          output(inParam.getOption(OUTPUT_OPTION_NAME)->getValue());
     const Chicane::ProgramParam::Positionals& sources = inParam.getPositionals();
 
-    switch (Chicane::Box::AssetHeader::getTypeFromTag(typeOption->getValue()))
+    switch (Chicane::Box::getTypeFromTag(typeOption->getValue()))
     {
     case Chicane::Box::AssetType::Animation:
         createAnimation(id, sources, output);
@@ -231,7 +231,7 @@ void Program::createFont(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Font));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Font));
 
         output = location;
     }
@@ -258,7 +258,7 @@ void Program::createMesh(
     for (const Chicane::String& source : inSources)
     {
         const Chicane::FileSystem::Path path(source);
-        const Chicane::Box::AssetType   type = Chicane::Box::AssetHeader::getTypeFromExtension(path);
+        const Chicane::Box::AssetType   type = Chicane::Box::getTypeFromExtension(path);
 
         if (sources.find(type) == sources.end())
         {
@@ -268,7 +268,7 @@ void Program::createMesh(
         if (!Chicane::FileSystem::exists(path))
         {
             throw std::runtime_error(
-                "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(type) + "] reference file doesn't exist"
+                "The Mesh [" + Chicane::Box::getTypeTag(type) + "] reference file doesn't exist"
             );
         }
 
@@ -279,7 +279,7 @@ void Program::createMesh(
     if (models.empty())
     {
         throw std::runtime_error(
-            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) +
+            "The Mesh [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Model) +
             "] reference file is missing"
         );
     }
@@ -288,7 +288,7 @@ void Program::createMesh(
     if (textures.empty())
     {
         throw std::runtime_error(
-            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Texture) +
+            "The Mesh [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Texture) +
             "] reference file is missing"
         );
     }
@@ -298,7 +298,7 @@ void Program::createMesh(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Mesh));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Mesh));
 
         output = location;
     }
@@ -312,7 +312,7 @@ void Program::createMesh(
     if (modelGroups.empty())
     {
         throw std::runtime_error(
-            "The Mesh [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) +
+            "The Mesh [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Model) +
             "] groups are missing"
         );
     }
@@ -409,7 +409,7 @@ void Program::createModel(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Model));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model));
 
         output = location;
     }
@@ -434,7 +434,7 @@ void Program::createSky(
     for (const Chicane::String& source : inSources)
     {
         const Chicane::FileSystem::Path path(source);
-        const Chicane::Box::AssetType   type = Chicane::Box::AssetHeader::getTypeFromExtension(path);
+        const Chicane::Box::AssetType   type = Chicane::Box::getTypeFromExtension(path);
 
         if (sources.find(type) == sources.end())
         {
@@ -444,7 +444,7 @@ void Program::createSky(
         if (!Chicane::FileSystem::exists(path))
         {
             throw std::runtime_error(
-                "The Sky [" + Chicane::Box::AssetHeader::getTypeTag(type) + "] reference file doesn't exist"
+                "The Sky [" + Chicane::Box::getTypeTag(type) + "] reference file doesn't exist"
             );
         }
 
@@ -455,7 +455,7 @@ void Program::createSky(
     if (models.empty())
     {
         throw std::runtime_error(
-            "The Sky [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) +
+            "The Sky [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Model) +
             "] reference file is missing"
         );
     }
@@ -464,7 +464,7 @@ void Program::createSky(
     if (textures.empty())
     {
         throw std::runtime_error(
-            "The Sky [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Texture) +
+            "The Sky [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Texture) +
             "] reference files are missing"
         );
     }
@@ -474,7 +474,7 @@ void Program::createSky(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Sky));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sky));
 
         output = location;
     }
@@ -488,7 +488,7 @@ void Program::createSky(
     if (modelGroups.empty())
     {
         throw std::runtime_error(
-            "The Sky [" + Chicane::Box::AssetHeader::getTypeTag(Chicane::Box::AssetType::Model) + "] groups are missing"
+            "The Sky [" + Chicane::Box::getTypeTag(Chicane::Box::AssetType::Model) + "] groups are missing"
         );
     }
 
@@ -550,7 +550,7 @@ void Program::createTexture(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
 
         output = location;
     }
@@ -584,7 +584,7 @@ void Program::createSound(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Sound));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sound));
 
         output = location;
     }
@@ -606,7 +606,7 @@ void Program::createSkeleton(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Skeleton));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Skeleton));
 
         output = location;
     }
@@ -654,7 +654,7 @@ void Program::createEffect(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Effect));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Effect));
 
         output = location;
     }
@@ -687,7 +687,7 @@ void Program::createAnimation(
             continue;
         }
 
-        if (Chicane::Box::AssetHeader::getTypeFromExtension(path) == Chicane::Box::AssetType::Skeleton)
+        if (Chicane::Box::getTypeFromExtension(path) == Chicane::Box::AssetType::Skeleton)
         {
             skeleton = path;
         }
@@ -710,7 +710,7 @@ void Program::createAnimation(
     if (output.isEmpty())
     {
         Chicane::String location = inId;
-        location.append(Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation));
+        location.append(Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Animation));
 
         output = location;
     }
@@ -800,7 +800,7 @@ static Chicane::FileSystem::Path resolveOutputDirectory(const Chicane::FileSyste
     }
 
     if (inOutput.hasExtension() &&
-        Chicane::Box::AssetHeader::getTypeFromExtension(inOutput) != Chicane::Box::AssetType::Undefined)
+        Chicane::Box::getTypeFromExtension(inOutput) != Chicane::Box::AssetType::Undefined)
     {
         const Chicane::FileSystem::Path parent = inOutput.parent();
 
@@ -851,7 +851,7 @@ void Program::createFromGltf(
     std::filesystem::create_directories(directory.toStandard());
 
     const Chicane::FileSystem::Path modelPath =
-        directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Model));
+        directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model));
     createModel(id, {inSource.toString()}, modelPath);
     logGenerated(modelPath);
 
@@ -878,13 +878,13 @@ void Program::createFromGltf(
         if (i == 0)
         {
             texture.path =
-                directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+                directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
             texture.id = id;
         }
         else
         {
             texture.path =
-                directory / id / (name + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+                directory / id / (name + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
             texture.id = id + "/" + name;
         }
 
@@ -937,7 +937,7 @@ void Program::createFromGltf(
         const std::array<unsigned char, 4> pixel = {255, 255, 255, 255};
         const Chicane::Image               image(pixel.data(), 1, 1, 4, 4);
         const Chicane::FileSystem::Path    path =
-            directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Texture));
+            directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
 
         ensureParent(path);
 
@@ -963,7 +963,7 @@ void Program::createFromGltf(
     if (Chicane::Box::SkeletonGltf::hasSkin(inSource) || !animationNames.empty())
     {
         skeletonPath =
-            directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Skeleton));
+            directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Skeleton));
         createSkeleton(id, {inSource.toString()}, skeletonPath);
         logGenerated(skeletonPath);
     }
@@ -1011,9 +1011,9 @@ void Program::createFromGltf(
             const Chicane::String     animId = sanitizeName(animationNames[i]);
             Chicane::FileSystem::Path animPath =
                 animationNames.size() == 1
-                    ? directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation))
+                    ? directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Animation))
                     : directory / id /
-                          (animId + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Animation));
+                          (animId + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Animation));
 
             ensureParent(animPath);
 
@@ -1029,7 +1029,7 @@ void Program::createFromGltf(
     }
 
     const Chicane::FileSystem::Path meshPath =
-        directory / (id + Chicane::Box::AssetHeader::getTypeExtension(Chicane::Box::AssetType::Mesh));
+        directory / (id + Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Mesh));
     ensureParent(meshPath);
 
     Chicane::Box::Mesh asset(meshPath);
@@ -1154,12 +1154,12 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
 
     auto bakeOne = [](const Chicane::FileSystem::Path& inPath)
     {
-        if (!Chicane::Box::AssetHeader::isFileAsset(inPath))
+        if (!Chicane::Box::isFileAsset(inPath))
         {
             return;
         }
 
-        if (Chicane::Box::AssetHeader::getTypeFromExtension(inPath) == Chicane::Box::AssetType::Texture)
+        if (Chicane::Box::getTypeFromExtension(inPath) == Chicane::Box::AssetType::Texture)
         {
             try
             {

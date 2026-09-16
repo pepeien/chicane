@@ -43,23 +43,23 @@ namespace Chicane
             void setBone(const String& inBone);
 
             const AssetReference& getModel() const;
-            void setModel(const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
+            void setModel(const XmlNode& inNode, const FileSystem::Path& inBase = {});
             void setModel(const String& inSource, const String& inReference);
 
             const TextureMaps& getTextures() const;
             bool hasTexture(TextureMap inMap) const;
             const AssetReference& getTexture(TextureMap inMap = TextureMap::Base) const;
-            void setTexture(TextureMap inMap, const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
+            void setTexture(TextureMap inMap, const XmlNode& inNode, const FileSystem::Path& inBase = {});
             void setTexture(TextureMap inMap, const String& inSource, const String& inReference);
-            void setTexture(const pugi::xml_node& inNode, const FileSystem::Path& inBase = {});
+            void setTexture(const XmlNode& inNode, const FileSystem::Path& inBase = {});
             void setTexture(const String& inSource, const String& inReference);
-            void saveTextures(pugi::xml_node& outNode) const;
+            void saveTextures(XmlNode& outNode) const;
 
             const Transform& getTransform() const;
             const Mat4& getModelMatrix() const;
             void setTransform(const Transform& inTransform);
-            void setTransform(const pugi::xml_node& inNode);
-            void saveTransform(pugi::xml_node& outNode) const;
+            void setTransform(const XmlNode& inNode);
+            void saveTransform(XmlNode& outNode) const;
 
             float getEmissiveStrength() const;
             void setEmissiveStrength(float inValue);

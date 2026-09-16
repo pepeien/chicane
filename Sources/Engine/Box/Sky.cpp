@@ -45,14 +45,14 @@ namespace Chicane
 
         void Sky::addTexture(const String& inSource, const String& inReference)
         {
-            pugi::xml_node textures = getXML().child(TEXTURES_TAG);
+            XmlNode textures = getXML().getChild(TEXTURES_TAG);
 
             if (textures.empty())
             {
-                textures = getXML().append_child(TEXTURES_TAG);
+                textures = getXML().appendChild(TEXTURES_TAG);
             }
 
-            pugi::xml_node node = textures.append_child(Texture::TAG);
+            XmlNode node = textures.appendChild(Texture::TAG);
 
             AssetReference texture;
             texture.setSource(inSource);
@@ -81,11 +81,11 @@ namespace Chicane
 
         void Sky::setModel(const String& inSource, const String& inReference)
         {
-            pugi::xml_node model = getXML().child(Model::TAG);
+            XmlNode model = getXML().getChild(Model::TAG);
 
             if (model.empty())
             {
-                model = getXML().append_child(Model::TAG);
+                model = getXML().appendChild(Model::TAG);
             }
 
             m_model.setSource(inSource);
@@ -95,14 +95,14 @@ namespace Chicane
 
         void Sky::fetchTextures()
         {
-            const pugi::xml_node textures = getXML().child(TEXTURES_TAG);
+            const XmlNode textures = getXML().getChild(TEXTURES_TAG);
 
             if (textures.empty())
             {
                 return;
             }
 
-            for (const pugi::xml_node& node : textures.children(Texture::TAG))
+            for (const XmlNode& node : textures.getChildren(Texture::TAG))
             {
                 AssetReference texture;
                 texture.setFrom(node, getFilepath());
@@ -113,7 +113,7 @@ namespace Chicane
 
         void Sky::fetchModel()
         {
-            const pugi::xml_node model = getXML().child(Model::TAG);
+            const XmlNode model = getXML().getChild(Model::TAG);
 
             if (model.empty())
             {

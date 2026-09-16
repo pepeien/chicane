@@ -4,13 +4,14 @@
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
 
+#include "Chicane/Core/Serializable.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX Asset
+        class CHICANE_BOX Asset : public Serializable
         {
         public:
             static constexpr inline const char*         TAG       = "Asset";
@@ -44,22 +45,23 @@ namespace Chicane
             AssetType getType() const;
             void setType(AssetType inType);
 
-            pugi::xml_node getXML() const;
+            XmlNode getXML() const;
             String getPayload() const;
             bool setPayload(const String& inData);
             void saveXML();
 
+            void syncProperties() override;
+
         protected:
-            pugi::xml_attribute getAttribute(const String& inId);
-            void setAttribute(const String& inId, const String& inData);
+            String getXmlAttribute(const String& inId) const;
+            void setXmlAttribute(const String& inId, const String& inData);
 
         private:
             void createXML(const FileSystem::Path& inFilepath);
             void fetchXML(const FileSystem::Path& inFilepath);
 
         protected:
-            AssetHeader        m_header;
-            pugi::xml_document m_xml;
+            AssetHeader m_header;
         };
     }
 }

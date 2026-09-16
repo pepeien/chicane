@@ -30,14 +30,13 @@ namespace Chicane
 
         bool Asset::isXMLEmpty() const
         {
-            pugi::xml_node root = getXML();
-
+            const XmlNode root = getXML();
             if (Xml::isEmpty(root))
             {
                 return true;
             }
 
-            return root.first_child() == root.last_child() && Xml::isEmpty(root.first_child());
+            return root.getFirstChild() == root.getLastChild() && Xml::isEmpty(root.getFirstChild());
         }
 
         const AssetHeader& Asset::getHeader() const
@@ -61,6 +60,7 @@ namespace Chicane
         void Asset::setFilepath(const FileSystem::Path& inFilepath)
         {
             m_header.filepath = inFilepath;
+            Serializable::setFilepath(inFilepath);
         }
 
         std::uint32_t Asset::getVersion() const
@@ -76,8 +76,7 @@ namespace Chicane
             }
 
             m_header.version = inVersion;
-
-            getXML().attribute(VERSION_ATTRIBUTE_NAME).set_value(inVersion);
+            setAttribute(VERSION_ATTRIBUTE_NAME, String::sprint("%u", inVersion));
         }
 
         const String& Asset::getId() const
@@ -93,7 +92,6 @@ namespace Chicane
             }
 
             m_header.id = inId;
-
             setAttribute(ID_ATTRIBUTE_NAME, m_header.id);
         }
 
@@ -109,60 +107,74 @@ namespace Chicane
 
         void Asset::saveXML()
         {
-            Xml::save(m_xml, getFilepath());
+            save(getFilepath());
         }
 
-        pugi::xml_attribute Asset::getAttribute(const String& inId)
+        void Asset::syncProperties()
         {
-            return getXML().attribute(inId.toStandard());
+            Serializable::syncProperties();
+
+            if (hasAttribute(VERSION_ATTRIBUTE_NAME))
+            {
+                const std::uint32_t version = getUint(VERSION_ATTRIBUTE_NAME, m_header.version);
+                if (version > 0)
+                {
+                    m_header.version = version;
+                }
+            }
+
+            if (hasAttribute(ID_ATTRIBUTE_NAME))
+            {
+                const String id = getString(ID_ATTRIBUTE_NAME, m_header.id);
+                if (!id.isEmpty())
+                {
+                    m_header.id = id;
+                }
+            }
         }
 
-        void Asset::setAttribute(const String& inId, const String& inData)
+        String Asset::getXmlAttribute(const String& inId) const
+        {
+            return getAttribute(inId);
+        }
+
+        void Asset::setXmlAttribute(const String& inId, const String& inData)
         {
             if (inId.isEmpty() || inData.isEmpty())
             {
                 return;
             }
 
-            const String id = inId.trim();
-
-            pugi::xml_attribute attribute = getAttribute(inId);
-
-            if (attribute.empty())
-            {
-                attribute = getXML().append_attribute(id.toStandard());
-            }
-
-            attribute.set_value(inData.toChar());
+            setAttribute(inId.trim(), inData);
         }
 
-        pugi::xml_node Asset::getXML() const
+        XmlNode Asset::getXML() const
         {
-            return m_xml.first_child();
+            return getSource();
         }
 
         String Asset::getPayload() const
         {
-            const pugi::xml_node root = getXML();
-            if (root.empty())
+            const XmlNode root = getXML();
+            if (root.isEmpty())
             {
                 return "";
             }
 
-            const pugi::xml_node value = root.child(VALUE_TAG);
-            if (!value.empty())
+            const XmlNode value = root.getChild(VALUE_TAG);
+            if (!value.isEmpty())
             {
-                return value.text().as_string();
+                return value.getText();
             }
 
-            for (pugi::xml_node child = root.first_child(); child; child = child.next_sibling())
+            for (XmlNode child = root.getFirstChild(); child; child = child.getNextSibling())
             {
-                if (child.type() != pugi::node_pcdata && child.type() != pugi::node_cdata)
+                if (!child.isText() && !child.isCData())
                 {
                     continue;
                 }
 
-                const String text = child.value();
+                const String text = child.getValue();
                 if (text.trim().isEmpty())
                 {
                     continue;
@@ -176,63 +188,60 @@ namespace Chicane
 
         bool Asset::setPayload(const String& inData)
         {
-            pugi::xml_node root = getXML();
-            if (root.empty())
+            XmlNode root = getXML();
+            if (root.isEmpty())
             {
                 return false;
             }
 
-            for (pugi::xml_node child = root.first_child(); child;)
+            for (XmlNode child = root.getFirstChild(); child;)
             {
-                pugi::xml_node next = child.next_sibling();
-                if (child.type() == pugi::node_pcdata || child.type() == pugi::node_cdata)
+                XmlNode next = child.getNextSibling();
+                if (child.isText() || child.isCData())
                 {
-                    root.remove_child(child);
+                    root.removeChild(child);
                 }
 
                 child = next;
             }
 
-            pugi::xml_node value = root.child(VALUE_TAG);
-            if (value.empty())
+            XmlNode value = root.getChild(VALUE_TAG);
+            if (value.isEmpty())
             {
-                value = root.append_child(VALUE_TAG);
+                value = root.appendChild(VALUE_TAG);
             }
 
-            return value.text().set(inData.toChar(), inData.size());
+            value.setText(inData);
+
+            return true;
         }
 
         void Asset::createXML(const FileSystem::Path& inFilepath)
         {
-            if (inFilepath.isEmpty() || !m_xml.children().empty())
+            if (inFilepath.isEmpty() || !m_document.isEmpty())
             {
                 return;
             }
 
-            pugi::xml_node root = m_xml.append_child(TAG);
-
-            root.append_attribute(VERSION_ATTRIBUTE_NAME).set_value(CURRENT_VERSION);
-
+            createRoot(TAG);
+            setAttribute(VERSION_ATTRIBUTE_NAME, String::sprint("%u", CURRENT_VERSION));
             setFilepath(inFilepath);
         }
 
         void Asset::fetchXML(const FileSystem::Path& inFilepath)
         {
-            m_xml = Xml::load(inFilepath);
+            load(inFilepath);
 
-            pugi::xml_node root = getXML();
+            const XmlNode root = getXML();
 
-            bool bIsRoot  = root.parent() == root.root();
-            bool bIsAlone = bIsRoot && !root.next_sibling();
-
+            const bool bIsRoot  = root.getParent() == root.getRoot();
+            const bool bIsAlone = bIsRoot && root.getNextSibling().isEmpty();
             if (!bIsRoot || !bIsAlone)
             {
                 throw std::runtime_error("Asset files root element must not have any siblings");
             }
 
-            const String name = root.name();
-
-            if (!name.equals(TAG))
+            if (!root.getName().equals(TAG))
             {
                 throw std::runtime_error(
                     String::sprint("Asset files root element must be have [%s] as a tag", TAG).toStandard()

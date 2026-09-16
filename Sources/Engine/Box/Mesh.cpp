@@ -31,14 +31,14 @@ namespace Chicane
 
         void Mesh::setGroups(const std::vector<MeshGroup>& inGroups)
         {
-            pugi::xml_node root = getXML();
-            for (pugi::xml_node child = root.first_child(); child;)
+            XmlNode root = getXML();
+            for (XmlNode child = root.getFirstChild(); child;)
             {
-                pugi::xml_node next = child.next_sibling();
-                const String   name = child.name();
+                XmlNode next = child.getNextSibling();
+                const String   name = child.getName();
                 if (!name.equals(AssetPreview::TAG) && !name.equals(Skeleton::TAG) && !name.equals(Animation::TAG))
                 {
-                    root.remove_child(child);
+                    root.removeChild(child);
                 }
 
                 child = next;
@@ -59,33 +59,38 @@ namespace Chicane
 
             String id = inGroup.getId();
 
-            pugi::xml_node root = getXML();
+            XmlNode root = getXML();
 
-            if (!Xml::isEmpty(root.find_child_by_attribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar())))
+            if (!Xml::isEmpty(root.findChildByAttribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar())))
             {
                 throw std::runtime_error("A group with the ID " + inGroup.getId().toStandard() + " already exists");
             }
 
-            pugi::xml_node groupNode = root.append_child(MeshGroup::TAG);
-            groupNode.append_attribute(MeshGroup::ID_ATTRIBUTE_NAME).set_value(id.toStandard());
+            XmlNode groupNode = root.appendChild(MeshGroup::TAG);
+            groupNode.setAttribute(MeshGroup::ID_ATTRIBUTE_NAME, id);
             if (!inGroup.getBone().isEmpty())
             {
-                groupNode.append_attribute(MeshGroup::BONE_ATTRIBUTE_NAME).set_value(inGroup.getBone().toStandard());
+                groupNode.setAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, inGroup.getBone());
             }
 
             if (inGroup.getEmissiveStrength() != 1.0f)
             {
-                groupNode.append_attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME)
-                    .set_value(inGroup.getEmissiveStrength());
+                groupNode.setAttribute(
+                    MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME,
+                    String::sprint("%g", inGroup.getEmissiveStrength())
+                );
             }
 
             if (inGroup.getTileSize() > 0.0f)
             {
-                groupNode.append_attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME).set_value(inGroup.getTileSize());
+                groupNode.setAttribute(
+                    MeshGroup::TILE_SIZE_ATTRIBUTE_NAME,
+                    String::sprint("%g", inGroup.getTileSize())
+                );
             }
 
             // Model
-            pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
+            XmlNode modelNode = groupNode.appendChild(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
             // Textures
@@ -117,8 +122,8 @@ namespace Chicane
 
             String id = inGroup.getId();
 
-            pugi::xml_node root           = getXML();
-            pugi::xml_node foundGroupNode = root.find_child_by_attribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar());
+            XmlNode root           = getXML();
+            XmlNode foundGroupNode = root.findChildByAttribute(MeshGroup::ID_ATTRIBUTE_NAME, id.toChar());
 
             if (Xml::isEmpty(foundGroupNode))
             {
@@ -127,62 +132,41 @@ namespace Chicane
                 return;
             }
 
-            pugi::xml_attribute boneAttribute = foundGroupNode.attribute(MeshGroup::BONE_ATTRIBUTE_NAME);
             if (inGroup.getBone().isEmpty())
             {
-                if (!boneAttribute.empty())
-                {
-                    foundGroupNode.remove_attribute(boneAttribute);
-                }
-            }
-            else if (boneAttribute.empty())
-            {
-                foundGroupNode.append_attribute(MeshGroup::BONE_ATTRIBUTE_NAME)
-                    .set_value(inGroup.getBone().toStandard());
+                foundGroupNode.removeAttribute(MeshGroup::BONE_ATTRIBUTE_NAME);
             }
             else
             {
-                boneAttribute.set_value(inGroup.getBone().toStandard());
+                foundGroupNode.setAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, inGroup.getBone());
             }
 
-            pugi::xml_attribute strengthAttribute =
-                foundGroupNode.attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME);
             if (inGroup.getEmissiveStrength() == 1.0f)
             {
-                if (!strengthAttribute.empty())
-                {
-                    foundGroupNode.remove_attribute(strengthAttribute);
-                }
-            }
-            else if (strengthAttribute.empty())
-            {
-                foundGroupNode.append_attribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME)
-                    .set_value(inGroup.getEmissiveStrength());
+                foundGroupNode.removeAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME);
             }
             else
             {
-                strengthAttribute.set_value(inGroup.getEmissiveStrength());
+                foundGroupNode.setAttribute(
+                    MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME,
+                    String::sprint("%g", inGroup.getEmissiveStrength())
+                );
             }
 
-            pugi::xml_attribute tileSizeAttribute = foundGroupNode.attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME);
             if (inGroup.getTileSize() <= 0.0f)
             {
-                if (!tileSizeAttribute.empty())
-                {
-                    foundGroupNode.remove_attribute(tileSizeAttribute);
-                }
-            }
-            else if (tileSizeAttribute.empty())
-            {
-                foundGroupNode.append_attribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME).set_value(inGroup.getTileSize());
+                foundGroupNode.removeAttribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME);
             }
             else
             {
-                tileSizeAttribute.set_value(inGroup.getTileSize());
+                foundGroupNode.setAttribute(
+                    MeshGroup::TILE_SIZE_ATTRIBUTE_NAME,
+                    String::sprint("%g", inGroup.getTileSize())
+                );
             }
 
             // Model
-            pugi::xml_node modelNode = foundGroupNode.child(Model::TAG);
+            XmlNode modelNode = foundGroupNode.getChild(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
             // Textures
@@ -222,7 +206,7 @@ namespace Chicane
                 return;
             }
 
-            const pugi::xml_node skeletonNode = getXML().child(Skeleton::TAG);
+            const XmlNode skeletonNode = getXML().getChild(Skeleton::TAG);
             if (Xml::isEmpty(skeletonNode))
             {
                 return;
@@ -233,11 +217,11 @@ namespace Chicane
 
         void Mesh::writeSkeleton()
         {
-            pugi::xml_node root         = getXML();
-            pugi::xml_node skeletonNode = root.child(Skeleton::TAG);
+            XmlNode root         = getXML();
+            XmlNode skeletonNode = root.getChild(Skeleton::TAG);
             if (Xml::isEmpty(skeletonNode))
             {
-                skeletonNode = root.prepend_child(Skeleton::TAG);
+                skeletonNode = root.prependChild(Skeleton::TAG);
             }
 
             m_skeleton.saveTo(skeletonNode);
@@ -294,9 +278,9 @@ namespace Chicane
                 return;
             }
 
-            for (const pugi::xml_node& child : getXML().children())
+            for (const XmlNode& child : getXML().getChildren())
             {
-                if (!String(child.name()).equals(Animation::TAG))
+                if (!String(child.getName()).equals(Animation::TAG))
                 {
                     continue;
                 }
@@ -314,23 +298,23 @@ namespace Chicane
 
         void Mesh::writeAnimations()
         {
-            pugi::xml_node root = getXML();
-            for (pugi::xml_node child = root.first_child(); child;)
+            XmlNode root = getXML();
+            for (XmlNode child = root.getFirstChild(); child;)
             {
-                pugi::xml_node next = child.next_sibling();
-                if (String(child.name()).equals(Animation::TAG))
+                XmlNode next = child.getNextSibling();
+                if (String(child.getName()).equals(Animation::TAG))
                 {
-                    root.remove_child(child);
+                    root.removeChild(child);
                 }
 
                 child = next;
             }
 
-            pugi::xml_node after = root.child(Skeleton::TAG);
+            XmlNode after = root.getChild(Skeleton::TAG);
             for (const AssetReference& animation : m_animations)
             {
-                pugi::xml_node animationNode =
-                    after ? root.insert_child_after(Animation::TAG, after) : root.prepend_child(Animation::TAG);
+                XmlNode animationNode =
+                    after ? root.insertChildAfter(Animation::TAG, after) : root.prependChild(Animation::TAG);
                 animation.saveTo(animationNode);
                 after = animationNode;
             }
@@ -343,9 +327,9 @@ namespace Chicane
                 return;
             }
 
-            for (const auto& groupNode : getXML().children())
+            for (const auto& groupNode : getXML().getChildren())
             {
-                const String name = groupNode.name();
+                const String name = groupNode.getName();
 
                 if (!name.equals(MeshGroup::TAG))
                 {
@@ -353,17 +337,17 @@ namespace Chicane
                 }
 
                 MeshGroup group;
-                group.setId(Xml::getAttribute(MeshGroup::ID_ATTRIBUTE_NAME, groupNode).as_string());
-                group.setBone(Xml::getAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, groupNode).as_string());
+                group.setId(Xml::getAttribute(MeshGroup::ID_ATTRIBUTE_NAME, groupNode));
+                group.setBone(Xml::getAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, groupNode));
                 group.setEmissiveStrength(
-                    Xml::getAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, groupNode).as_float(1.0f)
+                    groupNode.parseFloat(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, 1.0f)
                 );
-                group.setTileSize(Xml::getAttribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME, groupNode).as_float(0.0f));
+                group.setTileSize(groupNode.parseFloat(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME, 0.0f));
                 group.setTransform(groupNode);
 
-                for (const auto& assetNode : groupNode.children())
+                for (const auto& assetNode : groupNode.getChildren())
                 {
-                    const String currentTag = assetNode.name();
+                    const String currentTag = assetNode.getName();
 
                     if (currentTag.equals(Model::TAG))
                     {

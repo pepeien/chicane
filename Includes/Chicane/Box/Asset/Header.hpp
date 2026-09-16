@@ -13,24 +13,12 @@ namespace Chicane
         struct CHICANE_BOX AssetHeader
         {
         public:
-            static bool isFileAsset(const FileSystem::Path& inFilepath);
-
-            static AssetType getTypeFromExtension(const FileSystem::Path& inFilepath);
-            static AssetType getTypeFromTag(const String& inValue);
-
-            static std::vector<String> getTypeTags();
-            static const String& getTypeTag(AssetType inValue);
-
-            static std::vector<String> getTypeExtensions();
-            static const String& getTypeExtension(AssetType inValue);
-
-        public:
             AssetHeader(const FileSystem::Path& inFilepath);
             AssetHeader();
 
         private:
-            void fetchVersion(const pugi::xml_node& inRoot);
-            void fetchId(const pugi::xml_node& inRoot);
+            void fetchVersion(const XmlNode& inRoot);
+            void fetchId(const XmlNode& inRoot);
             void fetchType();
 
         public:
@@ -44,7 +32,7 @@ namespace Chicane
         {
             AssetHeader header;
             header.filepath = inFilepath;
-            header.type     = AssetHeader::getTypeFromExtension(inFilepath);
+            header.type     = getTypeFromExtension(inFilepath);
 
             return header;
         }

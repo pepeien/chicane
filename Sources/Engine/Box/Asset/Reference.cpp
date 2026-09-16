@@ -14,16 +14,16 @@ namespace Chicane
             return FileSystem::exists(m_source);
         }
 
-        void AssetReference::saveTo(pugi::xml_node& outNode) const
+        void AssetReference::saveTo(XmlNode& outNode) const
         {
             Xml::addAttribute(outNode, ASSET_SOURCE_ATTRIBUTE_NAME, FileSystem::rootRelative(getSource()).toString());
             Xml::addText(outNode, getReference());
         }
 
-        void AssetReference::setFrom(const pugi::xml_node& inNode, const FileSystem::Path& inBase)
+        void AssetReference::setFrom(const XmlNode& inNode, const FileSystem::Path& inBase)
         {
-            setSource(FileSystem::resolve(Xml::getAttribute(ASSET_SOURCE_ATTRIBUTE_NAME, inNode).as_string(), inBase));
-            setReference(inNode.child_value());
+            setSource(FileSystem::resolve(Xml::getAttribute(ASSET_SOURCE_ATTRIBUTE_NAME, inNode), inBase));
+            setReference(inNode.getText());
         }
 
         const FileSystem::Path& AssetReference::getSource() const

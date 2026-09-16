@@ -115,10 +115,10 @@ namespace Chicane
                 const Vertex::Indices&              inIndices,
                 const std::vector<Image::Instance>& inFaces
             );
-            static bool write(pugi::xml_node inRoot, AssetType inType, const Image& inImage);
+            static bool write(XmlNode inRoot, AssetType inType, const Image& inImage);
             static bool bake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage);
             static std::unique_ptr<AssetPreview> read(const FileSystem::Path& inAsset);
-            static std::unique_ptr<AssetPreview> read(const pugi::xml_node& inRoot);
+            static std::unique_ptr<AssetPreview> read(const XmlNode& inRoot);
 
         public:
             AssetPreview() = default;
