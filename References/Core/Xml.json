@@ -10,25 +10,10 @@
                 "name": "Attributes",
                 "type": {
                     "prefix": "",
-                    "name": "std::unordered_map",
+                    "name": "XmlNode::Attributes",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Xml/Node",
+                    "templates": []
                 },
                 "description": "CHICANE_XML_ATTRIBUTES_DESCRIPTION"
             }
@@ -52,9 +37,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_document",
+                            "name": "XmlDocument",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Document",
                             "templates": []
                         },
                         "name": "inDocument"
@@ -78,9 +63,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -104,9 +89,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_document",
+                            "name": "XmlDocument",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Document",
                             "templates": []
                         },
                         "name": "inDocument"
@@ -130,9 +115,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "pugi::xml_document",
+                    "name": "XmlDocument",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Xml/Document",
                     "templates": []
                 },
                 "name": "load",
@@ -166,9 +151,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -182,9 +167,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "pugi::xml_attribute",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getAttribute",
@@ -202,9 +187,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "inNode"
@@ -228,9 +213,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "outNode"
@@ -274,9 +259,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "pugi::xml_node",
+                            "name": "XmlNode",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/Xml/Node",
                             "templates": []
                         },
                         "name": "outNode"
@@ -294,6 +279,498 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_XML_ADDTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseFloat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEFLOAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseBool",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEBOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseInt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseUint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEUINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "parseVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "parseColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSECOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseFloat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEFLOAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseBool",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEBOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseUint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEUINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "parseString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSESTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "parseVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSEVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "parseColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_PARSECOLOR_DESCRIPTION"
             }
         ],
         "members": [],

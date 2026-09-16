@@ -1,0 +1,374 @@
+{
+    "title": "Document",
+    "filename": "Document",
+    "path": "Core/Xml/Document",
+    "source": {
+        "header": "Includes/Chicane/Core/Xml/Document.hpp",
+        "namespace": "Chicane::XmlDocument",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "XmlDocument",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_XMLDOCUMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "XmlDocument",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_XMLDOCUMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "XmlDocument",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_XMLDOCUMENT_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~XmlDocument",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_~XMLDOCUMENT_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "class",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "XmlNode",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_XMLNODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlDocument",
+                    "suffix": "&",
+                    "path": "Core/Xml/Document",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlDocument",
+                    "suffix": "&",
+                    "path": "Core/Xml/Document",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator bool",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_OPERATOR BOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlNode",
+                    "suffix": "",
+                    "path": "Core/Xml/Node",
+                    "templates": []
+                },
+                "name": "getFirstChild",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_GETFIRSTCHILD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlNode",
+                    "suffix": "",
+                    "path": "Core/Xml/Node",
+                    "templates": []
+                },
+                "name": "appendChild",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_APPENDCHILD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlNode",
+                    "suffix": "",
+                    "path": "Core/Xml/Node",
+                    "templates": []
+                },
+                "name": "appendCopy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_APPENDCOPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XMLDOCUMENT_LOADBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "save",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_SAVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlDocument",
+                    "suffix": "",
+                    "path": "Core/Xml/Document",
+                    "templates": []
+                },
+                "name": "load",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_LOAD_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Impl",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_impl",
+                "description": "CHICANE_XMLDOCUMENT_M_IMPL_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_XMLDOCUMENT_DESCRIPTION"
+    },
+    "children": []
+}

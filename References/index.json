@@ -2605,6 +2605,23 @@
                 ]
             },
             {
+                "title": "Serializable",
+                "filename": "Serializable",
+                "path": "Core/Serializable",
+                "source": {
+                    "header": "Includes/Chicane/Core/Serializable.hpp",
+                    "namespace": "Chicane::Serializable",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
                 "title": "Size",
                 "filename": "Size",
                 "path": "Core/Size",
@@ -3019,12 +3036,12 @@
                 },
                 "children": [
                     {
-                        "title": "Writer",
-                        "filename": "Writer",
-                        "path": "Core/Xml/Writer",
+                        "title": "Document",
+                        "filename": "Document",
+                        "path": "Core/Xml/Document",
                         "source": {
-                            "header": "Includes/Chicane/Core/Xml/Writer.hpp",
-                            "namespace": "Chicane::Xml::Writer",
+                            "header": "Includes/Chicane/Core/Xml/Document.hpp",
+                            "namespace": "Chicane::XmlDocument",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -3034,6 +3051,41 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "Node",
+                        "filename": "Node",
+                        "path": "Core/Xml/Node",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Xml/Node.hpp",
+                            "namespace": "Chicane::XmlNode",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Type",
+                                "filename": "Type",
+                                "path": "Core/Xml/Node/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Xml/Node/Type.hpp",
+                                    "namespace": "Chicane::XmlNodeType",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             }
