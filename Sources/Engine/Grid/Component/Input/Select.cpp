@@ -11,7 +11,7 @@ namespace Chicane
     {
         constexpr std::size_t INVALID_HIGHLIGHT = static_cast<std::size_t>(-1);
 
-        InputSelect::InputSelect(const pugi::xml_node& inNode)
+        InputSelect::InputSelect(const XmlNode& inNode)
             : Container(inNode),
               value(String::empty()),
               label(String::empty()),

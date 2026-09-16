@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Window::Window(const pugi::xml_node& inNode)
+        Window::Window(const XmlNode& inNode)
             : Container(inNode),
               bIsVisible(true),
               hasTitle(false),
@@ -137,8 +137,8 @@ namespace Chicane
 
         void Window::setGrabbable(bool inValue)
         {
-            m_bIsGrabbable                            = inValue;
-            m_attributes[IS_GRABBABLE_ATTRIBUTE_NAME] = inValue ? "true" : "false";
+            m_bIsGrabbable = inValue;
+            setAttribute(IS_GRABBABLE_ATTRIBUTE_NAME, inValue ? "true" : "false");
         }
 
         bool Window::hasAssignedHandle() const

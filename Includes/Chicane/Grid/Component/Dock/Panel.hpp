@@ -52,7 +52,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            DockPanel(const pugi::xml_node& inNode);
+            DockPanel(const XmlNode& inNode);
 
             ~DockPanel() override;
 

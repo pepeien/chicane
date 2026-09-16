@@ -27,7 +27,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            InputSlider(const pugi::xml_node& inNode);
+            InputSlider(const XmlNode& inNode);
 
         public:
             bool isFocusable() const override;

@@ -29,11 +29,11 @@ namespace Chicane
 
         CHICANE_RUNTIME const ReflectionTypeInfo* findType(const String& inTag);
 
-        CHICANE_RUNTIME void applyAttributes(Object& inObject, const pugi::xml_node& inNode);
+        CHICANE_RUNTIME void applyAttributes(Object& inObject, const XmlNode& inNode);
         CHICANE_RUNTIME bool applyField(Object& inObject, const String& inName, const String& inValue);
 
-        CHICANE_RUNTIME Actor* spawnActor(Scene& inScene, const pugi::xml_node& inNode);
-        CHICANE_RUNTIME Component* spawnComponent(Scene& inScene, const pugi::xml_node& inNode, Object* inParent);
+        CHICANE_RUNTIME Actor* spawnActor(Scene& inScene, const XmlNode& inNode);
+        CHICANE_RUNTIME Component* spawnComponent(Scene& inScene, const XmlNode& inNode, Object* inParent);
 
         CHICANE_RUNTIME void open(Scene& inScene, const FileSystem::Path& inFilepath);
         CHICANE_RUNTIME void save(const Scene& inScene, const FileSystem::Path& inFilepath);

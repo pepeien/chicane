@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Image::Image(const pugi::xml_node& inNode)
+        Image::Image(const XmlNode& inNode)
             : Container(inNode),
               src(""),
               playbackRate(1.0f),

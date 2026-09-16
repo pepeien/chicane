@@ -84,7 +84,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Svg(const pugi::xml_node& inNode);
+            Svg(const XmlNode& inNode);
 
             ~Svg() override;
 

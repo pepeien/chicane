@@ -25,7 +25,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Icon(const pugi::xml_node& inNode);
+            Icon(const XmlNode& inNode);
 
         protected:
             void onRefresh() override;

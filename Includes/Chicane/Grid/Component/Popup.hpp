@@ -22,7 +22,7 @@ namespace Chicane
             static constexpr inline const char* IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
 
         public:
-            inline Popup(const pugi::xml_node& inNode)
+            inline Popup(const XmlNode& inNode)
                 : Component(inNode)
             {}
         };

@@ -22,17 +22,18 @@ namespace Chicane
             static constexpr inline const char* TEXTURE_ATTRIBUTE_NAME = "texture";
 
             // Values
-            static constexpr inline const char* BLEND_TYPE_ADDITIVE       = "Additive";
-            static constexpr inline const char* BLEND_TYPE_ADD            = "Add";
-            static constexpr inline const char* BLEND_TYPE_ADDITIVE_LOWER = "additive";
-            static constexpr inline const float BLEND_ADDITIVE_VALUE      = 1.0f;
-            static constexpr inline const float BLEND_ALPHA_VALUE         = 0.0f;
+            static constexpr inline const char* BLEND_TYPE_ADDITIVE  = "Additive";
+            static constexpr inline const float BLEND_ADDITIVE_VALUE = 1.0f;
+            static constexpr inline const float BLEND_ALPHA_VALUE    = 0.0f;
 
         public:
             CH_CONSTRUCTOR()
-            RendererSprite(const pugi::xml_node& inNode);
+            RendererSprite(const XmlNode& inNode);
 
             RendererSprite();
+
+        public:
+            void refresh() override;
 
         public:
             void collect(

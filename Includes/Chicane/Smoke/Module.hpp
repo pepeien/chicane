@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Serializable.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Smoke.hpp"
@@ -15,19 +16,19 @@ namespace Chicane
     namespace Smoke
     {
         CH_TYPE(Manual)
-        class CHICANE_SMOKE Module
+        class CHICANE_SMOKE Module : public Serializable
         {
         public:
             using List = std::vector<std::unique_ptr<Module>>;
 
         public:
-            static Module* create(const pugi::xml_node& inNode);
+            static Module* create(const XmlNode& inNode);
 
         public:
             Module();
 
             CH_CONSTRUCTOR()
-            Module(const pugi::xml_node& inNode);
+            Module(const XmlNode& inNode);
 
             virtual ~Module();
 
@@ -36,6 +37,8 @@ namespace Chicane
             virtual void collect(
                 const Particle::List& inParticles, const PlayInfo& inPlay, Particle::List& outDraws
             ) const;
+
+            void syncProperties() override;
 
             const String& getTag() const;
 

@@ -7,11 +7,11 @@ namespace Chicane
 {
     namespace Grid
     {
-        InputSelectOption::InputSelectOption(const pugi::xml_node& inNode)
+        InputSelectOption::InputSelectOption(const XmlNode& inNode)
             : Button(inNode),
               value(String::empty())
         {
-            ensureText(String(inNode.text().as_string()).trim());
+            ensureText(String(inNode.getText()).trim());
             refreshValue();
         }
 
@@ -65,9 +65,9 @@ namespace Chicane
                 }
             }
 
-            pugi::xml_document document;
-            pugi::xml_node     node = document.append_child(Text::TAG_ID);
-            node.append_child(pugi::node_pcdata).set_value(inText.toChar());
+            XmlDocument document;
+            XmlNode     node = document.appendChild(Text::TAG_ID);
+            node.setText(inText);
 
             if (Component* child = create(node))
             {

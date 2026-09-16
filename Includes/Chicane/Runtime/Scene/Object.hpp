@@ -46,14 +46,20 @@ namespace Chicane
         CH_FUNCTION()
         bool isTransient() const;
 
-        const std::vector<Component*>& getAttachments() const;
-
     public:
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
+
         void setId(const String& inId);
+
         void setIsTransient(bool inValue);
+
         void notifyPropertyEdited(const String& inName);
+
+        const std::vector<Component*>& getAttachments() const;
+
+    protected:
+        void applyLookAt(const String& inTarget);
 
     protected:
         template <typename T = Scene>

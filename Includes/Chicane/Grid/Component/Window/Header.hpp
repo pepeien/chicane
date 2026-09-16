@@ -21,7 +21,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            WindowHeader(const pugi::xml_node& inNode);
+            WindowHeader(const XmlNode& inNode);
 
         protected:
             void onTick(float inDeltaTime) override;

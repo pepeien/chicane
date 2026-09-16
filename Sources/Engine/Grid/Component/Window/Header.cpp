@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        WindowHeader::WindowHeader(const pugi::xml_node& inNode)
+        WindowHeader::WindowHeader(const XmlNode& inNode)
             : Container(inNode),
               label(String::empty())
         {

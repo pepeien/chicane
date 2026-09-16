@@ -9,9 +9,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        static pugi::xml_node findSource(const FileSystem::Path& inPath)
+        static XmlNode findSource(const FileSystem::Path& inPath)
         {
-            static std::unordered_map<std::string, std::unique_ptr<pugi::xml_document>> cache;
+            static std::unordered_map<std::string, std::unique_ptr<XmlDocument>> cache;
 
             const std::string key = inPath.toString().toStandard();
 
@@ -24,16 +24,16 @@ namespace Chicane
                     throw std::runtime_error("Icon source does not exist [" + inPath.toString() + "]");
                 }
 
-                std::unique_ptr<pugi::xml_document> document = std::make_unique<pugi::xml_document>();
+                std::unique_ptr<XmlDocument> document = std::make_unique<XmlDocument>();
                 *document                                    = Xml::load(inPath);
 
                 found = cache.emplace(key, std::move(document)).first;
             }
 
-            return found->second->first_child();
+            return found->second->getFirstChild();
         }
 
-        Icon::Icon(const pugi::xml_node& inNode)
+        Icon::Icon(const XmlNode& inNode)
             : Svg(inNode),
               m_nameBinding(getAttribute(NAME_ATTRIBUTE_NAME)),
               m_sourceBinding(getAttribute(SOURCE_ATTRIBUTE_NAME)),
@@ -177,14 +177,13 @@ namespace Chicane
 
         void Icon::applySource(const FileSystem::Path& inPath)
         {
-            const pugi::xml_node root = findSource(inPath);
+            const XmlNode root = findSource(inPath);
             if (root.empty())
             {
                 throw std::runtime_error("Icon source does not have a root [" + inPath.toString() + "]");
             }
 
-            m_sourceDocument.reset();
-            m_sourceNode = m_sourceDocument.append_copy(root);
+            parse(root);
 
             for (const auto& [key, value] : m_usageAttributes)
             {
@@ -193,18 +192,8 @@ namespace Chicane
                     continue;
                 }
 
-                pugi::xml_attribute existing = m_sourceNode.attribute(key.toChar());
-                if (!existing.empty())
-                {
-                    existing.set_value(value.toChar());
-
-                    continue;
-                }
-
-                m_sourceNode.append_attribute(key.toChar()).set_value(value.toChar());
+                setAttribute(key, value);
             }
-
-            m_attributes = Xml::getAttributes(m_sourceNode);
 
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));

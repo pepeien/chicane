@@ -30,7 +30,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            ButtonRadio(const pugi::xml_node& inNode);
+            ButtonRadio(const XmlNode& inNode);
 
         public:
             bool isFocusable() const override;

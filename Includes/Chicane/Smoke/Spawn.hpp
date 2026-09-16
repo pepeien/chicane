@@ -62,9 +62,11 @@ namespace Chicane
             Spawn();
 
             CH_CONSTRUCTOR()
-            Spawn(const pugi::xml_node& inNode);
+            Spawn(const XmlNode& inNode);
 
         public:
+            void refresh() override;
+
             void emit(Particle::List& outParticles, const PlayInfo& inPlay, std::uint32_t inCount);
 
         public:

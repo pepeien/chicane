@@ -22,7 +22,7 @@ namespace Chicane
     {
         const Color::Rgba DROP_COLOR(11, 153, 125, 90);
 
-        Dock::Dock(const pugi::xml_node& inNode)
+        Dock::Dock(const XmlNode& inNode)
             : Container(inNode),
               m_regions({}),
               m_drop(new DockDrop()),

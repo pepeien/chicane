@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -13,11 +14,19 @@ namespace Chicane
     class CHICANE_RUNTIME CSound : public Component
     {
     public:
+        CH_CONSTRUCTOR()
         CSound();
+
+    protected:
+        void onPropertyEdited(const String& inName) override;
 
     public:
         void load(const FileSystem::Path& inFilePath);
         void play();
+
+    public:
+        CH_FIELD()
+        FileSystem::Path sound;
 
     protected:
         Screech::Sound m_instance;

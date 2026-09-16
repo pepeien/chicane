@@ -14,7 +14,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        InputSlider::InputSlider(const pugi::xml_node& inNode)
+        InputSlider::InputSlider(const XmlNode& inNode)
             : Container(inNode),
               value(0.0f),
               min(0.0f),

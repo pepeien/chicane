@@ -24,7 +24,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            InputText(const pugi::xml_node& inNode);
+            InputText(const XmlNode& inNode);
 
         public:
             bool isFocusable() const override;

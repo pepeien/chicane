@@ -17,7 +17,7 @@ namespace Chicane
         class CHICANE_GRID Scrollable : public Component
         {
         public:
-            Scrollable(const pugi::xml_node& inNode);
+            Scrollable(const XmlNode& inNode);
             Scrollable(const String& inTag);
             ~Scrollable() override;
 

@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Container::Container(const pugi::xml_node& inNode)
+        Container::Container(const XmlNode& inNode)
             : Scrollable(inNode)
         {
             applyBackgroundPrimitive();

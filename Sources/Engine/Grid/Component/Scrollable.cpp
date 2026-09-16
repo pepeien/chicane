@@ -17,7 +17,7 @@ namespace Chicane
         const Color::Rgba SCROLL_BAR_THUMB_COLOR(210, 210, 210, 210);
         constexpr float   SCROLL_BAR_MARGIN_EM = 0.25f;
 
-        Scrollable::Scrollable(const pugi::xml_node& inNode)
+        Scrollable::Scrollable(const XmlNode& inNode)
             : Component(inNode),
               m_currentPosition(Vec2::Zero()),
               m_scrollGeneration(0),

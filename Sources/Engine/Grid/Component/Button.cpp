@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Button::Button(const pugi::xml_node& inNode)
+        Button::Button(const XmlNode& inNode)
             : Container(inNode)
         {}
     }

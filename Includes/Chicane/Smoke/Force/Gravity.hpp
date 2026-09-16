@@ -28,7 +28,10 @@ namespace Chicane
             ForceGravity();
 
             CH_CONSTRUCTOR()
-            ForceGravity(const pugi::xml_node& inNode);
+            ForceGravity(const XmlNode& inNode);
+
+        public:
+            void refresh() override;
 
         public:
             void tick(float inDeltaTime, Particle::List& outParticles, const PlayInfo& inPlay) override;

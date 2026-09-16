@@ -41,7 +41,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Dock(const pugi::xml_node& inNode);
+            Dock(const XmlNode& inNode);
 
             ~Dock() override;
 

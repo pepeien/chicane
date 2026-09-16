@@ -12,14 +12,20 @@ namespace Chicane
     class CHICANE_RUNTIME ACamera : public Actor
     {
     public:
+        CH_CONSTRUCTOR()
         ACamera();
 
     protected:
         void onLoad() override;
+        void onPropertyEdited(const String& inName) override;
 
     public:
         void activate();
         void deactivate();
+
+    public:
+        CH_FIELD()
+        String lookAt;
 
     protected:
         CCamera* m_camera;

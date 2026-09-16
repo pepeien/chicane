@@ -11,9 +11,18 @@ namespace Chicane
     class CHICANE_RUNTIME CCamera : public CView
     {
     public:
+        CH_CONSTRUCTOR()
         CCamera();
+
+    protected:
+        void onLoad() override;
+        void onPropertyEdited(const String& inName) override;
 
     public:
         void onResize(const Vec<2, std::uint32_t>& inSize) override;
+
+    public:
+        CH_FIELD()
+        String lookAt;
     };
 }

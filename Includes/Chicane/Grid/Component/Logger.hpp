@@ -19,7 +19,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Logger(const pugi::xml_node& inNode);
+            Logger(const XmlNode& inNode);
 
         protected:
             void onTick(float inDeltaTime) override;

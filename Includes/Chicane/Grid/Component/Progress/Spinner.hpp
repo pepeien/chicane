@@ -27,7 +27,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            ProgressSpinner(const pugi::xml_node& inNode);
+            ProgressSpinner(const XmlNode& inNode);
 
         protected:
             void onTick(float inDeltaTime) override;

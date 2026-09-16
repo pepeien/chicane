@@ -25,7 +25,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            InputSelectOption(const pugi::xml_node& inNode);
+            InputSelectOption(const XmlNode& inNode);
 
         protected:
             void onRefresh() override;

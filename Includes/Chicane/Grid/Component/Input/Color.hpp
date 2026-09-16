@@ -25,7 +25,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            InputColor(const pugi::xml_node& inNode);
+            InputColor(const XmlNode& inNode);
 
         public:
             bool isFocusable() const override;

@@ -22,6 +22,7 @@
 #include "Chicane/Core/Reflection/Type/Field/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Method.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Core/Serializable.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 #include "Chicane/Core/Xml.hpp"
@@ -38,7 +39,7 @@ namespace Chicane
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID Component : public Animatable
+        class CHICANE_GRID Component : public Animatable, public Serializable
         {
         public:
             using ClassList  = std::set<String>;
@@ -66,13 +67,13 @@ namespace Chicane
             static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME = "onDragEnd";
 
         public:
-            static Component* create(const pugi::xml_node& inNode);
+            static Component* create(const XmlNode& inNode);
 
-            static bool isContentSlot(const pugi::xml_node& inNode);
+            static bool isContentSlot(const XmlNode& inNode);
 
         public:
             CH_CONSTRUCTOR()
-            Component(const pugi::xml_node& inNode);
+            Component(const XmlNode& inNode);
 
             CH_CONSTRUCTOR()
             Component(const String& inTag);
@@ -95,6 +96,7 @@ namespace Chicane
 
             // Lifecycle
             virtual void tick(float inDelta);
+            virtual void syncProperties() override;
             virtual void refresh();
 
             // Depth
@@ -191,9 +193,6 @@ namespace Chicane
             void runDirective(const String& inKey, const String& inValue);
             void setDirective(const String& inKey, const Directive& inValue);
 
-            // Attribute
-            const String& getAttribute(const String& inName) const;
-
             // Style
             bool hasStyleFile() const;
             const StyleFile* getStyleFile() const;
@@ -244,7 +243,7 @@ namespace Chicane
             bool containsPoint(const Vec2& inLocation) const;
             bool broadcastEvent(const WindowEvent& inEvent);
             bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
-            void addChildren(const pugi::xml_node& inNode);
+            void addChildren(const XmlNode& inNode);
             void addChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void releaseChild(Component* inComponent);
             void removeChild(Component* inComponent);
@@ -343,7 +342,7 @@ namespace Chicane
             }
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
-            void addProjectedContent(const pugi::xml_node& inSlot);
+            void addProjectedContent(const XmlNode& inSlot);
 
             void refreshClassName();
             void refreshStyle();
@@ -417,11 +416,6 @@ namespace Chicane
 
             // Draw
             Primitive                                             m_primitive;
-
-            // XML
-            Xml::Attributes                                       m_attributes;
-            pugi::xml_document                                    m_sourceDocument;
-            pugi::xml_node                                        m_sourceNode;
 
             // For-loop
             std::vector<Component*>                               m_forInstances;

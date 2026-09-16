@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        ButtonRadio::ButtonRadio(const pugi::xml_node& inNode)
+        ButtonRadio::ButtonRadio(const XmlNode& inNode)
             : Container(inNode),
               isChecked(false),
               group(String::empty()),

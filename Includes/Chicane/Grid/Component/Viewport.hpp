@@ -23,7 +23,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Viewport(const pugi::xml_node& inNode);
+            Viewport(const XmlNode& inNode);
 
         protected:
             void onRefresh() override;

@@ -21,7 +21,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            ProgressBar(const pugi::xml_node& inNode);
+            ProgressBar(const XmlNode& inNode);
 
         protected:
             void onTick(float inDeltaTime) override;

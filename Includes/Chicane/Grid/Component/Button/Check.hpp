@@ -28,7 +28,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            ButtonCheck(const pugi::xml_node& inNode);
+            ButtonCheck(const XmlNode& inNode);
 
         public:
             bool isFocusable() const override;

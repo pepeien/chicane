@@ -26,7 +26,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            System(const pugi::xml_node& inNode);
+            System(const XmlNode& inNode);
 
             System();
 
@@ -39,6 +39,7 @@ namespace Chicane
             ~System() override;
 
         public:
+            void refresh() override;
             void setPlayInfo(const PlayInfo& inValue);
             bool isAlive() const;
 

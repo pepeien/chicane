@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Logger::Logger(const pugi::xml_node& inNode)
+        Logger::Logger(const XmlNode& inNode)
             : Container(inNode),
               logs({})
         {

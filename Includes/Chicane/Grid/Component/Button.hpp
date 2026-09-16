@@ -19,7 +19,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Button(const pugi::xml_node& inNode);
+            Button(const XmlNode& inNode);
         };
     }
 }

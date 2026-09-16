@@ -23,24 +23,29 @@ namespace Chicane
             static constexpr inline const char* COLOR_ATTRIBUTE_NAME = "color";
 
             // Values
-            static constexpr inline const char* BLEND_TYPE_ADDITIVE       = "Additive";
-            static constexpr inline const char* BLEND_TYPE_ADD            = "Add";
-            static constexpr inline const char* BLEND_TYPE_ADDITIVE_LOWER = "additive";
-            static constexpr inline const float BLEND_ADDITIVE_VALUE      = 1.0f;
-            static constexpr inline const float BLEND_ALPHA_VALUE         = 0.0f;
-            static constexpr inline const float WIDTH_DEFAULT_VALUE       = 2.5f;
-            static constexpr inline const float LIFETIME_DEFAULT_VALUE    = 1.0f;
-            static constexpr inline const float LENGTH_MIN_VALUE          = 0.0001f;
-            static constexpr inline const float COLOR_R_DEFAULT_VALUE     = 1.0f;
-            static constexpr inline const float COLOR_G_DEFAULT_VALUE     = 0.35f;
-            static constexpr inline const float COLOR_B_DEFAULT_VALUE     = 0.15f;
-            static constexpr inline const float COLOR_A_DEFAULT_VALUE     = 1.0f;
+            static constexpr inline const char* BLEND_TYPE_ADDITIVE  = "Additive";
+            static constexpr inline const float BLEND_ADDITIVE_VALUE = 1.0f;
+            static constexpr inline const float BLEND_ALPHA_VALUE    = 0.0f;
+
+            static constexpr inline const float WIDTH_DEFAULT_VALUE = 2.5f;
+
+            static constexpr inline const float LIFETIME_DEFAULT_VALUE = 1.0f;
+
+            static constexpr inline const float LENGTH_MIN_VALUE = 0.0001f;
+
+            static constexpr inline const float COLOR_R_DEFAULT_VALUE = 1.0f;
+            static constexpr inline const float COLOR_G_DEFAULT_VALUE = 0.35f;
+            static constexpr inline const float COLOR_B_DEFAULT_VALUE = 0.15f;
+            static constexpr inline const float COLOR_A_DEFAULT_VALUE = 1.0f;
 
         public:
             CH_CONSTRUCTOR()
-            RendererBeam(const pugi::xml_node& inNode);
+            RendererBeam(const XmlNode& inNode);
 
             RendererBeam();
+
+        public:
+            void refresh() override;
 
         public:
             void collect(

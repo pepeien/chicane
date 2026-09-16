@@ -19,7 +19,7 @@ namespace Chicane
         constexpr float PORTRAIT_ENTER_EM = 32.0f;
         constexpr float PORTRAIT_LEAVE_EM = 38.0f;
 
-        DockPanel::DockPanel(const pugi::xml_node& inNode)
+        DockPanel::DockPanel(const XmlNode& inNode)
             : Container(inNode),
               orientation(ORIENTATION_LANDSCAPE),
               m_side(DockSide::Fill),
@@ -57,8 +57,8 @@ namespace Chicane
                 return;
             }
 
-            m_side                            = inSide;
-            m_attributes[SIDE_ATTRIBUTE_NAME] = toSideString(inSide);
+            m_side = inSide;
+            setAttribute(SIDE_ATTRIBUTE_NAME, toSideString(inSide));
 
             if (m_parent)
             {
@@ -88,8 +88,8 @@ namespace Chicane
 
         void DockPanel::setGrabbable(bool inValue)
         {
-            m_bIsGrabbable                            = inValue;
-            m_attributes[IS_GRABBABLE_ATTRIBUTE_NAME] = inValue ? "true" : "false";
+            m_bIsGrabbable = inValue;
+            setAttribute(IS_GRABBABLE_ATTRIBUTE_NAME, inValue ? "true" : "false");
 
             refreshHandle();
         }

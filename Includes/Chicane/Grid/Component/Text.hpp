@@ -22,7 +22,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Text(const pugi::xml_node& inNode);
+            Text(const XmlNode& inNode);
 
             ~Text() override;
 

@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        ButtonCheck::ButtonCheck(const pugi::xml_node& inNode)
+        ButtonCheck::ButtonCheck(const XmlNode& inNode)
             : Container(inNode),
               isChecked(false),
               checkState(STATE_IDLE),

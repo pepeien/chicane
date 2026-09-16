@@ -94,6 +94,22 @@ namespace Chicane
             return result;
         }
 
+        bool hasActor(const String& inId) const;
+
+        template <class T>
+        inline bool hasActor(const String& inId) const
+        {
+            return getActor<T>(inId) != nullptr;
+        }
+
+        Actor* getActor(const String& inId) const;
+
+        template <class T>
+        inline T* getActor(const String& inId) const
+        {
+            return dynamic_cast<T*>(getActor(inId));
+        }
+
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
@@ -158,6 +174,14 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        Component* getComponent(const String& inId) const;
+
+        template <class T>
+        inline T* getComponent(const String& inId) const
+        {
+            return dynamic_cast<T*>(getComponent(inId));
         }
 
         template <class T>

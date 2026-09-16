@@ -19,7 +19,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Container(const pugi::xml_node& inNode);
+            Container(const XmlNode& inNode);
 
             Container(const String& inTag);
 

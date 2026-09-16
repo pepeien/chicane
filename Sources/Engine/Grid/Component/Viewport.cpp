@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        Viewport::Viewport(const pugi::xml_node& inNode)
+        Viewport::Viewport(const XmlNode& inNode)
             : Container(inNode),
               target(String::empty())
         {}

@@ -31,7 +31,7 @@ namespace Chicane
 
         public:
             CH_CONSTRUCTOR()
-            Image(const pugi::xml_node& inNode);
+            Image(const XmlNode& inNode);
 
         protected:
             void onRefresh() override;

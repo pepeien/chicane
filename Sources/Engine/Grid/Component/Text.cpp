@@ -56,7 +56,7 @@ namespace Chicane
             outDescender                    = reference.descender;
         }
 
-        Text::Text(const pugi::xml_node& inNode)
+        Text::Text(const XmlNode& inNode)
             : Scrollable(inNode),
               m_text(""),
               m_parsedText(""),
@@ -65,7 +65,7 @@ namespace Chicane
               m_contentSize(Vec2::Zero()),
               m_glyphs({})
         {
-            setText(inNode.text().as_string());
+            setText(inNode.getText());
 
             Primitive primitive;
             primitive.indices = {0, 1, 2, 2, 3, 0};

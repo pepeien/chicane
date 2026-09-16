@@ -95,7 +95,7 @@ namespace Chicane
             return result;
         }
 
-        InputText::InputText(const pugi::xml_node& inNode)
+        InputText::InputText(const XmlNode& inNode)
             : Text(inNode),
               value(String::empty()),
               caret(Vec2::Zero()),

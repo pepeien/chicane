@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        ProgressSpinner::ProgressSpinner(const pugi::xml_node& inNode)
+        ProgressSpinner::ProgressSpinner(const XmlNode& inNode)
             : Container(inNode),
               isSpinning(true),
               spinState(STATE_SPINNING)

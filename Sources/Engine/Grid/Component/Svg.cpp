@@ -40,9 +40,9 @@ namespace Chicane
             return (inCurrent * Svg::CONTROL_REFLECT) - inLast;
         }
 
-        String tagName(const pugi::xml_node& inNode)
+        String tagName(const XmlNode& inNode)
         {
-            String            name  = inNode.name();
+            String            name  = inNode.getName();
             const std::size_t split = name.lastOf(':');
 
             if (split != String::npos)
@@ -65,25 +65,22 @@ namespace Chicane
             return name;
         }
 
-        String attribute(const pugi::xml_node& inNode, const char* inName)
+        String attribute(const XmlNode& inNode, const char* inName)
         {
-            const pugi::xml_attribute found = inNode.attribute(inName);
-
-            if (!found.empty())
+            if (inNode.hasAttribute(inName))
             {
-                return found.as_string();
+                return inNode.getAttribute(inName);
             }
 
             const String target = String(inName).toLower();
-
-            for (pugi::xml_attribute attr : inNode.attributes())
+            for (const auto& [name, value] : inNode.getAttributes())
             {
-                if (!String(attr.name()).toLower().equals(target))
+                if (!name.toLower().equals(target))
                 {
                     continue;
                 }
 
-                return attr.as_string();
+                return value;
             }
 
             return "";
@@ -307,7 +304,7 @@ namespace Chicane
             return result;
         }
 
-        SvgPaint applyNode(const pugi::xml_node& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
+        SvgPaint applyNode(const XmlNode& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
         {
             SvgPaint    paint            = inParent;
             const float inheritedOpacity = inParent.opacity;
@@ -1491,7 +1488,7 @@ namespace Chicane
             );
         }
 
-        bool hidden(const pugi::xml_node& inNode)
+        bool hidden(const XmlNode& inNode)
         {
             const String display    = attribute(inNode, Svg::DISPLAY_ATTRIBUTE_NAME).toLower();
             const String visibility = attribute(inNode, Svg::VISIBILITY_ATTRIBUTE_NAME).toLower();
@@ -1499,7 +1496,7 @@ namespace Chicane
             return display.equals(Svg::DISPLAY_NONE) || visibility.equals(Svg::VISIBILITY_HIDDEN);
         }
 
-        Svg::Svg(const pugi::xml_node& inNode)
+        Svg::Svg(const XmlNode& inNode)
             : Component(inNode),
               m_intrinsic(Vec2::Zero()),
               m_viewBox({}),
@@ -1704,10 +1701,10 @@ namespace Chicane
             m_signature = signature;
 
             SvgViewBox view;
-            view.size.x = parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)));
-            view.size.y = parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)));
+            view.size.x = parseNumber(parseText(attribute(m_source, WIDTH_ATTRIBUTE_NAME)));
+            view.size.y = parseNumber(parseText(attribute(m_source, HEIGHT_ATTRIBUTE_NAME)));
 
-            const String viewBoxValue = parseText(attribute(m_sourceNode, VIEWBOX_ATTRIBUTE_NAME)).trim();
+            const String viewBoxValue = parseText(attribute(m_source, VIEWBOX_ATTRIBUTE_NAME)).trim();
 
             if (!viewBoxValue.isEmpty())
             {
@@ -1726,20 +1723,20 @@ namespace Chicane
 
             m_viewBox   = view;
             m_intrinsic = Vec2(
-                parseNumber(parseText(attribute(m_sourceNode, WIDTH_ATTRIBUTE_NAME)), view.size.x),
-                parseNumber(parseText(attribute(m_sourceNode, HEIGHT_ATTRIBUTE_NAME)), view.size.y)
+                parseNumber(parseText(attribute(m_source, WIDTH_ATTRIBUTE_NAME)), view.size.x),
+                parseNumber(parseText(attribute(m_source, HEIGHT_ATTRIBUTE_NAME)), view.size.y)
             );
 
             const std::size_t shapeCount = m_shapes.size();
             std::size_t       index      = 0;
-            SvgPaint          root       = applyNode(m_sourceNode, SvgPaint(current), current);
+            SvgPaint          root       = applyNode(m_source, SvgPaint(current), current);
 
-            std::function<void(const pugi::xml_node&, const SvgPaint&)> walk;
-            walk = [&](const pugi::xml_node& inNode, const SvgPaint& inPaint)
+            std::function<void(const XmlNode&, const SvgPaint&)> walk;
+            walk = [&](const XmlNode& inNode, const SvgPaint& inPaint)
             {
-                for (pugi::xml_node child : inNode.children())
+                for (XmlNode child : inNode.getChildren())
                 {
-                    if (child.type() != pugi::node_element || hidden(child))
+                    if (!child.isElement() || hidden(child))
                     {
                         continue;
                     }
@@ -1876,7 +1873,7 @@ namespace Chicane
                 }
             };
 
-            walk(m_sourceNode, root);
+            walk(m_source, root);
 
             if (m_shapes.size() != shapeCount)
             {

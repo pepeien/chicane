@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        ProgressBar::ProgressBar(const pugi::xml_node& inNode)
+        ProgressBar::ProgressBar(const XmlNode& inNode)
             : Container(inNode),
               percentage(0.0f)
         {

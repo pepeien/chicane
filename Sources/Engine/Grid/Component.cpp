@@ -257,14 +257,14 @@ namespace Chicane
             std::vector<String>& stack;
         };
 
-        Component* Component::create(const pugi::xml_node& inNode)
+        Component* Component::create(const XmlNode& inNode)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element || isContentSlot(inNode))
+            if (inNode.empty() || !inNode.isElement() || isContentSlot(inNode))
             {
                 return nullptr;
             }
 
-            const String              tag = inNode.name();
+            const String              tag = inNode.getName();
             const ReflectionTypeInfo* type =
                 ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + tag);
 
@@ -302,26 +302,25 @@ namespace Chicane
             return instance;
         }
 
-        bool Component::isContentSlot(const pugi::xml_node& inNode)
+        bool Component::isContentSlot(const XmlNode& inNode)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element)
+            if (inNode.empty() || !inNode.isElement())
             {
                 return false;
             }
 
-            return String(inNode.name()).equals(CONTENT_TAG_ID);
+            return String(inNode.getName()).equals(CONTENT_TAG_ID);
         }
 
-        Component::Component(const pugi::xml_node& inNode)
-            : Component(inNode.name())
+        Component::Component(const XmlNode& inNode)
+            : Component(inNode.getName())
         {
-            m_sourceNode = m_sourceDocument.append_copy(inNode);
-            m_attributes = Xml::getAttributes(m_sourceNode);
+            parse(inNode);
             cacheAttributeFlags();
             setId(getAttribute(ID_ATTRIBUTE_NAME));
             setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
 
-            addChildren(inNode);
+            addChildren(getSource());
 
             setDirective(
                 IF_DIRECTIVE_KEYWORD,
@@ -467,8 +466,6 @@ namespace Chicane
               m_layoutParentSize(Vec2(-1.0f)),
               m_layoutParentFontSize(-1.0f),
               m_primitive({}),
-              m_attributes({}),
-              m_sourceNode(),
               m_forInstances({}),
               m_forVariable(String::empty()),
               m_forSource({}),
@@ -1234,6 +1231,11 @@ namespace Chicane
             m_bIsLayoutDirty = false;
         }
 
+        void Component::syncProperties()
+        {
+            syncAttributes();
+        }
+
         void Component::refresh()
         {
             Vec2  parentSize       = Vec2::Zero();
@@ -1536,18 +1538,6 @@ namespace Chicane
         void Component::setDirective(const String& inKey, const Directive& inValue)
         {
             m_directives[inKey] = inValue;
-        }
-
-        const String& Component::getAttribute(const String& inName) const
-        {
-            const auto& found = m_attributes.find(inName);
-
-            if (found == m_attributes.end())
-            {
-                return String::empty();
-            }
-
-            return found->second;
         }
 
         bool Component::hasStyleFile() const
@@ -2416,7 +2406,7 @@ namespace Chicane
             return false;
         }
 
-        void Component::addChildren(const pugi::xml_node& inNode)
+        void Component::addChildren(const XmlNode& inNode)
         {
             if (inNode.empty())
             {
@@ -2424,7 +2414,7 @@ namespace Chicane
             }
 
             bool bWasAdopted = false;
-            for (const auto& child : inNode.children())
+            for (const auto& child : inNode.getChildren())
             {
                 if (isContentSlot(child))
                 {
@@ -3315,14 +3305,14 @@ namespace Chicane
 
             Loading guard(loading, source);
 
-            pugi::xml_document document = Xml::load(inTemplate);
-            if (document.empty() || document.children().empty())
+            XmlDocument document = Xml::load(inTemplate);
+            if (document.empty())
             {
                 throw std::runtime_error("UI document " + source + " does not have any components");
             }
 
-            const pugi::xml_node root = document.first_child();
-            if (!(root.parent() == root.root() && !root.next_sibling()))
+            const XmlNode root = document.getFirstChild();
+            if (!(root.getParent() == root.getRoot() && root.getNextSibling().isEmpty()))
             {
                 throw std::runtime_error("UI document root element must not have any siblings");
             }
@@ -3333,14 +3323,13 @@ namespace Chicane
             Scope      scope(this);
             Projection projection(projected);
 
-            if (String(root.name()).equals(getTag()))
+            if (String(root.getName()).equals(getTag()))
             {
-                m_sourceNode = m_sourceDocument.append_copy(root);
-                m_attributes = Xml::getAttributes(m_sourceNode);
+                parse(root);
                 cacheAttributeFlags();
                 setId(getAttribute(ID_ATTRIBUTE_NAME));
                 setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
-                addChildren(root);
+                addChildren(getSource());
             }
             else if (Component* wrapper = create(root))
             {
@@ -3353,15 +3342,14 @@ namespace Chicane
             }
         }
 
-        void Component::addProjectedContent(const pugi::xml_node& inSlot)
+        void Component::addProjectedContent(const XmlNode& inSlot)
         {
             if (!g_projected || g_projected->empty())
             {
                 return;
             }
 
-            const pugi::xml_attribute attribute = Xml::getAttribute(CONTENT_SELECT_ATTRIBUTE_NAME, inSlot);
-            const String select = attribute.empty() ? String::empty() : String(attribute.as_string()).trim();
+            const String select = inSlot.parseString(CONTENT_SELECT_ATTRIBUTE_NAME, String::empty()).trim();
 
             std::vector<Component*> leftover;
             leftover.reserve(g_projected->size());
@@ -3677,20 +3665,20 @@ namespace Chicane
 
         Component* Component::cloneTemplate() const
         {
-            if (m_sourceNode.empty())
+            if (m_source.empty())
             {
                 return nullptr;
             }
 
             Scope      scope(m_importOwner);
-            Component* clone = create(m_sourceNode);
+            Component* clone = create(m_source);
             if (!clone)
             {
                 return nullptr;
             }
 
             clone->m_bShouldSkipForDirective = true;
-            clone->m_attributes.erase(FOR_DIRECTIVE_KEYWORD);
+            clone->removeAttribute(FOR_DIRECTIVE_KEYWORD);
 
             if (clone->m_className.isEmpty() && !m_className.isEmpty())
             {

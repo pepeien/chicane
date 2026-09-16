@@ -50,7 +50,7 @@ namespace Chicane
         {
             Component::load(inTemplate, inStyle);
 
-            if (!inTemplate.isEmpty() && !String(m_sourceNode.name()).equals(TAG_ID))
+            if (!inTemplate.isEmpty() && !String(m_source.getName()).equals(TAG_ID))
             {
                 throw std::runtime_error("UI document root element must be a " + String(TAG_ID));
             }

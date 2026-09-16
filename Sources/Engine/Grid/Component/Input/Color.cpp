@@ -206,7 +206,7 @@ namespace Chicane
             }
         }
 
-        InputColor::InputColor(const pugi::xml_node& inNode)
+        InputColor::InputColor(const XmlNode& inNode)
             : Container(inNode),
               hex("#FFFFFF"),
               vividHex("#FFFFFF"),
