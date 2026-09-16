@@ -5,13 +5,15 @@
 
 namespace Editor
 {
-    Outliner::Outliner(const pugi::xml_node& inNode)
+    Outliner::Outliner(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           outlinerNodes({})
     {
         import <DockHeader>();
 
         load("Assets/Editor/UI/Components/Outliner.grid", "Assets/Editor/UI/Components/Outliner.decal");
+
+        Prop::bind(this, NODES_ATTRIBUTE, outlinerNodes);
     }
 
     void Outliner::onTick(float inDeltaTime)

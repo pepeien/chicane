@@ -53,7 +53,7 @@ namespace Editor
     static constexpr inline float       ICON_DEFAULT_SIZE_PERCENTAGE = 40.0f;
     static constexpr inline float       ICON_DEFAULT_SIZE_FACTOR     = 0.25f;
 
-    Explorer::Explorer(const pugi::xml_node& inNode)
+    Explorer::Explorer(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           explorerFolder({}),
           gridItems({}),
@@ -88,9 +88,9 @@ namespace Editor
 
         load("Assets/Editor/UI/Components/Explorer.grid", "Assets/Editor/UI/Components/Explorer.decal");
 
-        pugi::xml_node tile = m_tileDocument.append_child(ExplorerItem::TAG_ID);
-        tile.append_attribute("class").set_value("--{{ layout }}");
-        tile.append_attribute("onClick").set_value("{{ onActivateItem(itemName) }}");
+        Chicane::XmlNode tile = m_tileDocument.appendChild(ExplorerItem::TAG_ID);
+        tile.setAttribute("class", "--{{ layout }}");
+        tile.setAttribute("onClick", "{{ onActivateItem(itemName) }}");
 
         m_rootFolder = Chicane::FileSystem::Item(Chicane::FileSystem::ItemType::Folder, ".");
         ensureListed(m_rootFolder);
@@ -101,6 +101,8 @@ namespace Editor
         rebuildTree();
         refreshGrid();
         refreshToggleStates();
+
+        Prop::bind(this, ORIENTATION_ATTRIBUTE, orientation);
     }
 
     bool Explorer::onEvent(const Chicane::WindowEvent& inEvent)
@@ -634,7 +636,7 @@ namespace Editor
     ExplorerItem* Explorer::createTile()
     {
         Chicane::Grid::Component* content = findGridContent();
-        ExplorerItem*             tile    = new ExplorerItem(m_tileDocument.first_child());
+        ExplorerItem*             tile    = new ExplorerItem(m_tileDocument.getFirstChild());
         if (content)
         {
             content->addChild(tile);

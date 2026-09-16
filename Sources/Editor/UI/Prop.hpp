@@ -93,6 +93,25 @@ namespace Editor
         }
 
         template <typename T>
+        inline Chicane::Serializable::AttributeSubscription bind(
+            Chicane::Grid::Component* inComponent, const Chicane::String& inAttribute, T& outValue
+        )
+        {
+            if (!inComponent)
+            {
+                return {};
+            }
+
+            return inComponent->watchAttribute(
+                inAttribute,
+                [inComponent, inAttribute, &outValue](const Chicane::String& inValue)
+                {
+                    copy(inComponent, inAttribute, outValue);
+                }
+            );
+        }
+
+        template <typename T>
         inline void pushParam(Chicane::ReflectionTypeMethod& ioMethod, T&& inValue)
         {
             using Decayed = std::decay_t<T>;

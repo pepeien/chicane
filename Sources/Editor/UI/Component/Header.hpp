@@ -27,7 +27,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        Header(const pugi::xml_node& inNode);
+        Header(const Chicane::XmlNode& inNode);
 
         ~Header() override;
 

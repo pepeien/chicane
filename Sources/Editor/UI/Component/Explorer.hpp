@@ -36,7 +36,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        Explorer(const pugi::xml_node& inNode);
+        Explorer(const Chicane::XmlNode& inNode);
 
     public:
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
@@ -155,6 +155,6 @@ namespace Editor
         Chicane::Grid::Component*  m_gridContent;
         Chicane::String            m_gridLayout;
         float                      m_gridIconEm;
-        pugi::xml_document         m_tileDocument;
+        Chicane::XmlDocument         m_tileDocument;
     };
 }

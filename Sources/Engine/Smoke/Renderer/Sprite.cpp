@@ -1,32 +1,36 @@
 #include "Chicane/Smoke/Renderer/Sprite.reflected.hpp"
 
-#include "Chicane/Smoke/Parse.hpp"
-#include "Chicane/Smoke/Renderer/Sprite.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
     namespace Smoke
     {
-
-        RendererSprite::RendererSprite(const pugi::xml_node& inNode)
+        RendererSprite::RendererSprite(const XmlNode& inNode)
             : RendererSprite()
         {
-            m_tag   = inNode.name();
-            blend   = parseString(inNode, BLEND_ATTRIBUTE_NAME, blend);
-            texture = parseString(inNode, TEXTURE_ATTRIBUTE_NAME, texture);
+            parse(inNode);
+        }
+
+        void RendererSprite::refresh()
+        {
+            m_tag   = getSource().getName();
+            blend   = getString(BLEND_ATTRIBUTE_NAME, blend);
+            texture = getString(TEXTURE_ATTRIBUTE_NAME, texture);
         }
 
         RendererSprite::RendererSprite()
             : Module(),
               blend(BLEND_TYPE_ADDITIVE),
               texture("")
-        {}
+        {
+            watchRefresh(BLEND_ATTRIBUTE_NAME);
+            watchRefresh(TEXTURE_ATTRIBUTE_NAME);
+        }
 
         void RendererSprite::collect(const Particle::List& inParticles, const PlayInfo&, Particle::List& outDraws) const
         {
-            const float additive = blend.equals(BLEND_TYPE_ADDITIVE, BLEND_TYPE_ADD, BLEND_TYPE_ADDITIVE_LOWER)
-                                       ? BLEND_ADDITIVE_VALUE
-                                       : BLEND_ALPHA_VALUE;
+            const float additive = blend.equals(BLEND_TYPE_ADDITIVE) ? BLEND_ADDITIVE_VALUE : BLEND_ALPHA_VALUE;
 
             for (const Particle& particle : inParticles)
             {

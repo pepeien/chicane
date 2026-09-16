@@ -5,7 +5,7 @@
 
 namespace Editor
 {
-    DockHeader::DockHeader(const pugi::xml_node& inNode)
+    DockHeader::DockHeader(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           label(Chicane::String::empty()),
           pinState(PIN_STATE_UNPINNED_VALUE)

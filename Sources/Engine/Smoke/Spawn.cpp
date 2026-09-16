@@ -28,30 +28,50 @@ namespace Chicane
               color(Vec4(1.0f)),
               colorEnd(Vec4(1.0f)),
               additive(BLEND_ADDITIVE_VALUE)
-        {}
+        {
+            watchRefresh(SHAPE_ATTRIBUTE_NAME);
+            watchRefresh(ANCHOR_ATTRIBUTE_NAME);
+            watchRefresh(ORIGIN_ATTRIBUTE_NAME);
+            watchRefresh(RATE_ATTRIBUTE_NAME);
+            watchRefresh(BURST_ATTRIBUTE_NAME);
+            watchRefresh(LIFETIME_ATTRIBUTE_NAME);
+            watchRefresh(SPEED_ATTRIBUTE_NAME);
+            watchRefresh(SIZE_ATTRIBUTE_NAME);
+            watchRefresh(SIZE_END_ATTRIBUTE_NAME);
+            watchRefresh(SPREAD_ATTRIBUTE_NAME);
+            watchRefresh(RADIUS_ATTRIBUTE_NAME);
+            watchRefresh(COLOR_ATTRIBUTE_NAME);
+            watchRefresh(COLOR_END_ATTRIBUTE_NAME);
+            watchRefresh(BLEND_ATTRIBUTE_NAME);
+        }
 
-        Spawn::Spawn(const pugi::xml_node& inNode)
+        Spawn::Spawn(const XmlNode& inNode)
             : Spawn()
         {
-            m_tag  = inNode.name();
-            shape  = parseString(inNode, SHAPE_ATTRIBUTE_NAME, shape);
-            anchor = parseString(inNode, ANCHOR_ATTRIBUTE_NAME, anchor);
-            if (Xml::getAttribute(ORIGIN_ATTRIBUTE_NAME, inNode).empty() == false)
-            {
-                anchor = parseString(inNode, ORIGIN_ATTRIBUTE_NAME, anchor);
-            }
-            rate     = parseFloat(inNode, RATE_ATTRIBUTE_NAME, rate);
-            burst    = parseUint(inNode, BURST_ATTRIBUTE_NAME, burst);
-            lifetime = parseRange(inNode, LIFETIME_ATTRIBUTE_NAME, lifetime);
-            speed    = parseRange(inNode, SPEED_ATTRIBUTE_NAME, speed);
-            size     = parseRange(inNode, SIZE_ATTRIBUTE_NAME, size);
-            sizeEnd  = parseRange(inNode, SIZE_END_ATTRIBUTE_NAME, sizeEnd);
-            spread   = parseRange(inNode, SPREAD_ATTRIBUTE_NAME, spread);
-            radius   = parseRange(inNode, RADIUS_ATTRIBUTE_NAME, radius);
-            color    = parseColor(inNode, COLOR_ATTRIBUTE_NAME, color);
-            colorEnd = parseColor(inNode, COLOR_END_ATTRIBUTE_NAME, colorEnd);
+            parse(inNode);
+        }
 
-            const String blend = parseString(inNode, BLEND_ATTRIBUTE_NAME, "");
+        void Spawn::refresh()
+        {
+            m_tag    = getSource().getName();
+            shape    = getString(SHAPE_ATTRIBUTE_NAME, shape);
+            anchor   = getString(ANCHOR_ATTRIBUTE_NAME, anchor);
+            if (hasAttribute(ORIGIN_ATTRIBUTE_NAME))
+            {
+                anchor = getString(ORIGIN_ATTRIBUTE_NAME, anchor);
+            }
+            rate     = getFloat(RATE_ATTRIBUTE_NAME, rate);
+            burst    = getUint(BURST_ATTRIBUTE_NAME, burst);
+            lifetime = parseRange(getAttribute(LIFETIME_ATTRIBUTE_NAME), lifetime);
+            speed    = parseRange(getAttribute(SPEED_ATTRIBUTE_NAME), speed);
+            size     = parseRange(getAttribute(SIZE_ATTRIBUTE_NAME), size);
+            sizeEnd  = parseRange(getAttribute(SIZE_END_ATTRIBUTE_NAME), sizeEnd);
+            spread   = parseRange(getAttribute(SPREAD_ATTRIBUTE_NAME), spread);
+            radius   = parseRange(getAttribute(RADIUS_ATTRIBUTE_NAME), radius);
+            color    = getColor(COLOR_ATTRIBUTE_NAME, color);
+            colorEnd = getColor(COLOR_END_ATTRIBUTE_NAME, colorEnd);
+
+            const String blend = getString(BLEND_ATTRIBUTE_NAME, "");
             if (!blend.isEmpty())
             {
                 additive = blend.equals(BLEND_TYPE_ADDITIVE, BLEND_TYPE_ADD, BLEND_TYPE_ADDITIVE_LOWER)

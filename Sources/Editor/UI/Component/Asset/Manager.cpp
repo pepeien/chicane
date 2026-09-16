@@ -1,7 +1,6 @@
 #include "Editor/UI/Component/Asset/Manager.reflected.hpp"
 
 #include <Chicane/Box/Asset.hpp>
-#include <Chicane/Box/Asset/Header.hpp>
 #include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Effect.hpp>
 #include <Chicane/Box/Mesh.hpp>
@@ -19,7 +18,7 @@
 
 namespace Editor
 {
-    AssetManager::AssetManager(const pugi::xml_node& inNode)
+    AssetManager::AssetManager(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           bHasAsset(false),
           bIsAssetEmpty(true),
@@ -35,6 +34,9 @@ namespace Editor
         import <DockHeader>();
 
         load("Assets/Editor/UI/Components/Asset/Manager.grid", "Assets/Editor/UI/Components/Asset/Manager.decal");
+
+        Prop::bind(this, SELECTED_FOLDER_ATTRIBUTE, selectedFolderPath);
+        Prop::bind(this, SELECTED_ASSET_ATTRIBUTE, selectedAssetName);
     }
 
     void AssetManager::onTick(float inDeltaTime)
@@ -80,7 +82,7 @@ namespace Editor
     void AssetManager::onSave()
     {
         const Chicane::FileSystem::Path path = selectedAssetPath();
-        if (path.isEmpty() || !Chicane::Box::AssetHeader::isFileAsset(path))
+        if (path.isEmpty() || !Chicane::Box::isFileAsset(path))
         {
             return;
         }
@@ -130,7 +132,7 @@ namespace Editor
                         continue;
                     }
 
-                    if (Chicane::Box::AssetHeader::isFileAsset(item.path))
+                    if (Chicane::Box::isFileAsset(item.path))
                     {
                         assetPath = item.path.toString();
                         refreshFromExplorer();
@@ -237,7 +239,7 @@ namespace Editor
     void AssetManager::refreshFromExplorer()
     {
         const Chicane::FileSystem::Path path = selectedAssetPath();
-        if (path.isEmpty() || !Chicane::Box::AssetHeader::isFileAsset(path) || !Chicane::FileSystem::exists(path))
+        if (path.isEmpty() || !Chicane::Box::isFileAsset(path) || !Chicane::FileSystem::exists(path))
         {
             if (assetPath.isEmpty())
             {

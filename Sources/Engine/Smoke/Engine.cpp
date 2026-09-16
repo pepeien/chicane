@@ -57,10 +57,10 @@ namespace Chicane
                 return;
             }
 
-            const pugi::xml_node root = asset->getXML();
-            for (const pugi::xml_node child : root.children())
+            const XmlNode root = asset->getXML();
+            for (const XmlNode child : root.getChildren())
             {
-                if (child.type() != pugi::node_element)
+                if (!child.isElement())
                 {
                     continue;
                 }

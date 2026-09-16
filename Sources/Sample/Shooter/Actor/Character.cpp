@@ -1,4 +1,4 @@
-#include "Sample/Shooter/Actor/Character.hpp"
+#include "Sample/Shooter/Actor/Character.reflected.hpp"
 
 #include <cmath>
 
@@ -22,8 +22,6 @@ Character::Character()
       m_padForward(0.0f),
       m_padRight(0.0f),
       m_camera(nullptr),
-      m_wand(nullptr),
-      m_body(nullptr),
       m_victorySound(nullptr)
 {}
 
@@ -31,46 +29,24 @@ void Character::onLoad()
 {
     Chicane::ACharacter::onLoad();
 
-    setMoveScale(MOVE_COEFFICIENT);
-    setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 0.0f));
-
-    m_camera = getScene()->createComponent<Chicane::CCamera>();
-    m_camera->setId("First Person");
-    m_camera->attachTo(this);
-    m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
-    m_camera->activate();
-
-    m_wand = getScene()->createComponent<Chicane::CMesh>();
-    m_wand->attachTo(m_camera);
-    m_wand->setMesh("Assets/Sample/Shooter/Meshes/Character/Wand.bmsh");
-    m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
-    m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
-    m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
-    m_wand->activate();
-
-    m_body = getScene()->createComponent<Chicane::CMesh>();
-    m_body->attachTo(this);
-    m_body->setMesh("Assets/Sample/Shooter/Meshes/Character/Body.bmsh");
-    m_body->activate();
-
     enablePhysics();
 
-    m_victorySound = getScene()->createComponent<Chicane::CSound>();
-    m_victorySound->attachTo(this);
-    m_victorySound->load("Assets/Sample/Shooter/Sounds/Victory.bsnd");
-    m_victorySound->activate();
+    setMoveScale(MOVE_COEFFICIENT);
+
+    m_camera       = getScene()->getComponent<Chicane::CCamera>(CAMERA_ID);
+    m_victorySound = getScene()->getComponent<Chicane::CSound>(VICTORY_SOUND_ID);
 
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
-            if (Game::didReachMaxScore())
+            if (m_victorySound && Game::didReachMaxScore())
             {
                 m_victorySound->play();
-
-                return;
             }
         }
     );
+
+    Chicane::Application::getInstance().getController()->attachTo(this);
 }
 
 void Character::onInput()
@@ -118,7 +94,10 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Released,
         [this]()
         {
-            m_camera->activate();
+            if (m_camera)
+            {
+                m_camera->activate();
+            }
 
             getScene<Scene>()->disableCameras();
         }
@@ -130,7 +109,10 @@ void Character::onControlAttachment()
         {
             getScene<Scene>()->activateLeftCamera();
 
-            m_camera->deactivate();
+            if (m_camera)
+            {
+                m_camera->deactivate();
+            }
         }
     );
     m_controller->bindEvent(
@@ -140,7 +122,10 @@ void Character::onControlAttachment()
         {
             getScene<Scene>()->activateCenterCamera();
 
-            m_camera->deactivate();
+            if (m_camera)
+            {
+                m_camera->deactivate();
+            }
         }
     );
     m_controller->bindEvent(
@@ -240,16 +225,24 @@ void Character::onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld)
     {
     case Chicane::Input::KeyboardButton::W:
         m_bIsMovingForward = inHeld;
+
         break;
+
     case Chicane::Input::KeyboardButton::S:
         m_bIsMovingBackward = inHeld;
+
         break;
+
     case Chicane::Input::KeyboardButton::A:
         m_bIsMovingLeft = inHeld;
+
         break;
+
     case Chicane::Input::KeyboardButton::D:
         m_bIsMovingRight = inHeld;
+
         break;
+
     default:
         return;
     }
@@ -276,7 +269,7 @@ void Character::onShoot()
 {
     Chicane::Application& application = Chicane::Application::getInstance();
 
-    if (!application.getWindow()->isFocused())
+    if (!application.getWindow()->isFocused() || !m_camera)
     {
         return;
     }
@@ -302,7 +295,7 @@ void Character::onShoot()
 
 void Character::onLook(float inX, float inY)
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused() || !m_camera)
     {
         return;
     }

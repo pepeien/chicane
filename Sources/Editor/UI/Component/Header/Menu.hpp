@@ -20,7 +20,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        HeaderMenu(const pugi::xml_node& inNode);
+        HeaderMenu(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

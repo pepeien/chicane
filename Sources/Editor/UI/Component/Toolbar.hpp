@@ -22,7 +22,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        Toolbar(const pugi::xml_node& inNode);
+        Toolbar(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

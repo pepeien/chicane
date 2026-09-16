@@ -19,7 +19,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        DockHeader(const pugi::xml_node& inNode);
+        DockHeader(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

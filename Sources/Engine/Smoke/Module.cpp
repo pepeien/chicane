@@ -8,14 +8,14 @@ namespace Chicane
 {
     namespace Smoke
     {
-        Module* Module::create(const pugi::xml_node& inNode)
+        Module* Module::create(const XmlNode& inNode)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element)
+            if (inNode.isEmpty() || !inNode.isElement())
             {
                 return nullptr;
             }
 
-            const String              tag = inNode.name();
+            const String              tag = inNode.getName();
             const ReflectionTypeInfo* type =
                 ReflectionTypeRegistry::getInstance().find(String("Chicane::Smoke::") + tag);
 
@@ -42,12 +42,16 @@ namespace Chicane
         }
 
         Module::Module()
-            : m_tag("")
+            : Serializable(),
+              m_tag(""),
+              m_bIsRefreshing(false)
         {}
 
-        Module::Module(const pugi::xml_node& inNode)
-            : m_tag(inNode.name())
-        {}
+        Module::Module(const XmlNode& inNode)
+            : Module()
+        {
+            parse(inNode);
+        }
 
         Module::~Module() = default;
 
@@ -56,6 +60,31 @@ namespace Chicane
 
         void Module::collect(const Particle::List&, const PlayInfo&, Particle::List&) const
         {}
+
+        void Module::watchRefresh(const String& inName)
+        {
+            watchAttribute(
+                inName,
+                [this](const String&)
+                {
+                    if (m_bIsRefreshing)
+                    {
+                        return;
+                    }
+
+                    onRefresh();
+                }
+            );
+        }
+
+        void Module::onAttributeSync()
+        {
+            m_bIsRefreshing = true;
+            Serializable::onAttributeSync();
+            m_bIsRefreshing = false;
+
+            m_tag = getSource().isEmpty() ? String::empty() : getSource().getName();
+        }
 
         const String& Module::getTag() const
         {

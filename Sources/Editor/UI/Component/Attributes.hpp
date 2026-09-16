@@ -18,7 +18,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        Attributes(const pugi::xml_node& inNode);
+        Attributes(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

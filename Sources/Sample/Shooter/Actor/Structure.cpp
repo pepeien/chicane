@@ -1,4 +1,4 @@
-#include "Sample/Shooter/Actor/Structure.hpp"
+#include "Sample/Shooter/Actor/Structure.reflected.hpp"
 
 #include <Chicane/Runtime/Scene.hpp>
 

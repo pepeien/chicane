@@ -1,14 +1,20 @@
 #pragma once
 
+#include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
-#include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 #include <Chicane/Runtime/Scene/Component/Sound.hpp>
 
+CH_TYPE(Type = (Manual), Alias = (Character))
 class Character : public Chicane::ACharacter
 {
 public:
+    static constexpr inline const char* CAMERA_ID        = "First Person";
+    static constexpr inline const char* VICTORY_SOUND_ID = "Victory";
+
+public:
+    CH_CONSTRUCTOR()
     Character();
 
 protected:
@@ -43,7 +49,5 @@ private:
     float m_padRight;
 
     Chicane::CCamera* m_camera;
-    Chicane::CMesh*   m_wand;
-    Chicane::CMesh*   m_body;
     Chicane::CSound*  m_victorySound;
 };

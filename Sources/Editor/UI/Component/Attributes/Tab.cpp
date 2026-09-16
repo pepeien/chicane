@@ -2,7 +2,7 @@
 
 namespace Editor
 {
-    AttributesTab::AttributesTab(const pugi::xml_node& inNode)
+    AttributesTab::AttributesTab(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Component(inNode),
           contentVisibility("hidden"),
           label(Chicane::String::empty())

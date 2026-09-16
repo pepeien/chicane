@@ -4,7 +4,7 @@
 
 namespace Editor
 {
-    HeaderMenu::HeaderMenu(const pugi::xml_node& inNode)
+    HeaderMenu::HeaderMenu(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           bIsOpen(false),
           bShouldShowChevron(false),

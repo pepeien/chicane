@@ -8,7 +8,7 @@
 
 namespace Editor
 {
-    Attributes::Attributes(const pugi::xml_node& inNode)
+    Attributes::Attributes(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           bIsItemSelected(false),
           attributeGroups({})
@@ -19,6 +19,9 @@ namespace Editor
         import <Vec3>();
 
         load("Assets/Editor/UI/Components/Attributes.grid", "Assets/Editor/UI/Components/Attributes.decal");
+
+        Prop::bind(this, ITEM_SELECTED_ATTRIBUTE, bIsItemSelected);
+        Prop::bind(this, GROUPS_ATTRIBUTE, attributeGroups);
     }
 
     void Attributes::onTick(float inDeltaTime)

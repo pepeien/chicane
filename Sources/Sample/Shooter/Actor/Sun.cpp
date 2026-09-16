@@ -1,4 +1,4 @@
-#include "Sample/Shooter/Actor/Sun.hpp"
+#include "Sample/Shooter/Actor/Sun.reflected.hpp"
 
 #include <cmath>
 

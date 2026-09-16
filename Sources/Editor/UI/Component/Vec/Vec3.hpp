@@ -16,7 +16,7 @@ namespace Editor
 
     public:
         CH_CONSTRUCTOR()
-        Vec3(const pugi::xml_node& inNode);
+        Vec3(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

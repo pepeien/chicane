@@ -17,7 +17,7 @@
 
 namespace Editor
 {
-    Header::Header(const pugi::xml_node& inNode)
+    Header::Header(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           maximizeState("restored"),
           menus({}),
@@ -36,6 +36,10 @@ namespace Editor
 
         initFileMenu();
         initSettingsMenu();
+
+        Prop::bind(this, THEME_ATTRIBUTE, theme);
+        Prop::bind(this, VIEWPORT_TAB_STATE_ATTRIBUTE, viewportTabState);
+        Prop::bind(this, ASSETS_TAB_STATE_ATTRIBUTE, assetsTabState);
     }
 
     Header::~Header()

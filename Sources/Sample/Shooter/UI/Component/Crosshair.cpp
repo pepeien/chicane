@@ -2,7 +2,7 @@
 
 #include <Chicane/Grid.hpp>
 
-Crosshair::Crosshair(const pugi::xml_node& inNode)
+Crosshair::Crosshair(const Chicane::XmlNode& inNode)
     : Chicane::Grid::Container(inNode),
       settings()
 {

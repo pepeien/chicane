@@ -1,6 +1,6 @@
 #include "Editor/UI/Component/Asset/Selector.reflected.hpp"
 
-#include <Chicane/Box/Asset/Header.hpp>
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
@@ -8,7 +8,7 @@
 
 namespace Editor
 {
-    AssetSelector::AssetSelector(const pugi::xml_node& inNode)
+    AssetSelector::AssetSelector(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           value(Chicane::String::empty()),
           kind(Chicane::String::empty()),
@@ -44,7 +44,7 @@ namespace Editor
         if (type == Chicane::Box::AssetType::Undefined)
         {
             Chicane::FileSystem::FileFilter::Extensions extensions;
-            for (const Chicane::String& extension : Chicane::Box::AssetHeader::getTypeExtensions())
+            for (const Chicane::String& extension : Chicane::Box::getTypeExtensions())
             {
                 extensions.push_back(extension);
             }
@@ -193,7 +193,7 @@ namespace Editor
         }
 
         const Chicane::FileSystem::Path path(value);
-        hasPreview = Chicane::FileSystem::exists(path) && Chicane::Box::AssetHeader::isFileAsset(path);
+        hasPreview = Chicane::FileSystem::exists(path) && Chicane::Box::isFileAsset(path);
     }
 
     Chicane::Box::AssetType AssetSelector::assetType() const
@@ -223,13 +223,13 @@ namespace Editor
                 return type;
             }
 
-            if (Chicane::Box::AssetHeader::getTypeTag(type).toLower().equals(key))
+            if (Chicane::Box::getTypeTag(type).toLower().equals(key))
             {
                 return type;
             }
         }
 
-        return Chicane::Box::AssetHeader::getTypeFromExtension(Chicane::FileSystem::Path(value));
+        return Chicane::Box::getTypeFromExtension(Chicane::FileSystem::Path(value));
     }
 
     Chicane::String AssetSelector::typeLabel() const
@@ -245,6 +245,6 @@ namespace Editor
 
     Chicane::String AssetSelector::typeExtension() const
     {
-        return Chicane::Box::AssetHeader::getTypeExtension(assetType());
+        return Chicane::Box::getTypeExtension(assetType());
     }
 }

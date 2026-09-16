@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "Chicane/Smoke/Parse.hpp"
+#include "Chicane/Core/Xml.hpp"
 #include "Chicane/Smoke/Spawn.hpp"
 #include "Chicane/Smoke/System.hpp"
 
@@ -15,18 +15,14 @@ namespace Chicane
             return !inParticle.bAlive;
         }
 
-        System::System(const pugi::xml_node& inNode)
+        System::System(const XmlNode& inNode)
             : System()
         {
-            m_tag = inNode.name();
+            parse(inNode);
 
-            name     = parseString(inNode, NAME_ATTRIBUTE_NAME, name);
-            duration = parseFloat(inNode, DURATION_ATTRIBUTE_NAME, duration);
-            looping  = parseBool(inNode, LOOPING_ATTRIBUTE_NAME, looping);
-
-            for (const pugi::xml_node child : inNode.children())
+            for (const XmlNode child : getSource().getChildren())
             {
-                if (child.type() != pugi::node_element)
+                if (!child.isElement())
                 {
                     continue;
                 }
@@ -38,6 +34,14 @@ namespace Chicane
             }
         }
 
+        void System::refresh()
+        {
+            m_tag    = getSource().getName();
+            name     = getString(NAME_ATTRIBUTE_NAME, name);
+            duration = getFloat(DURATION_ATTRIBUTE_NAME, duration);
+            looping  = getBool(LOOPING_ATTRIBUTE_NAME, looping);
+        }
+
         System::System()
             : Module(),
               name(""),
@@ -47,7 +51,11 @@ namespace Chicane
               m_age(0.0f),
               m_spawnAccumulator(0.0f),
               m_bBurst(false)
-        {}
+        {
+            watchRefresh(NAME_ATTRIBUTE_NAME);
+            watchRefresh(DURATION_ATTRIBUTE_NAME);
+            watchRefresh(LOOPING_ATTRIBUTE_NAME);
+        }
 
         System::~System() = default;
 

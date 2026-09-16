@@ -1,7 +1,6 @@
 #include "Editor/UI/Component/Explorer/Item.reflected.hpp"
 
 #include <Chicane/Box.hpp>
-#include <Chicane/Box/Asset/Header.hpp>
 #include <Chicane/Box/Asset/Preview.hpp>
 #include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Core/FileSystem/Item.hpp>
@@ -12,7 +11,7 @@
 
 namespace Editor
 {
-    ExplorerItem::ExplorerItem(const pugi::xml_node& inNode)
+    ExplorerItem::ExplorerItem(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Button(inNode),
           isFolder(false),
           isFile(true),
@@ -52,7 +51,7 @@ namespace Editor
         refreshState();
         refreshPosition();
         invalidateDrawCache();
-        m_bIsCulled = false;
+        setCulled(false);
 
         if (inShouldRestyle || bHasPreview != hasPreview || bIsFolder != isFolder ||
             bShouldShowGlyph != shouldShowFileGlyph || !previousType.equals(typeClass))
@@ -138,7 +137,7 @@ namespace Editor
 
         if (isFile)
         {
-            if (Chicane::Box::AssetHeader::isFileAsset(m_item->path))
+            if (Chicane::Box::isFileAsset(m_item->path))
             {
                 Chicane::Box::requestPreview(m_item->path);
 

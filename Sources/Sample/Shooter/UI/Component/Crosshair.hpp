@@ -14,7 +14,7 @@ public:
 
 public:
     CH_CONSTRUCTOR()
-    Crosshair(const pugi::xml_node& inNode);
+    Crosshair(const Chicane::XmlNode& inNode);
 
 protected:
     void onTick(float inDeltaTime) override;

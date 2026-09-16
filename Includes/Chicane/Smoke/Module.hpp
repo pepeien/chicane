@@ -33,17 +33,23 @@ namespace Chicane
             virtual ~Module();
 
         public:
+            void onAttributeSync() override;
+
+        public:
             virtual void tick(float inDeltaTime, Particle::List& outParticles, const PlayInfo& inPlay);
             virtual void collect(
                 const Particle::List& inParticles, const PlayInfo& inPlay, Particle::List& outDraws
             ) const;
 
-            void syncProperties() override;
-
+        public:
             const String& getTag() const;
 
         protected:
+            void watchRefresh(const String& inName);
+
+        protected:
             String m_tag;
+            bool   m_bIsRefreshing;
         };
     }
 }

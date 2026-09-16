@@ -10,6 +10,6 @@ namespace Editor
     {
     public:
         CH_CONSTRUCTOR()
-        Logo(const pugi::xml_node& inNode);
+        Logo(const Chicane::XmlNode& inNode);
     };
 }

@@ -14,7 +14,7 @@ namespace Editor
     {
     public:
         CH_CONSTRUCTOR()
-        ShowFlags(const pugi::xml_node& inNode);
+        ShowFlags(const Chicane::XmlNode& inNode);
 
     protected:
         void onTick(float inDeltaTime) override;

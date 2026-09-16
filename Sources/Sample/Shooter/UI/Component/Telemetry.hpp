@@ -10,7 +10,7 @@ class Telemetry : public Chicane::Grid::Container
 {
 public:
     CH_CONSTRUCTOR()
-    Telemetry(const pugi::xml_node& inNode);
+    Telemetry(const Chicane::XmlNode& inNode);
 
 public:
     CH_FIELD()

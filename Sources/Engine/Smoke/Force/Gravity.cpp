@@ -1,7 +1,6 @@
 #include "Chicane/Smoke/Force/Gravity.reflected.hpp"
 
 #include "Chicane/Smoke/Force/Gravity.hpp"
-#include "Chicane/Smoke/Parse.hpp"
 
 namespace Chicane
 {
@@ -10,19 +9,22 @@ namespace Chicane
         ForceGravity::ForceGravity()
             : Module(),
               value(Vec3(0.0f, 0.0f, Z_DEFAULT_VALUE))
-        {}
+        {
+            watchRefresh(VALUE_ATTRIBUTE_NAME);
+            watchRefresh(Z_ATTRIBUTE_NAME);
+        }
 
-        ForceGravity::ForceGravity(const pugi::xml_node& inNode)
+        ForceGravity::ForceGravity(const XmlNode& inNode)
             : ForceGravity()
         {
-            m_tag = inNode.name();
-            value = parseVec3(inNode, VALUE_ATTRIBUTE_NAME, value);
+            parse(inNode);
+        }
 
-            const pugi::xml_attribute z = Xml::getAttribute(Z_ATTRIBUTE_NAME, inNode);
-            if (!z.empty())
-            {
-                value.z = z.as_float(value.z);
-            }
+        void ForceGravity::refresh()
+        {
+            m_tag   = getSource().getName();
+            value   = getVec3(VALUE_ATTRIBUTE_NAME, value);
+            value.z = getFloat(Z_ATTRIBUTE_NAME, value.z);
         }
 
         void ForceGravity::tick(float inDeltaTime, Particle::List& outParticles, const PlayInfo&)

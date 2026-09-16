@@ -38,7 +38,7 @@ namespace Editor
         return reinterpret_cast<Chicane::SpatialTransform*>(pointee);
     }
 
-    Vec3::Vec3(const pugi::xml_node& inNode)
+    Vec3::Vec3(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           value(Chicane::Vec3::Zero())
     {

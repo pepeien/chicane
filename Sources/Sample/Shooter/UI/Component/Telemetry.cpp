@@ -2,7 +2,7 @@
 
 #include <Chicane/Runtime/Application.hpp>
 
-Telemetry::Telemetry(const pugi::xml_node& inNode)
+Telemetry::Telemetry(const Chicane::XmlNode& inNode)
     : Chicane::Grid::Container(inNode),
       telemetry(&Chicane::Application::getInstance().getTelemetry())
 {

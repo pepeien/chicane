@@ -4,12 +4,8 @@
 #include <Chicane/Kerb/Gravity.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
-#include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 
 #include "Actor/Apple.hpp"
-#include "Actor/Character.hpp"
-#include "Actor/Structure.hpp"
-#include "Actor/Sun.hpp"
 
 #include "Game.hpp"
 
@@ -20,10 +16,7 @@ static constexpr inline const float         APPLE_STEP          = 20.0f;
 static constexpr inline float               WORLD_GRAVITY_SCALE = 10.0f;
 
 Scene::Scene()
-    : Chicane::Scene(),
-      m_leftCamera(nullptr),
-      m_centerCamera(nullptr),
-      m_rightCamera(nullptr)
+    : Chicane::Scene()
 {}
 
 void Scene::onLoad()
@@ -32,83 +25,97 @@ void Scene::onLoad()
         Chicane::Kerb::Gravity::down(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
     );
 
-    spawnSky();
-    spawnLights();
-    spawnCameras();
-    spawnStructures();
-    spawnCharacter();
+    open(DEFAULT_TRACK);
+
     spawnApples();
 }
 
 void Scene::activateLeftCamera()
 {
-    m_leftCamera->activate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
+    {
+        camera->activate();
+    }
+    else
+    {
+        return;
+    }
 
-    m_centerCamera->deactivate();
-    m_rightCamera->deactivate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
+
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
 }
 
 void Scene::activateCenterCamera()
 {
-    m_centerCamera->activate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
+    {
+        camera->activate();
+    }
+    else
+    {
+        return;
+    }
 
-    m_leftCamera->deactivate();
-    m_rightCamera->deactivate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
+
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
 }
 
 void Scene::activateRightCamera()
 {
-    m_rightCamera->activate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID))
+    {
+        camera->activate();
+    }
+    else
+    {
+        return;
+    }
 
-    m_leftCamera->deactivate();
-    m_centerCamera->deactivate();
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
+
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
 }
 
 void Scene::disableCameras()
 {
-    m_leftCamera->deactivate();
-    m_centerCamera->deactivate();
-    m_rightCamera->deactivate();
-}
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
+    else
+    {
+        return;
+    }
 
-void Scene::spawnSky()
-{
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Assets/Engine/Skies/Debug.bsky"));
-}
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
 
-void Scene::spawnLights()
-{
-    createActor<Sun>();
-}
-
-void Scene::spawnCameras()
-{
-    const Chicane::Vec3 position(300.0f, 300.0f, 100.0f);
-
-    m_leftCamera = createActor<Chicane::ACamera>();
-    m_leftCamera->setId("Left");
-    m_leftCamera->setAbsoluteTranslation(-position.x, -position.y, position.z);
-    m_leftCamera->lookAt(Chicane::Vec3::Zero());
-
-    m_centerCamera = createActor<Chicane::ACamera>();
-    m_centerCamera->setId("Center");
-    m_centerCamera->setAbsoluteTranslation(0.0f, -position.y, position.z);
-    m_centerCamera->lookAt(Chicane::Vec3::Zero());
-
-    m_rightCamera = createActor<Chicane::ACamera>();
-    m_rightCamera->setId("Right");
-    m_rightCamera->setAbsoluteTranslation(position.x, -position.y, position.z);
-    m_rightCamera->lookAt(Chicane::Vec3::Zero());
-}
-
-void Scene::spawnStructures()
-{
-    createActor<Strcuture>()->setAbsoluteScale(1000.0f, 1000.0f, 2.0f);
-}
-
-void Scene::spawnCharacter()
-{
-    Chicane::Application::getInstance().getController()->attachTo(createActor<Character>());
+    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID))
+    {
+        camera->deactivate();
+    }
 }
 
 void Scene::spawnApples()

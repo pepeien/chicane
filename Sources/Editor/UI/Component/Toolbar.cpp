@@ -4,7 +4,7 @@
 
 namespace Editor
 {
-    Toolbar::Toolbar(const pugi::xml_node& inNode)
+    Toolbar::Toolbar(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           orientation(Chicane::String::empty()),
           translateState(Chicane::String::empty()),
@@ -12,6 +12,11 @@ namespace Editor
           scaleState(Chicane::String::empty())
     {
         load("Assets/Editor/UI/Components/Toolbar.grid", "Assets/Editor/UI/Components/Toolbar.decal");
+
+        Prop::bind(this, ORIENTATION_ATTRIBUTE, orientation);
+        Prop::bind(this, TRANSLATE_STATE_ATTRIBUTE, translateState);
+        Prop::bind(this, ROTATE_STATE_ATTRIBUTE, rotateState);
+        Prop::bind(this, SCALE_STATE_ATTRIBUTE, scaleState);
     }
 
     void Toolbar::onTick(float inDeltaTime)

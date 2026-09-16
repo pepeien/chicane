@@ -12,7 +12,7 @@ namespace Editor
         }
     }
 
-    ShowFlags::ShowFlags(const pugi::xml_node& inNode)
+    ShowFlags::ShowFlags(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           fillState("idle"),
           wireframeState("idle"),
