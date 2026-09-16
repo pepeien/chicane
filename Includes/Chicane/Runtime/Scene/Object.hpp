@@ -3,9 +3,10 @@
 #include <atomic>
 #include <vector>
 
-#include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Serializable.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Transformable.hpp"
 
 #include "Chicane/Runtime.hpp"
 
@@ -15,10 +16,20 @@ namespace Chicane
     class Component;
 
     CH_TYPE(Manual)
-    class CHICANE_RUNTIME Object : public Transformable
+    class CHICANE_RUNTIME Object : public Transformable, public Serializable
     {
         friend Scene;
         friend Component;
+
+    public:
+        // Attributes
+        static constexpr inline const char* ID_ATTRIBUTE_NAME                   = "id";
+        static constexpr inline const char* RELATIVE_TRANSLATION_ATTRIBUTE_NAME = "relativeTranslation";
+        static constexpr inline const char* RELATIVE_ROTATION_ATTRIBUTE_NAME    = "relativeRotation";
+        static constexpr inline const char* RELATIVE_SCALE_ATTRIBUTE_NAME       = "relativeScale";
+        static constexpr inline const char* ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME = "absoluteTranslation";
+        static constexpr inline const char* ABSOLUTE_ROTATION_ATTRIBUTE_NAME    = "absoluteRotation";
+        static constexpr inline const char* ABSOLUTE_SCALE_ATTRIBUTE_NAME       = "absoluteScale";
 
     public:
         Object();
@@ -26,6 +37,7 @@ namespace Chicane
 
     protected:
         void onRefresh() override;
+        void onAttributeChange(const String& inName, const String& inValue) override;
 
     protected:
         inline virtual void onLoad() { return; }
@@ -55,13 +67,14 @@ namespace Chicane
         void setIsTransient(bool inValue);
 
         void notifyPropertyEdited(const String& inName);
+        bool applySerializedField(const String& inName, const String& inValue);
 
         const std::vector<Component*>& getAttachments() const;
 
     protected:
         void applyLookAt(const String& inTarget);
+        void bindAttributes();
 
-    protected:
         template <typename T = Scene>
         T* getScene() const
         {

@@ -11,6 +11,10 @@ namespace Chicane
     class CHICANE_RUNTIME CCamera : public CView
     {
     public:
+        // Attributes
+        static constexpr inline const char* LOOK_AT_ATTRIBUTE_NAME = "lookAt";
+
+    public:
         CH_CONSTRUCTOR()
         CCamera();
 

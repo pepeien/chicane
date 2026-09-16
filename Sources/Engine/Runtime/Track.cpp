@@ -22,52 +22,33 @@ namespace Chicane
     {
         bool isTransformAttribute(const String& inName)
         {
-            return inName.equals(TRANSLATION_ATTRIBUTE_NAME, ROTATION_ATTRIBUTE_NAME, SCALE_ATTRIBUTE_NAME);
+            return inName.equals(
+                RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+                RELATIVE_ROTATION_ATTRIBUTE_NAME,
+                RELATIVE_SCALE_ATTRIBUTE_NAME,
+                ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+                ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+                ABSOLUTE_SCALE_ATTRIBUTE_NAME
+            );
         }
 
-        bool isIdentity(const Object& inObject)
+        bool isRelativeIdentity(const Object& inObject)
         {
             return inObject.getRelativeTranslation() == Vec3::Zero() &&
                    inObject.getRelativeRotation().getAngles() == Vec3::Zero() &&
                    inObject.getRelativeScale() == Vec3::One();
         }
 
+        bool isAbsoluteIdentity(const Object& inObject)
+        {
+            return inObject.getTranslation() == Vec3::Zero() &&
+                   inObject.getRotation().getAngles() == Vec3::Zero() &&
+                   inObject.getScale() == Vec3::One();
+        }
+
         String formatVec3(const Vec3& inValue)
         {
             return String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
-        }
-
-        Vec3 parseVec3(const String& inValue, const Vec3& inFallback)
-        {
-            String raw = inValue.trim();
-            if (raw.startsWith("["))
-            {
-                raw = raw.substr(1);
-            }
-
-            if (raw.endsWith("]"))
-            {
-                raw = raw.substr(0, raw.size() - 1);
-            }
-
-            const std::vector<String> parts = raw.split(',');
-            if (parts.size() < 3)
-            {
-                return inFallback;
-            }
-
-            try
-            {
-                return Vec3(
-                    std::stof(parts.at(0).trim().toStandard()),
-                    std::stof(parts.at(1).trim().toStandard()),
-                    std::stof(parts.at(2).trim().toStandard())
-                );
-            }
-            catch (const std::exception&)
-            {
-                return inFallback;
-            }
         }
 
         String typeTail(const String& inName)
@@ -115,35 +96,6 @@ namespace Chicane
             }
         }
 
-        void writeEnumValue(void* inAddress, std::size_t inSize, int inValue)
-        {
-            if (!inAddress)
-            {
-                return;
-            }
-
-            switch (inSize)
-            {
-            case 1:
-                *static_cast<std::uint8_t*>(inAddress) = static_cast<std::uint8_t>(inValue);
-
-                break;
-
-            case 2:
-                *static_cast<std::uint16_t*>(inAddress) = static_cast<std::uint16_t>(inValue);
-
-                break;
-
-            case 4:
-                *static_cast<int*>(inAddress) = inValue;
-
-                break;
-
-            default:
-                break;
-            }
-        }
-
         String enumToString(const ReflectionFieldAccessor& inAccessor, const void* inInstance)
         {
             const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
@@ -164,85 +116,12 @@ namespace Chicane
             return inAccessor.toString(inInstance);
         }
 
-        bool applyEnum(const ReflectionFieldAccessor& inAccessor, void* inInstance, const String& inValue)
-        {
-            const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
-            if (!info)
-            {
-                return false;
-            }
-
-            for (const ReflectionEnumeratorInfo& enumerator : info->enumerators)
-            {
-                if (!enumerator.name.equals(inValue) && !typeTail(enumerator.name).equals(inValue))
-                {
-                    continue;
-                }
-
-                writeEnumValue(inAccessor.address(inInstance), inAccessor.size, enumerator.value);
-
-                return true;
-            }
-
-            return false;
-        }
-
         bool applyField(Object& inObject, const String& inName, const String& inValue)
         {
-            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
-            if (!type)
-            {
-                return false;
-            }
-
-            const ReflectionFieldAccessor accessor = type->resolve(inName);
-            if (!accessor.isValid() || accessor.bNeedsDeref || accessor.bIsIterable)
-            {
-                return false;
-            }
-
-            if (applyEnum(accessor, &inObject, inValue))
-            {
-                inObject.notifyPropertyEdited(inName);
-
-                return true;
-            }
-
-            if (accessor.isType<FileSystem::Path>())
-            {
-                accessor.set<FileSystem::Path>(&inObject, FileSystem::Path(inValue));
-            }
-            else if (accessor.isType<String>())
-            {
-                accessor.set<String>(&inObject, inValue);
-            }
-            else if (accessor.isType<bool>())
-            {
-                accessor.set<bool>(&inObject, inValue.toBool() || inValue.equals("true", "1"));
-            }
-            else if (accessor.isType<float>())
-            {
-                accessor.set<float>(&inObject, std::stof(inValue.toStandard()));
-            }
-            else if (accessor.isType<Vec3>())
-            {
-                accessor.set<Vec3>(&inObject, parseVec3(inValue, Vec3::Zero()));
-            }
-            else if (accessor.isType<int>())
-            {
-                accessor.set<int>(&inObject, std::stoi(inValue.toStandard()));
-            }
-            else
-            {
-                return false;
-            }
-
-            inObject.notifyPropertyEdited(inName);
-
-            return true;
+            return inObject.applySerializedField(inName, inValue);
         }
 
-        void writeFields(pugi::xml_node& outNode, const Object& inObject)
+        void writeFields(XmlNode& outNode, const Object& inObject)
         {
             const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
             if (!type)
@@ -298,7 +177,7 @@ namespace Chicane
             }
         }
 
-        void writeObject(pugi::xml_node& outParent, const Object& inObject)
+        void writeObject(XmlNode& outParent, const Object& inObject)
         {
             if (inObject.isTransient())
             {
@@ -311,18 +190,50 @@ namespace Chicane
                 tag = dynamic_cast<const Actor*>(&inObject) ? Actor::TAG_ID : Component::TAG_ID;
             }
 
-            pugi::xml_node node = outParent.append_child(tag.toChar());
+            XmlNode node = outParent.appendChild(tag.toChar());
             Xml::addAttribute(node, ID_ATTRIBUTE_NAME, inObject.getId());
 
-            if (!isIdentity(inObject))
+            const Component* component = dynamic_cast<const Component*>(&inObject);
+            const bool       bAttached = component && component->getParent();
+
+            if (bAttached)
             {
-                Xml::addAttribute(node, TRANSLATION_ATTRIBUTE_NAME, formatVec3(inObject.getRelativeTranslation()));
+                if (!isRelativeIdentity(inObject))
+                {
+                    Xml::addAttribute(
+                        node,
+                        RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+                        formatVec3(inObject.getRelativeTranslation())
+                    );
+                    Xml::addAttribute(
+                        node,
+                        RELATIVE_ROTATION_ATTRIBUTE_NAME,
+                        formatVec3(inObject.getRelativeRotation().getAngles())
+                    );
+                    Xml::addAttribute(
+                        node,
+                        RELATIVE_SCALE_ATTRIBUTE_NAME,
+                        formatVec3(inObject.getRelativeScale())
+                    );
+                }
+            }
+            else if (!isAbsoluteIdentity(inObject))
+            {
                 Xml::addAttribute(
                     node,
-                    ROTATION_ATTRIBUTE_NAME,
-                    formatVec3(inObject.getRelativeRotation().getAngles())
+                    ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+                    formatVec3(inObject.getTranslation())
                 );
-                Xml::addAttribute(node, SCALE_ATTRIBUTE_NAME, formatVec3(inObject.getRelativeScale()));
+                Xml::addAttribute(
+                    node,
+                    ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+                    formatVec3(inObject.getRotation().getAngles())
+                );
+                Xml::addAttribute(
+                    node,
+                    ABSOLUTE_SCALE_ATTRIBUTE_NAME,
+                    formatVec3(inObject.getScale())
+                );
             }
 
             writeFields(node, inObject);
@@ -364,52 +275,19 @@ namespace Chicane
             return type;
         }
 
-        void applyAttributes(Object& inObject, const pugi::xml_node& inNode)
+        void applyAttributes(Object& inObject, const XmlNode& inNode)
         {
-            const String id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-            if (!id.isEmpty())
-            {
-                inObject.setId(id);
-            }
-
-            const pugi::xml_attribute translation = Xml::getAttribute(TRANSLATION_ATTRIBUTE_NAME, inNode);
-            if (!translation.empty())
-            {
-                inObject.setRelativeTranslation(parseVec3(translation.as_string(), Vec3::Zero()));
-            }
-
-            const pugi::xml_attribute rotation = Xml::getAttribute(ROTATION_ATTRIBUTE_NAME, inNode);
-            if (!rotation.empty())
-            {
-                inObject.setRelativeRotation(parseVec3(rotation.as_string(), Vec3::Zero()));
-            }
-
-            const pugi::xml_attribute scale = Xml::getAttribute(SCALE_ATTRIBUTE_NAME, inNode);
-            if (!scale.empty())
-            {
-                inObject.setRelativeScale(parseVec3(scale.as_string(), Vec3::One()));
-            }
-
-            for (pugi::xml_attribute attribute : inNode.attributes())
-            {
-                const String name = attribute.name();
-                if (name.equals(ID_ATTRIBUTE_NAME) || isTransformAttribute(name))
-                {
-                    continue;
-                }
-
-                applyField(inObject, name, attribute.as_string());
-            }
+            inObject.parse(inNode);
         }
 
-        Actor* spawnActor(Scene& inScene, const pugi::xml_node& inNode)
+        Actor* spawnActor(Scene& inScene, const XmlNode& inNode)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element)
+            if (inNode.empty() || !inNode.isElement())
             {
                 return nullptr;
             }
 
-            const ReflectionTypeInfo* type = findType(inNode.name());
+            const ReflectionTypeInfo* type = findType(inNode.getName());
             if (!type)
             {
                 return nullptr;
@@ -427,7 +305,7 @@ namespace Chicane
             applyAttributes(*actor, inNode);
             inScene.adoptActor(actor);
 
-            for (pugi::xml_node child : inNode.children())
+            for (XmlNode child : inNode.getChildren())
             {
                 spawnComponent(inScene, child, actor);
             }
@@ -435,14 +313,14 @@ namespace Chicane
             return actor;
         }
 
-        Component* spawnComponent(Scene& inScene, const pugi::xml_node& inNode, Object* inParent)
+        Component* spawnComponent(Scene& inScene, const XmlNode& inNode, Object* inParent)
         {
-            if (inNode.empty() || inNode.type() != pugi::node_element)
+            if (inNode.empty() || !inNode.isElement())
             {
                 return nullptr;
             }
 
-            const ReflectionTypeInfo* type = findType(inNode.name());
+            const ReflectionTypeInfo* type = findType(inNode.getName());
             if (!type)
             {
                 return nullptr;
@@ -467,7 +345,7 @@ namespace Chicane
 
             component->activate();
 
-            for (pugi::xml_node child : inNode.children())
+            for (XmlNode child : inNode.getChildren())
             {
                 spawnComponent(inScene, child, component);
             }
@@ -485,14 +363,14 @@ namespace Chicane
                 return;
             }
 
-            const pugi::xml_document document = Xml::load(inFilepath);
-            const pugi::xml_node     root     = document.first_child();
-            if (root.empty() || !String(root.name()).equals(TAG_ID))
+            const XmlDocument document = Xml::load(inFilepath);
+            const XmlNode     root     = document.getFirstChild();
+            if (root.empty() || !String(root.getName()).equals(TAG_ID))
             {
                 throw std::runtime_error("Track root element must be " + String(TAG_ID));
             }
 
-            for (pugi::xml_node child : root.children())
+            for (XmlNode child : root.getChildren())
             {
                 spawnActor(inScene, child);
             }
@@ -505,8 +383,8 @@ namespace Chicane
                 throw std::runtime_error("The track path is empty");
             }
 
-            pugi::xml_document document;
-            pugi::xml_node     root = document.append_child(TAG_ID);
+            XmlDocument document;
+            XmlNode     root = document.appendChild(TAG_ID);
             Xml::addAttribute(root, VERSION_ATTRIBUTE_NAME, String::sprint("%u", CURRENT_VERSION));
 
             const String id = inFilepath.stem().toString();

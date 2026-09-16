@@ -1,8 +1,16 @@
 #include "Chicane/Runtime/Scene/Object.reflected.hpp"
 
 #include <algorithm>
+#include <cstdint>
+#include <stdexcept>
 
+#include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
+#include "Chicane/Core/Reflection/Enum/Registry.hpp"
+#include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Drift.hpp"
 
@@ -11,16 +19,105 @@
 
 namespace Chicane
 {
+    namespace
+    {
+        String typeTail(const String& inName)
+        {
+            const std::size_t split = inName.lastOf(':');
+            if (split == String::npos)
+            {
+                return inName;
+            }
+
+            return inName.substr(split + 1);
+        }
+
+        const ReflectionEnumInfo* findEnum(const String& inTypeName)
+        {
+            ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
+            if (const ReflectionEnumInfo* found = registry.find(inTypeName))
+            {
+                return found;
+            }
+
+            return registry.find(typeTail(inTypeName));
+        }
+
+        void writeEnumValue(void* inAddress, std::size_t inSize, int inValue)
+        {
+            if (!inAddress)
+            {
+                return;
+            }
+
+            switch (inSize)
+            {
+            case 1:
+                *static_cast<std::uint8_t*>(inAddress) = static_cast<std::uint8_t>(inValue);
+                break;
+
+            case 2:
+                *static_cast<std::uint16_t*>(inAddress) = static_cast<std::uint16_t>(inValue);
+                break;
+
+            case 4:
+                *static_cast<int*>(inAddress) = inValue;
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        bool applyEnum(const ReflectionFieldAccessor& inAccessor, void* inInstance, const String& inValue)
+        {
+            const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
+            if (!info)
+            {
+                return false;
+            }
+
+            for (const ReflectionEnumeratorInfo& enumerator : info->enumerators)
+            {
+                if (!enumerator.name.equals(inValue) && !typeTail(enumerator.name).equals(inValue))
+                {
+                    continue;
+                }
+
+                writeEnumValue(inAccessor.address(inInstance), inAccessor.size, enumerator.value);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        bool isTransformAttribute(const String& inName)
+        {
+            return inName.equals(
+                Object::RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+                Object::RELATIVE_ROTATION_ATTRIBUTE_NAME,
+                Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
+                Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+                Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+                Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
+            );
+        }
+    }
+
     Object::Object()
         : Transformable(),
-          m_bCanCollide(false),
+          Serializable(),
           m_bCanTick(false),
+          m_bCanCollide(false),
           m_bIsTransient(false),
           m_id(""),
           m_attachments({}),
           m_scene(nullptr),
           m_bIsSpatialDirty(true)
-    {}
+    {
+        bindAttributes();
+    }
 
     Object::~Object()
     {
@@ -37,10 +134,101 @@ namespace Chicane
         }
     }
 
+    void Object::bindAttributes()
+    {
+        watchAttribute(
+            ID_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setId(inValue);
+                }
+            }
+        );
+
+        watchAttribute(
+            RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            RELATIVE_ROTATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeRotation(Xml::parseVec3(inValue, Vec3::Zero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            RELATIVE_SCALE_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeScale(Xml::parseVec3(inValue, Vec3::One()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteRotation(Xml::parseVec3(inValue, Vec3::Zero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_SCALE_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteScale(Xml::parseVec3(inValue, Vec3::One()));
+                }
+            }
+        );
+    }
+
     void Object::onRefresh()
     {
         Transformable::onRefresh();
+
         markSpatialDirty();
+    }
+
+    void Object::onAttributeChange(const String& inName, const String& inValue)
+    {
+        if (inName.equals(ID_ATTRIBUTE_NAME) || isTransformAttribute(inName) || inValue.isEmpty())
+        {
+            return;
+        }
+
+        applySerializedField(inName, inValue);
     }
 
     bool Object::canTick() const
@@ -116,6 +304,112 @@ namespace Chicane
     void Object::notifyPropertyEdited(const String& inName)
     {
         onPropertyEdited(inName);
+    }
+
+    bool Object::applySerializedField(const String& inName, const String& inValue)
+    {
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        if (!type)
+        {
+            return false;
+        }
+
+        const ReflectionFieldAccessor accessor = type->resolve(inName);
+        if (!accessor.isValid() || accessor.bNeedsDeref || accessor.bIsIterable)
+        {
+            return false;
+        }
+
+        if (applyEnum(accessor, this, inValue))
+        {
+            notifyPropertyEdited(inName);
+
+            return true;
+        }
+
+        if (accessor.isType<FileSystem::Path>())
+        {
+            accessor.set<FileSystem::Path>(this, FileSystem::Path(inValue));
+        }
+        else if (accessor.isType<String>())
+        {
+            accessor.set<String>(this, inValue);
+        }
+        else if (accessor.isType<bool>())
+        {
+            accessor.set<bool>(this, inValue.toBool() || inValue.equals("true", "1"));
+        }
+        else if (accessor.isType<float>())
+        {
+            accessor.set<float>(this, std::stof(inValue.toStandard()));
+        }
+        else if (accessor.isType<Vec3>())
+        {
+            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::Zero()));
+        }
+        else if (accessor.isType<int>())
+        {
+            accessor.set<int>(this, std::stoi(inValue.toStandard()));
+        }
+        else
+        {
+            return false;
+        }
+
+        notifyPropertyEdited(inName);
+
+        return true;
+    }
+
+    void Object::applyLookAt(const String& inTarget)
+    {
+        const String value = inTarget.trim();
+        if (value.isEmpty())
+        {
+            return;
+        }
+
+        String raw = value;
+        if (raw.startsWith("["))
+        {
+            raw = raw.substr(1);
+        }
+
+        if (raw.endsWith("]"))
+        {
+            raw = raw.substr(0, raw.size() - 1);
+        }
+
+        const std::vector<String> parts = raw.split(',');
+        if (parts.size() >= 3)
+        {
+            try
+            {
+                lookAt(Vec3(
+                    std::stof(parts.at(0).trim().toStandard()),
+                    std::stof(parts.at(1).trim().toStandard()),
+                    std::stof(parts.at(2).trim().toStandard())
+                ));
+
+                return;
+            }
+            catch (const std::exception&)
+            {}
+        }
+
+        Scene* scene = getScene();
+        if (!scene)
+        {
+            return;
+        }
+
+        Object* target = scene->getObject(value);
+        if (!target || target == this)
+        {
+            return;
+        }
+
+        lookAt(target->getTranslation());
     }
 
     void Object::addAttachment(Component* inComponent)

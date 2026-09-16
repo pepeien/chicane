@@ -14,6 +14,10 @@ namespace Chicane
     class CHICANE_RUNTIME CSound : public Component
     {
     public:
+        // Attributes
+        static constexpr inline const char* SOUND_ATTRIBUTE_NAME = "sound";
+
+    public:
         CH_CONSTRUCTOR()
         CSound();
 

@@ -6,6 +6,7 @@ namespace Chicane
 {
     ACamera::ACamera()
         : Actor(),
+          lookAt(),
           m_camera(nullptr)
     {}
 
@@ -13,6 +14,16 @@ namespace Chicane
     {
         m_camera = getScene()->createComponent<CCamera>();
         m_camera->attachTo(this);
+
+        applyLookAt(lookAt);
+    }
+
+    void ACamera::onPropertyEdited(const String& inName)
+    {
+        if (inName.equals(LOOK_AT_ATTRIBUTE_NAME))
+        {
+            applyLookAt(lookAt);
+        }
     }
 
     void ACamera::activate()

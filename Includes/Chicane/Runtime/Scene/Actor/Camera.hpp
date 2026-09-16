@@ -12,6 +12,10 @@ namespace Chicane
     class CHICANE_RUNTIME ACamera : public Actor
     {
     public:
+        // Attributes
+        static constexpr inline const char* LOOK_AT_ATTRIBUTE_NAME = "lookAt";
+
+    public:
         CH_CONSTRUCTOR()
         ACamera();
 

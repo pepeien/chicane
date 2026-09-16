@@ -265,6 +265,32 @@ namespace Chicane
         return result;
     }
 
+    Actor* Scene::getActor(const String& inId) const
+    {
+        if (inId.isEmpty())
+        {
+            return nullptr;
+        }
+
+        for (const auto& [type, actors] : m_actors)
+        {
+            for (Actor* actor : actors)
+            {
+                if (actor && actor->getId().equals(inId))
+                {
+                    return actor;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
+    bool Scene::hasActor(const String& inId) const
+    {
+        return getActor(inId) != nullptr;
+    }
+
     void Scene::removeActor(Actor* inActor)
     {
         if (!inActor)
@@ -325,6 +351,27 @@ namespace Chicane
         return result;
     }
 
+    Component* Scene::getComponent(const String& inId) const
+    {
+        if (inId.isEmpty())
+        {
+            return nullptr;
+        }
+
+        for (const auto& [type, components] : m_components)
+        {
+            for (Component* component : components)
+            {
+                if (component && component->getId().equals(inId))
+                {
+                    return component;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
     void Scene::removeComponent(Component* inComponent)
     {
         if (!inComponent)
@@ -374,34 +421,12 @@ namespace Chicane
 
     Object* Scene::getObject(const String& inId) const
     {
-        if (inId.isEmpty())
+        if (Actor* actor = getActor(inId))
         {
-            return nullptr;
+            return actor;
         }
 
-        for (const auto& [type, actors] : m_actors)
-        {
-            for (Actor* actor : actors)
-            {
-                if (actor && actor->getId().equals(inId))
-                {
-                    return actor;
-                }
-            }
-        }
-
-        for (const auto& [type, components] : m_components)
-        {
-            for (Component* component : components)
-            {
-                if (component && component->getId().equals(inId))
-                {
-                    return component;
-                }
-            }
-        }
-
-        return nullptr;
+        return getComponent(inId);
     }
 
     void Scene::assignUniqueId(Object* inObject, const String& inFallback)
