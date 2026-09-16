@@ -78,10 +78,10 @@ target_link_libraries(
  
     PUBLIC
         glm::glm
-        pugixml::pugixml
         SDL3::SDL3
 
     PRIVATE
+        pugixml::pugixml
         base64
         libtess2::libtess2
 )
