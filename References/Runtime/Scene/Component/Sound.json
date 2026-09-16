@@ -97,6 +97,22 @@
         "members": [
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SOUND_ATTRIBUTE_NAME",
+                "description": "CHICANE_CSOUND_SOUND_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",

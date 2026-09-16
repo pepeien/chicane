@@ -351,8 +351,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TRANSLATION_ATTRIBUTE_NAME",
-                "description": "CHICANE_TRACK_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "RELATIVE_TRANSLATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_RELATIVE_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -367,8 +367,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "ROTATION_ATTRIBUTE_NAME",
-                "description": "CHICANE_TRACK_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "RELATIVE_ROTATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_RELATIVE_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -383,8 +383,56 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "SCALE_ATTRIBUTE_NAME",
-                "description": "CHICANE_TRACK_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "RELATIVE_SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_RELATIVE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_ROTATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_ABSOLUTE_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_TRACK_ABSOLUTE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",

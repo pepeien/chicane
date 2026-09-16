@@ -244,6 +244,42 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applySerializedField",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_APPLYSERIALIZEDFIELD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
@@ -279,6 +315,42 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onAttributeChange",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ONATTRIBUTECHANGE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -395,6 +467,21 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_APPLYLOOKAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindAttributes",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_BINDATTRIBUTES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -583,6 +670,118 @@
                 },
                 "name": "m_bIsSpatialDirty",
                 "description": "CHICANE_OBJECT_M_BISSPATIALDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ID_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_ID_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RELATIVE_TRANSLATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_RELATIVE_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RELATIVE_ROTATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_RELATIVE_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RELATIVE_SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_RELATIVE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_ROTATION_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_ABSOLUTE_ROTATION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ABSOLUTE_SCALE_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_ABSOLUTE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "protected",
