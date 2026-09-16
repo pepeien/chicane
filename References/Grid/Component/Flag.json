@@ -1,0 +1,335 @@
+{
+    "title": "Flag",
+    "filename": "Flag",
+    "path": "Grid/Component/Flag",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Flag.hpp",
+        "namespace": "Chicane::Grid::ComponentFlag",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_GRID_COMPONENTFLAG_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Style",
+                "description": "CHICANE_GRID_COMPONENTFLAG_STYLE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Layout",
+                "description": "CHICANE_GRID_COMPONENTFLAG_LAYOUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LaidOut",
+                "description": "CHICANE_GRID_COMPONENTFLAG_LAIDOUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Insets",
+                "description": "CHICANE_GRID_COMPONENTFLAG_INSETS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LiveBind",
+                "description": "CHICANE_GRID_COMPONENTFLAG_LIVEBIND_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "operator|",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "operator&",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "&",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "operator|=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "&",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "&",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "operator&=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "&",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "operator~",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR~_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlags"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_HAS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_DESCRIPTION"
+    },
+    "children": []
+}

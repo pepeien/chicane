@@ -199,6 +199,36 @@
             },
             {
                 "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SERIALIZABLE_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onAttributeSync",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SERIALIZABLE_ONATTRIBUTESYNC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -796,7 +826,7 @@
                     "path": "Core/Serializable",
                     "templates": []
                 },
-                "name": "watch",
+                "name": "watchAttribute",
                 "parameters": [
                     {
                         "type": {
@@ -820,10 +850,10 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_SERIALIZABLE_WATCH_DESCRIPTION"
+                "description": "CHICANE_SERIALIZABLE_WATCHATTRIBUTE_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "protected",
                 "type": "virtual",
                 "return": {
                     "prefix": "",
@@ -832,27 +862,31 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "syncProperties",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SERIALIZABLE_SYNCPROPERTIES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refresh",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
+                "name": "onAttributeChange",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
                 ],
-                "description": "CHICANE_SERIALIZABLE_REFRESH_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_SERIALIZABLE_ONATTRIBUTECHANGE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

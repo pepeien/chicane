@@ -55,7 +55,7 @@
         "functions": [
             {
                 "accessor": "public",
-                "type": "override",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",

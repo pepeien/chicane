@@ -63,10 +63,25 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refresh",
+                "name": "onRefresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_SVG_REFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_SVG_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "invalidateDrawCacheSubtree",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SVG_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -92,21 +107,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_SVG_GETCHILDRENFLAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "invalidateDrawCacheSubtree",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_SVG_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

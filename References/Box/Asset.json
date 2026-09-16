@@ -389,21 +389,6 @@
                 "description": "CHICANE_BOX_ASSET_SAVEXML_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "syncProperties",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_SYNCPROPERTIES_DESCRIPTION"
-            },
-            {
                 "accessor": "protected",
                 "type": "standard",
                 "return": {

@@ -255,32 +255,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onTick",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDeltaTime"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_WINDOW_ONTICK_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "refreshPosition",
                 "parameters": [],
                 "modifiers": [],
@@ -296,48 +270,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refreshAttributes",
+                "name": "refreshTitleVisibility",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_WINDOW_REFRESHATTRIBUTES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "parseFlag",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFallback"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_WINDOW_PARSEFLAG_DESCRIPTION"
+                "description": "CHICANE_GRID_WINDOW_REFRESHTITLEVISIBILITY_DESCRIPTION"
             },
             {
                 "accessor": "private",

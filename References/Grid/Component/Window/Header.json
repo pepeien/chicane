@@ -51,47 +51,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_WINDOWHEADER_ONCLOSE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onTick",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDeltaTime"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_WINDOWHEADER_ONTICK_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshLabel",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_WINDOWHEADER_REFRESHLABEL_DESCRIPTION"
             }
         ],
         "members": [

@@ -339,10 +339,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "syncProperties",
+                "name": "onAttributeSync",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SYNCPROPERTIES_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_ONATTRIBUTESYNC_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -354,10 +354,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refresh",
+                "name": "onRefresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -627,6 +627,115 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "getStatus",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETSTATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasStatus",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inStatus"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASSTATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasFlag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASFLAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setFlag",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentFlag",
+                            "suffix": "",
+                            "path": "Grid/Component/Flag",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inEnabled"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETFLAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -862,6 +971,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETDRAGGING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCulled",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETCULLED_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3260,7 +3395,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "virtual",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -4105,21 +4240,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "cacheAttributeFlags",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_CACHEATTRIBUTEFLAGS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -4396,6 +4516,58 @@
                 },
                 "name": "m_className",
                 "description": "CHICANE_GRID_COMPONENT_M_CLASSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "m_status",
+                "description": "CHICANE_GRID_COMPONENT_M_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ComponentFlag",
+                    "suffix": "",
+                    "path": "Grid/Component/Flag",
+                    "templates": []
+                },
+                "name": "m_flags",
+                "description": "CHICANE_GRID_COMPONENT_M_FLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_live",
+                "description": "CHICANE_GRID_COMPONENT_M_LIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_liveHash",
+                "description": "CHICANE_GRID_COMPONENT_M_LIVEHASH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4714,6 +4886,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawCache",
+                    "suffix": "",
+                    "path": "Grid/Component/DrawCache",
+                    "templates": []
+                },
+                "name": "m_draw",
+                "description": "CHICANE_GRID_COMPONENT_M_DRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -4755,266 +4940,6 @@
                 },
                 "name": "m_forSource",
                 "description": "CHICANE_GRID_COMPONENT_M_FORSOURCE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bShouldSkipForDirective",
-                "description": "CHICANE_GRID_COMPONENT_M_BSHOULDSKIPFORDIRECTIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsHovered",
-                "description": "CHICANE_GRID_COMPONENT_M_BISHOVERED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsFocused",
-                "description": "CHICANE_GRID_COMPONENT_M_BISFOCUSED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsDragging",
-                "description": "CHICANE_GRID_COMPONENT_M_BISDRAGGING_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsStyleDirty",
-                "description": "CHICANE_GRID_COMPONENT_M_BISSTYLEDIRTY_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsLayoutDirty",
-                "description": "CHICANE_GRID_COMPONENT_M_BISLAYOUTDIRTY_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsCulled",
-                "description": "CHICANE_GRID_COMPONENT_M_BISCULLED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsLaidOutThisFrame",
-                "description": "CHICANE_GRID_COMPONENT_M_BISLAIDOUTTHISFRAME_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasInsetsApplied",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASINSETSAPPLIED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasClassBinding",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASCLASSBINDING_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasStyleBinding",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASSTYLEBINDING_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_styleBindingSource",
-                "description": "CHICANE_GRID_COMPONENT_M_STYLEBINDINGSOURCE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_styleBindingResolved",
-                "description": "CHICANE_GRID_COMPONENT_M_STYLEBINDINGRESOLVED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasIfDirective",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASIFDIRECTIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bIsDrawCacheValid",
-                "description": "CHICANE_GRID_COMPONENT_M_BISDRAWCACHEVALID_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasDrawPosition",
-                "description": "CHICANE_GRID_COMPONENT_M_BHASDRAWPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "m_cachedDrawPosition",
-                "description": "CHICANE_GRID_COMPONENT_M_CACHEDDRAWPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Mat3",
-                    "suffix": "",
-                    "path": "Core/Math/Mat/Mat3",
-                    "templates": []
-                },
-                "name": "m_cachedPaintMatrix",
-                "description": "CHICANE_GRID_COMPONENT_M_CACHEDPAINTMATRIX_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Bounds2D",
-                    "suffix": "",
-                    "path": "Core/Math/Bounds/2D",
-                    "templates": []
-                },
-                "name": "m_cachedDrawBounds",
-                "description": "CHICANE_GRID_COMPONENT_M_CACHEDDRAWBOUNDS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Bounds2D",
-                    "suffix": "",
-                    "path": "Core/Math/Bounds/2D",
-                    "templates": []
-                },
-                "name": "m_cachedOverflowClip",
-                "description": "CHICANE_GRID_COMPONENT_M_CACHEDOVERFLOWCLIP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"

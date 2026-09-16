@@ -1,0 +1,324 @@
+{
+    "title": "Status",
+    "filename": "Status",
+    "path": "Grid/Component/Status",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Status.hpp",
+        "namespace": "Chicane::Grid::ComponentStatus",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Hovered",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_HOVERED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Focused",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_FOCUSED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Dragging",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_DRAGGING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Culled",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_CULLED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "operator|",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "operator&",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "&",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "operator|=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "&",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "&",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "operator&=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "&",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "operator~",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR~_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inStatus"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_HAS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_DESCRIPTION"
+    },
+    "children": []
+}

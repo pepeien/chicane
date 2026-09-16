@@ -1,0 +1,83 @@
+{
+    "title": "DrawCache",
+    "filename": "DrawCache",
+    "path": "Grid/Component/DrawCache",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/DrawCache.hpp",
+        "namespace": "Chicane::Grid::DrawCache",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_GRID_DRAWCACHE_POSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat3",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat3",
+                    "templates": []
+                },
+                "name": "matrix",
+                "description": "CHICANE_GRID_DRAWCACHE_MATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "bounds",
+                "description": "CHICANE_GRID_DRAWCACHE_BOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "clip",
+                "description": "CHICANE_GRID_DRAWCACHE_CLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsValid",
+                "description": "CHICANE_GRID_DRAWCACHE_BISVALID_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DRAWCACHE_DESCRIPTION"
+    },
+    "children": []
+}
