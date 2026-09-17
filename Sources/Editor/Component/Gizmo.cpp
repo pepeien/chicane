@@ -870,6 +870,20 @@ namespace Editor
 
                 break;
 
+            case Chicane::Input::KeyboardButton::Delete: {
+                if (isDragging())
+                {
+                    endDrag();
+                }
+
+                if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
+                {
+                    home->onItemDelete();
+                }
+
+                break;
+            }
+
             default:
                 break;
             }

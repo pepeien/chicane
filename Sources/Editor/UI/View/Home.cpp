@@ -530,6 +530,29 @@ namespace Editor
         rebuildOutliner();
     }
 
+    void HomeView::onItemDelete()
+    {
+        if (!selectedItem || selectedItem->isTransient())
+        {
+            return;
+        }
+
+        if (m_editingOutlinerItem)
+        {
+            commitOutlinerEdit(false);
+        }
+
+        std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
+        if (!scene)
+        {
+            return;
+        }
+
+        Chicane::Object* item = selectedItem;
+        onItemSelection(nullptr);
+        scene->destroyObject(item);
+    }
+
     void HomeView::onItemIdInput(Chicane::Object* inItem, Chicane::String inValue)
     {
         if (!inItem || inItem != m_editingOutlinerItem)

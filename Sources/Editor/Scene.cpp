@@ -39,6 +39,45 @@ namespace Editor
         m_gizmo->setTarget(inItem);
     }
 
+    void Scene::destroyObject(Chicane::Object* inObject)
+    {
+        if (!inObject || inObject->isTransient())
+        {
+            return;
+        }
+
+        destroyObjectTree(inObject);
+    }
+
+    void Scene::destroyObjectTree(Chicane::Object* inObject)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        const std::vector<Chicane::Component*> attachments = inObject->getAttachments();
+        for (Chicane::Component* child : attachments)
+        {
+            destroyObjectTree(child);
+        }
+
+        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
+        {
+            removeActor(actor);
+            delete actor;
+
+            return;
+        }
+
+        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
+        {
+            component->detach();
+            removeComponent(component);
+            delete component;
+        }
+    }
+
     Gizmo* Scene::getGizmo() const
     {
         return m_gizmo;

@@ -46,6 +46,9 @@ namespace Editor
         void onItemEdit();
 
         CH_FUNCTION()
+        void onItemDelete();
+
+        CH_FUNCTION()
         void onItemIdInput(Chicane::Object* inItem, Chicane::String inValue);
 
         CH_FUNCTION()

@@ -83,6 +83,32 @@ namespace Editor
         m_asset = {};
     }
 
+    void ViewerScene::destroyObject(Chicane::Object* inObject)
+    {
+        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
+        {
+            for (std::size_t i = 0; i < m_groups.size(); ++i)
+            {
+                if (m_groups[i] != actor)
+                {
+                    continue;
+                }
+
+                m_groups.erase(m_groups.begin() + static_cast<std::ptrdiff_t>(i));
+                if (i < m_tempMeshes.size())
+                {
+                    std::error_code error;
+                    std::filesystem::remove(m_tempMeshes[i].toStandard(), error);
+                    m_tempMeshes.erase(m_tempMeshes.begin() + static_cast<std::ptrdiff_t>(i));
+                }
+
+                break;
+            }
+        }
+
+        Scene::destroyObject(inObject);
+    }
+
     void ViewerScene::commitGroups()
     {
         if (m_asset.isEmpty() || !Chicane::FileSystem::exists(m_asset))

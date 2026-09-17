@@ -1,14 +1,16 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Event/Subscription/State.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     template <typename T = void*>
-    class EventSubscription
+    class CHICANE_CORE EventSubscription
     {
     public:
         using EmptyCallback    = std::function<void()>;
@@ -22,17 +24,15 @@ namespace Chicane
         {}
 
         inline EventSubscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
-            : m_bIsCompleted(false),
-              m_next(inNext),
-              m_error(inError),
-              m_complete(inComplete)
-        {}
+            : m_state(std::make_shared<EventSubscriptionState<T>>())
+        {
+            m_state->next     = inNext;
+            m_state->error    = inError;
+            m_state->complete = inComplete;
+        }
 
         inline EventSubscription()
-            : m_bIsCompleted(false),
-              m_next(nullptr),
-              m_error(nullptr),
-              m_complete(nullptr)
+            : m_state(std::make_shared<EventSubscriptionState<T>>())
         {}
 
     public:
@@ -45,9 +45,9 @@ namespace Chicane
                 return *this;
             }
 
-            if (m_next)
+            if (m_state->next)
             {
-                m_next(inData);
+                m_state->next(inData);
             }
 
             return *this;
@@ -60,15 +60,15 @@ namespace Chicane
                 return *this;
             }
 
-            if (m_error)
+            if (m_state->error)
             {
-                m_error(inMessage);
+                m_state->error(inMessage);
             }
 
             return *this;
         }
 
-        inline bool isCompleted() const { return m_bIsCompleted; }
+        inline bool isCompleted() const { return !m_state || m_state->bIsCompleted; }
 
         inline EventSubscription<T> complete()
         {
@@ -77,21 +77,17 @@ namespace Chicane
                 return *this;
             }
 
-            m_bIsCompleted = true;
+            m_state->bIsCompleted = true;
 
-            if (m_complete)
+            if (m_state->complete)
             {
-                m_complete();
+                m_state->complete();
             }
 
             return *this;
         }
 
     private:
-        bool             m_bIsCompleted;
-
-        NextCallback     m_next;
-        ErrorCallback    m_error;
-        CompleteCallback m_complete;
+        std::shared_ptr<EventSubscriptionState<T>> m_state;
     };
 }

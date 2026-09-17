@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <functional>
 #include <vector>
 
@@ -10,7 +11,7 @@
 namespace Chicane
 {
     template <typename T = void*>
-    class EventObservable
+    class CHICANE_CORE EventObservable
     {
     public:
         using EmptyCallback    = std::function<void()>;
@@ -44,7 +45,18 @@ namespace Chicane
             return m_subscriptions.back();
         }
 
-        inline bool isEmpty() const { return m_subscriptions.empty(); }
+        inline bool isEmpty() const
+        {
+            for (const EventSubscription<T>& subscription : m_subscriptions)
+            {
+                if (!subscription.isCompleted())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         inline void next() { next(nullptr); }
 
@@ -57,16 +69,26 @@ namespace Chicane
 
             for (EventSubscription<T>& subscription : m_subscriptions)
             {
-                subscription.next(inData);
+                if (!subscription.isCompleted())
+                {
+                    subscription.next(inData);
+                }
             }
+
+            compact();
         }
 
         inline void error(const String& inMessage)
         {
             for (EventSubscription<T>& subscription : m_subscriptions)
             {
-                subscription.error(inMessage);
+                if (!subscription.isCompleted())
+                {
+                    subscription.error(inMessage);
+                }
             }
+
+            compact();
         }
 
         inline void complete()
@@ -75,6 +97,21 @@ namespace Chicane
             {
                 subscription.complete();
             }
+
+            compact();
+        }
+
+    private:
+        inline void compact()
+        {
+            m_subscriptions.erase(
+                std::remove_if(
+                    m_subscriptions.begin(),
+                    m_subscriptions.end(),
+                    [](const EventSubscription<T>& subscription) { return subscription.isCompleted(); }
+                ),
+                m_subscriptions.end()
+            );
         }
 
     private:

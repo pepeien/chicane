@@ -26,6 +26,7 @@ namespace Editor
         void setAsset(const Chicane::FileSystem::Path& inMesh);
         void clearAsset();
         void commitGroups();
+        void destroyObject(Chicane::Object* inObject) override;
 
         const Chicane::FileSystem::Path& getAsset() const;
         const std::vector<Chicane::Actor*>& getGroups() const;

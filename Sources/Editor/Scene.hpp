@@ -22,6 +22,7 @@ namespace Editor
 
     public:
         void setSelection(Chicane::Object* inItem);
+        virtual void destroyObject(Chicane::Object* inObject);
 
         Gizmo* getGizmo() const;
         void setGizmoType(GizmoType inType);
@@ -32,6 +33,9 @@ namespace Editor
         void spawnLights();
         void spawnCharacter();
         void spawnGizmo();
+
+    private:
+        void destroyObjectTree(Chicane::Object* inObject);
 
     private:
         Gizmo* m_gizmo;
