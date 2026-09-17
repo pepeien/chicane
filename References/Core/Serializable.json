@@ -207,21 +207,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onRefresh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SERIALIZABLE_ONREFRESH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "onAttributeSync",
                 "parameters": [],
                 "modifiers": [],

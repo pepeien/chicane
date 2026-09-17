@@ -54,7 +54,7 @@
         "functions": [
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -62,10 +62,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refresh",
+                "name": "onAttributeRefresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_SMOKE_RENDERERBEAM_REFRESH_DESCRIPTION"
+                "description": "CHICANE_SMOKE_RENDERERBEAM_ONATTRIBUTEREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",

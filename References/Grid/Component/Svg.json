@@ -63,10 +63,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onRefresh",
+                "name": "refresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_SVG_ONREFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_SVG_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",

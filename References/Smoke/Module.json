@@ -149,6 +149,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onAttributeRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SMOKE_MODULE_ONATTRIBUTEREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "tick",
                 "parameters": [
                     {

@@ -331,7 +331,7 @@
             },
             {
                 "accessor": "public",
-                "type": "override",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -339,25 +339,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onAttributeSync",
+                "name": "refresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ONATTRIBUTESYNC_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onRefresh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ONREFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -3395,7 +3380,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "override",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",

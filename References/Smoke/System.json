@@ -130,7 +130,7 @@
             },
             {
                 "accessor": "public",
-                "type": "standard",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -138,10 +138,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refresh",
+                "name": "onAttributeRefresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_SMOKE_SYSTEM_REFRESH_DESCRIPTION"
+                "description": "CHICANE_SMOKE_SYSTEM_ONATTRIBUTEREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
