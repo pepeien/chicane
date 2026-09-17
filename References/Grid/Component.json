@@ -95,6 +95,32 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_VARIABLES_DESCRIPTION"
+            },
+            {
+                "name": "Imports",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "const ",
+                            "name": "ReflectionTypeInfo",
+                            "suffix": "*",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_COMPONENT_IMPORTS_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -4240,6 +4266,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncDrawCache",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_SYNCDRAWCACHE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -4658,25 +4701,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::unordered_map",
+                    "name": "Imports",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "const ",
-                            "name": "ReflectionTypeInfo",
-                            "suffix": "*",
-                            "path": "Core/Reflection/Type/Info",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Grid/Component",
+                    "templates": []
                 },
                 "name": "m_imports",
                 "description": "CHICANE_GRID_COMPONENT_M_IMPORTS_DESCRIPTION"

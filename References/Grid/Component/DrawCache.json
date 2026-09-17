@@ -68,6 +68,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "scrollGeneration",
+                "description": "CHICANE_GRID_DRAWCACHE_SCROLLGENERATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
