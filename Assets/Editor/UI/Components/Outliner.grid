@@ -18,10 +18,22 @@
                 name="CaretDown"
                 class="outliner__item__caret --leaf"
             />
-            <Button class="outliner__item__body" onClick="{{ onItemSelection(node.item) }}">
+            <Button
+                dir:if="{{ node.bShowLabel }}"
+                class="outliner__item__body"
+                onClick="{{ onItemSelection(node.item) }}"
+            >
                 <Icon source="Assets/Editor/UI/Icons/Fill" name="{{ node.icon }}" class="outliner__item__icon"/>
                 <Text>{{ node.label }}</Text>
             </Button>
+            <Container dir:if="{{ node.bIsEditing }}" class="outliner__item__body --editing">
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="{{ node.icon }}" class="outliner__item__icon"/>
+                <Input::Text
+                    class="outliner__item__input"
+                    value="{{ node.label }}"
+                    onInput="{{ onItemIdInput(node.item, value) }}"
+                />
+            </Container>
         </Container>
     </Container>
 </Container>

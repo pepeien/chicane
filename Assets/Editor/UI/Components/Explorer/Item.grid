@@ -1,10 +1,11 @@
-<Button class="explorer__item --{{ typeClass }} --{{ layout }} --{{ selectionState }}">
+<Button class="explorer__item --{{ typeClass }} --{{ dragClass }} --{{ layout }} --{{ selectionState }} --{{ ghostClass }}" onClick="{{ onClick() }}">
     <Container class="explorer__item__preview">
-        <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Regular" name="Folder" class="explorer__item__badge"/>
-        <Icon dir:if="{{ isFile }}" source="Assets/Editor/UI/Icons/Regular" name="File" class="explorer__item__badge"/>
-        <Icon dir:if="{{ isFolder }}" source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__item__glyph --folder"/>
-        <Icon dir:if="{{ shouldShowFileGlyph }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__item__glyph --file"/>
-        <Image dir:if="{{ hasPreview }}" src="{{ itemPath }}" load="Preview" class="explorer__item__image"/>
+        <Icon dir:if="{{ kind == Folder }}" source="Assets/Editor/UI/Icons/Regular" name="Folder" class="explorer__item__badge"/>
+        <Icon dir:if="{{ kind == File }}" source="Assets/Editor/UI/Icons/Regular" name="File" class="explorer__item__badge"/>
+        <Icon dir:if="{{ kind == Preview }}" source="Assets/Editor/UI/Icons/Regular" name="File" class="explorer__item__badge"/>
+        <Icon dir:if="{{ kind == Folder }}" source="Assets/Editor/UI/Icons/Fill" name="Folder" class="explorer__item__glyph --folder"/>
+        <Icon dir:if="{{ kind == File }}" source="Assets/Editor/UI/Icons/Fill" name="Cube" class="explorer__item__glyph --file"/>
+        <Image dir:if="{{ kind == Preview }}" src="{{ itemPath }}" load="Preview" class="explorer__item__image"/>
     </Container>
     <Text class="explorer__item__name">{{ itemName }}</Text>
 </Button>

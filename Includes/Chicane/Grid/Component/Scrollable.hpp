@@ -26,6 +26,9 @@ namespace Chicane
             bool onEvent(const WindowEvent& inEvent) override;
             std::vector<Component*> getChildrenFlat() const override;
 
+        protected:
+            void appendHitPeripherals(std::vector<Component*>& outChildren) const override;
+
         public:
             const Vec2& getScroll() const;
             Vec2 getScrollOffset() const override;
@@ -47,12 +50,13 @@ namespace Chicane
             bool canScrollY() const;
             bool hasScrollBar() const;
 
+            bool isDragging() const;
+
         protected:
             bool hitScrollBar(const Vec2& inLocation) const;
             void beginScrollBarDrag(const Vec2& inLocation);
             void updateScrollBarDrag(const Vec2& inLocation);
             void endScrollBarDrag();
-            bool isDragging() const;
 
             Bounds2D getScrollBarXTrack() const;
             Bounds2D getScrollBarXThumb() const;

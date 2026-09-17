@@ -88,6 +88,17 @@ $outlinerHeaderHeight: 1.65em;
             color: $--grey;
         }
 
+        &__input {
+            width: calc(100% - 1.15em);
+            height: 1.1em;
+            margin: auto 0;
+            font-size: 0.7em;
+            color: $--black;
+            background-color: $--dark-grey;
+            border-radius: 2px;
+            padding: 0 0.2em;
+        }
+
         Text {
             font-size: 0.7em;
             margin: auto 0;

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Font.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
 #include <Chicane/Core/Input/Mouse/Button/Event.hpp>
@@ -11,10 +12,13 @@
 #include <Chicane/Core/Window/Event/Type.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Scrollable.hpp>
+#include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Grid/Style/Display.hpp>
+#include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/UI/Component/Dock/Header.hpp"
 #include "Editor/UI/Component/Explorer/Item.hpp"
+#include "Editor/UI/Component/Explorer/Item/Kind.hpp"
 #include "Editor/UI/Prop.hpp"
 
 namespace Editor
@@ -52,6 +56,7 @@ namespace Editor
     static constexpr inline const char* ICON_DEFAULT_SIZE            = "7em";
     static constexpr inline float       ICON_DEFAULT_SIZE_PERCENTAGE = 40.0f;
     static constexpr inline float       ICON_DEFAULT_SIZE_FACTOR     = 0.25f;
+    static constexpr inline float       DRAG_GHOST_THRESHOLD_PX      = 6.0f;
 
     Explorer::Explorer(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
@@ -81,7 +86,13 @@ namespace Editor
           m_tiles({}),
           m_gridContent(nullptr),
           m_gridLayout(Chicane::String::empty()),
-          m_gridIconEm(-1.0f)
+          m_gridIconEm(-1.0f),
+          m_dragGhost(nullptr),
+          m_dragSource(nullptr),
+          m_dragItem({}),
+          m_dragOrigin(Chicane::Vec2::Zero()),
+          m_bDragArmed(false),
+          m_bDragGhostVisible(false)
     {
         import <DockHeader>();
         import <ExplorerItem>();
@@ -127,7 +138,7 @@ namespace Editor
                     }
 
                     ExplorerItem* tile = static_cast<ExplorerItem*>(node);
-                    if (!tile->isFolder || tile->itemPath.isEmpty())
+                    if (tile->kind != ExplorerItemKind::Folder || tile->itemPath.isEmpty())
                     {
                         continue;
                     }
@@ -148,6 +159,7 @@ namespace Editor
             const Chicane::Input::MouseMotionEvent event =
                 *static_cast<Chicane::Input::MouseMotionEvent*>(inEvent.data);
             m_pointer = event.location;
+            updateItemDrag(m_pointer);
 
             return Chicane::Grid::Container::onEvent(inEvent);
         }
@@ -272,6 +284,124 @@ namespace Editor
         selectedAssetName = inName;
 
         Prop::invoke(this, ON_ASSET_ATTRIBUTE, selectedAssetName);
+    }
+
+    void Explorer::onDropAssetAt(const Chicane::String& inPath, const Chicane::Vec2& inLocation)
+    {
+        if (inPath.isEmpty())
+        {
+            return;
+        }
+
+        if (Chicane::Box::getTypeFromExtension(inPath) == Chicane::Box::AssetType::Undefined)
+        {
+            return;
+        }
+
+        if (!isOverViewport(inLocation))
+        {
+            return;
+        }
+
+        Prop::invoke(this, ON_ASSET_DROP_ATTRIBUTE, inPath);
+    }
+
+    void Explorer::beginItemDrag(ExplorerItem* inSource, const Chicane::Vec2& inPointer)
+    {
+        if (!inSource || inSource->isGhost())
+        {
+            return;
+        }
+
+        m_dragSource         = inSource;
+        m_dragOrigin         = inPointer;
+        m_pointer            = inPointer;
+        m_bDragArmed         = true;
+        m_bDragGhostVisible  = false;
+    }
+
+    void Explorer::updateItemDrag(const Chicane::Vec2& inPointer)
+    {
+        if (!m_bDragArmed || !m_dragSource)
+        {
+            return;
+        }
+
+        m_pointer = inPointer;
+
+        if (!m_bDragGhostVisible)
+        {
+            const float dx = inPointer.x - m_dragOrigin.x;
+            const float dy = inPointer.y - m_dragOrigin.y;
+            if ((dx * dx) + (dy * dy) < (DRAG_GHOST_THRESHOLD_PX * DRAG_GHOST_THRESHOLD_PX))
+            {
+                return;
+            }
+
+            showDragGhost(m_dragSource, inPointer);
+
+            return;
+        }
+
+        if (m_dragGhost)
+        {
+            m_dragGhost->moveGhost(inPointer);
+        }
+    }
+
+    void Explorer::endItemDrag()
+    {
+        hideDragGhost();
+
+        m_dragSource        = nullptr;
+        m_bDragArmed        = false;
+        m_bDragGhostVisible = false;
+        m_dragOrigin        = Chicane::Vec2::Zero();
+    }
+
+    void Explorer::ensureDragGhost()
+    {
+        if (m_dragGhost)
+        {
+            return;
+        }
+
+        if (m_tileDocument.empty())
+        {
+            return;
+        }
+
+        m_dragGhost = new ExplorerItem(m_tileDocument.getFirstChild());
+        m_dragGhost->hideGhost();
+        addChild(m_dragGhost);
+    }
+
+    void Explorer::showDragGhost(ExplorerItem* inSource, const Chicane::Vec2& inPointer)
+    {
+        if (!inSource)
+        {
+            return;
+        }
+
+        ensureDragGhost();
+        if (!m_dragGhost)
+        {
+            return;
+        }
+
+        m_dragGhost->showGhost(*inSource, m_dragItem, inPointer);
+        m_bDragGhostVisible = true;
+    }
+
+    void Explorer::hideDragGhost()
+    {
+        if (m_dragGhost)
+        {
+            m_dragGhost->hideGhost();
+        }
+
+        m_bDragGhostVisible = false;
+        m_dragItem          = {};
     }
 
     bool Explorer::isListedFolder(const Chicane::FileSystem::Item& inItem)
@@ -474,14 +604,22 @@ namespace Editor
             if (child->getId().equals(EXPLORER_MAIN_ID))
             {
                 main = dynamic_cast<Chicane::Grid::Scrollable*>(child);
+
+                continue;
             }
-            else if (child->getId().equals(EXPLORER_TREE_ID))
+
+            if (child->getId().equals(EXPLORER_TREE_ID))
             {
                 tree = dynamic_cast<Chicane::Grid::Scrollable*>(child);
+
+                continue;
             }
-            else if (child->getId().equals(GRID_CONTENT_ID))
+
+            if (child->getId().equals(GRID_CONTENT_ID))
             {
                 grid = dynamic_cast<Chicane::Grid::Scrollable*>(child);
+
+                continue;
             }
         }
 
@@ -523,6 +661,42 @@ namespace Editor
         target->addScroll(-event.delta.x * step, -event.delta.y * step);
 
         return true;
+    }
+
+    bool Explorer::isOverViewport(const Chicane::Vec2& inLocation) const
+    {
+        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        if (viewport.isEmpty() || !viewport.contains(inLocation))
+        {
+            return false;
+        }
+
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        if (!view)
+        {
+            return true;
+        }
+
+        Chicane::Grid::Component* hit = view->getHitAt(inLocation);
+        if (!hit)
+        {
+            return true;
+        }
+
+        for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
+        {
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
+            {
+                return true;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 
     void Explorer::syncGridTiles()

@@ -6,7 +6,13 @@
     <Structure id="Ground" absoluteScale="1000,1000,2"/>
     <Character id="Player" absoluteTranslation="0,-150,0">
         <CCamera id="First Person" relativeTranslation="0,0,15">
-            <CMesh id="Wand" mesh="Assets/Sample/Shooter/Meshes/Character/Wand.bmsh" relativeTranslation="0.15,0.4,-0.1" relativeRotation="0,0,8" relativeScale="0.015,0.2,0.015"/>
+            <CMesh
+                id="Wand"
+                mesh="Assets/Sample/Shooter/Meshes/Character/Wand.bmsh"
+                relativeTranslation="0.15,0.4,-0.1"
+                relativeRotation="0,0,8"
+                relativeScale="0.015,0.2,0.015"
+            />
         </CCamera>
         <CMesh id="Body" mesh="Assets/Sample/Shooter/Meshes/Character/Body.bmsh"/>
         <CSound id="Victory" sound="Assets/Sample/Shooter/Sounds/Victory.bsnd"/>

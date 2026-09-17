@@ -2335,26 +2335,66 @@ namespace Chicane
         {
             Component* hit = nullptr;
 
-            for (Component* child : getChildrenFlat())
+            std::vector<const Component*> stack;
+            stack.push_back(this);
+
+            thread_local std::vector<Component*> peripherals;
+            peripherals.clear();
+
+            auto consider = [&](Component* candidate)
             {
-                if (!child || !child->isDisplayable())
+                if (!candidate || !candidate->isDisplayable() || candidate->isCulled())
+                {
+                    return;
+                }
+
+                if (!candidate->getDrawBounds().contains(inLocation))
+                {
+                    return;
+                }
+
+                if (!candidate->containsPoint(inLocation))
+                {
+                    return;
+                }
+
+                if (!hit || candidate->getDepth() >= hit->getDepth())
+                {
+                    hit = candidate;
+                }
+            };
+
+            while (!stack.empty())
+            {
+                const Component* node = stack.back();
+                stack.pop_back();
+
+                if (node != this && node->isCulled())
                 {
                     continue;
                 }
 
-                if (!child->getDrawBounds().contains(inLocation))
+                for (auto it = node->m_children.rbegin(); it != node->m_children.rend(); it++)
                 {
-                    continue;
+                    Component* child = *it;
+                    if (!child || !child->isDisplayable())
+                    {
+                        continue;
+                    }
+
+                    stack.push_back(child);
                 }
 
-                if (!child->containsPoint(inLocation))
+                peripherals.clear();
+                node->appendHitPeripherals(peripherals);
+                for (Component* peripheral : peripherals)
                 {
-                    continue;
+                    consider(peripheral);
                 }
 
-                if (!hit || child->getDepth() >= hit->getDepth())
+                if (node != this)
                 {
-                    hit = child;
+                    consider(const_cast<Component*>(node));
                 }
             }
 
@@ -2373,13 +2413,25 @@ namespace Chicane
                 return false;
             }
 
-            Vec2       local   = inLocation;
-            const Mat3 paint   = getPaintMatrix();
-            const Mat3 inverse = glm::inverse(static_cast<glm::mat3>(paint));
-            const Vec3 mapped  = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
+            Vec2             local  = inLocation;
+            const Mat3       paint  = getPaintMatrix();
+            const glm::mat3& matrix = paint;
 
-            local.x = mapped.x;
-            local.y = mapped.y;
+            const bool bIdentity = std::fabs(matrix[0][0] - 1.0f) <= 0.0001f &&
+                                   std::fabs(matrix[1][1] - 1.0f) <= 0.0001f &&
+                                   std::fabs(matrix[2][2] - 1.0f) <= 0.0001f && std::fabs(matrix[0][1]) <= 0.0001f &&
+                                   std::fabs(matrix[0][2]) <= 0.0001f && std::fabs(matrix[1][0]) <= 0.0001f &&
+                                   std::fabs(matrix[1][2]) <= 0.0001f && std::fabs(matrix[2][0]) <= 0.0001f &&
+                                   std::fabs(matrix[2][1]) <= 0.0001f;
+
+            if (!bIdentity)
+            {
+                const Mat3 inverse = glm::inverse(matrix);
+                const Vec3 mapped  = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
+
+                local.x = mapped.x;
+                local.y = mapped.y;
+            }
 
             const Vec2 position = getDrawPosition();
             Bounds2D   box;
@@ -2428,11 +2480,38 @@ namespace Chicane
 
         bool Component::broadcastEvent(const WindowEvent& inEvent)
         {
-            for (Component* child : getChildrenFlat())
+            std::vector<Component*> stack;
+            stack.reserve(m_children.size());
+
+            for (auto it = m_children.rbegin(); it != m_children.rend(); it++)
             {
+                if (*it)
+                {
+                    stack.push_back(*it);
+                }
+            }
+
+            while (!stack.empty())
+            {
+                Component* child = stack.back();
+                stack.pop_back();
+
+                if (child->isCulled())
+                {
+                    continue;
+                }
+
                 if (child->onEvent(inEvent))
                 {
                     return true;
+                }
+
+                for (auto it = child->m_children.rbegin(); it != child->m_children.rend(); it++)
+                {
+                    if (*it)
+                    {
+                        stack.push_back(*it);
+                    }
                 }
             }
 
@@ -3944,15 +4023,31 @@ namespace Chicane
                 }
 
                 ReflectionFieldAccessor accessor = getField(param);
-                if (!accessor.isValid() && hasParent())
+                const Component*        owner    = this;
+                if (!accessor.isValid())
                 {
-                    accessor = m_parent->getField(param);
+                    for (const Component* node = hasParent() ? getParent() : nullptr; node != nullptr;
+                         node                  = node->hasParent() ? node->getParent() : nullptr)
+                    {
+                        accessor = node->getField(param);
+                        if (accessor.isValid())
+                        {
+                            owner = node;
+
+                            break;
+                        }
+
+                        if (node->isRoot())
+                        {
+                            break;
+                        }
+                    }
                 }
 
                 if (accessor.isValid())
                 {
                     const void* instance =
-                        accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(this);
+                        accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(owner);
 
                     if (expected.endsWith('*'))
                     {

@@ -166,6 +166,14 @@ namespace Chicane
                     return false;
                 }
 
+                if (event.clicks >= 2)
+                {
+                    m_bIsSelecting = false;
+                    selectAll();
+
+                    return true;
+                }
+
                 return beginSelect(event.location, false);
             }
 

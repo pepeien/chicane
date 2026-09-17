@@ -41,5 +41,11 @@ namespace Editor
 
         CH_FIELD()
         bool bIsLeaf;
+
+        CH_FIELD()
+        bool bIsEditing;
+
+        CH_FIELD()
+        bool bShowLabel;
     };
 }

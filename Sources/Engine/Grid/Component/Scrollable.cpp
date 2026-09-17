@@ -127,11 +127,6 @@ namespace Chicane
             return false;
         }
 
-        bool Scrollable::isDragging() const
-        {
-            return m_horizontalBar.bIsDragging || m_verticalBar.bIsDragging;
-        }
-
         bool Scrollable::handleWheel(const Vec2& inDelta)
         {
             const float step = std::max(16.0f, m_style.font.size.get() * 3.0f);
@@ -162,10 +157,15 @@ namespace Chicane
         {
             std::vector<Component*> result = Component::getChildrenFlat();
 
-            m_verticalBar.append(result);
-            m_horizontalBar.append(result);
+            appendHitPeripherals(result);
 
             return result;
+        }
+
+        void Scrollable::appendHitPeripherals(std::vector<Component*>& outChildren) const
+        {
+            m_verticalBar.append(outChildren);
+            m_horizontalBar.append(outChildren);
         }
 
         const Vec2& Scrollable::getScroll() const
@@ -298,6 +298,11 @@ namespace Chicane
         bool Scrollable::hasScrollBar() const
         {
             return m_horizontalBar.bIsVisible || m_verticalBar.bIsVisible;
+        }
+
+        bool Scrollable::isDragging() const
+        {
+            return m_horizontalBar.bIsDragging || m_verticalBar.bIsDragging;
         }
 
         bool Scrollable::hitScrollBar(const Vec2& inLocation) const

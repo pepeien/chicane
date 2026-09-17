@@ -6,7 +6,7 @@ $explorerTreeWidth: 15em;
 $explorerSearchFilterWidth: 11.5em;
 $explorerPortraitTreeHeight: 11.5em;
 $explorerPortraitToolbarHeight: 4.7em;
-$explorerPortraitFooterHeight: 2.4em;
+$explorerPortraitFooterHeight: 4.2em;
 $explorerSliderThumb: 0.72em;
 
 .explorer {
@@ -144,6 +144,7 @@ $explorerSliderThumb: 0.72em;
         background-color: $--green;
         border-radius: 4px;
         cursor: pointer;
+        overflow: hidden;
 
         Icon {
             width: 0.85em;
@@ -269,7 +270,7 @@ $explorerSliderThumb: 0.72em;
 
             &__main {
                 width: 100%;
-                height: calc(100% - $explorerPortraitTreeHeight - 0.15em);
+                height: 100%;
             }
 
             &__toolbar {
@@ -283,7 +284,6 @@ $explorerSliderThumb: 0.72em;
 
             &__filter {
                 width: 40%;
-                overflow: hidden;
             }
 
             &__grid {
@@ -294,6 +294,7 @@ $explorerSliderThumb: 0.72em;
                 flex-direction: column;
                 gap: 0.25em;
                 height: $explorerPortraitFooterHeight;
+                padding: 0.5em;
 
                 &__group {
                     width: 100%;

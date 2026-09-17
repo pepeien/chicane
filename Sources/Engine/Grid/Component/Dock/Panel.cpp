@@ -264,12 +264,17 @@ namespace Chicane
         {
             std::vector<Component*> result = Component::getChildrenFlat();
 
-            if (m_handle)
-            {
-                result.push_back(m_handle);
-            }
+            appendHitPeripherals(result);
 
             return result;
+        }
+
+        void DockPanel::appendHitPeripherals(std::vector<Component*>& outChildren) const
+        {
+            if (m_handle)
+            {
+                outChildren.push_back(m_handle);
+            }
         }
 
         void DockPanel::onRefresh()

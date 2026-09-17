@@ -10,6 +10,8 @@ namespace Editor
           expandState("leaf"),
           selectedState("idle"),
           bHasChildren(false),
-          bIsLeaf(true)
+          bIsLeaf(true),
+          bIsEditing(false),
+          bShowLabel(true)
     {}
 }

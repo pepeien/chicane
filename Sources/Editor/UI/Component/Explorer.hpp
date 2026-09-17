@@ -24,9 +24,10 @@ namespace Editor
     class Explorer : public Chicane::Grid::Container
     {
     public:
-        static constexpr inline const char* ORIENTATION_ATTRIBUTE = "orientation";
-        static constexpr inline const char* ON_FOLDER_ATTRIBUTE   = "onFolder";
-        static constexpr inline const char* ON_ASSET_ATTRIBUTE    = "onAsset";
+        static constexpr inline const char* ORIENTATION_ATTRIBUTE  = "orientation";
+        static constexpr inline const char* ON_FOLDER_ATTRIBUTE    = "onFolder";
+        static constexpr inline const char* ON_ASSET_ATTRIBUTE     = "onAsset";
+        static constexpr inline const char* ON_ASSET_DROP_ATTRIBUTE = "onAssetDrop";
 
     private:
         static bool isListedFolder(const Chicane::FileSystem::Item& inItem);
@@ -70,6 +71,12 @@ namespace Editor
         CH_FUNCTION()
         void onActivateItem(Chicane::String inName);
 
+        void onDropAssetAt(const Chicane::String& inPath, const Chicane::Vec2& inLocation);
+
+        void beginItemDrag(ExplorerItem* inSource, const Chicane::Vec2& inPointer);
+        void updateItemDrag(const Chicane::Vec2& inPointer);
+        void endItemDrag();
+
     private:
         void rebuildTree();
         void appendTreeFolders(Chicane::FileSystem::Item::List& inItems, int inDepth);
@@ -89,6 +96,10 @@ namespace Editor
 
         Chicane::Grid::Scrollable* findScrollableAt(const Chicane::Vec2& inLocation) const;
         bool handleWheel(const Chicane::WindowEvent& inEvent);
+        bool isOverViewport(const Chicane::Vec2& inLocation) const;
+        void ensureDragGhost();
+        void showDragGhost(ExplorerItem* inSource, const Chicane::Vec2& inPointer);
+        void hideDragGhost();
 
         const Chicane::FileSystem::Item* findFolder(
             const Chicane::FileSystem::Item& inRoot, const Chicane::String& inPath
@@ -155,6 +166,13 @@ namespace Editor
         Chicane::Grid::Component*  m_gridContent;
         Chicane::String            m_gridLayout;
         float                      m_gridIconEm;
-        Chicane::XmlDocument         m_tileDocument;
+        Chicane::XmlDocument       m_tileDocument;
+
+        ExplorerItem*                m_dragGhost;
+        ExplorerItem*                m_dragSource;
+        Chicane::FileSystem::Item    m_dragItem;
+        Chicane::Vec2                m_dragOrigin;
+        bool                         m_bDragArmed;
+        bool                         m_bDragGhostVisible;
     };
 }

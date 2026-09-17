@@ -53,6 +53,7 @@ namespace Chicane
             std::vector<Component*> getChildrenFlat() const override;
 
         protected:
+            void appendHitPeripherals(std::vector<Component*>& outChildren) const override;
             void refreshSize() override;
 
         public:

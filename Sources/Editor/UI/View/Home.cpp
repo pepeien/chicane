@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <exception>
 
+#include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Core/Color.hpp>
 #include <Chicane/Core/FileSystem.hpp>
@@ -384,7 +385,9 @@ namespace Editor
           scaleState(STATE_IDLE),
           selectedFolderPath(Chicane::String::empty()),
           selectedAssetName(Chicane::String::empty()),
-          m_collapsedOutlinerItems({})
+          m_collapsedOutlinerItems({}),
+          m_editingOutlinerItem(nullptr),
+          m_outlinerEditId(Chicane::String::empty())
     {
         import <AssetManager>();
         import <Attributes>();
@@ -474,6 +477,11 @@ namespace Editor
 
     void HomeView::onItemSelection(Chicane::Object* inItem)
     {
+        if (m_editingOutlinerItem && m_editingOutlinerItem != inItem)
+        {
+            commitOutlinerEdit(false);
+        }
+
         selectedItem    = inItem;
         bIsItemSelected = selectedItem != nullptr;
 
@@ -502,6 +510,51 @@ namespace Editor
         rebuildOutliner();
     }
 
+    void HomeView::onItemEdit()
+    {
+        if (!selectedItem)
+        {
+            return;
+        }
+
+        if (m_editingOutlinerItem == selectedItem)
+        {
+            return;
+        }
+
+        commitOutlinerEdit(false);
+
+        m_editingOutlinerItem = selectedItem;
+        m_outlinerEditId      = selectedItem->getId();
+
+        rebuildOutliner();
+    }
+
+    void HomeView::onItemIdInput(Chicane::Object* inItem, Chicane::String inValue)
+    {
+        if (!inItem || inItem != m_editingOutlinerItem)
+        {
+            return;
+        }
+
+        m_outlinerEditId = inValue;
+
+        for (OutlinerNode& node : outlinerNodes)
+        {
+            if (node.item == inItem)
+            {
+                node.label = inValue;
+
+                break;
+            }
+        }
+    }
+
+    void HomeView::onItemIdCommit()
+    {
+        commitOutlinerEdit();
+    }
+
     void HomeView::onWorkspaceViewport()
     {
         setWorkspace(WORKSPACE_VIEWPORT);
@@ -514,6 +567,11 @@ namespace Editor
 
     void HomeView::setWorkspace(const Chicane::String& inValue)
     {
+        if (workspace.equals(inValue))
+        {
+            return;
+        }
+
         workspace            = inValue;
         bIsViewportWorkspace = workspace.equals(WORKSPACE_VIEWPORT);
         bIsAssetsWorkspace   = workspace.equals(WORKSPACE_ASSETS);
@@ -769,6 +827,39 @@ namespace Editor
         selectedAssetName = inName;
     }
 
+    void HomeView::onExplorerAssetDrop(Chicane::String inPath)
+    {
+        if (inPath.isEmpty())
+        {
+            return;
+        }
+
+        std::shared_ptr<Scene> scene = editorScene();
+        if (!scene)
+        {
+            return;
+        }
+
+        switch (Chicane::Box::getTypeFromExtension(inPath))
+        {
+        case Chicane::Box::AssetType::Mesh: {
+            if (!bIsViewportWorkspace)
+            {
+                setWorkspace(WORKSPACE_VIEWPORT);
+            }
+
+            Chicane::Actor* actor = scene->spawnMeshActor(inPath);
+
+            onItemSelection(actor);
+
+            break;
+        }
+
+        default:
+            break;
+        }
+    }
+
     void HomeView::rebuildOutliner()
     {
         outlinerNodes.clear();
@@ -777,6 +868,8 @@ namespace Editor
         if (!scene)
         {
             m_collapsedOutlinerItems.clear();
+            m_editingOutlinerItem = nullptr;
+            m_outlinerEditId      = Chicane::String::empty();
 
             return;
         }
@@ -813,6 +906,12 @@ namespace Editor
 
             rebuildAttributes();
         }
+
+        if (m_editingOutlinerItem && live.find(m_editingOutlinerItem) == live.end())
+        {
+            m_editingOutlinerItem = nullptr;
+            m_outlinerEditId      = Chicane::String::empty();
+        }
     }
 
     void HomeView::appendOutlinerNode(
@@ -833,7 +932,7 @@ namespace Editor
         {
             OutlinerNode node;
             node.item          = inObject;
-            node.label         = inObject->getId();
+            node.label         = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
             node.icon          = outlinerIcon(inObject);
             node.indent        = Chicane::String::sprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
             node.expandState   = !bHasChildren  ? OUTLINER_EXPAND_LEAF
@@ -842,6 +941,8 @@ namespace Editor
             node.selectedState = inObject == selectedItem ? "selected" : "idle";
             node.bHasChildren  = bHasChildren;
             node.bIsLeaf       = !bHasChildren;
+            node.bIsEditing    = inObject == m_editingOutlinerItem;
+            node.bShowLabel    = !node.bIsEditing;
             outlinerNodes.push_back(node);
         }
 
@@ -873,6 +974,42 @@ namespace Editor
             }
 
             break;
+        }
+    }
+
+    void HomeView::commitOutlinerEdit(bool bShouldRebuild)
+    {
+        Chicane::Object* item = m_editingOutlinerItem;
+        if (!item)
+        {
+            return;
+        }
+
+        const Chicane::String id = m_outlinerEditId.trim();
+        m_editingOutlinerItem    = nullptr;
+        m_outlinerEditId         = Chicane::String::empty();
+
+        if (!id.isEmpty() && !id.equals(item->getId()))
+        {
+            std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
+            if (scene)
+            {
+                Chicane::Object* existing = scene->getObject(id);
+                if (!existing || existing == item)
+                {
+                    item->setId(id);
+                }
+            }
+            else
+            {
+                item->setId(id);
+            }
+        }
+
+        if (bShouldRebuild)
+        {
+            rebuildOutliner();
+            rebuildAttributes();
         }
     }
 

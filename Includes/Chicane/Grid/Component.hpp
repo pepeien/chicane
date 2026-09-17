@@ -139,6 +139,9 @@ namespace Chicane
             virtual void refreshSize();
             virtual void refreshPosition();
 
+            // Hit detection
+            virtual void appendHitPeripherals(std::vector<Component*>& outChildren) const { return; }
+
         public:
             // Checkers
             bool isRoot() const;

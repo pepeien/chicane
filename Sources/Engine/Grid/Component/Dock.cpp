@@ -124,12 +124,17 @@ namespace Chicane
         {
             std::vector<Component*> result = Component::getChildrenFlat();
 
-            if (m_drop)
-            {
-                result.push_back(m_drop);
-            }
+            appendHitPeripherals(result);
 
             return result;
+        }
+
+        void Dock::appendHitPeripherals(std::vector<Component*>& outChildren) const
+        {
+            if (m_drop)
+            {
+                outChildren.push_back(m_drop);
+            }
         }
 
         const DockRegion* Dock::findRegion(const DockPanel* inPanel) const

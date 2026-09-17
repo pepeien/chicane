@@ -43,6 +43,15 @@ namespace Editor
         void onItemToggle(Chicane::Object* inItem);
 
         CH_FUNCTION()
+        void onItemEdit();
+
+        CH_FUNCTION()
+        void onItemIdInput(Chicane::Object* inItem, Chicane::String inValue);
+
+        CH_FUNCTION()
+        void onItemIdCommit();
+
+        CH_FUNCTION()
         void onWorkspaceViewport();
 
         CH_FUNCTION()
@@ -84,6 +93,9 @@ namespace Editor
         CH_FUNCTION()
         void onExplorerAsset(Chicane::String inName);
 
+        CH_FUNCTION()
+        void onExplorerAssetDrop(Chicane::String inPath);
+
     private:
         void bindScene();
         void rebuildOutliner();
@@ -91,6 +103,7 @@ namespace Editor
             Chicane::Object* inObject, int inDepth, bool inIsVisible, std::unordered_set<Chicane::Object*>& outLive
         );
         void expandOutlinerAncestors(Chicane::Object* inItem);
+        void commitOutlinerEdit(bool bShouldRebuild = true);
         void rebuildAttributes();
         void syncAttributeValues();
         bool hasSelectedItem() const;
@@ -139,5 +152,7 @@ namespace Editor
 
     private:
         std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;
+        Chicane::Object*                     m_editingOutlinerItem;
+        Chicane::String                      m_outlinerEditId;
     };
 }

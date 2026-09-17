@@ -29,6 +29,9 @@
                 outlinerNodes="{{ outlinerNodes }}"
                 onItemSelection="{{ onItemSelection }}"
                 onItemToggle="{{ onItemToggle }}"
+                onItemEdit="{{ onItemEdit }}"
+                onItemIdInput="{{ onItemIdInput }}"
+                onItemIdCommit="{{ onItemIdCommit }}"
             />
         </DockPanel>
         <DockPanel side="right" size="20%" handle="attributesHeader">
@@ -43,6 +46,7 @@
                 orientation="{{ orientation }}"
                 onFolder="{{ onExplorerFolder }}"
                 onAsset="{{ onExplorerAsset }}"
+                onAssetDrop="{{ onExplorerAssetDrop }}"
             />
         </DockPanel>
     </Dock>
@@ -58,6 +62,7 @@
                 orientation="{{ orientation }}"
                 onFolder="{{ onExplorerFolder }}"
                 onAsset="{{ onExplorerAsset }}"
+                onAssetDrop="{{ onExplorerAssetDrop }}"
             />
         </DockPanel>
         <DockPanel side="right" size="15%" handle="outlinerHeader">
@@ -65,6 +70,9 @@
                 outlinerNodes="{{ outlinerNodes }}"
                 onItemSelection="{{ onItemSelection }}"
                 onItemToggle="{{ onItemToggle }}"
+                onItemEdit="{{ onItemEdit }}"
+                onItemIdInput="{{ onItemIdInput }}"
+                onItemIdCommit="{{ onItemIdCommit }}"
             />
         </DockPanel>
     </Dock>
