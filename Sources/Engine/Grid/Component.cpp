@@ -575,7 +575,7 @@ namespace Chicane
                 ancestor = next;
             }
 
-            for (auto it = ancestors.rbegin(); it != ancestors.rend(); ++it)
+            for (auto it = ancestors.rbegin(); it != ancestors.rend(); it++)
             {
                 addFile(*it);
             }
@@ -1817,7 +1817,7 @@ namespace Chicane
 
                 std::size_t next = String::npos;
 
-                for (std::size_t i = 1; i < value.size(); ++i)
+                for (std::size_t i = 1; i < value.size(); i++)
                 {
                     const char c = value.at(i);
 
@@ -2259,6 +2259,28 @@ namespace Chicane
                     child->invalidateDrawCacheSubtree();
                 }
             }
+        }
+
+        void Component::syncDrawCache() const
+        {
+            std::uint64_t generation = 0;
+            for (const Component* ancestor = m_parent; ancestor; ancestor = ancestor->m_parent)
+            {
+                generation ^= ancestor->getScrollGeneration();
+
+                if (ancestor->isRoot())
+                {
+                    break;
+                }
+            }
+
+            if (m_draw.scrollGeneration == generation)
+            {
+                return;
+            }
+
+            m_draw.scrollGeneration = generation;
+            m_draw.bIsValid         = false;
         }
 
         Vec2 Component::getScrollOffset() const
@@ -2924,6 +2946,8 @@ namespace Chicane
 
         Vec2 Component::getDrawPosition() const
         {
+            syncDrawCache();
+
             if (!m_draw.bIsValid)
             {
                 m_draw.position = computeDrawPosition();
@@ -2961,6 +2985,8 @@ namespace Chicane
 
         Mat3 Component::getPaintMatrix() const
         {
+            syncDrawCache();
+
             if (!m_draw.bIsValid)
             {
                 m_draw.matrix = computePaintMatrix();
@@ -3067,6 +3093,8 @@ namespace Chicane
 
         Bounds2D Component::getDrawBounds() const
         {
+            syncDrawCache();
+
             if (!m_draw.bIsValid)
             {
                 Bounds2D result;
@@ -3111,6 +3139,8 @@ namespace Chicane
 
         Bounds2D Component::getOverflowClip() const
         {
+            syncDrawCache();
+
             if (!m_draw.bIsValid)
             {
                 getDrawBounds();
@@ -3503,7 +3533,7 @@ namespace Chicane
                 }
             }
 
-            for (auto iterator = ancestors.rbegin(); iterator != ancestors.rend(); ++iterator)
+            for (auto iterator = ancestors.rbegin(); iterator != ancestors.rend(); iterator++)
             {
                 addFile(*iterator);
             }
@@ -3515,7 +3545,7 @@ namespace Chicane
                 addFile(m_styles.get());
             }
 
-            for (auto iterator = files.rbegin(); iterator != files.rend(); ++iterator)
+            for (auto iterator = files.rbegin(); iterator != files.rend(); iterator++)
             {
                 if ((*iterator)->hasKeyframes(inName))
                 {
@@ -3781,7 +3811,7 @@ namespace Chicane
                 bWasMutated = true;
             }
 
-            for (std::size_t i = 0; i < m_forInstances.size(); ++i)
+            for (std::size_t i = 0; i < m_forInstances.size(); i++)
             {
                 Component* instance = m_forInstances.at(i);
 

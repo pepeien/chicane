@@ -97,7 +97,7 @@ namespace Chicane
             m_compositeSets.resize(frameCount);
             m_blurSets.resize(static_cast<std::size_t>(frameCount) * BLUR_PASS_COUNT);
 
-            for (std::uint32_t frame = 0; frame < frameCount; ++frame)
+            for (std::uint32_t frame = 0; frame < frameCount; frame++)
             {
                 VulkanDescriptorSetLayout::allocate(
                     m_extractSets[frame],
@@ -112,7 +112,7 @@ namespace Chicane
                     m_extractDescriptor.pool
                 );
 
-                for (std::uint32_t pass = 0; pass < BLUR_PASS_COUNT; ++pass)
+                for (std::uint32_t pass = 0; pass < BLUR_PASS_COUNT; pass++)
                 {
                     VulkanDescriptorSetLayout::allocate(
                         m_blurSets[static_cast<std::size_t>(frame) * BLUR_PASS_COUNT + pass],
@@ -541,7 +541,7 @@ namespace Chicane
                 return 0;
             }
 
-            for (std::uint32_t i = 0; i < m_backend->frames.size(); ++i)
+            for (std::uint32_t i = 0; i < m_backend->frames.size(); i++)
             {
                 if (&m_backend->frames.at(i) == &inGpuFrame)
                 {

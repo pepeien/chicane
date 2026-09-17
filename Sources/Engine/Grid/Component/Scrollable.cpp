@@ -67,8 +67,7 @@ namespace Chicane
 
             if (m_currentPosition.x != beforeClamp.x || m_currentPosition.y != beforeClamp.y)
             {
-                ++m_scrollGeneration;
-                invalidateDrawCacheSubtree();
+                m_scrollGeneration++;
             }
 
             refreshScrollBars();
@@ -248,8 +247,7 @@ namespace Chicane
                 return;
             }
 
-            ++m_scrollGeneration;
-            invalidateDrawCacheSubtree();
+            m_scrollGeneration++;
             refreshScrollBars();
         }
 

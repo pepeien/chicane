@@ -524,7 +524,7 @@ namespace Chicane
                 }
             }
 
-            for (auto it = next.rbegin(); it != next.rend(); ++it)
+            for (auto it = next.rbegin(); it != next.rend(); it++)
             {
                 if (!contains(previous, *it))
                 {
@@ -623,7 +623,7 @@ namespace Chicane
                 }
             }
 
-            for (auto it = next.rbegin(); it != next.rend(); ++it)
+            for (auto it = next.rbegin(); it != next.rend(); it++)
             {
                 if (!contains(previous, *it))
                 {

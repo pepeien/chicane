@@ -195,7 +195,7 @@ namespace Chicane
 
         void OpenGLLSceneSky::clearTextureData()
         {
-            for (std::uint32_t level = 0; level < SKY_MIP_LEVELS; ++level)
+            for (std::uint32_t level = 0; level < SKY_MIP_LEVELS; level++)
             {
                 glClearTexImage(m_texturesBuffer, static_cast<GLint>(level), GL_RGBA, GL_FLOAT, nullptr);
             }
@@ -213,7 +213,7 @@ namespace Chicane
                 {
                     image->blit(srgb.data(), static_cast<int>(SKY_TEXTURE_SIZE), static_cast<int>(SKY_TEXTURE_SIZE));
 
-                    for (std::size_t index = 0; index < linear.size(); ++index)
+                    for (std::size_t index = 0; index < linear.size(); index++)
                     {
                         const float channel = static_cast<float>(srgb[index]) / 255.0f;
                         const bool  bAlpha  = (index % 4u) == 3u;

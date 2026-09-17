@@ -183,7 +183,7 @@ namespace Chicane
             {
                 threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, -1);
 
-                for (std::uint32_t i = 0; i < OBJECT_LAYER_COUNT; ++i)
+                for (std::uint32_t i = 0; i < OBJECT_LAYER_COUNT; i++)
                 {
                     const ObjectLayer layer = static_cast<ObjectLayer>(i);
                     broadLayer.MapObjectToBroadPhaseLayer(
@@ -624,7 +624,7 @@ namespace Chicane
                 );
                 m_implementation->accumulator -= FIXED_STEP;
 
-                ++steps;
+                steps++;
             }
 
             m_implementation->horizontalWish.clear();
@@ -967,11 +967,11 @@ namespace Chicane
                     break;
                 }
 
-                for (int i = 0; i < triangleCount; ++i)
+                for (int i = 0; i < triangleCount; i++)
                 {
                     const std::uint32_t offset = static_cast<std::uint32_t>(result.second.size());
 
-                    for (int j = 0; j < 3; ++j)
+                    for (int j = 0; j < 3; j++)
                     {
                         result.first.push_back(offset + static_cast<std::uint32_t>(j));
 

@@ -372,7 +372,7 @@ namespace Chicane
                 return;
             }
 
-            for (std::size_t i = 0; i < options.size(); ++i)
+            for (std::size_t i = 0; i < options.size(); i++)
             {
                 InputSelectOption* option = options.at(i);
                 if (!option)

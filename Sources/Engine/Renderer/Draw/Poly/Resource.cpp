@@ -171,7 +171,7 @@ namespace Chicane
             m_glyphOutlines.push_back(static_cast<float>(count));
             m_glyphOutlines.push_back(0.0f);
 
-            for (Draw::Id i = 0; i < count * 3; ++i)
+            for (Draw::Id i = 0; i < count * 3; i++)
             {
                 m_glyphOutlines.push_back(inData.points[i].x);
                 m_glyphOutlines.push_back(inData.points[i].y);
@@ -206,7 +206,7 @@ namespace Chicane
             {
                 if (it->second.vertexStart < m_stableVertexCount)
                 {
-                    ++it;
+                    it++;
 
                     continue;
                 }

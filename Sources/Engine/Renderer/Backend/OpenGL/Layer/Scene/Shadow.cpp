@@ -60,7 +60,7 @@ namespace Chicane
 
             glViewport(0, 0, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 glProgramUniform1i(m_shaderProgram, 0, static_cast<GLint>(cascade));
                 glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_depthMapBuffer, 0, cascade);

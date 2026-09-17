@@ -248,7 +248,7 @@ namespace Chicane
                 std::uint32_t width  = std::max(1u, inWidth);
                 std::uint32_t height = std::max(1u, inHeight);
 
-                for (std::uint32_t level = 1; level < levels; ++level)
+                for (std::uint32_t level = 1; level < levels; level++)
                 {
                     transition(
                         level - 1,

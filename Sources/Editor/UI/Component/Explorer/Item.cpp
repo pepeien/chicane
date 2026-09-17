@@ -59,6 +59,10 @@ namespace Editor
             markStyleDirtySubtree();
             markLayoutDirty();
         }
+        else
+        {
+            markLayoutDirty();
+        }
     }
 
     void ExplorerItem::unbind()

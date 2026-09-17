@@ -186,7 +186,7 @@ namespace Chicane
             arrayViewCreateInfo.logicalDevice = backend->logicalDevice;
             VulkanImage::initView(shadowImage.view, shadowImage.instance, arrayViewCreateInfo);
 
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 VulkanImageViewCreateInfo layerViewCreateInfo;
                 layerViewCreateInfo.count          = 1;
@@ -218,7 +218,7 @@ namespace Chicane
         {
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 backend->logicalDevice.destroyImageView(shadowLayerViews[cascade]);
                 shadowLayerViews[cascade] = nullptr;

@@ -68,7 +68,7 @@ namespace Chicane
             scissor.extent.width  = SHADOW_MAP_WIDTH;
             scissor.extent.height = SHADOW_MAP_HEIGHT;
 
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 vk::RenderPassBeginInfo beginInfo;
                 beginInfo.renderPass = m_graphicsPipeline.renderPass;
@@ -285,7 +285,7 @@ namespace Chicane
 
             for (VulkanSwapchainImage& image : backend->swapchain.images)
             {
-                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
                 {
                     VulkanFrameBufferCreateInfo createInfo;
                     createInfo.id            = String(SCENE_SHADOW_LAYER_ID) + "_" + std::to_string(cascade);

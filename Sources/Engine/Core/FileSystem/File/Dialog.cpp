@@ -97,7 +97,7 @@ namespace Chicane
                         filterCount++;
                     }
 
-                    for (std::size_t i = 0; i < specNames.size(); ++i)
+                    for (std::size_t i = 0; i < specNames.size(); i++)
                     {
                         specs.push_back({specNames[i].c_str(), specPatterns[i].c_str()});
                     }
@@ -115,7 +115,7 @@ namespace Chicane
                         DWORD count = 0;
                         items->GetCount(&count);
 
-                        for (DWORD i = 0; i < count; ++i)
+                        for (DWORD i = 0; i < count; i++)
                         {
                             IShellItem* item = nullptr;
                             items->GetItemAt(i, &item);

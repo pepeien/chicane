@@ -29,11 +29,11 @@ namespace Chicane
             static void getFrustumCorners(const Mat4& inInverseViewProjection, std::array<Vec3, 8>& outCorners)
             {
                 std::uint32_t index = 0;
-                for (std::uint32_t z = 0; z < 2; ++z)
+                for (std::uint32_t z = 0; z < 2; z++)
                 {
-                    for (std::uint32_t y = 0; y < 2; ++y)
+                    for (std::uint32_t y = 0; y < 2; y++)
                     {
-                        for (std::uint32_t x = 0; x < 2; ++x)
+                        for (std::uint32_t x = 0; x < 2; x++)
                         {
                             const Vec4 corner = inInverseViewProjection * Vec4(
                                                                               2.0f * static_cast<float>(x) - 1.0f,
@@ -55,7 +55,7 @@ namespace Chicane
                 const float farClip   = std::max(std::min(cameraFar, kMaxShadowDistance), nearClip + 1.0f);
 
                 std::array<float, SHADOW_CASCADE_COUNT> splits = {};
-                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
                 {
                     const float progress = static_cast<float>(cascade + 1) / static_cast<float>(SHADOW_CASCADE_COUNT);
                     const float logSplit = nearClip * std::pow(farClip / nearClip, progress);
@@ -79,12 +79,12 @@ namespace Chicane
                 const float cameraRange = cameraFar - nearClip;
 
                 float lastSplit = 0.0f;
-                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+                for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
                 {
                     const float         split   = std::clamp((splits[cascade] - nearClip) / cameraRange, 0.0f, 1.0f);
                     std::array<Vec3, 8> corners = {};
 
-                    for (std::uint32_t corner = 0; corner < 4; ++corner)
+                    for (std::uint32_t corner = 0; corner < 4; corner++)
                     {
                         const Vec3 edge     = fullFrustumCorners[corner + 4] - fullFrustumCorners[corner];
                         corners[corner]     = fullFrustumCorners[corner] + edge * lastSplit;
@@ -155,7 +155,7 @@ namespace Chicane
                 int directional = -1;
                 int any         = -1;
 
-                for (std::uint32_t index = 0; index < inCount; ++index)
+                for (std::uint32_t index = 0; index < inCount; index++)
                 {
                     const Light& light = inLights.at(index);
                     if (!light.castShadows || light.type == LightType::Environment)
@@ -207,7 +207,7 @@ namespace Chicane
                 indices.reserve(inLights.size());
 
                 bool hasEnvironment = false;
-                for (std::uint32_t index = 0; index < inLights.size(); ++index)
+                for (std::uint32_t index = 0; index < inLights.size(); index++)
                 {
                     const Light& light = inLights.at(index);
                     if (!isVisible(light))
@@ -281,7 +281,7 @@ namespace Chicane
 
             static int findEnvironmentLight(const Light::List& inLights, std::uint32_t inCount)
             {
-                for (std::uint32_t index = 0; index < inCount; ++index)
+                for (std::uint32_t index = 0; index < inCount; index++)
                 {
                     if (inLights.at(index).type == LightType::Environment)
                     {
@@ -306,7 +306,7 @@ namespace Chicane
                 const std::uint32_t count  = static_cast<std::uint32_t>(lights.size());
                 result.info.x              = static_cast<float>(count);
 
-                for (std::uint32_t index = 0; index < count; ++index)
+                for (std::uint32_t index = 0; index < count; index++)
                 {
                     const Light& source = lights.at(index);
 

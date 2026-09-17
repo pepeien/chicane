@@ -195,7 +195,7 @@ namespace Chicane
                 {
                     instance->blit(srgb.data(), static_cast<int>(extent.width), static_cast<int>(extent.height));
 
-                    for (std::size_t index = 0; index < linear.size(); ++index)
+                    for (std::size_t index = 0; index < linear.size(); index++)
                     {
                         const float channel = static_cast<float>(srgb[index]) / 255.0f;
                         const bool  bAlpha  = (index % 4u) == 3u;

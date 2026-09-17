@@ -110,7 +110,7 @@ namespace Chicane
         const float mins[3]       = {min.x, min.y, min.z};
         const float maxs[3]       = {max.x, max.y, max.z};
 
-        for (int axis = 0; axis < 3; ++axis)
+        for (int axis = 0; axis < 3; axis++)
         {
             if (std::abs(directions[axis]) <= FLT_EPSILON)
             {

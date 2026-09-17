@@ -34,7 +34,7 @@ namespace Chicane
                 const tg3_model& model = inDocument.get();
 
                 std::unordered_map<std::int32_t, NodeCurves> curves;
-                for (std::uint32_t i = 0; i < inAnimation.channels_count; ++i)
+                for (std::uint32_t i = 0; i < inAnimation.channels_count; i++)
                 {
                     const tg3_animation_channel& channel = inAnimation.channels[i];
                     if (channel.target.node < 0 ||
@@ -143,7 +143,7 @@ namespace Chicane
                 std::vector<String> names;
                 names.reserve(model.animations_count);
 
-                for (std::uint32_t i = 0; i < model.animations_count; ++i)
+                for (std::uint32_t i = 0; i < model.animations_count; i++)
                 {
                     names.push_back(animationName(model.animations[i], i));
                 }

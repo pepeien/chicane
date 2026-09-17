@@ -78,7 +78,7 @@ namespace Chicane
                 }
             };
 
-            for (std::uint32_t s = 0; s < model.skins_count; ++s)
+            for (std::uint32_t s = 0; s < model.skins_count; s++)
             {
                 const tg3_skin& skin = model.skins[s];
                 if (!skin.joints)
@@ -86,22 +86,22 @@ namespace Chicane
                     continue;
                 }
 
-                for (std::uint32_t i = 0; i < skin.joints_count; ++i)
+                for (std::uint32_t i = 0; i < skin.joints_count; i++)
                 {
                     add(skin.joints[i]);
                 }
             }
 
-            for (std::uint32_t a = 0; a < model.animations_count; ++a)
+            for (std::uint32_t a = 0; a < model.animations_count; a++)
             {
                 const tg3_animation& animation = model.animations[a];
-                for (std::uint32_t c = 0; c < animation.channels_count; ++c)
+                for (std::uint32_t c = 0; c < animation.channels_count; c++)
                 {
                     add(animation.channels[c].target.node);
                 }
             }
 
-            for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+            for (std::uint32_t i = 0; i < model.nodes_count; i++)
             {
                 if (model.nodes[i].mesh >= 0)
                 {
@@ -131,7 +131,7 @@ namespace Chicane
             }
 
             joints.reserve(model.nodes_count);
-            for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+            for (std::uint32_t i = 0; i < model.nodes_count; i++)
             {
                 joints.push_back(static_cast<std::int32_t>(i));
             }
@@ -146,7 +146,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            for (std::uint32_t i = 0; i < inModel.animations_count; ++i)
+            for (std::uint32_t i = 0; i < inModel.animations_count; i++)
             {
                 if (toString(inModel.animations[i].name).equals(inId))
                 {
@@ -164,7 +164,7 @@ namespace Chicane
                 return 0;
             }
 
-            for (std::size_t i = 0; i + 1 < inTimes.size(); ++i)
+            for (std::size_t i = 0; i + 1 < inTimes.size(); i++)
             {
                 if (inTime < inTimes[i + 1])
                 {
@@ -220,7 +220,7 @@ namespace Chicane
             }
 
             curve.times = times;
-            for (std::size_t i = 0; i < times.size(); ++i)
+            for (std::size_t i = 0; i < times.size(); i++)
             {
                 const std::size_t valueIndex =
                     (i * stride + (cubic ? 1 : 0)) * static_cast<std::size_t>(valueComponents);
@@ -321,7 +321,7 @@ namespace Chicane
                     return candidate;
                 }
 
-                ++index;
+                index++;
             }
         }
 
@@ -339,7 +339,7 @@ namespace Chicane
 
             if (mode == TG3_MODE_TRIANGLE_STRIP)
             {
-                for (std::size_t i = 2; i < inIndices.size(); ++i)
+                for (std::size_t i = 2; i < inIndices.size(); i++)
                 {
                     if ((i % 2) == 0)
                     {
@@ -360,7 +360,7 @@ namespace Chicane
 
             if (mode == TG3_MODE_TRIANGLE_FAN)
             {
-                for (std::size_t i = 2; i < inIndices.size(); ++i)
+                for (std::size_t i = 2; i < inIndices.size(); i++)
                 {
                     outIndices.push_back(inIndices[0]);
                     outIndices.push_back(inIndices[i - 1]);

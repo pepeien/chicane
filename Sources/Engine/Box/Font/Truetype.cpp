@@ -266,7 +266,7 @@ namespace Chicane
                 {
                     std::vector<FT_Fixed> coordinates(variation->num_axis);
 
-                    for (FT_UInt i = 0; i < variation->num_axis; ++i)
+                    for (FT_UInt i = 0; i < variation->num_axis; i++)
                     {
                         coordinates.at(i) = variation->axis[i].def;
 
@@ -326,7 +326,7 @@ namespace Chicane
 
                 if (FT_HAS_KERNING(face))
                 {
-                    for (FT_UInt leftIndex = 0; leftIndex < face->num_glyphs; ++leftIndex)
+                    for (FT_UInt leftIndex = 0; leftIndex < face->num_glyphs; leftIndex++)
                     {
                         const auto leftIt = indexToCode.find(leftIndex);
 
@@ -335,7 +335,7 @@ namespace Chicane
                             continue;
                         }
 
-                        for (FT_UInt rightIndex = 0; rightIndex < face->num_glyphs; ++rightIndex)
+                        for (FT_UInt rightIndex = 0; rightIndex < face->num_glyphs; rightIndex++)
                         {
                             const auto rightIt = indexToCode.find(rightIndex);
 

@@ -368,7 +368,7 @@ namespace Chicane
             );
             const float slice = usable / static_cast<float>(inPanels.size());
 
-            for (std::size_t i = 0; i < inPanels.size(); ++i)
+            for (std::size_t i = 0; i < inPanels.size(); i++)
             {
                 DockRegion  region;
                 const float offset = (slice + gap) * static_cast<float>(i);

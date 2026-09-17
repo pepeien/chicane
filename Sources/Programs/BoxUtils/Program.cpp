@@ -865,7 +865,7 @@ void Program::createFromGltf(
     const Chicane::Box::TextureGltf::Parsed textures = Chicane::Box::TextureGltf::parse(inSource);
 
     std::vector<WrittenTexture> written(textures.images.size());
-    for (std::size_t i = 0; i < textures.images.size(); ++i)
+    for (std::size_t i = 0; i < textures.images.size(); i++)
     {
         const Chicane::Box::TextureGltf::Entry& image = textures.images[i];
         if (image.data.empty())
@@ -973,7 +973,7 @@ void Program::createFromGltf(
     {
         Chicane::Box::Skeleton bones(skeletonPath);
 
-        for (std::uint32_t i = 0; i < animationNames.size(); ++i)
+        for (std::uint32_t i = 0; i < animationNames.size(); i++)
         {
             Chicane::Box::AnimationClip clip;
             try

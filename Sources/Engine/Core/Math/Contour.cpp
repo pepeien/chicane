@@ -87,7 +87,7 @@ namespace Chicane
         const std::size_t count   = inPoints.size();
         int               sign    = 0;
 
-        for (std::size_t i = 0; i < count; ++i)
+        for (std::size_t i = 0; i < count; i++)
         {
             const float area = signedArea(inPoints[i], inPoints[(i + 1) % count], inPoints[(i + 2) % count]);
 
@@ -121,7 +121,7 @@ namespace Chicane
             outPositions.push_back({point[0], point[1], 0.0f});
         }
 
-        for (std::uint32_t i = 1; i + 1 < count; ++i)
+        for (std::uint32_t i = 1; i + 1 < count; i++)
         {
             if (std::fabs(signedArea(inPoints[0], inPoints[i], inPoints[i + 1])) <= minArea)
             {
@@ -265,12 +265,12 @@ namespace Chicane
         const float  inv     = 1.0f / scale;
         const float  minArea = std::max(extent * extent * DEGENERATE_AREA_RELATIVE, MIN_LENGTH);
 
-        for (int i = 0; i < nverts; ++i)
+        for (int i = 0; i < nverts; i++)
         {
             m_positions.push_back({(verts[i * 2] * inv) + min.x, (verts[i * 2 + 1] * inv) + min.y, 0.0f});
         }
 
-        for (int i = 0; i < nelems; ++i)
+        for (int i = 0; i < nelems; i++)
         {
             const int* tri = &indices[i * 3];
 

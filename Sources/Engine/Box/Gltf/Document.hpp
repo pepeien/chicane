@@ -48,10 +48,10 @@ namespace Chicane
                 const tg3_model&          model = get();
                 std::vector<std::int32_t> result(model.nodes_count, -1);
 
-                for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+                for (std::uint32_t i = 0; i < model.nodes_count; i++)
                 {
                     const tg3_node& node = model.nodes[i];
-                    for (std::uint32_t c = 0; c < node.children_count; ++c)
+                    for (std::uint32_t c = 0; c < node.children_count; c++)
                     {
                         const std::int32_t child = node.children[c];
                         if (child < 0 || static_cast<std::uint32_t>(child) >= model.nodes_count)
@@ -192,10 +192,10 @@ namespace Chicane
                 }
 
                 outValues.resize(static_cast<std::size_t>(accessor.count) * static_cast<std::size_t>(outComponents));
-                for (std::uint64_t i = 0; i < accessor.count; ++i)
+                for (std::uint64_t i = 0; i < accessor.count; i++)
                 {
                     const uint8_t* element = bytes + (i * static_cast<std::uint64_t>(stride));
-                    for (std::int32_t c = 0; c < outComponents; ++c)
+                    for (std::int32_t c = 0; c < outComponents; c++)
                     {
                         outValues
                             [static_cast<std::size_t>(i) * static_cast<std::size_t>(outComponents) +
@@ -228,7 +228,7 @@ namespace Chicane
                 }
 
                 outIndices.resize(static_cast<std::size_t>(accessor.count));
-                for (std::uint64_t i = 0; i < accessor.count; ++i)
+                for (std::uint64_t i = 0; i < accessor.count; i++)
                 {
                     outIndices[static_cast<std::size_t>(i)] = static_cast<std::uint32_t>(
                         readComponent(bytes + (i * static_cast<std::uint64_t>(stride)), accessor.component_type, 0)
@@ -240,7 +240,7 @@ namespace Chicane
 
             std::int32_t findAttribute(const tg3_primitive& inPrimitive, const char* inName) const
             {
-                for (std::uint32_t i = 0; i < inPrimitive.attributes_count; ++i)
+                for (std::uint32_t i = 0; i < inPrimitive.attributes_count; i++)
                 {
                     if (equals(inPrimitive.attributes[i].key, inName))
                     {

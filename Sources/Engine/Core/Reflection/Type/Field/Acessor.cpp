@@ -213,7 +213,7 @@ namespace Chicane
             const std::size_t count = getSize(inInstance);
 
             String result = "[";
-            for (std::size_t i = 0; i < count; ++i)
+            for (std::size_t i = 0; i < count; i++)
             {
                 if (i > 0)
                 {

@@ -218,7 +218,7 @@ namespace Chicane
                 std::uint32_t runStart = 0U;
                 std::uint32_t runCount = 0U;
 
-                for (std::uint32_t index = 0U; index < draw.instanceCount; ++index)
+                for (std::uint32_t index = 0U; index < draw.instanceCount; index++)
                 {
                     const std::uint32_t instanceIndex = draw.instanceStart + index;
 

@@ -158,7 +158,7 @@ namespace Chicane
             {
                 if (!it->bIsVolatile)
                 {
-                    ++it;
+                    it++;
 
                     continue;
                 }

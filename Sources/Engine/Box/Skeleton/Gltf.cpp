@@ -13,7 +13,7 @@ namespace Chicane
                 const Document   document(inFilepath);
                 const tg3_model& model = document.get();
 
-                for (std::uint32_t i = 0; i < model.skins_count; ++i)
+                for (std::uint32_t i = 0; i < model.skins_count; i++)
                 {
                     if (model.skins[i].joints && model.skins[i].joints_count > 0)
                     {

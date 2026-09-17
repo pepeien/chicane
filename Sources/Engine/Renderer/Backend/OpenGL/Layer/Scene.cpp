@@ -75,7 +75,7 @@ namespace Chicane
 
             m_light =
                 Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 Mat4 depth                   = Mat4::One;
                 depth[2][2]                  = 0.5f;

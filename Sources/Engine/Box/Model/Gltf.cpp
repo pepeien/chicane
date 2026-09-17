@@ -31,7 +31,7 @@ namespace Chicane
                 std::vector<glm::mat4>          worlds(model.nodes_count, glm::mat4(1.0f));
                 std::vector<char>               computed(model.nodes_count, 0);
 
-                for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+                for (std::uint32_t i = 0; i < model.nodes_count; i++)
                 {
                     locals[i] = localGltfMatrix(model.nodes[i]);
                 }
@@ -41,7 +41,7 @@ namespace Chicane
                 {
                     progressed = false;
 
-                    for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+                    for (std::uint32_t i = 0; i < model.nodes_count; i++)
                     {
                         if (computed[i])
                         {
@@ -70,7 +70,7 @@ namespace Chicane
                 }
 
                 std::unordered_map<std::int32_t, std::vector<std::int32_t>> meshNodes;
-                for (std::uint32_t i = 0; i < model.nodes_count; ++i)
+                for (std::uint32_t i = 0; i < model.nodes_count; i++)
                 {
                     if (model.nodes[i].mesh < 0)
                     {
@@ -139,7 +139,7 @@ namespace Chicane
                     else
                     {
                         sourceIndices.resize(vertexCount);
-                        for (std::size_t i = 0; i < vertexCount; ++i)
+                        for (std::size_t i = 0; i < vertexCount; i++)
                         {
                             sourceIndices[i] = static_cast<std::uint32_t>(i);
                         }
@@ -161,7 +161,7 @@ namespace Chicane
                     parsed.transform = transformFromMatrix(BASIS4 * inWorld * BASIS4_INVERSE);
                     parsed.vertices.reserve(vertexCount);
 
-                    for (std::size_t i = 0; i < vertexCount; ++i)
+                    for (std::size_t i = 0; i < vertexCount; i++)
                     {
                         const std::size_t offset = i * static_cast<std::size_t>(positionComponents);
                         const glm::vec4   mapped =
@@ -210,7 +210,7 @@ namespace Chicane
                     result.emplace(inName, std::move(parsed));
                 };
 
-                for (std::uint32_t meshIndex = 0; meshIndex < model.meshes_count; ++meshIndex)
+                for (std::uint32_t meshIndex = 0; meshIndex < model.meshes_count; meshIndex++)
                 {
                     const tg3_mesh&                  mesh      = model.meshes[meshIndex];
                     const std::vector<std::int32_t>& nodes     = meshNodes[static_cast<std::int32_t>(meshIndex)];
@@ -219,7 +219,7 @@ namespace Chicane
                     for (const std::int32_t node : instances)
                     {
                         const glm::mat4 world = node >= 0 ? worlds[static_cast<std::size_t>(node)] : glm::mat4(1.0f);
-                        for (std::uint32_t primitiveIndex = 0; primitiveIndex < mesh.primitives_count; ++primitiveIndex)
+                        for (std::uint32_t primitiveIndex = 0; primitiveIndex < mesh.primitives_count; primitiveIndex++)
                         {
                             String name = toString(mesh.name);
                             if (name.isEmpty())

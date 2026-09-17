@@ -47,7 +47,7 @@ namespace Chicane
 
     void ProgramParam::parse(int inParamCount, char* inParamValue[])
     {
-        for (int i = 1; i < inParamCount; ++i)
+        for (int i = 1; i < inParamCount; i++)
         {
             String arg = inParamValue[i];
 

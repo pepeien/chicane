@@ -109,7 +109,7 @@ namespace Chicane
                 }
             }
 
-            for (std::uint32_t i = 0; i < inCount; ++i)
+            for (std::uint32_t i = 0; i < inCount; i++)
             {
                 Particle particle;
                 particle.lifetime   = std::max(LIFETIME_MIN_VALUE, randomFloat(lifetime.from, lifetime.to));

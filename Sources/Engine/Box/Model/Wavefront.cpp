@@ -72,27 +72,27 @@ namespace Chicane
                 std::vector<std::uint32_t> faceIndexOffsets(mesh->face_count);
                 {
                     std::uint32_t offset = 0;
-                    for (std::uint32_t f = 0; f < mesh->face_count; ++f)
+                    for (std::uint32_t f = 0; f < mesh->face_count; f++)
                     {
                         faceIndexOffsets[f] = offset;
                         offset += mesh->face_vertices[f];
                     }
                 }
 
-                for (std::uint32_t o = 0; o < mesh->object_count; ++o)
+                for (std::uint32_t o = 0; o < mesh->object_count; o++)
                 {
                     const fastObjGroup& obj = mesh->objects[o];
 
                     ModelParsed                               model;
                     std::unordered_map<String, std::uint32_t> map;
 
-                    for (std::uint32_t f = 0; f < obj.face_count; ++f)
+                    for (std::uint32_t f = 0; f < obj.face_count; f++)
                     {
                         std::uint32_t faceIndex  = obj.face_offset + f;
                         std::uint32_t faceVertex = mesh->face_vertices[faceIndex];
                         std::uint32_t indexStart = faceIndexOffsets[faceIndex];
 
-                        for (std::uint32_t i = 1; i + 1 < faceVertex; ++i)
+                        for (std::uint32_t i = 1; i + 1 < faceVertex; i++)
                         {
                             parseDataset(model, map, mesh, indexStart + 0);
                             parseDataset(model, map, mesh, indexStart + i);

@@ -451,7 +451,7 @@ namespace Chicane
                 lineStart = glyphIndex;
             };
 
-            for (std::size_t i = 0; i < codepoints.size(); ++i)
+            for (std::size_t i = 0; i < codepoints.size(); i++)
             {
                 const char32_t codepoint = codepoints.at(i);
 
@@ -496,7 +496,7 @@ namespace Chicane
 
             maxWidth = std::max(maxWidth, cursor.x);
 
-            for (std::size_t i = glyphIndex; i < m_glyphs.size(); ++i)
+            for (std::size_t i = glyphIndex; i < m_glyphs.size(); i++)
             {
                 m_glyphs.at(i)->clear();
             }
@@ -556,7 +556,7 @@ namespace Chicane
                 return;
             }
 
-            for (std::size_t i = inStart; i < inEnd && i < m_glyphs.size(); ++i)
+            for (std::size_t i = inStart; i < inEnd && i < m_glyphs.size(); i++)
             {
                 TextGlyph* glyph = m_glyphs.at(i);
                 if (!glyph)

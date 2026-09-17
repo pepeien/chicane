@@ -23,7 +23,7 @@ namespace Editor
 
     void Studio::onLoad()
     {
-        for (std::size_t index = 0; index < LIGHT_COUNT; ++index)
+        for (std::size_t index = 0; index < LIGHT_COUNT; index++)
         {
             Chicane::CLight* light = getScene()->createComponent<Chicane::CLight>();
             light->setType(Chicane::LightType::Directional);
@@ -64,7 +64,7 @@ namespace Editor
         const Chicane::Vec3 up     = camera->getUp().normalize();
         const Chicane::Vec3 look   = camera->getForward().normalize();
 
-        for (std::size_t index = 0; index < LIGHT_COUNT; ++index)
+        for (std::size_t index = 0; index < LIGHT_COUNT; index++)
         {
             Chicane::CLight* light = m_lights.at(index);
             if (!light)

@@ -230,7 +230,7 @@ namespace Chicane
             static float emissiveStrength(const tg3_material& inMaterial)
             {
                 const tg3_extras_ext& extras = inMaterial.ext;
-                for (std::uint32_t i = 0; i < extras.extensions_count; ++i)
+                for (std::uint32_t i = 0; i < extras.extensions_count; i++)
                 {
                     const tg3_extension& extension = extras.extensions[i];
                     if (!equals(extension.name, "KHR_materials_emissive_strength"))
@@ -243,7 +243,7 @@ namespace Chicane
                         break;
                     }
 
-                    for (std::uint32_t k = 0; k < extension.value.object_count; ++k)
+                    for (std::uint32_t k = 0; k < extension.value.object_count; k++)
                     {
                         const tg3_kv_pair& field = extension.value.object_data[k];
                         if (!equals(field.key, "emissiveStrength"))
@@ -276,7 +276,7 @@ namespace Chicane
                 Parsed result;
                 result.images.resize(model.images_count);
 
-                for (std::uint32_t i = 0; i < model.images_count; ++i)
+                for (std::uint32_t i = 0; i < model.images_count; i++)
                 {
                     const tg3_image& image = model.images[i];
                     Entry            parsed;
@@ -287,7 +287,7 @@ namespace Chicane
                     result.images[i] = std::move(parsed);
                 }
 
-                for (std::uint32_t i = 0; i < model.materials_count; ++i)
+                for (std::uint32_t i = 0; i < model.materials_count; i++)
                 {
                     const tg3_material&                 material = model.materials[i];
                     std::map<TextureMap, std::int32_t>& maps     = result.materials[static_cast<std::int32_t>(i)];

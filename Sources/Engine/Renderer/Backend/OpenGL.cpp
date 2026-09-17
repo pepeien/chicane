@@ -1052,7 +1052,7 @@ namespace Chicane
             glCreateTextures(GL_TEXTURE_2D, 2, m_bloomColor.data());
             glCreateFramebuffers(2, m_bloomFramebuffer.data());
 
-            for (int index = 0; index < 2; ++index)
+            for (int index = 0; index < 2; index++)
             {
                 glTextureStorage2D(m_bloomColor.at(index), 1, GL_RGBA16F, bloomWidth, bloomHeight);
                 glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_MIN_FILTER, GL_LINEAR);

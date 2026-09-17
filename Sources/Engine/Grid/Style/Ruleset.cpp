@@ -130,7 +130,7 @@ namespace Chicane
                         const char prefix = part.at(0);
 
                         std::size_t next = String::npos;
-                        for (std::size_t i = 1; i < part.size(); ++i)
+                        for (std::size_t i = 1; i < part.size(); i++)
                         {
                             const char c = part.at(i);
                             if (c == Style::CLASS_SELECTOR || c == Style::ID_SELECTOR)

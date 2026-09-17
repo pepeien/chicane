@@ -348,7 +348,7 @@ namespace Chicane
                 }
             }
 
-            for (std::size_t i = 0; i < outModel.vertices.size(); ++i)
+            for (std::size_t i = 0; i < outModel.vertices.size(); i++)
             {
                 const Vec3 normal  = outModel.vertices[i].normal.normalize();
                 Vec3       tangent = tangents[i];

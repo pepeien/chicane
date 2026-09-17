@@ -28,7 +28,7 @@ namespace Editor
     static constexpr float LIST_GAP_EM        = 0.2f;
     static constexpr float LIST_ICON_SCALE    = 0.37f;
     static constexpr float LIST_ROW_PAD_EM    = 0.3f;
-    static constexpr int   TILE_OVERSCAN_ROWS = 6;
+    static constexpr int   TILE_OVERSCAN_ROWS = 2;
 
     static constexpr inline const char* EXPLORER_MAIN_ID = "explorerMain";
     static constexpr inline const char* EXPLORER_TREE_ID = "explorerTree";
@@ -319,7 +319,7 @@ namespace Editor
         std::vector<std::size_t> folders;
         folders.reserve(inItems.size());
 
-        for (std::size_t i = 0; i < inItems.size(); ++i)
+        for (std::size_t i = 0; i < inItems.size(); i++)
         {
             if (isListedFolder(inItems.at(i)))
             {
@@ -616,7 +616,7 @@ namespace Editor
             content->removeChild(extra);
         }
 
-        for (std::size_t i = 0; i < m_tiles.size(); ++i)
+        for (std::size_t i = 0; i < m_tiles.size(); i++)
         {
             ExplorerItem* tile = m_tiles.at(i);
 
@@ -627,9 +627,8 @@ namespace Editor
                 bIsVertical ? Chicane::Vec2(0.0f, static_cast<float>(row) * stride.y)
                             : Chicane::Vec2(static_cast<float>(column) * stride.x, static_cast<float>(row) * stride.y);
 
-            const bool bShouldRebind =
-                bHasLayoutChanged || bHasIconSizeChanged || tile->boundIndex() != static_cast<int>(dataIndex);
-            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot, bShouldRebind);
+            const bool bShouldRestyle = bHasLayoutChanged || bHasIconSizeChanged;
+            tile->bind(&gridItems.at(dataIndex), static_cast<int>(dataIndex), slot, bShouldRestyle);
         }
     }
 

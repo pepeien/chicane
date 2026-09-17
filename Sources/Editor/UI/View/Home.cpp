@@ -801,7 +801,7 @@ namespace Editor
                 continue;
             }
 
-            ++it;
+            it++;
         }
 
         if (selectedItem && live.find(selectedItem) == live.end())

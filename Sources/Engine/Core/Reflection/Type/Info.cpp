@@ -90,7 +90,7 @@ namespace Chicane
         bool                       bHasCrossedPointer = false;
         const ReflectionFieldInfo* field              = nullptr;
 
-        for (std::size_t i = 0; i < parts.size(); ++i)
+        for (std::size_t i = 0; i < parts.size(); i++)
         {
             const String&              part         = parts[i];
             const ReflectionFieldInfo* currentField = currentType->findField(part);

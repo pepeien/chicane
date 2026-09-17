@@ -49,6 +49,7 @@ namespace Chicane
             using Directive  = std::function<void(const String&)>;
             using Directives = std::unordered_map<String, Directive>;
             using Variables  = std::unordered_map<String, ReflectionFieldAccessor>;
+            using Imports    = std::unordered_map<String, const ReflectionTypeInfo*>;
 
         public:
             // Directive
@@ -381,63 +382,64 @@ namespace Chicane
             bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void rebuildFlatChildren();
             bool hideIfDirective();
+            void syncDrawCache() const;
             Vec2 computeDrawPosition() const;
             Mat3 computePaintMatrix() const;
 
         protected:
             // Properties
-            String                                                m_tag;
-            String                                                m_id;
-            String                                                m_className;
+            String                     m_tag;
+            String                     m_id;
+            String                     m_className;
 
             // Status
-            ComponentStatus                                       m_status;
-            ComponentFlag                                         m_flags;
+            ComponentStatus            m_status;
+            ComponentFlag              m_flags;
 
             // Hash
-            String                                                m_live;
-            std::uint64_t                                         m_liveHash;
+            String                     m_live;
+            std::uint64_t              m_liveHash;
 
             // Modifier
-            Directives                                            m_directives;
+            Directives                 m_directives;
 
             // Runtime
-            Variables                                             m_variables;
+            Variables                  m_variables;
 
             // Style
-            Style                                                 m_style;
-            StyleFile::Variables                                  m_styleVariables;
-            StyleFile*                                            m_styleFile;
-            std::unique_ptr<StyleFile>                            m_styles;
-            bool                                                  m_bHasOwnStyle;
+            Style                      m_style;
+            StyleFile::Variables       m_styleVariables;
+            StyleFile*                 m_styleFile;
+            std::unique_ptr<StyleFile> m_styles;
+            bool                       m_bHasOwnStyle;
 
             // Imports
-            std::unordered_map<String, const ReflectionTypeInfo*> m_imports;
-            Component*                                            m_importOwner;
+            Imports                    m_imports;
+            Component*                 m_importOwner;
 
             // Hierarchy
-            Component*                                            m_root;
-            Component*                                            m_parent;
-            std::vector<Component*>                               m_children;
-            std::vector<Component*>                               m_flatChildren;
+            Component*                 m_root;
+            Component*                 m_parent;
+            std::vector<Component*>    m_children;
+            std::vector<Component*>    m_flatChildren;
 
             // Position
-            Vec2                                                  m_size;
-            Vec2                                                  m_scale;
-            Vec2                                                  m_offset;
-            Vec2                                                  m_cursor;
-            float                                                 m_scratch;
-            Vec2                                                  m_layoutParentSize;
-            float                                                 m_layoutParentFontSize;
+            Vec2                       m_size;
+            Vec2                       m_scale;
+            Vec2                       m_offset;
+            Vec2                       m_cursor;
+            float                      m_scratch;
+            Vec2                       m_layoutParentSize;
+            float                      m_layoutParentFontSize;
 
             // Draw
-            Primitive                                             m_primitive;
-            mutable DrawCache                                     m_draw;
+            Primitive                  m_primitive;
+            mutable DrawCache          m_draw;
 
             // For-loop
-            std::vector<Component*>                               m_forInstances;
-            String                                                m_forVariable;
-            std::any                                              m_forSource;
+            std::vector<Component*>    m_forInstances;
+            String                     m_forVariable;
+            std::any                   m_forSource;
         };
     }
 }

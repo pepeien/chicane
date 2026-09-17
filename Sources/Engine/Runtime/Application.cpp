@@ -854,7 +854,7 @@ namespace Chicane
                 subcommand.instance.emissiveStrength = group.getEmissiveStrength();
                 subcommand.instance.tileSize         = group.getTileSize();
 
-                for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
+                for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; slot++)
                 {
                     const TextureMap map = static_cast<TextureMap>(slot);
                     if (group.hasTexture(map))
@@ -1010,7 +1010,7 @@ namespace Chicane
             {
                 instance.flags &= ~Renderer::DrawPoly3DFlag::Lit;
             }
-            for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; ++slot)
+            for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; slot++)
             {
                 instance.textures[slot] = resolveTextureId(
                     m_renderer.get(),

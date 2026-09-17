@@ -276,7 +276,7 @@ namespace Chicane
         {
             lightData =
                 Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
-            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; ++cascade)
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
             {
                 lightData.projections[cascade][1][1] *= -1.0f;
 
