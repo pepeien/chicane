@@ -15,7 +15,7 @@ namespace Chicane
             parse(inNode);
         }
 
-        void RendererBeam::refresh()
+        void RendererBeam::onAttributeRefresh()
         {
             m_tag = getSource().getName();
             width = getFloat(WIDTH_ATTRIBUTE_NAME, width);

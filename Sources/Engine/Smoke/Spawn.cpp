@@ -51,7 +51,7 @@ namespace Chicane
             parse(inNode);
         }
 
-        void Spawn::refresh()
+        void Spawn::onAttributeRefresh()
         {
             m_tag    = getSource().getName();
             shape    = getString(SHAPE_ATTRIBUTE_NAME, shape);

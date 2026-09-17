@@ -39,7 +39,7 @@ namespace Chicane
             ~System() override;
 
         public:
-            void refresh() override;
+            void onAttributeRefresh() override;
             void setPlayInfo(const PlayInfo& inValue);
             bool isAlive() const;
 

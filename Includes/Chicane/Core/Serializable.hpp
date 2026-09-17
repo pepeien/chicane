@@ -34,8 +34,6 @@ namespace Chicane
         Serializable& operator=(Serializable&&)      = default;
 
     public:
-        virtual void onRefresh();
-
         virtual void onAttributeSync();
 
     protected:

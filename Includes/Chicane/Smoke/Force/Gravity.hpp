@@ -31,7 +31,7 @@ namespace Chicane
             ForceGravity(const XmlNode& inNode);
 
         public:
-            void refresh() override;
+            void onAttributeRefresh() override;
 
         public:
             void tick(float inDeltaTime, Particle::List& outParticles, const PlayInfo& inPlay) override;

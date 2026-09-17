@@ -34,7 +34,7 @@ namespace Chicane
             }
         }
 
-        void System::refresh()
+        void System::onAttributeRefresh()
         {
             m_tag    = getSource().getName();
             name     = getString(NAME_ATTRIBUTE_NAME, name);

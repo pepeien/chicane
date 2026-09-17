@@ -61,6 +61,9 @@ namespace Chicane
         void Module::collect(const Particle::List&, const PlayInfo&, Particle::List&) const
         {}
 
+        void Module::onAttributeRefresh()
+        {}
+
         void Module::watchRefresh(const String& inName)
         {
             watchAttribute(
@@ -72,7 +75,7 @@ namespace Chicane
                         return;
                     }
 
-                    onRefresh();
+                    onAttributeRefresh();
                 }
             );
         }
@@ -84,6 +87,7 @@ namespace Chicane
             m_bIsRefreshing = false;
 
             m_tag = getSource().isEmpty() ? String::empty() : getSource().getName();
+            onAttributeRefresh();
         }
 
         const String& Module::getTag() const

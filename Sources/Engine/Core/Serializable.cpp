@@ -21,16 +21,9 @@ namespace Chicane
         onAttributeSync();
     }
 
-    void Serializable::onRefresh()
-    {
-        return;
-    }
-
     void Serializable::onAttributeSync()
     {
         syncAttributes();
-
-        onRefresh();
     }
 
     void Serializable::onAttributeChange(const String&, const String&)
@@ -137,7 +130,6 @@ namespace Chicane
         }
 
         emitAttribute(inName, inValue);
-        onRefresh();
     }
 
     void Serializable::removeAttribute(const String& inName)
@@ -154,7 +146,6 @@ namespace Chicane
         }
 
         emitAttribute(inName, String::empty());
-        onRefresh();
     }
 
     float Serializable::getFloat(const String& inName, float inFallback) const

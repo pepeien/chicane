@@ -33,7 +33,7 @@ namespace Chicane
             RendererSprite();
 
         public:
-            void refresh() override;
+            void onAttributeRefresh() override;
 
         public:
             void collect(

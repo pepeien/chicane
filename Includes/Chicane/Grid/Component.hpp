@@ -99,8 +99,7 @@ namespace Chicane
 
             // Lifecycle
             virtual void tick(float inDelta);
-            virtual void onAttributeSync() override;
-            virtual void onRefresh();
+            virtual void refresh();
 
             // Depth
             virtual float getDepth() const;
@@ -118,7 +117,7 @@ namespace Chicane
             virtual std::vector<Component*> getChildrenFlat() const;
 
         protected:
-            // Lifescycle Events
+            // Lifecycle hooks
             virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }

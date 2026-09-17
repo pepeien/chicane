@@ -12,7 +12,7 @@ namespace Chicane
             parse(inNode);
         }
 
-        void RendererSprite::refresh()
+        void RendererSprite::onAttributeRefresh()
         {
             m_tag   = getSource().getName();
             blend   = getString(BLEND_ATTRIBUTE_NAME, blend);

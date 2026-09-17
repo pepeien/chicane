@@ -45,7 +45,7 @@ namespace Chicane
             RendererBeam();
 
         public:
-            void refresh() override;
+            void onAttributeRefresh() override;
 
         public:
             void collect(

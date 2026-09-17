@@ -1220,7 +1220,7 @@ namespace Chicane
             m_animationDelta = inDeltaTime;
             setFlag(ComponentFlag::LaidOut, false);
 
-            onRefresh();
+            refresh();
 
             m_animationDelta = 0.0f;
 
@@ -1281,12 +1281,7 @@ namespace Chicane
             setFlag(ComponentFlag::Layout, false);
         }
 
-        void Component::onAttributeSync()
-        {
-            syncAttributes();
-        }
-
-        void Component::onRefresh()
+        void Component::refresh()
         {
             Vec2  parentSize     = Vec2::Zero();
             float parentFont     = 0.0f;

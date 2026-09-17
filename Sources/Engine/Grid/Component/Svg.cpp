@@ -1523,7 +1523,7 @@ namespace Chicane
             m_shapes.clear();
         }
 
-        void Svg::onRefresh()
+        void Svg::refresh()
         {
             SvgTessellation& tess           = SvgTessellation::instance();
             bool             bNeedsTessSync = tess.pump();
@@ -1534,7 +1534,7 @@ namespace Chicane
                 bNeedsTessSync = true;
             }
 
-            Component::onRefresh();
+            Component::refresh();
 
             if (m_style.isDisplay(StyleDisplay::None))
             {

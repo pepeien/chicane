@@ -111,7 +111,7 @@ namespace Chicane
 
         void Text::refresh()
         {
-            Component::onRefresh();
+            Component::refresh();
 
             if (m_style.isDisplay(StyleDisplay::None))
             {

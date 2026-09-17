@@ -65,7 +65,7 @@ namespace Chicane
             Spawn(const XmlNode& inNode);
 
         public:
-            void refresh() override;
+            void onAttributeRefresh() override;
 
             void emit(Particle::List& outParticles, const PlayInfo& inPlay, std::uint32_t inCount);
 

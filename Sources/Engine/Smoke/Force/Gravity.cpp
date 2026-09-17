@@ -20,7 +20,7 @@ namespace Chicane
             parse(inNode);
         }
 
-        void ForceGravity::refresh()
+        void ForceGravity::onAttributeRefresh()
         {
             m_tag   = getSource().getName();
             value   = getVec3(VALUE_ATTRIBUTE_NAME, value);
