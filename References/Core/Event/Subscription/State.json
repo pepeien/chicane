@@ -1,0 +1,94 @@
+{
+    "title": "State",
+    "filename": "State",
+    "path": "Core/Event/Subscription/State",
+    "source": {
+        "header": "Includes/Chicane/Core/Event/Subscription/State.hpp",
+        "namespace": "Chicane::EventSubscriptionState",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsCompleted",
+                "description": "CHICANE_EVENTSUBSCRIPTIONSTATE_BISCOMPLETED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(T)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "next",
+                "description": "CHICANE_EVENTSUBSCRIPTIONSTATE_NEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const String &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "error",
+                "description": "CHICANE_EVENTSUBSCRIPTIONSTATE_ERROR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "complete",
+                "description": "CHICANE_EVENTSUBSCRIPTIONSTATE_COMPLETE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_EVENTSUBSCRIPTIONSTATE_DESCRIPTION"
+    },
+    "children": []
+}

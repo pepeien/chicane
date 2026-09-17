@@ -342,6 +342,23 @@
                     "inline"
                 ],
                 "description": "CHICANE_EVENTOBSERVABLE_COMPLETE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "compact",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_EVENTOBSERVABLE_COMPACT_DESCRIPTION"
             }
         ],
         "members": [

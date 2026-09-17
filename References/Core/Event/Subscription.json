@@ -348,52 +348,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "EventSubscriptionState",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription/State",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
                 },
-                "name": "m_bIsCompleted",
-                "description": "CHICANE_EVENTSUBSCRIPTION_M_BISCOMPLETED_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "NextCallback",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": []
-                },
-                "name": "m_next",
-                "description": "CHICANE_EVENTSUBSCRIPTION_M_NEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ErrorCallback",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": []
-                },
-                "name": "m_error",
-                "description": "CHICANE_EVENTSUBSCRIPTION_M_ERROR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "CompleteCallback",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": []
-                },
-                "name": "m_complete",
-                "description": "CHICANE_EVENTSUBSCRIPTION_M_COMPLETE_DESCRIPTION"
+                "name": "m_state",
+                "description": "CHICANE_EVENTSUBSCRIPTION_M_STATE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_EVENTSUBSCRIPTION_DESCRIPTION"

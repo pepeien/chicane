@@ -927,7 +927,25 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "State",
+                                "filename": "State",
+                                "path": "Core/Event/Subscription/State",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Event/Subscription/State.hpp",
+                                    "namespace": "Chicane::EventSubscriptionState",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             },
