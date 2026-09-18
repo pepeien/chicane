@@ -313,11 +313,11 @@ namespace Editor
             return;
         }
 
-        m_dragSource         = inSource;
-        m_dragOrigin         = inPointer;
-        m_pointer            = inPointer;
-        m_bDragArmed         = true;
-        m_bDragGhostVisible  = false;
+        m_dragSource        = inSource;
+        m_dragOrigin        = inPointer;
+        m_pointer           = inPointer;
+        m_bDragArmed        = true;
+        m_bDragGhostVisible = false;
     }
 
     void Explorer::updateItemDrag(const Chicane::Vec2& inPointer)

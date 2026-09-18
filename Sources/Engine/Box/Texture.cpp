@@ -204,9 +204,8 @@ namespace Chicane
                 return;
             }
 
-            m_vendor = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
-            m_bNormal =
-                String(getAttribute(NORMAL_ATTRIBUTE_NAME)).toLower().equals("true") || looksLikeNormal();
+            m_vendor  = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
+            m_bNormal = String(getAttribute(NORMAL_ATTRIBUTE_NAME)).toLower().equals("true") || looksLikeNormal();
         }
 
         void Texture::fetchDataFromXML()

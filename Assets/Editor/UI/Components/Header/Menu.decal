@@ -8,17 +8,6 @@ Editor::HeaderMenu {
     display: flex;
     overflow: visible;
 
-    &__check {
-        display: none;
-    }
-
-    &__label {
-        margin: auto 0;
-        color: $--black;
-        font-size: 0.75em;
-        transition: color 200ms ease-in-out;
-    }
-
     &__control {
         height: 100%;
         display: flex;
@@ -30,28 +19,28 @@ Editor::HeaderMenu {
         transition: background-color 200ms ease-in-out;
         border-radius: 5px;
 
+        Text, Icon {
+            transition: color 200ms ease-in-out;
+        }
+
+        &__label {
+            margin: auto 0;
+            color: $--black;
+            font-size: 0.75em;
+        }
+
+        &__check, &__shortcut {
+            display: none;
+        }
+
         &:hover {
             cursor: pointer;
             background-color: $--black;
 
-            Text, Icon {
+            &__label {
                 color: $--white;
             }
         }
-    }
-
-    &__shortcut {
-        margin: auto 0 auto 1.5em;
-        color: $--lighter-grey;
-        font-size: 0.6em;
-    }
-
-    &__chevron {
-        width: 0.45em;
-        height: 0.45em;
-        margin: auto 0 auto auto;
-        color: $--grey;
-        transition: color 200ms ease-in-out;
     }
 
     &__list {
@@ -76,39 +65,47 @@ Editor::HeaderMenu {
             width: 100%;
             height: auto;
 
-            &__label {
-                color: $--grey;
-            }
-
-            &__check {
-                display: block;
-                width: 0.35em;
-                height: 0.35em;
-                margin: auto 0;
-                color: $--grey;
-                opacity: 0;
-                transition: color 200ms ease-in-out, opacity 100ms ease-in-out;
-
-                &.--checked {
-                    opacity: 1;
-                }
-            }
-
             &__control {
                 width: 100%;
                 height: auto;
                 padding: 0.35em 0.6em;
-                border: 1px solid transparent;
                 border-radius: 7px;
-                transition: padding-left 200ms ease-in-out, border-color 250ms ease-in-out;
+                transition: padding-left 200ms ease-in-out, background-color 250ms ease-in-out;
+
+                Text, Icon {
+                    color: $--grey;
+                }
+
+                &__check {
+                    display: block;
+                    width: 0.8em;
+                    height: 0.8em;
+                    margin: auto 0;
+                    opacity: 0;
+
+                    &.--checked {
+                        opacity: 1;
+                    }
+                }
+
+                &__shortcut {
+                    display: block;
+                    margin: auto 1em auto auto;
+                    font-size: 0.6em;
+                }
+
+                &__chevron {
+                    width: 1em;
+                    height: 1em;
+                    margin: auto 0 auto auto;
+                }
 
                 &:hover {
                     padding-left: 0.9em;
-                    border-color: $--grey;
-                    background-color: transparent;
+                    background-color: $--white;
 
                     Text, Icon {
-                        color: $--grey;
+                        color: $--black;
                     }
                 }
             }

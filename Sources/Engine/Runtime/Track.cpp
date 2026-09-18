@@ -41,8 +41,7 @@ namespace Chicane
 
         bool isAbsoluteIdentity(const Object& inObject)
         {
-            return inObject.getTranslation() == Vec3::Zero() &&
-                   inObject.getRotation().getAngles() == Vec3::Zero() &&
+            return inObject.getTranslation() == Vec3::Zero() && inObject.getRotation().getAngles() == Vec3::Zero() &&
                    inObject.getScale() == Vec3::One();
         }
 
@@ -210,30 +209,18 @@ namespace Chicane
                         RELATIVE_ROTATION_ATTRIBUTE_NAME,
                         formatVec3(inObject.getRelativeRotation().getAngles())
                     );
-                    Xml::addAttribute(
-                        node,
-                        RELATIVE_SCALE_ATTRIBUTE_NAME,
-                        formatVec3(inObject.getRelativeScale())
-                    );
+                    Xml::addAttribute(node, RELATIVE_SCALE_ATTRIBUTE_NAME, formatVec3(inObject.getRelativeScale()));
                 }
             }
             else if (!isAbsoluteIdentity(inObject))
             {
-                Xml::addAttribute(
-                    node,
-                    ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
-                    formatVec3(inObject.getTranslation())
-                );
+                Xml::addAttribute(node, ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME, formatVec3(inObject.getTranslation()));
                 Xml::addAttribute(
                     node,
                     ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
                     formatVec3(inObject.getRotation().getAngles())
                 );
-                Xml::addAttribute(
-                    node,
-                    ABSOLUTE_SCALE_ATTRIBUTE_NAME,
-                    formatVec3(inObject.getScale())
-                );
+                Xml::addAttribute(node, ABSOLUTE_SCALE_ATTRIBUTE_NAME, formatVec3(inObject.getScale()));
             }
 
             writeFields(node, inObject);

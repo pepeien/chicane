@@ -24,9 +24,9 @@ namespace Editor
     class Explorer : public Chicane::Grid::Container
     {
     public:
-        static constexpr inline const char* ORIENTATION_ATTRIBUTE  = "orientation";
-        static constexpr inline const char* ON_FOLDER_ATTRIBUTE    = "onFolder";
-        static constexpr inline const char* ON_ASSET_ATTRIBUTE     = "onAsset";
+        static constexpr inline const char* ORIENTATION_ATTRIBUTE   = "orientation";
+        static constexpr inline const char* ON_FOLDER_ATTRIBUTE     = "onFolder";
+        static constexpr inline const char* ON_ASSET_ATTRIBUTE      = "onAsset";
         static constexpr inline const char* ON_ASSET_DROP_ATTRIBUTE = "onAssetDrop";
 
     private:
@@ -168,11 +168,11 @@ namespace Editor
         float                      m_gridIconEm;
         Chicane::XmlDocument       m_tileDocument;
 
-        ExplorerItem*                m_dragGhost;
-        ExplorerItem*                m_dragSource;
-        Chicane::FileSystem::Item    m_dragItem;
-        Chicane::Vec2                m_dragOrigin;
-        bool                         m_bDragArmed;
-        bool                         m_bDragGhostVisible;
+        ExplorerItem*             m_dragGhost;
+        ExplorerItem*             m_dragSource;
+        Chicane::FileSystem::Item m_dragItem;
+        Chicane::Vec2             m_dragOrigin;
+        bool                      m_bDragArmed;
+        bool                      m_bDragGhostVisible;
     };
 }

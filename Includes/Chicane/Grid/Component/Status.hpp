@@ -44,16 +44,12 @@ namespace Chicane
 
         inline constexpr ComponentStatus operator|(ComponentStatus inLeft, ComponentStatus inRight)
         {
-            return static_cast<ComponentStatus>(
-                static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight)
-            );
+            return static_cast<ComponentStatus>(static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight));
         }
 
         inline constexpr ComponentStatus operator&(ComponentStatus inLeft, ComponentStatus inRight)
         {
-            return static_cast<ComponentStatus>(
-                static_cast<std::uint8_t>(inLeft) & static_cast<std::uint8_t>(inRight)
-            );
+            return static_cast<ComponentStatus>(static_cast<std::uint8_t>(inLeft) & static_cast<std::uint8_t>(inRight));
         }
 
         inline ComponentStatus& operator|=(ComponentStatus& inLeft, ComponentStatus inRight)

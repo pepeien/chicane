@@ -105,9 +105,7 @@ namespace Editor
             return inComponent->watchAttribute(
                 inAttribute,
                 [inComponent, inAttribute, &outValue](const Chicane::String& inValue)
-                {
-                    copy(inComponent, inAttribute, outValue);
-                }
+                { copy(inComponent, inAttribute, outValue); }
             );
         }
 

@@ -31,8 +31,7 @@ namespace Editor
             return Chicane::Grid::Container::onEvent(inEvent);
         }
 
-        const Chicane::Input::MouseButtonEvent event =
-            *static_cast<Chicane::Input::MouseButtonEvent*>(inEvent.data);
+        const Chicane::Input::MouseButtonEvent event = *static_cast<Chicane::Input::MouseButtonEvent*>(inEvent.data);
         if (event.button != Chicane::Input::MouseButton::Left)
         {
             return Chicane::Grid::Container::onEvent(inEvent);

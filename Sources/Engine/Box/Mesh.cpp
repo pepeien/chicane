@@ -34,8 +34,8 @@ namespace Chicane
             XmlNode root = getXML();
             for (XmlNode child = root.getFirstChild(); child;)
             {
-                XmlNode next = child.getNextSibling();
-                const String   name = child.getName();
+                XmlNode      next = child.getNextSibling();
+                const String name = child.getName();
                 if (!name.equals(AssetPreview::TAG) && !name.equals(Skeleton::TAG) && !name.equals(Animation::TAG))
                 {
                     root.removeChild(child);
@@ -339,9 +339,7 @@ namespace Chicane
                 MeshGroup group;
                 group.setId(Xml::getAttribute(MeshGroup::ID_ATTRIBUTE_NAME, groupNode));
                 group.setBone(Xml::getAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, groupNode));
-                group.setEmissiveStrength(
-                    groupNode.parseFloat(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, 1.0f)
-                );
+                group.setEmissiveStrength(groupNode.parseFloat(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME, 1.0f));
                 group.setTileSize(groupNode.parseFloat(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME, 0.0f));
                 group.setTransform(groupNode);
 

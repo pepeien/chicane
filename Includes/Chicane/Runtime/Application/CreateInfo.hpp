@@ -1,5 +1,9 @@
 #pragma once
 
+#include <functional>
+#include <vector>
+
+#include "Chicane/Core/FileSystem/Path.hpp"
 #include "Chicane/Core/Window/Settings.hpp"
 
 #include "Chicane/Renderer/Settings.hpp"
@@ -12,12 +16,15 @@ namespace Chicane
     {
     public:
         // Window
-        WindowSettings        window = {};
+        WindowSettings                window = {};
 
         // Renderer
-        Renderer::Settings    renderer = {};
+        Renderer::Settings            renderer = {};
+
+        // Modules
+        std::vector<FileSystem::Path> modules = {};
 
         // Callbacks
-        std::function<void()> onSetup = nullptr;
+        std::function<void()>         onSetup = nullptr;
     };
 }

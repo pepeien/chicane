@@ -8,6 +8,7 @@
 
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
+#include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
 #include "Editor/Actor/Character.hpp"
 #include "Editor/UI/View/Home.hpp"
@@ -29,7 +30,7 @@ namespace Editor
         return *s_instance;
     }
 
-    Application::Application()
+    Application::Application(const std::vector<Chicane::FileSystem::Path>& inModules)
         : m_controller(nullptr),
           m_homeScene(nullptr),
           m_viewerScene(nullptr)
@@ -44,6 +45,8 @@ namespace Editor
         createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::WindowedBorderless;
         createInfo.window.backend = Chicane::WindowBackend::Vulkan;
+
+        createInfo.modules = inModules;
 
         // Setup
         createInfo.onSetup = [this]()
@@ -163,6 +166,29 @@ namespace Editor
             }
 
             controller->attachTo(character);
+
+            // Renderer uses the last active CCamera; deactivate level cameras so the
+            // editor orbit camera stays in control after opening a gameplay track.
+            for (Chicane::CCamera* camera : inScene->getComponents<Chicane::CCamera>())
+            {
+                if (!camera)
+                {
+                    continue;
+                }
+
+                camera->deactivate();
+            }
+
+            for (Chicane::Component* attachment : character->getAttachments())
+            {
+                Chicane::CCamera* camera = dynamic_cast<Chicane::CCamera*>(attachment);
+                if (!camera)
+                {
+                    continue;
+                }
+
+                camera->activate();
+            }
 
             return;
         }

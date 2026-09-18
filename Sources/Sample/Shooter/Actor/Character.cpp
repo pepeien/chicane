@@ -29,8 +29,6 @@ void Character::onLoad()
 {
     Chicane::ACharacter::onLoad();
 
-    enablePhysics();
-
     setMoveScale(MOVE_COEFFICIENT);
 
     m_camera       = getScene()->getComponent<Chicane::CCamera>(CAMERA_ID);
@@ -46,7 +44,14 @@ void Character::onLoad()
         }
     );
 
-    Chicane::Application::getInstance().getController()->attachTo(this);
+    Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+    if (!controller || controller->isAttached())
+    {
+        return;
+    }
+
+    enablePhysics();
+    controller->attachTo(this);
 }
 
 void Character::onInput()

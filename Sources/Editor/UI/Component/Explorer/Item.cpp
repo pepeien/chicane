@@ -87,13 +87,12 @@ namespace Editor
         const Chicane::FileSystem::Item* inItem, int inIndex, const Chicane::Vec2& inSlot, bool inShouldRestyle
     )
     {
-        if (m_bIsGhost || ghostClass.equals("hidden"))
+        if (m_bIsGhost || ghostClass.equals(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN))
         {
             return;
         }
 
-        const Chicane::String nextPath =
-            inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::empty();
+        const Chicane::String nextPath = inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::empty();
 
         if (!inShouldRestyle && itemPath.equals(nextPath) && m_boundIndex == inIndex && m_slot.x == inSlot.x &&
             m_slot.y == inSlot.y)
@@ -104,16 +103,14 @@ namespace Editor
         const ExplorerItemKind previousKind = kind;
         const Chicane::String  previousType = typeClass;
 
-        // Snapshot into owned fields — never retain pointers into gridItems.
         m_item       = nullptr;
         m_boundIndex = inIndex;
         m_slot       = inSlot;
         ghostClass   = "solid";
         itemName     = inItem ? inItem->name : Chicane::String::empty();
         itemPath     = nextPath;
-        kind         = (inItem && inItem->type == Chicane::FileSystem::ItemType::Folder)
-                           ? ExplorerItemKind::Folder
-                           : ExplorerItemKind::File;
+        kind         = (inItem && inItem->type == Chicane::FileSystem::ItemType::Folder) ? ExplorerItemKind::Folder
+                                                                                         : ExplorerItemKind::File;
         m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
 
         refreshState();
@@ -134,7 +131,7 @@ namespace Editor
 
     void ExplorerItem::unbind()
     {
-        if (m_bIsGhost || ghostClass.equals("hidden"))
+        if (m_bIsGhost || ghostClass.equals(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN))
         {
             return;
         }
@@ -159,11 +156,10 @@ namespace Editor
         const ExplorerItem& inSource, Chicane::FileSystem::Item& ioStorage, const Chicane::Vec2& inPointer
     )
     {
-        // Prefer owned strings on the source tile — m_item can dangle when gridItems reallocates.
         ioStorage      = {};
         ioStorage.name = inSource.itemName;
         ioStorage.type = inSource.kind == ExplorerItemKind::Folder ? Chicane::FileSystem::ItemType::Folder
-                                                                  : Chicane::FileSystem::ItemType::File;
+                                                                   : Chicane::FileSystem::ItemType::File;
 
         if (!inSource.itemPath.isEmpty())
         {
@@ -215,7 +211,7 @@ namespace Editor
         m_boundIndex = -1;
         m_grab       = Chicane::Vec2::Zero();
         m_ghostSize  = Chicane::Vec2::Zero();
-        ghostClass   = "hidden";
+        ghostClass   = Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN;
 
         applyGhostHidden();
 
@@ -260,8 +256,6 @@ namespace Editor
 
     void ExplorerItem::restyleChildren()
     {
-        // Do not markStyleDirtySubtree() on this host: resetValues() wipes the
-        // display/position overrides that keep the floating preview alive.
         for (Chicane::Grid::Component* child : getChildren())
         {
             if (child)
@@ -289,7 +283,7 @@ namespace Editor
             return;
         }
 
-        if (ghostClass.equals("hidden"))
+        if (ghostClass.equals(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN))
         {
             applyGhostHidden();
 
@@ -384,7 +378,7 @@ namespace Editor
             itemName = m_item->name;
             itemPath = m_item->path.lexicallyNormal().toString();
             kind     = m_item->type == Chicane::FileSystem::ItemType::Folder ? ExplorerItemKind::Folder
-                                                                            : ExplorerItemKind::File;
+                                                                             : ExplorerItemKind::File;
         }
 
         typeClass = "file";
@@ -396,7 +390,7 @@ namespace Editor
         else if (!itemPath.isEmpty())
         {
             const Chicane::FileSystem::Path filePath(itemPath);
-            const Chicane::Box::AssetType  assetType = Chicane::Box::getTypeFromExtension(filePath);
+            const Chicane::Box::AssetType   assetType = Chicane::Box::getTypeFromExtension(filePath);
             if (assetType != Chicane::Box::AssetType::Undefined)
             {
                 typeClass = Chicane::Box::toString(assetType).toLower();
@@ -411,9 +405,8 @@ namespace Editor
                 if (const Chicane::Box::AssetPreview* preview = Chicane::Box::findPreview(filePath))
                 {
                     Chicane::Application& application = Chicane::Application::getInstance();
-                    if (application.hasRenderer() &&
-                        application.getRenderer()->findTexture(preview->textureId()) >
-                            Chicane::Renderer::Draw::InvalidId)
+                    if (application.hasRenderer() && application.getRenderer()->findTexture(preview->textureId()) >
+                                                         Chicane::Renderer::Draw::InvalidId)
                     {
                         kind = ExplorerItemKind::Preview;
                     }

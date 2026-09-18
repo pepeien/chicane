@@ -53,9 +53,9 @@ namespace Chicane
 
         void Spawn::onAttributeRefresh()
         {
-            m_tag    = getSource().getName();
-            shape    = getString(SHAPE_ATTRIBUTE_NAME, shape);
-            anchor   = getString(ANCHOR_ATTRIBUTE_NAME, anchor);
+            m_tag  = getSource().getName();
+            shape  = getString(SHAPE_ATTRIBUTE_NAME, shape);
+            anchor = getString(ANCHOR_ATTRIBUTE_NAME, anchor);
             if (hasAttribute(ORIGIN_ATTRIBUTE_NAME))
             {
                 anchor = getString(ORIGIN_ATTRIBUTE_NAME, anchor);

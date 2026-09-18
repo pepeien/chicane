@@ -2,7 +2,9 @@
 
 #include <atomic>
 #include <thread>
+#include <vector>
 
+#include "Chicane/Core/FileSystem/Path.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Window.hpp"
 
@@ -165,6 +167,9 @@ namespace Chicane
         void initWindow(const WindowSettings& inSettings);
 
         // Systems
+        void initModules(const std::vector<FileSystem::Path>& inModules);
+        void shutdownModules();
+
         void initBox();
 
         void initKerb();

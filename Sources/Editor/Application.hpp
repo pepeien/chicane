@@ -1,7 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
+#include <Chicane/Core/FileSystem/Path.hpp>
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
@@ -16,20 +18,22 @@ namespace Editor
         static Application& getInstance();
 
     public:
-        Application();
+        Application(const std::vector<Chicane::FileSystem::Path>& inModules = {});
 
+    public:
         std::shared_ptr<Scene> getHomeScene() const;
         std::shared_ptr<ViewerScene> getViewerScene() const;
 
         void activateHomeScene();
         void activateViewerScene();
 
+        void possess(const std::shared_ptr<Chicane::Scene>& inScene);
+
     private:
         void initController();
         void initScene();
         void initView();
         void initLayers();
-        void possess(const std::shared_ptr<Chicane::Scene>& inScene);
 
     private:
         static Application* s_instance;

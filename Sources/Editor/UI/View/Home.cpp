@@ -632,7 +632,10 @@ namespace Editor
         if (std::shared_ptr<Scene> scene = editorScene())
         {
             scene->open({});
+
             onItemSelection(nullptr);
+
+            Application::getInstance().possess(scene);
         }
     }
 
@@ -660,7 +663,10 @@ namespace Editor
                     }
 
                     scene->open(item.path);
+
                     onItemSelection(nullptr);
+
+                    Application::getInstance().possess(scene);
 
                     return;
                 }

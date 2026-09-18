@@ -14,12 +14,13 @@ namespace Editor
     class Outliner : public Chicane::Grid::Container
     {
     public:
-        static constexpr inline const char* NODES_ATTRIBUTE              = "outlinerNodes";
-        static constexpr inline const char* ON_ITEM_SELECTION_ATTRIBUTE  = "onItemSelection";
-        static constexpr inline const char* ON_ITEM_TOGGLE_ATTRIBUTE     = "onItemToggle";
-        static constexpr inline const char* ON_ITEM_EDIT_ATTRIBUTE       = "onItemEdit";
-        static constexpr inline const char* ON_ITEM_ID_INPUT_ATTRIBUTE   = "onItemIdInput";
-        static constexpr inline const char* ON_ITEM_ID_COMMIT_ATTRIBUTE  = "onItemIdCommit";
+        // Attributes
+        static constexpr inline const char* NODES_ATTRIBUTE             = "outlinerNodes";
+        static constexpr inline const char* ON_ITEM_SELECTION_ATTRIBUTE = "onItemSelection";
+        static constexpr inline const char* ON_ITEM_TOGGLE_ATTRIBUTE    = "onItemToggle";
+        static constexpr inline const char* ON_ITEM_EDIT_ATTRIBUTE      = "onItemEdit";
+        static constexpr inline const char* ON_ITEM_ID_INPUT_ATTRIBUTE  = "onItemIdInput";
+        static constexpr inline const char* ON_ITEM_ID_COMMIT_ATTRIBUTE = "onItemIdCommit";
 
     public:
         CH_CONSTRUCTOR()

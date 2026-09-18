@@ -19,6 +19,7 @@
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Module.hpp"
 #include "Chicane/Core/Texture/Map.hpp"
 #include "Chicane/Core/Time.hpp"
 
@@ -300,6 +301,7 @@ namespace Chicane
         initDrift();
         initScreech();
         initSmoke();
+        initModules(inCreateInfo.modules);
 
         if (inCreateInfo.onSetup)
         {
@@ -327,6 +329,7 @@ namespace Chicane
         shutdownUI();
         shutdownDrift();
         shutdownSmoke();
+        shutdownModules();
 
         shutdownRenderer();
     }
@@ -608,6 +611,24 @@ namespace Chicane
         }
 
         m_renderer->shutdown();
+    }
+
+    void Application::initModules(const std::vector<FileSystem::Path>& inModules)
+    {
+        for (const FileSystem::Path& path : inModules)
+        {
+            if (path.isEmpty())
+            {
+                continue;
+            }
+
+            Module::load(path);
+        }
+    }
+
+    void Application::shutdownModules()
+    {
+        Module::unloadAll();
     }
 
     void Application::initBox()

@@ -48,16 +48,12 @@ namespace Chicane
 
         inline constexpr ComponentFlag operator|(ComponentFlag inLeft, ComponentFlag inRight)
         {
-            return static_cast<ComponentFlag>(
-                static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight)
-            );
+            return static_cast<ComponentFlag>(static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight));
         }
 
         inline constexpr ComponentFlag operator&(ComponentFlag inLeft, ComponentFlag inRight)
         {
-            return static_cast<ComponentFlag>(
-                static_cast<std::uint8_t>(inLeft) & static_cast<std::uint8_t>(inRight)
-            );
+            return static_cast<ComponentFlag>(static_cast<std::uint8_t>(inLeft) & static_cast<std::uint8_t>(inRight));
         }
 
         inline ComponentFlag& operator|=(ComponentFlag& inLeft, ComponentFlag inRight)

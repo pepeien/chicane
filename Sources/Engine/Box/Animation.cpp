@@ -161,13 +161,9 @@ namespace Chicane
                 return;
             }
 
-            m_clip.duration =
-                Time::fromSeconds(clipNode.parseFloat(AnimationClip::DURATION_ATTRIBUTE_NAME, 0.0f));
+            m_clip.duration   = Time::fromSeconds(clipNode.parseFloat(AnimationClip::DURATION_ATTRIBUTE_NAME, 0.0f));
             m_clip.loop       = parseLoop(Xml::getAttribute(AnimationClip::LOOP_ATTRIBUTE_NAME, clipNode));
-            m_clip.iterations = Xml::parseInt(
-                Xml::getAttribute(AnimationClip::ITERATIONS_ATTRIBUTE_NAME, clipNode),
-                1
-            );
+            m_clip.iterations = Xml::parseInt(Xml::getAttribute(AnimationClip::ITERATIONS_ATTRIBUTE_NAME, clipNode), 1);
 
             for (const XmlNode& trackNode : clipNode.getChildren())
             {
@@ -187,11 +183,9 @@ namespace Chicane
                     }
 
                     AnimationKeyframe keyframe;
-                    keyframe.time = Time::fromSeconds(
-                        keyframeNode.parseFloat(AnimationKeyframe::TIME_ATTRIBUTE_NAME, 0.0f)
-                    );
-                    keyframe.easing =
-                        Xml::getAttribute(AnimationKeyframe::EASING_ATTRIBUTE_NAME, keyframeNode);
+                    keyframe.time =
+                        Time::fromSeconds(keyframeNode.parseFloat(AnimationKeyframe::TIME_ATTRIBUTE_NAME, 0.0f));
+                    keyframe.easing    = Xml::getAttribute(AnimationKeyframe::EASING_ATTRIBUTE_NAME, keyframeNode);
                     keyframe.transform = readTransform(keyframeNode);
                     track.addKeyframe(keyframe);
                 }

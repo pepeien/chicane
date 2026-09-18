@@ -61,9 +61,7 @@ namespace Chicane
             }
         }
 
-        static std::unique_ptr<AssetPreview> parsePreviewNode(
-            const XmlNode& inNode, const FileSystem::Path& inAsset
-        )
+        static std::unique_ptr<AssetPreview> parsePreviewNode(const XmlNode& inNode, const FileSystem::Path& inAsset)
         {
             if (inNode.empty() || !String(inNode.getName()).equals(AssetPreview::TAG))
             {
@@ -123,8 +121,7 @@ namespace Chicane
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
-            result->type =
-                getTypeFromTag(Xml::getAttribute(AssetPreview::TYPE_ATTRIBUTE_NAME, inNode));
+            result->type  = getTypeFromTag(Xml::getAttribute(AssetPreview::TYPE_ATTRIBUTE_NAME, inNode));
             result->image = image;
 
             return result;
@@ -1137,8 +1134,8 @@ namespace Chicane
                         continue;
                     }
 
-                    const std::size_t  close = end + std::strlen(CLOSE_TAG);
-                    XmlDocument document;
+                    const std::size_t close = end + std::strlen(CLOSE_TAG);
+                    XmlDocument       document;
                     if (!document.loadBuffer(buffer.data() + start, close - start))
                     {
                         return nullptr;
