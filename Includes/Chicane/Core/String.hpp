@@ -181,7 +181,7 @@ namespace Chicane
         bool contains(char inValue) const;
 
         template <typename... Args>
-        bool startsWithChars(Args... inValues)
+        inline bool startsWithChars(Args... inValues) const
         {
             static_assert((std::is_same_v<Args, char> && ...), "startsWithChars only accepts char arguments");
 

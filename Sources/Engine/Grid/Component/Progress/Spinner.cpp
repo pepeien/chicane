@@ -17,10 +17,7 @@ namespace Chicane
 
             watchAttribute(
                 IS_SPINNING_ATTRIBUTE_NAME,
-                [this](const String& inValue)
-                {
-                    bIsSpinning = Xml::parseBool(parseText(inValue).trim(), true);
-                }
+                [this](const String& inValue) { bIsSpinning = Xml::parseBool(parseText(inValue).trim(), true); }
             );
         }
     }

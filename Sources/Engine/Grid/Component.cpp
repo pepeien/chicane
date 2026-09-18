@@ -654,7 +654,7 @@ namespace Chicane
                 {
                     if (inLeft.origin != inRight.origin)
                     {
-                        return inLeft.origin < inRight.origin;
+                        return inLeft.origin > inRight.origin;
                     }
 
                     if (inLeft.specificity != inRight.specificity)
