@@ -672,7 +672,8 @@
                     }
                 ],
                 "modifiers": [
-                    "inline"
+                    "inline",
+                    "const"
                 ],
                 "description": "CHICANE_STRING_STARTSWITHCHARS_DESCRIPTION"
             },
