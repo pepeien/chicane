@@ -875,6 +875,55 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "initModules",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "FileSystem::Path",
+                                    "suffix": "",
+                                    "path": "Core/FileSystem/Path",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inModules"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITMODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownModules",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SHUTDOWNMODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initBox",
                 "parameters": [],
                 "modifiers": [],

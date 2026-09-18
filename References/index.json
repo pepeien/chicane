@@ -2258,6 +2258,23 @@
                 ]
             },
             {
+                "title": "Module",
+                "filename": "Module",
+                "path": "Core/Module",
+                "source": {
+                    "header": "Includes/Chicane/Core/Module.hpp",
+                    "namespace": "Chicane::Module",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
                 "title": "Program",
                 "filename": "Program",
                 "path": "Core/Program",

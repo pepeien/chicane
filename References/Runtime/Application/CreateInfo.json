@@ -42,6 +42,27 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "modules",
+                "description": "CHICANE_APPLICATIONCREATEINFO_MODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::function",
                     "suffix": "",
                     "path": "",
