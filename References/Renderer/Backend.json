@@ -551,6 +551,79 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "RHI::Device",
+                    "suffix": "*",
+                    "path": "Renderer/RHI/Device",
+                    "templates": []
+                },
+                "name": "getRHIDevice",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETRHIDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Viewport",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Viewport",
+                    "templates": []
+                },
+                "name": "getRHIViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETRHIVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Scissor",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Scissor",
+                    "templates": []
+                },
+                "name": "getRHIScissor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_GETRHISCISSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -799,7 +872,7 @@
         ],
         "members": [
             {
-                "accessor": "private",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -810,19 +883,6 @@
                 },
                 "name": "Instance",
                 "description": "CHICANE_RENDERER_BACKEND_INSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "BackendStatus",
-                    "suffix": "",
-                    "path": "Renderer/Backend/Status",
-                    "templates": []
-                },
-                "name": "m_status",
-                "description": "CHICANE_RENDERER_BACKEND_M_STATUS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -855,6 +915,27 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::Device",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_rhi",
+                "description": "CHICANE_RENDERER_BACKEND_M_RHI_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::size_t",
                     "suffix": "",
                     "path": "",
@@ -875,6 +956,19 @@
                 },
                 "name": "m_gpuDelta",
                 "description": "CHICANE_RENDERER_BACKEND_M_GPUDELTA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BackendStatus",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Status",
+                    "templates": []
+                },
+                "name": "m_status",
+                "description": "CHICANE_RENDERER_BACKEND_M_STATUS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_BACKEND_DESCRIPTION"

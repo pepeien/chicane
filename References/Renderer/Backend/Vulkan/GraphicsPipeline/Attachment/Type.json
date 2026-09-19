@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "VulkanGraphicsPipelineAttachmentType",
     "filename": "Type",
     "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "VulkanGraphicsPipelineAttachmentType",
+                            "name": "Renderer::VulkanGraphicsPipelineAttachmentType",
                             "suffix": "",
                             "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENTTYPE_DESCRIPTION"
     },
     "children": []
 }

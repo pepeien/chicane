@@ -1,0 +1,378 @@
+{
+    "title": "UI",
+    "filename": "UI",
+    "path": "Renderer/Layer/UI",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/UI.hpp",
+        "namespace": "Chicane::Renderer::LUI",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LUI",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_LUI_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ONDESTRUCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyResource",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Resource",
+                            "templates": []
+                        },
+                        "name": "inResource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onBeginRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ONBEGINRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureBackdrop",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Device",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LUI_ENSUREBACKDROP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_pipeline",
+                "description": "CHICANE_RENDERER_LUI_M_PIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_layout",
+                "description": "CHICANE_RENDERER_LUI_M_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_textureLayout",
+                "description": "CHICANE_RENDERER_LUI_M_TEXTURELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_groups",
+                "description": "CHICANE_RENDERER_LUI_M_GROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_vertexBuffer",
+                "description": "CHICANE_RENDERER_LUI_M_VERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_indexBuffer",
+                "description": "CHICANE_RENDERER_LUI_M_INDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_glyphBuffer",
+                "description": "CHICANE_RENDERER_LUI_M_GLYPHBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "m_backdropSampler",
+                "description": "CHICANE_RENDERER_LUI_M_BACKDROPSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_backdrops",
+                "description": "CHICANE_RENDERER_LUI_M_BACKDROPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_backdropWidth",
+                "description": "CHICANE_RENDERER_LUI_M_BACKDROPWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_backdropHeight",
+                "description": "CHICANE_RENDERER_LUI_M_BACKDROPHEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LUI_DESCRIPTION"
+    },
+    "children": []
+}

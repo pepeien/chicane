@@ -1,0 +1,70 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/OpenGL/RHI/Buffer/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/OpenGL/RHI/Buffer/Data.hpp",
+        "namespace": "Chicane::Renderer::OpenGLRHIBufferData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_RENDERER_OPENGLRHIBUFFERDATA_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_OPENGLRHIBUFFERDATA_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BufferUsage",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer/Usage",
+                    "templates": []
+                },
+                "name": "usage",
+                "description": "CHICANE_RENDERER_OPENGLRHIBUFFERDATA_USAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bOwned",
+                "description": "CHICANE_RENDERER_OPENGLRHIBUFFERDATA_BOWNED_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_OPENGLRHIBUFFERDATA_DESCRIPTION"
+    },
+    "children": []
+}

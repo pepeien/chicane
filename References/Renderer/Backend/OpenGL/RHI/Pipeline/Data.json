@@ -1,0 +1,70 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/OpenGL/RHI/Pipeline/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/OpenGL/RHI/Pipeline/Data.hpp",
+        "namespace": "Chicane::Renderer::OpenGLRHIPipelineData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "program",
+                "description": "CHICANE_RENDERER_OPENGLRHIPIPELINEDATA_PROGRAM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vao",
+                "description": "CHICANE_RENDERER_OPENGLRHIPIPELINEDATA_VAO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::PipelineCreateInfo",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline/CreateInfo",
+                    "templates": []
+                },
+                "name": "createInfo",
+                "description": "CHICANE_RENDERER_OPENGLRHIPIPELINEDATA_CREATEINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushUbo",
+                "description": "CHICANE_RENDERER_OPENGLRHIPIPELINEDATA_PUSHUBO_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_OPENGLRHIPIPELINEDATA_DESCRIPTION"
+    },
+    "children": []
+}

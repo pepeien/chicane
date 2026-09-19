@@ -42,10 +42,53 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Mat4",
+                    "name": "std::array",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Mat4",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SceneLight",
+                            "suffix": "",
+                            "path": "Renderer/Light/Scene",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "MAX_LIGHTS",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a750bdca7a96658666926900a701b6be4",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "lights",
+                "description": "CHICANE_RENDERER_SHADOWLIGHT_LIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Mat4",
+                            "suffix": "",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SHADOW_CASCADE_COUNT",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a65b46f17a520e9bf7d2a245d6b8f6363",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "views",
                 "description": "CHICANE_RENDERER_SHADOWLIGHT_VIEWS_DESCRIPTION"
@@ -55,26 +98,28 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Mat4",
+                    "name": "std::array",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Mat4",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Mat4",
+                            "suffix": "",
+                            "path": "Core/Math/Mat/Mat4",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SHADOW_CASCADE_COUNT",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a65b46f17a520e9bf7d2a245d6b8f6363",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "projections",
                 "description": "CHICANE_RENDERER_SHADOWLIGHT_PROJECTIONS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "SceneLight",
-                    "suffix": "",
-                    "path": "Renderer/Light/Scene",
-                    "templates": []
-                },
-                "name": "lights",
-                "description": "CHICANE_RENDERER_SHADOWLIGHT_LIGHTS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_SHADOWLIGHT_DESCRIPTION"

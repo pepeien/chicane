@@ -452,10 +452,25 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec4",
+                    "name": "std::array",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec4",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec4",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "8",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "gradientStops",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_GRADIENTSTOPS_DESCRIPTION"

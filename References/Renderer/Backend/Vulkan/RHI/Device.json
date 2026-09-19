@@ -1,0 +1,1150 @@
+{
+    "title": "Device",
+    "filename": "Device",
+    "path": "Renderer/Backend/Vulkan/RHI/Device",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/Device.hpp",
+        "namespace": "Chicane::Renderer::VulkanRHIDevice",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VulkanRHIDevice",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanBackend",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_VULKANRHIDEVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~VulkanRHIDevice",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_~VULKANRHIDEVICE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "createBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::BufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Buffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_UPDATEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "createImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::ImageCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Image/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_UPDATEIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "generateMips",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_GENERATEMIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "createImageView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEIMAGEVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "createSampler",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::SamplerCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Sampler/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATESAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySampler",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Sampler",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Sampler",
+                            "templates": []
+                        },
+                        "name": "inSampler"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "createBindGroupLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::BindGroupLayoutCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/BindGroup/Layout/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEBINDGROUPLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBindGroupLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYBINDGROUPLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "createBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_UPDATEBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "createPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::PipelineCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Pipeline/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_CREATEPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Pipeline",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Pipeline",
+                            "templates": []
+                        },
+                        "name": "inPipeline"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESTROYPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "shaderPath",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inLogical"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ShaderType",
+                            "suffix": "",
+                            "path": "Renderer/Shader/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_SHADERPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "sceneColorFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_SCENECOLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "sceneDepthFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_SCENEDEPTHFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "presentColorFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_PRESENTCOLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "wrapBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanBuffer",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DeviceSize",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMapped"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_WRAPBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "wrapImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanImageInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Image/Info",
+                            "templates": []
+                        },
+                        "name": "inInfo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageKind",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Kind",
+                            "templates": []
+                        },
+                        "name": "inKind"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageFormat",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Format",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayers"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_WRAPIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "wrapDescriptorSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSet"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_WRAPDESCRIPTORSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::CommandList",
+                    "suffix": "*",
+                    "path": "Renderer/RHI/CommandList",
+                    "templates": []
+                },
+                "name": "commandList",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_COMMANDLIST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCommandBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_SETCOMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "VulkanBackend",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/Vulkan",
+                    "templates": []
+                },
+                "name": "backend",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_BACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toVkFormat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageFormat",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Format",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_TOVKFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::ImageLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shaderLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageKind",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Kind",
+                            "templates": []
+                        },
+                        "name": "inKind"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_SHADERLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::ImageLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rememberedLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanRHIImageData",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan/RHI/Image/Data",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_REMEMBEREDLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rememberLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanRHIImageData",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan/RHI/Image/Data",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::ImageLayout",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_REMEMBERLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanRHIGroupData",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan/RHI/BindGroup/Data",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_WRITEGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "imageKey",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanRHIImageData",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/Vulkan/RHI/Image/Data",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_IMAGEKEY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBackend",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/Vulkan",
+                    "templates": []
+                },
+                "name": "m_backend",
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_M_BACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanRHICommandList",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/RHI/CommandList",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_commands",
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_M_COMMANDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "vk::ImageLayout",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_imageLayouts",
+                "description": "CHICANE_RENDERER_VULKANRHIDEVICE_M_IMAGELAYOUTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANRHIDEVICE_DESCRIPTION"
+    },
+    "children": []
+}

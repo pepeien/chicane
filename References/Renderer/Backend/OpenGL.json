@@ -4,7 +4,7 @@
     "path": "Renderer/Backend/OpenGL",
     "source": {
         "header": "Includes/Chicane/Renderer/Backend/OpenGL.hpp",
-        "namespace": "Chicane::Renderer::OpenGLBackend::TextureTableEntry",
+        "namespace": "Chicane::Renderer::OpenGLBackend",
         "types": [
             {
                 "name": "GpuQueries",
@@ -121,6 +121,62 @@
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_GETGLVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Viewport",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Viewport",
+                    "templates": []
+                },
+                "name": "getRHIViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_GETRHIVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Scissor",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Scissor",
+                    "templates": []
+                },
+                "name": "getRHIScissor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_GETRHISCISSOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -800,9 +856,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "TextureSlot",
+                            "name": "OpenGLTextureSlot",
                             "suffix": "&",
-                            "path": "Renderer/Backend/OpenGL",
+                            "path": "Renderer/Backend/OpenGL/Texture/Slot",
                             "templates": []
                         },
                         "name": "inSlot"
@@ -852,6 +908,26 @@
                             "templates": []
                         },
                         "name": "inLayer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
                     }
                 ],
                 "modifiers": [],
@@ -972,9 +1048,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SizeClass",
+                            "name": "OpenGLTextureSizeClass",
                             "suffix": "&",
-                            "path": "Renderer/Backend/OpenGL",
+                            "path": "Renderer/Backend/OpenGL/Texture/SizeClass",
                             "templates": []
                         },
                         "name": "inClass"
@@ -1008,9 +1084,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "SizeClass",
+                            "name": "OpenGLTextureSizeClass",
                             "suffix": "&",
-                            "path": "Renderer/Backend/OpenGL",
+                            "path": "Renderer/Backend/OpenGL/Texture/SizeClass",
                             "templates": []
                         },
                         "name": "inClass"
@@ -1084,9 +1160,7 @@
                         "name": "inFrame"
                     }
                 ],
-                "modifiers": [
-                    "const"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_PRESENTTARGET_DESCRIPTION"
             },
             {
@@ -1099,10 +1173,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "captureScreenTarget",
+                "name": "buildTextureBindGroup",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_CAPTURESCREENTARGET_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDTEXTUREBINDGROUP_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1114,10 +1188,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "buildBloom",
+                "name": "wrapTargetImages",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_BUILDBLOOM_DESCRIPTION"
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_WRAPTARGETIMAGES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1129,83 +1203,36 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "destroyBloom",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYBLOOM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroyBloomImages",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYBLOOMIMAGES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "blurBloomPass",
+                "name": "fillRhiFrame",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
                             "templates": []
                         },
-                        "name": "inSource"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inDestination"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inY"
+                        "name": "inFrame"
                     }
                 ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_BLURBLOOMPASS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_FILLRHIFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyRhiResources",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_DESTROYRHIRESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1525,9 +1552,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "TextureSlot",
+                            "name": "OpenGLTextureSlot",
                             "suffix": "",
-                            "path": "Renderer/Backend/OpenGL",
+                            "path": "Renderer/Backend/OpenGL/Texture/Slot",
                             "templates": []
                         }
                     ]
@@ -1546,9 +1573,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "SizeClass",
+                            "name": "OpenGLTextureSizeClass",
                             "suffix": "",
-                            "path": "Renderer/Backend/OpenGL",
+                            "path": "Renderer/Backend/OpenGL/Texture/SizeClass",
                             "templates": []
                         },
                         {
@@ -1672,114 +1699,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::array",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_bloomColor",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLOOMCOLOR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::array",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_bloomFramebuffer",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLOOMFRAMEBUFFER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_extractProgram",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_EXTRACTPROGRAM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_blurProgram",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLURPROGRAM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_compositeProgram",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_COMPOSITEPROGRAM_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_postVertexArray",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_POSTVERTEXARRAY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "Draw::Id",
                     "suffix": "",
                     "path": "Renderer/Draw",
@@ -1787,6 +1706,216 @@
                 },
                 "name": "m_screenTextureId",
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCREENTEXTUREID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::FullscreenPass",
+                    "suffix": "",
+                    "path": "Renderer/RHI/FullscreenPass",
+                    "templates": []
+                },
+                "name": "m_bloomPass",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_BLOOMPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_cameraBuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_CAMERABUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_lightBuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_LIGHTBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_instanceBuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_INSTANCEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_particleBuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_PARTICLEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "m_linearSampler",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_LINEARSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "m_textureSampler",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURESAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_textureLayout",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "m_textureGroup",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTUREGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_textureTableBuffer",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_TEXTURETABLEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "TEXTURE_CLASS_COUNT",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a276b1b750be4c4d1480b8573b6965d60",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_classImages",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_CLASSIMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "m_sceneColor",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCENECOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "m_sceneDepth",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_SCENEDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "m_presentColor",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_PRESENTCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Frame",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Frame",
+                    "templates": []
+                },
+                "name": "m_rhiFrame",
+                "description": "CHICANE_RENDERER_OPENGLBACKEND_M_RHIFRAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1834,173 +1963,9 @@
                 },
                 "name": "m_gpuQueryWrite",
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_M_GPUQUERYWRITE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "size",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_SIZE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "texture",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_TEXTURE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "allocated",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_ALLOCATED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "used",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_USED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "freeLayers",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_SIZECLASS_FREELAYERS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "classIndex",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_CLASSINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "layer",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_LAYER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "sourceWidth",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_SOURCEWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "sourceHeight",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_SOURCEHEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "residentMinMip",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURESLOT_RESIDENTMINMIP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "classIndex",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_CLASSINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "layer",
-                "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_LAYER_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_OPENGLBACKEND_TEXTURETABLEENTRY_DESCRIPTION"
+        "description": "CHICANE_RENDERER_OPENGLBACKEND_DESCRIPTION"
     },
     "children": []
 }

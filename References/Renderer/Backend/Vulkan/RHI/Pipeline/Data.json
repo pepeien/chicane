@@ -1,0 +1,57 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/RHI/Pipeline/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/Pipeline/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanRHIPipelineData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipeline",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
+                },
+                "name": "pipeline",
+                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushSize",
+                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PUSHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ShaderStageFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushStages",
+                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PUSHSTAGES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_DESCRIPTION"
+    },
+    "children": []
+}

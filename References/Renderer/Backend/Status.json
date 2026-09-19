@@ -1,5 +1,5 @@
 {
-    "title": "Status",
+    "title": "BackendStatus",
     "filename": "Status",
     "path": "Renderer/Backend/Status",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "BackendStatus",
+                            "name": "Renderer::BackendStatus",
                             "suffix": "",
                             "path": "Renderer/Backend/Status",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_BACKENDSTATUS_DESCRIPTION"
     },
     "children": []
 }

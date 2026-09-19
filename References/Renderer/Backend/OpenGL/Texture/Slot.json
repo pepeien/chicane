@@ -1,0 +1,83 @@
+{
+    "title": "Slot",
+    "filename": "Slot",
+    "path": "Renderer/Backend/OpenGL/Texture/Slot",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/OpenGL/Texture/Slot.hpp",
+        "namespace": "Chicane::Renderer::OpenGLTextureSlot",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "classIndex",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_CLASSINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_LAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sourceWidth",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_SOURCEWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sourceHeight",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_SOURCEHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "residentMinMip",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_RESIDENTMINMIP_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_OPENGLTEXTURESLOT_DESCRIPTION"
+    },
+    "children": []
+}

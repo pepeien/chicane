@@ -117,6 +117,62 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Viewport",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Viewport",
+                    "templates": []
+                },
+                "name": "getRHIViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETRHIVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Scissor",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Scissor",
+                    "templates": []
+                },
+                "name": "getRHIScissor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETRHISCISSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -260,6 +316,57 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fillRhiFrame",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "VulkanFrame",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanSwapchainImage",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Swapchain/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_FILLRHIFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "releaseRhiWraps",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_RELEASERHIWRAPS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -827,9 +934,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "VulkanBloomPass",
+                    "name": "RHI::FullscreenPass",
                     "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Bloom/Pass",
+                    "path": "Renderer/RHI/FullscreenPass",
                     "templates": []
                 },
                 "name": "bloom",
@@ -1147,6 +1254,32 @@
                 },
                 "name": "m_timestampSubmitted",
                 "description": "CHICANE_RENDERER_VULKANBACKEND_M_TIMESTAMPSUBMITTED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Frame",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Frame",
+                    "templates": []
+                },
+                "name": "m_rhiFrame",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_RHIFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "m_linearSampler",
+                "description": "CHICANE_RENDERER_VULKANBACKEND_M_LINEARSAMPLER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANBACKEND_DESCRIPTION"

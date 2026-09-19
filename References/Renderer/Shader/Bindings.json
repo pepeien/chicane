@@ -1,0 +1,274 @@
+{
+    "title": "Bindings",
+    "filename": "Bindings",
+    "path": "Renderer/Shader/Bindings",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Shader/Bindings.hpp",
+        "namespace": "Chicane::Renderer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_SET_FRAME",
+                "description": "CHICANE_RENDERER_RHI_SET_FRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_SET_TEXTURES",
+                "description": "CHICANE_RENDERER_RHI_SET_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_CAMERA",
+                "description": "CHICANE_RENDERER_RHI_BINDING_CAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_LIGHT",
+                "description": "CHICANE_RENDERER_RHI_BINDING_LIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_MESH_INSTANCES",
+                "description": "CHICANE_RENDERER_RHI_BINDING_MESH_INSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_SHADOW_MAP",
+                "description": "CHICANE_RENDERER_RHI_BINDING_SHADOW_MAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_SKY_MAP",
+                "description": "CHICANE_RENDERER_RHI_BINDING_SKY_MAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_PARTICLES",
+                "description": "CHICANE_RENDERER_RHI_BINDING_PARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_UI_INSTANCES",
+                "description": "CHICANE_RENDERER_RHI_BINDING_UI_INSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_UI_GLYPHS",
+                "description": "CHICANE_RENDERER_RHI_BINDING_UI_GLYPHS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_UI_BACKDROP",
+                "description": "CHICANE_RENDERER_RHI_BINDING_UI_BACKDROP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_UI_SCREEN",
+                "description": "CHICANE_RENDERER_RHI_BINDING_UI_SCREEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_POST_SOURCE",
+                "description": "CHICANE_RENDERER_RHI_BINDING_POST_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_POST_BLOOM",
+                "description": "CHICANE_RENDERER_RHI_BINDING_POST_BLOOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_TEXTURES",
+                "description": "CHICANE_RENDERER_RHI_BINDING_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RHI_BINDING_PUSH_CONSTANTS",
+                "description": "CHICANE_RENDERER_RHI_BINDING_PUSH_CONSTANTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

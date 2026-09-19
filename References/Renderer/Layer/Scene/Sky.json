@@ -1,0 +1,239 @@
+{
+    "title": "Sky",
+    "filename": "Sky",
+    "path": "Renderer/Layer/Scene/Sky",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/Scene/Sky.hpp",
+        "namespace": "Chicane::Renderer::LSceneSky",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LSceneSky",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_LSCENESKY_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_ONDESTRUCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawSkyResource",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Sky/Resource",
+                            "templates": []
+                        },
+                        "name": "inResource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_ONLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onBeginRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_ONBEGINRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENESKY_ONRENDER_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_pipeline",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_PIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_frameLayout",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_FRAMELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_textureLayout",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_TEXTURELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_frameGroups",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_FRAMEGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "m_textureGroup",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_TEXTUREGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasSky",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_BHASSKY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LSCENESKY_DESCRIPTION"
+    },
+    "children": []
+}

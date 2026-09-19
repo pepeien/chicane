@@ -1,0 +1,44 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/RHI/BindGroup/Layout/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/BindGroup/Layout/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanRHILayoutData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSetLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layout",
+                "description": "CHICANE_RENDERER_VULKANRHILAYOUTDATA_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayoutCreateInfo",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout/CreateInfo",
+                    "templates": []
+                },
+                "name": "createInfo",
+                "description": "CHICANE_RENDERER_VULKANRHILAYOUTDATA_CREATEINFO_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANRHILAYOUTDATA_DESCRIPTION"
+    },
+    "children": []
+}

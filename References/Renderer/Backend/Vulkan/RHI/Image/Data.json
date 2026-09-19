@@ -1,0 +1,187 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/RHI/Image/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/Image/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanRHIImageData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanImageInfo",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Image/Info",
+                    "templates": []
+                },
+                "name": "info",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_INFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::ImageKind",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Kind",
+                    "templates": []
+                },
+                "name": "kind",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_KIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layers",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_LAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mips",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_MIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layout",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bOwned",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BOWNED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bViewOnly",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BVIEWONLY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsSampled",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BISSAMPLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasColor",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BHASCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepth",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BHASDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bPresent",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_BPRESENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanRHIImageData",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/Vulkan/RHI/Image/Data",
+                    "templates": []
+                },
+                "name": "parent",
+                "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_PARENT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANRHIIMAGEDATA_DESCRIPTION"
+    },
+    "children": []
+}

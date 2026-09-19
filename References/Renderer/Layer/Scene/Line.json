@@ -1,0 +1,454 @@
+{
+    "title": "Line",
+    "filename": "Line",
+    "path": "Renderer/Layer/Scene/Line",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/Scene/Line.hpp",
+        "namespace": "Chicane::Renderer::LSceneLine",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LSceneLine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_LSCENELINE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_ONDESTRUCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onBeginRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_ONBEGINRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawMeshWireframe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_LSCENELINE_SHOULDDRAWMESHWIREFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawLineList",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_LSCENELINE_SHOULDDRAWLINELIST_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shouldDrawOutline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_LSCENELINE_SHOULDDRAWOUTLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureImmediate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Device",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_ENSUREIMMEDIATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawOutline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::CommandList",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/CommandList",
+                            "templates": []
+                        },
+                        "name": "inCommands"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffsetX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffsetY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENELINE_DRAWOUTLINE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_meshPipeline",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_MESHPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_linePipeline",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_LINEPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_lineForegroundPipeline",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_LINEFOREGROUNDPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_outlineMaskPipeline",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_OUTLINEMASKPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_outlinePipeline",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_OUTLINEPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_layout",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_groups",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_GROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_immediateVertex",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEVERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "m_immediateIndex",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_immediateVertexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEVERTEXBYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_immediateIndexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEINDEXBYTES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LSCENELINE_DESCRIPTION"
+    },
+    "children": []
+}

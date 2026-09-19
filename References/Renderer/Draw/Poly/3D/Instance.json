@@ -105,10 +105,25 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Draw::Id",
+                    "name": "std::array",
                     "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "TEXTURE_MAP_COUNT",
+                            "suffix": "",
+                            "path": "d0/d54/namespaceChicane_1ac0a28824177ebbe38d18b66dcbd2de00",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "textures",
                 "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TEXTURES_DESCRIPTION"

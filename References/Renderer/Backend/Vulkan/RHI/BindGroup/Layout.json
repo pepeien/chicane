@@ -1,0 +1,17 @@
+{
+    "title": "Layout",
+    "filename": "Layout",
+    "path": "Renderer/Backend/Vulkan/RHI/BindGroup/Layout",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

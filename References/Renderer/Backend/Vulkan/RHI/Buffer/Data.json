@@ -1,0 +1,83 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/RHI/Buffer/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/Buffer/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanRHIBufferData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "buffer",
+                "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_BUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DeviceSize",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHost",
+                "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_BHOST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bOwned",
+                "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_BOWNED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mapped",
+                "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_MAPPED_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANRHIBUFFERDATA_DESCRIPTION"
+    },
+    "children": []
+}

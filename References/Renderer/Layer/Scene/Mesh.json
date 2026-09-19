@@ -1,0 +1,161 @@
+{
+    "title": "Mesh",
+    "filename": "Mesh",
+    "path": "Renderer/Layer/Scene/Mesh",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/Scene/Mesh.hpp",
+        "namespace": "Chicane::Renderer::LSceneMesh",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LSceneMesh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENEMESH_LSCENEMESH_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENEMESH_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestruction",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENEMESH_ONDESTRUCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENEMESH_ONRENDER_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_pipeline",
+                "description": "CHICANE_RENDERER_LSCENEMESH_M_PIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_layout",
+                "description": "CHICANE_RENDERER_LSCENEMESH_M_LAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_textureLayout",
+                "description": "CHICANE_RENDERER_LSCENEMESH_M_TEXTURELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_groups",
+                "description": "CHICANE_RENDERER_LSCENEMESH_M_GROUPS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LSCENEMESH_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,17 @@
+{
+    "title": "BindGroup",
+    "filename": "BindGroup",
+    "path": "Renderer/Backend/Vulkan/RHI/BindGroup",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

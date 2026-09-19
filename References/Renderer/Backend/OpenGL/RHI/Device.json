@@ -1,0 +1,936 @@
+{
+    "title": "Device",
+    "filename": "Device",
+    "path": "Renderer/Backend/OpenGL/RHI/Device",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/OpenGL/RHI/Device.hpp",
+        "namespace": "Chicane::Renderer::OpenGLRHIDevice",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OpenGLRHIDevice",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "OpenGLBackend",
+                            "suffix": "*",
+                            "path": "Renderer/Backend/OpenGL",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_OPENGLRHIDEVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~OpenGLRHIDevice",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_~OPENGLRHIDEVICE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "createBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::BufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Buffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOffset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_UPDATEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "createImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::ImageCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Image/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_UPDATEIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "generateMips",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_GENERATEMIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "createImageView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEIMAGEVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "createSampler",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::SamplerCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Sampler/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATESAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySampler",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Sampler",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Sampler",
+                            "templates": []
+                        },
+                        "name": "inSampler"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "createBindGroupLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::BindGroupLayoutCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/BindGroup/Layout/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEBINDGROUPLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBindGroupLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYBINDGROUPLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "createBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_UPDATEBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "createPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::PipelineCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Pipeline/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_CREATEPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Pipeline",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Pipeline",
+                            "templates": []
+                        },
+                        "name": "inPipeline"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESTROYPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "shaderPath",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inLogical"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ShaderType",
+                            "suffix": "",
+                            "path": "Renderer/Shader/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_SHADERPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "sceneColorFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_SCENECOLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "sceneDepthFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_SCENEDEPTHFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "presentColorFormat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_PRESENTCOLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "wrapTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTexture"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageKind",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Kind",
+                            "templates": []
+                        },
+                        "name": "inKind"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::ImageFormat",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Format",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFbo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_WRAPTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "wrapBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BufferUsage",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer/Usage",
+                            "templates": []
+                        },
+                        "name": "inUsage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_WRAPBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::CommandList",
+                    "suffix": "*",
+                    "path": "Renderer/RHI/CommandList",
+                    "templates": []
+                },
+                "name": "commandList",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_COMMANDLIST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "OpenGLBackend",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/OpenGL",
+                    "templates": []
+                },
+                "name": "backend",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_BACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "compileProgram",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inVertex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inFragment"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_COMPILEPROGRAM_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "OpenGLBackend",
+                    "suffix": "*",
+                    "path": "Renderer/Backend/OpenGL",
+                    "templates": []
+                },
+                "name": "m_backend",
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_M_BACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "OpenGLRHICommandList",
+                            "suffix": "",
+                            "path": "Renderer/Backend/OpenGL/RHI/CommandList",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_commands",
+                "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_M_COMMANDS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_OPENGLRHIDEVICE_DESCRIPTION"
+    },
+    "children": []
+}

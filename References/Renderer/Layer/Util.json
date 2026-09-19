@@ -1,0 +1,385 @@
+{
+    "title": "Util",
+    "filename": "Util",
+    "path": "Renderer/Layer/Util",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/Util.hpp",
+        "namespace": "Chicane::Renderer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::VertexAttribute",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Attribute",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "rhiPoly2DAttributes",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIPOLY2DATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::VertexAttribute",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Attribute",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "rhiPoly3DPositionAttributes",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIPOLY3DPOSITIONATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::VertexAttribute",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Attribute",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "rhiPoly3DColorAttributes",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIPOLY3DCOLORATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RHI::VertexAttribute",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Attribute",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "rhiPoly3DAttributes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTangent"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIPOLY3DATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rhiWriteGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Device",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroup",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "outGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIWRITEGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rhiReplaceGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Device",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindGroup",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindGroup",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outGroups"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "RHI::BindResource",
+                                    "suffix": "",
+                                    "path": "Renderer/RHI/BindResource",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIREPLACEGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rhiApplyView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::CommandList",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/CommandList",
+                            "templates": []
+                        },
+                        "name": "inCommands"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Backend",
+                            "suffix": "*",
+                            "path": "Renderer/Backend",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Layer",
+                            "suffix": "*",
+                            "path": "Renderer/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHIAPPLYVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::PassCreateInfo",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pass/CreateInfo",
+                    "templates": []
+                },
+                "name": "rhiScenePass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RHI::Frame",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDepth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::LoadOp",
+                            "suffix": "",
+                            "path": "Renderer/RHI/LoadOp",
+                            "templates": []
+                        },
+                        "name": "inColorLoad"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::LoadOp",
+                            "suffix": "",
+                            "path": "Renderer/RHI/LoadOp",
+                            "templates": []
+                        },
+                        "name": "inDepthLoad"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_RHISCENEPASS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

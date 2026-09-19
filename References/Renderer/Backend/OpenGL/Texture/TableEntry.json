@@ -1,0 +1,70 @@
+{
+    "title": "TableEntry",
+    "filename": "TableEntry",
+    "path": "Renderer/Backend/OpenGL/Texture/TableEntry",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/OpenGL/Texture/TableEntry.hpp",
+        "namespace": "Chicane::Renderer::OpenGLTextureTableEntry",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "classIndex",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURETABLEENTRY_CLASSINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURETABLEENTRY_LAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURETABLEENTRY_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_OPENGLTEXTURETABLEENTRY_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_OPENGLTEXTURETABLEENTRY_DESCRIPTION"
+    },
+    "children": []
+}
