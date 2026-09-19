@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <array>
+#include <limits>
+#include <string>
 
 namespace Chicane
 {
@@ -74,70 +76,148 @@ namespace Chicane
                 outPresentMode = vk::PresentModeKHR::eFifo;
             }
 
-            void init(
+            vk::Extent2D chooseExtent(
+                const vk::SurfaceCapabilitiesKHR& inCapabilities, const vk::Extent2D& inFallback
+            )
+            {
+                if (inCapabilities.currentExtent.width != std::numeric_limits<std::uint32_t>::max() &&
+                    inCapabilities.currentExtent.height != std::numeric_limits<std::uint32_t>::max())
+                {
+                    return inCapabilities.currentExtent;
+                }
+
+                vk::Extent2D extent;
+                extent.width = std::clamp(
+                    inFallback.width,
+                    inCapabilities.minImageExtent.width,
+                    inCapabilities.maxImageExtent.width
+                );
+                extent.height = std::clamp(
+                    inFallback.height,
+                    inCapabilities.minImageExtent.height,
+                    inCapabilities.maxImageExtent.height
+                );
+
+                return extent;
+            }
+
+            vk::CompositeAlphaFlagBitsKHR pickCompositeAlpha(vk::CompositeAlphaFlagsKHR inSupported)
+            {
+                const std::array<vk::CompositeAlphaFlagBitsKHR, 4> options = {
+                    vk::CompositeAlphaFlagBitsKHR::eOpaque,
+                    vk::CompositeAlphaFlagBitsKHR::ePreMultiplied,
+                    vk::CompositeAlphaFlagBitsKHR::ePostMultiplied,
+                    vk::CompositeAlphaFlagBitsKHR::eInherit
+                };
+
+                for (vk::CompositeAlphaFlagBitsKHR option : options)
+                {
+                    if (inSupported & option)
+                    {
+                        return option;
+                    }
+                }
+
+                return vk::CompositeAlphaFlagBitsKHR::eOpaque;
+            }
+
+            bool init(
                 VulkanSwapchainBundle&    outSwapChain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device&         inLogicalDevice,
-                const vk::SurfaceKHR&     inSurface
+                const vk::SurfaceKHR&     inSurface,
+                const vk::SwapchainKHR&   inOldSwapchain,
+                const vk::Extent2D&       inFallbackExtent
             )
             {
-                VulkanSwapchainSupportDetails supportDetails;
-                querySupport(supportDetails, inPhysicalDevice, inSurface);
-
-                vk::SurfaceFormatKHR surfaceFormat;
-                pickSurfaceFormat(surfaceFormat, supportDetails.formats);
-
-                vk::Format depthFormat = VulkanImage::findSupportedFormat(
-                    inPhysicalDevice,
-                    {vk::Format::eD32SfloatS8Uint, vk::Format::eD24UnormS8Uint, vk::Format::eD32Sfloat},
-                    vk::ImageTiling::eOptimal,
-                    vk::FormatFeatureFlagBits::eDepthStencilAttachment
-                );
-
-                vk::PresentModeKHR presentMode;
-                pickPresentMode(presentMode, supportDetails.presentModes);
-
-                vk::Extent2D extent = supportDetails.capabilities.currentExtent;
-
-                std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
-                if (supportDetails.capabilities.maxImageCount > 0)
-                {
-                    imageCount = std::min(imageCount, supportDetails.capabilities.maxImageCount);
-                }
-
-                vk::SwapchainCreateInfoKHR createInfo;
-                createInfo.surface          = inSurface;
-                createInfo.minImageCount    = imageCount;
-                createInfo.imageFormat      = surfaceFormat.format;
-                createInfo.imageColorSpace  = surfaceFormat.colorSpace;
-                createInfo.imageExtent      = extent;
-                createInfo.imageArrayLayers = 1;
-                createInfo.imageUsage       = vk::ImageUsageFlagBits::eColorAttachment |
-                                        vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst;
-
                 VulkanQueueFamilyIndices familyIndices(inPhysicalDevice, inSurface);
+                const std::array<std::uint32_t, 2> queueFamilyIndices = {
+                    familyIndices.graphicsFamily.value(),
+                    familyIndices.presentFamily.value()
+                };
 
-                createInfo.imageSharingMode = vk::SharingMode::eExclusive;
+                vk::SwapchainKHR     created;
+                vk::SurfaceFormatKHR surfaceFormat;
+                vk::Format           depthFormat = vk::Format::eUndefined;
+                vk::Extent2D         extent      = {};
+                vk::Result           result      = vk::Result::eErrorOutOfDateKHR;
 
-                if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
+                for (int attempt = 0; attempt < 3; ++attempt)
                 {
-                    const std::array<std::uint32_t, 2> queueFamilyIndices = {
-                        familyIndices.graphicsFamily.value(),
-                        familyIndices.presentFamily.value()
-                    };
+                    VulkanSwapchainSupportDetails supportDetails;
+                    querySupport(supportDetails, inPhysicalDevice, inSurface);
 
-                    createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
-                    createInfo.queueFamilyIndexCount = 2;
-                    createInfo.pQueueFamilyIndices   = queueFamilyIndices.data();
+                    pickSurfaceFormat(surfaceFormat, supportDetails.formats);
+
+                    vk::PresentModeKHR presentMode;
+                    pickPresentMode(presentMode, supportDetails.presentModes);
+
+                    depthFormat = VulkanImage::findSupportedFormat(
+                        inPhysicalDevice,
+                        {vk::Format::eD32SfloatS8Uint, vk::Format::eD24UnormS8Uint, vk::Format::eD32Sfloat},
+                        vk::ImageTiling::eOptimal,
+                        vk::FormatFeatureFlagBits::eDepthStencilAttachment
+                    );
+
+                    extent = chooseExtent(supportDetails.capabilities, inFallbackExtent);
+                    if (extent.width == 0 || extent.height == 0)
+                    {
+                        return false;
+                    }
+
+                    std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
+                    if (supportDetails.capabilities.maxImageCount > 0)
+                    {
+                        imageCount = std::min(imageCount, supportDetails.capabilities.maxImageCount);
+                    }
+
+                    vk::ImageUsageFlags imageUsage = vk::ImageUsageFlagBits::eColorAttachment |
+                                                     vk::ImageUsageFlagBits::eTransferSrc |
+                                                     vk::ImageUsageFlagBits::eTransferDst;
+                    imageUsage &= supportDetails.capabilities.supportedUsageFlags;
+                    imageUsage |= vk::ImageUsageFlagBits::eColorAttachment;
+
+                    vk::SwapchainCreateInfoKHR createInfo{};
+                    createInfo.surface          = inSurface;
+                    createInfo.minImageCount    = imageCount;
+                    createInfo.imageFormat      = surfaceFormat.format;
+                    createInfo.imageColorSpace  = surfaceFormat.colorSpace;
+                    createInfo.imageExtent      = extent;
+                    createInfo.imageArrayLayers = 1;
+                    createInfo.imageUsage       = imageUsage;
+                    createInfo.imageSharingMode = vk::SharingMode::eExclusive;
+
+                    if (queueFamilyIndices[0] != queueFamilyIndices[1])
+                    {
+                        createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
+                        createInfo.queueFamilyIndexCount = 2;
+                        createInfo.pQueueFamilyIndices   = queueFamilyIndices.data();
+                    }
+
+                    createInfo.preTransform   = supportDetails.capabilities.currentTransform;
+                    createInfo.compositeAlpha = pickCompositeAlpha(supportDetails.capabilities.supportedCompositeAlpha);
+                    createInfo.presentMode    = presentMode;
+                    createInfo.clipped        = VK_TRUE;
+                    createInfo.oldSwapchain   = inOldSwapchain;
+
+                    result = inLogicalDevice.createSwapchainKHR(&createInfo, nullptr, &created);
+                    if (result == vk::Result::eSuccess)
+                    {
+                        break;
+                    }
+
+                    if (result != vk::Result::eErrorOutOfDateKHR)
+                    {
+                        throw std::runtime_error("Failed to create the swapchain: " + vk::to_string(result));
+                    }
                 }
 
-                createInfo.preTransform   = supportDetails.capabilities.currentTransform;
-                createInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
-                createInfo.presentMode    = presentMode;
-                createInfo.clipped        = VK_TRUE;
-                createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
+                if (result != vk::Result::eSuccess)
+                {
+                    return false;
+                }
 
-                outSwapChain.instance    = inLogicalDevice.createSwapchainKHR(createInfo);
+                outSwapChain.instance    = created;
                 outSwapChain.colorFormat = surfaceFormat.format;
                 outSwapChain.depthFormat = depthFormat;
                 outSwapChain.extent      = extent;
@@ -152,6 +232,8 @@ namespace Chicane
                     image.logicalDevice         = inLogicalDevice;
                     image.colorImage.instance   = images[i];
                 }
+
+                return true;
             }
         }
     }

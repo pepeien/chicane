@@ -27,11 +27,17 @@ namespace Chicane
                 vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes
             );
 
-            CHICANE_RENDERER void init(
+            CHICANE_RENDERER vk::Extent2D chooseExtent(
+                const vk::SurfaceCapabilitiesKHR& inCapabilities, const vk::Extent2D& inFallback
+            );
+
+            CHICANE_RENDERER bool init(
                 VulkanSwapchainBundle&    outSwapchain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device&         inLogicalDevice,
-                const vk::SurfaceKHR&     inSurface
+                const vk::SurfaceKHR&     inSurface,
+                const vk::SwapchainKHR&   inOldSwapchain,
+                const vk::Extent2D&       inFallbackExtent
             );
         }
     }

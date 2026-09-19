@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <utility>
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
@@ -127,6 +128,11 @@ namespace Chicane
 
         void VulkanBackend::onRender(const Frame& inFrame)
         {
+            if (!swapchain.instance || getRenderer()->getWindow()->isMinimized())
+            {
+                return;
+            }
+
             VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
             nextFrame.wait();
             resolveGpuTimestamp(m_currentFrameIndex);
@@ -397,10 +403,22 @@ namespace Chicane
             VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
             VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
         }
-        void VulkanBackend::buildSwapchain()
-        {
-            VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
 
+        vk::Extent2D VulkanBackend::getSwapchainFallbackExtent() const
+        {
+            const Window* window = getRenderer()->getWindow();
+            if (!window)
+            {
+                return {};
+            }
+
+            const Vec<2, std::uint32_t>& size = window->getSize();
+
+            return {size.x, size.y};
+        }
+
+        void VulkanBackend::setupSwapchainImages()
+        {
             for (VulkanSwapchainImage& image : swapchain.images)
             {
                 // Sync
@@ -411,6 +429,18 @@ namespace Chicane
                 image.setupTargetImage(getSceneColorFormat(), swapchain.extent);
                 image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
             }
+        }
+
+        void VulkanBackend::buildSwapchain()
+        {
+            if (!VulkanSwapchain::init(
+                    swapchain, physicalDevice, logicalDevice, surface, {}, getSwapchainFallbackExtent()
+                ))
+            {
+                throw std::runtime_error("Failed to create the swapchain");
+            }
+
+            setupSwapchainImages();
         }
 
         void VulkanBackend::destroySwapchain()
@@ -424,22 +454,59 @@ namespace Chicane
 
             swapchain.images.clear();
 
-            logicalDevice.destroySwapchainKHR(swapchain.instance);
+            if (swapchain.instance)
+            {
+                logicalDevice.destroySwapchainKHR(swapchain.instance);
+                swapchain.instance = nullptr;
+            }
 
             shutdownLayers();
         }
 
         void VulkanBackend::rebuildSwapchain()
         {
-            if (getRenderer()->getWindow()->isMinimized())
+            if (!swapchain.instance || getRenderer()->getWindow()->isMinimized())
+            {
+                return;
+            }
+
+            VulkanSwapchainSupportDetails supportDetails;
+            VulkanSwapchain::querySupport(supportDetails, physicalDevice, surface);
+
+            const vk::Extent2D extent =
+                VulkanSwapchain::chooseExtent(supportDetails.capabilities, getSwapchainFallbackExtent());
+            if (extent.width == 0 || extent.height == 0)
+            {
+                return;
+            }
+
+            logicalDevice.waitIdle();
+
+            VulkanSwapchainBundle next = {};
+            if (!VulkanSwapchain::init(
+                    next, physicalDevice, logicalDevice, surface, swapchain.instance, getSwapchainFallbackExtent()
+                ))
             {
                 return;
             }
 
             bloom.destroyImages();
-            destroySwapchain();
-            buildSwapchain();
 
+            for (VulkanSwapchainImage& image : swapchain.images)
+            {
+                image.destroy();
+            }
+
+            swapchain.images.clear();
+            shutdownLayers();
+
+            if (swapchain.instance)
+            {
+                logicalDevice.destroySwapchainKHR(swapchain.instance);
+            }
+
+            swapchain = std::move(next);
+            setupSwapchainImages();
             rebuildLayers();
             bloom.resize(swapchain.extent.width, swapchain.extent.height, m_rhi->sceneColorFormat());
         }

@@ -80,8 +80,10 @@ namespace Chicane
             void buildMainCommandBuffer();
 
             void buildSwapchain();
+            void setupSwapchainImages();
             void destroySwapchain();
             void rebuildSwapchain();
+            vk::Extent2D getSwapchainFallbackExtent() const;
 
             void buildFrames();
             void destroyFrames();
