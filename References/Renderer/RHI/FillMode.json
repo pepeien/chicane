@@ -1,0 +1,69 @@
+{
+    "title": "FillMode",
+    "filename": "FillMode",
+    "path": "Renderer/RHI/FillMode",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/FillMode.hpp",
+        "namespace": "Chicane::Renderer::RHI::FillMode",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Fill",
+                "description": "CHICANE_RENDERER_RHI_FILLMODE_FILL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Line",
+                "description": "CHICANE_RENDERER_RHI_FILLMODE_LINE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::FillMode",
+                            "suffix": "",
+                            "path": "Renderer/RHI/FillMode",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_FILLMODE_DESCRIPTION"
+    },
+    "children": []
+}

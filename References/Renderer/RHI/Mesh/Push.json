@@ -1,0 +1,31 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Mesh/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Mesh/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::MeshPush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "transparentPass",
+                "description": "CHICANE_RENDERER_RHI_MESHPUSH_TRANSPARENTPASS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_MESHPUSH_DESCRIPTION"
+    },
+    "children": []
+}

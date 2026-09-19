@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "ShaderType",
     "filename": "Type",
     "path": "Renderer/Shader/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ShaderType",
+                            "name": "Renderer::ShaderType",
                             "suffix": "",
                             "path": "Renderer/Shader/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_SHADERTYPE_DESCRIPTION"
     },
     "children": []
 }

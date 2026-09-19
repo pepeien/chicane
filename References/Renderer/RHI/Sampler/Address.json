@@ -1,0 +1,80 @@
+{
+    "title": "SamplerAddress",
+    "filename": "Address",
+    "path": "Renderer/RHI/Sampler/Address",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Sampler/Address.hpp",
+        "namespace": "Chicane::Renderer::RHI::SamplerAddress",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ClampToEdge",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERADDRESS_CLAMPTOEDGE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ClampToBorder",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERADDRESS_CLAMPTOBORDER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Repeat",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERADDRESS_REPEAT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::SamplerAddress",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Sampler/Address",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_SAMPLERADDRESS_DESCRIPTION"
+    },
+    "children": []
+}

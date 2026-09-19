@@ -1,0 +1,80 @@
+{
+    "title": "LoadOp",
+    "filename": "LoadOp",
+    "path": "Renderer/RHI/LoadOp",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/LoadOp.hpp",
+        "namespace": "Chicane::Renderer::RHI::LoadOp",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Load",
+                "description": "CHICANE_RENDERER_RHI_LOADOP_LOAD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clear",
+                "description": "CHICANE_RENDERER_RHI_LOADOP_CLEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DontCare",
+                "description": "CHICANE_RENDERER_RHI_LOADOP_DONTCARE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::LoadOp",
+                            "suffix": "",
+                            "path": "Renderer/RHI/LoadOp",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_LOADOP_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,5 +1,5 @@
 {
-    "title": "Mode",
+    "title": "DrawPolyMode",
     "filename": "Mode",
     "path": "Renderer/Draw/Poly/Mode",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DrawPolyMode",
+                            "name": "Renderer::DrawPolyMode",
                             "suffix": "",
                             "path": "Renderer/Draw/Poly/Mode",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DRAWPOLYMODE_DESCRIPTION"
     },
     "children": []
 }

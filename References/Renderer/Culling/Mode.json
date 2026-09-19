@@ -1,5 +1,5 @@
 {
-    "title": "Mode",
+    "title": "CullingMode",
     "filename": "Mode",
     "path": "Renderer/Culling/Mode",
     "source": {
@@ -70,7 +70,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "CullingMode",
+                            "name": "Renderer::CullingMode",
                             "suffix": "",
                             "path": "Renderer/Culling/Mode",
                             "templates": []
@@ -81,11 +81,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_CULLINGMODE_DESCRIPTION"
     },
     "children": []
 }

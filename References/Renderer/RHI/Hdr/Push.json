@@ -1,0 +1,31 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Hdr/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Hdr/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::HdrPush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enabled",
+                "description": "CHICANE_RENDERER_RHI_HDRPUSH_ENABLED_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_HDRPUSH_DESCRIPTION"
+    },
+    "children": []
+}

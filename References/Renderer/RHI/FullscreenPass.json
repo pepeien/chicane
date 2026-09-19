@@ -1,0 +1,422 @@
+{
+    "title": "FullscreenPass",
+    "filename": "FullscreenPass",
+    "path": "Renderer/RHI/FullscreenPass",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/FullscreenPass.hpp",
+        "namespace": "Chicane::Renderer::RHI::FullscreenPass",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Device",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/Device",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_DESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resize",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ImageFormat",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Format",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_RESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "apply",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CommandList",
+                            "suffix": "*",
+                            "path": "Renderer/RHI/CommandList",
+                            "templates": []
+                        },
+                        "name": "inCommands"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inSceneColor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inOutput"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bHdr"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_APPLY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyImages",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_DESTROYIMAGES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Device",
+                    "suffix": "*",
+                    "path": "Renderer/RHI/Device",
+                    "templates": []
+                },
+                "name": "m_device",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_DEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_composite",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_COMPOSITE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_compositeLayout",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_COMPOSITELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_compositeGroups",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_COMPOSITEGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "m_sampler",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_SAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindGroupLayout",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup/Layout",
+                    "templates": []
+                },
+                "name": "m_sampleLayout",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_SAMPLELAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bloom",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_BLOOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_blurGroup",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_BLURGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_blur",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_BLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_extract",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_EXTRACT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_extractGroups",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_EXTRACTGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_width",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_height",
+                "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_M_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_FULLSCREENPASS_DESCRIPTION"
+    },
+    "children": []
+}

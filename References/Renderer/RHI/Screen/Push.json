@@ -1,0 +1,46 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Screen/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Screen/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::ScreenPush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "data",
+                "description": "CHICANE_RENDERER_RHI_SCREENPUSH_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_SCREENPUSH_DESCRIPTION"
+    },
+    "children": []
+}

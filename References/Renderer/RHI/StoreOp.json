@@ -1,0 +1,69 @@
+{
+    "title": "StoreOp",
+    "filename": "StoreOp",
+    "path": "Renderer/RHI/StoreOp",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/StoreOp.hpp",
+        "namespace": "Chicane::Renderer::RHI::StoreOp",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Store",
+                "description": "CHICANE_RENDERER_RHI_STOREOP_STORE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DontCare",
+                "description": "CHICANE_RENDERER_RHI_STOREOP_DONTCARE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::StoreOp",
+                            "suffix": "",
+                            "path": "Renderer/RHI/StoreOp",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_STOREOP_DESCRIPTION"
+    },
+    "children": []
+}

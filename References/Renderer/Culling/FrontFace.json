@@ -1,5 +1,5 @@
 {
-    "title": "FrontFace",
+    "title": "CullingFrontFace",
     "filename": "FrontFace",
     "path": "Renderer/Culling/FrontFace",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "CullingFrontFace",
+                            "name": "Renderer::CullingFrontFace",
                             "suffix": "",
                             "path": "Renderer/Culling/FrontFace",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_CULLINGFRONTFACE_DESCRIPTION"
     },
     "children": []
 }

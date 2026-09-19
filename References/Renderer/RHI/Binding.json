@@ -1,0 +1,96 @@
+{
+    "title": "Binding",
+    "filename": "Binding",
+    "path": "Renderer/RHI/Binding",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Binding.hpp",
+        "namespace": "Chicane::Renderer::RHI::Binding",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsVertex",
+                "description": "CHICANE_RENDERER_RHI_BINDING_BISVERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsFragment",
+                "description": "CHICANE_RENDERER_RHI_BINDING_BISFRAGMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsPartiallyBound",
+                "description": "CHICANE_RENDERER_RHI_BINDING_BISPARTIALLYBOUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "binding",
+                "description": "CHICANE_RENDERER_RHI_BINDING_BINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindingType",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Binding/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_RHI_BINDING_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "count",
+                "description": "CHICANE_RENDERER_RHI_BINDING_COUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BINDING_DESCRIPTION"
+    },
+    "children": []
+}

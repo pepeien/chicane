@@ -1,0 +1,70 @@
+{
+    "title": "Scissor",
+    "filename": "Scissor",
+    "path": "Renderer/RHI/Scissor",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Scissor.hpp",
+        "namespace": "Chicane::Renderer::RHI::Scissor",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "x",
+                "description": "CHICANE_RENDERER_RHI_SCISSOR_X_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "y",
+                "description": "CHICANE_RENDERER_RHI_SCISSOR_Y_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_RHI_SCISSOR_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_RHI_SCISSOR_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_SCISSOR_DESCRIPTION"
+    },
+    "children": []
+}

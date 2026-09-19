@@ -1,0 +1,102 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Outline/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Outline/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::OutlinePush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "pixelOffset",
+                "description": "CHICANE_RENDERER_RHI_OUTLINEPUSH_PIXELOFFSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "padding",
+                "description": "CHICANE_RENDERER_RHI_OUTLINEPUSH_PADDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_RHI_OUTLINEPUSH_COLOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_OUTLINEPUSH_DESCRIPTION"
+    },
+    "children": []
+}

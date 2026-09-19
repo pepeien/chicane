@@ -1,0 +1,96 @@
+{
+    "title": "BindResource",
+    "filename": "BindResource",
+    "path": "Renderer/RHI/BindResource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/BindResource.hpp",
+        "namespace": "Chicane::Renderer::RHI::BindResource",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "binding",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_BINDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindingType",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Binding/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "buffer",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_BUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "sampler",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_SAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "arrayIndex",
+                "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_ARRAYINDEX_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BINDRESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,31 @@
+{
+    "title": "Layout",
+    "filename": "Layout",
+    "path": "Renderer/RHI/BindGroup/Layout",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/BindGroup/Layout.hpp",
+        "namespace": "Chicane::Renderer::RHI::BindGroupLayout",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "description": "CHICANE_RENDERER_RHI_BINDGROUPLAYOUT_HANDLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BINDGROUPLAYOUT_DESCRIPTION"
+    },
+    "children": []
+}

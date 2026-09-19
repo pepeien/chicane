@@ -1,0 +1,17 @@
+{
+    "title": "Pass",
+    "filename": "Pass",
+    "path": "Renderer/RHI/Pass",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

@@ -1,0 +1,553 @@
+{
+    "title": "CommandList",
+    "filename": "CommandList",
+    "path": "Renderer/RHI/CommandList",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/CommandList.hpp",
+        "namespace": "Chicane::Renderer::RHI::CommandList",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~CommandList",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_~COMMANDLIST_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginPass",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "PassCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Pass/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BEGINPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "endPass",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_ENDPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindPipeline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Pipeline",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Pipeline",
+                            "templates": []
+                        },
+                        "name": "inPipeline"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BINDPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSet"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindVertexBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BINDVERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindIndexBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Buffer",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer",
+                            "templates": []
+                        },
+                        "name": "inBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BINDINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushConstants",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_PUSHCONSTANTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "draw",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inVertexCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstanceCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFirstVertex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFirstInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_DRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawIndexed",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndexCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstanceCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFirstIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inVertexOffset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFirstInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_DRAWINDEXED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Viewport",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Viewport",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_SETVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScissor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Scissor",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Scissor",
+                            "templates": []
+                        },
+                        "name": "inScissor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_SETSCISSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setLineWidth",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_SETLINEWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "blitColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_BLITCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "prepareShaderRead",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_PREPARESHADERREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "preparePresent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_COMMANDLIST_PREPAREPRESENT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_COMMANDLIST_DESCRIPTION"
+    },
+    "children": []
+}

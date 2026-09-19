@@ -1,0 +1,80 @@
+{
+    "title": "VertexFormat",
+    "filename": "Format",
+    "path": "Renderer/RHI/Vertex/Format",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Vertex/Format.hpp",
+        "namespace": "Chicane::Renderer::RHI::VertexFormat",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Float2",
+                "description": "CHICANE_RENDERER_RHI_VERTEXFORMAT_FLOAT2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Float3",
+                "description": "CHICANE_RENDERER_RHI_VERTEXFORMAT_FLOAT3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Float4",
+                "description": "CHICANE_RENDERER_RHI_VERTEXFORMAT_FLOAT4_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::VertexFormat",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Format",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_VERTEXFORMAT_DESCRIPTION"
+    },
+    "children": []
+}

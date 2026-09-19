@@ -1,0 +1,46 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Blur/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Blur/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::BlurPush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "direction",
+                "description": "CHICANE_RENDERER_RHI_BLURPUSH_DIRECTION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BLURPUSH_DESCRIPTION"
+    },
+    "children": []
+}

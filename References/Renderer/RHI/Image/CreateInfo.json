@@ -1,0 +1,135 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/Image/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Image/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::ImageCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsSampled",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_BISSAMPLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasColor",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_BHASCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepth",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_BHASDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageKind",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Kind",
+                    "templates": []
+                },
+                "name": "kind",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_KIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layers",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_LAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mipLevels",
+                "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_MIPLEVELS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_IMAGECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

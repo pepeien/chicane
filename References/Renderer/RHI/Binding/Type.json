@@ -1,0 +1,80 @@
+{
+    "title": "BindingType",
+    "filename": "Type",
+    "path": "Renderer/RHI/Binding/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Binding/Type.hpp",
+        "namespace": "Chicane::Renderer::RHI::BindingType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UniformBuffer",
+                "description": "CHICANE_RENDERER_RHI_BINDINGTYPE_UNIFORMBUFFER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StorageBuffer",
+                "description": "CHICANE_RENDERER_RHI_BINDINGTYPE_STORAGEBUFFER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SampledImage",
+                "description": "CHICANE_RENDERER_RHI_BINDINGTYPE_SAMPLEDIMAGE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::BindingType",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Binding/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_BINDINGTYPE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,83 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/Sampler/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Sampler/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::SamplerCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SamplerFilter",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler/Filter",
+                    "templates": []
+                },
+                "name": "minFilter",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_MINFILTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SamplerFilter",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler/Filter",
+                    "templates": []
+                },
+                "name": "magFilter",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_MAGFILTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SamplerAddress",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler/Address",
+                    "templates": []
+                },
+                "name": "address",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_ADDRESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasMip",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_BHASMIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "borderColor",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_BORDERCOLOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_SAMPLERCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

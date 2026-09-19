@@ -1,0 +1,31 @@
+{
+    "title": "ShaderModule",
+    "filename": "ShaderModule",
+    "path": "Renderer/RHI/ShaderModule",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/ShaderModule.hpp",
+        "namespace": "Chicane::Renderer::RHI::ShaderModule",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "description": "CHICANE_RENDERER_RHI_SHADERMODULE_HANDLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_SHADERMODULE_DESCRIPTION"
+    },
+    "children": []
+}

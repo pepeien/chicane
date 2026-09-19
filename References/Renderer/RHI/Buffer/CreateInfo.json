@@ -1,0 +1,57 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/Buffer/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Buffer/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::BufferCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasHostAccess",
+                "description": "CHICANE_RENDERER_RHI_BUFFERCREATEINFO_BHASHOSTACCESS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_RHI_BUFFERCREATEINFO_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BufferUsage",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer/Usage",
+                    "templates": []
+                },
+                "name": "usage",
+                "description": "CHICANE_RENDERER_RHI_BUFFERCREATEINFO_USAGE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BUFFERCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

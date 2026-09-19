@@ -1,0 +1,31 @@
+{
+    "title": "Push",
+    "filename": "Push",
+    "path": "Renderer/RHI/Sky/Push",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Sky/Push.hpp",
+        "namespace": "Chicane::Renderer::RHI::SkyPush",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intensity",
+                "description": "CHICANE_RENDERER_RHI_SKYPUSH_INTENSITY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_SKYPUSH_DESCRIPTION"
+    },
+    "children": []
+}

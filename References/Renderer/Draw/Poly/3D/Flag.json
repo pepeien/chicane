@@ -81,7 +81,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DrawPoly3DFlag",
+                            "name": "Renderer::DrawPoly3DFlag",
                             "suffix": "",
                             "path": "Renderer/Draw/Poly/3D/Flag",
                             "templates": []
@@ -92,7 +92,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

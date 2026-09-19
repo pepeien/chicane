@@ -1,0 +1,320 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/Pipeline/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Pipeline/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::PipelineCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasPushVertex",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASPUSHVERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "vertexPath",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_VERTEXPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasPushFragment",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASPUSHFRAGMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "fragmentPath",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_FRAGMENTPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexStride",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_VERTEXSTRIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VertexAttribute",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Vertex/Attribute",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "vertexAttributes",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_VERTEXATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "PrimitiveTopology",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Primitive/Topology",
+                    "templates": []
+                },
+                "name": "topology",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_TOPOLOGY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FillMode",
+                    "suffix": "",
+                    "path": "Renderer/RHI/FillMode",
+                    "templates": []
+                },
+                "name": "fill",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_FILL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CullingMode",
+                    "suffix": "",
+                    "path": "Renderer/Culling/Mode",
+                    "templates": []
+                },
+                "name": "cull",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_CULL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CullingFrontFace",
+                    "suffix": "",
+                    "path": "Renderer/Culling/FrontFace",
+                    "templates": []
+                },
+                "name": "frontFace",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_FRONTFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StencilMode",
+                    "suffix": "",
+                    "path": "Renderer/RHI/StencilMode",
+                    "templates": []
+                },
+                "name": "stencil",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_STENCIL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BlendMode",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BlendMode",
+                    "templates": []
+                },
+                "name": "blend",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BLEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushConstantSize",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_PUSHCONSTANTSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasColor",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasColorWrite",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASCOLORWRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "colorFormat",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_COLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepth",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepthTest",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASDEPTHTEST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepthWrite",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_BHASDEPTHWRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ImageFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image/Format",
+                    "templates": []
+                },
+                "name": "depthFormat",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_DEPTHFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DepthCompare",
+                    "suffix": "",
+                    "path": "Renderer/Depth/Compare",
+                    "templates": []
+                },
+                "name": "depthCompare",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_DEPTHCOMPARE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BindGroupLayout",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup/Layout",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "layouts",
+                "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_LAYOUTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_PIPELINECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

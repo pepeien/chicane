@@ -1,0 +1,96 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/Pass/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Pass/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::PassCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasColor",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_BHASCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Attachment",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Attachment",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepth",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_BHASDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Attachment",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Attachment",
+                    "templates": []
+                },
+                "name": "depth",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_DEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_PASSCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

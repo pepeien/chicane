@@ -1,0 +1,80 @@
+{
+    "title": "StencilMode",
+    "filename": "StencilMode",
+    "path": "Renderer/RHI/StencilMode",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/StencilMode.hpp",
+        "namespace": "Chicane::Renderer::RHI::StencilMode",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_RENDERER_RHI_STENCILMODE_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WriteReplace",
+                "description": "CHICANE_RENDERER_RHI_STENCILMODE_WRITEREPLACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TestNotEqual",
+                "description": "CHICANE_RENDERER_RHI_STENCILMODE_TESTNOTEQUAL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::StencilMode",
+                            "suffix": "",
+                            "path": "Renderer/RHI/StencilMode",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_STENCILMODE_DESCRIPTION"
+    },
+    "children": []
+}

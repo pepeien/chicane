@@ -1,0 +1,57 @@
+{
+    "title": "Attribute",
+    "filename": "Attribute",
+    "path": "Renderer/RHI/Vertex/Attribute",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Vertex/Attribute.hpp",
+        "namespace": "Chicane::Renderer::RHI::VertexAttribute",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "location",
+                "description": "CHICANE_RENDERER_RHI_VERTEXATTRIBUTE_LOCATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VertexFormat",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Vertex/Format",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_RHI_VERTEXATTRIBUTE_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "description": "CHICANE_RENDERER_RHI_VERTEXATTRIBUTE_OFFSET_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_VERTEXATTRIBUTE_DESCRIPTION"
+    },
+    "children": []
+}

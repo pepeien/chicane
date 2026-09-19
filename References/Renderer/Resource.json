@@ -185,7 +185,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Resource",
+                            "name": "Renderer::Resource",
                             "suffix": "",
                             "path": "Renderer/Resource",
                             "templates": []
@@ -196,7 +196,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],

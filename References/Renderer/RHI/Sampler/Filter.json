@@ -1,0 +1,69 @@
+{
+    "title": "SamplerFilter",
+    "filename": "Filter",
+    "path": "Renderer/RHI/Sampler/Filter",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Sampler/Filter.hpp",
+        "namespace": "Chicane::Renderer::RHI::SamplerFilter",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Nearest",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERFILTER_NEAREST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Linear",
+                "description": "CHICANE_RENDERER_RHI_SAMPLERFILTER_LINEAR_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::SamplerFilter",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Sampler/Filter",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_SAMPLERFILTER_DESCRIPTION"
+    },
+    "children": []
+}

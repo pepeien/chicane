@@ -1,0 +1,91 @@
+{
+    "title": "BufferUsage",
+    "filename": "Usage",
+    "path": "Renderer/RHI/Buffer/Usage",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Buffer/Usage.hpp",
+        "namespace": "Chicane::Renderer::RHI::BufferUsage",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vertex",
+                "description": "CHICANE_RENDERER_RHI_BUFFERUSAGE_VERTEX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Index",
+                "description": "CHICANE_RENDERER_RHI_BUFFERUSAGE_INDEX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Uniform",
+                "description": "CHICANE_RENDERER_RHI_BUFFERUSAGE_UNIFORM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Storage",
+                "description": "CHICANE_RENDERER_RHI_BUFFERUSAGE_STORAGE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::BufferUsage",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Buffer/Usage",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_BUFFERUSAGE_DESCRIPTION"
+    },
+    "children": []
+}

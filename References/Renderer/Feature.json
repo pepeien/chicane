@@ -147,7 +147,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "RendererFeature",
+                            "name": "Renderer::RendererFeature",
                             "suffix": "",
                             "path": "Renderer/Feature",
                             "templates": []
@@ -158,7 +158,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

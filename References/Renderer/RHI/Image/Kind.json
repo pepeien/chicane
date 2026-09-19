@@ -1,0 +1,91 @@
+{
+    "title": "ImageKind",
+    "filename": "Kind",
+    "path": "Renderer/RHI/Image/Kind",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Image/Kind.hpp",
+        "namespace": "Chicane::Renderer::RHI::ImageKind",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Color2D",
+                "description": "CHICANE_RENDERER_RHI_IMAGEKIND_COLOR2D_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Depth2D",
+                "description": "CHICANE_RENDERER_RHI_IMAGEKIND_DEPTH2D_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Depth2DArray",
+                "description": "CHICANE_RENDERER_RHI_IMAGEKIND_DEPTH2DARRAY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Cube",
+                "description": "CHICANE_RENDERER_RHI_IMAGEKIND_CUBE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::ImageKind",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image/Kind",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_IMAGEKIND_DESCRIPTION"
+    },
+    "children": []
+}

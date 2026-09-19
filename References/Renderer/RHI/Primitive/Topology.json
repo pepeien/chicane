@@ -1,0 +1,80 @@
+{
+    "title": "PrimitiveTopology",
+    "filename": "Topology",
+    "path": "Renderer/RHI/Primitive/Topology",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Primitive/Topology.hpp",
+        "namespace": "Chicane::Renderer::RHI::PrimitiveTopology",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleList",
+                "description": "CHICANE_RENDERER_RHI_PRIMITIVETOPOLOGY_TRIANGLELIST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TriangleStrip",
+                "description": "CHICANE_RENDERER_RHI_PRIMITIVETOPOLOGY_TRIANGLESTRIP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LineList",
+                "description": "CHICANE_RENDERER_RHI_PRIMITIVETOPOLOGY_LINELIST_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RHI::PrimitiveTopology",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Primitive/Topology",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_RHI_PRIMITIVETOPOLOGY_DESCRIPTION"
+    },
+    "children": []
+}

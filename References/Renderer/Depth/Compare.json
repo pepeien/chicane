@@ -1,5 +1,5 @@
 {
-    "title": "Compare",
+    "title": "DepthCompare",
     "filename": "Compare",
     "path": "Renderer/Depth/Compare",
     "source": {
@@ -114,7 +114,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DepthCompare",
+                            "name": "Renderer::DepthCompare",
                             "suffix": "",
                             "path": "Renderer/Depth/Compare",
                             "templates": []
@@ -125,11 +125,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DEPTHCOMPARE_DESCRIPTION"
     },
     "children": []
 }

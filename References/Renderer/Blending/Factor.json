@@ -1,5 +1,5 @@
 {
-    "title": "Factor",
+    "title": "BlendingFactor",
     "filename": "Factor",
     "path": "Renderer/Blending/Factor",
     "source": {
@@ -235,7 +235,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "BlendingFactor",
+                            "name": "Renderer::BlendingFactor",
                             "suffix": "",
                             "path": "Renderer/Blending/Factor",
                             "templates": []
@@ -246,11 +246,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_BLENDINGFACTOR_DESCRIPTION"
     },
     "children": []
 }

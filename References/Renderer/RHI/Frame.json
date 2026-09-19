@@ -1,0 +1,331 @@
+{
+    "title": "Frame",
+    "filename": "Frame",
+    "path": "Renderer/RHI/Frame",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Frame.hpp",
+        "namespace": "Chicane::Renderer::RHI::Frame",
+        "types": [
+            {
+                "name": "BindGroups",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_RHI_FRAME_BINDGROUPS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "BindGroup",
+                            "suffix": "",
+                            "path": "Renderer/RHI/BindGroup",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_RHI_FRAME_ADDBINDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "getBindGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_RHI_FRAME_GETBINDGROUP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CommandList",
+                    "suffix": "*",
+                    "path": "Renderer/RHI/CommandList",
+                    "templates": []
+                },
+                "name": "commands",
+                "description": "CHICANE_RENDERER_RHI_FRAME_COMMANDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "cameraBuffer",
+                "description": "CHICANE_RENDERER_RHI_FRAME_CAMERABUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "lightBuffer",
+                "description": "CHICANE_RENDERER_RHI_FRAME_LIGHTBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "instance3DBuffer",
+                "description": "CHICANE_RENDERER_RHI_FRAME_INSTANCE3DBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "instance2DBuffer",
+                "description": "CHICANE_RENDERER_RHI_FRAME_INSTANCE2DBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "particleBuffer",
+                "description": "CHICANE_RENDERER_RHI_FRAME_PARTICLEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindGroup",
+                    "suffix": "",
+                    "path": "Renderer/RHI/BindGroup",
+                    "templates": []
+                },
+                "name": "textureTable",
+                "description": "CHICANE_RENDERER_RHI_FRAME_TEXTURETABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "sceneColor",
+                "description": "CHICANE_RENDERER_RHI_FRAME_SCENECOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "sceneDepth",
+                "description": "CHICANE_RENDERER_RHI_FRAME_SCENEDEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "presentColor",
+                "description": "CHICANE_RENDERER_RHI_FRAME_PRESENTCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "linearSampler",
+                "description": "CHICANE_RENDERER_RHI_FRAME_LINEARSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Viewport",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Viewport",
+                    "templates": []
+                },
+                "name": "viewport",
+                "description": "CHICANE_RENDERER_RHI_FRAME_VIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Scissor",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Scissor",
+                    "templates": []
+                },
+                "name": "scissor",
+                "description": "CHICANE_RENDERER_RHI_FRAME_SCISSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "frameIndex",
+                "description": "CHICANE_RENDERER_RHI_FRAME_FRAMEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_RHI_FRAME_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_RHI_FRAME_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "BindGroups",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Frame",
+                    "templates": []
+                },
+                "name": "m_bindGroups",
+                "description": "CHICANE_RENDERER_RHI_FRAME_M_BINDGROUPS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_FRAME_DESCRIPTION"
+    },
+    "children": []
+}

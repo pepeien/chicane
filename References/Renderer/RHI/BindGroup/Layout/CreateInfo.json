@@ -1,0 +1,39 @@
+{
+    "title": "CreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/RHI/BindGroup/Layout/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/BindGroup/Layout/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::RHI::BindGroupLayoutCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Binding",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Binding",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "bindings",
+                "description": "CHICANE_RENDERER_RHI_BINDGROUPLAYOUTCREATEINFO_BINDINGS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BINDGROUPLAYOUTCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

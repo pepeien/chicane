@@ -1,0 +1,83 @@
+{
+    "title": "Attachment",
+    "filename": "Attachment",
+    "path": "Renderer/RHI/Attachment",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Attachment.hpp",
+        "namespace": "Chicane::Renderer::RHI::Attachment",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_RENDERER_RHI_ATTACHMENT_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "LoadOp",
+                    "suffix": "",
+                    "path": "Renderer/RHI/LoadOp",
+                    "templates": []
+                },
+                "name": "load",
+                "description": "CHICANE_RENDERER_RHI_ATTACHMENT_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StoreOp",
+                    "suffix": "",
+                    "path": "Renderer/RHI/StoreOp",
+                    "templates": []
+                },
+                "name": "store",
+                "description": "CHICANE_RENDERER_RHI_ATTACHMENT_STORE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "clear",
+                "description": "CHICANE_RENDERER_RHI_ATTACHMENT_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "layer",
+                "description": "CHICANE_RENDERER_RHI_ATTACHMENT_LAYER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_ATTACHMENT_DESCRIPTION"
+    },
+    "children": []
+}

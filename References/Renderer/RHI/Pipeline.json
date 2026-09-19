@@ -1,0 +1,31 @@
+{
+    "title": "Pipeline",
+    "filename": "Pipeline",
+    "path": "Renderer/RHI/Pipeline",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Pipeline.hpp",
+        "namespace": "Chicane::Renderer::RHI::Pipeline",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "description": "CHICANE_RENDERER_RHI_PIPELINE_HANDLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_PIPELINE_DESCRIPTION"
+    },
+    "children": []
+}

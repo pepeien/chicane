@@ -1,0 +1,31 @@
+{
+    "title": "Buffer",
+    "filename": "Buffer",
+    "path": "Renderer/RHI/Buffer",
+    "source": {
+        "header": "Includes/Chicane/Renderer/RHI/Buffer.hpp",
+        "namespace": "Chicane::Renderer::RHI::Buffer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "handle",
+                "description": "CHICANE_RENDERER_RHI_BUFFER_HANDLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_RHI_BUFFER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,17 @@
+{
+    "title": "Hdr",
+    "filename": "Hdr",
+    "path": "Renderer/RHI/Hdr",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

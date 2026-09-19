@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "DrawPolyType",
     "filename": "Type",
     "path": "Renderer/Draw/Poly/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DrawPolyType",
+                            "name": "Renderer::DrawPolyType",
                             "suffix": "",
                             "path": "Renderer/Draw/Poly/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "description": "CHICANE_RENDERER_DRAWPOLYTYPE_DESCRIPTION"
     },
     "children": []
 }
