@@ -8,7 +8,7 @@
 namespace Chicane
 {
     template <typename T = void*>
-    struct CHICANE_CORE EventSubscriptionState
+    struct EventSubscriptionState
     {
     public:
         bool                               bIsCompleted = false;
