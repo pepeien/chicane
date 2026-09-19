@@ -15,23 +15,23 @@ namespace Chicane
             Round,
             Bevel
         };
+    }
 
-        inline String toString(SvgLineJoin inValue)
+    inline String toString(Grid::SvgLineJoin inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SvgLineJoin::Miter:
-                return "Miter";
+        case Grid::SvgLineJoin::Miter:
+            return "Miter";
 
-            case SvgLineJoin::Round:
-                return "Round";
+        case Grid::SvgLineJoin::Round:
+            return "Round";
 
-            case SvgLineJoin::Bevel:
-                return "Bevel";
+        case Grid::SvgLineJoin::Bevel:
+            return "Bevel";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

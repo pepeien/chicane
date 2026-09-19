@@ -32,68 +32,68 @@ namespace Chicane
             Alt        = (LeftAlt | RightAlt),     /**< Any Alt key is down. */
             Gui        = (LeftGui | RightGui),     /**< Any GUI key is down. */
         };
+    }
 
-        inline String toString(KeyboardButtonModifier inValue)
+    inline String toString(Input::KeyboardButtonModifier inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case KeyboardButtonModifier::None:
-                return "None";
+        case Input::KeyboardButtonModifier::None:
+            return "None";
 
-            case KeyboardButtonModifier::LeftShift:
-                return "LeftShift";
+        case Input::KeyboardButtonModifier::LeftShift:
+            return "LeftShift";
 
-            case KeyboardButtonModifier::RightShift:
-                return "RightShift";
+        case Input::KeyboardButtonModifier::RightShift:
+            return "RightShift";
 
-            case KeyboardButtonModifier::Leve5:
-                return "Leve5";
+        case Input::KeyboardButtonModifier::Leve5:
+            return "Leve5";
 
-            case KeyboardButtonModifier::LeftCtrl:
-                return "LeftCtrl";
+        case Input::KeyboardButtonModifier::LeftCtrl:
+            return "LeftCtrl";
 
-            case KeyboardButtonModifier::RightCtrl:
-                return "RightCtrl";
+        case Input::KeyboardButtonModifier::RightCtrl:
+            return "RightCtrl";
 
-            case KeyboardButtonModifier::LeftAlt:
-                return "LeftAlt";
+        case Input::KeyboardButtonModifier::LeftAlt:
+            return "LeftAlt";
 
-            case KeyboardButtonModifier::RightAlt:
-                return "RightAlt";
+        case Input::KeyboardButtonModifier::RightAlt:
+            return "RightAlt";
 
-            case KeyboardButtonModifier::LeftGui:
-                return "LeftGui";
+        case Input::KeyboardButtonModifier::LeftGui:
+            return "LeftGui";
 
-            case KeyboardButtonModifier::RightGui:
-                return "RightGui";
+        case Input::KeyboardButtonModifier::RightGui:
+            return "RightGui";
 
-            case KeyboardButtonModifier::Num:
-                return "Num";
+        case Input::KeyboardButtonModifier::Num:
+            return "Num";
 
-            case KeyboardButtonModifier::Caps:
-                return "Caps";
+        case Input::KeyboardButtonModifier::Caps:
+            return "Caps";
 
-            case KeyboardButtonModifier::Mode:
-                return "Mode";
+        case Input::KeyboardButtonModifier::Mode:
+            return "Mode";
 
-            case KeyboardButtonModifier::Scroll:
-                return "Scroll";
+        case Input::KeyboardButtonModifier::Scroll:
+            return "Scroll";
 
-            case KeyboardButtonModifier::Ctrl:
-                return "Ctrl";
+        case Input::KeyboardButtonModifier::Ctrl:
+            return "Ctrl";
 
-            case KeyboardButtonModifier::Shift:
-                return "Shift";
+        case Input::KeyboardButtonModifier::Shift:
+            return "Shift";
 
-            case KeyboardButtonModifier::Alt:
-                return "Alt";
+        case Input::KeyboardButtonModifier::Alt:
+            return "Alt";
 
-            case KeyboardButtonModifier::Gui:
-                return "Gui";
+        case Input::KeyboardButtonModifier::Gui:
+            return "Gui";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

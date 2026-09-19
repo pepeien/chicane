@@ -22,45 +22,6 @@ namespace Chicane
             Effect,    // Visual effects
         };
 
-        inline String toString(AssetType inValue)
-        {
-            switch (inValue)
-            {
-            case AssetType::Undefined:
-                return "Undefined";
-
-            case AssetType::Animation:
-                return "Animation";
-
-            case AssetType::Font:
-                return "Font";
-
-            case AssetType::Mesh:
-                return "Mesh";
-
-            case AssetType::Model:
-                return "Model";
-
-            case AssetType::Skeleton:
-                return "Skeleton";
-
-            case AssetType::Texture:
-                return "Texture";
-
-            case AssetType::Sky:
-                return "Sky";
-
-            case AssetType::Sound:
-                return "Sound";
-
-            case AssetType::Effect:
-                return "Effect";
-
-            default:
-                return "";
-            }
-        }
-
         CHICANE_BOX bool isFileAsset(const FileSystem::Path& inFilepath);
 
         CHICANE_BOX AssetType getTypeFromExtension(const FileSystem::Path& inFilepath);
@@ -71,5 +32,44 @@ namespace Chicane
 
         CHICANE_BOX std::vector<String> getTypeExtensions();
         CHICANE_BOX const String& getTypeExtension(AssetType inValue);
+    }
+
+    inline String toString(Box::AssetType inValue)
+    {
+        switch (inValue)
+        {
+        case Box::AssetType::Undefined:
+            return "Undefined";
+
+        case Box::AssetType::Animation:
+            return "Animation";
+
+        case Box::AssetType::Font:
+            return "Font";
+
+        case Box::AssetType::Mesh:
+            return "Mesh";
+
+        case Box::AssetType::Model:
+            return "Model";
+
+        case Box::AssetType::Skeleton:
+            return "Skeleton";
+
+        case Box::AssetType::Texture:
+            return "Texture";
+
+        case Box::AssetType::Sky:
+            return "Sky";
+
+        case Box::AssetType::Sound:
+            return "Sound";
+
+        case Box::AssetType::Effect:
+            return "Effect";
+
+        default:
+            return "";
+        }
     }
 }

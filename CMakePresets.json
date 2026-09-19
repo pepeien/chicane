@@ -42,13 +42,11 @@
         {
             "name": "debug",
             "configurePreset": "debug",
-            "targets": ["ALL_BUILD"],
             "configuration": "Debug"
         },
         {
             "name": "release",
             "configurePreset": "release",
-            "targets": ["ALL_BUILD"],
             "configuration": "Release"
         }
     ]

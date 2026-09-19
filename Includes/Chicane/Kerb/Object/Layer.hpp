@@ -25,45 +25,45 @@ namespace Chicane
             Auto = 255 // Resolve from motion / collision preset at create time
         };
 
-        inline String toString(ObjectLayer inValue)
-        {
-            switch (inValue)
-            {
-            case ObjectLayer::NonMoving:
-                return "NonMoving";
-
-            case ObjectLayer::Moving:
-                return "Moving";
-
-            case ObjectLayer::Pawn:
-                return "Pawn";
-
-            case ObjectLayer::PhysicsBody:
-                return "PhysicsBody";
-
-            case ObjectLayer::Projectile:
-                return "Projectile";
-
-            case ObjectLayer::Trigger:
-                return "Trigger";
-
-            case ObjectLayer::Debris:
-                return "Debris";
-
-            case ObjectLayer::NoCollision:
-                return "NoCollision";
-
-            case ObjectLayer::Count:
-                return "Count";
-
-            case ObjectLayer::Auto:
-                return "Auto";
-
-            default:
-                return "";
-            }
-        }
-
         CHICANE_KERB ObjectLayer resolveObjectLayer(ObjectLayer inLayer, MotionType inMotion);
+    }
+
+    inline String toString(Kerb::ObjectLayer inValue)
+    {
+        switch (inValue)
+        {
+        case Kerb::ObjectLayer::NonMoving:
+            return "NonMoving";
+
+        case Kerb::ObjectLayer::Moving:
+            return "Moving";
+
+        case Kerb::ObjectLayer::Pawn:
+            return "Pawn";
+
+        case Kerb::ObjectLayer::PhysicsBody:
+            return "PhysicsBody";
+
+        case Kerb::ObjectLayer::Projectile:
+            return "Projectile";
+
+        case Kerb::ObjectLayer::Trigger:
+            return "Trigger";
+
+        case Kerb::ObjectLayer::Debris:
+            return "Debris";
+
+        case Kerb::ObjectLayer::NoCollision:
+            return "NoCollision";
+
+        case Kerb::ObjectLayer::Count:
+            return "Count";
+
+        case Kerb::ObjectLayer::Auto:
+            return "Auto";
+
+        default:
+            return "";
+        }
     }
 }

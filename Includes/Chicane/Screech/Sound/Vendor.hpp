@@ -30,59 +30,59 @@ namespace Chicane
             Null    /* <-- Must always be the last item. Lowest priority, and used
                        as the terminator for backend enumeration. */
         };
+    }
 
-        inline String toString(SoundVendor inValue)
+    inline String toString(Screech::SoundVendor inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SoundVendor::WASAPI:
-                return "WASAPI";
+        case Screech::SoundVendor::WASAPI:
+            return "WASAPI";
 
-            case SoundVendor::DirectSound:
-                return "DirectSound";
+        case Screech::SoundVendor::DirectSound:
+            return "DirectSound";
 
-            case SoundVendor::WinMM:
-                return "WinMM";
+        case Screech::SoundVendor::WinMM:
+            return "WinMM";
 
-            case SoundVendor::CoreAudio:
-                return "CoreAudio";
+        case Screech::SoundVendor::CoreAudio:
+            return "CoreAudio";
 
-            case SoundVendor::Sndio:
-                return "Sndio";
+        case Screech::SoundVendor::Sndio:
+            return "Sndio";
 
-            case SoundVendor::Audio4:
-                return "Audio4";
+        case Screech::SoundVendor::Audio4:
+            return "Audio4";
 
-            case SoundVendor::OSS:
-                return "OSS";
+        case Screech::SoundVendor::OSS:
+            return "OSS";
 
-            case SoundVendor::PulseAudio:
-                return "PulseAudio";
+        case Screech::SoundVendor::PulseAudio:
+            return "PulseAudio";
 
-            case SoundVendor::ALSA:
-                return "ALSA";
+        case Screech::SoundVendor::ALSA:
+            return "ALSA";
 
-            case SoundVendor::JACK:
-                return "JACK";
+        case Screech::SoundVendor::JACK:
+            return "JACK";
 
-            case SoundVendor::AAudio:
-                return "AAudio";
+        case Screech::SoundVendor::AAudio:
+            return "AAudio";
 
-            case SoundVendor::OpenSL:
-                return "OpenSL";
+        case Screech::SoundVendor::OpenSL:
+            return "OpenSL";
 
-            case SoundVendor::WebAudio:
-                return "WebAudio";
+        case Screech::SoundVendor::WebAudio:
+            return "WebAudio";
 
-            case SoundVendor::Custom:
-                return "Custom";
+        case Screech::SoundVendor::Custom:
+            return "Custom";
 
-            case SoundVendor::Null:
-                return "Null";
+        case Screech::SoundVendor::Null:
+            return "Null";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

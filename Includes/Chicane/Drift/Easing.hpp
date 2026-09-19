@@ -18,32 +18,32 @@ namespace Chicane
             EaseInOut,
             CubicBezier
         };
+    }
 
-        inline String toString(Easing inValue)
+    inline String toString(Drift::Easing inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case Easing::Linear:
-                return "Linear";
+        case Drift::Easing::Linear:
+            return "Linear";
 
-            case Easing::Ease:
-                return "Ease";
+        case Drift::Easing::Ease:
+            return "Ease";
 
-            case Easing::EaseIn:
-                return "EaseIn";
+        case Drift::Easing::EaseIn:
+            return "EaseIn";
 
-            case Easing::EaseOut:
-                return "EaseOut";
+        case Drift::Easing::EaseOut:
+            return "EaseOut";
 
-            case Easing::EaseInOut:
-                return "EaseInOut";
+        case Drift::Easing::EaseInOut:
+            return "EaseInOut";
 
-            case Easing::CubicBezier:
-                return "CubicBezier";
+        case Drift::Easing::CubicBezier:
+            return "CubicBezier";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

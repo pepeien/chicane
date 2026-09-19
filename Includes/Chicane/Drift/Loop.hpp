@@ -15,23 +15,23 @@ namespace Chicane
             Repeat,
             PingPong
         };
+    }
 
-        inline String toString(Loop inValue)
+    inline String toString(Drift::Loop inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case Loop::Once:
-                return "Once";
+        case Drift::Loop::Once:
+            return "Once";
 
-            case Loop::Repeat:
-                return "Repeat";
+        case Drift::Loop::Repeat:
+            return "Repeat";
 
-            case Loop::PingPong:
-                return "PingPong";
+        case Drift::Loop::PingPong:
+            return "PingPong";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

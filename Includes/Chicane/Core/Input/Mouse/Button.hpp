@@ -16,23 +16,23 @@ namespace Chicane
             Middle,
             Right
         };
+    }
 
-        inline String toString(MouseButton inValue)
+    inline String toString(Input::MouseButton inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case MouseButton::Left:
-                return "Left";
+        case Input::MouseButton::Left:
+            return "Left";
 
-            case MouseButton::Middle:
-                return "Middle";
+        case Input::MouseButton::Middle:
+            return "Middle";
 
-            case MouseButton::Right:
-                return "Right";
+        case Input::MouseButton::Right:
+            return "Right";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

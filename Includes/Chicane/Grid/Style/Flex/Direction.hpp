@@ -13,20 +13,20 @@ namespace Chicane
             Column,
             Row
         };
+    }
 
-        inline String toString(StyleFlexDirection inValue)
+    inline String toString(Grid::StyleFlexDirection inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleFlexDirection::Column:
-                return "Column";
+        case Grid::StyleFlexDirection::Column:
+            return "Column";
 
-            case StyleFlexDirection::Row:
-                return "Row";
+        case Grid::StyleFlexDirection::Row:
+            return "Row";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

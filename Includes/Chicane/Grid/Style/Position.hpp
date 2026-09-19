@@ -12,20 +12,20 @@ namespace Chicane
             Absolute, // Out of flow; origin is the nearest positioned ancestor, else the root
             Relative  // In flow; also a containing block when explicitly set
         };
+    }
 
-        inline String toString(StylePosition inValue)
+    inline String toString(Grid::StylePosition inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StylePosition::Absolute:
-                return "Absolute";
+        case Grid::StylePosition::Absolute:
+            return "Absolute";
 
-            case StylePosition::Relative:
-                return "Relative";
+        case Grid::StylePosition::Relative:
+            return "Relative";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -16,26 +16,26 @@ namespace Chicane
             Scroll,  // Clip and allow scrolling
             Auto     // Clip and scroll only when content overflows
         };
+    }
 
-        inline String toString(StyleOverflow inValue)
+    inline String toString(Grid::StyleOverflow inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleOverflow::Visible:
-                return "Visible";
+        case Grid::StyleOverflow::Visible:
+            return "Visible";
 
-            case StyleOverflow::Hidden:
-                return "Hidden";
+        case Grid::StyleOverflow::Hidden:
+            return "Hidden";
 
-            case StyleOverflow::Scroll:
-                return "Scroll";
+        case Grid::StyleOverflow::Scroll:
+            return "Scroll";
 
-            case StyleOverflow::Auto:
-                return "Auto";
+        case Grid::StyleOverflow::Auto:
+            return "Auto";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

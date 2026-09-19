@@ -17,29 +17,29 @@ namespace Chicane
             Loopback = 4,
             Unknown
         };
+    }
 
-        inline String toString(DeviceType inValue)
+    inline String toString(Screech::DeviceType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DeviceType::Playback:
-                return "Playback";
+        case Screech::DeviceType::Playback:
+            return "Playback";
 
-            case DeviceType::Capture:
-                return "Capture";
+        case Screech::DeviceType::Capture:
+            return "Capture";
 
-            case DeviceType::Duplex:
-                return "Duplex";
+        case Screech::DeviceType::Duplex:
+            return "Duplex";
 
-            case DeviceType::Loopback:
-                return "Loopback";
+        case Screech::DeviceType::Loopback:
+            return "Loopback";
 
-            case DeviceType::Unknown:
-                return "Unknown";
+        case Screech::DeviceType::Unknown:
+            return "Unknown";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

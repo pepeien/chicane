@@ -19,38 +19,38 @@ namespace Chicane
             Projectile,
             OverlapAll
         };
+    }
 
-        inline String toString(CollisionPreset inValue)
+    inline String toString(Kerb::CollisionPreset inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case CollisionPreset::Custom:
-                return "Custom";
+        case Kerb::CollisionPreset::Custom:
+            return "Custom";
 
-            case CollisionPreset::Default:
-                return "Default";
+        case Kerb::CollisionPreset::Default:
+            return "Default";
 
-            case CollisionPreset::BlockAll:
-                return "BlockAll";
+        case Kerb::CollisionPreset::BlockAll:
+            return "BlockAll";
 
-            case CollisionPreset::NoCollision:
-                return "NoCollision";
+        case Kerb::CollisionPreset::NoCollision:
+            return "NoCollision";
 
-            case CollisionPreset::Pawn:
-                return "Pawn";
+        case Kerb::CollisionPreset::Pawn:
+            return "Pawn";
 
-            case CollisionPreset::PhysicsActor:
-                return "PhysicsActor";
+        case Kerb::CollisionPreset::PhysicsActor:
+            return "PhysicsActor";
 
-            case CollisionPreset::Projectile:
-                return "Projectile";
+        case Kerb::CollisionPreset::Projectile:
+            return "Projectile";
 
-            case CollisionPreset::OverlapAll:
-                return "OverlapAll";
+        case Kerb::CollisionPreset::OverlapAll:
+            return "OverlapAll";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -18,35 +18,35 @@ namespace Chicane
             LeftTrigger,
             RightTrigger
         };
+    }
 
-        inline String toString(GamepadAxis inValue)
+    inline String toString(Input::GamepadAxis inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case GamepadAxis::Invalid:
-                return "Invalid";
+        case Input::GamepadAxis::Invalid:
+            return "Invalid";
 
-            case GamepadAxis::LeftX:
-                return "LeftX";
+        case Input::GamepadAxis::LeftX:
+            return "LeftX";
 
-            case GamepadAxis::LeftY:
-                return "LeftY";
+        case Input::GamepadAxis::LeftY:
+            return "LeftY";
 
-            case GamepadAxis::RightX:
-                return "RightX";
+        case Input::GamepadAxis::RightX:
+            return "RightX";
 
-            case GamepadAxis::RightY:
-                return "RightY";
+        case Input::GamepadAxis::RightY:
+            return "RightY";
 
-            case GamepadAxis::LeftTrigger:
-                return "LeftTrigger";
+        case Input::GamepadAxis::LeftTrigger:
+            return "LeftTrigger";
 
-            case GamepadAxis::RightTrigger:
-                return "RightTrigger";
+        case Input::GamepadAxis::RightTrigger:
+            return "RightTrigger";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

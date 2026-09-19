@@ -15,23 +15,23 @@ namespace Chicane
             Paused,
             Stopped
         };
+    }
 
-        inline String toString(SoundStatus inValue)
+    inline String toString(Screech::SoundStatus inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SoundStatus::Playing:
-                return "Playing";
+        case Screech::SoundStatus::Playing:
+            return "Playing";
 
-            case SoundStatus::Paused:
-                return "Paused";
+        case Screech::SoundStatus::Paused:
+            return "Paused";
 
-            case SoundStatus::Stopped:
-                return "Stopped";
+        case Screech::SoundStatus::Stopped:
+            return "Stopped";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

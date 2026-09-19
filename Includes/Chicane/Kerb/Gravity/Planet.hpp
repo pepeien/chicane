@@ -21,44 +21,44 @@ namespace Chicane
             Neptune,
             Pluto
         };
+    }
 
-        inline String toString(Planet inValue)
+    inline String toString(Kerb::Planet inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case Planet::Mercury:
-                return "Mercury";
+        case Kerb::Planet::Mercury:
+            return "Mercury";
 
-            case Planet::Venus:
-                return "Venus";
+        case Kerb::Planet::Venus:
+            return "Venus";
 
-            case Planet::Earth:
-                return "Earth";
+        case Kerb::Planet::Earth:
+            return "Earth";
 
-            case Planet::Moon:
-                return "Moon";
+        case Kerb::Planet::Moon:
+            return "Moon";
 
-            case Planet::Mars:
-                return "Mars";
+        case Kerb::Planet::Mars:
+            return "Mars";
 
-            case Planet::Jupiter:
-                return "Jupiter";
+        case Kerb::Planet::Jupiter:
+            return "Jupiter";
 
-            case Planet::Saturn:
-                return "Saturn";
+        case Kerb::Planet::Saturn:
+            return "Saturn";
 
-            case Planet::Uranus:
-                return "Uranus";
+        case Kerb::Planet::Uranus:
+            return "Uranus";
 
-            case Planet::Neptune:
-                return "Neptune";
+        case Kerb::Planet::Neptune:
+            return "Neptune";
 
-            case Planet::Pluto:
-                return "Pluto";
+        case Kerb::Planet::Pluto:
+            return "Pluto";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

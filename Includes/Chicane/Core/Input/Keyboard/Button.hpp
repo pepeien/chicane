@@ -346,752 +346,752 @@ namespace Chicane
             Call,      /**< Used for accepting phone calls. */
             Endcall    /**< Used for rejecting phone calls. */
         };
+    }
 
-        inline String toString(KeyboardButton inValue)
+    inline String toString(Input::KeyboardButton inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case KeyboardButton::A:
-                return "A";
+        case Input::KeyboardButton::A:
+            return "A";
 
-            case KeyboardButton::B:
-                return "B";
+        case Input::KeyboardButton::B:
+            return "B";
 
-            case KeyboardButton::C:
-                return "C";
+        case Input::KeyboardButton::C:
+            return "C";
 
-            case KeyboardButton::D:
-                return "D";
+        case Input::KeyboardButton::D:
+            return "D";
 
-            case KeyboardButton::E:
-                return "E";
+        case Input::KeyboardButton::E:
+            return "E";
 
-            case KeyboardButton::F:
-                return "F";
+        case Input::KeyboardButton::F:
+            return "F";
 
-            case KeyboardButton::G:
-                return "G";
+        case Input::KeyboardButton::G:
+            return "G";
 
-            case KeyboardButton::H:
-                return "H";
+        case Input::KeyboardButton::H:
+            return "H";
 
-            case KeyboardButton::I:
-                return "I";
+        case Input::KeyboardButton::I:
+            return "I";
 
-            case KeyboardButton::J:
-                return "J";
+        case Input::KeyboardButton::J:
+            return "J";
 
-            case KeyboardButton::K:
-                return "K";
+        case Input::KeyboardButton::K:
+            return "K";
 
-            case KeyboardButton::L:
-                return "L";
+        case Input::KeyboardButton::L:
+            return "L";
 
-            case KeyboardButton::M:
-                return "M";
+        case Input::KeyboardButton::M:
+            return "M";
 
-            case KeyboardButton::N:
-                return "N";
+        case Input::KeyboardButton::N:
+            return "N";
 
-            case KeyboardButton::O:
-                return "O";
+        case Input::KeyboardButton::O:
+            return "O";
 
-            case KeyboardButton::P:
-                return "P";
+        case Input::KeyboardButton::P:
+            return "P";
 
-            case KeyboardButton::Q:
-                return "Q";
+        case Input::KeyboardButton::Q:
+            return "Q";
 
-            case KeyboardButton::R:
-                return "R";
+        case Input::KeyboardButton::R:
+            return "R";
 
-            case KeyboardButton::S:
-                return "S";
+        case Input::KeyboardButton::S:
+            return "S";
 
-            case KeyboardButton::T:
-                return "T";
+        case Input::KeyboardButton::T:
+            return "T";
 
-            case KeyboardButton::U:
-                return "U";
+        case Input::KeyboardButton::U:
+            return "U";
 
-            case KeyboardButton::V:
-                return "V";
+        case Input::KeyboardButton::V:
+            return "V";
 
-            case KeyboardButton::W:
-                return "W";
+        case Input::KeyboardButton::W:
+            return "W";
 
-            case KeyboardButton::X:
-                return "X";
+        case Input::KeyboardButton::X:
+            return "X";
 
-            case KeyboardButton::Y:
-                return "Y";
+        case Input::KeyboardButton::Y:
+            return "Y";
 
-            case KeyboardButton::Z:
-                return "Z";
+        case Input::KeyboardButton::Z:
+            return "Z";
 
-            case KeyboardButton::Number1:
-                return "Number1";
+        case Input::KeyboardButton::Number1:
+            return "Number1";
 
-            case KeyboardButton::Number2:
-                return "Number2";
+        case Input::KeyboardButton::Number2:
+            return "Number2";
 
-            case KeyboardButton::Number3:
-                return "Number3";
+        case Input::KeyboardButton::Number3:
+            return "Number3";
 
-            case KeyboardButton::Number4:
-                return "Number4";
+        case Input::KeyboardButton::Number4:
+            return "Number4";
 
-            case KeyboardButton::Number5:
-                return "Number5";
+        case Input::KeyboardButton::Number5:
+            return "Number5";
 
-            case KeyboardButton::Number6:
-                return "Number6";
+        case Input::KeyboardButton::Number6:
+            return "Number6";
 
-            case KeyboardButton::Number7:
-                return "Number7";
+        case Input::KeyboardButton::Number7:
+            return "Number7";
 
-            case KeyboardButton::Number8:
-                return "Number8";
+        case Input::KeyboardButton::Number8:
+            return "Number8";
 
-            case KeyboardButton::Number9:
-                return "Number9";
+        case Input::KeyboardButton::Number9:
+            return "Number9";
 
-            case KeyboardButton::Number0:
-                return "Number0";
+        case Input::KeyboardButton::Number0:
+            return "Number0";
 
-            case KeyboardButton::Return:
-                return "Return";
+        case Input::KeyboardButton::Return:
+            return "Return";
 
-            case KeyboardButton::Escape:
-                return "Escape";
+        case Input::KeyboardButton::Escape:
+            return "Escape";
 
-            case KeyboardButton::Backspace:
-                return "Backspace";
+        case Input::KeyboardButton::Backspace:
+            return "Backspace";
 
-            case KeyboardButton::Tab:
-                return "Tab";
+        case Input::KeyboardButton::Tab:
+            return "Tab";
 
-            case KeyboardButton::Space:
-                return "Space";
+        case Input::KeyboardButton::Space:
+            return "Space";
 
-            case KeyboardButton::Minus:
-                return "Minus";
+        case Input::KeyboardButton::Minus:
+            return "Minus";
 
-            case KeyboardButton::Equals:
-                return "Equals";
+        case Input::KeyboardButton::Equals:
+            return "Equals";
 
-            case KeyboardButton::Leftbracket:
-                return "Leftbracket";
+        case Input::KeyboardButton::Leftbracket:
+            return "Leftbracket";
 
-            case KeyboardButton::Rightbracket:
-                return "Rightbracket";
+        case Input::KeyboardButton::Rightbracket:
+            return "Rightbracket";
 
-            case KeyboardButton::Backslash:
-                return "Backslash";
+        case Input::KeyboardButton::Backslash:
+            return "Backslash";
 
-            case KeyboardButton::Nonushash:
-                return "Nonushash";
+        case Input::KeyboardButton::Nonushash:
+            return "Nonushash";
 
-            case KeyboardButton::Semicolon:
-                return "Semicolon";
+        case Input::KeyboardButton::Semicolon:
+            return "Semicolon";
 
-            case KeyboardButton::Apostrophe:
-                return "Apostrophe";
+        case Input::KeyboardButton::Apostrophe:
+            return "Apostrophe";
 
-            case KeyboardButton::Grave:
-                return "Grave";
+        case Input::KeyboardButton::Grave:
+            return "Grave";
 
-            case KeyboardButton::Comma:
-                return "Comma";
+        case Input::KeyboardButton::Comma:
+            return "Comma";
 
-            case KeyboardButton::Period:
-                return "Period";
+        case Input::KeyboardButton::Period:
+            return "Period";
 
-            case KeyboardButton::Slash:
-                return "Slash";
+        case Input::KeyboardButton::Slash:
+            return "Slash";
 
-            case KeyboardButton::Capslock:
-                return "Capslock";
+        case Input::KeyboardButton::Capslock:
+            return "Capslock";
 
-            case KeyboardButton::F1:
-                return "F1";
+        case Input::KeyboardButton::F1:
+            return "F1";
 
-            case KeyboardButton::F2:
-                return "F2";
+        case Input::KeyboardButton::F2:
+            return "F2";
 
-            case KeyboardButton::F3:
-                return "F3";
+        case Input::KeyboardButton::F3:
+            return "F3";
 
-            case KeyboardButton::F4:
-                return "F4";
+        case Input::KeyboardButton::F4:
+            return "F4";
 
-            case KeyboardButton::F5:
-                return "F5";
+        case Input::KeyboardButton::F5:
+            return "F5";
 
-            case KeyboardButton::F6:
-                return "F6";
+        case Input::KeyboardButton::F6:
+            return "F6";
 
-            case KeyboardButton::F7:
-                return "F7";
+        case Input::KeyboardButton::F7:
+            return "F7";
 
-            case KeyboardButton::F8:
-                return "F8";
+        case Input::KeyboardButton::F8:
+            return "F8";
 
-            case KeyboardButton::F9:
-                return "F9";
+        case Input::KeyboardButton::F9:
+            return "F9";
 
-            case KeyboardButton::F10:
-                return "F10";
+        case Input::KeyboardButton::F10:
+            return "F10";
 
-            case KeyboardButton::F11:
-                return "F11";
+        case Input::KeyboardButton::F11:
+            return "F11";
 
-            case KeyboardButton::F12:
-                return "F12";
+        case Input::KeyboardButton::F12:
+            return "F12";
 
-            case KeyboardButton::Printscreen:
-                return "Printscreen";
+        case Input::KeyboardButton::Printscreen:
+            return "Printscreen";
 
-            case KeyboardButton::Scrolllock:
-                return "Scrolllock";
+        case Input::KeyboardButton::Scrolllock:
+            return "Scrolllock";
 
-            case KeyboardButton::Pause:
-                return "Pause";
+        case Input::KeyboardButton::Pause:
+            return "Pause";
 
-            case KeyboardButton::Insert:
-                return "Insert";
+        case Input::KeyboardButton::Insert:
+            return "Insert";
 
-            case KeyboardButton::Home:
-                return "Home";
+        case Input::KeyboardButton::Home:
+            return "Home";
 
-            case KeyboardButton::Pageup:
-                return "Pageup";
+        case Input::KeyboardButton::Pageup:
+            return "Pageup";
 
-            case KeyboardButton::Delete:
-                return "Delete";
+        case Input::KeyboardButton::Delete:
+            return "Delete";
 
-            case KeyboardButton::End:
-                return "End";
+        case Input::KeyboardButton::End:
+            return "End";
 
-            case KeyboardButton::Pagedown:
-                return "Pagedown";
+        case Input::KeyboardButton::Pagedown:
+            return "Pagedown";
 
-            case KeyboardButton::Right:
-                return "Right";
+        case Input::KeyboardButton::Right:
+            return "Right";
 
-            case KeyboardButton::Left:
-                return "Left";
+        case Input::KeyboardButton::Left:
+            return "Left";
 
-            case KeyboardButton::Down:
-                return "Down";
+        case Input::KeyboardButton::Down:
+            return "Down";
 
-            case KeyboardButton::Up:
-                return "Up";
+        case Input::KeyboardButton::Up:
+            return "Up";
 
-            case KeyboardButton::Numlockclear:
-                return "Numlockclear";
+        case Input::KeyboardButton::Numlockclear:
+            return "Numlockclear";
 
-            case KeyboardButton::KpDivide:
-                return "KpDivide";
+        case Input::KeyboardButton::KpDivide:
+            return "KpDivide";
 
-            case KeyboardButton::KpMultiply:
-                return "KpMultiply";
+        case Input::KeyboardButton::KpMultiply:
+            return "KpMultiply";
 
-            case KeyboardButton::KpMinus:
-                return "KpMinus";
+        case Input::KeyboardButton::KpMinus:
+            return "KpMinus";
 
-            case KeyboardButton::KpPlus:
-                return "KpPlus";
+        case Input::KeyboardButton::KpPlus:
+            return "KpPlus";
 
-            case KeyboardButton::KpEnter:
-                return "KpEnter";
+        case Input::KeyboardButton::KpEnter:
+            return "KpEnter";
 
-            case KeyboardButton::Kp1:
-                return "Kp1";
+        case Input::KeyboardButton::Kp1:
+            return "Kp1";
 
-            case KeyboardButton::Kp2:
-                return "Kp2";
+        case Input::KeyboardButton::Kp2:
+            return "Kp2";
 
-            case KeyboardButton::Kp3:
-                return "Kp3";
+        case Input::KeyboardButton::Kp3:
+            return "Kp3";
 
-            case KeyboardButton::Kp4:
-                return "Kp4";
+        case Input::KeyboardButton::Kp4:
+            return "Kp4";
 
-            case KeyboardButton::Kp5:
-                return "Kp5";
+        case Input::KeyboardButton::Kp5:
+            return "Kp5";
 
-            case KeyboardButton::Kp6:
-                return "Kp6";
+        case Input::KeyboardButton::Kp6:
+            return "Kp6";
 
-            case KeyboardButton::Kp7:
-                return "Kp7";
+        case Input::KeyboardButton::Kp7:
+            return "Kp7";
 
-            case KeyboardButton::Kp8:
-                return "Kp8";
+        case Input::KeyboardButton::Kp8:
+            return "Kp8";
 
-            case KeyboardButton::Kp9:
-                return "Kp9";
+        case Input::KeyboardButton::Kp9:
+            return "Kp9";
 
-            case KeyboardButton::Kp0:
-                return "Kp0";
+        case Input::KeyboardButton::Kp0:
+            return "Kp0";
 
-            case KeyboardButton::KpPeriod:
-                return "KpPeriod";
+        case Input::KeyboardButton::KpPeriod:
+            return "KpPeriod";
 
-            case KeyboardButton::Nonusbackslash:
-                return "Nonusbackslash";
+        case Input::KeyboardButton::Nonusbackslash:
+            return "Nonusbackslash";
 
-            case KeyboardButton::Application:
-                return "Application";
+        case Input::KeyboardButton::Application:
+            return "Application";
 
-            case KeyboardButton::Power:
-                return "Power";
+        case Input::KeyboardButton::Power:
+            return "Power";
 
-            case KeyboardButton::KpEquals:
-                return "KpEquals";
+        case Input::KeyboardButton::KpEquals:
+            return "KpEquals";
 
-            case KeyboardButton::F13:
-                return "F13";
+        case Input::KeyboardButton::F13:
+            return "F13";
 
-            case KeyboardButton::F14:
-                return "F14";
+        case Input::KeyboardButton::F14:
+            return "F14";
 
-            case KeyboardButton::F15:
-                return "F15";
+        case Input::KeyboardButton::F15:
+            return "F15";
 
-            case KeyboardButton::F16:
-                return "F16";
+        case Input::KeyboardButton::F16:
+            return "F16";
 
-            case KeyboardButton::F17:
-                return "F17";
+        case Input::KeyboardButton::F17:
+            return "F17";
 
-            case KeyboardButton::F18:
-                return "F18";
+        case Input::KeyboardButton::F18:
+            return "F18";
 
-            case KeyboardButton::F19:
-                return "F19";
+        case Input::KeyboardButton::F19:
+            return "F19";
 
-            case KeyboardButton::F20:
-                return "F20";
+        case Input::KeyboardButton::F20:
+            return "F20";
 
-            case KeyboardButton::F21:
-                return "F21";
+        case Input::KeyboardButton::F21:
+            return "F21";
 
-            case KeyboardButton::F22:
-                return "F22";
+        case Input::KeyboardButton::F22:
+            return "F22";
 
-            case KeyboardButton::F23:
-                return "F23";
+        case Input::KeyboardButton::F23:
+            return "F23";
 
-            case KeyboardButton::F24:
-                return "F24";
+        case Input::KeyboardButton::F24:
+            return "F24";
 
-            case KeyboardButton::Execute:
-                return "Execute";
+        case Input::KeyboardButton::Execute:
+            return "Execute";
 
-            case KeyboardButton::Help:
-                return "Help";
+        case Input::KeyboardButton::Help:
+            return "Help";
 
-            case KeyboardButton::Menu:
-                return "Menu";
+        case Input::KeyboardButton::Menu:
+            return "Menu";
 
-            case KeyboardButton::Select:
-                return "Select";
+        case Input::KeyboardButton::Select:
+            return "Select";
 
-            case KeyboardButton::Stop:
-                return "Stop";
+        case Input::KeyboardButton::Stop:
+            return "Stop";
 
-            case KeyboardButton::Again:
-                return "Again";
+        case Input::KeyboardButton::Again:
+            return "Again";
 
-            case KeyboardButton::Undo:
-                return "Undo";
+        case Input::KeyboardButton::Undo:
+            return "Undo";
 
-            case KeyboardButton::Cut:
-                return "Cut";
+        case Input::KeyboardButton::Cut:
+            return "Cut";
 
-            case KeyboardButton::Copy:
-                return "Copy";
+        case Input::KeyboardButton::Copy:
+            return "Copy";
 
-            case KeyboardButton::Paste:
-                return "Paste";
+        case Input::KeyboardButton::Paste:
+            return "Paste";
 
-            case KeyboardButton::Find:
-                return "Find";
+        case Input::KeyboardButton::Find:
+            return "Find";
 
-            case KeyboardButton::Mute:
-                return "Mute";
+        case Input::KeyboardButton::Mute:
+            return "Mute";
 
-            case KeyboardButton::Volumeup:
-                return "Volumeup";
+        case Input::KeyboardButton::Volumeup:
+            return "Volumeup";
 
-            case KeyboardButton::Volumedown:
-                return "Volumedown";
+        case Input::KeyboardButton::Volumedown:
+            return "Volumedown";
 
-            case KeyboardButton::KpComma:
-                return "KpComma";
+        case Input::KeyboardButton::KpComma:
+            return "KpComma";
 
-            case KeyboardButton::KpEqualsas400:
-                return "KpEqualsas400";
+        case Input::KeyboardButton::KpEqualsas400:
+            return "KpEqualsas400";
 
-            case KeyboardButton::International1:
-                return "International1";
+        case Input::KeyboardButton::International1:
+            return "International1";
 
-            case KeyboardButton::International2:
-                return "International2";
+        case Input::KeyboardButton::International2:
+            return "International2";
 
-            case KeyboardButton::International3:
-                return "International3";
+        case Input::KeyboardButton::International3:
+            return "International3";
 
-            case KeyboardButton::International4:
-                return "International4";
+        case Input::KeyboardButton::International4:
+            return "International4";
 
-            case KeyboardButton::International5:
-                return "International5";
+        case Input::KeyboardButton::International5:
+            return "International5";
 
-            case KeyboardButton::International6:
-                return "International6";
+        case Input::KeyboardButton::International6:
+            return "International6";
 
-            case KeyboardButton::International7:
-                return "International7";
+        case Input::KeyboardButton::International7:
+            return "International7";
 
-            case KeyboardButton::International8:
-                return "International8";
+        case Input::KeyboardButton::International8:
+            return "International8";
 
-            case KeyboardButton::International9:
-                return "International9";
+        case Input::KeyboardButton::International9:
+            return "International9";
 
-            case KeyboardButton::Lang1:
-                return "Lang1";
+        case Input::KeyboardButton::Lang1:
+            return "Lang1";
 
-            case KeyboardButton::Lang2:
-                return "Lang2";
+        case Input::KeyboardButton::Lang2:
+            return "Lang2";
 
-            case KeyboardButton::Lang3:
-                return "Lang3";
+        case Input::KeyboardButton::Lang3:
+            return "Lang3";
 
-            case KeyboardButton::Lang4:
-                return "Lang4";
+        case Input::KeyboardButton::Lang4:
+            return "Lang4";
 
-            case KeyboardButton::Lang5:
-                return "Lang5";
+        case Input::KeyboardButton::Lang5:
+            return "Lang5";
 
-            case KeyboardButton::Lang6:
-                return "Lang6";
+        case Input::KeyboardButton::Lang6:
+            return "Lang6";
 
-            case KeyboardButton::Lang7:
-                return "Lang7";
+        case Input::KeyboardButton::Lang7:
+            return "Lang7";
 
-            case KeyboardButton::Lang8:
-                return "Lang8";
+        case Input::KeyboardButton::Lang8:
+            return "Lang8";
 
-            case KeyboardButton::Lang9:
-                return "Lang9";
+        case Input::KeyboardButton::Lang9:
+            return "Lang9";
 
-            case KeyboardButton::Alterase:
-                return "Alterase";
+        case Input::KeyboardButton::Alterase:
+            return "Alterase";
 
-            case KeyboardButton::Sysreq:
-                return "Sysreq";
+        case Input::KeyboardButton::Sysreq:
+            return "Sysreq";
 
-            case KeyboardButton::Cancel:
-                return "Cancel";
+        case Input::KeyboardButton::Cancel:
+            return "Cancel";
 
-            case KeyboardButton::Clear:
-                return "Clear";
+        case Input::KeyboardButton::Clear:
+            return "Clear";
 
-            case KeyboardButton::Prior:
-                return "Prior";
+        case Input::KeyboardButton::Prior:
+            return "Prior";
 
-            case KeyboardButton::Return2:
-                return "Return2";
+        case Input::KeyboardButton::Return2:
+            return "Return2";
 
-            case KeyboardButton::Separator:
-                return "Separator";
+        case Input::KeyboardButton::Separator:
+            return "Separator";
 
-            case KeyboardButton::Out:
-                return "Out";
+        case Input::KeyboardButton::Out:
+            return "Out";
 
-            case KeyboardButton::Oper:
-                return "Oper";
+        case Input::KeyboardButton::Oper:
+            return "Oper";
 
-            case KeyboardButton::Clearagain:
-                return "Clearagain";
+        case Input::KeyboardButton::Clearagain:
+            return "Clearagain";
 
-            case KeyboardButton::Crsel:
-                return "Crsel";
+        case Input::KeyboardButton::Crsel:
+            return "Crsel";
 
-            case KeyboardButton::Exsel:
-                return "Exsel";
+        case Input::KeyboardButton::Exsel:
+            return "Exsel";
 
-            case KeyboardButton::Kp00:
-                return "Kp00";
+        case Input::KeyboardButton::Kp00:
+            return "Kp00";
 
-            case KeyboardButton::Kp000:
-                return "Kp000";
+        case Input::KeyboardButton::Kp000:
+            return "Kp000";
 
-            case KeyboardButton::Thousandsseparator:
-                return "Thousandsseparator";
+        case Input::KeyboardButton::Thousandsseparator:
+            return "Thousandsseparator";
 
-            case KeyboardButton::Decimalseparator:
-                return "Decimalseparator";
+        case Input::KeyboardButton::Decimalseparator:
+            return "Decimalseparator";
 
-            case KeyboardButton::Currencyunit:
-                return "Currencyunit";
+        case Input::KeyboardButton::Currencyunit:
+            return "Currencyunit";
 
-            case KeyboardButton::Currencysubunit:
-                return "Currencysubunit";
+        case Input::KeyboardButton::Currencysubunit:
+            return "Currencysubunit";
 
-            case KeyboardButton::KpLeftparen:
-                return "KpLeftparen";
+        case Input::KeyboardButton::KpLeftparen:
+            return "KpLeftparen";
 
-            case KeyboardButton::KpRightparen:
-                return "KpRightparen";
+        case Input::KeyboardButton::KpRightparen:
+            return "KpRightparen";
 
-            case KeyboardButton::KpLeftbrace:
-                return "KpLeftbrace";
+        case Input::KeyboardButton::KpLeftbrace:
+            return "KpLeftbrace";
 
-            case KeyboardButton::KpRightbrace:
-                return "KpRightbrace";
+        case Input::KeyboardButton::KpRightbrace:
+            return "KpRightbrace";
 
-            case KeyboardButton::KpTab:
-                return "KpTab";
+        case Input::KeyboardButton::KpTab:
+            return "KpTab";
 
-            case KeyboardButton::KpBackspace:
-                return "KpBackspace";
+        case Input::KeyboardButton::KpBackspace:
+            return "KpBackspace";
 
-            case KeyboardButton::KpA:
-                return "KpA";
+        case Input::KeyboardButton::KpA:
+            return "KpA";
 
-            case KeyboardButton::KpB:
-                return "KpB";
+        case Input::KeyboardButton::KpB:
+            return "KpB";
 
-            case KeyboardButton::KpC:
-                return "KpC";
+        case Input::KeyboardButton::KpC:
+            return "KpC";
 
-            case KeyboardButton::KpD:
-                return "KpD";
+        case Input::KeyboardButton::KpD:
+            return "KpD";
 
-            case KeyboardButton::KpE:
-                return "KpE";
+        case Input::KeyboardButton::KpE:
+            return "KpE";
 
-            case KeyboardButton::KpF:
-                return "KpF";
+        case Input::KeyboardButton::KpF:
+            return "KpF";
 
-            case KeyboardButton::KpXor:
-                return "KpXor";
+        case Input::KeyboardButton::KpXor:
+            return "KpXor";
 
-            case KeyboardButton::KpPower:
-                return "KpPower";
+        case Input::KeyboardButton::KpPower:
+            return "KpPower";
 
-            case KeyboardButton::KpPercent:
-                return "KpPercent";
+        case Input::KeyboardButton::KpPercent:
+            return "KpPercent";
 
-            case KeyboardButton::KpLess:
-                return "KpLess";
+        case Input::KeyboardButton::KpLess:
+            return "KpLess";
 
-            case KeyboardButton::KpGreater:
-                return "KpGreater";
+        case Input::KeyboardButton::KpGreater:
+            return "KpGreater";
 
-            case KeyboardButton::KpAmpersand:
-                return "KpAmpersand";
+        case Input::KeyboardButton::KpAmpersand:
+            return "KpAmpersand";
 
-            case KeyboardButton::KpDblampersand:
-                return "KpDblampersand";
+        case Input::KeyboardButton::KpDblampersand:
+            return "KpDblampersand";
 
-            case KeyboardButton::KpVerticalbar:
-                return "KpVerticalbar";
+        case Input::KeyboardButton::KpVerticalbar:
+            return "KpVerticalbar";
 
-            case KeyboardButton::KpDblverticalbar:
-                return "KpDblverticalbar";
+        case Input::KeyboardButton::KpDblverticalbar:
+            return "KpDblverticalbar";
 
-            case KeyboardButton::KpColon:
-                return "KpColon";
+        case Input::KeyboardButton::KpColon:
+            return "KpColon";
 
-            case KeyboardButton::KpHash:
-                return "KpHash";
+        case Input::KeyboardButton::KpHash:
+            return "KpHash";
 
-            case KeyboardButton::KpSpace:
-                return "KpSpace";
+        case Input::KeyboardButton::KpSpace:
+            return "KpSpace";
 
-            case KeyboardButton::KpAt:
-                return "KpAt";
+        case Input::KeyboardButton::KpAt:
+            return "KpAt";
 
-            case KeyboardButton::KpExclam:
-                return "KpExclam";
+        case Input::KeyboardButton::KpExclam:
+            return "KpExclam";
 
-            case KeyboardButton::KpMemstore:
-                return "KpMemstore";
+        case Input::KeyboardButton::KpMemstore:
+            return "KpMemstore";
 
-            case KeyboardButton::KpMemrecall:
-                return "KpMemrecall";
+        case Input::KeyboardButton::KpMemrecall:
+            return "KpMemrecall";
 
-            case KeyboardButton::KpMemclear:
-                return "KpMemclear";
+        case Input::KeyboardButton::KpMemclear:
+            return "KpMemclear";
 
-            case KeyboardButton::KpMemadd:
-                return "KpMemadd";
+        case Input::KeyboardButton::KpMemadd:
+            return "KpMemadd";
 
-            case KeyboardButton::KpMemsubtract:
-                return "KpMemsubtract";
+        case Input::KeyboardButton::KpMemsubtract:
+            return "KpMemsubtract";
 
-            case KeyboardButton::KpMemmultiply:
-                return "KpMemmultiply";
+        case Input::KeyboardButton::KpMemmultiply:
+            return "KpMemmultiply";
 
-            case KeyboardButton::KpMemdivide:
-                return "KpMemdivide";
+        case Input::KeyboardButton::KpMemdivide:
+            return "KpMemdivide";
 
-            case KeyboardButton::KpPlusminus:
-                return "KpPlusminus";
+        case Input::KeyboardButton::KpPlusminus:
+            return "KpPlusminus";
 
-            case KeyboardButton::KpClear:
-                return "KpClear";
+        case Input::KeyboardButton::KpClear:
+            return "KpClear";
 
-            case KeyboardButton::KpClearentry:
-                return "KpClearentry";
+        case Input::KeyboardButton::KpClearentry:
+            return "KpClearentry";
 
-            case KeyboardButton::KpBinary:
-                return "KpBinary";
+        case Input::KeyboardButton::KpBinary:
+            return "KpBinary";
 
-            case KeyboardButton::KpOctal:
-                return "KpOctal";
+        case Input::KeyboardButton::KpOctal:
+            return "KpOctal";
 
-            case KeyboardButton::KpDecimal:
-                return "KpDecimal";
+        case Input::KeyboardButton::KpDecimal:
+            return "KpDecimal";
 
-            case KeyboardButton::KpHexadecimal:
-                return "KpHexadecimal";
+        case Input::KeyboardButton::KpHexadecimal:
+            return "KpHexadecimal";
 
-            case KeyboardButton::LCtrl:
-                return "LCtrl";
+        case Input::KeyboardButton::LCtrl:
+            return "LCtrl";
 
-            case KeyboardButton::LShift:
-                return "LShift";
+        case Input::KeyboardButton::LShift:
+            return "LShift";
 
-            case KeyboardButton::LAlt:
-                return "LAlt";
+        case Input::KeyboardButton::LAlt:
+            return "LAlt";
 
-            case KeyboardButton::LGui:
-                return "LGui";
+        case Input::KeyboardButton::LGui:
+            return "LGui";
 
-            case KeyboardButton::RCtrl:
-                return "RCtrl";
+        case Input::KeyboardButton::RCtrl:
+            return "RCtrl";
 
-            case KeyboardButton::RShift:
-                return "RShift";
+        case Input::KeyboardButton::RShift:
+            return "RShift";
 
-            case KeyboardButton::RAlt:
-                return "RAlt";
+        case Input::KeyboardButton::RAlt:
+            return "RAlt";
 
-            case KeyboardButton::RGui:
-                return "RGui";
+        case Input::KeyboardButton::RGui:
+            return "RGui";
 
-            case KeyboardButton::Mode:
-                return "Mode";
+        case Input::KeyboardButton::Mode:
+            return "Mode";
 
-            case KeyboardButton::Sleep:
-                return "Sleep";
+        case Input::KeyboardButton::Sleep:
+            return "Sleep";
 
-            case KeyboardButton::Wake:
-                return "Wake";
+        case Input::KeyboardButton::Wake:
+            return "Wake";
 
-            case KeyboardButton::ChannelIncrement:
-                return "ChannelIncrement";
+        case Input::KeyboardButton::ChannelIncrement:
+            return "ChannelIncrement";
 
-            case KeyboardButton::ChannelDecrement:
-                return "ChannelDecrement";
+        case Input::KeyboardButton::ChannelDecrement:
+            return "ChannelDecrement";
 
-            case KeyboardButton::MediaPlay:
-                return "MediaPlay";
+        case Input::KeyboardButton::MediaPlay:
+            return "MediaPlay";
 
-            case KeyboardButton::MediaPause:
-                return "MediaPause";
+        case Input::KeyboardButton::MediaPause:
+            return "MediaPause";
 
-            case KeyboardButton::MediaRecord:
-                return "MediaRecord";
+        case Input::KeyboardButton::MediaRecord:
+            return "MediaRecord";
 
-            case KeyboardButton::MediaFastForward:
-                return "MediaFastForward";
+        case Input::KeyboardButton::MediaFastForward:
+            return "MediaFastForward";
 
-            case KeyboardButton::MediaRewind:
-                return "MediaRewind";
+        case Input::KeyboardButton::MediaRewind:
+            return "MediaRewind";
 
-            case KeyboardButton::MediaNextTrack:
-                return "MediaNextTrack";
+        case Input::KeyboardButton::MediaNextTrack:
+            return "MediaNextTrack";
 
-            case KeyboardButton::MediaPreviousTrack:
-                return "MediaPreviousTrack";
+        case Input::KeyboardButton::MediaPreviousTrack:
+            return "MediaPreviousTrack";
 
-            case KeyboardButton::MediaStop:
-                return "MediaStop";
+        case Input::KeyboardButton::MediaStop:
+            return "MediaStop";
 
-            case KeyboardButton::MediaEject:
-                return "MediaEject";
+        case Input::KeyboardButton::MediaEject:
+            return "MediaEject";
 
-            case KeyboardButton::MediaPlayPause:
-                return "MediaPlayPause";
+        case Input::KeyboardButton::MediaPlayPause:
+            return "MediaPlayPause";
 
-            case KeyboardButton::MediaSelect:
-                return "MediaSelect";
+        case Input::KeyboardButton::MediaSelect:
+            return "MediaSelect";
 
-            case KeyboardButton::AcNew:
-                return "AcNew";
+        case Input::KeyboardButton::AcNew:
+            return "AcNew";
 
-            case KeyboardButton::AcOpen:
-                return "AcOpen";
+        case Input::KeyboardButton::AcOpen:
+            return "AcOpen";
 
-            case KeyboardButton::AcClose:
-                return "AcClose";
+        case Input::KeyboardButton::AcClose:
+            return "AcClose";
 
-            case KeyboardButton::AcExit:
-                return "AcExit";
+        case Input::KeyboardButton::AcExit:
+            return "AcExit";
 
-            case KeyboardButton::AcSave:
-                return "AcSave";
+        case Input::KeyboardButton::AcSave:
+            return "AcSave";
 
-            case KeyboardButton::AcPrint:
-                return "AcPrint";
+        case Input::KeyboardButton::AcPrint:
+            return "AcPrint";
 
-            case KeyboardButton::AcProperties:
-                return "AcProperties";
+        case Input::KeyboardButton::AcProperties:
+            return "AcProperties";
 
-            case KeyboardButton::AcSearch:
-                return "AcSearch";
+        case Input::KeyboardButton::AcSearch:
+            return "AcSearch";
 
-            case KeyboardButton::AcHome:
-                return "AcHome";
+        case Input::KeyboardButton::AcHome:
+            return "AcHome";
 
-            case KeyboardButton::AcBack:
-                return "AcBack";
+        case Input::KeyboardButton::AcBack:
+            return "AcBack";
 
-            case KeyboardButton::AcForward:
-                return "AcForward";
+        case Input::KeyboardButton::AcForward:
+            return "AcForward";
 
-            case KeyboardButton::AcStop:
-                return "AcStop";
+        case Input::KeyboardButton::AcStop:
+            return "AcStop";
 
-            case KeyboardButton::AcRefresh:
-                return "AcRefresh";
+        case Input::KeyboardButton::AcRefresh:
+            return "AcRefresh";
 
-            case KeyboardButton::AcBookmarks:
-                return "AcBookmarks";
+        case Input::KeyboardButton::AcBookmarks:
+            return "AcBookmarks";
 
-            case KeyboardButton::Softleft:
-                return "Softleft";
+        case Input::KeyboardButton::Softleft:
+            return "Softleft";
 
-            case KeyboardButton::Softright:
-                return "Softright";
+        case Input::KeyboardButton::Softright:
+            return "Softright";
 
-            case KeyboardButton::Call:
-                return "Call";
+        case Input::KeyboardButton::Call:
+            return "Call";
 
-            case KeyboardButton::Endcall:
-                return "Endcall";
+        case Input::KeyboardButton::Endcall:
+            return "Endcall";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

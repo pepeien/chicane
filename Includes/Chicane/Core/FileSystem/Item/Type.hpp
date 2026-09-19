@@ -17,23 +17,23 @@ namespace Chicane
             Folder,
             File
         };
+    }
 
-        inline String toString(ItemType inValue)
+    inline String toString(FileSystem::ItemType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case ItemType::Undefined:
-                return "Undefined";
+        case FileSystem::ItemType::Undefined:
+            return "Undefined";
 
-            case ItemType::Folder:
-                return "Folder";
+        case FileSystem::ItemType::Folder:
+            return "Folder";
 
-            case ItemType::File:
-                return "File";
+        case FileSystem::ItemType::File:
+            return "File";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

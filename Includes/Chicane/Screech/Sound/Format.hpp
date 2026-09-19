@@ -27,35 +27,35 @@ namespace Chicane
             F32     = 5,
             Count
         };
+    }
 
-        inline String toString(SoundFormat inValue)
+    inline String toString(Screech::SoundFormat inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SoundFormat::Unknown:
-                return "Unknown";
+        case Screech::SoundFormat::Unknown:
+            return "Unknown";
 
-            case SoundFormat::U8:
-                return "U8";
+        case Screech::SoundFormat::U8:
+            return "U8";
 
-            case SoundFormat::S16:
-                return "S16";
+        case Screech::SoundFormat::S16:
+            return "S16";
 
-            case SoundFormat::S24:
-                return "S24";
+        case Screech::SoundFormat::S24:
+            return "S24";
 
-            case SoundFormat::S32:
-                return "S32";
+        case Screech::SoundFormat::S32:
+            return "S32";
 
-            case SoundFormat::F32:
-                return "F32";
+        case Screech::SoundFormat::F32:
+            return "F32";
 
-            case SoundFormat::Count:
-                return "Count";
+        case Screech::SoundFormat::Count:
+            return "Count";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

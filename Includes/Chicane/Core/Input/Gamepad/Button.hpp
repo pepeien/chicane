@@ -39,92 +39,92 @@ namespace Chicane
             Misc5,
             Misc6
         };
+    }
 
-        inline String toString(GamepadButton inValue)
+    inline String toString(Input::GamepadButton inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case GamepadButton::South:
-                return "South";
+        case Input::GamepadButton::South:
+            return "South";
 
-            case GamepadButton::East:
-                return "East";
+        case Input::GamepadButton::East:
+            return "East";
 
-            case GamepadButton::West:
-                return "West";
+        case Input::GamepadButton::West:
+            return "West";
 
-            case GamepadButton::North:
-                return "North";
+        case Input::GamepadButton::North:
+            return "North";
 
-            case GamepadButton::Back:
-                return "Back";
+        case Input::GamepadButton::Back:
+            return "Back";
 
-            case GamepadButton::Guide:
-                return "Guide";
+        case Input::GamepadButton::Guide:
+            return "Guide";
 
-            case GamepadButton::Start:
-                return "Start";
+        case Input::GamepadButton::Start:
+            return "Start";
 
-            case GamepadButton::LeftStick:
-                return "LeftStick";
+        case Input::GamepadButton::LeftStick:
+            return "LeftStick";
 
-            case GamepadButton::RightStick:
-                return "RightStick";
+        case Input::GamepadButton::RightStick:
+            return "RightStick";
 
-            case GamepadButton::LeftShoulder:
-                return "LeftShoulder";
+        case Input::GamepadButton::LeftShoulder:
+            return "LeftShoulder";
 
-            case GamepadButton::RightShoulder:
-                return "RightShoulder";
+        case Input::GamepadButton::RightShoulder:
+            return "RightShoulder";
 
-            case GamepadButton::DPadUp:
-                return "DPadUp";
+        case Input::GamepadButton::DPadUp:
+            return "DPadUp";
 
-            case GamepadButton::DPadDown:
-                return "DPadDown";
+        case Input::GamepadButton::DPadDown:
+            return "DPadDown";
 
-            case GamepadButton::DPadLeft:
-                return "DPadLeft";
+        case Input::GamepadButton::DPadLeft:
+            return "DPadLeft";
 
-            case GamepadButton::DPadRight:
-                return "DPadRight";
+        case Input::GamepadButton::DPadRight:
+            return "DPadRight";
 
-            case GamepadButton::RightPaddlePrimary:
-                return "RightPaddlePrimary";
+        case Input::GamepadButton::RightPaddlePrimary:
+            return "RightPaddlePrimary";
 
-            case GamepadButton::LeftPaddlePrimary:
-                return "LeftPaddlePrimary";
+        case Input::GamepadButton::LeftPaddlePrimary:
+            return "LeftPaddlePrimary";
 
-            case GamepadButton::RightPaddleSecondary:
-                return "RightPaddleSecondary";
+        case Input::GamepadButton::RightPaddleSecondary:
+            return "RightPaddleSecondary";
 
-            case GamepadButton::LeftPaddleSecondary:
-                return "LeftPaddleSecondary";
+        case Input::GamepadButton::LeftPaddleSecondary:
+            return "LeftPaddleSecondary";
 
-            case GamepadButton::Touchpad:
-                return "Touchpad";
+        case Input::GamepadButton::Touchpad:
+            return "Touchpad";
 
-            case GamepadButton::Misc1:
-                return "Misc1";
+        case Input::GamepadButton::Misc1:
+            return "Misc1";
 
-            case GamepadButton::Misc2:
-                return "Misc2";
+        case Input::GamepadButton::Misc2:
+            return "Misc2";
 
-            case GamepadButton::Misc3:
-                return "Misc3";
+        case Input::GamepadButton::Misc3:
+            return "Misc3";
 
-            case GamepadButton::Misc4:
-                return "Misc4";
+        case Input::GamepadButton::Misc4:
+            return "Misc4";
 
-            case GamepadButton::Misc5:
-                return "Misc5";
+        case Input::GamepadButton::Misc5:
+            return "Misc5";
 
-            case GamepadButton::Misc6:
-                return "Misc6";
+        case Input::GamepadButton::Misc6:
+            return "Misc6";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

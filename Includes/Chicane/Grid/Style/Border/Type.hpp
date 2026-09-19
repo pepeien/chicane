@@ -14,20 +14,20 @@ namespace Chicane
             None,
             Solid
         };
+    }
 
-        inline String toString(StyleBorderType inValue)
+    inline String toString(Grid::StyleBorderType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleBorderType::None:
-                return "None";
+        case Grid::StyleBorderType::None:
+            return "None";
 
-            case StyleBorderType::Solid:
-                return "Solid";
+        case Grid::StyleBorderType::Solid:
+            return "Solid";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

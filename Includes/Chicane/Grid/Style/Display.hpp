@@ -14,26 +14,26 @@ namespace Chicane
             Hidden, // Visibly hidden but still occupies space on the overall layout
             None    // Visibly hidden and doesn't occupiy space on the overall layout
         };
+    }
 
-        inline String toString(StyleDisplay inValue)
+    inline String toString(Grid::StyleDisplay inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleDisplay::Flex:
-                return "Flex";
+        case Grid::StyleDisplay::Flex:
+            return "Flex";
 
-            case StyleDisplay::Block:
-                return "Block";
+        case Grid::StyleDisplay::Block:
+            return "Block";
 
-            case StyleDisplay::Hidden:
-                return "Hidden";
+        case Grid::StyleDisplay::Hidden:
+            return "Hidden";
 
-            case StyleDisplay::None:
-                return "None";
+        case Grid::StyleDisplay::None:
+            return "None";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

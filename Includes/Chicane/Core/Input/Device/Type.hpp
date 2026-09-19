@@ -15,23 +15,23 @@ namespace Chicane
             Keyboard,
             Mouse
         };
+    }
 
-        inline String toString(DeviceType inValue)
+    inline String toString(Input::DeviceType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DeviceType::Gamepad:
-                return "Gamepad";
+        case Input::DeviceType::Gamepad:
+            return "Gamepad";
 
-            case DeviceType::Keyboard:
-                return "Keyboard";
+        case Input::DeviceType::Keyboard:
+            return "Keyboard";
 
-            case DeviceType::Mouse:
-                return "Mouse";
+        case Input::DeviceType::Mouse:
+            return "Mouse";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

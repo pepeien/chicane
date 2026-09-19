@@ -30,41 +30,41 @@ namespace Chicane
                                                optimization. */
             NoSpatialization  = 0x00004000  /* Disable spatialization. */
         };
+    }
 
-        inline String toString(SoundFlag inValue)
+    inline String toString(Screech::SoundFlag inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SoundFlag::Stream:
-                return "Stream";
+        case Screech::SoundFlag::Stream:
+            return "Stream";
 
-            case SoundFlag::Decode:
-                return "Decode";
+        case Screech::SoundFlag::Decode:
+            return "Decode";
 
-            case SoundFlag::Async:
-                return "Async";
+        case Screech::SoundFlag::Async:
+            return "Async";
 
-            case SoundFlag::WaitInit:
-                return "WaitInit";
+        case Screech::SoundFlag::WaitInit:
+            return "WaitInit";
 
-            case SoundFlag::UnknownLength:
-                return "UnknownLength";
+        case Screech::SoundFlag::UnknownLength:
+            return "UnknownLength";
 
-            case SoundFlag::Looping:
-                return "Looping";
+        case Screech::SoundFlag::Looping:
+            return "Looping";
 
-            case SoundFlag::DefaultAttachment:
-                return "DefaultAttachment";
+        case Screech::SoundFlag::DefaultAttachment:
+            return "DefaultAttachment";
 
-            case SoundFlag::NoPitch:
-                return "NoPitch";
+        case Screech::SoundFlag::NoPitch:
+            return "NoPitch";
 
-            case SoundFlag::NoSpatialization:
-                return "NoSpatialization";
+        case Screech::SoundFlag::NoSpatialization:
+            return "NoSpatialization";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

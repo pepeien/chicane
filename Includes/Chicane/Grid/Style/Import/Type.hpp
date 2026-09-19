@@ -16,26 +16,26 @@ namespace Chicane
             Font,
             Texture
         };
+    }
 
-        inline String toString(StyleImportType inValue)
+    inline String toString(Grid::StyleImportType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleImportType::Undefined:
-                return "Undefined";
+        case Grid::StyleImportType::Undefined:
+            return "Undefined";
 
-            case StyleImportType::Style:
-                return "Style";
+        case Grid::StyleImportType::Style:
+            return "Style";
 
-            case StyleImportType::Font:
-                return "Font";
+        case Grid::StyleImportType::Font:
+            return "Font";
 
-            case StyleImportType::Texture:
-                return "Texture";
+        case Grid::StyleImportType::Texture:
+            return "Texture";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

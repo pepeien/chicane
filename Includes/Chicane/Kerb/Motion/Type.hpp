@@ -14,23 +14,23 @@ namespace Chicane
             Kinematic,
             Static
         };
+    }
 
-        inline String toString(MotionType inValue)
+    inline String toString(Kerb::MotionType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case MotionType::Dynamic:
-                return "Dynamic";
+        case Kerb::MotionType::Dynamic:
+            return "Dynamic";
 
-            case MotionType::Kinematic:
-                return "Kinematic";
+        case Kerb::MotionType::Kinematic:
+            return "Kinematic";
 
-            case MotionType::Static:
-                return "Static";
+        case Kerb::MotionType::Static:
+            return "Static";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

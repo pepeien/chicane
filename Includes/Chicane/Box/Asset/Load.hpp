@@ -14,23 +14,23 @@ namespace Chicane
             Preview,
             Full
         };
+    }
 
-        inline String toString(AssetLoad inValue)
+    inline String toString(Box::AssetLoad inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case AssetLoad::Header:
-                return "Header";
+        case Box::AssetLoad::Header:
+            return "Header";
 
-            case AssetLoad::Preview:
-                return "Preview";
+        case Box::AssetLoad::Preview:
+            return "Preview";
 
-            case AssetLoad::Full:
-                return "Full";
+        case Box::AssetLoad::Full:
+            return "Full";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

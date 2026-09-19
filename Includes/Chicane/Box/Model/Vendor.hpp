@@ -12,23 +12,23 @@ namespace Chicane
             Wavefront, // .obj
             Gltf       // .gltf / .glb
         };
+    }
 
-        inline String toString(ModelVendor inValue)
+    inline String toString(Box::ModelVendor inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case ModelVendor::Undefined:
-                return "Undefined";
+        case Box::ModelVendor::Undefined:
+            return "Undefined";
 
-            case ModelVendor::Wavefront:
-                return "Wavefront";
+        case Box::ModelVendor::Wavefront:
+            return "Wavefront";
 
-            case ModelVendor::Gltf:
-                return "Gltf";
+        case Box::ModelVendor::Gltf:
+            return "Gltf";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -15,32 +15,32 @@ namespace Chicane
             Up,    // Z+
             Down   // Z-
         };
+    }
 
-        inline String toString(SkySide inValue)
+    inline String toString(Box::SkySide inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SkySide::Right:
-                return "Right";
+        case Box::SkySide::Right:
+            return "Right";
 
-            case SkySide::Left:
-                return "Left";
+        case Box::SkySide::Left:
+            return "Left";
 
-            case SkySide::Front:
-                return "Front";
+        case Box::SkySide::Front:
+            return "Front";
 
-            case SkySide::Back:
-                return "Back";
+        case Box::SkySide::Back:
+            return "Back";
 
-            case SkySide::Up:
-                return "Up";
+        case Box::SkySide::Up:
+            return "Up";
 
-            case SkySide::Down:
-                return "Down";
+        case Box::SkySide::Down:
+            return "Down";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

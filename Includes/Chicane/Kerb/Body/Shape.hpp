@@ -14,23 +14,23 @@ namespace Chicane
             Capsule,
             Polygon
         };
+    }
 
-        inline String toString(BodyShape inValue)
+    inline String toString(Kerb::BodyShape inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case BodyShape::Box:
-                return "Box";
+        case Kerb::BodyShape::Box:
+            return "Box";
 
-            case BodyShape::Capsule:
-                return "Capsule";
+        case Kerb::BodyShape::Capsule:
+            return "Capsule";
 
-            case BodyShape::Polygon:
-                return "Polygon";
+        case Kerb::BodyShape::Polygon:
+            return "Polygon";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

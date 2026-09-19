@@ -14,20 +14,20 @@ namespace Chicane
             Forward,
             Reverse
         };
+    }
 
-        inline String toString(Direction inValue)
+    inline String toString(Drift::Direction inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case Direction::Forward:
-                return "Forward";
+        case Drift::Direction::Forward:
+            return "Forward";
 
-            case Direction::Reverse:
-                return "Reverse";
+        case Drift::Direction::Reverse:
+            return "Reverse";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

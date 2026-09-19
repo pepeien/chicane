@@ -13,20 +13,20 @@ namespace Chicane
             NoWrap,
             Wrap
         };
+    }
 
-        inline String toString(StyleFlexWrap inValue)
+    inline String toString(Grid::StyleFlexWrap inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleFlexWrap::NoWrap:
-                return "NoWrap";
+        case Grid::StyleFlexWrap::NoWrap:
+            return "NoWrap";
 
-            case StyleFlexWrap::Wrap:
-                return "Wrap";
+        case Grid::StyleFlexWrap::Wrap:
+            return "Wrap";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

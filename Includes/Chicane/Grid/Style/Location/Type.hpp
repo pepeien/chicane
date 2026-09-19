@@ -14,20 +14,20 @@ namespace Chicane
             Local,
             URL
         };
+    }
 
-        inline String toString(StyleLocationType inValue)
+    inline String toString(Grid::StyleLocationType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleLocationType::Local:
-                return "Local";
+        case Grid::StyleLocationType::Local:
+            return "Local";
 
-            case StyleLocationType::URL:
-                return "URL";
+        case Grid::StyleLocationType::URL:
+            return "URL";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -14,20 +14,20 @@ namespace Chicane
             Pressed,
             Released
         };
+    }
 
-        inline String toString(Status inValue)
+    inline String toString(Input::Status inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case Status::Pressed:
-                return "Pressed";
+        case Input::Status::Pressed:
+            return "Pressed";
 
-            case Status::Released:
-                return "Released";
+        case Input::Status::Released:
+            return "Released";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

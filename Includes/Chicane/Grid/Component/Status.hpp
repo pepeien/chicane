@@ -18,30 +18,6 @@ namespace Chicane
             Culled   = 1 << 3
         };
 
-        inline String toString(ComponentStatus inValue)
-        {
-            switch (inValue)
-            {
-            case ComponentStatus::None:
-                return "None";
-
-            case ComponentStatus::Hovered:
-                return "Hovered";
-
-            case ComponentStatus::Focused:
-                return "Focused";
-
-            case ComponentStatus::Dragging:
-                return "Dragging";
-
-            case ComponentStatus::Culled:
-                return "Culled";
-
-            default:
-                return "";
-            }
-        }
-
         inline constexpr ComponentStatus operator|(ComponentStatus inLeft, ComponentStatus inRight)
         {
             return static_cast<ComponentStatus>(static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight));
@@ -74,6 +50,30 @@ namespace Chicane
         inline constexpr bool has(ComponentStatus inStatus, ComponentStatus inFlag)
         {
             return (inStatus & inFlag) != ComponentStatus::None;
+        }
+    }
+
+    inline String toString(Grid::ComponentStatus inValue)
+    {
+        switch (inValue)
+        {
+        case Grid::ComponentStatus::None:
+            return "None";
+
+        case Grid::ComponentStatus::Hovered:
+            return "Hovered";
+
+        case Grid::ComponentStatus::Focused:
+            return "Focused";
+
+        case Grid::ComponentStatus::Dragging:
+            return "Dragging";
+
+        case Grid::ComponentStatus::Culled:
+            return "Culled";
+
+        default:
+            return "";
         }
     }
 }

@@ -15,23 +15,23 @@ namespace Chicane
             Round,
             Square
         };
+    }
 
-        inline String toString(SvgLineCap inValue)
+    inline String toString(Grid::SvgLineCap inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case SvgLineCap::Butt:
-                return "Butt";
+        case Grid::SvgLineCap::Butt:
+            return "Butt";
 
-            case SvgLineCap::Round:
-                return "Round";
+        case Grid::SvgLineCap::Round:
+            return "Round";
 
-            case SvgLineCap::Square:
-                return "Square";
+        case Grid::SvgLineCap::Square:
+            return "Square";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

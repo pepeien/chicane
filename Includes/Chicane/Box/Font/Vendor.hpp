@@ -12,23 +12,23 @@ namespace Chicane
             OpenType,  // .otf
             TrueType   // .ttf
         };
+    }
 
-        inline String toString(FontVendor inValue)
+    inline String toString(Box::FontVendor inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case FontVendor::Undefined:
-                return "Undefined";
+        case Box::FontVendor::Undefined:
+            return "Undefined";
 
-            case FontVendor::OpenType:
-                return "OpenType";
+        case Box::FontVendor::OpenType:
+            return "OpenType";
 
-            case FontVendor::TrueType:
-                return "TrueType";
+        case Box::FontVendor::TrueType:
+            return "TrueType";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

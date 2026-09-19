@@ -15,20 +15,20 @@ namespace Chicane
             Linear = 1,
             Radial = 2
         };
+    }
 
-        inline String toString(StyleGradientType inValue)
+    inline String toString(Grid::StyleGradientType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case StyleGradientType::Linear:
-                return "Linear";
+        case Grid::StyleGradientType::Linear:
+            return "Linear";
 
-            case StyleGradientType::Radial:
-                return "Radial";
+        case Grid::StyleGradientType::Radial:
+            return "Radial";
 
-            default:
-                return "None";
-            }
+        default:
+            return "None";
         }
     }
 }

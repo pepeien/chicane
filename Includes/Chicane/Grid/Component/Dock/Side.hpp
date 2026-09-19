@@ -18,32 +18,32 @@ namespace Chicane
             Top,
             Bottom
         };
+    }
 
-        inline String toString(DockSide inValue)
+    inline String toString(Grid::DockSide inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DockSide::Fill:
-                return "Fill";
+        case Grid::DockSide::Fill:
+            return "Fill";
 
-            case DockSide::Float:
-                return "Float";
+        case Grid::DockSide::Float:
+            return "Float";
 
-            case DockSide::Left:
-                return "Left";
+        case Grid::DockSide::Left:
+            return "Left";
 
-            case DockSide::Right:
-                return "Right";
+        case Grid::DockSide::Right:
+            return "Right";
 
-            case DockSide::Top:
-                return "Top";
+        case Grid::DockSide::Top:
+            return "Top";
 
-            case DockSide::Bottom:
-                return "Bottom";
+        case Grid::DockSide::Bottom:
+            return "Bottom";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }
