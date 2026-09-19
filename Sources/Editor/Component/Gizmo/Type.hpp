@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include <Chicane/Core/Reflection.hpp>
+#include <Chicane/Core/String.hpp>
 
 namespace Editor
 {
@@ -13,4 +14,22 @@ namespace Editor
         Rotation,
         Scale
     };
+
+    inline Chicane::String toString(Editor::GizmoType inValue)
+    {
+        switch (inValue)
+        {
+        case GizmoType::Translation:
+            return "Translation";
+
+        case GizmoType::Rotation:
+            return "Rotation";
+
+        case GizmoType::Scale:
+            return "Scale";
+
+        default:
+            return "";
+        }
+    }
 }

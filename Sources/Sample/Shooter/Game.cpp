@@ -1,6 +1,10 @@
 #include "Sample/Shooter/Game.hpp"
 
 #include <Chicane/Core/Event/Observable.hpp>
+#include <Chicane/Runtime/Application.hpp>
+
+#include "Sample/Shooter/Scene.hpp"
+#include "Sample/Shooter/UI/View/Home.hpp"
 
 std::uint32_t m_score    = 0;
 std::uint32_t m_maxScore = 0;
@@ -9,6 +13,12 @@ Chicane::EventObservable<std::uint32_t> m_scoreObservable = Chicane::EventObserv
 
 namespace Game
 {
+    void boot()
+    {
+        Chicane::Application::getInstance().setScene<Scene>();
+        Chicane::Application::getInstance().setView<HomeView>();
+    }
+
     std::uint32_t getScore()
     {
         return m_score;

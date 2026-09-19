@@ -9,6 +9,11 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Frame.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Texture/SizeClass.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Texture/Slot.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Texture/TableEntry.hpp"
+#include "Chicane/Renderer/RHI/Frame.hpp"
+#include "Chicane/Renderer/RHI/FullscreenPass.hpp"
 #include "Chicane/Renderer/Blending.hpp"
 #include "Chicane/Renderer/Culling.hpp"
 #include "Chicane/Renderer/Depth.hpp"
@@ -50,6 +55,8 @@ namespace Chicane
         public:
             // Layer
             Viewport getGLViewport(Layer* inLayer) const;
+            RHI::Viewport getRHIViewport(Layer* inLayer) const override;
+            RHI::Scissor getRHIScissor(Layer* inLayer) const override;
             void useViewport(Layer* inLayer) const;
 
             // Program
@@ -82,31 +89,6 @@ namespace Chicane
             std::uint32_t getTargetColor() const;
 
         private:
-            struct TextureSlot
-            {
-                std::uint32_t classIndex     = ~0u;
-                std::uint32_t layer          = 0;
-                std::uint32_t sourceWidth    = 0;
-                std::uint32_t sourceHeight   = 0;
-                std::uint32_t residentMinMip = ~0u;
-            };
-
-            struct SizeClass
-            {
-                std::uint32_t              size      = 1;
-                std::uint32_t              texture   = 0;
-                std::uint32_t              allocated = 0;
-                std::uint32_t              used      = 0;
-                std::vector<std::uint32_t> freeLayers;
-            };
-
-            struct TextureTableEntry
-            {
-                std::uint32_t classIndex = 0;
-                std::uint32_t layer      = 0;
-            };
-
-            // OpenGL
             void buildContext();
             void destroyContext();
             void buildGlad();
@@ -117,23 +99,28 @@ namespace Chicane
             void destroyTextureData();
             void bindTextureTable() const;
             void uploadTexture(const DrawTexture& inTexture);
-            void releaseTextureSlot(TextureSlot& inSlot);
-            void writeTextureSlot(Draw::Id inId, std::uint32_t inClass, std::uint32_t inLayer);
+            void releaseTextureSlot(OpenGLTextureSlot& inSlot);
+            void writeTextureSlot(
+                Draw::Id      inId,
+                std::uint32_t inClass,
+                std::uint32_t inLayer,
+                std::uint32_t inWidth  = 1,
+                std::uint32_t inHeight = 1
+            );
             std::uint32_t classFromResident(std::uint32_t inWidth, std::uint32_t inHeight) const;
             std::uint32_t allocateLayer(std::uint32_t inClass);
             void growClass(std::uint32_t inClass, std::uint32_t inLayers);
-            void createClassArray(SizeClass& inClass, std::uint32_t inLayers);
-            void fillWhiteLayer(const SizeClass& inClass, std::uint32_t inLayer) const;
+            void createClassArray(OpenGLTextureSizeClass& inClass, std::uint32_t inLayers);
+            void fillWhiteLayer(const OpenGLTextureSizeClass& inClass, std::uint32_t inLayer) const;
 
             void buildTarget();
             void destroyTarget();
-            void presentTarget(const Frame& inFrame) const;
-            void captureScreenTarget();
+            void presentTarget(const Frame& inFrame);
 
-            void buildBloom();
-            void destroyBloom();
-            void destroyBloomImages();
-            void blurBloomPass(std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY) const;
+            void buildTextureBindGroup();
+            void wrapTargetImages();
+            void fillRhiFrame(const Frame& inFrame);
+            void destroyRhiResources();
 
             // GPU timing
             void buildGpuQueries();
@@ -161,30 +148,40 @@ namespace Chicane
             std::vector<OpenGLFrame> frames;
 
         private:
-            std::uint32_t                              m_currentFrameIndex;
+            std::uint32_t                                           m_currentFrameIndex;
 
-            std::vector<TextureSlot>                   m_textures;
-            std::array<SizeClass, TEXTURE_CLASS_COUNT> m_classes;
-            std::uint32_t                              m_textureTable;
-            std::uint32_t                              m_maxArrayLayers;
-            std::uint32_t                              m_targetFramebuffer;
-            std::uint32_t                              m_targetColor;
-            std::uint32_t                              m_targetDepth;
-            std::uint32_t                              m_targetWidth;
-            std::uint32_t                              m_targetHeight;
-            std::uint32_t                              m_screenBlitFramebuffer;
-            std::array<std::uint32_t, 2>               m_bloomColor       = {};
-            std::array<std::uint32_t, 2>               m_bloomFramebuffer = {};
-            std::uint32_t                              m_extractProgram   = 0;
-            std::uint32_t                              m_blurProgram      = 0;
-            std::uint32_t                              m_compositeProgram = 0;
-            std::uint32_t                              m_postVertexArray  = 0;
-            Draw::Id                                   m_screenTextureId;
+            std::vector<OpenGLTextureSlot>                          m_textures;
+            std::array<OpenGLTextureSizeClass, TEXTURE_CLASS_COUNT> m_classes;
+            std::uint32_t                                           m_textureTable;
+            std::uint32_t                                           m_maxArrayLayers;
+            std::uint32_t                                           m_targetFramebuffer;
+            std::uint32_t                                           m_targetColor;
+            std::uint32_t                                           m_targetDepth;
+            std::uint32_t                                           m_targetWidth;
+            std::uint32_t                                           m_targetHeight;
+            std::uint32_t                                           m_screenBlitFramebuffer;
+            Draw::Id                                                m_screenTextureId;
+
+            RHI::FullscreenPass                                     m_bloomPass;
+            RHI::Buffer                                             m_cameraBuffer;
+            RHI::Buffer                                             m_lightBuffer;
+            RHI::Buffer                                             m_instanceBuffer;
+            RHI::Buffer                                             m_particleBuffer;
+            RHI::Sampler                                            m_linearSampler;
+            RHI::Sampler                                            m_textureSampler;
+            RHI::BindGroupLayout                                    m_textureLayout;
+            RHI::BindGroup                                          m_textureGroup;
+            RHI::Buffer                                             m_textureTableBuffer;
+            std::array<RHI::Image, TEXTURE_CLASS_COUNT>             m_classImages;
+            RHI::Image                                              m_sceneColor;
+            RHI::Image                                              m_sceneDepth;
+            RHI::Image                                              m_presentColor;
+            RHI::Frame                                              m_rhiFrame;
 
             // GPU timing
-            GpuQueries                                 m_gpuQueries;
-            std::vector<bool>                          m_gpuQueryPending;
-            std::uint32_t                              m_gpuQueryWrite;
+            GpuQueries                                              m_gpuQueries;
+            std::vector<bool>                                       m_gpuQueryPending;
+            std::uint32_t                                           m_gpuQueryWrite;
         };
     }
 }

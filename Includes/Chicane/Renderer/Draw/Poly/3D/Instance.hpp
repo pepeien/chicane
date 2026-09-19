@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <map>
@@ -26,8 +27,8 @@ namespace Chicane
             bool has(DrawPoly3DFlag inFlag) const { return Renderer::has(flags, inFlag); }
 
         public:
-            Mat4     model                       = Mat4::One;
-            Draw::Id textures[TEXTURE_MAP_COUNT] = {
+            Mat4                                    model    = Mat4::One;
+            std::array<Draw::Id, TEXTURE_MAP_COUNT> textures = {
                 Draw::InvalidId,
                 Draw::InvalidId,
                 Draw::InvalidId,

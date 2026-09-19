@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 
@@ -13,13 +14,12 @@ namespace Chicane
         struct CHICANE_RENDERER ShadowLight
         {
         public:
-            Vec4       splits = Vec4::Zero();
-            Vec4       info   = Vec4::Zero();
+            Vec4                                   splits = Vec4::Zero();
+            Vec4                                   info   = Vec4::Zero();
 
-            Mat4       views[SHADOW_CASCADE_COUNT]       = {};
-            Mat4       projections[SHADOW_CASCADE_COUNT] = {};
-
-            SceneLight lights[MAX_LIGHTS] = {};
+            std::array<SceneLight, MAX_LIGHTS>     lights      = {};
+            std::array<Mat4, SHADOW_CASCADE_COUNT> views       = {};
+            std::array<Mat4, SHADOW_CASCADE_COUNT> projections = {};
         };
     }
 }

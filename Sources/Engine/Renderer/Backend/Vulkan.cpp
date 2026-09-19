@@ -13,8 +13,10 @@
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Layer/UI.hpp"
+#include "Chicane/Renderer/Shader/Bindings.hpp"
+#include "Chicane/Renderer/Layer/Scene.hpp"
+#include "Chicane/Renderer/Layer/UI.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/RHI/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
@@ -60,9 +62,15 @@ namespace Chicane
             buildFrames();
             buildTimestampQueries();
             buildTextureDescriptor();
+            m_rhi = std::make_unique<VulkanRHIDevice>(this);
+            RHI::SamplerCreateInfo sampler;
+            sampler.minFilter = RHI::SamplerFilter::Linear;
+            sampler.magFilter = RHI::SamplerFilter::Linear;
+            sampler.address   = RHI::SamplerAddress::ClampToEdge;
+            m_linearSampler   = m_rhi->createSampler(sampler);
+            bloom.init(m_rhi.get());
+            bloom.resize(swapchain.extent.width, swapchain.extent.height, m_rhi->sceneColorFormat());
             buildLayers();
-            bloom.init(this);
-            bloom.rebuildFramebuffers();
         }
 
         void VulkanBackend::onShutdown()
@@ -76,15 +84,21 @@ namespace Chicane
 
             logicalDevice.waitIdle();
 
+            destroyLayers();
             bloom.destroy();
+            if (m_linearSampler.handle)
+            {
+                m_rhi->destroySampler(m_linearSampler);
+                m_linearSampler = {};
+            }
+            releaseRhiWraps();
+            m_rhi.reset();
 
-            // Vulkan
             destroyCommandPool();
             destroyTimestampQueries();
             destroySwapchain();
             destroyFrames();
             destroyTextureData();
-            destroyLayers();
 
             destroyDevices();
             destroySurface();
@@ -142,19 +156,32 @@ namespace Chicane
             {
                 writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
 
+                fillRhiFrame(nextFrame, nextImage);
                 renderLayers(
                     inFrame,
-                    &nextFrame,
+                    &m_rhiFrame,
                     [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
                 );
-                bloom.apply(nextFrame, inFrame, !isScreenComposited(inFrame));
+                if (!isScreenComposited(inFrame))
+                {
+                    bloom.apply(
+                        m_rhiFrame.commands,
+                        m_rhiFrame.sceneColor,
+                        m_rhiFrame.presentColor,
+                        m_rhiFrame.width,
+                        m_rhiFrame.height,
+                        inFrame.hasFeature(RendererFeature::HDR),
+                        m_rhiFrame.frameIndex
+                    );
+                }
                 renderLayers(
                     inFrame,
-                    &nextFrame,
+                    &m_rhiFrame,
                     [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
                 );
 
                 writeGpuTimestampEnd(nextFrame.commandBuffer, m_currentFrameIndex);
+                m_rhiFrame.commands->preparePresent(m_rhiFrame.presentColor);
             }
             nextFrame.end();
 
@@ -267,6 +294,31 @@ namespace Chicane
             return result;
         }
 
+        RHI::Viewport VulkanBackend::getRHIViewport(Layer* inLayer) const
+        {
+            const vk::Viewport viewport = getVkViewport(inLayer);
+
+            RHI::Viewport result;
+            result.size     = Vec2(viewport.width, viewport.height);
+            result.position = Vec2(viewport.x, viewport.y);
+            result.depth    = Vec2(viewport.minDepth, viewport.maxDepth);
+
+            return result;
+        }
+
+        RHI::Scissor VulkanBackend::getRHIScissor(Layer* inLayer) const
+        {
+            const vk::Viewport viewport = getVkViewport(inLayer);
+
+            RHI::Scissor result;
+            result.x      = static_cast<std::int32_t>(viewport.x);
+            result.y      = static_cast<std::int32_t>(viewport.y);
+            result.width  = static_cast<std::uint32_t>(viewport.width);
+            result.height = static_cast<std::uint32_t>(viewport.height);
+
+            return result;
+        }
+
         void VulkanBackend::buildInstance()
         {
             VulkanInstance::init(instance, m_dispatcher);
@@ -357,7 +409,6 @@ namespace Chicane
                 // Images
                 image.setupColorImage(swapchain.colorFormat, swapchain.extent);
                 image.setupTargetImage(getSceneColorFormat(), swapchain.extent);
-                image.bloom.setup(logicalDevice, physicalDevice, getSceneColorFormat(), swapchain.extent);
                 image.setupDepthImage(swapchain.depthFormat, swapchain.extent);
             }
         }
@@ -385,13 +436,12 @@ namespace Chicane
                 return;
             }
 
-            bloom.destroy();
+            bloom.destroyImages();
             destroySwapchain();
             buildSwapchain();
 
             rebuildLayers();
-            bloom.init(this);
-            bloom.rebuildFramebuffers();
+            bloom.resize(swapchain.extent.width, swapchain.extent.height, m_rhi->sceneColorFormat());
         }
 
         void VulkanBackend::buildFrames()
@@ -530,10 +580,10 @@ namespace Chicane
             ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
-            addLayer<VulkanLScene>(settings);
+            addLayer<LScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<VulkanLUI>(settings);
+            addLayer<LUI>(settings);
         }
 
         void VulkanBackend::buildTextureDescriptor()
@@ -541,7 +591,7 @@ namespace Chicane
             VulkanDescriptorSetLayoutBidingsCreateInfo layoutBidings;
             layoutBidings.count = 1;
 
-            layoutBidings.indices.push_back(0);
+            layoutBidings.indices.push_back(RHI_BINDING_TEXTURES);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
             layoutBidings.counts.push_back(getResourceBudgetCount(Resource::Texture));
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
@@ -702,7 +752,7 @@ namespace Chicane
             {
                 vk::WriteDescriptorSet write;
                 write.dstSet          = set;
-                write.dstBinding      = 0;
+                write.dstBinding      = RHI_BINDING_TEXTURES;
                 write.dstArrayElement = static_cast<std::uint32_t>(inId);
                 write.descriptorCount = 1;
                 write.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
@@ -726,7 +776,7 @@ namespace Chicane
 
             vk::WriteDescriptorSet set;
             set.dstSet          = getTextureDescriptorSet();
-            set.dstBinding      = 0;
+            set.dstBinding      = RHI_BINDING_TEXTURES;
             set.dstArrayElement = static_cast<std::uint32_t>(m_screenTextureId);
             set.descriptorCount = 1;
             set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
@@ -746,6 +796,105 @@ namespace Chicane
             textureDescriptor.set       = nullptr;
             textureDescriptor.setLayout = nullptr;
             textureDescriptor.pool      = nullptr;
+        }
+
+        void VulkanBackend::releaseRhiWraps()
+        {
+            if (!m_rhi)
+            {
+                return;
+            }
+
+            auto killBuffer = [&](RHI::Buffer& inBuffer)
+            {
+                if (inBuffer.handle)
+                {
+                    m_rhi->destroyBuffer(inBuffer);
+                    inBuffer = {};
+                }
+            };
+            auto killImage = [&](RHI::Image& inImage)
+            {
+                if (inImage.handle)
+                {
+                    m_rhi->destroyImage(inImage);
+                    inImage = {};
+                }
+            };
+            auto killGroup = [&](RHI::BindGroup& inGroup)
+            {
+                if (inGroup.handle)
+                {
+                    m_rhi->destroyBindGroup(inGroup);
+                    inGroup = {};
+                }
+            };
+
+            killBuffer(m_rhiFrame.cameraBuffer);
+            killBuffer(m_rhiFrame.lightBuffer);
+            killBuffer(m_rhiFrame.instance3DBuffer);
+            killBuffer(m_rhiFrame.instance2DBuffer);
+            killBuffer(m_rhiFrame.particleBuffer);
+            killImage(m_rhiFrame.sceneColor);
+            killImage(m_rhiFrame.sceneDepth);
+            killImage(m_rhiFrame.presentColor);
+            killGroup(m_rhiFrame.textureTable);
+        }
+
+        void VulkanBackend::fillRhiFrame(VulkanFrame& inFrame, const VulkanSwapchainImage& inImage)
+        {
+            auto* device = static_cast<VulkanRHIDevice*>(m_rhi.get());
+            releaseRhiWraps();
+
+            device->setCommandBuffer(inFrame.commandBuffer);
+            m_rhiFrame.commands      = device->commandList();
+            m_rhiFrame.frameIndex    = m_currentFrameIndex;
+            m_rhiFrame.width         = swapchain.extent.width;
+            m_rhiFrame.height        = swapchain.extent.height;
+            m_rhiFrame.linearSampler = m_linearSampler;
+
+            VulkanBuffer camera;
+            camera.instance         = inFrame.cameraResource.bufferInfo.buffer;
+            m_rhiFrame.cameraBuffer = device->wrapBuffer(camera, inFrame.cameraResource.bufferInfo.range, nullptr);
+
+            VulkanBuffer light;
+            light.instance         = inFrame.lightResource.bufferInfo.buffer;
+            m_rhiFrame.lightBuffer = device->wrapBuffer(light, inFrame.lightResource.bufferInfo.range, nullptr);
+
+            VulkanBuffer instances;
+            instances.instance = inFrame.poly3DResource.bufferInfo.buffer;
+            m_rhiFrame.instance3DBuffer =
+                device->wrapBuffer(instances, inFrame.poly3DResource.bufferInfo.range, nullptr);
+
+            VulkanBuffer ui;
+            ui.instance                 = inFrame.poly2DResource.bufferInfo.buffer;
+            m_rhiFrame.instance2DBuffer = device->wrapBuffer(ui, inFrame.poly2DResource.bufferInfo.range, nullptr);
+
+            VulkanBuffer particles;
+            particles.instance = inFrame.particleResource.bufferInfo.buffer;
+            m_rhiFrame.particleBuffer =
+                device->wrapBuffer(particles, inFrame.particleResource.bufferInfo.range, nullptr);
+
+            m_rhiFrame.sceneColor =
+                device->wrapImage(inImage.targetImage, RHI::ImageKind::Color2D, RHI::ImageFormat::RGBA16F);
+            m_rhiFrame.sceneDepth =
+                device->wrapImage(inImage.depthImage, RHI::ImageKind::Depth2D, device->sceneDepthFormat());
+            m_rhiFrame.presentColor =
+                device->wrapImage(inImage.colorImage, RHI::ImageKind::Color2D, device->presentColorFormat());
+            m_rhiFrame.textureTable = device->wrapDescriptorSet(getTextureDescriptorSet());
+
+            auto* sceneColor       = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneColor.handle);
+            sceneColor->bIsSampled = true;
+            sceneColor->bHasColor  = true;
+            device->rememberLayout(sceneColor, vk::ImageLayout::eColorAttachmentOptimal);
+
+            auto* sceneDepth      = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneDepth.handle);
+            sceneDepth->bHasDepth = true;
+            device->rememberLayout(sceneDepth, vk::ImageLayout::eDepthStencilAttachmentOptimal);
+
+            auto* presentColor      = static_cast<VulkanRHIImageData*>(m_rhiFrame.presentColor.handle);
+            presentColor->bHasColor = true;
+            presentColor->bPresent  = true;
         }
     }
 }

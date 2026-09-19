@@ -159,8 +159,8 @@ namespace Editor
     {
         Chicane::FileSystem::FileDialog dialog;
         dialog.bCanSelectMany = false;
-        dialog.title          = "Create " + Chicane::Box::toString(inType);
-        dialog.addFilter(Chicane::Box::toString(inType) + "s", {inExtension});
+        dialog.title          = "Create " + Chicane::toString(inType);
+        dialog.addFilter(Chicane::toString(inType) + "s", {inExtension});
 
         dialog.open(
             [this, inType, inExtension](const Chicane::FileSystem::Item::List& inFiles)
@@ -266,7 +266,7 @@ namespace Editor
         bIsMeshAsset  = asset.getType() == Chicane::Box::AssetType::Mesh;
         assetId       = asset.getId();
         assetSource   = asset.getPayload();
-        assetType     = Chicane::Box::toString(asset.getType());
+        assetType     = Chicane::toString(asset.getType());
 
         syncViewer();
     }

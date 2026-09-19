@@ -3,8 +3,7 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Sample/Shooter/Scene.hpp"
-#include "Sample/Shooter/UI/View/Home.hpp"
+#include "Sample/Shooter/Game.hpp"
 
 Application::Application()
 {
@@ -14,14 +13,13 @@ Application::Application()
     createInfo.window.title   = "Chicane Sample";
     createInfo.window.display = 0;
     createInfo.window.type    = Chicane::WindowType::Windowed;
-    createInfo.window.backend = Chicane::WindowBackend::Vulkan;
+    createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
     // Setup
     createInfo.onSetup = [this]()
     {
         initController();
         initScene();
-        initView();
     };
 
     Chicane::Application::getInstance().run(createInfo);
@@ -36,10 +34,5 @@ void Application::initController()
 
 void Application::initScene()
 {
-    Chicane::Application::getInstance().setScene<Scene>();
-}
-
-void Application::initView()
-{
-    Chicane::Application::getInstance().setView<HomeView>();
+    Game::boot();
 }

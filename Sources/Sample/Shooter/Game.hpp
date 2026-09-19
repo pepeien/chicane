@@ -3,8 +3,12 @@
 #include <cstdint>
 #include <functional>
 
+#include "Sample/Export.hpp"
+
 namespace Game
 {
+    CHICANE_SAMPLE_API void boot();
+
     std::uint32_t getScore();
     void incrementScore(std::uint32_t inScore);
     void decrementScore(std::uint32_t inScore);

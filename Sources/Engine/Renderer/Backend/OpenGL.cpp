@@ -10,12 +10,20 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
-#include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/View.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Layer/UI.hpp"
+#include "Chicane/Renderer/Layer/Scene.hpp"
+#include "Chicane/Renderer/Layer/UI.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/RHI/Device.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
+#include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
+#include "Chicane/Renderer/Feature.hpp"
+#include "Chicane/Renderer/Shadow.hpp"
+#include "Chicane/Renderer/Shader/Bindings.hpp"
 
 namespace Chicane
 {
@@ -70,6 +78,70 @@ namespace Chicane
             buildGpuQueries();
             buildTextureData();
             buildTarget();
+            m_rhi = std::make_unique<OpenGLRHIDevice>(this);
+
+            RHI::BufferCreateInfo camera;
+            camera.size           = sizeof(View);
+            camera.usage          = RHI::BufferUsage::Uniform;
+            camera.bHasHostAccess = true;
+            m_cameraBuffer        = m_rhi->createBuffer(camera);
+
+            RHI::BufferCreateInfo light;
+            light.size           = sizeof(ShadowLight);
+            light.usage          = RHI::BufferUsage::Storage;
+            light.bHasHostAccess = true;
+            m_lightBuffer        = m_rhi->createBuffer(light);
+
+            RHI::BufferCreateInfo instances;
+            instances.size           = getResourceBudget(Resource::SceneInstances);
+            instances.usage          = RHI::BufferUsage::Storage;
+            instances.bHasHostAccess = true;
+            m_instanceBuffer         = m_rhi->createBuffer(instances);
+
+            RHI::BufferCreateInfo particles;
+            particles.size           = sizeof(DrawParticle) * MAX_PARTICLES;
+            particles.usage          = RHI::BufferUsage::Storage;
+            particles.bHasHostAccess = true;
+            m_particleBuffer         = m_rhi->createBuffer(particles);
+
+            RHI::BufferCreateInfo ui;
+            ui.size                     = getResourceBudget(Resource::UIInstances);
+            ui.usage                    = RHI::BufferUsage::Storage;
+            ui.bHasHostAccess           = true;
+            m_rhiFrame.instance2DBuffer = m_rhi->createBuffer(ui);
+
+            RHI::SamplerCreateInfo sampler;
+            sampler.minFilter = RHI::SamplerFilter::Linear;
+            sampler.magFilter = RHI::SamplerFilter::Linear;
+            sampler.address   = RHI::SamplerAddress::ClampToEdge;
+            m_linearSampler   = m_rhi->createSampler(sampler);
+
+            RHI::SamplerCreateInfo textureSampler;
+            textureSampler.minFilter = RHI::SamplerFilter::Linear;
+            textureSampler.magFilter = RHI::SamplerFilter::Linear;
+            textureSampler.address   = RHI::SamplerAddress::Repeat;
+            textureSampler.bHasMip   = true;
+            m_textureSampler         = m_rhi->createSampler(textureSampler);
+
+            RHI::BindGroupLayoutCreateInfo textureLayout;
+            RHI::Binding                   binding;
+            binding.binding     = TEXTURE_TABLE_BINDING;
+            binding.type        = RHI::BindingType::StorageBuffer;
+            binding.bIsVertex   = false;
+            binding.bIsFragment = true;
+            textureLayout.bindings.push_back(binding);
+            for (std::uint32_t index = 0; index < TEXTURE_CLASS_COUNT; index++)
+            {
+                binding.binding = TEXTURE_CLASS_BINDING + index;
+                binding.type    = RHI::BindingType::SampledImage;
+                textureLayout.bindings.push_back(binding);
+            }
+            m_textureLayout = m_rhi->createBindGroupLayout(textureLayout);
+
+            wrapTargetImages();
+            buildTextureBindGroup();
+            m_bloomPass.init(m_rhi.get());
+            m_bloomPass.resize(m_targetWidth, m_targetHeight, m_rhi->sceneColorFormat());
             buildLayers();
         }
 
@@ -84,13 +156,14 @@ namespace Chicane
 
             // Layers
             destroyLayers();
+            m_bloomPass.destroy();
+            destroyRhiResources();
             destroyFrames();
 
-            // OpenGL
             destroyGpuQueries();
             destroyTextureData();
             destroyTarget();
-            destroyBloom();
+            m_rhi.reset();
             destroyContext();
         }
 
@@ -122,6 +195,7 @@ namespace Chicane
             }
 
             bindTextureTable();
+            buildTextureBindGroup();
             Backend::onLoad(inResources);
         }
 
@@ -132,6 +206,11 @@ namespace Chicane
 
             buildTarget();
             bindTarget();
+
+            glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+            glDepthMask(GL_TRUE);
+            glStencilMask(0xFF);
+            glDisable(GL_SCISSOR_TEST);
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
@@ -147,11 +226,11 @@ namespace Chicane
 
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
-            OpenGLFrame& nextFrame = frames.at(m_currentFrameIndex);
-
+            m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
+            fillRhiFrame(inFrame);
             renderLayers(
                 inFrame,
-                &nextFrame,
+                &m_rhiFrame,
                 [](const Layer* inLayer) { return !inLayer->getId().equals(UI_LAYER_ID); }
             );
 
@@ -160,7 +239,7 @@ namespace Chicane
 
             renderLayers(
                 inFrame,
-                &nextFrame,
+                &m_rhiFrame,
                 [](const Layer* inLayer) { return inLayer->getId().equals(UI_LAYER_ID); }
             );
 
@@ -185,6 +264,30 @@ namespace Chicane
 
             Viewport result   = getLayerViewport(inLayer);
             result.position.y = resolution.y - (result.position.y + result.size.y);
+
+            return result;
+        }
+
+        RHI::Viewport OpenGLBackend::getRHIViewport(Layer* inLayer) const
+        {
+            const Viewport viewport = getGLViewport(inLayer);
+
+            RHI::Viewport result;
+            result.size     = viewport.size;
+            result.position = viewport.position;
+
+            return result;
+        }
+
+        RHI::Scissor OpenGLBackend::getRHIScissor(Layer* inLayer) const
+        {
+            const Viewport viewport = getGLViewport(inLayer);
+
+            RHI::Scissor result;
+            result.x      = static_cast<std::int32_t>(viewport.position.x);
+            result.y      = static_cast<std::int32_t>(viewport.position.y);
+            result.width  = static_cast<std::uint32_t>(viewport.size.x);
+            result.height = static_cast<std::uint32_t>(viewport.size.y);
 
             return result;
         }
@@ -235,10 +338,12 @@ namespace Chicane
                 }
 
                 const std::vector<char> code = Chicane::FileSystem::read(shader.source);
+                std::string             source(code.begin(), code.end());
+                const char*             src = source.c_str();
 
                 GLint result = GL_FALSE;
-                glShaderBinary(1, &module, GL_SHADER_BINARY_FORMAT_SPIR_V, code.data(), code.size());
-                glSpecializeShader(module, "main", 0, nullptr, nullptr);
+                glShaderSource(module, 1, &src, nullptr);
+                glCompileShader(module);
                 glGetShaderiv(module, GL_COMPILE_STATUS, &result);
 
                 if (!result)
@@ -483,7 +588,7 @@ namespace Chicane
 
         void OpenGLBackend::buildTextureData()
         {
-            static_assert(sizeof(TextureTableEntry) == 8, "GLSL uvec2 table entries must be 8 bytes");
+            static_assert(sizeof(OpenGLTextureTableEntry) == 16, "GLSL uvec4 table entries must be 16 bytes");
 
             GLint maxLayers = 2048;
             glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
@@ -497,16 +602,16 @@ namespace Chicane
             glCreateBuffers(1, &m_textureTable);
             glNamedBufferStorage(
                 m_textureTable,
-                static_cast<GLsizeiptr>(sizeof(TextureTableEntry) * slotCount),
+                static_cast<GLsizeiptr>(sizeof(OpenGLTextureTableEntry) * slotCount),
                 nullptr,
                 GL_DYNAMIC_STORAGE_BIT
             );
 
-            std::vector<TextureTableEntry> entries(slotCount);
+            std::vector<OpenGLTextureTableEntry> entries(slotCount);
             glNamedBufferSubData(
                 m_textureTable,
                 0,
-                static_cast<GLsizeiptr>(entries.size() * sizeof(TextureTableEntry)),
+                static_cast<GLsizeiptr>(entries.size() * sizeof(OpenGLTextureTableEntry)),
                 entries.data()
             );
 
@@ -517,7 +622,7 @@ namespace Chicane
         {
             m_textures.clear();
 
-            for (SizeClass& sizeClass : m_classes)
+            for (OpenGLTextureSizeClass& sizeClass : m_classes)
             {
                 if (sizeClass.texture != 0)
                 {
@@ -559,11 +664,11 @@ namespace Chicane
             }
         }
 
-        void OpenGLBackend::releaseTextureSlot(TextureSlot& inSlot)
+        void OpenGLBackend::releaseTextureSlot(OpenGLTextureSlot& inSlot)
         {
             if (inSlot.classIndex < TEXTURE_CLASS_COUNT)
             {
-                SizeClass& sizeClass = m_classes[inSlot.classIndex];
+                OpenGLTextureSizeClass& sizeClass = m_classes[inSlot.classIndex];
                 if (inSlot.layer != 0 || inSlot.classIndex != 0)
                 {
                     sizeClass.freeLayers.push_back(inSlot.layer);
@@ -577,7 +682,9 @@ namespace Chicane
             inSlot.residentMinMip = ~0u;
         }
 
-        void OpenGLBackend::writeTextureSlot(Draw::Id inId, std::uint32_t inClass, std::uint32_t inLayer)
+        void OpenGLBackend::writeTextureSlot(
+            Draw::Id inId, std::uint32_t inClass, std::uint32_t inLayer, std::uint32_t inWidth, std::uint32_t inHeight
+        )
         {
             if (inId <= Draw::InvalidId || m_textureTable == 0)
             {
@@ -590,11 +697,11 @@ namespace Chicane
                 return;
             }
 
-            const TextureTableEntry entry{inClass, inLayer};
+            const OpenGLTextureTableEntry entry{inClass, inLayer, std::max(1u, inWidth), std::max(1u, inHeight)};
             glNamedBufferSubData(
                 m_textureTable,
-                static_cast<GLintptr>(static_cast<std::size_t>(inId) * sizeof(TextureTableEntry)),
-                sizeof(TextureTableEntry),
+                static_cast<GLintptr>(static_cast<std::size_t>(inId) * sizeof(OpenGLTextureTableEntry)),
+                sizeof(OpenGLTextureTableEntry),
                 &entry
             );
         }
@@ -613,7 +720,7 @@ namespace Chicane
             return TEXTURE_CLASS_COUNT - 1;
         }
 
-        void OpenGLBackend::createClassArray(SizeClass& inClass, std::uint32_t inLayers)
+        void OpenGLBackend::createClassArray(OpenGLTextureSizeClass& inClass, std::uint32_t inLayers)
         {
             const std::uint32_t layers    = std::max(1u, std::min(inLayers, m_maxArrayLayers));
             const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
@@ -644,7 +751,7 @@ namespace Chicane
             inClass.allocated = layers;
         }
 
-        void OpenGLBackend::fillWhiteLayer(const SizeClass& inClass, std::uint32_t inLayer) const
+        void OpenGLBackend::fillWhiteLayer(const OpenGLTextureSizeClass& inClass, std::uint32_t inLayer) const
         {
             if (inClass.texture == 0)
             {
@@ -674,8 +781,8 @@ namespace Chicane
 
         void OpenGLBackend::growClass(std::uint32_t inClass, std::uint32_t inLayers)
         {
-            SizeClass&          sizeClass = m_classes[inClass];
-            const std::uint32_t layers    = std::min(std::max(inLayers, sizeClass.allocated + 1), m_maxArrayLayers);
+            OpenGLTextureSizeClass& sizeClass = m_classes[inClass];
+            const std::uint32_t     layers    = std::min(std::max(inLayers, sizeClass.allocated + 1), m_maxArrayLayers);
             if (layers <= sizeClass.allocated && sizeClass.texture != 0)
             {
                 return;
@@ -716,7 +823,7 @@ namespace Chicane
 
         std::uint32_t OpenGLBackend::allocateLayer(std::uint32_t inClass)
         {
-            SizeClass& sizeClass = m_classes[inClass];
+            OpenGLTextureSizeClass& sizeClass = m_classes[inClass];
             if (!sizeClass.freeLayers.empty())
             {
                 const std::uint32_t layer = sizeClass.freeLayers.back();
@@ -772,7 +879,7 @@ namespace Chicane
                 std::max(1u, Image::mipDimension(inTexture.height, inTexture.residentMinMip));
             const std::uint32_t classIndex = classFromResident(residentWidth, residentHeight);
 
-            TextureSlot& slot = m_textures[static_cast<std::size_t>(inTexture.id)];
+            OpenGLTextureSlot& slot = m_textures[static_cast<std::size_t>(inTexture.id)];
             if (slot.classIndex == classIndex && slot.sourceWidth == inTexture.width &&
                 slot.sourceHeight == inTexture.height && slot.residentMinMip == inTexture.residentMinMip)
             {
@@ -781,16 +888,16 @@ namespace Chicane
 
             releaseTextureSlot(slot);
 
-            const std::uint32_t layer     = allocateLayer(classIndex);
-            SizeClass&          sizeClass = m_classes[classIndex];
+            const std::uint32_t     layer     = allocateLayer(classIndex);
+            OpenGLTextureSizeClass& sizeClass = m_classes[classIndex];
             if (layer == ~0u || sizeClass.texture == 0)
             {
-                writeTextureSlot(inTexture.id, 0, 0);
+                writeTextureSlot(inTexture.id, 0, 0, residentWidth, residentHeight);
 
                 return;
             }
 
-            const std::uint32_t mipLevels = Image::mipCount(sizeClass.size, sizeClass.size);
+            const std::uint32_t mipLevels = Image::mipCount(residentWidth, residentHeight);
 
             Image::Instance lastImage;
             for (std::uint32_t gpuLevel = 0; gpuLevel < mipLevels; gpuLevel++)
@@ -810,18 +917,19 @@ namespace Chicane
                     image = lastImage;
                 }
 
-                const std::uint32_t       levelWidth = Image::mipDimension(sizeClass.size, gpuLevel);
-                std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelWidth * 4, 255);
+                const std::uint32_t       levelWidth  = std::max(1u, Image::mipDimension(residentWidth, gpuLevel));
+                const std::uint32_t       levelHeight = std::max(1u, Image::mipDimension(residentHeight, gpuLevel));
+                std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelHeight * 4, 255);
                 if (image && image->getPixels())
                 {
                     if (image->getWidth() == static_cast<int>(levelWidth) &&
-                        image->getHeight() == static_cast<int>(levelWidth))
+                        image->getHeight() == static_cast<int>(levelHeight))
                     {
                         std::memcpy(staging.data(), image->getPixels(), staging.size());
                     }
                     else
                     {
-                        image->blit(staging.data(), static_cast<int>(levelWidth), static_cast<int>(levelWidth));
+                        image->blit(staging.data(), static_cast<int>(levelWidth), static_cast<int>(levelHeight));
                     }
                 }
 
@@ -832,7 +940,7 @@ namespace Chicane
                     0,
                     static_cast<GLint>(layer),
                     static_cast<GLsizei>(levelWidth),
-                    static_cast<GLsizei>(levelWidth),
+                    static_cast<GLsizei>(levelHeight),
                     1,
                     GL_RGBA,
                     GL_UNSIGNED_BYTE,
@@ -847,7 +955,7 @@ namespace Chicane
             slot.sourceWidth    = inTexture.width;
             slot.sourceHeight   = inTexture.height;
             slot.residentMinMip = inTexture.residentMinMip;
-            writeTextureSlot(inTexture.id, classIndex, layer);
+            writeTextureSlot(inTexture.id, classIndex, layer, residentWidth, residentHeight);
         }
 
         void OpenGLBackend::buildTarget()
@@ -870,29 +978,48 @@ namespace Chicane
             glTextureParameteri(m_targetColor, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTextureParameteri(m_targetColor, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-            glCreateRenderbuffers(1, &m_targetDepth);
-            glNamedRenderbufferStorage(m_targetDepth, GL_DEPTH24_STENCIL8, width, height);
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_targetDepth);
+            glTextureStorage2D(m_targetDepth, 1, GL_DEPTH32F_STENCIL8, width, height);
+            glTextureParameteri(m_targetDepth, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTextureParameteri(m_targetDepth, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
             glCreateFramebuffers(1, &m_targetFramebuffer);
             glNamedFramebufferTexture(m_targetFramebuffer, GL_COLOR_ATTACHMENT0, m_targetColor, 0);
-            glNamedFramebufferRenderbuffer(
-                m_targetFramebuffer,
-                GL_DEPTH_STENCIL_ATTACHMENT,
-                GL_RENDERBUFFER,
-                m_targetDepth
-            );
+            glNamedFramebufferTexture(m_targetFramebuffer, GL_DEPTH_STENCIL_ATTACHMENT, m_targetDepth, 0);
 
             glCreateFramebuffers(1, &m_screenBlitFramebuffer);
 
             m_targetWidth  = width;
             m_targetHeight = height;
 
-            buildBloom();
+            if (m_rhi)
+            {
+                wrapTargetImages();
+                m_bloomPass.resize(m_targetWidth, m_targetHeight, m_rhi->sceneColorFormat());
+            }
         }
 
         void OpenGLBackend::destroyTarget()
         {
-            destroyBloomImages();
+            if (m_rhi)
+            {
+                auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+                if (m_sceneColor.handle)
+                {
+                    device->destroyImage(m_sceneColor);
+                    m_sceneColor = {};
+                }
+                if (m_sceneDepth.handle)
+                {
+                    device->destroyImage(m_sceneDepth);
+                    m_sceneDepth = {};
+                }
+                if (m_presentColor.handle)
+                {
+                    device->destroyImage(m_presentColor);
+                    m_presentColor = {};
+                }
+            }
 
             if (m_screenBlitFramebuffer != 0)
             {
@@ -908,7 +1035,7 @@ namespace Chicane
 
             if (m_targetDepth != 0)
             {
-                glDeleteRenderbuffers(1, &m_targetDepth);
+                glDeleteTextures(1, &m_targetDepth);
                 m_targetDepth = 0;
             }
 
@@ -937,184 +1064,261 @@ namespace Chicane
             return m_screenTextureId;
         }
 
-        void OpenGLBackend::presentTarget(const Frame& inFrame) const
+        void OpenGLBackend::presentTarget(const Frame& inFrame)
         {
             if (m_targetFramebuffer == 0)
             {
                 return;
             }
 
-            glDisable(GL_DEPTH_TEST);
-            glDisable(GL_BLEND);
-            glDisable(GL_CULL_FACE);
-
-            const bool bShouldPresentToWindow = !isScreenComposited(inFrame);
-            if (!bShouldPresentToWindow || m_compositeProgram == 0)
+            if (isScreenComposited(inFrame) || !m_rhiFrame.commands)
             {
                 glBindFramebuffer(GL_FRAMEBUFFER, 0);
                 glDrawBuffer(GL_BACK);
+                glDisable(GL_SCISSOR_TEST);
                 glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 return;
             }
 
-            const bool bIsHDREnabled = inFrame.hasFeature(RendererFeature::HDR);
-
-            glBindVertexArray(m_postVertexArray);
-
-            if (m_extractProgram != 0 && m_bloomColor.at(0) != 0)
-            {
-                const std::uint32_t bloomWidth  = std::max(1u, m_targetWidth / 2u);
-                const std::uint32_t bloomHeight = std::max(1u, m_targetHeight / 2u);
-
-                glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(0));
-                glViewport(0, 0, static_cast<GLsizei>(bloomWidth), static_cast<GLsizei>(bloomHeight));
-                glUseProgram(m_extractProgram);
-                glBindTextureUnit(0, m_targetColor);
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-
-                blurBloomPass(0, 1, 1.0f, 0.0f);
-                blurBloomPass(1, 0, 0.0f, 1.0f);
-                blurBloomPass(0, 1, 1.0f, 0.0f);
-                blurBloomPass(1, 0, 0.0f, 1.0f);
-            }
-
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            glDrawBuffer(GL_BACK);
-            glViewport(0, 0, static_cast<GLsizei>(m_targetWidth), static_cast<GLsizei>(m_targetHeight));
-            glUseProgram(m_compositeProgram);
-            glProgramUniform1i(m_compositeProgram, 10, bIsHDREnabled ? 1 : 0);
-            glBindTextureUnit(0, m_targetColor);
-            glBindTextureUnit(1, m_bloomColor.at(0) != 0 ? m_bloomColor.at(0) : m_targetColor);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-
-            glBindVertexArray(0);
-            glUseProgram(0);
+            m_bloomPass.apply(
+                m_rhiFrame.commands,
+                m_rhiFrame.sceneColor,
+                m_rhiFrame.presentColor,
+                m_rhiFrame.width,
+                m_rhiFrame.height,
+                inFrame.hasFeature(RendererFeature::HDR),
+                m_rhiFrame.frameIndex
+            );
         }
 
-        void OpenGLBackend::blurBloomPass(
-            std::uint32_t inSource, std::uint32_t inDestination, float inX, float inY
-        ) const
+        void OpenGLBackend::wrapTargetImages()
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, m_bloomFramebuffer.at(inDestination));
-            glUseProgram(m_blurProgram);
-            glProgramUniform2f(m_blurProgram, 1, inX, inY);
-            glBindTextureUnit(0, m_bloomColor.at(inSource));
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-        }
-
-        void OpenGLBackend::buildBloom()
-        {
-            if (m_extractProgram == 0)
+            auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            if (!device)
             {
-                Shader::List extractShaders;
-                Shader       extractVertex;
-                extractVertex.type   = ShaderType::Vertex;
-                extractVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
-                extractShaders.push_back(extractVertex);
-                Shader extractFragment;
-                extractFragment.type   = ShaderType::Fragment;
-                extractFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Extract.ofrag";
-                extractShaders.push_back(extractFragment);
-
-                Shader::List blurShaders;
-                Shader       blurVertex;
-                blurVertex.type   = ShaderType::Vertex;
-                blurVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
-                blurShaders.push_back(blurVertex);
-                Shader blurFragment;
-                blurFragment.type   = ShaderType::Fragment;
-                blurFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Blur.ofrag";
-                blurShaders.push_back(blurFragment);
-
-                Shader::List compositeShaders;
-                Shader       compositeVertex;
-                compositeVertex.type   = ShaderType::Vertex;
-                compositeVertex.source = "Assets/Engine/Shaders/OpenGL/Post/Fullscreen.overt";
-                compositeShaders.push_back(compositeVertex);
-                Shader compositeFragment;
-                compositeFragment.type   = ShaderType::Fragment;
-                compositeFragment.source = "Assets/Engine/Shaders/OpenGL/Post/Composite.ofrag";
-                compositeShaders.push_back(compositeFragment);
-
-                m_extractProgram   = initShader(extractShaders);
-                m_blurProgram      = initShader(blurShaders);
-                m_compositeProgram = initShader(compositeShaders);
-                m_postVertexArray  = initVertexArray(0);
+                return;
             }
 
-            destroyBloomImages();
-
-            const std::uint32_t bloomWidth  = std::max(1u, m_targetWidth / 2u);
-            const std::uint32_t bloomHeight = std::max(1u, m_targetHeight / 2u);
-
-            glCreateTextures(GL_TEXTURE_2D, 2, m_bloomColor.data());
-            glCreateFramebuffers(2, m_bloomFramebuffer.data());
-
-            for (int index = 0; index < 2; index++)
+            if (m_sceneColor.handle)
             {
-                glTextureStorage2D(m_bloomColor.at(index), 1, GL_RGBA16F, bloomWidth, bloomHeight);
-                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                glTextureParameteri(m_bloomColor.at(index), GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-                glNamedFramebufferTexture(
-                    m_bloomFramebuffer.at(index),
-                    GL_COLOR_ATTACHMENT0,
-                    m_bloomColor.at(index),
-                    0
+                device->destroyImage(m_sceneColor);
+                m_sceneColor = {};
+            }
+            if (m_sceneDepth.handle)
+            {
+                device->destroyImage(m_sceneDepth);
+                m_sceneDepth = {};
+            }
+            if (m_presentColor.handle)
+            {
+                device->destroyImage(m_presentColor);
+                m_presentColor = {};
+            }
+
+            m_sceneColor = device->wrapTexture(
+                m_targetColor,
+                RHI::ImageKind::Color2D,
+                RHI::ImageFormat::RGBA16F,
+                m_targetWidth,
+                m_targetHeight,
+                m_targetFramebuffer
+            );
+            m_sceneDepth = device->wrapTexture(
+                m_targetDepth,
+                RHI::ImageKind::Depth2D,
+                RHI::ImageFormat::Depth32F,
+                m_targetWidth,
+                m_targetHeight,
+                m_targetFramebuffer
+            );
+            m_presentColor = device->wrapTexture(
+                0,
+                RHI::ImageKind::Color2D,
+                device->presentColorFormat(),
+                m_targetWidth,
+                m_targetHeight,
+                0
+            );
+        }
+
+        void OpenGLBackend::buildTextureBindGroup()
+        {
+            auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            if (!device || m_textureTable == 0)
+            {
+                return;
+            }
+
+            if (m_textureTableBuffer.handle)
+            {
+                device->destroyBuffer(m_textureTableBuffer);
+                m_textureTableBuffer = {};
+            }
+            for (RHI::Image& image : m_classImages)
+            {
+                if (image.handle)
+                {
+                    device->destroyImage(image);
+                    image = {};
+                }
+            }
+            if (m_textureGroup.handle)
+            {
+                device->destroyBindGroup(m_textureGroup);
+                m_textureGroup = {};
+            }
+
+            m_textureTableBuffer = device->wrapBuffer(
+                m_textureTable,
+                sizeof(OpenGLTextureTableEntry) * getResourceBudgetCount(Resource::Texture),
+                RHI::BufferUsage::Storage
+            );
+
+            std::vector<RHI::BindResource> resources;
+            resources.push_back(
+                {TEXTURE_TABLE_BINDING, RHI::BindingType::StorageBuffer, m_textureTableBuffer, {}, {}, 0}
+            );
+            for (std::uint32_t index = 0; index < TEXTURE_CLASS_COUNT; index++)
+            {
+                const std::uint32_t texture =
+                    m_classes[index].texture != 0 ? m_classes[index].texture : m_classes[0].texture;
+                m_classImages[index] = device->wrapTexture(
+                    texture,
+                    RHI::ImageKind::Color2D,
+                    RHI::ImageFormat::RGBA8,
+                    m_classes[index].size,
+                    m_classes[index].size
+                );
+                resources.push_back(
+                    {TEXTURE_CLASS_BINDING + index,
+                     RHI::BindingType::SampledImage,
+                     {},
+                     m_classImages[index],
+                     m_textureSampler,
+                     0}
+                );
+            }
+            m_textureGroup = device->createBindGroup(m_textureLayout, resources);
+        }
+
+        void OpenGLBackend::fillRhiFrame(const Frame& inFrame)
+        {
+            auto* device                = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            m_rhiFrame.commands         = device->commandList();
+            m_rhiFrame.frameIndex       = m_currentFrameIndex;
+            m_rhiFrame.width            = m_targetWidth;
+            m_rhiFrame.height           = m_targetHeight;
+            m_rhiFrame.cameraBuffer     = m_cameraBuffer;
+            m_rhiFrame.lightBuffer      = m_lightBuffer;
+            m_rhiFrame.instance3DBuffer = m_instanceBuffer;
+            m_rhiFrame.particleBuffer   = m_particleBuffer;
+            m_rhiFrame.textureTable     = m_textureGroup;
+            m_rhiFrame.sceneColor       = m_sceneColor;
+            m_rhiFrame.sceneDepth       = m_sceneDepth;
+            m_rhiFrame.presentColor     = m_presentColor;
+            m_rhiFrame.linearSampler    = m_linearSampler;
+
+            View camera = inFrame.getCamera();
+            camera.depthZeroToOne();
+            m_rhi->updateBuffer(m_cameraBuffer, &camera, sizeof(View));
+
+            ShadowLight light =
+                Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
+            {
+                Mat4 depth                 = Mat4::One;
+                depth[2][2]                = 0.5f;
+                depth[3][2]                = 0.5f;
+                light.projections[cascade] = depth * light.projections[cascade];
+            }
+            m_rhi->updateBuffer(m_lightBuffer, &light, sizeof(ShadowLight));
+
+            const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
+            if (!instances.empty())
+            {
+                m_rhi->updateBuffer(m_instanceBuffer, instances.data(), sizeof(DrawPoly3DInstance) * instances.size());
+            }
+
+            const DrawParticle::List& particles = inFrame.getParticles();
+            const std::uint32_t       count     = std::min(static_cast<std::uint32_t>(particles.size()), MAX_PARTICLES);
+            if (count > 0)
+            {
+                m_rhi->updateBuffer(m_particleBuffer, particles.data(), sizeof(DrawParticle) * count);
+            }
+
+            if (!inFrame.getInstances2D().empty())
+            {
+                m_rhi->updateBuffer(
+                    m_rhiFrame.instance2DBuffer,
+                    inFrame.getInstances2D().data(),
+                    sizeof(DrawPoly2DInstance) * inFrame.getInstances2D().size()
                 );
             }
         }
 
-        void OpenGLBackend::destroyBloomImages()
+        void OpenGLBackend::destroyRhiResources()
         {
-            if (m_bloomFramebuffer.at(0) != 0)
+            if (!m_rhi)
             {
-                glDeleteFramebuffers(2, m_bloomFramebuffer.data());
-                m_bloomFramebuffer.fill(0);
+                return;
             }
 
-            if (m_bloomColor.at(0) != 0)
+            auto killBuffer = [&](RHI::Buffer& inBuffer)
             {
-                glDeleteTextures(2, m_bloomColor.data());
-                m_bloomColor.fill(0);
-            }
-        }
-
-        void OpenGLBackend::destroyBloom()
-        {
-            destroyBloomImages();
-
-            if (m_extractProgram != 0)
+                if (inBuffer.handle)
+                {
+                    m_rhi->destroyBuffer(inBuffer);
+                    inBuffer = {};
+                }
+            };
+            auto killImage = [&](RHI::Image& inImage)
             {
-                destroyProgram(m_extractProgram);
-                m_extractProgram = 0;
-            }
+                if (inImage.handle)
+                {
+                    m_rhi->destroyImage(inImage);
+                    inImage = {};
+                }
+            };
 
-            if (m_blurProgram != 0)
+            killBuffer(m_cameraBuffer);
+            killBuffer(m_lightBuffer);
+            killBuffer(m_instanceBuffer);
+            killBuffer(m_particleBuffer);
+            killBuffer(m_textureTableBuffer);
+            if (m_rhiFrame.instance2DBuffer.handle)
             {
-                destroyProgram(m_blurProgram);
-                m_blurProgram = 0;
+                m_rhi->destroyBuffer(m_rhiFrame.instance2DBuffer);
+                m_rhiFrame.instance2DBuffer = {};
             }
-
-            if (m_compositeProgram != 0)
+            for (RHI::Image& image : m_classImages)
             {
-                destroyProgram(m_compositeProgram);
-                m_compositeProgram = 0;
+                killImage(image);
             }
-
-            if (m_postVertexArray != 0)
+            killImage(m_sceneColor);
+            killImage(m_sceneDepth);
+            killImage(m_presentColor);
+            if (m_textureGroup.handle)
             {
-                destroyVertexArray(m_postVertexArray);
-                m_postVertexArray = 0;
+                m_rhi->destroyBindGroup(m_textureGroup);
+                m_textureGroup = {};
             }
-        }
-
-        void OpenGLBackend::captureScreenTarget()
-        {
-            return;
+            if (m_textureLayout.handle)
+            {
+                m_rhi->destroyBindGroupLayout(m_textureLayout);
+                m_textureLayout = {};
+            }
+            if (m_linearSampler.handle)
+            {
+                m_rhi->destroySampler(m_linearSampler);
+                m_linearSampler = {};
+            }
+            if (m_textureSampler.handle)
+            {
+                m_rhi->destroySampler(m_textureSampler);
+                m_textureSampler = {};
+            }
         }
 
         void OpenGLBackend::buildFrames()
@@ -1134,10 +1338,10 @@ namespace Chicane
             ListPush<Layer*> settings;
 
             settings.strategy = ListPushStrategy::Front;
-            addLayer<OpenGLLScene>(settings);
+            addLayer<LScene>(settings);
 
             settings.strategy = ListPushStrategy::Back;
-            addLayer<OpenGLLUI>(settings);
+            addLayer<LUI>(settings);
         }
 
         std::uint16_t OpenGLBackend::toGLDepthCompare(DepthCompare inValue) const

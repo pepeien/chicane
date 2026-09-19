@@ -13,20 +13,20 @@ namespace Chicane
             Running,
             Shutdown
         };
+    }
 
-        inline String toString(BackendStatus inValue)
+    inline String toString(Renderer::BackendStatus inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case BackendStatus::Running:
-                return "Running";
+        case Renderer::BackendStatus::Running:
+            return "Running";
 
-            case BackendStatus::Shutdown:
-                return "Shutdown";
+        case Renderer::BackendStatus::Shutdown:
+            return "Shutdown";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

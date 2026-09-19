@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include <Chicane/Core/Reflection.hpp>
+#include <Chicane/Core/String.hpp>
 
 namespace Editor
 {
@@ -14,4 +15,25 @@ namespace Editor
         Pan,
         Zoom
     };
+
+    inline Chicane::String toString(NavigationType inValue)
+    {
+        switch (inValue)
+        {
+        case NavigationType::None:
+            return "None";
+
+        case NavigationType::Orbit:
+            return "Orbit";
+
+        case NavigationType::Pan:
+            return "Pan";
+
+        case NavigationType::Zoom:
+            return "Zoom";
+
+        default:
+            return "";
+        }
+    }
 }

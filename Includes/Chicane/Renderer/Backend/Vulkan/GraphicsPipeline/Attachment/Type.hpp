@@ -14,20 +14,20 @@ namespace Chicane
             Color,
             Depth
         };
+    }
 
-        inline String toString(VulkanGraphicsPipelineAttachmentType inValue)
+    inline String toString(Renderer::VulkanGraphicsPipelineAttachmentType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case VulkanGraphicsPipelineAttachmentType::Color:
-                return "Color";
+        case Renderer::VulkanGraphicsPipelineAttachmentType::Color:
+            return "Color";
 
-            case VulkanGraphicsPipelineAttachmentType::Depth:
-                return "Depth";
+        case Renderer::VulkanGraphicsPipelineAttachmentType::Depth:
+            return "Depth";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -218,7 +218,7 @@ namespace Editor
 
         for (const Chicane::Box::AssetType type : types)
         {
-            if (Chicane::Box::toString(type).toLower().equals(key))
+            if (Chicane::toString(type).toLower().equals(key))
             {
                 return type;
             }
@@ -240,7 +240,7 @@ namespace Editor
             return "Asset";
         }
 
-        return Chicane::Box::toString(type);
+        return Chicane::toString(type);
     }
 
     Chicane::String AssetSelector::typeExtension() const

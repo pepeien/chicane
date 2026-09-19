@@ -11,15 +11,8 @@
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
 #include "Editor/Actor/Character.hpp"
+#include "Editor/Layer/Grid.hpp"
 #include "Editor/UI/View/Home.hpp"
-
-#if CHICANE_OPENGL
-    #include "Layer/OpenGL/Grid.hpp"
-#endif
-
-#if CHICANE_VULKAN
-    #include "Layer/Vulkan/Grid.hpp"
-#endif
 
 namespace Editor
 {
@@ -117,25 +110,7 @@ namespace Editor
                 settings.predicate = [](Chicane::Renderer::Layer* inLayer)
                 { return inLayer->getId().equals(Chicane::Renderer::SCENE_MESH_LAYER_ID); };
 
-                switch (inValue)
-                {
-#if CHICANE_OPENGL
-                case Chicane::WindowBackend::OpenGL:
-                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLUI>(settings);
-
-                    break;
-#endif
-
-#if CHICANE_VULKAN
-                case Chicane::WindowBackend::Vulkan:
-                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<VulkanLUI>(settings);
-
-                    break;
-#endif
-
-                default:
-                    break;
-                }
+                Chicane::Application::getInstance().getRenderer()->addBackendLayer<LGrid>(settings);
             }
         );
     }

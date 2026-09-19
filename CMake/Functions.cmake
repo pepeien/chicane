@@ -60,83 +60,95 @@ function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
     add_dependencies(${TARGET_NAME} "${TARGET_NAME}-Copy")
 endfunction()
 
-function(
-    _CH_COMPILE_SHADERS
-    TARGET_NAME
-    SOURCE_PATH
-    OUTPUT_PATH
-    FRAG_SHADER_EXTENSION
-    VERT_SHADER_EXTENSION
-    SHADER_VERSION
-)
-    file(
-        GLOB_RECURSE
-        VULKAN_SOURCES
-            "${SOURCE_PATH}/*.${FRAG_SHADER_EXTENSION}"
-            "${SOURCE_PATH}/*.${VERT_SHADER_EXTENSION}"
-    )
-    file(
-        GLOB_RECURSE
-        SHADER_INCLUDES
-            "${SOURCE_PATH}/*.glsl"
-    )
+function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
+    cmake_parse_arguments(SHADER "" "" "INCLUDES" ${ARGN})
 
-    set(ALL_SPIRV "")
+    find_program(SLANGC slangc HINTS "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_SDK}/bin" REQUIRED)
+    find_program(SPIRV_CROSS spirv-cross HINTS "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_SDK}/bin" REQUIRED)
+    find_program(GLSL_VALIDATOR glslangValidator HINTS "$ENV{VULKAN_SDK}/Bin" "$ENV{VULKAN_SDK}/bin")
 
-    foreach(GLSL ${VULKAN_SOURCES})
-        get_filename_component(FILE_DIR       ${GLSL} DIRECTORY)
-        get_filename_component(FILE_NAME      ${GLSL} NAME)
-        get_filename_component(FILE_EXTENSION ${GLSL} EXT)
+    file(GLOB_RECURSE SLANG_SOURCES "${SOURCE_PATH}/*.slang")
+    file(GLOB_RECURSE SLANG_MODULES "${SOURCE_PATH}/*.slang")
 
-        set(SPIRV_DIR "${FILE_DIR}")
-        string(REPLACE "${SOURCE_PATH}" "" SPIRV_DIR ${SPIRV_DIR})
-        set(SPIRV_DIR "${OUTPUT_PATH}/${SPIRV_DIR}")
-        string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
+    set(INCLUDE_ARGS "")
+    list(APPEND INCLUDE_ARGS "-I${SOURCE_PATH}")
+    list(APPEND INCLUDE_ARGS "-I${SOURCE_PATH}/Shaders")
+    list(APPEND INCLUDE_ARGS "-I${SOURCE_PATH}/Shaders/Common")
+    list(APPEND INCLUDE_ARGS "-I${SOURCE_PATH}/Common")
+    foreach(INCLUDE_PATH ${SHADER_INCLUDES})
+        list(APPEND INCLUDE_ARGS "-I${INCLUDE_PATH}")
+        list(APPEND INCLUDE_ARGS "-I${INCLUDE_PATH}/Common")
+        file(GLOB_RECURSE EXTRA_MODULES "${INCLUDE_PATH}/*.slang")
+        list(APPEND SLANG_MODULES ${EXTRA_MODULES})
+    endforeach()
 
-        set(SPIRV "${SPIRV_DIR}/${FILE_NAME}")
-        string(REPLACE "//" "/" SPIRV ${SPIRV})
+    set(ALL_OUTPUTS "")
 
-        if(FILE_EXTENSION STREQUAL ".${FRAG_SHADER_EXTENSION}")
-            set(SHADER_STAGE "frag")
-        elseif(FILE_EXTENSION STREQUAL ".${VERT_SHADER_EXTENSION}")
-            set(SHADER_STAGE "vert")
+    foreach(SLANG ${SLANG_SOURCES})
+        get_filename_component(FILE_NAME ${SLANG} NAME)
+
+        if(FILE_NAME MATCHES "\\.vert\\.slang$")
+            set(SHADER_STAGE "vertex")
+            set(VALIDATOR_STAGE "vert")
+        elseif(FILE_NAME MATCHES "\\.frag\\.slang$")
+            set(SHADER_STAGE "fragment")
+            set(VALIDATOR_STAGE "frag")
         else()
             continue()
         endif()
 
+        get_filename_component(FILE_DIR ${SLANG} DIRECTORY)
+        set(REL_DIR "${FILE_DIR}")
+        string(REPLACE "${SOURCE_PATH}" "" REL_DIR "${REL_DIR}")
+        set(OUT_DIR "${OUTPUT_PATH}/${REL_DIR}")
+        string(REPLACE "//" "/" OUT_DIR "${OUT_DIR}")
+
+        string(REPLACE ".slang" "" STAGE_NAME "${FILE_NAME}")
+        set(VSPV "${OUT_DIR}/${STAGE_NAME}.vspv")
+        set(GLSL "${OUT_DIR}/${STAGE_NAME}.glsl")
+        set(TMP_SPV "${OUT_DIR}/${STAGE_NAME}.gl.spv")
+        string(REPLACE "//" "/" VSPV "${VSPV}")
+        string(REPLACE "//" "/" GLSL "${GLSL}")
+        string(REPLACE "//" "/" TMP_SPV "${TMP_SPV}")
+
+        set(VALIDATE_COMMAND ${CMAKE_COMMAND} -E true)
+        if(GLSL_VALIDATOR)
+            set(VALIDATE_COMMAND ${GLSL_VALIDATOR} -S ${VALIDATOR_STAGE} ${GLSL})
+        endif()
+
         add_custom_command(
             OUTPUT
-                "${SPIRV}"
-            COMMAND
-                ${CMAKE_COMMAND} -E make_directory "${SPIRV_DIR}"
-            COMMAND
-                ${GLSL_VALIDATOR} -S ${SHADER_STAGE} -${SHADER_VERSION} -I"${SOURCE_PATH}" ${GLSL} -o ${SPIRV}
-            DEPENDS
+                "${VSPV}"
                 "${GLSL}"
-                ${SHADER_INCLUDES}
+            COMMAND
+                ${CMAKE_COMMAND} -E make_directory "${OUT_DIR}"
+            COMMAND
+                ${SLANGC} ${SLANG} -target spirv -stage ${SHADER_STAGE} -entry main -DCHICANE_VULKAN ${INCLUDE_ARGS} -o "${VSPV}"
+            COMMAND
+                ${SLANGC} ${SLANG} -target spirv -stage ${SHADER_STAGE} -entry main ${INCLUDE_ARGS} -o "${TMP_SPV}"
+            COMMAND
+                ${SPIRV_CROSS} "${TMP_SPV}" --version 460 --no-es --output "${GLSL}"
+            COMMAND
+                ${VALIDATE_COMMAND}
+            DEPENDS
+                "${SLANG}"
+                ${SLANG_MODULES}
             COMMENT
                 "Compiling shader ${FILE_NAME}"
             VERBATIM
         )
 
-        list(APPEND ALL_SPIRV "${SPIRV}")
+        list(APPEND ALL_OUTPUTS "${VSPV}" "${GLSL}")
     endforeach()
 
-    if(ALL_SPIRV)
-        string(MD5 SHADER_HASH "${SOURCE_PATH}${SHADER_VERSION}")
+    if(ALL_OUTPUTS)
+        string(MD5 SHADER_HASH "${SOURCE_PATH}")
         add_custom_target(
             "CH_SHADERS_${SHADER_HASH}" ALL
-            DEPENDS ${ALL_SPIRV}
+            DEPENDS ${ALL_OUTPUTS}
         )
         add_dependencies(${TARGET_NAME} "CH_SHADERS_${SHADER_HASH}")
     endif()
-endfunction()
-
-function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
-    find_program(GLSL_VALIDATOR glslangValidator REQUIRED)
-
-    _CH_COMPILE_SHADERS(${TARGET_NAME} ${SOURCE_PATH} ${OUTPUT_PATH} "vfrag" "vvert" "V")
-    _CH_COMPILE_SHADERS(${TARGET_NAME} ${SOURCE_PATH} ${OUTPUT_PATH} "ofrag" "overt" "G")
 endfunction()
 
 function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)

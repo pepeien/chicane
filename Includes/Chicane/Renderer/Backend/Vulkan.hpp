@@ -9,13 +9,14 @@
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Instance.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Bloom/Pass.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Info.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
+#include "Chicane/Renderer/RHI/Frame.hpp"
+#include "Chicane/Renderer/RHI/FullscreenPass.hpp"
 
 namespace Chicane
 {
@@ -45,13 +46,18 @@ namespace Chicane
         public:
             vk::Viewport getVkViewport(Layer* inLayer) const;
             vk::Rect2D getVkScissor(Layer* inLayer) const;
+            RHI::Viewport getRHIViewport(Layer* inLayer) const override;
+            RHI::Scissor getRHIScissor(Layer* inLayer) const override;
             vk::DescriptorSet getTextureDescriptorSet() const;
             vk::Format getSceneColorFormat() const;
             void releaseBoundDescriptors();
 
-            VulkanBloomPass bloom;
+            RHI::FullscreenPass bloom;
 
         private:
+            void fillRhiFrame(VulkanFrame& inFrame, const VulkanSwapchainImage& inImage);
+            void releaseRhiWraps();
+
             void buildInstance();
             void destroyInstance();
 
@@ -145,6 +151,8 @@ namespace Chicane
             float                      m_timestampPeriod;
             bool                       m_bIsTimestampsEnabled;
             std::vector<bool>          m_timestampSubmitted;
+            RHI::Frame                 m_rhiFrame;
+            RHI::Sampler               m_linearSampler;
         };
     }
 }

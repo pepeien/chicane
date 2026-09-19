@@ -19,6 +19,7 @@ file(
     ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
+list(FILTER SOURCES EXCLUDE REGEX "Hygiene\\.cpp$")
 
 ######################### Setup #########################
 if (CHICANE_OPENGL)
@@ -100,6 +101,29 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${CHICANE_ENGINE_RENDERER_TARGET_NAME})
 CH_GENERATE_REFLECTION(${CHICANE_ENGINE_RENDERER_TARGET_NAME})
+
+add_library(
+    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
+    STATIC
+        ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Hygiene.cpp
+)
+set_target_properties(
+    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
+    PROPERTIES
+        EXCLUDE_FROM_ALL
+            FALSE
+)
+target_include_directories(
+    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
+    PRIVATE
+        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
+)
+target_link_libraries(
+    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
+    PRIVATE
+        Chicane::Core
+)
+CH_ADD_COMPILER(${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene)
 
 ######################### Depedencies #########################
 add_dependencies(${CHICANE_ENGINE_RENDERER_TARGET_NAME} ${CHICANE_ENGINE_ASSETS_TARGET_NAME})

@@ -12,6 +12,7 @@ namespace Chicane
         Backend::Backend()
             : m_renderer(nullptr),
               m_layers({}),
+              m_rhi(nullptr),
               m_VRAM(0U),
               m_gpuDelta(0.0f),
               m_status(BackendStatus::Shutdown)
@@ -223,6 +224,35 @@ namespace Chicane
         bool Backend::isStatus(BackendStatus inValue) const
         {
             return m_status == inValue;
+        }
+
+        RHI::Device* Backend::getRHIDevice() const
+        {
+            return m_rhi.get();
+        }
+
+        RHI::Viewport Backend::getRHIViewport(Layer* inLayer) const
+        {
+            const Viewport viewport = getLayerViewport(inLayer);
+
+            RHI::Viewport result;
+            result.size     = viewport.size;
+            result.position = viewport.position;
+
+            return result;
+        }
+
+        RHI::Scissor Backend::getRHIScissor(Layer* inLayer) const
+        {
+            const Viewport viewport = getLayerViewport(inLayer);
+
+            RHI::Scissor result;
+            result.x      = static_cast<std::int32_t>(viewport.position.x);
+            result.y      = static_cast<std::int32_t>(viewport.position.y);
+            result.width  = static_cast<std::uint32_t>(viewport.size.x);
+            result.height = static_cast<std::uint32_t>(viewport.size.y);
+
+            return result;
         }
 
         float Backend::getGpuDelta() const

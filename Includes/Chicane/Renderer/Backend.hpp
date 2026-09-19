@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <memory>
 
 #include "Chicane/Core/List/Push.hpp"
 
@@ -18,6 +19,9 @@
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/RHI/Device.hpp"
+#include "Chicane/Renderer/RHI/Scissor.hpp"
+#include "Chicane/Renderer/RHI/Viewport.hpp"
 
 namespace Chicane
 {
@@ -27,6 +31,7 @@ namespace Chicane
 
         class CHICANE_RENDERER Backend
         {
+        public:
             friend Instance;
 
         public:
@@ -133,6 +138,12 @@ namespace Chicane
 
             bool isStatus(BackendStatus inValue) const;
 
+            // RHI
+            RHI::Device* getRHIDevice() const;
+
+            virtual RHI::Viewport getRHIViewport(Layer* inLayer) const;
+            virtual RHI::Scissor getRHIScissor(Layer* inLayer) const;
+
             // Telemetry
             float getGpuDelta() const;
 
@@ -157,10 +168,11 @@ namespace Chicane
             void setRenderer(const Instance* inValue);
 
         protected:
-            const Instance* m_renderer;
-            LayerList       m_layers;
-            std::size_t     m_VRAM;
-            float           m_gpuDelta;
+            const Instance*              m_renderer;
+            LayerList                    m_layers;
+            std::unique_ptr<RHI::Device> m_rhi;
+            std::size_t                  m_VRAM;
+            float                        m_gpuDelta;
 
         private:
             BackendStatus m_status;

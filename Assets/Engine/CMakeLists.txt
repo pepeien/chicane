@@ -6,7 +6,7 @@ CH_COPY_FILES(
     ${CHICANE_ENGINE_ASSETS_TARGET_NAME}
     ${CHICANE_ENGINE_ASSETS_SOURCES_DIR}
     ${CHICANE_ENGINE_ASSETS_BUILD_DIR}
-    ".:*CMakeLists.txt|.frag|.vert$"
+    ".:*CMakeLists.txt|.slang$"
 )
 
 CH_COMPILE_SHADERS(

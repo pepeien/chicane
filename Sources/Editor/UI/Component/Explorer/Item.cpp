@@ -393,7 +393,7 @@ namespace Editor
             const Chicane::Box::AssetType   assetType = Chicane::Box::getTypeFromExtension(filePath);
             if (assetType != Chicane::Box::AssetType::Undefined)
             {
-                typeClass = Chicane::Box::toString(assetType).toLower();
+                typeClass = Chicane::toString(assetType).toLower();
             }
 
             kind = ExplorerItemKind::File;

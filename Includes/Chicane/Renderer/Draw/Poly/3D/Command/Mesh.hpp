@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
@@ -19,9 +20,9 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommandMesh>;
 
         public:
-            Draw::Reference    model                       = Draw::InvalidReference;
-            Draw::Reference    textures[TEXTURE_MAP_COUNT] = {};
-            DrawPoly3DInstance instance                    = {};
+            Draw::Reference                                model    = Draw::InvalidReference;
+            std::array<Draw::Reference, TEXTURE_MAP_COUNT> textures = {};
+            DrawPoly3DInstance                             instance = {};
         };
     }
 }
