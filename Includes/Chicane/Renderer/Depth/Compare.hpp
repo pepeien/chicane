@@ -19,38 +19,38 @@ namespace Chicane
             GreaterOrEqual,
             Always
         };
+    }
 
-        inline String toString(DepthCompare inValue)
+    inline String toString(Renderer::DepthCompare inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DepthCompare::Never:
-                return "Never";
+        case Renderer::DepthCompare::Never:
+            return "Never";
 
-            case DepthCompare::Less:
-                return "Less";
+        case Renderer::DepthCompare::Less:
+            return "Less";
 
-            case DepthCompare::Equal:
-                return "Equal";
+        case Renderer::DepthCompare::Equal:
+            return "Equal";
 
-            case DepthCompare::LessOrEqual:
-                return "LessOrEqual";
+        case Renderer::DepthCompare::LessOrEqual:
+            return "LessOrEqual";
 
-            case DepthCompare::Greater:
-                return "Greater";
+        case Renderer::DepthCompare::Greater:
+            return "Greater";
 
-            case DepthCompare::NotEqual:
-                return "NotEqual";
+        case Renderer::DepthCompare::NotEqual:
+            return "NotEqual";
 
-            case DepthCompare::GreaterOrEqual:
-                return "GreaterOrEqual";
+        case Renderer::DepthCompare::GreaterOrEqual:
+            return "GreaterOrEqual";
 
-            case DepthCompare::Always:
-                return "Always";
+        case Renderer::DepthCompare::Always:
+            return "Always";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

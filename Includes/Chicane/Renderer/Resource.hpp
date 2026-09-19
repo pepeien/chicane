@@ -27,51 +27,51 @@ namespace Chicane
             UIGlyphs
         };
 
-        inline String toString(Resource inValue)
-        {
-            switch (inValue)
-            {
-            case Resource::Scene:
-                return "Scene";
-
-            case Resource::SceneIndices:
-                return "SceneIndices";
-
-            case Resource::SceneVertices:
-                return "SceneVertices";
-
-            case Resource::SceneInstances:
-                return "SceneInstances";
-
-            case Resource::SceneCamera:
-                return "SceneCamera";
-
-            case Resource::SceneLights:
-                return "SceneLights";
-
-            case Resource::Texture:
-                return "Texture";
-
-            case Resource::UI:
-                return "UI";
-
-            case Resource::UIIndices:
-                return "UIIndices";
-
-            case Resource::UIVertices:
-                return "UIVertices";
-
-            case Resource::UIInstances:
-                return "UIInstances";
-
-            case Resource::UIGlyphs:
-                return "UIGlyphs";
-
-            default:
-                return "";
-            }
-        }
-
         using ResourceBudget = std::unordered_map<Resource, float>;
+    }
+
+    inline String toString(Renderer::Resource inValue)
+    {
+        switch (inValue)
+        {
+        case Renderer::Resource::Scene:
+            return "Scene";
+
+        case Renderer::Resource::SceneIndices:
+            return "SceneIndices";
+
+        case Renderer::Resource::SceneVertices:
+            return "SceneVertices";
+
+        case Renderer::Resource::SceneInstances:
+            return "SceneInstances";
+
+        case Renderer::Resource::SceneCamera:
+            return "SceneCamera";
+
+        case Renderer::Resource::SceneLights:
+            return "SceneLights";
+
+        case Renderer::Resource::Texture:
+            return "Texture";
+
+        case Renderer::Resource::UI:
+            return "UI";
+
+        case Renderer::Resource::UIIndices:
+            return "UIIndices";
+
+        case Renderer::Resource::UIVertices:
+            return "UIVertices";
+
+        case Renderer::Resource::UIInstances:
+            return "UIInstances";
+
+        case Renderer::Resource::UIGlyphs:
+            return "UIGlyphs";
+
+        default:
+            return "";
+        }
     }
 }

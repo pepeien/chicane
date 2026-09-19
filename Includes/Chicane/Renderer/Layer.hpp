@@ -22,6 +22,7 @@ namespace Chicane
 
         class CHICANE_RENDERER Layer
         {
+        public:
             friend Backend;
 
         public:

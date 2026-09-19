@@ -15,26 +15,26 @@ namespace Chicane
             Back,
             FrontAndBack
         };
+    }
 
-        inline String toString(CullingMode inValue)
+    inline String toString(Renderer::CullingMode inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case CullingMode::None:
-                return "None";
+        case Renderer::CullingMode::None:
+            return "None";
 
-            case CullingMode::Front:
-                return "Front";
+        case Renderer::CullingMode::Front:
+            return "Front";
 
-            case CullingMode::Back:
-                return "Back";
+        case Renderer::CullingMode::Back:
+            return "Back";
 
-            case CullingMode::FrontAndBack:
-                return "FrontAndBack";
+        case Renderer::CullingMode::FrontAndBack:
+            return "FrontAndBack";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

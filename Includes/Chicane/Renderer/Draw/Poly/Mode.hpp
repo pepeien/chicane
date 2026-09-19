@@ -13,20 +13,20 @@ namespace Chicane
             Fill,
             Line
         };
+    }
 
-        inline String toString(DrawPolyMode inValue)
+    inline String toString(Renderer::DrawPolyMode inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DrawPolyMode::Fill:
-                return "Fill";
+        case Renderer::DrawPolyMode::Fill:
+            return "Fill";
 
-            case DrawPolyMode::Line:
-                return "Line";
+        case Renderer::DrawPolyMode::Line:
+            return "Line";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

@@ -14,23 +14,23 @@ namespace Chicane
             e3D,
             eParticle
         };
+    }
 
-        inline String toString(DrawPolyType inValue)
+    inline String toString(Renderer::DrawPolyType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DrawPolyType::e2D:
-                return "e2D";
+        case Renderer::DrawPolyType::e2D:
+            return "e2D";
 
-            case DrawPolyType::e3D:
-                return "e3D";
+        case Renderer::DrawPolyType::e3D:
+            return "e3D";
 
-            case DrawPolyType::eParticle:
-                return "eParticle";
+        case Renderer::DrawPolyType::eParticle:
+            return "eParticle";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

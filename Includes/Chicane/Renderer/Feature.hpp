@@ -25,48 +25,6 @@ namespace Chicane
             All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light
         };
 
-        inline String toString(RendererFeature inValue)
-        {
-            switch (inValue)
-            {
-            case RendererFeature::None:
-                return "None";
-
-            case RendererFeature::Fill:
-                return "Fill";
-
-            case RendererFeature::Wireframe:
-                return "Wireframe";
-
-            case RendererFeature::Bounds:
-                return "Bounds";
-
-            case RendererFeature::Traces:
-                return "Traces";
-
-            case RendererFeature::Colliders:
-                return "Colliders";
-
-            case RendererFeature::Skeletons:
-                return "Skeletons";
-
-            case RendererFeature::HDR:
-                return "HDR";
-
-            case RendererFeature::Light:
-                return "Light";
-
-            case RendererFeature::Default:
-                return "Default";
-
-            case RendererFeature::All:
-                return "All";
-
-            default:
-                return "";
-            }
-        }
-
         inline RendererFeature operator|(RendererFeature inLeft, RendererFeature inRight)
         {
             return static_cast<RendererFeature>(static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight));
@@ -94,6 +52,48 @@ namespace Chicane
         inline RendererFeature operator~(RendererFeature inValue)
         {
             return static_cast<RendererFeature>(~static_cast<std::uint8_t>(inValue));
+        }
+    }
+
+    inline String toString(Renderer::RendererFeature inValue)
+    {
+        switch (inValue)
+        {
+        case Renderer::RendererFeature::None:
+            return "None";
+
+        case Renderer::RendererFeature::Fill:
+            return "Fill";
+
+        case Renderer::RendererFeature::Wireframe:
+            return "Wireframe";
+
+        case Renderer::RendererFeature::Bounds:
+            return "Bounds";
+
+        case Renderer::RendererFeature::Traces:
+            return "Traces";
+
+        case Renderer::RendererFeature::Colliders:
+            return "Colliders";
+
+        case Renderer::RendererFeature::Skeletons:
+            return "Skeletons";
+
+        case Renderer::RendererFeature::HDR:
+            return "HDR";
+
+        case Renderer::RendererFeature::Light:
+            return "Light";
+
+        case Renderer::RendererFeature::Default:
+            return "Default";
+
+        case Renderer::RendererFeature::All:
+            return "All";
+
+        default:
+            return "";
         }
     }
 }

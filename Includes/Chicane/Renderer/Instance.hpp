@@ -37,6 +37,7 @@ namespace Chicane
     {
         class CHICANE_RENDERER Instance
         {
+        public:
             friend Application;
 
         public:

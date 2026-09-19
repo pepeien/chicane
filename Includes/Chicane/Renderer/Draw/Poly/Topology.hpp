@@ -22,47 +22,47 @@ namespace Chicane
             TriangleStripWithAdjacency,
             PatchList
         };
+    }
 
-        inline String toString(DrawPolyTopology inValue)
+    inline String toString(Renderer::DrawPolyTopology inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case DrawPolyTopology::PointList:
-                return "PointList";
+        case Renderer::DrawPolyTopology::PointList:
+            return "PointList";
 
-            case DrawPolyTopology::LineList:
-                return "LineList";
+        case Renderer::DrawPolyTopology::LineList:
+            return "LineList";
 
-            case DrawPolyTopology::LineStrip:
-                return "LineStrip";
+        case Renderer::DrawPolyTopology::LineStrip:
+            return "LineStrip";
 
-            case DrawPolyTopology::TriangleList:
-                return "TriangleList";
+        case Renderer::DrawPolyTopology::TriangleList:
+            return "TriangleList";
 
-            case DrawPolyTopology::TriangleStrip:
-                return "TriangleStrip";
+        case Renderer::DrawPolyTopology::TriangleStrip:
+            return "TriangleStrip";
 
-            case DrawPolyTopology::TriangleFan:
-                return "TriangleFan";
+        case Renderer::DrawPolyTopology::TriangleFan:
+            return "TriangleFan";
 
-            case DrawPolyTopology::LineListWithAdjacency:
-                return "LineListWithAdjacency";
+        case Renderer::DrawPolyTopology::LineListWithAdjacency:
+            return "LineListWithAdjacency";
 
-            case DrawPolyTopology::LineStripWithAdjacency:
-                return "LineStripWithAdjacency";
+        case Renderer::DrawPolyTopology::LineStripWithAdjacency:
+            return "LineStripWithAdjacency";
 
-            case DrawPolyTopology::TriangleListWithAdjacency:
-                return "TriangleListWithAdjacency";
+        case Renderer::DrawPolyTopology::TriangleListWithAdjacency:
+            return "TriangleListWithAdjacency";
 
-            case DrawPolyTopology::TriangleStripWithAdjacency:
-                return "TriangleStripWithAdjacency";
+        case Renderer::DrawPolyTopology::TriangleStripWithAdjacency:
+            return "TriangleStripWithAdjacency";
 
-            case DrawPolyTopology::PatchList:
-                return "PatchList";
+        case Renderer::DrawPolyTopology::PatchList:
+            return "PatchList";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

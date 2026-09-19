@@ -13,20 +13,20 @@ namespace Chicane
             CounterClockwise,
             Clockwise
         };
+    }
 
-        inline String toString(CullingFrontFace inValue)
+    inline String toString(Renderer::CullingFrontFace inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case CullingFrontFace::CounterClockwise:
-                return "CounterClockwise";
+        case Renderer::CullingFrontFace::CounterClockwise:
+            return "CounterClockwise";
 
-            case CullingFrontFace::Clockwise:
-                return "Clockwise";
+        case Renderer::CullingFrontFace::Clockwise:
+            return "Clockwise";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }

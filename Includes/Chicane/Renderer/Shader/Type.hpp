@@ -16,23 +16,23 @@ namespace Chicane
             Vertex,
             Undefined
         };
+    }
 
-        inline String toString(ShaderType inValue)
+    inline String toString(Renderer::ShaderType inValue)
+    {
+        switch (inValue)
         {
-            switch (inValue)
-            {
-            case ShaderType::Fragment:
-                return "Fragment";
+        case Renderer::ShaderType::Fragment:
+            return "Fragment";
 
-            case ShaderType::Vertex:
-                return "Vertex";
+        case Renderer::ShaderType::Vertex:
+            return "Vertex";
 
-            case ShaderType::Undefined:
-                return "Undefined";
+        case Renderer::ShaderType::Undefined:
+            return "Undefined";
 
-            default:
-                return "";
-            }
+        default:
+            return "";
         }
     }
 }
