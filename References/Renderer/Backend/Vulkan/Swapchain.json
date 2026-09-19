@@ -149,7 +149,43 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "chooseExtent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::SurfaceCapabilitiesKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCapabilities"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_CHOOSEEXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -195,6 +231,26 @@
                             "templates": []
                         },
                         "name": "inSurface"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::SwapchainKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOldSwapchain"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFallbackExtent"
                     }
                 ],
                 "modifiers": [],

@@ -588,6 +588,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setupSwapchainImages",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_SETUPSWAPCHAINIMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "destroySwapchain",
                 "parameters": [],
                 "modifiers": [],
@@ -607,6 +622,23 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_REBUILDSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getSwapchainFallbackExtent",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANBACKEND_GETSWAPCHAINFALLBACKEXTENT_DESCRIPTION"
             },
             {
                 "accessor": "private",
