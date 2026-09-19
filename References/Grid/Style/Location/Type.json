@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "StyleLocationType",
     "filename": "Type",
     "path": "Grid/Style/Location/Type",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleLocationType",
+                            "name": "Grid::StyleLocationType",
                             "suffix": "",
                             "path": "Grid/Style/Location/Type",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLELOCATIONTYPE_DESCRIPTION"
     },
     "children": []
 }

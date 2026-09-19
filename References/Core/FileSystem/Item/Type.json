@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "ItemType",
     "filename": "Type",
     "path": "Core/FileSystem/Item/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ItemType",
+                            "name": "FileSystem::ItemType",
                             "suffix": "",
                             "path": "Core/FileSystem/Item/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_FILESYSTEM_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_FILESYSTEM_DESCRIPTION"
+        "description": "CHICANE_FILESYSTEM_ITEMTYPE_DESCRIPTION"
     },
     "children": []
 }

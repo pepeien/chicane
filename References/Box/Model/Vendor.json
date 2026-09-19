@@ -1,5 +1,5 @@
 {
-    "title": "Vendor",
+    "title": "ModelVendor",
     "filename": "Vendor",
     "path": "Box/Model/Vendor",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ModelVendor",
+                            "name": "Box::ModelVendor",
                             "suffix": "",
                             "path": "Box/Model/Vendor",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELVENDOR_DESCRIPTION"
     },
     "children": []
 }

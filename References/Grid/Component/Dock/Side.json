@@ -1,5 +1,5 @@
 {
-    "title": "Side",
+    "title": "DockSide",
     "filename": "Side",
     "path": "Grid/Component/Dock/Side",
     "source": {
@@ -92,7 +92,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DockSide",
+                            "name": "Grid::DockSide",
                             "suffix": "",
                             "path": "Grid/Component/Dock/Side",
                             "templates": []
@@ -103,11 +103,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_DOCKSIDE_DESCRIPTION"
     },
     "children": []
 }

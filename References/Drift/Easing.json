@@ -92,7 +92,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Easing",
+                            "name": "Drift::Easing",
                             "suffix": "",
                             "path": "Drift/Easing",
                             "templates": []
@@ -103,11 +103,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_DRIFT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_DRIFT_DESCRIPTION"
+        "description": "CHICANE_DRIFT_EASING_DESCRIPTION"
     },
     "children": []
 }

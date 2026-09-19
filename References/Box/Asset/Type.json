@@ -136,7 +136,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "AssetType",
+                            "name": "Box::AssetType",
                             "suffix": "",
                             "path": "Box/Asset/Type",
                             "templates": []
@@ -147,7 +147,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

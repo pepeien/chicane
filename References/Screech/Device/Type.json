@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "DeviceType",
     "filename": "Type",
     "path": "Screech/Device/Type",
     "source": {
@@ -81,7 +81,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DeviceType",
+                            "name": "Screech::DeviceType",
                             "suffix": "",
                             "path": "Screech/Device/Type",
                             "templates": []
@@ -92,11 +92,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SCREECH_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_SCREECH_DESCRIPTION"
+        "description": "CHICANE_SCREECH_DEVICETYPE_DESCRIPTION"
     },
     "children": []
 }

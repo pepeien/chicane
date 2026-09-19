@@ -1,5 +1,5 @@
 {
-    "title": "Direction",
+    "title": "StyleFlexDirection",
     "filename": "Direction",
     "path": "Grid/Style/Flex/Direction",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleFlexDirection",
+                            "name": "Grid::StyleFlexDirection",
                             "suffix": "",
                             "path": "Grid/Style/Flex/Direction",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEFLEXDIRECTION_DESCRIPTION"
     },
     "children": []
 }

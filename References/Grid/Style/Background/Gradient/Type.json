@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "StyleGradientType",
     "filename": "Type",
     "path": "Grid/Style/Background/Gradient/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleGradientType",
+                            "name": "Grid::StyleGradientType",
                             "suffix": "",
                             "path": "Grid/Style/Background/Gradient/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEGRADIENTTYPE_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "StyleBorderType",
     "filename": "Type",
     "path": "Grid/Style/Border/Type",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleBorderType",
+                            "name": "Grid::StyleBorderType",
                             "suffix": "",
                             "path": "Grid/Style/Border/Type",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEBORDERTYPE_DESCRIPTION"
     },
     "children": []
 }

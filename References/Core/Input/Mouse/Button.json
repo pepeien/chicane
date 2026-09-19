@@ -1,5 +1,5 @@
 {
-    "title": "Button",
+    "title": "MouseButton",
     "filename": "Button",
     "path": "Core/Input/Mouse/Button",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "MouseButton",
+                            "name": "Input::MouseButton",
                             "suffix": "",
                             "path": "Core/Input/Mouse/Button",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_INPUT_DESCRIPTION"
+        "description": "CHICANE_INPUT_MOUSEBUTTON_DESCRIPTION"
     },
     "children": []
 }

@@ -136,7 +136,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Planet",
+                            "name": "Kerb::Planet",
                             "suffix": "",
                             "path": "Kerb/Gravity/Planet",
                             "templates": []
@@ -147,11 +147,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_DESCRIPTION"
+        "description": "CHICANE_KERB_PLANET_DESCRIPTION"
     },
     "children": []
 }

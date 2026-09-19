@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleAlignment",
+                            "name": "Grid::StyleAlignment",
                             "suffix": "",
                             "path": "Grid/Style/Alignment",
                             "templates": []
@@ -70,7 +70,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -1,5 +1,5 @@
 {
-    "title": "Button",
+    "title": "GamepadButton",
     "filename": "Button",
     "path": "Core/Input/Gamepad/Button",
     "source": {
@@ -312,7 +312,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "GamepadButton",
+                            "name": "Input::GamepadButton",
                             "suffix": "",
                             "path": "Core/Input/Gamepad/Button",
                             "templates": []
@@ -323,11 +323,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_INPUT_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADBUTTON_DESCRIPTION"
     },
     "children": []
 }

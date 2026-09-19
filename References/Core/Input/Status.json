@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Status",
+                            "name": "Input::Status",
                             "suffix": "",
                             "path": "Core/Input/Status",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_INPUT_DESCRIPTION"
+        "description": "CHICANE_INPUT_STATUS_DESCRIPTION"
     },
     "children": []
 }

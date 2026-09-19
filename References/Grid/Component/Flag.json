@@ -92,7 +92,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "Grid::ComponentFlag",
                             "suffix": "",
                             "path": "Grid/Component/Flag",
                             "templates": []
@@ -103,7 +103,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

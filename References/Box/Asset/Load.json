@@ -1,5 +1,5 @@
 {
-    "title": "Load",
+    "title": "AssetLoad",
     "filename": "Load",
     "path": "Box/Asset/Load",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "AssetLoad",
+                            "name": "Box::AssetLoad",
                             "suffix": "",
                             "path": "Box/Asset/Load",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_DESCRIPTION"
+        "description": "CHICANE_BOX_ASSETLOAD_DESCRIPTION"
     },
     "children": []
 }

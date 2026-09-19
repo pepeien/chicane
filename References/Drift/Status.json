@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Status",
+                            "name": "Drift::Status",
                             "suffix": "",
                             "path": "Drift/Status",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_DRIFT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_DRIFT_DESCRIPTION"
+        "description": "CHICANE_DRIFT_STATUS_DESCRIPTION"
     },
     "children": []
 }

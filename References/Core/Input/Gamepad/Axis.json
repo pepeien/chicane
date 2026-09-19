@@ -1,5 +1,5 @@
 {
-    "title": "Axis",
+    "title": "GamepadAxis",
     "filename": "Axis",
     "path": "Core/Input/Gamepad/Axis",
     "source": {
@@ -103,7 +103,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "GamepadAxis",
+                            "name": "Input::GamepadAxis",
                             "suffix": "",
                             "path": "Core/Input/Gamepad/Axis",
                             "templates": []
@@ -114,11 +114,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_INPUT_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADAXIS_DESCRIPTION"
     },
     "children": []
 }

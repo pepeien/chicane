@@ -1,5 +1,5 @@
 {
-    "title": "Position",
+    "title": "StylePosition",
     "filename": "Position",
     "path": "Grid/Style/Position",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StylePosition",
+                            "name": "Grid::StylePosition",
                             "suffix": "",
                             "path": "Grid/Style/Position",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEPOSITION_DESCRIPTION"
     },
     "children": []
 }

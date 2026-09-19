@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "MotionType",
     "filename": "Type",
     "path": "Kerb/Motion/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "MotionType",
+                            "name": "Kerb::MotionType",
                             "suffix": "",
                             "path": "Kerb/Motion/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_DESCRIPTION"
+        "description": "CHICANE_KERB_MOTIONTYPE_DESCRIPTION"
     },
     "children": []
 }

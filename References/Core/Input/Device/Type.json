@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "DeviceType",
     "filename": "Type",
     "path": "Core/Input/Device/Type",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "DeviceType",
+                            "name": "Input::DeviceType",
                             "suffix": "",
                             "path": "Core/Input/Device/Type",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_INPUT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_INPUT_DESCRIPTION"
+        "description": "CHICANE_INPUT_DEVICETYPE_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "Type",
+    "title": "StyleImportType",
     "filename": "Type",
     "path": "Grid/Style/Import/Type",
     "source": {
@@ -70,7 +70,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleImportType",
+                            "name": "Grid::StyleImportType",
                             "suffix": "",
                             "path": "Grid/Style/Import/Type",
                             "templates": []
@@ -81,11 +81,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEIMPORTTYPE_DESCRIPTION"
     },
     "children": []
 }

@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Loop",
+                            "name": "Drift::Loop",
                             "suffix": "",
                             "path": "Drift/Loop",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_DRIFT_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_DRIFT_DESCRIPTION"
+        "description": "CHICANE_DRIFT_LOOP_DESCRIPTION"
     },
     "children": []
 }

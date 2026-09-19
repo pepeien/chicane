@@ -1,5 +1,5 @@
 {
-    "title": "Side",
+    "title": "SkySide",
     "filename": "Side",
     "path": "Box/Sky/Side",
     "source": {
@@ -92,7 +92,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SkySide",
+                            "name": "Box::SkySide",
                             "suffix": "",
                             "path": "Box/Sky/Side",
                             "templates": []
@@ -103,11 +103,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_DESCRIPTION"
+        "description": "CHICANE_BOX_SKYSIDE_DESCRIPTION"
     },
     "children": []
 }

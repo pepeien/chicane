@@ -1,5 +1,5 @@
 {
-    "title": "LineCap",
+    "title": "SvgLineCap",
     "filename": "LineCap",
     "path": "Grid/Component/Svg/Paint/LineCap",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SvgLineCap",
+                            "name": "Grid::SvgLineCap",
                             "suffix": "",
                             "path": "Grid/Component/Svg/Paint/LineCap",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_SVGLINECAP_DESCRIPTION"
     },
     "children": []
 }

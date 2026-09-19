@@ -136,7 +136,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ObjectLayer",
+                            "name": "Kerb::ObjectLayer",
                             "suffix": "",
                             "path": "Kerb/Object/Layer",
                             "templates": []
@@ -147,7 +147,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

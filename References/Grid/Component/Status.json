@@ -81,7 +81,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentStatus",
+                            "name": "Grid::ComponentStatus",
                             "suffix": "",
                             "path": "Grid/Component/Status",
                             "templates": []
@@ -92,7 +92,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

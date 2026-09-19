@@ -1,5 +1,5 @@
 {
-    "title": "Shape",
+    "title": "BodyShape",
     "filename": "Shape",
     "path": "Kerb/Body/Shape",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "BodyShape",
+                            "name": "Kerb::BodyShape",
                             "suffix": "",
                             "path": "Kerb/Body/Shape",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_DESCRIPTION"
+        "description": "CHICANE_KERB_BODYSHAPE_DESCRIPTION"
     },
     "children": []
 }

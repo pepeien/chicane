@@ -1,5 +1,5 @@
 {
-    "title": "Preset",
+    "title": "CollisionPreset",
     "filename": "Preset",
     "path": "Kerb/Collision/Preset",
     "source": {
@@ -114,7 +114,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "CollisionPreset",
+                            "name": "Kerb::CollisionPreset",
                             "suffix": "",
                             "path": "Kerb/Collision/Preset",
                             "templates": []
@@ -125,11 +125,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_KERB_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_DESCRIPTION"
+        "description": "CHICANE_KERB_COLLISIONPRESET_DESCRIPTION"
     },
     "children": []
 }

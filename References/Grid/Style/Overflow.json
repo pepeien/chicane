@@ -1,5 +1,5 @@
 {
-    "title": "Overflow",
+    "title": "StyleOverflow",
     "filename": "Overflow",
     "path": "Grid/Style/Overflow",
     "source": {
@@ -70,7 +70,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleOverflow",
+                            "name": "Grid::StyleOverflow",
                             "suffix": "",
                             "path": "Grid/Style/Overflow",
                             "templates": []
@@ -81,11 +81,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEOVERFLOW_DESCRIPTION"
     },
     "children": []
 }

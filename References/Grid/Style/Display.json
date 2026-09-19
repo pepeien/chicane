@@ -1,5 +1,5 @@
 {
-    "title": "Display",
+    "title": "StyleDisplay",
     "filename": "Display",
     "path": "Grid/Style/Display",
     "source": {
@@ -70,7 +70,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleDisplay",
+                            "name": "Grid::StyleDisplay",
                             "suffix": "",
                             "path": "Grid/Style/Display",
                             "templates": []
@@ -81,11 +81,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEDISPLAY_DESCRIPTION"
     },
     "children": []
 }

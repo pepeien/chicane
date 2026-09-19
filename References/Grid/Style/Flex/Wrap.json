@@ -1,5 +1,5 @@
 {
-    "title": "Wrap",
+    "title": "StyleFlexWrap",
     "filename": "Wrap",
     "path": "Grid/Style/Flex/Wrap",
     "source": {
@@ -48,7 +48,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "StyleFlexWrap",
+                            "name": "Grid::StyleFlexWrap",
                             "suffix": "",
                             "path": "Grid/Style/Flex/Wrap",
                             "templates": []
@@ -59,11 +59,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_GRID_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEFLEXWRAP_DESCRIPTION"
     },
     "children": []
 }

@@ -1,5 +1,5 @@
 {
-    "title": "Status",
+    "title": "SoundStatus",
     "filename": "Status",
     "path": "Screech/Sound/Status",
     "source": {
@@ -59,7 +59,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SoundStatus",
+                            "name": "Screech::SoundStatus",
                             "suffix": "",
                             "path": "Screech/Sound/Status",
                             "templates": []
@@ -70,11 +70,11 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SCREECH_TOSTRING_DESCRIPTION"
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_SCREECH_DESCRIPTION"
+        "description": "CHICANE_SCREECH_SOUNDSTATUS_DESCRIPTION"
     },
     "children": []
 }
