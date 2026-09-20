@@ -53,6 +53,9 @@ namespace Chicane
         }
 
         SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
+
+        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT, "0");
+        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT_RAW, "0");
     }
 
     Window::~Window()
