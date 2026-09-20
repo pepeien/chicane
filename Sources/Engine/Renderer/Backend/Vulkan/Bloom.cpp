@@ -1,11 +1,12 @@
-#include "Chicane/Renderer/Backend/Vulkan/Bloom.hpp"
+#include "Backend/Vulkan/Bloom.hpp"
 
 #include <algorithm>
 
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Image/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/View/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -14,6 +15,7 @@ namespace Chicane
         void VulkanBloom::setup(
             vk::Device          inLogicalDevice,
             vk::PhysicalDevice  inPhysicalDevice,
+            VulkanAllocator*    inAllocator,
             vk::Format          inFormat,
             const vk::Extent2D& inExtent
         )
@@ -32,9 +34,15 @@ namespace Chicane
                 instanceCreateInfo.count  = 1;
                 instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
                 instanceCreateInfo.usage  = vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled;
-                instanceCreateInfo.format = inFormat;
+                instanceCreateInfo.format        = inFormat;
                 instanceCreateInfo.logicalDevice = inLogicalDevice;
-                VulkanImage::initInstance(image.instance, instanceCreateInfo);
+
+                VulkanImageMemoryCreateInfo memoryCreateInfo;
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = inLogicalDevice;
+                memoryCreateInfo.physicalDevice = inPhysicalDevice;
+                memoryCreateInfo.allocator      = inAllocator;
+                VulkanImage::init(image, instanceCreateInfo, memoryCreateInfo);
 
                 vk::SamplerCreateInfo samplerCreateInfo;
                 samplerCreateInfo.minFilter    = vk::Filter::eLinear;
@@ -45,12 +53,6 @@ namespace Chicane
                 samplerCreateInfo.addressModeW = vk::SamplerAddressMode::eClampToEdge;
                 samplerCreateInfo.maxLod       = 1.0f;
                 image.sampler                  = inLogicalDevice.createSampler(samplerCreateInfo);
-
-                VulkanImageMemoryCreateInfo memoryCreateInfo;
-                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                memoryCreateInfo.logicalDevice  = inLogicalDevice;
-                memoryCreateInfo.physicalDevice = inPhysicalDevice;
-                VulkanImage::initMemory(image.memory, image.instance, memoryCreateInfo);
 
                 VulkanImageViewCreateInfo viewCreateInfo;
                 viewCreateInfo.count         = 1;
@@ -109,16 +111,7 @@ namespace Chicane
                     inLogicalDevice.destroyImageView(image.view);
                     image.view = nullptr;
                 }
-                if (image.instance)
-                {
-                    inLogicalDevice.destroyImage(image.instance);
-                    image.instance = nullptr;
-                }
-                if (image.memory)
-                {
-                    inLogicalDevice.freeMemory(image.memory);
-                    image.memory = nullptr;
-                }
+                VulkanAllocator::destroyImage(image);
             }
         }
 

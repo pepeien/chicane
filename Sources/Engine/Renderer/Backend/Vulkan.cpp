@@ -1,25 +1,25 @@
-#include "Chicane/Renderer/Backend/Vulkan.hpp"
+#include "Backend/Vulkan.hpp"
 
 #include <algorithm>
 #include <array>
 #include <utility>
 
 #include "Chicane/Renderer/Instance.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Debug.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
+#include "Backend/Vulkan/CommandBuffer.hpp"
+#include "Backend/Vulkan/CommandBuffer/Pool.hpp"
+#include "Backend/Vulkan/Debug.hpp"
+#include "Backend/Vulkan/Descriptor/Pool.hpp"
+#include "Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
+#include "Backend/Vulkan/Device.hpp"
+#include "Backend/Vulkan/Queue.hpp"
+#include "Backend/Vulkan/Instance.hpp"
 #include "Chicane/Renderer/Shader/Bindings.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
 #include "Chicane/Renderer/Layer/UI.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/RHI/Device.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
+#include "Backend/Vulkan/RHI/Device.hpp"
+#include "Backend/Vulkan/Surface.hpp"
+#include "Backend/Vulkan/Swapchain.hpp"
 
 namespace Chicane
 {
@@ -55,6 +55,7 @@ namespace Chicane
             buildDebugMessenger();
             buildSurface();
             buildDevices();
+            allocator.init(instance, physicalDevice, logicalDevice);
             updateResourceBudget();
             buildQueues();
             buildCommandPool();
@@ -101,6 +102,7 @@ namespace Chicane
             destroyFrames();
             destroyTextureData();
 
+            allocator.destroy();
             destroyDevices();
             destroySurface();
 
@@ -369,18 +371,7 @@ namespace Chicane
 
         void VulkanBackend::updateResourceBudget()
         {
-            vk::PhysicalDeviceMemoryProperties properties = physicalDevice.getMemoryProperties();
-
-            std::size_t VRAM = 0U;
-            for (const auto& memoryHeap : properties.memoryHeaps)
-            {
-                if (memoryHeap.flags & vk::MemoryHeapFlagBits::eDeviceLocal)
-                {
-                    VRAM += memoryHeap.size;
-                }
-            }
-
-            setVRAM(VRAM);
+            setVRAM(VulkanAllocator::queryDedicatedHeapSize(physicalDevice));
         }
 
         void VulkanBackend::destroyDevices()
@@ -423,6 +414,8 @@ namespace Chicane
             {
                 // Sync
                 image.setupSync();
+
+                image.allocator = &allocator;
 
                 // Images
                 image.setupColorImage(swapchain.colorFormat, swapchain.extent);
@@ -519,6 +512,7 @@ namespace Chicane
             {
                 frame.logicalDevice  = logicalDevice;
                 frame.physicalDevice = physicalDevice;
+                frame.allocator      = &allocator;
 
                 // Commandbuffer
                 frame.setupCommandBuffer(m_mainCommandPool);
@@ -764,6 +758,7 @@ namespace Chicane
             createInfo.physicalDevice = physicalDevice;
             createInfo.commandBuffer  = mainCommandBuffer;
             createInfo.queue          = graphicsQueue;
+            createInfo.allocator      = &allocator;
 
             for (const DrawTexture& texture : inTextures)
             {

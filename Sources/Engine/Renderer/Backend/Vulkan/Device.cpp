@@ -1,11 +1,11 @@
-#include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
+#include "Backend/Vulkan/Device.hpp"
 
 #include <set>
 
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
+#include "Backend/Vulkan/Queue.hpp"
 
 namespace Chicane
 {

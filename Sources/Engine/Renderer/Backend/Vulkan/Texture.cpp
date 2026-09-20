@@ -1,12 +1,13 @@
-#include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
+#include "Backend/Vulkan/Texture.hpp"
 
 #include <algorithm>
 #include <cstring>
 #include <vector>
 
-#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Texture/CreateInfo.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/Buffer.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Texture/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -17,6 +18,7 @@ namespace Chicane
               m_physicalDevice(inCreateInfo.physicalDevice),
               m_commandBuffer(inCreateInfo.commandBuffer),
               m_queue(inCreateInfo.queue),
+              m_allocator(inCreateInfo.allocator),
               m_sourceWidth(1),
               m_sourceHeight(1),
               m_residentMinMip(0),
@@ -25,17 +27,26 @@ namespace Chicane
             initExtent(inCreateInfo);
             initInstance();
             initSampler();
-            initMemory();
             initView();
             copyPixels(inCreateInfo);
         }
 
         VulkanTexture::~VulkanTexture()
         {
-            m_logicalDevice.freeMemory(memory);
-            m_logicalDevice.destroyImage(instance);
-            m_logicalDevice.destroyImageView(view);
-            m_logicalDevice.destroySampler(sampler);
+            if (sampler)
+            {
+                m_logicalDevice.destroySampler(sampler);
+                sampler = nullptr;
+            }
+            if (view)
+            {
+                m_logicalDevice.destroyImageView(view);
+                view = nullptr;
+            }
+            if (m_allocator)
+            {
+                m_allocator->destroyImage(*this);
+            }
         }
 
         bool VulkanTexture::matches(const DrawTexture& inTexture) const
@@ -82,7 +93,13 @@ namespace Chicane
                                vk::ImageUsageFlagBits::eSampled;
             createInfo.format        = vk::Format::eR8G8B8A8Unorm;
             createInfo.logicalDevice = m_logicalDevice;
-            VulkanImage::initInstance(instance, createInfo);
+
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = m_logicalDevice;
+            memoryCreateInfo.physicalDevice = m_physicalDevice;
+            memoryCreateInfo.allocator      = m_allocator;
+            VulkanImage::init(*this, createInfo, memoryCreateInfo);
         }
 
         void VulkanTexture::initSampler()
@@ -98,15 +115,6 @@ namespace Chicane
             createInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
             createInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initSampler(sampler, createInfo);
-        }
-
-        void VulkanTexture::initMemory()
-        {
-            VulkanImageMemoryCreateInfo createInfo;
-            createInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            createInfo.logicalDevice  = m_logicalDevice;
-            createInfo.physicalDevice = m_physicalDevice;
-            VulkanImage::initMemory(memory, instance, createInfo);
         }
 
         void VulkanTexture::initView()
@@ -153,6 +161,7 @@ namespace Chicane
                 VulkanBufferCreateInfo bufferCreateInfo;
                 bufferCreateInfo.logicalDevice  = m_logicalDevice;
                 bufferCreateInfo.physicalDevice = m_physicalDevice;
+                bufferCreateInfo.allocator      = m_allocator;
                 bufferCreateInfo.memoryProperties =
                     vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
                 bufferCreateInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
@@ -161,7 +170,7 @@ namespace Chicane
                 VulkanBuffer stagingBuffer;
                 stagingBuffer.init(bufferCreateInfo);
 
-                void* writeLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, 0, bufferCreateInfo.size);
+                void* writeLocation = stagingBuffer.map();
                 if (image->getWidth() == static_cast<int>(levelWidth) &&
                     image->getHeight() == static_cast<int>(levelHeight) && image->getPixels())
                 {
@@ -173,7 +182,6 @@ namespace Chicane
                     image->blit(resized.data(), static_cast<int>(levelWidth), static_cast<int>(levelHeight));
                     std::memcpy(writeLocation, resized.data(), static_cast<std::size_t>(bufferCreateInfo.size));
                 }
-                m_logicalDevice.unmapMemory(stagingBuffer.memory);
 
                 if (gpuLevel == 0)
                 {
@@ -199,7 +207,7 @@ namespace Chicane
                     gpuLevel
                 );
 
-                stagingBuffer.destroy(m_logicalDevice);
+                stagingBuffer.destroy();
                 uploaded++;
             }
 

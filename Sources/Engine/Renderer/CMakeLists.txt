@@ -1,6 +1,5 @@
-######################### Values #########################
-## Dirs
-set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
+######################### Directories #########################
+add_subdirectory(Vendor)
 
 ######################### Files #########################
 file(
@@ -19,33 +18,47 @@ file(
     ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
-list(FILTER SOURCES EXCLUDE REGEX "Hygiene\\.cpp$")
+
+file(
+    GLOB_RECURSE
+    PRIVATE_HEADERS
+    CONFIGURE_DEPENDS
+    ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/*.hpp
+)
+list(FILTER PRIVATE_HEADERS EXCLUDE REGEX "Vendor/.*")
 
 ######################### Setup #########################
 if (CHICANE_OPENGL)
     find_package(OpenGL REQUIRED)
-    list(APPEND PUBLIC_LIBS OpenGL::GL)
-
-    add_subdirectory(${VENDORS_DIR}/Glad)
-    list(APPEND PUBLIC_LIBS Glad::Glad)
+    list(APPEND BACKEND_LIBS OpenGL::GL)
+    list(APPEND BACKEND_LIBS Glad::Glad)
 else()
-    list(FILTER HEADERS EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_INCLUDES_DIR}/Backend/OpenGL")
+    list(FILTER PRIVATE_HEADERS EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/OpenGL")
 endif()
 
 if (CHICANE_VULKAN)
     find_package(Vulkan REQUIRED)
-    list(APPEND PUBLIC_LIBS Vulkan::Vulkan)
+    list(APPEND BACKEND_LIBS Vulkan::Vulkan)
+    list(APPEND PRIVATE_LIBS GPUOpen::VulkanMemoryAllocator)
 else()
-    list(FILTER HEADERS EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_INCLUDES_DIR}/Backend/Vulkan")
+    list(FILTER PRIVATE_HEADERS EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/Vulkan")
     list(FILTER SOURCES EXCLUDE REGEX "${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Backend/Vulkan")
+endif()
+
+# Shared Renderer links loaders inside the DLL. Static still has to expose them
+# so the final binary can resolve Vulkan/OpenGL/Glad symbols.
+if (CHICANE_SHARED)
+    list(APPEND PRIVATE_LIBS ${BACKEND_LIBS})
+else()
+    list(APPEND PUBLIC_LIBS ${BACKEND_LIBS})
 endif()
 
 
 if (CHICANE_SHARED)
-    add_library(${CHICANE_ENGINE_RENDERER_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_RENDERER_TARGET_NAME} SHARED ${HEADERS} ${PRIVATE_HEADERS} ${SOURCES})
 else()
-    add_library(${CHICANE_ENGINE_RENDERER_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${CHICANE_ENGINE_RENDERER_TARGET_NAME} STATIC ${HEADERS} ${PRIVATE_HEADERS} ${SOURCES})
 endif()
 
 add_library(
@@ -86,6 +99,8 @@ target_include_directories(
     PUBLIC
         $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
+    PRIVATE
+        ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}
 )
 
 target_link_libraries(
@@ -101,29 +116,6 @@ target_link_libraries(
 
 CH_ADD_COMPILER(${CHICANE_ENGINE_RENDERER_TARGET_NAME})
 CH_GENERATE_REFLECTION(${CHICANE_ENGINE_RENDERER_TARGET_NAME})
-
-add_library(
-    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
-    STATIC
-        ${CHICANE_ENGINE_RENDERER_SOURCES_DIR}/Hygiene.cpp
-)
-set_target_properties(
-    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
-    PROPERTIES
-        EXCLUDE_FROM_ALL
-            FALSE
-)
-target_include_directories(
-    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
-    PRIVATE
-        $<BUILD_INTERFACE:${CHICANE_BUILD_INTERFACE_DIR}>
-)
-target_link_libraries(
-    ${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene
-    PRIVATE
-        Chicane::Core
-)
-CH_ADD_COMPILER(${CHICANE_ENGINE_RENDERER_TARGET_NAME}Hygiene)
 
 ######################### Depedencies #########################
 add_dependencies(${CHICANE_ENGINE_RENDERER_TARGET_NAME} ${CHICANE_ENGINE_ASSETS_TARGET_NAME})

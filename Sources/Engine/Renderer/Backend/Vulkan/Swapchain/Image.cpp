@@ -1,15 +1,16 @@
-#include "Chicane/Renderer/Backend/Vulkan/Swapchain/Image.hpp"
+#include "Backend/Vulkan/Swapchain/Image.hpp"
 
 #include <algorithm>
 
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/Buffer.hpp"
+#include "Backend/Vulkan/GraphicsPipeline.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Image/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/View/CreateInfo.hpp"
+#include "Backend/Vulkan/Sync.hpp"
 
 namespace Chicane
 {
@@ -87,7 +88,13 @@ namespace Chicane
                                        vk::ImageUsageFlagBits::eTransferSrc | vk::ImageUsageFlagBits::eTransferDst;
             instanceCreateInfo.format        = inFormat;
             instanceCreateInfo.logicalDevice = logicalDevice;
-            VulkanImage::initInstance(targetImage.instance, instanceCreateInfo);
+
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = logicalDevice;
+            memoryCreateInfo.physicalDevice = physicalDevice;
+            memoryCreateInfo.allocator      = allocator;
+            VulkanImage::init(targetImage, instanceCreateInfo, memoryCreateInfo);
 
             vk::SamplerCreateInfo samplerCreateInfo;
             samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
@@ -107,12 +114,6 @@ namespace Chicane
             samplerCreateInfo.maxLod                  = 1.0f;
             samplerCreateInfo.unnormalizedCoordinates = false;
             targetImage.sampler                       = logicalDevice.createSampler(samplerCreateInfo);
-
-            VulkanImageMemoryCreateInfo memoryCreateInfo;
-            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            memoryCreateInfo.logicalDevice  = logicalDevice;
-            memoryCreateInfo.physicalDevice = physicalDevice;
-            VulkanImage::initMemory(targetImage.memory, targetImage.instance, memoryCreateInfo);
 
             VulkanImageViewCreateInfo viewCreateInfo;
             viewCreateInfo.count         = 1;
@@ -137,17 +138,7 @@ namespace Chicane
                 targetImage.view = nullptr;
             }
 
-            if (targetImage.instance)
-            {
-                logicalDevice.destroyImage(targetImage.instance);
-                targetImage.instance = nullptr;
-            }
-
-            if (targetImage.memory)
-            {
-                logicalDevice.freeMemory(targetImage.memory);
-                targetImage.memory = nullptr;
-            }
+            VulkanAllocator::destroyImage(targetImage);
         }
 
         void VulkanSwapchainImage::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)
@@ -165,7 +156,13 @@ namespace Chicane
                 vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
             instanceCreateInfo.format        = inFormat;
             instanceCreateInfo.logicalDevice = logicalDevice;
-            VulkanImage::initInstance(depthImage.instance, instanceCreateInfo);
+
+            VulkanImageMemoryCreateInfo memoryCreateInfo;
+            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            memoryCreateInfo.logicalDevice  = logicalDevice;
+            memoryCreateInfo.physicalDevice = physicalDevice;
+            memoryCreateInfo.allocator      = allocator;
+            VulkanImage::init(depthImage, instanceCreateInfo, memoryCreateInfo);
 
             vk::SamplerCreateInfo samplerCreateInfo;
             samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
@@ -186,12 +183,6 @@ namespace Chicane
             samplerCreateInfo.unnormalizedCoordinates = false;
             depthImage.sampler                        = logicalDevice.createSampler(samplerCreateInfo);
 
-            VulkanImageMemoryCreateInfo memoryCreateInfo;
-            memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            memoryCreateInfo.logicalDevice  = logicalDevice;
-            memoryCreateInfo.physicalDevice = physicalDevice;
-            VulkanImage::initMemory(depthImage.memory, depthImage.instance, memoryCreateInfo);
-
             VulkanImageViewCreateInfo viewCreateInfo;
             viewCreateInfo.count         = instanceCreateInfo.count;
             viewCreateInfo.type          = vk::ImageViewType::e2D;
@@ -203,10 +194,17 @@ namespace Chicane
 
         void VulkanSwapchainImage::destroyDepthImage()
         {
-            logicalDevice.freeMemory(depthImage.memory);
-            logicalDevice.destroyImage(depthImage.instance);
-            logicalDevice.destroyImageView(depthImage.view);
-            logicalDevice.destroySampler(depthImage.sampler);
+            if (depthImage.view)
+            {
+                logicalDevice.destroyImageView(depthImage.view);
+                depthImage.view = nullptr;
+            }
+            if (depthImage.sampler)
+            {
+                logicalDevice.destroySampler(depthImage.sampler);
+                depthImage.sampler = nullptr;
+            }
+            VulkanAllocator::destroyImage(depthImage);
         }
 
         void VulkanSwapchainImage::addFramebuffer(const String& inId, const vk::Framebuffer& inFramebuffer)

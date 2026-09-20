@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
+#include "Backend/Vulkan/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {

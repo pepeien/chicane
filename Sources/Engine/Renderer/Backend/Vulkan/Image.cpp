@@ -1,9 +1,10 @@
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Image.hpp"
 
 #include <algorithm>
+#include <stdexcept>
 
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {
@@ -43,22 +44,18 @@ namespace Chicane
                 throw std::runtime_error("Unable to select suitable format");
             }
 
-            void initInstance(vk::Image& outInstance, const VulkanImageCreateInfo& inCreateInfo)
+            void init(
+                VulkanImageInfo&                   outImage,
+                const VulkanImageCreateInfo&       inCreateInfo,
+                const VulkanImageMemoryCreateInfo& inMemoryCreateInfo
+            )
             {
-                vk::ImageCreateInfo createInfo;
-                createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
-                createInfo.imageType     = vk::ImageType::e2D;
-                createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
-                createInfo.mipLevels     = std::max(1u, inCreateInfo.mipLevels);
-                createInfo.arrayLayers   = inCreateInfo.count;
-                createInfo.format        = inCreateInfo.format;
-                createInfo.samples       = vk::SampleCountFlagBits::e1;
-                createInfo.tiling        = inCreateInfo.tiling;
-                createInfo.initialLayout = vk::ImageLayout::eUndefined;
-                createInfo.usage         = inCreateInfo.usage;
-                createInfo.sharingMode   = vk::SharingMode::eExclusive;
+                if (!inMemoryCreateInfo.allocator)
+                {
+                    throw std::runtime_error("Vulkan image requires an allocator");
+                }
 
-                outInstance = inCreateInfo.logicalDevice.createImage(createInfo);
+                inMemoryCreateInfo.allocator->createImage(outImage, inCreateInfo, inMemoryCreateInfo);
             }
 
             void initSampler(vk::Sampler& outSampler, const VulkanImageSamplerCreateInfo& inCreateInfo)
@@ -82,27 +79,6 @@ namespace Chicane
                 createInfo.maxLod                  = static_cast<float>(std::max(1u, inCreateInfo.mipLevels) - 1u);
 
                 outSampler = inCreateInfo.logicalDevice.createSampler(createInfo);
-            }
-
-            void initMemory(
-                vk::DeviceMemory&                  outMemory,
-                const vk::Image&                   inInstance,
-                const VulkanImageMemoryCreateInfo& inCreateInfo
-            )
-            {
-                vk::MemoryRequirements requirements = inCreateInfo.logicalDevice.getImageMemoryRequirements(inInstance);
-
-                vk::MemoryAllocateInfo allocationInfo;
-                allocationInfo.allocationSize  = requirements.size;
-                allocationInfo.memoryTypeIndex = VulkanDevice::findMemoryTypeIndex(
-                    inCreateInfo.physicalDevice,
-                    requirements.memoryTypeBits,
-                    inCreateInfo.properties
-                );
-
-                outMemory = inCreateInfo.logicalDevice.allocateMemory(allocationInfo);
-
-                inCreateInfo.logicalDevice.bindImageMemory(inInstance, outMemory, 0);
             }
 
             void initView(

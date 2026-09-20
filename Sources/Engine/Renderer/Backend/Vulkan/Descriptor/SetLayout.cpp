@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Backend/Vulkan/Descriptor/SetLayout.hpp"
 
 namespace Chicane
 {

@@ -22,19 +22,25 @@ namespace Chicane
             RHI::Device* device = m_backend->getRHIDevice();
 
             RHI::BufferCreateInfo vertex;
-            vertex.size           = m_backend->getResourceBudget(Resource::UIVertices);
+            vertex.size           = std::min(
+                m_backend->getResourceBudget(Resource::UIVertices), RESOURCE_MESH_INITIAL_BYTES
+            );
             vertex.usage          = RHI::BufferUsage::Vertex;
-            vertex.bHasHostAccess = true;
+            vertex.bHasHostAccess = false;
             m_vertexBuffer        = device->createBuffer(vertex);
 
             RHI::BufferCreateInfo index;
-            index.size           = m_backend->getResourceBudget(Resource::UIIndices);
+            index.size           = std::min(
+                m_backend->getResourceBudget(Resource::UIIndices), RESOURCE_MESH_INITIAL_BYTES
+            );
             index.usage          = RHI::BufferUsage::Index;
-            index.bHasHostAccess = true;
+            index.bHasHostAccess = false;
             m_indexBuffer        = device->createBuffer(index);
 
             RHI::BufferCreateInfo glyph;
-            glyph.size           = m_backend->getResourceBudget(Resource::UIGlyphs);
+            glyph.size           = std::min(
+                m_backend->getResourceBudget(Resource::UIGlyphs), RESOURCE_MESH_INITIAL_BYTES
+            );
             glyph.usage          = RHI::BufferUsage::Storage;
             glyph.bHasHostAccess = true;
             m_glyphBuffer        = device->createBuffer(glyph);
@@ -104,11 +110,11 @@ namespace Chicane
                 return;
             }
 
-            for (RHI::Image image : m_backdrops)
+            for (UIBackdrop& slot : m_backdrops)
             {
-                if (image.handle)
+                if (slot.image.handle)
                 {
-                    device->destroyImage(image);
+                    device->destroyImage(slot.image);
                 }
             }
             for (RHI::BindGroup group : m_groups)
@@ -163,14 +169,16 @@ namespace Chicane
                 m_backdrops.resize(inIndex + 1);
             }
 
-            if (m_backdrops[inIndex].handle && m_backdropWidth == inWidth && m_backdropHeight == inHeight)
+            UIBackdrop& slot = m_backdrops[inIndex];
+            if (slot.image.handle && slot.width == inWidth && slot.height == inHeight)
             {
                 return;
             }
 
-            if (m_backdrops[inIndex].handle)
+            if (slot.image.handle)
             {
-                inDevice->destroyImage(m_backdrops[inIndex]);
+                inDevice->destroyImage(slot.image);
+                slot.image = {};
             }
 
             std::uint32_t levels = 1;
@@ -182,16 +190,16 @@ namespace Chicane
             }
 
             RHI::ImageCreateInfo desc;
-            desc.kind            = RHI::ImageKind::Color2D;
-            desc.format          = RHI::ImageFormat::RGBA8;
-            desc.width           = inWidth;
-            desc.height          = inHeight;
-            desc.mipLevels       = levels;
-            desc.bIsSampled      = true;
-            desc.bHasColor       = true;
-            m_backdrops[inIndex] = inDevice->createImage(desc);
-            m_backdropWidth      = inWidth;
-            m_backdropHeight     = inHeight;
+            desc.kind       = RHI::ImageKind::Color2D;
+            desc.format     = RHI::ImageFormat::RGBA8;
+            desc.width      = inWidth;
+            desc.height     = inHeight;
+            desc.mipLevels  = levels;
+            desc.bIsSampled = true;
+            desc.bHasColor  = true;
+            slot.image      = inDevice->createImage(desc);
+            slot.width      = inWidth;
+            slot.height     = inHeight;
         }
 
         void LUI::onRender(const Frame& inFrame, void* inData)
@@ -217,7 +225,7 @@ namespace Chicane
                         {RHI_BINDING_UI_BACKDROP,
                          RHI::BindingType::SampledImage,
                          {},
-                         m_backdrops[rhi->frameIndex],
+                         m_backdrops[rhi->frameIndex].image,
                          m_backdropSampler,                                                                        0},
                         {RHI_BINDING_UI_SCREEN,
                          RHI::BindingType::SampledImage,
@@ -287,7 +295,7 @@ namespace Chicane
                         endPass();
                         rhi->commands->blitColor(
                             rhi->presentColor,
-                            m_backdrops[rhi->frameIndex],
+                            m_backdrops[rhi->frameIndex].image,
                             static_cast<std::int32_t>(viewport.position.x),
                             static_cast<std::int32_t>(viewport.position.y),
                             width,

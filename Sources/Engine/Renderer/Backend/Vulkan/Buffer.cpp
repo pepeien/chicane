@@ -1,7 +1,9 @@
-#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
+#include "Backend/Vulkan/Buffer.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
+#include <stdexcept>
+
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {
@@ -9,37 +11,56 @@ namespace Chicane
     {
         VulkanBuffer::VulkanBuffer()
             : instance(nullptr),
-              memory(nullptr)
+              memory(nullptr),
+              mapped(nullptr),
+              owner(nullptr),
+              vma(nullptr),
+              allocation(nullptr),
+              size(0),
+              usage(),
+              properties()
         {}
 
         void VulkanBuffer::init(const VulkanBufferCreateInfo& inCreateInfo)
         {
-            vk::BufferCreateInfo bufferInfo;
-            bufferInfo.size        = inCreateInfo.size;
-            bufferInfo.usage       = inCreateInfo.usage;
-            bufferInfo.sharingMode = vk::SharingMode::eExclusive;
+            if (!inCreateInfo.allocator)
+            {
+                throw std::runtime_error("Vulkan buffer requires an allocator");
+            }
 
-            instance = inCreateInfo.logicalDevice.createBuffer(bufferInfo);
-
-            allocate(inCreateInfo);
+            inCreateInfo.allocator->createBuffer(*this, inCreateInfo);
         }
 
-        void VulkanBuffer::allocate(const VulkanBufferCreateInfo& inCreateInfo)
+        void VulkanBuffer::destroy()
         {
-            vk::MemoryRequirements memoryRequirements =
-                inCreateInfo.logicalDevice.getBufferMemoryRequirements(instance);
+            if (!owner)
+            {
+                *this = {};
 
-            vk::MemoryAllocateInfo memoryAlocateInfo;
-            memoryAlocateInfo.allocationSize  = memoryRequirements.size;
-            memoryAlocateInfo.memoryTypeIndex = VulkanDevice::findMemoryTypeIndex(
-                inCreateInfo.physicalDevice,
-                memoryRequirements.memoryTypeBits,
-                inCreateInfo.memoryProperties
-            );
+                return;
+            }
 
-            memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
+            owner->destroyBuffer(*this);
+        }
 
-            inCreateInfo.logicalDevice.bindBufferMemory(instance, memory, 0);
+        void* VulkanBuffer::map()
+        {
+            if (!owner)
+            {
+                return mapped;
+            }
+
+            return owner->map(*this);
+        }
+
+        void VulkanBuffer::unmap()
+        {
+            if (!owner)
+            {
+                return;
+            }
+
+            owner->unmap(*this);
         }
 
         void VulkanBuffer::copy(
@@ -59,21 +80,6 @@ namespace Chicane
             inCommandBuffer.copyBuffer(instance, inDestination.instance, 1, &copyRegion);
 
             VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
-        }
-
-        void VulkanBuffer::destroy(const vk::Device& inLogicalDevice)
-        {
-            if (instance)
-            {
-                inLogicalDevice.destroyBuffer(instance);
-                instance = nullptr;
-            }
-
-            if (memory)
-            {
-                inLogicalDevice.freeMemory(memory);
-                memory = nullptr;
-            }
         }
     }
 }

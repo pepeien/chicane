@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/RHI/Device.hpp"
+#include "Backend/OpenGL/RHI/Device.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -9,8 +9,8 @@
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
-#include "Chicane/Renderer/Backend/OpenGL.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/RHI/CommandList.hpp"
+#include "Backend/OpenGL.hpp"
+#include "Backend/OpenGL/RHI/CommandList.hpp"
 #include "Chicane/Renderer/Shader/Bindings.hpp"
 
 namespace Chicane
@@ -57,6 +57,31 @@ namespace Chicane
             {
                 return;
             }
+
+            if (inOffset + inSize > data->size)
+            {
+                const std::size_t newSize = std::max(inOffset + inSize, data->size * 2);
+                GLuint            grown   = 0;
+                glCreateBuffers(1, &grown);
+                glNamedBufferData(grown, static_cast<GLsizeiptr>(newSize), nullptr, GL_DYNAMIC_DRAW);
+                if (data->id && data->size > 0)
+                {
+                    glCopyNamedBufferSubData(
+                        data->id,
+                        grown,
+                        0,
+                        0,
+                        static_cast<GLsizeiptr>(data->size)
+                    );
+                }
+                if (data->bOwned && data->id)
+                {
+                    glDeleteBuffers(1, &data->id);
+                }
+                data->id   = grown;
+                data->size = newSize;
+            }
+
             glNamedBufferSubData(data->id, static_cast<GLintptr>(inOffset), static_cast<GLsizeiptr>(inSize), inData);
         }
 
@@ -117,6 +142,12 @@ namespace Chicane
             }
 
             glCreateFramebuffers(1, &data->fbo);
+            if (inCreateInfo.kind == RHI::ImageKind::Color2D)
+            {
+                glNamedFramebufferTexture(data->fbo, GL_COLOR_ATTACHMENT0, data->texture, 0);
+                const GLenum buffer = GL_COLOR_ATTACHMENT0;
+                glNamedFramebufferDrawBuffers(data->fbo, 1, &buffer);
+            }
             return {data};
         }
 

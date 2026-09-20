@@ -1,10 +1,10 @@
-#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Backend/Vulkan/Frame.hpp"
 
 #include <array>
 
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Sync.hpp"
+#include "Backend/Vulkan/CommandBuffer.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Sync.hpp"
 #include "Chicane/Renderer/Shadow.hpp"
 
 namespace Chicane
@@ -214,6 +214,7 @@ namespace Chicane
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.allocator      = allocator;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             bufferCreateInfo.size  = sizeof(View);
@@ -241,6 +242,7 @@ namespace Chicane
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.allocator      = allocator;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             bufferCreateInfo.size  = sizeof(ShadowLight);
@@ -276,6 +278,7 @@ namespace Chicane
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.allocator      = allocator;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             bufferCreateInfo.size  = inBudget;
@@ -304,6 +307,7 @@ namespace Chicane
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.allocator      = allocator;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             bufferCreateInfo.size  = inBudget;
@@ -332,6 +336,7 @@ namespace Chicane
             VulkanBufferCreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice  = logicalDevice;
             bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.allocator      = allocator;
             bufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             bufferCreateInfo.size  = inBudget;

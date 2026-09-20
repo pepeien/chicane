@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Sky.hpp"
+#include "Backend/Vulkan/Sky.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -6,9 +6,10 @@
 #include <cstring>
 #include <vector>
 
-#include "Chicane/Renderer/Backend/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/Buffer.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Descriptor/SetLayout.hpp"
 
 namespace Chicane
 {
@@ -53,6 +54,7 @@ namespace Chicane
               m_physicalDevice(inCreateInfo.physicalDevice),
               m_commandBuffer(inCreateInfo.commandBuffer),
               m_queue(inCreateInfo.queue),
+              m_allocator(inCreateInfo.allocator),
               m_mipLevels(1),
               m_descriptor({})
         {
@@ -64,7 +66,6 @@ namespace Chicane
             initMipLevels();
             initInstance(inCreateInfo.images.size());
             initSampler();
-            initMemory();
             initView(inCreateInfo.images.size());
             copyPixels(inCreateInfo.images);
             initDescriptorSet();
@@ -72,10 +73,20 @@ namespace Chicane
 
         VulkanSky::~VulkanSky()
         {
-            m_logicalDevice.freeMemory(memory);
-            m_logicalDevice.destroyImage(instance);
-            m_logicalDevice.destroyImageView(view);
-            m_logicalDevice.destroySampler(sampler);
+            if (sampler)
+            {
+                m_logicalDevice.destroySampler(sampler);
+                sampler = nullptr;
+            }
+            if (view)
+            {
+                m_logicalDevice.destroyImageView(view);
+                view = nullptr;
+            }
+            if (m_allocator)
+            {
+                m_allocator->destroyImage(*this);
+            }
         }
 
         void VulkanSky::bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
@@ -132,7 +143,13 @@ namespace Chicane
                                vk::ImageUsageFlagBits::eSampled;
             createInfo.format        = vk::Format::eR16G16B16A16Sfloat;
             createInfo.logicalDevice = m_logicalDevice;
-            VulkanImage::initInstance(instance, createInfo);
+
+            VulkanImageMemoryCreateInfo createMemoryInfo;
+            createMemoryInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            createMemoryInfo.logicalDevice  = m_logicalDevice;
+            createMemoryInfo.physicalDevice = m_physicalDevice;
+            createMemoryInfo.allocator      = m_allocator;
+            VulkanImage::init(*this, createInfo, createMemoryInfo);
         }
 
         void VulkanSky::initSampler()
@@ -143,15 +160,6 @@ namespace Chicane
             createInfo.borderColor   = vk::BorderColor::eFloatTransparentBlack;
             createInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initSampler(sampler, createInfo);
-        }
-
-        void VulkanSky::initMemory()
-        {
-            VulkanImageMemoryCreateInfo createInfo;
-            createInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            createInfo.logicalDevice  = m_logicalDevice;
-            createInfo.physicalDevice = m_physicalDevice;
-            VulkanImage::initMemory(memory, instance, createInfo);
         }
 
         void VulkanSky::initView(std::uint32_t inCount)
@@ -175,6 +183,7 @@ namespace Chicane
             VulkanBufferCreateInfo createInfo;
             createInfo.logicalDevice  = m_logicalDevice;
             createInfo.physicalDevice = m_physicalDevice;
+            createInfo.allocator      = m_allocator;
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
             createInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
@@ -182,6 +191,7 @@ namespace Chicane
 
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
+            void* writeLocation = stagingBuffer.map();
 
             std::vector<unsigned char> srgb(static_cast<std::size_t>(extent.width) * extent.height * 4u);
             std::vector<std::uint16_t> linear(static_cast<std::size_t>(extent.width) * extent.height * 4u);
@@ -203,9 +213,11 @@ namespace Chicane
                     }
                 }
 
-                void* writeLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, offset, faceBytes);
-                std::memcpy(writeLocation, linear.data(), static_cast<std::size_t>(faceBytes));
-                m_logicalDevice.unmapMemory(stagingBuffer.memory);
+                std::memcpy(
+                    static_cast<char*>(writeLocation) + static_cast<std::size_t>(offset),
+                    linear.data(),
+                    static_cast<std::size_t>(faceBytes)
+                );
 
                 offset += faceBytes;
             }
@@ -240,7 +252,7 @@ namespace Chicane
                 m_mipLevels
             );
 
-            stagingBuffer.destroy(m_logicalDevice);
+            stagingBuffer.destroy();
         }
 
         void VulkanSky::initDescriptorSet()

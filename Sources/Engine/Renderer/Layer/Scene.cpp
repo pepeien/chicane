@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Layer/Scene.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Layer/Scene/Foreground.hpp"
 #include "Chicane/Renderer/Layer/Scene/Line.hpp"
@@ -57,15 +59,19 @@ namespace Chicane
             RHI::Device* device = m_backend->getRHIDevice();
 
             RHI::BufferCreateInfo vertex;
-            vertex.size           = m_backend->getResourceBudget(Resource::SceneVertices);
+            vertex.size           = std::min(
+                m_backend->getResourceBudget(Resource::SceneVertices), RESOURCE_MESH_INITIAL_BYTES
+            );
             vertex.usage          = RHI::BufferUsage::Vertex;
-            vertex.bHasHostAccess = true;
+            vertex.bHasHostAccess = false;
             modelVertexBuffer     = device->createBuffer(vertex);
 
             RHI::BufferCreateInfo index;
-            index.size           = m_backend->getResourceBudget(Resource::SceneIndices);
+            index.size           = std::min(
+                m_backend->getResourceBudget(Resource::SceneIndices), RESOURCE_MESH_INITIAL_BYTES
+            );
             index.usage          = RHI::BufferUsage::Index;
-            index.bHasHostAccess = true;
+            index.bHasHostAccess = false;
             modelIndexBuffer     = device->createBuffer(index);
         }
 

@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Debug.hpp"
+#include "Backend/Vulkan/Debug.hpp"
 
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Log.hpp"

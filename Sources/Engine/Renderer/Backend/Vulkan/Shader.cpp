@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Shader.hpp"
+#include "Backend/Vulkan/Shader.hpp"
 
 #include "Chicane/Core/FileSystem.hpp"
 

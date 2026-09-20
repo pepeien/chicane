@@ -52,7 +52,7 @@ namespace Chicane
         {
             pumpDecoded(inResources);
 
-            std::unordered_map<Draw::Id, Priority> priorities;
+            std::unordered_map<Draw::Id, TextureStreamerPriority> priorities;
             auto                                   consider = [&](Draw::Id inId, float inScreenPx, bool inPinned)
             {
                 if (inId <= Draw::InvalidId)
@@ -60,7 +60,7 @@ namespace Chicane
                     return;
                 }
 
-                Priority& entry = priorities[inId];
+                TextureStreamerPriority& entry = priorities[inId];
                 entry.id        = inId;
                 entry.bPinned   = entry.bPinned || inPinned;
                 entry.screenPx  = std::max(entry.screenPx, inScreenPx);
@@ -141,7 +141,7 @@ namespace Chicane
                 return true;
             };
 
-            std::vector<Priority> ranked;
+            std::vector<TextureStreamerPriority> ranked;
             ranked.reserve(priorities.size());
             for (const auto& [id, priority] : priorities)
             {
@@ -151,7 +151,7 @@ namespace Chicane
             std::sort(
                 ranked.begin(),
                 ranked.end(),
-                [](const Priority& inLeft, const Priority& inRight)
+                [](const TextureStreamerPriority& inLeft, const TextureStreamerPriority& inRight)
                 {
                     if (inLeft.bPinned != inRight.bPinned)
                     {
@@ -163,7 +163,7 @@ namespace Chicane
             );
 
             std::uint32_t promotions = 0;
-            for (const Priority& priority : ranked)
+            for (const TextureStreamerPriority& priority : ranked)
             {
                 DrawTexture* texture = inResources.getDrawMutable(priority.id);
                 if (!texture || !texture->bStreamable || texture->getMipCount() == 0)
@@ -215,11 +215,11 @@ namespace Chicane
 
             if (inBudgetBytes > 0 && used > inBudgetBytes)
             {
-                std::vector<Priority> eviction = ranked;
+                std::vector<TextureStreamerPriority> eviction = ranked;
                 std::sort(
                     eviction.begin(),
                     eviction.end(),
-                    [](const Priority& inLeft, const Priority& inRight)
+                    [](const TextureStreamerPriority& inLeft, const TextureStreamerPriority& inRight)
                     {
                         if (inLeft.bPinned != inRight.bPinned)
                         {
@@ -230,7 +230,7 @@ namespace Chicane
                     }
                 );
 
-                for (const Priority& priority : eviction)
+                for (const TextureStreamerPriority& priority : eviction)
                 {
                     if (used <= inBudgetBytes)
                     {
@@ -265,13 +265,13 @@ namespace Chicane
 
         void TextureStreamer::pumpDecoded(DrawTextureResource& inResources)
         {
-            std::vector<DecodeResult> ready;
+            std::vector<TextureStreamerDecodeResult> ready;
             {
                 std::lock_guard<std::mutex> lock(m_mailbox->mutex);
                 ready.swap(m_mailbox->ready);
             }
 
-            for (const DecodeResult& result : ready)
+            for (const TextureStreamerDecodeResult& result : ready)
             {
                 m_inFlight.erase(decodeKey(result.id, result.mip));
                 DrawTexture* texture = inResources.getDrawMutable(result.id);
@@ -307,7 +307,7 @@ namespace Chicane
 
             const Draw::Id                       id      = inTexture.id;
             const std::shared_ptr<ImageMipChain> mips    = inTexture.mips;
-            const std::shared_ptr<Mailbox>       mailbox = m_mailbox;
+            const std::shared_ptr<TextureStreamerMailbox> mailbox = m_mailbox;
             m_inFlight.insert(key);
 
             Worker::submit(

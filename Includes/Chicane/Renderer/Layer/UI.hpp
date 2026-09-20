@@ -4,6 +4,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Layer/UI/Backdrop.hpp"
 #include "Chicane/Renderer/RHI/BindGroup.hpp"
 #include "Chicane/Renderer/RHI/BindGroup/Layout.hpp"
 #include "Chicane/Renderer/RHI/Buffer.hpp"
@@ -44,9 +45,7 @@ namespace Chicane
             RHI::Buffer                 m_indexBuffer;
             RHI::Buffer                 m_glyphBuffer;
             RHI::Sampler                m_backdropSampler;
-            std::vector<RHI::Image>     m_backdrops;
-            std::uint32_t               m_backdropWidth  = 0;
-            std::uint32_t               m_backdropHeight = 0;
+            std::vector<UIBackdrop>     m_backdrops;
         };
     }
 }

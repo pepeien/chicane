@@ -20,9 +20,9 @@ VSOut main(
     PolyInstance3D mesh = gMeshes[instanceId];
 
     VSOut output;
-    output.color    = inColor;
-    output.position = mul(gCamera.projection, mul(gCamera.view, mul(mesh.model, float4(inPosition, 1.0))));
-    output.position.z -= max(output.position.w, 0.0) * 0.002;
+            output.color    = inColor;
+            output.position = mul(gCamera.projection, mul(gCamera.view, mul(mesh.model, float4(inPosition, 1.0))));
+            output.position.z -= max(output.position.w, 0.0) * 0.01;
 
     return output;
 }

@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
+#include "Backend/Vulkan/Descriptor/Pool.hpp"
 
 namespace Chicane
 {

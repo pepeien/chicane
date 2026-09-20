@@ -1,7 +1,9 @@
-#include "Chicane/Renderer/Backend/OpenGL/RHI/CommandList.hpp"
+#include "Backend/OpenGL/RHI/CommandList.hpp"
 
-#include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Backend/OpenGL.hpp"
 #include "Chicane/Renderer/Shader/Bindings.hpp"
+
+#include <algorithm>
 
 namespace Chicane
 {
@@ -51,6 +53,16 @@ namespace Chicane
             }
 
             glPolygonMode(GL_FRONT_AND_BACK, inCreateInfo.fill == RHI::FillMode::Line ? GL_LINE : GL_FILL);
+            if (inCreateInfo.fill == RHI::FillMode::Line)
+            {
+                glEnable(GL_POLYGON_OFFSET_LINE);
+                glPolygonOffset(-1.25f, -1.0f);
+            }
+            else
+            {
+                glDisable(GL_POLYGON_OFFSET_LINE);
+                glPolygonOffset(0.0f, 0.0f);
+            }
 
             if (inCreateInfo.blend == RHI::BlendMode::None)
             {
@@ -233,6 +245,8 @@ namespace Chicane
             glStencilMask(0xFF);
             glDisable(GL_STENCIL_TEST);
             glDisable(GL_SCISSOR_TEST);
+            glDisable(GL_POLYGON_OFFSET_LINE);
+            glPolygonOffset(0.0f, 0.0f);
         }
 
         void OpenGLRHICommandList::bindPipeline(RHI::Pipeline inPipeline)
@@ -364,22 +378,40 @@ namespace Chicane
                 return;
             }
 
+            const std::int32_t srcExtentX = static_cast<std::int32_t>(std::max(1u, source->width));
+            const std::int32_t srcExtentY = static_cast<std::int32_t>(std::max(1u, source->height));
+            const std::int32_t dstExtentX = static_cast<std::int32_t>(std::max(1u, dest->width));
+            const std::int32_t dstExtentY = static_cast<std::int32_t>(std::max(1u, dest->height));
+
+            const std::int32_t srcX0 = std::clamp(inX, 0, srcExtentX);
+            const std::int32_t srcY0 = std::clamp(inY, 0, srcExtentY);
+            const std::int32_t srcX1 = std::clamp(inX + static_cast<std::int32_t>(inWidth), 0, srcExtentX);
+            const std::int32_t srcY1 = std::clamp(inY + static_cast<std::int32_t>(inHeight), 0, srcExtentY);
+            if (srcX1 <= srcX0 || srcY1 <= srcY0)
+            {
+                return;
+            }
+
             GLint previous = 0;
             glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &previous);
 
             glBindFramebuffer(GL_READ_FRAMEBUFFER, source->fbo);
             glReadBuffer(source->fbo == 0 ? GL_BACK : GL_COLOR_ATTACHMENT0);
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, dest->fbo);
+            if (dest->texture)
+            {
+                glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, dest->texture, 0);
+            }
             glDrawBuffer(GL_COLOR_ATTACHMENT0);
             glBlitFramebuffer(
-                inX,
-                inY,
-                inX + static_cast<std::int32_t>(inWidth),
-                inY + static_cast<std::int32_t>(inHeight),
+                srcX0,
+                srcY0,
+                srcX1,
+                srcY1,
                 0,
                 0,
-                static_cast<GLint>(inWidth),
-                static_cast<GLint>(inHeight),
+                dstExtentX,
+                dstExtentY,
                 GL_COLOR_BUFFER_BIT,
                 GL_NEAREST
             );

@@ -49,6 +49,15 @@ namespace Chicane
         static constexpr inline const std::uint32_t TEXTURE_MAX_SIZE                                     = 4096;
         static constexpr inline const std::uint32_t TEXTURE_STREAM_TAIL                                  = 128;
         static constexpr inline const std::uint32_t TEXTURE_SLOT_MAX                                     = 4096;
+        static constexpr inline const std::size_t   RESOURCE_MESH_INITIAL_BYTES                          = 1ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_STAGING_INITIAL_BYTES                       = 16ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_SCENE_VERTICES                          = 64ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_SCENE_INDICES                           = 16ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_SCENE_INSTANCES                         = 8ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_UI_VERTICES                             = 16ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_UI_INDICES                              = 4ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_UI_INSTANCES                            = 4ull << 20;
+        static constexpr inline const std::size_t   RESOURCE_CAP_UI_GLYPHS                               = 4ull << 20;
         static constexpr inline const std::uint32_t TEXTURE_TABLE_BINDING                                = 5;
         static constexpr inline const std::uint32_t TEXTURE_CLASS_COUNT                                  = 6;
         static constexpr inline const std::uint32_t TEXTURE_CLASS_BINDING                                = 6;

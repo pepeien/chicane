@@ -7,11 +7,11 @@
 #include "Chicane/Renderer/Resource.hpp"
 
 #if CHICANE_OPENGL
-    #include "Chicane/Renderer/Backend/OpenGL.hpp"
+    #include "Backend/OpenGL.hpp"
 #endif
 
 #if CHICANE_VULKAN
-    #include "Chicane/Renderer/Backend/Vulkan.hpp"
+    #include "Backend/Vulkan.hpp"
 #endif
 
 namespace Chicane

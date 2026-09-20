@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
+#include "Backend/OpenGL/Debug.hpp"
 
 #include <glad/gl.h>
 

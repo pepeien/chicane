@@ -1,7 +1,7 @@
-#include "Chicane/Renderer/Backend/Vulkan/RHI/CommandList.hpp"
+#include "Backend/Vulkan/RHI/CommandList.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan.hpp"
+#include "Backend/Vulkan/Image.hpp"
 
 #include <algorithm>
 #include <array>
@@ -29,10 +29,10 @@ namespace Chicane
             );
         }
 
-        void VulkanRHICommandList::destroyPassObjects(std::vector<PassObjects>& inObjects)
+        void VulkanRHICommandList::destroyPassObjects(std::vector<VulkanRHIPassObjects>& inObjects)
         {
             vk::Device device = m_device->backend()->logicalDevice;
-            for (PassObjects& objects : inObjects)
+            for (VulkanRHIPassObjects& objects : inObjects)
             {
                 if (objects.framebuffer)
                 {
@@ -460,28 +460,54 @@ namespace Chicane
                 return;
             }
 
-            const std::uint32_t width  = std::max(1u, inWidth);
-            const std::uint32_t height = std::max(1u, inHeight);
+            const std::int32_t srcExtentX = static_cast<std::int32_t>(
+                std::max(1u, source->info.extent.width)
+            );
+            const std::int32_t srcExtentY = static_cast<std::int32_t>(
+                std::max(1u, source->info.extent.height)
+            );
+            const std::int32_t dstExtentX = static_cast<std::int32_t>(
+                std::max(1u, dest->info.extent.width)
+            );
+            const std::int32_t dstExtentY = static_cast<std::int32_t>(
+                std::max(1u, dest->info.extent.height)
+            );
+
+            const std::int32_t srcX0 = std::clamp(inX, 0, srcExtentX);
+            const std::int32_t srcY0 = std::clamp(inY, 0, srcExtentY);
+            const std::int32_t srcX1 = std::clamp(inX + static_cast<std::int32_t>(inWidth), 0, srcExtentX);
+            const std::int32_t srcY1 = std::clamp(inY + static_cast<std::int32_t>(inHeight), 0, srcExtentY);
+            if (srcX1 <= srcX0 || srcY1 <= srcY0)
+            {
+                return;
+            }
+
             const std::uint32_t levels = std::max(1u, dest->mips);
 
             setLayout(source, vk::ImageLayout::eTransferSrcOptimal);
             setLayout(dest, vk::ImageLayout::eTransferDstOptimal);
 
-            vk::ImageCopy region;
+            vk::ImageBlit region;
             region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
             region.srcSubresource.mipLevel       = 0;
             region.srcSubresource.baseArrayLayer = 0;
             region.srcSubresource.layerCount     = 1;
-            region.srcOffset                     = vk::Offset3D(std::max(0, inX), std::max(0, inY), 0);
-            region.dstSubresource                = region.srcSubresource;
-            region.extent                        = vk::Extent3D(width, height, 1);
+            region.srcOffsets[0]                 = vk::Offset3D(srcX0, srcY0, 0);
+            region.srcOffsets[1]                 = vk::Offset3D(srcX1, srcY1, 1);
+            region.dstSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            region.dstSubresource.mipLevel       = 0;
+            region.dstSubresource.baseArrayLayer = 0;
+            region.dstSubresource.layerCount     = 1;
+            region.dstOffsets[0]                 = vk::Offset3D(0, 0, 0);
+            region.dstOffsets[1]                 = vk::Offset3D(dstExtentX, dstExtentY, 1);
 
-            m_commands.copyImage(
+            m_commands.blitImage(
                 source->info.instance,
                 vk::ImageLayout::eTransferSrcOptimal,
                 dest->info.instance,
                 vk::ImageLayout::eTransferDstOptimal,
-                region
+                region,
+                vk::Filter::eNearest
             );
 
             auto transition = [&](std::uint32_t          inLevel,
@@ -515,8 +541,8 @@ namespace Chicane
                 );
             };
 
-            std::uint32_t mipWidth  = width;
-            std::uint32_t mipHeight = height;
+            std::uint32_t mipWidth  = static_cast<std::uint32_t>(dstExtentX);
+            std::uint32_t mipHeight = static_cast<std::uint32_t>(dstExtentY);
             for (std::uint32_t level = 1; level < levels; level++)
             {
                 transition(

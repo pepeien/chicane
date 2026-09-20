@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
+#include "Backend/Vulkan/Swapchain.hpp"
 
 #include <algorithm>
 #include <array>

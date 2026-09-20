@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
+#include "Backend/Vulkan/CommandBuffer.hpp"
 
 #include <cstdint>
 

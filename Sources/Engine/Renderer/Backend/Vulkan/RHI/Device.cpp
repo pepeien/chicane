@@ -1,24 +1,26 @@
-#include "Chicane/Renderer/Backend/Vulkan/RHI/Device.hpp"
+#include "Backend/Vulkan/RHI/Device.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 
 #include "Chicane/Core/Math/Vertex.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Buffer/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Worker.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/RHI/CommandList.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
+#include "Backend/Vulkan.hpp"
+#include "Backend/Vulkan/Allocator.hpp"
+#include "Backend/Vulkan/Buffer/CreateInfo.hpp"
+#include "Backend/Vulkan/CommandBuffer/Worker.hpp"
+#include "Backend/Vulkan/Descriptor/Pool.hpp"
+#include "Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
+#include "Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Backend/Vulkan/GraphicsPipeline/Builder.hpp"
+#include "Backend/Vulkan/Image.hpp"
+#include "Backend/Vulkan/Image/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/Sampler/CreateInfo.hpp"
+#include "Backend/Vulkan/Image/View/CreateInfo.hpp"
+#include "Backend/Vulkan/RHI/CommandList.hpp"
+#include "Backend/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {
@@ -104,8 +106,9 @@ namespace Chicane
             VulkanBufferCreateInfo info;
             info.logicalDevice  = m_backend->logicalDevice;
             info.physicalDevice = m_backend->physicalDevice;
+            info.allocator      = &m_backend->allocator;
             info.size           = inCreateInfo.size;
-            info.usage          = vk::BufferUsageFlagBits::eTransferDst;
+            info.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc;
             if (inCreateInfo.usage == RHI::BufferUsage::Vertex)
             {
                 info.usage |= vk::BufferUsageFlagBits::eVertexBuffer;
@@ -125,7 +128,6 @@ namespace Chicane
 
             if (inCreateInfo.bHasHostAccess)
             {
-                info.usage |= vk::BufferUsageFlagBits::eTransferSrc;
                 info.memoryProperties =
                     vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             }
@@ -135,9 +137,10 @@ namespace Chicane
             }
 
             data->buffer.init(info);
+            data->usage = info.usage;
             if (inCreateInfo.bHasHostAccess)
             {
-                data->mapped = m_backend->logicalDevice.mapMemory(data->buffer.memory, 0, inCreateInfo.size);
+                data->mapped = data->buffer.map();
             }
 
             return {data};
@@ -153,11 +156,8 @@ namespace Chicane
 
             if (data->bOwned)
             {
-                if (data->mapped)
-                {
-                    m_backend->logicalDevice.unmapMemory(data->buffer.memory);
-                }
-                data->buffer.destroy(m_backend->logicalDevice);
+                data->mapped = nullptr;
+                data->buffer.destroy();
             }
             delete data;
         }
@@ -172,34 +172,49 @@ namespace Chicane
                 return;
             }
 
+            if (inOffset + inSize > data->size)
+            {
+                VulkanBufferCreateInfo info;
+                info.logicalDevice    = m_backend->logicalDevice;
+                info.physicalDevice   = m_backend->physicalDevice;
+                info.allocator        = &m_backend->allocator;
+                info.size             = std::max(inOffset + inSize, data->size * 2);
+                info.usage            = data->usage;
+                info.memoryProperties = data->bHost
+                                            ? vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent
+                                            : vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+                VulkanBuffer grown;
+                grown.init(info);
+                if (data->bHost && data->mapped && data->size > 0)
+                {
+                    std::memcpy(grown.map(), data->mapped, static_cast<std::size_t>(data->size));
+                }
+                else if (!data->bHost && data->size > 0)
+                {
+                    data->buffer.copy(grown, data->size, m_backend->graphicsQueue, m_backend->mainCommandBuffer);
+                }
+
+                data->buffer.destroy();
+                data->buffer = grown;
+                data->size   = info.size;
+                data->mapped = data->bHost ? data->buffer.map() : nullptr;
+            }
+
             if (data->mapped)
             {
                 std::memcpy(static_cast<char*>(data->mapped) + inOffset, inData, inSize);
                 return;
             }
 
-            VulkanBufferCreateInfo info;
-            info.logicalDevice  = m_backend->logicalDevice;
-            info.physicalDevice = m_backend->physicalDevice;
-            info.size           = inSize;
-            info.usage          = vk::BufferUsageFlagBits::eTransferSrc;
-            info.memoryProperties =
-                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-
-            VulkanBuffer staging;
-            staging.init(info);
-            void* mapped = m_backend->logicalDevice.mapMemory(staging.memory, 0, inSize);
-            std::memcpy(mapped, inData, inSize);
-            m_backend->logicalDevice.unmapMemory(staging.memory);
-
-            VulkanCommandBufferWorker::startJob(m_backend->mainCommandBuffer);
-            vk::BufferCopy copy;
-            copy.srcOffset = 0;
-            copy.dstOffset = inOffset;
-            copy.size      = inSize;
-            m_backend->mainCommandBuffer.copyBuffer(staging.instance, data->buffer.instance, 1, &copy);
-            VulkanCommandBufferWorker::endJob(m_backend->mainCommandBuffer, m_backend->graphicsQueue, "RHI buffer");
-            staging.destroy(m_backend->logicalDevice);
+            m_backend->allocator.upload(
+                data->buffer.instance,
+                inOffset,
+                inData,
+                inSize,
+                m_backend->mainCommandBuffer,
+                m_backend->graphicsQueue
+            );
         }
 
         RHI::Image VulkanRHIDevice::createImage(const RHI::ImageCreateInfo& inCreateInfo)
@@ -237,13 +252,13 @@ namespace Chicane
             }
             instanceCreateInfo.format        = data->info.format;
             instanceCreateInfo.logicalDevice = m_backend->logicalDevice;
-            VulkanImage::initInstance(data->info.instance, instanceCreateInfo);
 
             VulkanImageMemoryCreateInfo memoryCreateInfo;
             memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
             memoryCreateInfo.logicalDevice  = m_backend->logicalDevice;
             memoryCreateInfo.physicalDevice = m_backend->physicalDevice;
-            VulkanImage::initMemory(data->info.memory, data->info.instance, memoryCreateInfo);
+            memoryCreateInfo.allocator      = &m_backend->allocator;
+            VulkanImage::init(data->info, instanceCreateInfo, memoryCreateInfo);
 
             VulkanImageViewCreateInfo viewCreateInfo;
             viewCreateInfo.count         = instanceCreateInfo.count;
@@ -315,14 +330,7 @@ namespace Chicane
                 }
                 if (!data->bViewOnly)
                 {
-                    if (data->info.instance)
-                    {
-                        m_backend->logicalDevice.destroyImage(data->info.instance);
-                    }
-                    if (data->info.memory)
-                    {
-                        m_backend->logicalDevice.freeMemory(data->info.memory);
-                    }
+                    VulkanAllocator::destroyImage(data->info);
                     if (data->info.sampler)
                     {
                         m_backend->logicalDevice.destroySampler(data->info.sampler);
@@ -344,18 +352,18 @@ namespace Chicane
 
             const std::size_t size =
                 static_cast<std::size_t>(inWidth) * inHeight * (data->format == RHI::ImageFormat::RGBA16F ? 8u : 4u);
+
             VulkanBufferCreateInfo info;
-            info.logicalDevice  = m_backend->logicalDevice;
-            info.physicalDevice = m_backend->physicalDevice;
-            info.size           = size;
-            info.usage          = vk::BufferUsageFlagBits::eTransferSrc;
+            info.logicalDevice    = m_backend->logicalDevice;
+            info.physicalDevice   = m_backend->physicalDevice;
+            info.allocator        = &m_backend->allocator;
+            info.size             = size;
+            info.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             info.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             VulkanBuffer staging;
             staging.init(info);
-            void* mapped = m_backend->logicalDevice.mapMemory(staging.memory, 0, size);
-            std::memcpy(mapped, inData, size);
-            m_backend->logicalDevice.unmapMemory(staging.memory);
+            std::memcpy(staging.map(), inData, size);
 
             if (inLayer == 0)
             {
@@ -383,7 +391,7 @@ namespace Chicane
             m_backend->mainCommandBuffer
                 .copyBufferToImage(staging.instance, data->info.instance, vk::ImageLayout::eTransferDstOptimal, copy);
             VulkanCommandBufferWorker::endJob(m_backend->mainCommandBuffer, m_backend->graphicsQueue, "RHI image");
-            staging.destroy(m_backend->logicalDevice);
+            staging.destroy();
         }
 
         void VulkanRHIDevice::generateMips(RHI::Image inImage)
@@ -687,6 +695,13 @@ namespace Chicane
                                           ? vk::FrontFace::eClockwise
                                           : vk::FrontFace::eCounterClockwise;
             rasterization.lineWidth = 1.0f;
+            if (inCreateInfo.fill == RHI::FillMode::Line ||
+                inCreateInfo.topology == RHI::PrimitiveTopology::LineList)
+            {
+                rasterization.depthBiasEnable         = VK_TRUE;
+                rasterization.depthBiasConstantFactor = -1.25f;
+                rasterization.depthBiasSlopeFactor    = -1.0f;
+            }
 
             vk::PipelineDepthStencilStateCreateInfo depth;
             depth.depthTestEnable  = inCreateInfo.bHasDepthTest;

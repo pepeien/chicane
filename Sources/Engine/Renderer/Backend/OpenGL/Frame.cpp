@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Frame.hpp"
+#include "Backend/OpenGL/Frame.hpp"
 
 #include <stdexcept>
 

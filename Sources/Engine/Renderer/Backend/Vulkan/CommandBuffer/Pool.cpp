@@ -1,6 +1,6 @@
-#include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp"
+#include "Backend/Vulkan/CommandBuffer/Pool.hpp"
 
-#include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
+#include "Backend/Vulkan/Queue.hpp"
 
 namespace Chicane
 {

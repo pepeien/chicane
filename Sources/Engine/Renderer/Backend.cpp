@@ -200,7 +200,41 @@ namespace Chicane
                 return static_cast<std::size_t>(budget.at(inType) * static_cast<float>(m_VRAM));
             }
 
-            return getResourceSize(inType) * getResourceBudgetCount(inType) * 0.5f;
+            std::size_t bytes = getResourceSize(inType) * getResourceBudgetCount(inType) * 0.5f;
+            std::size_t cap   = 0;
+            switch (inType)
+            {
+            case Resource::SceneVertices:
+                cap = RESOURCE_CAP_SCENE_VERTICES;
+                break;
+            case Resource::SceneIndices:
+                cap = RESOURCE_CAP_SCENE_INDICES;
+                break;
+            case Resource::SceneInstances:
+                cap = RESOURCE_CAP_SCENE_INSTANCES;
+                break;
+            case Resource::UIVertices:
+                cap = RESOURCE_CAP_UI_VERTICES;
+                break;
+            case Resource::UIIndices:
+                cap = RESOURCE_CAP_UI_INDICES;
+                break;
+            case Resource::UIInstances:
+                cap = RESOURCE_CAP_UI_INSTANCES;
+                break;
+            case Resource::UIGlyphs:
+                cap = RESOURCE_CAP_UI_GLYPHS;
+                break;
+            default:
+                break;
+            }
+
+            if (cap > 0)
+            {
+                bytes = std::min(bytes, cap);
+            }
+
+            return bytes;
         }
 
         std::uint32_t Backend::getResourceBudgetCount(Resource inType)

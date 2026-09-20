@@ -371,7 +371,6 @@ namespace Chicane
             if (shouldDrawLineList(inFrame) && inFrame.hasImmediateVertices())
             {
                 ensureImmediate(device, inFrame);
-                rhi->commands->bindVertexBuffer(m_immediateVertex);
                 for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
                 {
                     if (!draw.isLineList())
@@ -383,6 +382,7 @@ namespace Chicane
                         inFrame.isForegroundDraw(draw) ? m_lineForegroundPipeline : m_linePipeline
                     );
                     rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
+                    rhi->commands->bindVertexBuffer(m_immediateVertex);
                     rhi->commands->setLineWidth(1.0f);
                     if (draw.indexCount == 0)
                     {

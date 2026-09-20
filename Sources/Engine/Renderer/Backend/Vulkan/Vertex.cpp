@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
+#include "Backend/Vulkan/Vertex.hpp"
 
 #include "Chicane/Core/Math/Vertex.hpp"
 

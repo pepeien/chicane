@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
+#include "Backend/Vulkan/Surface.hpp"
 
 #include <SDL3/SDL_vulkan.h>
 

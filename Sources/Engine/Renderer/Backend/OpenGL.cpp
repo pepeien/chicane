@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL.hpp"
+#include "Backend/OpenGL.hpp"
 
 #include <algorithm>
 #include <array>
@@ -14,10 +14,10 @@
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
+#include "Backend/OpenGL/Debug.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
 #include "Chicane/Renderer/Layer/UI.hpp"
-#include "Chicane/Renderer/Backend/OpenGL/RHI/Device.hpp"
+#include "Backend/OpenGL/RHI/Device.hpp"
 #include "Chicane/Renderer/Draw/Particle.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
