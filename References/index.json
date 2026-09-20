@@ -3502,6 +3502,23 @@
                         "children": []
                     },
                     {
+                        "title": "Dirty",
+                        "filename": "Dirty",
+                        "path": "Grid/Component/Dirty",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Dirty.hpp",
+                            "namespace": "Chicane::Grid::ComponentDirty",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Dock",
                         "filename": "Dock",
                         "path": "Grid/Component/Dock",
@@ -3645,23 +3662,6 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/DrawCache.hpp",
                             "namespace": "Chicane::Grid::DrawCache",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Flag",
-                        "filename": "Flag",
-                        "path": "Grid/Component/Flag",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/Flag.hpp",
-                            "namespace": "Chicane::Grid::ComponentFlag",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -3817,6 +3817,23 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Logger.hpp",
                             "namespace": "Chicane::Grid::Logger",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "PaintContext",
+                        "filename": "PaintContext",
+                        "path": "Grid/Component/PaintContext",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/PaintContext.hpp",
+                            "namespace": "Chicane::Grid::ComponentPaintContext",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4331,6 +4348,58 @@
                         "children": []
                     },
                     {
+                        "title": "Animator",
+                        "filename": "Animator",
+                        "path": "Grid/Style/Animator",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Animator.hpp",
+                            "namespace": "Chicane::Grid::StyleAnimator",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Track",
+                                "filename": "Track",
+                                "path": "Grid/Style/Animator/Track",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Animator/Track.hpp",
+                                    "namespace": "Chicane::Grid::StyleAnimatorTrack",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Tween",
+                                "filename": "Tween",
+                                "path": "Grid/Style/Animator/Tween",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Animator/Tween.hpp",
+                                    "namespace": "Chicane::Grid::StyleAnimatorTween",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "Background",
                         "filename": "Background",
                         "path": "Grid/Style/Background",
@@ -4362,6 +4431,23 @@
                                     "description": null
                                 },
                                 "children": [
+                                    {
+                                        "title": "Stop",
+                                        "filename": "Stop",
+                                        "path": "Grid/Style/Background/Gradient/Stop",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Style/Background/Gradient/Stop.hpp",
+                                            "namespace": "Chicane::Grid::StyleGradientStop",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
                                     {
                                         "title": "StyleGradientType",
                                         "filename": "Type",
@@ -4640,7 +4726,76 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "Dirty",
+                                "filename": "Dirty",
+                                "path": "Grid/Style/Property/Dirty",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Property/Dirty.hpp",
+                                    "namespace": "Chicane::Grid::StylePropertyDirty",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Entry",
+                                "filename": "Entry",
+                                "path": "Grid/Style/Property/Entry",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Property/Entry.hpp",
+                                    "namespace": "Chicane::Grid::StylePropertyEntry",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "StylePropertyId",
+                                "filename": "Id",
+                                "path": "Grid/Style/Property/Id",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Property/Id.hpp",
+                                    "namespace": "Chicane::Grid::StylePropertyId",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Table",
+                                "filename": "Table",
+                                "path": "Grid/Style/Property/Table",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Property/Table.hpp",
+                                    "namespace": "Chicane::Grid::StylePropertyTable",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "Radius",

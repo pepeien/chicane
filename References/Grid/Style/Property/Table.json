@@ -1,0 +1,145 @@
+{
+    "title": "Table",
+    "filename": "Table",
+    "path": "Grid/Style/Property/Table",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Property/Table.hpp",
+        "namespace": "Chicane::Grid::StylePropertyTable",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "StylePropertyEntry",
+                    "suffix": "&",
+                    "path": "Grid/Style/Property/Entry",
+                    "templates": []
+                },
+                "name": "get",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_GET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "find",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "outId"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_FIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_OFFSET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "COUNT",
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VALUE_COUNT",
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_VALUE_COUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEPROPERTYTABLE_DESCRIPTION"
+    },
+    "children": []
+}

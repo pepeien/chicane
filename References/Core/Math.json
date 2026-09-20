@@ -24,6 +24,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "EPSILON",
+                "description": "CHICANE_MATH_EPSILON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "PI",
                 "description": "CHICANE_MATH_PI_DESCRIPTION"
             },

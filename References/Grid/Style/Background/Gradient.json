@@ -117,32 +117,6 @@
         "members": [
             {
                 "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Color::Rgba",
-                    "suffix": "",
-                    "path": "Core/Color",
-                    "templates": []
-                },
-                "name": "color",
-                "description": "CHICANE_GRID_STYLEGRADIENT_STOP_COLOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "offset",
-                "description": "CHICANE_GRID_STYLEGRADIENT_STOP_OFFSET_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "modifiers": [
                     "static",
                     "constexpr"
@@ -194,9 +168,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Stop",
+                            "name": "StyleGradientStop",
                             "suffix": "",
-                            "path": "Grid/Style/Background/Gradient",
+                            "path": "Grid/Style/Background/Gradient/Stop",
                             "templates": []
                         }
                     ]

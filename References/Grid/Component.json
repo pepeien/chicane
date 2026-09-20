@@ -443,23 +443,6 @@
                 "type": "virtual",
                 "return": {
                     "prefix": "",
-                    "name": "std::uint64_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getScrollGeneration",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETSCROLLGENERATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -471,31 +454,6 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_COMPONENT_GETSCROLLBARGUTTER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getChildrenFlat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -693,9 +651,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inFlag"
@@ -721,9 +679,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inFlag"
@@ -1872,16 +1830,87 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getPaintChildren",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETPAINTCHILDREN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "markFlatDirty",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_MARKFLATDIRTY_DESCRIPTION"
+                "name": "appendChildrenFlat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outChildren"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_APPENDCHILDRENFLAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1953,14 +1982,14 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "invalidateDrawCache",
+                "name": "markPaintDirty",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_INVALIDATEDRAWCACHE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_MARKPAINTDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -1968,10 +1997,36 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "invalidateDrawCacheSubtree",
+                "name": "markPaintDirtySubtree",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_MARKPAINTDIRTYSUBTREE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ComponentPaintContext",
+                            "suffix": "&",
+                            "path": "Grid/Component/PaintContext",
+                            "templates": []
+                        },
+                        "name": "inContext"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_PAINT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2879,9 +2934,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Mat3",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Mat/Mat3",
                     "templates": []
                 },
@@ -3054,9 +3109,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Bounds2D",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Bounds/2D",
                     "templates": []
                 },
@@ -3071,9 +3126,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Bounds2D",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Bounds/2D",
                     "templates": []
                 },
@@ -3660,7 +3715,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -3668,11 +3723,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "appendHitPeripherals",
+                "name": "setPeripherals",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -3686,14 +3741,11 @@
                                 }
                             ]
                         },
-                        "name": "outChildren"
+                        "name": "inPeripherals"
                     }
                 ],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_APPENDHITPERIPHERALS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETPERIPHERALS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -3848,21 +3900,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFLOWCHILDPOSITIONS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshCullSubtree",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESHCULLSUBTREE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4278,10 +4315,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "rebuildFlatChildren",
+                "name": "rebuildPaintChildren",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REBUILDFLATCHILDREN_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_REBUILDPAINTCHILDREN_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4303,51 +4340,96 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "syncDrawCache",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_SYNCDRAWCACHE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "computeDrawPosition",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_COMPUTEDRAWPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "Mat3",
                     "suffix": "",
                     "path": "Core/Math/Mat/Mat3",
                     "templates": []
                 },
-                "name": "computePaintMatrix",
-                "parameters": [],
+                "name": "computeLocalPaintMatrix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleTransform",
+                            "suffix": "&",
+                            "path": "Grid/Style/Transform",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_COMPUTEPAINTMATRIX_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_COMPUTELOCALPAINTMATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintRadius",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "const ",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inRoundedAncestors"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_PAINTRADIUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "paintRoundClips",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "const ",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inRoundedAncestors"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_PAINTROUNDCLIPS_DESCRIPTION"
             }
         ],
         "members": [
@@ -4600,9 +4682,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "m_flags",
@@ -4824,8 +4906,29 @@
                         }
                     ]
                 },
-                "name": "m_flatChildren",
-                "description": "CHICANE_GRID_COMPONENT_M_FLATCHILDREN_DESCRIPTION"
+                "name": "m_peripherals",
+                "description": "CHICANE_GRID_COMPONENT_M_PERIPHERALS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_paintChildren",
+                "description": "CHICANE_GRID_COMPONENT_M_PAINTCHILDREN_DESCRIPTION"
             },
             {
                 "accessor": "protected",

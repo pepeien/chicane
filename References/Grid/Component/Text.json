@@ -73,46 +73,6 @@
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "invalidateDrawCacheSubtree",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_TEXT_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getChildrenFlat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_TEXT_GETCHILDRENFLAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -257,6 +217,21 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_TEXT_GETINSERTIONINDEXAT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshPeripherals",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESHPERIPHERALS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

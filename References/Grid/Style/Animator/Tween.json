@@ -1,0 +1,44 @@
+{
+    "title": "Tween",
+    "filename": "Tween",
+    "path": "Grid/Style/Animator/Tween",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Animator/Tween.hpp",
+        "namespace": "Chicane::Grid::StyleAnimatorTween",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StylePropertyId",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Id",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_GRID_STYLEANIMATORTWEEN_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Drift::Tween",
+                    "suffix": "",
+                    "path": "Drift/Tween",
+                    "templates": []
+                },
+                "name": "tween",
+                "description": "CHICANE_GRID_STYLEANIMATORTWEEN_TWEEN_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEANIMATORTWEEN_DESCRIPTION"
+    },
+    "children": []
+}

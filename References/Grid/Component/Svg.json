@@ -69,8 +69,8 @@
                 "description": "CHICANE_GRID_SVG_REFRESH_DESCRIPTION"
             },
             {
-                "accessor": "public",
-                "type": "override",
+                "accessor": "protected",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -78,35 +78,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "invalidateDrawCacheSubtree",
+                "name": "refreshPeripherals",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_SVG_INVALIDATEDRAWCACHESUBTREE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getChildrenFlat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_SVG_GETCHILDRENFLAT_DESCRIPTION"
+                "description": "CHICANE_GRID_SVG_REFRESHPERIPHERALS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

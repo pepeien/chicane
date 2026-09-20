@@ -1,0 +1,44 @@
+{
+    "title": "Stop",
+    "filename": "Stop",
+    "path": "Grid/Style/Background/Gradient/Stop",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Background/Gradient/Stop.hpp",
+        "namespace": "Chicane::Grid::StyleGradientStop",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_GRID_STYLEGRADIENTSTOP_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "offset",
+                "description": "CHICANE_GRID_STYLEGRADIENTSTOP_OFFSET_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEGRADIENTSTOP_DESCRIPTION"
+    },
+    "children": []
+}

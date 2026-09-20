@@ -141,13 +141,29 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MAX_PROPERTY_ARITY",
+                "description": "CHICANE_GRID_ANIMATABLE_MAX_PROPERTY_ARITY_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Drift::Animator",
+                    "name": "StyleAnimator",
                     "suffix": "",
-                    "path": "Drift/Animator",
+                    "path": "Grid/Style/Animator",
                     "templates": []
                 },
                 "name": "m_animator",

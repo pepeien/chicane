@@ -98,31 +98,6 @@
             },
             {
                 "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getChildrenFlat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCKPANEL_GETCHILDRENFLAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -568,7 +543,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "override",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -576,31 +551,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "appendHitPeripherals",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Component",
-                                    "suffix": "*",
-                                    "path": "Grid/Component",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "outChildren"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCKPANEL_APPENDHITPERIPHERALS_DESCRIPTION"
+                "name": "refreshPeripherals",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_DOCKPANEL_REFRESHPERIPHERALS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

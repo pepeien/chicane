@@ -1,10 +1,10 @@
 {
-    "title": "Flag",
-    "filename": "Flag",
-    "path": "Grid/Component/Flag",
+    "title": "Dirty",
+    "filename": "Dirty",
+    "path": "Grid/Component/Dirty",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/Flag.hpp",
-        "namespace": "Chicane::Grid::ComponentFlag",
+        "header": "Includes/Chicane/Grid/Component/Dirty.hpp",
+        "namespace": "Chicane::Grid::ComponentDirty",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "None",
-                "description": "CHICANE_GRID_COMPONENTFLAG_NONE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_NONE_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Style",
-                "description": "CHICANE_GRID_COMPONENTFLAG_STYLE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_STYLE_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,29 @@
                     "templates": []
                 },
                 "name": "Layout",
-                "description": "CHICANE_GRID_COMPONENTFLAG_LAYOUT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_LAYOUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Paint",
+                "description": "CHICANE_GRID_COMPONENTDIRTY_PAINT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Text",
+                "description": "CHICANE_GRID_COMPONENTDIRTY_TEXT_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,7 +71,7 @@
                     "templates": []
                 },
                 "name": "LaidOut",
-                "description": "CHICANE_GRID_COMPONENTFLAG_LAIDOUT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_LAIDOUT_DESCRIPTION"
             },
             {
                 "type": {
@@ -60,7 +82,7 @@
                     "templates": []
                 },
                 "name": "Insets",
-                "description": "CHICANE_GRID_COMPONENTFLAG_INSETS_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_INSETS_DESCRIPTION"
             },
             {
                 "type": {
@@ -71,7 +93,7 @@
                     "templates": []
                 },
                 "name": "LiveBind",
-                "description": "CHICANE_GRID_COMPONENTFLAG_LIVEBIND_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTDIRTY_LIVEBIND_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -92,9 +114,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Grid::ComponentFlag",
+                            "name": "Grid::ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inValue"
@@ -110,9 +132,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "operator|",
@@ -120,9 +142,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inLeft"
@@ -130,9 +152,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inRight"
@@ -149,9 +171,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "operator&",
@@ -159,9 +181,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inLeft"
@@ -169,9 +191,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inRight"
@@ -188,9 +210,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "&",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "operator|=",
@@ -198,9 +220,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "&",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inLeft"
@@ -208,9 +230,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inRight"
@@ -226,9 +248,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "&",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "operator&=",
@@ -236,9 +258,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "&",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inLeft"
@@ -246,9 +268,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inRight"
@@ -264,9 +286,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ComponentFlag",
+                    "name": "ComponentDirty",
                     "suffix": "",
-                    "path": "Grid/Component/Flag",
+                    "path": "Grid/Component/Dirty",
                     "templates": []
                 },
                 "name": "operator~",
@@ -274,9 +296,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inValue"
@@ -303,9 +325,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inFlags"
@@ -313,9 +335,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "ComponentFlag",
+                            "name": "ComponentDirty",
                             "suffix": "",
-                            "path": "Grid/Component/Flag",
+                            "path": "Grid/Component/Dirty",
                             "templates": []
                         },
                         "name": "inFlag"

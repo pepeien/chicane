@@ -1,0 +1,487 @@
+{
+    "title": "StylePropertyId",
+    "filename": "Id",
+    "path": "Grid/Style/Property/Id",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Property/Id.hpp",
+        "namespace": "Chicane::Grid::StylePropertyId",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Opacity",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_OPACITY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Width",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_WIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Height",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_HEIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MinWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MINWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MinHeight",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MINHEIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MaxWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MAXWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MaxHeight",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MAXHEIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ZIndex",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_ZINDEX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ForegroundColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_FOREGROUNDCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BackgroundColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BACKGROUNDCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FontSize",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_FONTSIZE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LetterSpacing",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_LETTERSPACING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Filter",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_FILTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BackdropFilter",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BACKDROPFILTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Transform",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Translate",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_TRANSLATE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotate",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_ROTATE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scale",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_SCALE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TransformOrigin",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_TRANSFORMORIGIN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MarginTop",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MARGINTOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MarginBottom",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MARGINBOTTOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MarginLeft",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MARGINLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MarginRight",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_MARGINRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PaddingTop",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_PADDINGTOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PaddingBottom",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_PADDINGBOTTOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PaddingLeft",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_PADDINGLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PaddingRight",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_PADDINGRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderTopWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERTOPWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderRightWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERRIGHTWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderBottomWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERBOTTOMWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderLeftWidth",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERLEFTWIDTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderTopColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERTOPCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderRightColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERRIGHTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderBottomColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERBOTTOMCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BorderLeftColor",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_BORDERLEFTCOLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GapTop",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_GAPTOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GapBottom",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_GAPBOTTOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GapLeft",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_GAPLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GapRight",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_GAPRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_COUNT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Grid::StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEPROPERTYID_DESCRIPTION"
+    },
+    "children": []
+}

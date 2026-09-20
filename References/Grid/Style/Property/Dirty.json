@@ -1,0 +1,324 @@
+{
+    "title": "Dirty",
+    "filename": "Dirty",
+    "path": "Grid/Style/Property/Dirty",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Property/Dirty.hpp",
+        "namespace": "Chicane::Grid::StylePropertyDirty",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_GRID_STYLEPROPERTYDIRTY_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Layout",
+                "description": "CHICANE_GRID_STYLEPROPERTYDIRTY_LAYOUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Paint",
+                "description": "CHICANE_GRID_STYLEPROPERTYDIRTY_PAINT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Text",
+                "description": "CHICANE_GRID_STYLEPROPERTYDIRTY_TEXT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Subtree",
+                "description": "CHICANE_GRID_STYLEPROPERTYDIRTY_SUBTREE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Grid::StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "operator|",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "operator&",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "&",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "operator|=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR|=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "&",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "operator&=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "&",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_OPERATOR&=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "operator~",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_OPERATOR~_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "has",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inDirty"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyDirty",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Dirty",
+                            "templates": []
+                        },
+                        "name": "inFlag"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_HAS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_DESCRIPTION"
+    },
+    "children": []
+}

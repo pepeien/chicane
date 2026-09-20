@@ -68,26 +68,143 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint64_t",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "scrollGeneration",
-                "description": "CHICANE_GRID_DRAWCACHE_SCROLLGENERATION_DESCRIPTION"
+                "name": "opacity",
+                "description": "CHICANE_GRID_DRAWCACHE_OPACITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "bIsValid",
-                "description": "CHICANE_GRID_DRAWCACHE_BISVALID_DESCRIPTION"
+                "name": "filterBlur",
+                "description": "CHICANE_GRID_DRAWCACHE_FILTERBLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "depth",
+                "description": "CHICANE_GRID_DRAWCACHE_DEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "radiusX",
+                "description": "CHICANE_GRID_DRAWCACHE_RADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "radiusY",
+                "description": "CHICANE_GRID_DRAWCACHE_RADIUSY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClip",
+                "description": "CHICANE_GRID_DRAWCACHE_INNERCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClipRadiusX",
+                "description": "CHICANE_GRID_DRAWCACHE_INNERCLIPRADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "innerClipRadiusY",
+                "description": "CHICANE_GRID_DRAWCACHE_INNERCLIPRADIUSY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClip",
+                "description": "CHICANE_GRID_DRAWCACHE_OUTERCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClipRadiusX",
+                "description": "CHICANE_GRID_DRAWCACHE_OUTERCLIPRADIUSX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "outerClipRadiusY",
+                "description": "CHICANE_GRID_DRAWCACHE_OUTERCLIPRADIUSY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_DRAWCACHE_DESCRIPTION"

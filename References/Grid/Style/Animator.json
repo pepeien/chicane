@@ -1,0 +1,617 @@
+{
+    "title": "Animator",
+    "filename": "Animator",
+    "path": "Grid/Style/Animator",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Animator.hpp",
+        "namespace": "Chicane::Grid::StyleAnimator",
+        "types": [
+            {
+                "name": "Mask",
+                "type": {
+                    "prefix": "",
+                    "name": "std::bitset",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StylePropertyTable::COUNT",
+                            "suffix": "",
+                            "path": "d5/d02/structChicane_1_1Grid_1_1StylePropertyTable_1a1c2341ee057915eb747bce1fea3b05a9",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEANIMATOR_MASK_DESCRIPTION"
+            },
+            {
+                "name": "Slots",
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "StylePropertyTable::COUNT",
+                            "suffix": "",
+                            "path": "d5/d02/structChicane_1_1Grid_1_1StylePropertyTable_1a1c2341ee057915eb747bce1fea3b05a9",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEANIMATOR_SLOTS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleAnimator",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_STYLEANIMATOR_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "float",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "float",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDuration"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelay"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Drift::EasingCurve",
+                            "suffix": "&",
+                            "path": "Drift/Easing/Curve",
+                            "templates": []
+                        },
+                        "name": "inEasing"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_TWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasTween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_HASTWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "readTween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outValues"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_READTWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopTween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "StylePropertyId",
+                            "suffix": "",
+                            "path": "Grid/Style/Property/Id",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_STOPTWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopTweens",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_STOPTWEENS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleAnimatorTween",
+                            "suffix": "",
+                            "path": "Grid/Style/Animator/Tween",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getTweens",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_GETTWEENS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Drift::Clip",
+                            "suffix": "&",
+                            "path": "Drift/Clip",
+                            "templates": []
+                        },
+                        "name": "inClip"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_PLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasPlayer",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_HASPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Drift::Player",
+                    "suffix": "*",
+                    "path": "Drift/Player",
+                    "templates": []
+                },
+                "name": "getPlayer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_GETPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Drift::Player",
+                    "suffix": "*",
+                    "path": "Drift/Player",
+                    "templates": []
+                },
+                "name": "getPlayer",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_GETPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stopPlayer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_STOPPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleAnimatorTrack",
+                            "suffix": "",
+                            "path": "Grid/Style/Animator/Track",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getPlayerTracks",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_GETPLAYERTRACKS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_STOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isIdle",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_ISIDLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "getDirty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLEANIMATOR_GETDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEANIMATOR_REFRESHDIRTY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "INVALID_SLOT",
+                "description": "CHICANE_GRID_STYLEANIMATOR_INVALID_SLOT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mask",
+                    "suffix": "",
+                    "path": "Grid/Style/Animator",
+                    "templates": []
+                },
+                "name": "m_active",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_ACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Slots",
+                    "suffix": "",
+                    "path": "Grid/Style/Animator",
+                    "templates": []
+                },
+                "name": "m_slots",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_SLOTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleAnimatorTween",
+                            "suffix": "",
+                            "path": "Grid/Style/Animator/Tween",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_tweens",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_TWEENS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Drift::Player",
+                    "suffix": "",
+                    "path": "Drift/Player",
+                    "templates": []
+                },
+                "name": "m_player",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_PLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleAnimatorTrack",
+                            "suffix": "",
+                            "path": "Grid/Style/Animator/Track",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_playerTracks",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_PLAYERTRACKS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasPlayer",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_BHASPLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "m_dirty",
+                "description": "CHICANE_GRID_STYLEANIMATOR_M_DIRTY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEANIMATOR_DESCRIPTION"
+    },
+    "children": []
+}

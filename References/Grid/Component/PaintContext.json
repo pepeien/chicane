@@ -1,0 +1,117 @@
+{
+    "title": "PaintContext",
+    "filename": "PaintContext",
+    "path": "Grid/Component/PaintContext",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/PaintContext.hpp",
+        "namespace": "Chicane::Grid::ComponentPaintContext",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat3",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat3",
+                    "templates": []
+                },
+                "name": "world",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_WORLD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "clip",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_CLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "scroll",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_SCROLL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "opacity",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_OPACITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "filterBlur",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_FILTERBLUR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "depth",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_DEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "roundedAncestors",
+                "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_ROUNDEDANCESTORS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_COMPONENTPAINTCONTEXT_DESCRIPTION"
+    },
+    "children": []
+}

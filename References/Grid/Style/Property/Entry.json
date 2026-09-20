@@ -1,0 +1,106 @@
+{
+    "title": "Entry",
+    "filename": "Entry",
+    "path": "Grid/Style/Property/Entry",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Property/Entry.hpp",
+        "namespace": "Chicane::Grid::StylePropertyEntry",
+        "types": [
+            {
+                "name": "Read",
+                "type": {
+                    "prefix": "",
+                    "name": "bool(*)(const Style &inStyle, float *outValues)",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_READ_DESCRIPTION"
+            },
+            {
+                "name": "Write",
+                "type": {
+                    "prefix": "",
+                    "name": "void(*)(Style &outStyle, const float *inValues)",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_WRITE_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "arity",
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_ARITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StylePropertyDirty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Dirty",
+                    "templates": []
+                },
+                "name": "dirty",
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_DIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Read",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Entry",
+                    "templates": []
+                },
+                "name": "read",
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_READ_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Write",
+                    "suffix": "",
+                    "path": "Grid/Style/Property/Entry",
+                    "templates": []
+                },
+                "name": "write",
+                "description": "CHICANE_GRID_STYLEPROPERTYENTRY_WRITE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEPROPERTYENTRY_DESCRIPTION"
+    },
+    "children": []
+}

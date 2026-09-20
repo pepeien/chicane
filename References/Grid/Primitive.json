@@ -96,6 +96,104 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_PRIMITIVE_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "seal",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PRIMITIVE_SEAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::shared_ptr",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getSharedVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_PRIMITIVE_GETSHAREDVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::shared_ptr",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::Indices",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getSharedIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_PRIMITIVE_GETSHAREDINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::shared_ptr",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Vec2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "getSharedOutline",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_PRIMITIVE_GETSHAREDOUTLINE_DESCRIPTION"
             }
         ],
         "members": [
@@ -210,6 +308,77 @@
                 },
                 "name": "outline",
                 "description": "CHICANE_GRID_PRIMITIVE_OUTLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sharedVertices",
+                "description": "CHICANE_GRID_PRIMITIVE_M_SHAREDVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::Indices",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sharedIndices",
+                "description": "CHICANE_GRID_PRIMITIVE_M_SHAREDINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Vec2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_sharedOutline",
+                "description": "CHICANE_GRID_PRIMITIVE_M_SHAREDOUTLINE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_PRIMITIVE_DESCRIPTION"

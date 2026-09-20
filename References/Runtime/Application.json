@@ -1599,6 +1599,27 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewDrawables",
+                "description": "CHICANE_APPLICATION_M_VIEWDRAWABLES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::atomic",
                     "suffix": "",
                     "path": "",
