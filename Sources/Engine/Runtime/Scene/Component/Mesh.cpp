@@ -26,7 +26,7 @@
 
 namespace Chicane
 {
-    std::vector<float> packTransform(const Transform& inTransform)
+    static std::vector<float> packTransform(const Transform& inTransform)
     {
         const Vec3&      translation = inTransform.getTranslation();
         const QuatFloat& rotation    = inTransform.getRotation().get();
@@ -46,7 +46,7 @@ namespace Chicane
         };
     }
 
-    void alignPackedRotation(std::vector<float>& ioValue, const QuatFloat& inPrevious)
+    static void alignPackedRotation(std::vector<float>& ioValue, const QuatFloat& inPrevious)
     {
         if (ioValue.size() < 7)
         {
@@ -66,7 +66,7 @@ namespace Chicane
         ioValue.at(6) = -ioValue.at(6);
     }
 
-    Transform unpackTransform(const std::vector<float>& inValue, const Transform& inFallback)
+    static Transform unpackTransform(const std::vector<float>& inValue, const Transform& inFallback)
     {
         if (inValue.size() < 9)
         {
@@ -90,7 +90,7 @@ namespace Chicane
         return transform;
     }
 
-    Drift::Loop toDriftLoop(Box::AnimationLoop inValue)
+    static Drift::Loop toDriftLoop(Box::AnimationLoop inValue)
     {
         switch (inValue)
         {
@@ -105,7 +105,7 @@ namespace Chicane
         }
     }
 
-    Drift::Clip toDriftClip(const Box::AnimationClip& inClip)
+    static Drift::Clip toDriftClip(const Box::AnimationClip& inClip)
     {
         Drift::Clip clip(inClip.name);
         clip.duration   = inClip.duration;
@@ -146,7 +146,7 @@ namespace Chicane
         return clip;
     }
 
-    String animationId(const Box::Animation* inAnimation)
+    static String animationId(const Box::Animation* inAnimation)
     {
         if (!inAnimation)
         {

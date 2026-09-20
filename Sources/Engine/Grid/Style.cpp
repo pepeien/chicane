@@ -1540,7 +1540,7 @@ namespace Chicane
             );
         }
 
-        Vec2 percentContainingSize(const Component* inBox)
+        static Vec2 percentContainingSize(const Component* inBox)
         {
             if (!inBox)
             {

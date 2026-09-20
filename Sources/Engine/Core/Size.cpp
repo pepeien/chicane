@@ -125,7 +125,7 @@ namespace Chicane
         return inValue.substr(open + 1).trim();
     }
 
-    bool isBinaryOperator(const String& inValue, std::uint32_t inIndex)
+    static bool isBinaryOperator(const String& inValue, std::uint32_t inIndex)
     {
         for (std::uint32_t j = inIndex; j > 0;)
         {
@@ -145,7 +145,7 @@ namespace Chicane
         return false;
     }
 
-    bool isSoleCalculation(const String& inValue)
+    static bool isSoleCalculation(const String& inValue)
     {
         if (!inValue.startsWith(Size::CALCULATION_KEYWORD))
         {

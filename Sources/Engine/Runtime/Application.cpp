@@ -65,7 +65,7 @@ namespace Chicane
     std::shared_ptr<std::vector<Renderer::DrawGlyphData>> g_pendingGlyphs =
         std::make_shared<std::vector<Renderer::DrawGlyphData>>();
 
-    String resolveModelDrawId(const Box::AssetReference& inReference)
+    static String resolveModelDrawId(const Box::AssetReference& inReference)
     {
         const Box::Model* model = Box::load<Box::Model>(inReference.getSource());
         if (!model)
@@ -81,7 +81,7 @@ namespace Chicane
         return model->getUniqueId(inReference.getReference());
     }
 
-    String resolveDefaultModelDrawId()
+    static String resolveDefaultModelDrawId()
     {
         const Box::Model* model = Box::Model::getDefault();
         if (!model)
@@ -93,7 +93,7 @@ namespace Chicane
     }
 
     template <typename T>
-    void enqueuePending(std::shared_ptr<std::vector<T>>& ioQueue, const T& inValue)
+    static void enqueuePending(std::shared_ptr<std::vector<T>>& ioQueue, const T& inValue)
     {
         std::shared_ptr<std::vector<T>> current = std::atomic_load_explicit(&ioQueue, std::memory_order_acquire);
 
@@ -116,12 +116,12 @@ namespace Chicane
     }
 
     template <typename T>
-    std::shared_ptr<std::vector<T>> drainPending(std::shared_ptr<std::vector<T>>& ioQueue)
+    static std::shared_ptr<std::vector<T>> drainPending(std::shared_ptr<std::vector<T>>& ioQueue)
     {
         return std::atomic_exchange_explicit(&ioQueue, std::make_shared<std::vector<T>>(), std::memory_order_acq_rel);
     }
 
-    std::size_t nextSceneWriteIndex(std::size_t inCurrent, std::size_t inBusy, std::size_t inCount)
+    static std::size_t nextSceneWriteIndex(std::size_t inCurrent, std::size_t inBusy, std::size_t inCount)
     {
         if (inCount == 0)
         {
@@ -137,7 +137,9 @@ namespace Chicane
         return next;
     }
 
-    Renderer::Draw::Id resolvePolyId(Renderer::Instance* inRenderer, const Renderer::Draw::Reference& inReference)
+    static Renderer::Draw::Id resolvePolyId(
+        Renderer::Instance* inRenderer, const Renderer::Draw::Reference& inReference
+    )
     {
         if (!inRenderer)
         {
@@ -153,7 +155,7 @@ namespace Chicane
         return inRenderer->findPoly(Renderer::DrawPolyType::e3D, resolveDefaultModelDrawId());
     }
 
-    Renderer::Draw::Id resolveTextureId(
+    static Renderer::Draw::Id resolveTextureId(
         Renderer::Instance* inRenderer, const Renderer::Draw::Reference& inReference, bool inUseDefault
     )
     {
@@ -179,7 +181,7 @@ namespace Chicane
         return inRenderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
     }
 
-    Renderer::DrawPoly3DCommandPoly makeLinePoly(
+    static Renderer::DrawPoly3DCommandPoly makeLinePoly(
         Vertex::List inVertices, Renderer::DrawPoly3DFlag inFlags = Renderer::DrawPoly3DFlag::None
     )
     {
@@ -192,7 +194,7 @@ namespace Chicane
         return poly;
     }
 
-    void appendTrace(Vertex::List& outVertices, const SceneTraceRequest& inRequest, const Vec4& inColor)
+    static void appendTrace(Vertex::List& outVertices, const SceneTraceRequest& inRequest, const Vec4& inColor)
     {
         if (!inRequest.isValid() || !inRequest.shape)
         {
@@ -326,13 +328,16 @@ namespace Chicane
         }
 
         m_bIsRunning.store(false, std::memory_order_seq_cst);
+
         shutdownScene();
         shutdownUI();
         shutdownDrift();
         shutdownSmoke();
         shutdownModules();
-
         shutdownRenderer();
+
+        m_renderer.reset();
+        m_window.reset();
     }
 
     void Application::render()

@@ -20,7 +20,7 @@ namespace Chicane
 {
     namespace Track
     {
-        bool isTransformAttribute(const String& inName)
+        static bool isTransformAttribute(const String& inName)
         {
             return inName.equals(
                 RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
@@ -32,25 +32,25 @@ namespace Chicane
             );
         }
 
-        bool isRelativeIdentity(const Object& inObject)
+        static bool isRelativeIdentity(const Object& inObject)
         {
             return inObject.getRelativeTranslation() == Vec3::Zero() &&
                    inObject.getRelativeRotation().getAngles() == Vec3::Zero() &&
                    inObject.getRelativeScale() == Vec3::One();
         }
 
-        bool isAbsoluteIdentity(const Object& inObject)
+        static bool isAbsoluteIdentity(const Object& inObject)
         {
             return inObject.getTranslation() == Vec3::Zero() && inObject.getRotation().getAngles() == Vec3::Zero() &&
                    inObject.getScale() == Vec3::One();
         }
 
-        String formatVec3(const Vec3& inValue)
+        static String formatVec3(const Vec3& inValue)
         {
             return String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
         }
 
-        String typeTail(const String& inName)
+        static String typeTail(const String& inName)
         {
             const std::size_t split = inName.lastOf(':');
             if (split == String::npos)
@@ -61,7 +61,7 @@ namespace Chicane
             return inName.substr(split + 1);
         }
 
-        const ReflectionEnumInfo* findEnum(const String& inTypeName)
+        static const ReflectionEnumInfo* findEnum(const String& inTypeName)
         {
             ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
             if (const ReflectionEnumInfo* found = registry.find(inTypeName))
@@ -72,7 +72,7 @@ namespace Chicane
             return registry.find(typeTail(inTypeName));
         }
 
-        int readEnumValue(const void* inAddress, std::size_t inSize)
+        static int readEnumValue(const void* inAddress, std::size_t inSize)
         {
             if (!inAddress)
             {
@@ -95,7 +95,7 @@ namespace Chicane
             }
         }
 
-        String enumToString(const ReflectionFieldAccessor& inAccessor, const void* inInstance)
+        static String enumToString(const ReflectionFieldAccessor& inAccessor, const void* inInstance)
         {
             const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
             if (!info)
@@ -120,7 +120,7 @@ namespace Chicane
             return inObject.applySerializedField(inName, inValue);
         }
 
-        void writeFields(XmlNode& outNode, const Object& inObject)
+        static void writeFields(XmlNode& outNode, const Object& inObject)
         {
             const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
             if (!type)
@@ -176,7 +176,7 @@ namespace Chicane
             }
         }
 
-        void writeObject(XmlNode& outParent, const Object& inObject)
+        static void writeObject(XmlNode& outParent, const Object& inObject)
         {
             if (inObject.isTransient())
             {

@@ -6,7 +6,7 @@
 
 namespace Editor
 {
-    Chicane::SpatialTransform* asSpatial(const Chicane::ReflectionFieldAccessor& inAccessor, void* inInstance)
+    static Chicane::SpatialTransform* asSpatial(const Chicane::ReflectionFieldAccessor& inAccessor, void* inInstance)
     {
         if (!inInstance)
         {

@@ -18,12 +18,12 @@ namespace Chicane
 {
     namespace Grid
     {
-        bool hasModifier(Input::KeyboardButtonModifier inValue, Input::KeyboardButtonModifier inFlag)
+        static bool hasModifier(Input::KeyboardButtonModifier inValue, Input::KeyboardButtonModifier inFlag)
         {
             return (static_cast<std::uint16_t>(inValue) & static_cast<std::uint16_t>(inFlag)) != 0;
         }
 
-        String characterFromKey(const Input::KeyboardEvent& inEvent)
+        static String characterFromKey(const Input::KeyboardEvent& inEvent)
         {
             if (hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Ctrl) ||
                 hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Alt) ||
@@ -51,7 +51,7 @@ namespace Chicane
             return String(character);
         }
 
-        void appendCodepoint(String& outValue, char32_t inCode)
+        static void appendCodepoint(String& outValue, char32_t inCode)
         {
             if (inCode <= 0x7F)
             {
@@ -83,7 +83,7 @@ namespace Chicane
             outValue += static_cast<char>(0x80 | (inCode & 0x3F));
         }
 
-        String fromCodepoints(const std::vector<char32_t>& inCodes)
+        static String fromCodepoints(const std::vector<char32_t>& inCodes)
         {
             String result;
 

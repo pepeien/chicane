@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        bool areNear(const float* inLeft, const float* inRight, std::uint8_t inArity)
+        static bool areNear(const float* inLeft, const float* inRight, std::uint8_t inArity)
         {
             for (std::uint8_t i = 0; i < inArity; i++)
             {

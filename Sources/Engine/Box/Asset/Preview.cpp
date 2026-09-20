@@ -18,7 +18,7 @@ namespace Chicane
 {
     namespace Box
     {
-        void writeRgba(unsigned char* outPixel, const Color::Rgba& inColor)
+        static void writeRgba(unsigned char* outPixel, const Color::Rgba& inColor)
         {
             outPixel[0] = inColor.r;
             outPixel[1] = inColor.g;
@@ -26,12 +26,12 @@ namespace Chicane
             outPixel[3] = inColor.a;
         }
 
-        void writeRgba(std::vector<unsigned char>& outPixels, std::size_t inIndex, const Color::Rgba& inColor)
+        static void writeRgba(std::vector<unsigned char>& outPixels, std::size_t inIndex, const Color::Rgba& inColor)
         {
             writeRgba(outPixels.data() + (inIndex * static_cast<std::size_t>(AssetPreview::CHANNELS)), inColor);
         }
 
-        void writeRgba(std::vector<unsigned char>& outPixels, std::size_t inIndex, const unsigned char* inColor)
+        static void writeRgba(std::vector<unsigned char>& outPixels, std::size_t inIndex, const unsigned char* inColor)
         {
             std::memcpy(
                 outPixels.data() + (inIndex * static_cast<std::size_t>(AssetPreview::CHANNELS)),
@@ -40,7 +40,7 @@ namespace Chicane
             );
         }
 
-        Color::Rgba scaledRgb(const Color::Rgba& inColor, float inScale)
+        static Color::Rgba scaledRgb(const Color::Rgba& inColor, float inScale)
         {
             auto channel = [inScale](std::uint8_t inValue)
             {
@@ -52,7 +52,7 @@ namespace Chicane
             return Color::Rgba(channel(inColor.r), channel(inColor.g), channel(inColor.b), inColor.a);
         }
 
-        void fillBackground(std::vector<unsigned char>& outPixels)
+        static void fillBackground(std::vector<unsigned char>& outPixels)
         {
             const std::size_t pixelCount = outPixels.size() / static_cast<std::size_t>(AssetPreview::CHANNELS);
             for (std::size_t i = 0; i < pixelCount; i++)
@@ -157,7 +157,7 @@ namespace Chicane
             return result;
         }
 
-        void previewCamera(Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
+        static void previewCamera(Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
         {
             outViewDir = AssetPreview::VIEW_DIRECTION.normalize();
             outRight   = outViewDir.cross(Vec3::Up());
@@ -171,7 +171,7 @@ namespace Chicane
             outLight = AssetPreview::LIGHT_DIRECTION.normalize();
         }
 
-        void sampleCubemap(const std::vector<Image::Instance>& inFaces, const Vec3& inDirection, unsigned char* outRgba)
+        static void sampleCubemap(const std::vector<Image::Instance>& inFaces, const Vec3& inDirection, unsigned char* outRgba)
         {
             writeRgba(outRgba, AssetPreview::BACKGROUND_COLOR);
 
@@ -243,7 +243,7 @@ namespace Chicane
             outRgba[3] = channels > 3 ? pixels[offset + 3] : AssetPreview::BACKGROUND_COLOR.a;
         }
 
-        void appendUnitCube(Vertex::List& outVertices, Vertex::Indices& outIndices)
+        static void appendUnitCube(Vertex::List& outVertices, Vertex::Indices& outIndices)
         {
             const Vertex::Index       base    = static_cast<Vertex::Index>(outVertices.size());
             const std::array<Vec3, 8> corners = {
@@ -273,7 +273,7 @@ namespace Chicane
             }
         }
 
-        Color::Rgba sampleImage(const Image::Instance& inImage, const Vec2& inUv)
+        static Color::Rgba sampleImage(const Image::Instance& inImage, const Vec2& inUv)
         {
             if (!inImage || inImage->getPixels() == nullptr || inImage->getWidth() <= 0 || inImage->getHeight() <= 0)
             {
@@ -302,7 +302,7 @@ namespace Chicane
             );
         }
 
-        std::unique_ptr<AssetPreview> rasterPreview(
+        static std::unique_ptr<AssetPreview> rasterPreview(
             const FileSystem::Path&             inAsset,
             AssetType                           inType,
             std::vector<PreviewGeometryBatch>   inBatches,

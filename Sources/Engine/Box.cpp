@@ -34,12 +34,12 @@ namespace Chicane
         static std::list<FileSystem::Path>                                                 g_previewOrder   = {};
         static std::unordered_map<FileSystem::Path, std::list<FileSystem::Path>::iterator> g_previewOrderIt = {};
 
-        FileSystem::Path normalizePreviewPath(const FileSystem::Path& inFilePath)
+        static FileSystem::Path normalizePreviewPath(const FileSystem::Path& inFilePath)
         {
             return inFilePath.lexicallyNormal();
         }
 
-        void appendGeometry(
+        static void appendGeometry(
             const ModelParsed::Map& inModels,
             Vertex::List&           outVertices,
             Vertex::Indices&        outIndices,
@@ -80,7 +80,7 @@ namespace Chicane
             }
         }
 
-        Image::Instance loadTextureImage(const FileSystem::Path& inFilePath)
+        static Image::Instance loadTextureImage(const FileSystem::Path& inFilePath)
         {
             if (!FileSystem::exists(inFilePath))
             {
@@ -99,7 +99,9 @@ namespace Chicane
             }
         }
 
-        std::unique_ptr<AssetPreview> decodeTexturePreview(const FileSystem::Path& inFilePath, bool inShouldUseStored)
+        static std::unique_ptr<AssetPreview> decodeTexturePreview(
+            const FileSystem::Path& inFilePath, bool inShouldUseStored
+        )
         {
             if (!FileSystem::exists(inFilePath))
             {
@@ -356,7 +358,7 @@ namespace Chicane
             }
         }
 
-        const AssetPreview* touchPreview(const FileSystem::Path& inFilePath)
+        static const AssetPreview* touchPreview(const FileSystem::Path& inFilePath)
         {
             const auto found = g_previewCache.find(inFilePath);
             if (found == g_previewCache.end())
@@ -374,7 +376,7 @@ namespace Chicane
             return found->second.get();
         }
 
-        const AssetPreview* insertPreview(std::unique_ptr<AssetPreview> inPreview)
+        static const AssetPreview* insertPreview(std::unique_ptr<AssetPreview> inPreview)
         {
             if (!inPreview)
             {
@@ -411,13 +413,13 @@ namespace Chicane
             return preview;
         }
 
-        bool hasAsset(const FileSystem::Path& inSource)
+        static bool hasAsset(const FileSystem::Path& inSource)
         {
             return g_cache.find(inSource) != g_cache.end();
         }
 
         template <class T = Asset>
-        const T* getAsset(const FileSystem::Path& inSource)
+        static const T* getAsset(const FileSystem::Path& inSource)
         {
             if (!hasAsset(inSource))
             {
@@ -428,7 +430,7 @@ namespace Chicane
         }
 
         template <class T = Asset>
-        const T* addAsset(const FileSystem::Path& inSource)
+        static const T* addAsset(const FileSystem::Path& inSource)
         {
             if (!hasAsset(inSource))
             {
@@ -440,7 +442,7 @@ namespace Chicane
             return getAsset<T>(inSource);
         }
 
-        const Sound* loadSound(const FileSystem::Path& inFilePath)
+        static const Sound* loadSound(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Sound)
             {
@@ -455,7 +457,7 @@ namespace Chicane
             return getAsset<Sound>(inFilePath);
         }
 
-        const Font* loadFont(const FileSystem::Path& inFilePath)
+        static const Font* loadFont(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Font)
             {
@@ -470,7 +472,7 @@ namespace Chicane
             return getAsset<Font>(inFilePath);
         }
 
-        const Model* loadModel(const FileSystem::Path& inFilePath)
+        static const Model* loadModel(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Model)
             {
@@ -499,7 +501,7 @@ namespace Chicane
             return asset;
         }
 
-        const Texture* loadTexture(const FileSystem::Path& inFilePath)
+        static const Texture* loadTexture(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Texture)
             {
@@ -528,7 +530,7 @@ namespace Chicane
             return asset;
         }
 
-        const Skeleton* loadSkeleton(const FileSystem::Path& inFilePath)
+        static const Skeleton* loadSkeleton(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Skeleton)
             {
@@ -543,7 +545,7 @@ namespace Chicane
             return getAsset<Skeleton>(inFilePath);
         }
 
-        const Animation* loadAnimation(const FileSystem::Path& inFilePath)
+        static const Animation* loadAnimation(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Animation)
             {
@@ -577,7 +579,7 @@ namespace Chicane
             return getAsset<Animation>(inFilePath);
         }
 
-        const Mesh* loadMesh(const FileSystem::Path& inFilePath)
+        static const Mesh* loadMesh(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Mesh)
             {
@@ -614,7 +616,7 @@ namespace Chicane
             return getAsset<Mesh>(inFilePath);
         }
 
-        const Effect* loadEffect(const FileSystem::Path& inFilePath)
+        static const Effect* loadEffect(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Effect)
             {
@@ -629,7 +631,7 @@ namespace Chicane
             return getAsset<Effect>(inFilePath);
         }
 
-        const Sky* loadSky(const FileSystem::Path& inFilePath)
+        static const Sky* loadSky(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Sky)
             {

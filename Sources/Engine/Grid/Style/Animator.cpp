@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        bool areNear(const std::vector<float>& inLeft, const float* inRight, std::uint8_t inArity)
+        static bool areNear(const std::vector<float>& inLeft, const float* inRight, std::uint8_t inArity)
         {
             if (inLeft.size() != static_cast<std::size_t>(inArity))
             {

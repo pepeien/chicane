@@ -54,27 +54,27 @@ namespace Chicane
         static constexpr int           COLLISION_STEPS          = 1;
         static constexpr int           MAX_STEPS_PER_TICK       = 4;
 
-        JPH::BodyID toId(Body inBody)
+        static JPH::BodyID toId(Body inBody)
         {
             return JPH::BodyID(inBody.value());
         }
 
-        Body toBody(JPH::BodyID inId)
+        static Body toBody(JPH::BodyID inId)
         {
             return Body(inId.GetIndexAndSequenceNumber());
         }
 
-        JPH::ObjectLayer toPhysicsObjectLayer(ObjectLayer inLayer)
+        static JPH::ObjectLayer toPhysicsObjectLayer(ObjectLayer inLayer)
         {
             return static_cast<JPH::ObjectLayer>(inLayer);
         }
 
-        bool isNonMovingLayer(ObjectLayer inLayer)
+        static bool isNonMovingLayer(ObjectLayer inLayer)
         {
             return inLayer == ObjectLayer::NonMoving || inLayer == ObjectLayer::NoCollision;
         }
 
-        ObjectLayer resolveCreateLayer(const BodyCreateInfo& inCreateInfo)
+        static ObjectLayer resolveCreateLayer(const BodyCreateInfo& inCreateInfo)
         {
             if (inCreateInfo.preset != CollisionPreset::Custom)
             {
@@ -84,7 +84,7 @@ namespace Chicane
             return resolveObjectLayer(inCreateInfo.layer, inCreateInfo.motion);
         }
 
-        bool resolveCreateSensor(const BodyCreateInfo& inCreateInfo)
+        static bool resolveCreateSensor(const BodyCreateInfo& inCreateInfo)
         {
             if (inCreateInfo.preset != CollisionPreset::Custom)
             {
@@ -95,12 +95,12 @@ namespace Chicane
             return inCreateInfo.bSensor || inCreateInfo.layer == ObjectLayer::Trigger;
         }
 
-        float resolveCreateMass(const BodyCreateInfo& inCreateInfo)
+        static float resolveCreateMass(const BodyCreateInfo& inCreateInfo)
         {
             return std::max(0.1f, inCreateInfo.mass * std::max(0.0f, inCreateInfo.massScale));
         }
 
-        void enableLayerPair(JPH::ObjectLayerPairFilterTable& inTable, ObjectLayer inA, ObjectLayer inB)
+        static void enableLayerPair(JPH::ObjectLayerPairFilterTable& inTable, ObjectLayer inA, ObjectLayer inB)
         {
             const JPH::ObjectLayer a = toPhysicsObjectLayer(inA);
             const JPH::ObjectLayer b = toPhysicsObjectLayer(inB);
@@ -111,7 +111,7 @@ namespace Chicane
             }
         }
 
-        void setupObjectLayerMatrix(JPH::ObjectLayerPairFilterTable& inTable)
+        static void setupObjectLayerMatrix(JPH::ObjectLayerPairFilterTable& inTable)
         {
             // WorldStatic / NonMoving
             enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Moving);
@@ -149,7 +149,7 @@ namespace Chicane
             enableLayerPair(inTable, ObjectLayer::Trigger, ObjectLayer::Debris);
         }
 
-        Hash::Value hashPolygon(const BodyPolygon& inPolygon)
+        static Hash::Value hashPolygon(const BodyPolygon& inPolygon)
         {
             Vertex::Positions positions;
             positions.reserve(inPolygon.second.size());
@@ -259,7 +259,7 @@ namespace Chicane
             float                                                      accumulator;
         };
 
-        JPH::RefConst<JPH::Shape> makeBox(const Vec3& inSize)
+        static JPH::RefConst<JPH::Shape> makeBox(const Vec3& inSize)
         {
             const JPH::Vec3 half = Convert::toPhysicsSize(inSize * 0.5f);
             const JPH::Vec3 extents(
@@ -279,7 +279,7 @@ namespace Chicane
             return result.Get();
         }
 
-        JPH::RefConst<JPH::Shape> makeCapsule(const Vec3& inSize)
+        static JPH::RefConst<JPH::Shape> makeCapsule(const Vec3& inSize)
         {
             const float radius     = std::max(0.05f, std::min(inSize.x, inSize.y) * 0.5f);
             const float halfHeight = std::max(0.0f, inSize.z * 0.5f - radius);
@@ -294,7 +294,7 @@ namespace Chicane
             return result.Get();
         }
 
-        JPH::RefConst<JPH::Shape> makeHull(const BodyPolygon& inPolygon)
+        static JPH::RefConst<JPH::Shape> makeHull(const BodyPolygon& inPolygon)
         {
             if (inPolygon.second.size() < 4)
             {

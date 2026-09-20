@@ -12,7 +12,7 @@ namespace Chicane
     namespace Grid
     {
 
-        void readColor(const Color::Rgba& inValue, float* outValues)
+        static void readColor(const Color::Rgba& inValue, float* outValues)
         {
             outValues[0] = static_cast<float>(inValue.r);
             outValues[1] = static_cast<float>(inValue.g);
@@ -20,7 +20,7 @@ namespace Chicane
             outValues[3] = static_cast<float>(inValue.a);
         }
 
-        Color::Rgba writeColor(const float* inValues)
+        static Color::Rgba writeColor(const float* inValues)
         {
             auto channel = [](float inChannel) -> std::uint8_t
             { return static_cast<std::uint8_t>(std::round(std::clamp(inChannel, 0.0f, 255.0f))); };
@@ -30,7 +30,7 @@ namespace Chicane
 
         using Entries = std::array<StylePropertyEntry, StylePropertyTable::COUNT>;
 
-        Entries buildEntries()
+        static Entries buildEntries()
         {
             Entries entries = {};
 
@@ -661,7 +661,7 @@ namespace Chicane
             return entries;
         }
 
-        const Entries& entries()
+        static const Entries& entries()
         {
             static const Entries result = buildEntries();
 
@@ -670,7 +670,7 @@ namespace Chicane
 
         using Offsets = std::array<std::size_t, StylePropertyTable::COUNT>;
 
-        const Offsets& offsets()
+        static const Offsets& offsets()
         {
             static const Offsets result = []()
             {

@@ -30,17 +30,17 @@ namespace Chicane
 {
     namespace Grid
     {
-        float degreesToRadians(float inDegrees)
+        static float degreesToRadians(float inDegrees)
         {
             return inDegrees * Math::DEG_TO_RAD;
         }
 
-        Vec2 reflectControl(const Vec2& inCurrent, const Vec2& inLast)
+        static Vec2 reflectControl(const Vec2& inCurrent, const Vec2& inLast)
         {
             return (inCurrent * Svg::CONTROL_REFLECT) - inLast;
         }
 
-        String tagName(const XmlNode& inNode)
+        static String tagName(const XmlNode& inNode)
         {
             String            name  = inNode.getName();
             const std::size_t split = name.lastOf(':');
@@ -65,7 +65,7 @@ namespace Chicane
             return name;
         }
 
-        String attribute(const XmlNode& inNode, const char* inName)
+        static String attribute(const XmlNode& inNode, const char* inName)
         {
             if (inNode.hasAttribute(inName))
             {
@@ -96,7 +96,7 @@ namespace Chicane
             return std::strtof(inValue.toChar(), nullptr);
         }
 
-        Color::Rgba withOpacity(Color::Rgba inColor, float inOpacity)
+        static Color::Rgba withOpacity(Color::Rgba inColor, float inOpacity)
         {
             inColor.a = static_cast<std::uint8_t>(
                 std::clamp(static_cast<float>(inColor.a) * std::clamp(inOpacity, 0.0f, 1.0f), 0.0f, Svg::CHANNEL_MAX) +
@@ -106,7 +106,7 @@ namespace Chicane
             return inColor;
         }
 
-        bool parsePaint(const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled)
+        static bool parsePaint(const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled)
         {
             const String value = inValue.trim();
 
@@ -131,7 +131,7 @@ namespace Chicane
             return true;
         }
 
-        void parseStyle(const String& inStyle, const Color::Rgba& inCurrent, SvgPaint& outPaint)
+        static void parseStyle(const String& inStyle, const Color::Rgba& inCurrent, SvgPaint& outPaint)
         {
             for (const String& block : inStyle.split(';'))
             {
@@ -304,7 +304,7 @@ namespace Chicane
             return result;
         }
 
-        SvgPaint applyNode(const XmlNode& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
+        static SvgPaint applyNode(const XmlNode& inNode, const SvgPaint& inParent, const Color::Rgba& inCurrent)
         {
             SvgPaint    paint            = inParent;
             const float inheritedOpacity = inParent.opacity;
@@ -373,7 +373,7 @@ namespace Chicane
             return paint;
         }
 
-        Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
+        static Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
         {
             const glm::vec3 mapped =
                 static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
@@ -381,7 +381,7 @@ namespace Chicane
             return {mapped.x, mapped.y};
         }
 
-        Vec2 toLocal(const Vec2& inPoint, const SvgViewBox& inView)
+        static Vec2 toLocal(const Vec2& inPoint, const SvgViewBox& inView)
         {
             const float extent = std::max(inView.size.x, inView.size.y);
 
@@ -395,14 +395,14 @@ namespace Chicane
             return {local.x, -local.y};
         }
 
-        void appendLineGlyph(std::vector<Vec2>& outPoints, const Vec2& inStart, const Vec2& inEnd)
+        static void appendLineGlyph(std::vector<Vec2>& outPoints, const Vec2& inStart, const Vec2& inEnd)
         {
             outPoints.push_back(inStart);
             outPoints.push_back(Vec2((inStart.x + inEnd.x) * Svg::HALF, (inStart.y + inEnd.y) * Svg::HALF));
             outPoints.push_back(inEnd);
         }
 
-        void appendContourGlyph(std::vector<Vec2>& outPoints, const std::vector<Vec2>& inContour)
+        static void appendContourGlyph(std::vector<Vec2>& outPoints, const std::vector<Vec2>& inContour)
         {
             if (inContour.size() < Svg::MIN_CONTOUR_POINTS)
             {
@@ -425,7 +425,7 @@ namespace Chicane
             }
         }
 
-        void writeGlyphQuad(Primitive& outPrimitive)
+        static void writeGlyphQuad(Primitive& outPrimitive)
         {
             outPrimitive.indices = {0, 1, 2, 2, 3, 0};
             outPrimitive.vertices.clear();
@@ -445,7 +445,7 @@ namespace Chicane
             push(-Svg::HALF, Svg::HALF, 0.0f, 1.0f);
         }
 
-        Primitive makeGlyphPrimitive(const std::vector<Vec2>& inSegments)
+        static Primitive makeGlyphPrimitive(const std::vector<Vec2>& inSegments)
         {
             Primitive primitive;
             if (inSegments.size() < 3)
@@ -473,7 +473,7 @@ namespace Chicane
             return primitive;
         }
 
-        Primitive contoursToGlyph(const Curve::List& inContours)
+        static Primitive contoursToGlyph(const Curve::List& inContours)
         {
             std::vector<Vec2> segments;
 
@@ -490,7 +490,7 @@ namespace Chicane
             return makeGlyphPrimitive(segments);
         }
 
-        SvgViewBox parseViewBox(const String& inValue)
+        static SvgViewBox parseViewBox(const String& inValue)
         {
             SvgViewBox result;
             SvgScanner scanner(inValue);
@@ -515,7 +515,7 @@ namespace Chicane
             return result;
         }
 
-        Primitive toPrimitive(const Vertex::Positions& inPositions, const Vertex::Indices& inIndices)
+        static Primitive toPrimitive(const Vertex::Positions& inPositions, const Vertex::Indices& inIndices)
         {
             Primitive primitive;
             primitive.indices = inIndices;
@@ -531,7 +531,7 @@ namespace Chicane
             return primitive;
         }
 
-        void addArc(
+        static void addArc(
             Curve&      outCurve,
             const Vec2& inFrom,
             const Vec2& inRadius,
@@ -658,7 +658,7 @@ namespace Chicane
             }
         }
 
-        std::vector<Curve> parsePath(const String& inValue)
+        static std::vector<Curve> parsePath(const String& inValue)
         {
             std::vector<Curve> contours;
             SvgScanner         scanner(inValue);
@@ -891,7 +891,7 @@ namespace Chicane
             return contours;
         }
 
-        std::vector<Vec2> parsePoints(const String& inValue)
+        static std::vector<Vec2> parsePoints(const String& inValue)
         {
             std::vector<Vec2> points;
             SvgScanner        scanner(inValue);
@@ -911,7 +911,7 @@ namespace Chicane
             return points;
         }
 
-        Curve makeEllipse(const Vec2& inCenter, const Vec2& inRadius)
+        static Curve makeEllipse(const Vec2& inCenter, const Vec2& inRadius)
         {
             const Vec2 kappa = Svg::KAPPA * inRadius;
 
@@ -942,7 +942,7 @@ namespace Chicane
             return curve;
         }
 
-        Curve makeRect(const Vec2& inOrigin, const Vec2& inSize, const Vec2& inRadius)
+        static Curve makeRect(const Vec2& inOrigin, const Vec2& inSize, const Vec2& inRadius)
         {
             Curve curve;
             curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
@@ -1007,7 +1007,7 @@ namespace Chicane
             return curve;
         }
 
-        Curve::List toLocalContours(
+        static Curve::List toLocalContours(
             const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
@@ -1031,7 +1031,7 @@ namespace Chicane
             return result;
         }
 
-        Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        static Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
         {
             const Curve::List local = toLocalContours(inContours, inPaint, inView);
             Primitive         glyph = contoursToGlyph(local);
@@ -1046,7 +1046,7 @@ namespace Chicane
             return toPrimitive(mesh.getPositions(), mesh.getIndices());
         }
 
-        String makeGeometryKey(
+        static String makeGeometryKey(
             const char* inKind, const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
@@ -1077,7 +1077,7 @@ namespace Chicane
             return key;
         }
 
-        const Primitive& cachedFill(
+        static const Primitive& cachedFill(
             const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
@@ -1107,7 +1107,7 @@ namespace Chicane
             return empty;
         }
 
-        Primitive buildStroke(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        static Primitive buildStroke(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
         {
             Primitive primitive;
 
@@ -1452,7 +1452,7 @@ namespace Chicane
             return primitive;
         }
 
-        const Primitive& cachedStroke(
+        static const Primitive& cachedStroke(
             const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
         )
         {
@@ -1470,7 +1470,7 @@ namespace Chicane
             return empty;
         }
 
-        bool skipSubtree(const String& inTag)
+        static bool skipSubtree(const String& inTag)
         {
             return inTag.equals(
                 "defs",
@@ -1488,7 +1488,7 @@ namespace Chicane
             );
         }
 
-        bool hidden(const XmlNode& inNode)
+        static bool hidden(const XmlNode& inNode)
         {
             const String display    = attribute(inNode, Svg::DISPLAY_ATTRIBUTE_NAME).toLower();
             const String visibility = attribute(inNode, Svg::VISIBILITY_ATTRIBUTE_NAME).toLower();

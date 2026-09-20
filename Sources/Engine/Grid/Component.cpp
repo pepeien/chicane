@@ -80,7 +80,7 @@ namespace Chicane
                    inLeft.paddingB.equals(inRight.paddingB);
         }
 
-        LayoutMetrics captureLayoutMetrics(const Style& inStyle)
+        static LayoutMetrics captureLayoutMetrics(const Style& inStyle)
         {
             return {
                 inStyle.display.get(),
@@ -105,33 +105,33 @@ namespace Chicane
             };
         }
 
-        bool isHeightAuto(const Style& inStyle)
+        static bool isHeightAuto(const Style& inStyle)
         {
             return inStyle.height.isAuto();
         }
 
-        bool isWidthAuto(const Style& inStyle)
+        static bool isWidthAuto(const Style& inStyle)
         {
             return inStyle.width.isAuto();
         }
 
-        bool isFlexNowrap(const Style& inStyle)
+        static bool isFlexNowrap(const Style& inStyle)
         {
             return inStyle.isDisplay(StyleDisplay::Flex) && inStyle.flex.wrap.get() == StyleFlexWrap::NoWrap;
         }
 
-        void applyLaidOutRadius(Style& outStyle, const Vec2& inSize)
+        static void applyLaidOutRadius(Style& outStyle, const Vec2& inSize)
         {
             outStyle.radius.refresh();
             outStyle.radius.constrain(inSize.x, inSize.y);
         }
 
-        bool hasLayoutTween(const StyleAnimator& inAnimator)
+        static bool hasLayoutTween(const StyleAnimator& inAnimator)
         {
             return has(inAnimator.getDirty(), StylePropertyDirty::Layout);
         }
 
-        Vec2 innerLayoutSize(const Component* inBox)
+        static Vec2 innerLayoutSize(const Component* inBox)
         {
             if (!inBox)
             {
@@ -143,7 +143,7 @@ namespace Chicane
             return {std::max(0.0f, content.x), std::max(0.0f, content.y)};
         }
 
-        String expandStyleBinding(const String& inValue)
+        static String expandStyleBinding(const String& inValue)
         {
             const std::size_t ref = inValue.find("ref(");
             if (ref == String::npos)
@@ -2256,12 +2256,7 @@ namespace Chicane
 
             std::vector<const Component*>  ownedAncestors;
             std::vector<const Component*>& roundedAncestors =
-                inContext.roundedAncestors ? *inContext.roundedAncestors : ownedAncestors;
-
-            if (bEscapes)
-            {
-                roundedAncestors.clear();
-            }
+                (bEscapes || !inContext.roundedAncestors) ? ownedAncestors : *inContext.roundedAncestors;
 
             paintRadius(roundedAncestors);
             paintRoundClips(roundedAncestors);
@@ -2297,7 +2292,7 @@ namespace Chicane
                 }
             }
 
-            if (bIsRoundedClipper)
+            if (bIsRoundedClipper && !roundedAncestors.empty())
             {
                 roundedAncestors.pop_back();
             }

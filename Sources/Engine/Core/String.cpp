@@ -4,7 +4,7 @@
 
 namespace Chicane
 {
-    String formatSplittedBlock(const String& inValue, const String inDelimeter)
+    static String formatSplittedBlock(const String& inValue, const String inDelimeter)
     {
         if (inValue.isEmpty())
         {

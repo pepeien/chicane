@@ -8,7 +8,7 @@
 
 #include "Editor/Application.hpp"
 
-std::vector<Chicane::FileSystem::Path> parseModules(int argc, char* argv[])
+static std::vector<Chicane::FileSystem::Path> parseModules(int argc, char* argv[])
 {
     std::vector<Chicane::FileSystem::Path> modules;
 

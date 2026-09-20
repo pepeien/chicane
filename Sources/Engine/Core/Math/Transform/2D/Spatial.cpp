@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    Vec2 rotate(const Vec2& inValue, float inDegrees)
+    static Vec2 rotate(const Vec2& inValue, float inDegrees)
     {
         const float radians = glm::radians(inDegrees);
         const float cosine  = glm::cos(radians);

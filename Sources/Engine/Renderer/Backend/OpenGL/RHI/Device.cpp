@@ -17,7 +17,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        bool isIdentifier(const std::string& inValue)
+        static bool isIdentifier(const std::string& inValue)
         {
             if (inValue.empty() || std::isdigit(static_cast<unsigned char>(inValue.front())))
             {
@@ -32,7 +32,7 @@ namespace Chicane
             );
         }
 
-        std::string toBlockName(const std::string& inInstance)
+        static std::string toBlockName(const std::string& inInstance)
         {
             const std::size_t separator = inInstance.find_last_of('_');
             if (separator == std::string::npos || separator + 1 >= inInstance.size())
@@ -50,7 +50,7 @@ namespace Chicane
             return (bIsDedup ? inInstance.substr(0, separator) : inInstance) + "_block";
         }
 
-        std::string renameStorageBlocks(std::string inSource)
+        static std::string renameStorageBlocks(std::string inSource)
         {
             static const std::string keyword = "buffer ";
 

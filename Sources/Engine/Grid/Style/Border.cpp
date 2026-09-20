@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        float paintedWidth(float inWidth, StyleBorderType inType)
+        static float paintedWidth(float inWidth, StyleBorderType inType)
         {
             if (inType == StyleBorderType::None)
             {
@@ -17,7 +17,7 @@ namespace Chicane
         }
 
         template <typename T>
-        void assignOneliner(
+        static void assignOneliner(
             const std::vector<String>& inValues,
             StyleProperty<T>&          outTop,
             StyleProperty<T>&          outRight,

@@ -22,21 +22,21 @@ namespace Chicane
             ShutdownFn        shutdown = nullptr;
         };
 
-        std::mutex& mutex()
+        static std::mutex& mutex()
         {
             static std::mutex instance;
 
             return instance;
         }
 
-        std::unordered_map<String, Entry>& entries()
+        static std::unordered_map<String, Entry>& entries()
         {
             static std::unordered_map<String, Entry> instance;
 
             return instance;
         }
 
-        String sharedExtension()
+        static String sharedExtension()
         {
 #if IS_WINDOWS
             return ".dll";
@@ -45,7 +45,7 @@ namespace Chicane
 #endif
         }
 
-        String keyFor(const FileSystem::Path& inPath)
+        static String keyFor(const FileSystem::Path& inPath)
         {
             if (inPath.isEmpty())
             {
@@ -55,7 +55,7 @@ namespace Chicane
             return inPath.lexicallyNormal().toString();
         }
 
-        FileSystem::Path resolvePath(const FileSystem::Path& inPath)
+        static FileSystem::Path resolvePath(const FileSystem::Path& inPath)
         {
             if (inPath.isEmpty())
             {

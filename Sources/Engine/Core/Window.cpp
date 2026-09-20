@@ -42,6 +42,12 @@ namespace Chicane
     {
         g_current = this;
 
+        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT, "0");
+        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT_RAW, "0");
+        SDL_SetHint(SDL_HINT_WINDOWS_GAMEINPUT, "0");
+
+        SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
+
         SDL_InitFlags initFlags = 0;
         initFlags |= SDL_INIT_GAMEPAD;
         initFlags |= SDL_INIT_HAPTIC;
@@ -51,11 +57,6 @@ namespace Chicane
         {
             emmitError("Error initing the window");
         }
-
-        SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
-
-        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT, "0");
-        SDL_SetHint(SDL_HINT_JOYSTICK_GAMEINPUT_RAW, "0");
     }
 
     Window::~Window()
@@ -246,10 +247,10 @@ namespace Chicane
         initInstance();
 
         setTitle(m_settings.title);
-        setIcon(m_settings.icon);
         setSize(m_settings.size);
         setDisplay(m_settings.display);
         setType(m_settings.type);
+        setIcon(m_settings.icon);
     }
 
     const Vec<2, std::uint32_t>& Window::getSize() const
@@ -336,7 +337,7 @@ namespace Chicane
 
     void Window::setIcon(const FileSystem::Path& inPath)
     {
-        if (inPath.isEmpty())
+        if (!hasInstance() || inPath.isEmpty())
         {
             return;
         }
@@ -351,7 +352,7 @@ namespace Chicane
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
             image.getWidth(),
             image.getHeight(),
-            SDL_PIXELFORMAT_RGBA8888,
+            SDL_PIXELFORMAT_RGBA32,
             image.getPixels(),
             image.getPitch()
         );
@@ -359,6 +360,11 @@ namespace Chicane
         if (!icon || !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon))
         {
             emmitWarning("Failed to set the window icon");
+
+            if (icon)
+            {
+                SDL_DestroySurface(icon);
+            }
 
             return;
         }

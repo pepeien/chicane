@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        bool splitRadiusSides(const String& inValue, String& outHorizontal, String& outVertical)
+        static bool splitRadiusSides(const String& inValue, String& outHorizontal, String& outVertical)
         {
             std::uint32_t parenthesisCount = 0;
 

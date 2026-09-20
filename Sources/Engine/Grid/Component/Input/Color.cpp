@@ -11,22 +11,22 @@ namespace Chicane
 {
     namespace Grid
     {
-        String toHexRgb(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB)
+        static String toHexRgb(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB)
         {
             return String::sprint("#%02X%02X%02X", inR, inG, inB);
         }
 
-        std::uint8_t toByte(float inValue)
+        static std::uint8_t toByte(float inValue)
         {
             return static_cast<std::uint8_t>(std::round(std::clamp(inValue, 0.0f, 1.0f) * 255.0f));
         }
 
-        String formatInt(float inValue)
+        static String formatInt(float inValue)
         {
             return String::sprint("%d", static_cast<int>(std::round(inValue)));
         }
 
-        void rgbToHsv(float inR, float inG, float inB, float& outH, float& outS, float& outV)
+        static void rgbToHsv(float inR, float inG, float inB, float& outH, float& outS, float& outV)
         {
             const float max   = std::max(inR, std::max(inG, inB));
             const float min   = std::min(inR, std::min(inG, inB));
@@ -62,7 +62,7 @@ namespace Chicane
             }
         }
 
-        void hsvToRgb(float inH, float inS, float inV, float& outR, float& outG, float& outB)
+        static void hsvToRgb(float inH, float inS, float inV, float& outR, float& outG, float& outB)
         {
             const float s = std::clamp(inS, 0.0f, 1.0f);
             const float v = std::clamp(inV, 0.0f, 1.0f);
@@ -110,7 +110,7 @@ namespace Chicane
             outB = b + m;
         }
 
-        void rgbToHsl(float inR, float inG, float inB, float& outH, float& outS, float& outL)
+        static void rgbToHsl(float inR, float inG, float inB, float& outH, float& outS, float& outL)
         {
             const float max   = std::max(inR, std::max(inG, inB));
             const float min   = std::min(inR, std::min(inG, inB));
@@ -148,7 +148,7 @@ namespace Chicane
             }
         }
 
-        float hueToRgb(float inP, float inQ, float inT)
+        static float hueToRgb(float inP, float inQ, float inT)
         {
             float t = inT;
             if (t < 0.0f)
@@ -179,7 +179,7 @@ namespace Chicane
             return inP;
         }
 
-        void hslToRgb(float inH, float inS, float inL, float& outR, float& outG, float& outB)
+        static void hslToRgb(float inH, float inS, float inL, float& outR, float& outG, float& outB)
         {
             const float s = std::clamp(inS, 0.0f, 1.0f);
             const float l = std::clamp(inL, 0.0f, 1.0f);

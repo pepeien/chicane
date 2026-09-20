@@ -16,7 +16,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        bool parseStopOffset(const String& inValue, float& outOffset)
+        static bool parseStopOffset(const String& inValue, float& outOffset)
         {
             String value = inValue.trim().toLower();
 
@@ -54,7 +54,7 @@ namespace Chicane
             return true;
         }
 
-        bool isHintToken(const String& inValue)
+        static bool isHintToken(const String& inValue)
         {
             float offset = 0.0f;
 
@@ -69,7 +69,7 @@ namespace Chicane
                    !lower.startsWith(Style::RGBA_KEYWORD);
         }
 
-        bool extractColorToken(const String& inValue, String& outColor, String& outRest)
+        static bool extractColorToken(const String& inValue, String& outColor, String& outRest)
         {
             const String value = inValue.trim();
 
@@ -150,7 +150,7 @@ namespace Chicane
             return true;
         }
 
-        bool isLinearDirection(const String& inValue)
+        static bool isLinearDirection(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -163,7 +163,7 @@ namespace Chicane
                    value.endsWith(Style::TRANSFORM_TURN_UNIT);
         }
 
-        bool isRadialShape(const String& inValue)
+        static bool isRadialShape(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -171,7 +171,7 @@ namespace Chicane
                    value.equals("at") || value.startsWith("closest-") || value.startsWith("farthest-");
         }
 
-        float parseAngleDegrees(const String& inValue)
+        static float parseAngleDegrees(const String& inValue)
         {
             String value = inValue.trim().toLower();
 
@@ -210,7 +210,7 @@ namespace Chicane
             return std::strtof(value.toChar(), nullptr);
         }
 
-        Vec2 parseLinearAxis(const String& inValue)
+        static Vec2 parseLinearAxis(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -257,7 +257,7 @@ namespace Chicane
             return Vec2(std::sin(radians), -std::cos(radians));
         }
 
-        float parsePositionToken(const String& inValue)
+        static float parsePositionToken(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -285,7 +285,7 @@ namespace Chicane
             return std::clamp(offset, 0.0f, 1.0f);
         }
 
-        Vec2 parseRadialCenter(const String& inValue)
+        static Vec2 parseRadialCenter(const String& inValue)
         {
             Vec2 result(0.5f, 0.5f);
 
@@ -347,7 +347,7 @@ namespace Chicane
             return result;
         }
 
-        void normalizeStops(std::vector<StyleGradientStop>& outStops)
+        static void normalizeStops(std::vector<StyleGradientStop>& outStops)
         {
             if (outStops.empty())
             {

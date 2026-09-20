@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        void assignCorners(
+        static void assignCorners(
             const std::vector<String>& inValues,
             String&                    outTopLeft,
             String&                    outTopRight,

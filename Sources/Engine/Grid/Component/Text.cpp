@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        const Box::FontGlyph& resolveGlyph(const Box::FontFamily& inFamily, char32_t inCode)
+        static const Box::FontGlyph& resolveGlyph(const Box::FontFamily& inFamily, char32_t inCode)
         {
             if (inFamily.hasGlyph(inCode))
             {
@@ -32,7 +32,7 @@ namespace Chicane
             return Box::FontGlyph::empty();
         }
 
-        void getFontMetrics(const Box::FontFamily& inFamily, float& outAscender, float& outDescender)
+        static void getFontMetrics(const Box::FontFamily& inFamily, float& outAscender, float& outDescender)
         {
             outAscender  = inFamily.getAscender();
             outDescender = inFamily.getDescender();
